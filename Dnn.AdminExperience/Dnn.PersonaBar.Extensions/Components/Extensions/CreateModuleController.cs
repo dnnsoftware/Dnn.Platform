@@ -1,40 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
     {
-        protected INavigationManager NavigationManager { get; }
         public CreateModuleController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        protected override Func<ICreateModuleController> GetFactory()
-        {
-            return () => new CreateModuleController();
-        }
+        protected INavigationManager NavigationManager { get; }
 
         /// <summary>
         /// create new module.
@@ -51,17 +48,28 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (createModuleDto.Type)
             {
                 case CreateModuleType.New:
-                    packageId = CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
+                    packageId = this.CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
                     break;
                 case CreateModuleType.Control:
-                    packageId = CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+                    packageId = this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
                     break;
                 case CreateModuleType.Manifest:
-                    packageId = CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
+                    packageId = this.CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
                     break;
             }
 
             return packageId;
+        }
+
+        protected override Func<ICreateModuleController> GetFactory()
+        {
+            return () => new CreateModuleController();
+        }
+
+        private static bool InvalidFilename(string fileName)
+        {
+            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+            return invalidFilenameChars.IsMatch(fileName);
         }
 
         private int CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
@@ -121,11 +129,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             //First create the control
             createModuleDto.FileName = controlSrc;
-            var message = CreateControl(createModuleDto);
+            var message = this.CreateControl(createModuleDto);
             if (string.IsNullOrEmpty(message))
             {
                 //Next import the control
-                return CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+                return this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
             }
 
             return Null.NullInteger;
@@ -143,7 +151,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
+                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
                 var friendlyName = createModuleDto.ModuleName;
                 var name = createModuleDto.ModuleName;
                 var moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
@@ -220,7 +228,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (createModuleDto.AddPage)
                 {
-                    newPageUrl = CreateNewPage(moduleDefinition);
+                    newPageUrl = this.CreateNewPage(moduleDefinition);
                 }
 
                 return package.PackageID;
@@ -245,7 +253,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
+                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
                 var manifest = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", folder, createModuleDto.Manifest);
                 var installer = new Installer(manifest, Globals.ApplicationMapPath, true);
 
@@ -266,7 +274,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                 {
                                     var moduleDefinition = kvp.Value;
 
-                                    newPageUrl = CreateNewPage(moduleDefinition);
+                                    newPageUrl = this.CreateNewPage(moduleDefinition);
                                     break;
                                 }
                             }
@@ -326,26 +334,20 @@ namespace Dnn.PersonaBar.Extensions.Components
                 objModule.AllTabs = false;
                 ModuleController.Instance.AddModule(objModule);
 
-                return NavigationManager.NavigateURL(newTab.TabID);
+                return this.NavigationManager.NavigateURL(newTab.TabID);
             }
 
             return string.Empty;
         }
 
-        private static bool InvalidFilename(string fileName)
-        {
-            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-            return invalidFilenameChars.IsMatch(fileName);
-        }
-
         private string CreateControl(CreateModuleDto createModuleDto)
         {
-            var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
-            var className = GetClassName(createModuleDto);
+            var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+            var className = this.GetClassName(createModuleDto);
             var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules/" + folder + "/" + createModuleDto.FileName);
             var message = Null.NullString;
 
-            var source = string.Format(LoadControlTemplate(), createModuleDto.Language, className);
+            var source = string.Format(this.LoadControlTemplate(), createModuleDto.Language, className);
 
             //reset attributes
             if (File.Exists(moduleControlPath))

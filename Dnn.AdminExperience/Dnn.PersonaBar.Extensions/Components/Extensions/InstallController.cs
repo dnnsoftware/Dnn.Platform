@@ -1,34 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Data;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Common.Utilities;
-using ICSharpCode.SharpZipLib;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer;
+    using ICSharpCode.SharpZipLib;
+
     public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
-
-        protected override Func<IInstallController> GetFactory()
-        {
-            return () => new InstallController();
-        }
 
         public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
@@ -158,6 +154,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
+        protected override Func<IInstallController> GetFactory()
+        {
+            return () => new InstallController();
+        }
+
         private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null, bool isPortalPackage = false)
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
@@ -170,7 +171,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             // We always assume we are installing from //Host/Extensions (in the previous releases)
             // This will not work when we try to install a skin/container under a specific portal.
-            installer.InstallerInfo.PortalID = isPortalPackage ? portalId: Null.NullInteger;
+            installer.InstallerInfo.PortalID = isPortalPackage ? portalId : Null.NullInteger;
 
             //Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)
@@ -226,8 +227,8 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 if (File.Exists(installerFile))
                 {
-                        File.SetAttributes(installerFile, FileAttributes.Normal);
-                        File.Delete(installerFile);
+                    File.SetAttributes(installerFile, FileAttributes.Normal);
+                    File.Delete(installerFile);
                 }
             }
             catch (Exception ex)

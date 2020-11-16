@@ -1,26 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mobile;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mobile;
 
     /// -----------------------------------------------------------------------------
-    ///<summary>
+    /// <summary>
     /// The FeatureController class for the modules.
     /// </summary>
     /// <remarks>
@@ -28,16 +27,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
     /// <history>
     /// </history>
     /// -----------------------------------------------------------------------------
-
     public class FeatureController : IUpgradeable
     {
-        #region Constants
-
         private const string ResourceFileRelativePath = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/App_LocalResources/SharedResources.resx";
-
-        #endregion
-
-        #region Interfaces
 
         /// <summary>
         /// Handles upgrading the module and adding the module to the hosts menu.
@@ -53,13 +45,41 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     var moduleTabs = TabController.Instance.GetTabsByPackageID(-1, package.PackageID, false);
 
                     if (moduleTabs.Count > 0)
+                    {
                         return string.Empty;
+                    }
 
-                    RemoveWurflProvider();
+                    this.RemoveWurflProvider();
                     break;
             }
 
             return Localization.GetString("SuccessMessage", ResourceFileRelativePath);
+        }
+
+        private static IDictionary<string, string> CreateMappedCapabilities()
+        {
+            var mappingCapabilites = new Dictionary<string, string>
+            {
+                { "is_wireless_device", "IsMobile" },
+                { "resolution_width", "ScreenPixelsWidth" },
+                { "resolution_height", "ScreenPixelsHeight" },
+            };
+
+            if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")
+            {
+                mappingCapabilites.Add("is_tablet", "IsTablet");
+                mappingCapabilites.Add("device_os", "PlatformName");
+                mappingCapabilites.Add("mobile_browser", "BrowserName");
+                mappingCapabilites.Add("mobile_browser_version", "BrowserVersion");
+                mappingCapabilites.Add("device_os_version", "PlatformVersion");
+                mappingCapabilites.Add("brand_name", "HardwareVendor");
+                mappingCapabilites.Add("cookie_support", "CookiesCapable");
+                mappingCapabilites.Add("model_name", "HardwareModel");
+                mappingCapabilites.Add("physical_screen_height", "ScreenMMHeight");
+                mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
+            }
+
+            return mappingCapabilites;
         }
 
         private void RemoveWurflProvider()
@@ -71,7 +91,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                 installer.UnInstall(true);
             }
 
-            UpdateRules();
+            this.UpdateRules();
         }
 
         private void UpdateRules()
@@ -123,7 +143,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     }
                 }
 
-                //remove the deleted rules
+                // remove the deleted rules
                 foreach (var deletedRule in deletedRules)
                 {
                     controller.DeleteRule(redirection.PortalId, redirection.Id, deletedRule.Id);
@@ -133,32 +153,5 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                 controller.Save(redirection);
             }
         }
-
-        private static IDictionary<string, string> CreateMappedCapabilities()
-        {
-            var mappingCapabilites = new Dictionary<string, string>
-            {
-                {"is_wireless_device", "IsMobile"},
-                {"resolution_width", "ScreenPixelsWidth"},
-                {"resolution_height", "ScreenPixelsHeight"}
-            };
-
-            if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")
-            {
-                mappingCapabilites.Add("is_tablet", "IsTablet");
-                mappingCapabilites.Add("device_os", "PlatformName");
-                mappingCapabilites.Add("mobile_browser", "BrowserName");
-                mappingCapabilites.Add("mobile_browser_version", "BrowserVersion");
-                mappingCapabilites.Add("device_os_version", "PlatformVersion");
-                mappingCapabilites.Add("brand_name", "HardwareVendor");
-                mappingCapabilites.Add("cookie_support", "CookiesCapable");
-                mappingCapabilites.Add("model_name", "HardwareModel");
-                mappingCapabilites.Add("physical_screen_height", "ScreenMMHeight");
-                mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
-            }
-            return mappingCapabilites;
-        }
-
-        #endregion
     }
 }

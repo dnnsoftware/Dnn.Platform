@@ -1,94 +1,54 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileDefinitions PortalModuleBase is used to manage the Profile Properties
-    /// for a portal
+    /// for a portal.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
-        private readonly INavigationManager _navigationManager;
-        public ProfileDefinitions()
-        {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-        #region Constants
-
         private const int COLUMN_REQUIRED = 11;
         private const int COLUMN_VISIBLE = 12;
         private const int COLUMN_MOVE_DOWN = 2;
         private const int COLUMN_MOVE_UP = 3;
 
-        #endregion
-
-        #region Private Members
-
+        private readonly INavigationManager _navigationManager;
         private ProfilePropertyDefinitionCollection _profileProperties;
         private bool _requiredColumnHidden = false;
 
-        #endregion
-
-        #region Protected Members
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether we are dealing with SuperUsers
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected bool IsSuperUser
+        public ProfileDefinitions()
         {
-            get
-            {
-            	return Globals.IsHostTab(PortalSettings.ActiveTab.TabID);
-            }
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of Profile Proeprties
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected ProfilePropertyDefinitionCollection ProfileProperties
-        {
-            get
-            {
-                return _profileProperties ?? (_profileProperties = ProfileController.GetPropertyDefinitionsByPortal(UsersPortalId, false, false));
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Return Url for the page
+        /// Gets the Return Url for the page.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string ReturnUrl
@@ -96,298 +56,106 @@ namespace DotNetNuke.Modules.Admin.Users
             get
             {
                 string returnURL;
-                var filterParams = new string[String.IsNullOrEmpty(Request.QueryString["filterproperty"]) ? 1 : 2];
+                var filterParams = new string[string.IsNullOrEmpty(this.Request.QueryString["filterproperty"]) ? 1 : 2];
 
-                if (String.IsNullOrEmpty(Request.QueryString["filterProperty"]))
+                if (string.IsNullOrEmpty(this.Request.QueryString["filterProperty"]))
                 {
-                    filterParams.SetValue("filter=" + Request.QueryString["filter"], 0);
+                    filterParams.SetValue("filter=" + this.Request.QueryString["filter"], 0);
                 }
                 else
                 {
-                    filterParams.SetValue("filter=" + Request.QueryString["filter"], 0);
-                    filterParams.SetValue("filterProperty=" + Request.QueryString["filterProperty"], 1);
+                    filterParams.SetValue("filter=" + this.Request.QueryString["filter"], 0);
+                    filterParams.SetValue("filterProperty=" + this.Request.QueryString["filterProperty"], 1);
                 }
-                if (string.IsNullOrEmpty(Request.QueryString["filter"]))
+
+                if (string.IsNullOrEmpty(this.Request.QueryString["filter"]))
                 {
-                    returnURL = _navigationManager.NavigateURL(TabId);
+                    returnURL = this._navigationManager.NavigateURL(this.TabId);
                 }
                 else
                 {
-                    returnURL = _navigationManager.NavigateURL(TabId, "", filterParams);
+                    returnURL = this._navigationManager.NavigateURL(this.TabId, string.Empty, filterParams);
                 }
+
                 return returnURL;
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Portal Id whose Users we are managing
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected int UsersPortalId
-        {
-            get
-            {
-                int intPortalId = PortalId;
-                if (IsSuperUser)
-                {
-                    intPortalId = Null.NullInteger;
-                }
-                return intPortalId;
-            }
-        }
-
-        #endregion
-
-        #region IActionable Members
 
         public ModuleActionCollection ModuleActions
         {
             get
             {
                 var actions = new ModuleActionCollection();
-                actions.Add(GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "add.gif",
-                            EditUrl("EditProfileProperty"),
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
-                actions.Add(GetNextActionID(),
-                            Localization.GetString("Cancel.Action", LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "lt.gif",
-                            ReturnUrl,
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
+                actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    "add.gif",
+                    this.EditUrl("EditProfileProperty"),
+                    false,
+                    SecurityAccessLevel.Admin,
+                    true,
+                    false);
+                actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString("Cancel.Action", this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    "lt.gif",
+                    this.ReturnUrl,
+                    false,
+                    SecurityAccessLevel.Admin,
+                    true,
+                    false);
                 return actions;
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Helper function that determines whether the client-side functionality is possible
+        /// Gets a value indicating whether gets whether we are dealing with SuperUsers.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private bool SupportsRichClient()
+        protected bool IsSuperUser
         {
-            return ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Deletes a property
-        /// </summary>
-        /// <param name="index">The index of the Property to delete</param>
-        /// -----------------------------------------------------------------------------
-        private void DeleteProperty(int index)
-        {
-            ProfileController.DeletePropertyDefinition(ProfileProperties[index]);
-
-            RefreshGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Moves a property
-        /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// <param name="destIndex">The new index of the Property</param>
-        /// -----------------------------------------------------------------------------
-        private void MoveProperty(int index, int destIndex)
-        {
-            ProfilePropertyDefinition profileProperty = ProfileProperties[index];
-            ProfilePropertyDefinition nextProfileProperty = ProfileProperties[destIndex];
-
-            int currentOrder = profileProperty.ViewOrder;
-            int nextOrder = nextProfileProperty.ViewOrder;
-
-            //Swap ViewOrders
-            profileProperty.ViewOrder = nextOrder;
-            nextProfileProperty.ViewOrder = currentOrder;
-
-            //Refresh Grid
-            ProfileProperties.Sort();
-            BindGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Moves a property down in the ViewOrder
-        /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// -----------------------------------------------------------------------------
-        private void MovePropertyDown(int index)
-        {
-            MoveProperty(index, index + 1);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Moves a property up in the ViewOrder
-        /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// -----------------------------------------------------------------------------
-        private void MovePropertyUp(int index)
-        {
-            MoveProperty(index, index - 1);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Binds the Property Collection to the Grid
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void BindGrid()
-        {
-            bool allRequired = true;
-            bool allVisible = true;
-
-            //Check whether the checkbox column headers are true or false
-            foreach (ProfilePropertyDefinition profProperty in ProfileProperties)
+            get
             {
-                if (profProperty.Required == false)
-                {
-                    allRequired = false;
-                }
-                if (profProperty.Visible == false)
-                {
-                    allVisible = false;
-                }
-                if (!allRequired && !allVisible)
-                {
-                    break;
-                }
-            }
-            foreach (DataGridColumn column in grdProfileProperties.Columns)
-            {
-                if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
-                {
-                    //Manage CheckBox column events
-                    var checkBoxColumn = (CheckBoxColumn)column;
-                    if (checkBoxColumn.DataField == "Required")
-                    {
-                        checkBoxColumn.Checked = allRequired;
-                    }
-                    if (checkBoxColumn.DataField == "Visible")
-                    {
-                        checkBoxColumn.Checked = allVisible;
-                    }
-                }
-            }
-            grdProfileProperties.DataSource = ProfileProperties;
-            grdProfileProperties.DataBind();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Refresh the Property Collection to the Grid
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void RefreshGrid()
-        {
-            _profileProperties = null;
-            BindGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates any "dirty" properties
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void UpdateProperties()
-        {
-            ProcessPostBack();
-            foreach (ProfilePropertyDefinition property in ProfileProperties)
-            {
-                if (property.IsDirty)
-                {
-                    if (UsersPortalId == Null.NullInteger)
-                    {
-                        property.Required = false;
-                    }
-                    ProfileController.UpdatePropertyDefinition(property);
-                }
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This method is responsible for taking in posted information from the grid and
-        /// persisting it to the property definition collection
+        /// Gets the collection of Profile Proeprties.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void ProcessPostBack()
+        protected ProfilePropertyDefinitionCollection ProfileProperties
         {
-
-            string[] newOrder = ClientAPI.GetClientSideReorder(grdProfileProperties.ClientID, Page);
-            for (int i = 0; i <= grdProfileProperties.Items.Count - 1; i++)
+            get
             {
-                DataGridItem dataGridItem = grdProfileProperties.Items[i];
-                ProfilePropertyDefinition profileProperty = ProfileProperties[i];
-                CheckBox checkBox = (CheckBox)dataGridItem.Cells[COLUMN_REQUIRED].Controls[0];
-                profileProperty.Required = checkBox.Checked;
-                checkBox = (CheckBox)dataGridItem.Cells[COLUMN_VISIBLE].Controls[0];
-                profileProperty.Visible = checkBox.Checked;
+                return this._profileProperties ?? (this._profileProperties = ProfileController.GetPropertyDefinitionsByPortal(this.UsersPortalId, false, false));
             }
-
-            //assign vieworder
-            for (int i = 0; i <= newOrder.Length - 1; i++)
-            {
-                ProfileProperties[Convert.ToInt32(newOrder[i])].ViewOrder = i;
-            }
-            ProfileProperties.Sort();
         }
 
-        #endregion
-
-        #region Protected Methods
-
-        protected override void LoadViewState(object savedState)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Portal Id whose Users we are managing.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected int UsersPortalId
         {
-            if (savedState != null)
+            get
             {
-                //Load State from the array of objects that was saved with SaveViewState.
-                var myState = (object[])savedState;
-
-                //Load Base Controls ViewState
-                if (myState[0] != null)
+                int intPortalId = this.PortalId;
+                if (this.IsSuperUser)
                 {
-                    base.LoadViewState(myState[0]);
+                    intPortalId = Null.NullInteger;
                 }
 
-                //Load ModuleID
-                if (myState[1] != null)
-                {
-                    _profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
-                }
+                return intPortalId;
             }
         }
-
-        protected override object SaveViewState()
-        {
-            var allStates = new object[2];
-
-            //Save the Base Controls ViewState
-            allStates[0] = base.SaveViewState();
-            allStates[1] = ProfileProperties;
-
-            return allStates;
-        }
-
-        #endregion
-
-        #region Public Methods
 
         public string DisplayDataType(ProfilePropertyDefinition definition)
         {
@@ -398,16 +166,18 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 retValue = definitionEntry.Value;
             }
+
             return retValue;
         }
 
         public string DisplayDefaultVisibility(ProfilePropertyDefinition definition)
         {
             string retValue = Null.NullString;
-            if (!String.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
+            if (!string.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
             {
-                retValue = LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
+                retValue = this.LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
             }
+
             return retValue;
         }
 
@@ -415,24 +185,52 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                UpdateProperties();
+                this.UpdateProperties();
 
-                //Redirect to upadte page
-                Response.Redirect(Request.RawUrl, true);
+                // Redirect to upadte page
+                this.Response.Redirect(this.Request.RawUrl, true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        #endregion
+        protected override void LoadViewState(object savedState)
+        {
+            if (savedState != null)
+            {
+                // Load State from the array of objects that was saved with SaveViewState.
+                var myState = (object[])savedState;
 
-        #region Event Handlers
+                // Load Base Controls ViewState
+                if (myState[0] != null)
+                {
+                    base.LoadViewState(myState[0]);
+                }
+
+                // Load ModuleID
+                if (myState[1] != null)
+                {
+                    this._profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
+                }
+            }
+        }
+
+        protected override object SaveViewState()
+        {
+            var allStates = new object[2];
+
+            // Save the Base Controls ViewState
+            allStates[0] = base.SaveViewState();
+            allStates[1] = this.ProfileProperties;
+
+            return allStates;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -441,45 +239,46 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnInit(e);
 
-            foreach (DataGridColumn column in grdProfileProperties.Columns)
+            foreach (DataGridColumn column in this.grdProfileProperties.Columns)
             {
                 if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
                 {
                     var checkBoxColumn = (CheckBoxColumn)column;
-                    if (checkBoxColumn.DataField == "Required" && UsersPortalId == Null.NullInteger)
+                    if (checkBoxColumn.DataField == "Required" && this.UsersPortalId == Null.NullInteger)
                     {
                         checkBoxColumn.Visible = false;
-                        _requiredColumnHidden = true;
+                        this._requiredColumnHidden = true;
                     }
-                    if (SupportsRichClient() == false)
+
+                    if (this.SupportsRichClient() == false)
                     {
-                        checkBoxColumn.CheckedChanged += grdProfileProperties_ItemCheckedChanged;
+                        checkBoxColumn.CheckedChanged += this.grdProfileProperties_ItemCheckedChanged;
                     }
                 }
                 else if (ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
                 {
-                    //Manage Delete Confirm JS
+                    // Manage Delete Confirm JS
                     var imageColumn = (ImageCommandColumn)column;
                     switch (imageColumn.CommandName)
                     {
                         case "Delete":
                             imageColumn.OnClickJS = Localization.GetString("DeleteItem");
-                            imageColumn.Text = Localization.GetString("Delete", LocalResourceFile);
+                            imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
                             break;
                         case "Edit":
-                            //The Friendly URL parser does not like non-alphanumeric characters
-                            //so first create the format string with a dummy value and then
-                            //replace the dummy value with the FormatString place holder
-                            string formatString = EditUrl("PropertyDefinitionID", "KEYFIELD", "EditProfileProperty");
+                            // The Friendly URL parser does not like non-alphanumeric characters
+                            // so first create the format string with a dummy value and then
+                            // replace the dummy value with the FormatString place holder
+                            string formatString = this.EditUrl("PropertyDefinitionID", "KEYFIELD", "EditProfileProperty");
                             formatString = formatString.Replace("KEYFIELD", "{0}");
                             imageColumn.NavigateURLFormatString = formatString;
-                            imageColumn.Text = Localization.GetString("Edit", LocalResourceFile);
+                            imageColumn.Text = Localization.GetString("Edit", this.LocalResourceFile);
                             break;
                         case "MoveUp":
-                            imageColumn.Text = Localization.GetString("MoveUp", LocalResourceFile);
+                            imageColumn.Text = Localization.GetString("MoveUp", this.LocalResourceFile);
                             break;
                         case "MoveDown":
-                            imageColumn.Text = Localization.GetString("MoveDown", LocalResourceFile);
+                            imageColumn.Text = Localization.GetString("MoveDown", this.LocalResourceFile);
                             break;
                     }
                 }
@@ -490,22 +289,22 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnLoad(e);
 
-            cmdRefresh.Click += cmdRefresh_Click;
-            grdProfileProperties.ItemCommand += grdProfileProperties_ItemCommand;
-            grdProfileProperties.ItemCreated += grdProfileProperties_ItemCreated;
-            grdProfileProperties.ItemDataBound += grdProfileProperties_ItemDataBound;
+            this.cmdRefresh.Click += this.cmdRefresh_Click;
+            this.grdProfileProperties.ItemCommand += this.grdProfileProperties_ItemCommand;
+            this.grdProfileProperties.ItemCreated += this.grdProfileProperties_ItemCreated;
+            this.grdProfileProperties.ItemDataBound += this.grdProfileProperties_ItemDataBound;
 
-            cmdAdd.NavigateUrl = EditUrl("EditProfileProperty");
+            this.cmdAdd.NavigateUrl = this.EditUrl("EditProfileProperty");
 
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    Localization.LocalizeDataGrid(ref grdProfileProperties, LocalResourceFile);
-                    BindGrid();
+                    Localization.LocalizeDataGrid(ref this.grdProfileProperties, this.LocalResourceFile);
+                    this.BindGrid();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -513,127 +312,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdRefresh_Click runs when the refresh button is clciked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void cmdRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdProfileProperties_ItemCheckedChanged runs when a checkbox in the grid
-        /// is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void grdProfileProperties_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
-        {
-            string propertyName = e.Field;
-            bool propertyValue = e.Checked;
-
-            if (e.IsAll)
-            {
-                //Update All the properties
-                foreach (ProfilePropertyDefinition profProperty in ProfileProperties)
-                {
-                    switch (propertyName)
-                    {
-                        case "Required":
-                            profProperty.Required = propertyValue;
-                            break;
-                        case "Visible":
-                            profProperty.Visible = propertyValue;
-                            break;
-                    }
-                }
-            }
-            else
-            {
-                //Update the indexed property
-                ProfilePropertyDefinition profileProperty = ProfileProperties[e.Item.ItemIndex];
-                switch (propertyName)
-                {
-                    case "Required":
-                        profileProperty.Required = propertyValue;
-                        break;
-                    case "Visible":
-                        profileProperty.Visible = propertyValue;
-                        break;
-                }
-            }
-            BindGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdProfileProperties_ItemCommand runs when a Command event is raised in the
-        /// Grid
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void grdProfileProperties_ItemCommand(object source, DataGridCommandEventArgs e)
-        {
-            int index = e.Item.ItemIndex;
-
-            switch (e.CommandName)
-            {
-                case "Delete":
-                    DeleteProperty(index);
-                    break;
-                case "MoveUp":
-                    MovePropertyUp(index);
-                    break;
-                case "MoveDown":
-                    MovePropertyDown(index);
-                    break;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated
-        /// event is responsible for disabling all the unneeded AutoPostBacks, along with assiging the appropriate
-        ///	client-side script for each event handler
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private void grdProfileProperties_ItemCreated(object sender, DataGridItemEventArgs e)
-        {
-            if (SupportsRichClient())
-            {
-                switch (e.Item.ItemType)
-                {
-                    case ListItemType.Header:
-                        //we combined the header label and checkbox in same place, so it is control 1 instead of 0
-                        ((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
-                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
-
-                        int column_visible = _requiredColumnHidden ? COLUMN_VISIBLE - 1 : COLUMN_VISIBLE;
-                        ((WebControl)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + column_visible + ");");
-                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).AutoPostBack = false;
-                        break;
-                    case ListItemType.AlternatingItem:
-                    case ListItemType.Item:
-                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[0]).AutoPostBack = false;
-                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[0]).AutoPostBack = false;
-                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_DOWN].Controls[0], Page, false, grdProfileProperties.ClientID);
-                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_UP].Controls[0], Page, true, grdProfileProperties.ClientID);
-                        break;
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
-        /// Grid
+        /// Grid.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -665,6 +345,305 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Helper function that determines whether the client-side functionality is possible.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private bool SupportsRichClient()
+        {
+            return ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Deletes a property.
+        /// </summary>
+        /// <param name="index">The index of the Property to delete.</param>
+        /// -----------------------------------------------------------------------------
+        private void DeleteProperty(int index)
+        {
+            ProfileController.DeletePropertyDefinition(this.ProfileProperties[index]);
+
+            this.RefreshGrid();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Moves a property.
+        /// </summary>
+        /// <param name="index">The index of the Property to move.</param>
+        /// <param name="destIndex">The new index of the Property.</param>
+        /// -----------------------------------------------------------------------------
+        private void MoveProperty(int index, int destIndex)
+        {
+            ProfilePropertyDefinition profileProperty = this.ProfileProperties[index];
+            ProfilePropertyDefinition nextProfileProperty = this.ProfileProperties[destIndex];
+
+            int currentOrder = profileProperty.ViewOrder;
+            int nextOrder = nextProfileProperty.ViewOrder;
+
+            // Swap ViewOrders
+            profileProperty.ViewOrder = nextOrder;
+            nextProfileProperty.ViewOrder = currentOrder;
+
+            // Refresh Grid
+            this.ProfileProperties.Sort();
+            this.BindGrid();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Moves a property down in the ViewOrder.
+        /// </summary>
+        /// <param name="index">The index of the Property to move.</param>
+        /// -----------------------------------------------------------------------------
+        private void MovePropertyDown(int index)
+        {
+            this.MoveProperty(index, index + 1);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Moves a property up in the ViewOrder.
+        /// </summary>
+        /// <param name="index">The index of the Property to move.</param>
+        /// -----------------------------------------------------------------------------
+        private void MovePropertyUp(int index)
+        {
+            this.MoveProperty(index, index - 1);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Binds the Property Collection to the Grid.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void BindGrid()
+        {
+            bool allRequired = true;
+            bool allVisible = true;
+
+            // Check whether the checkbox column headers are true or false
+            foreach (ProfilePropertyDefinition profProperty in this.ProfileProperties)
+            {
+                if (profProperty.Required == false)
+                {
+                    allRequired = false;
+                }
+
+                if (profProperty.Visible == false)
+                {
+                    allVisible = false;
+                }
+
+                if (!allRequired && !allVisible)
+                {
+                    break;
+                }
+            }
+
+            foreach (DataGridColumn column in this.grdProfileProperties.Columns)
+            {
+                if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
+                {
+                    // Manage CheckBox column events
+                    var checkBoxColumn = (CheckBoxColumn)column;
+                    if (checkBoxColumn.DataField == "Required")
+                    {
+                        checkBoxColumn.Checked = allRequired;
+                    }
+
+                    if (checkBoxColumn.DataField == "Visible")
+                    {
+                        checkBoxColumn.Checked = allVisible;
+                    }
+                }
+            }
+
+            this.grdProfileProperties.DataSource = this.ProfileProperties;
+            this.grdProfileProperties.DataBind();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Refresh the Property Collection to the Grid.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void RefreshGrid()
+        {
+            this._profileProperties = null;
+            this.BindGrid();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Updates any "dirty" properties.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void UpdateProperties()
+        {
+            this.ProcessPostBack();
+            foreach (ProfilePropertyDefinition property in this.ProfileProperties)
+            {
+                if (property.IsDirty)
+                {
+                    if (this.UsersPortalId == Null.NullInteger)
+                    {
+                        property.Required = false;
+                    }
+
+                    ProfileController.UpdatePropertyDefinition(property);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This method is responsible for taking in posted information from the grid and
+        /// persisting it to the property definition collection.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void ProcessPostBack()
+        {
+            string[] newOrder = ClientAPI.GetClientSideReorder(this.grdProfileProperties.ClientID, this.Page);
+            for (int i = 0; i <= this.grdProfileProperties.Items.Count - 1; i++)
+            {
+                DataGridItem dataGridItem = this.grdProfileProperties.Items[i];
+                ProfilePropertyDefinition profileProperty = this.ProfileProperties[i];
+                CheckBox checkBox = (CheckBox)dataGridItem.Cells[COLUMN_REQUIRED].Controls[0];
+                profileProperty.Required = checkBox.Checked;
+                checkBox = (CheckBox)dataGridItem.Cells[COLUMN_VISIBLE].Controls[0];
+                profileProperty.Visible = checkBox.Checked;
+            }
+
+            // assign vieworder
+            for (int i = 0; i <= newOrder.Length - 1; i++)
+            {
+                this.ProfileProperties[Convert.ToInt32(newOrder[i])].ViewOrder = i;
+            }
+
+            this.ProfileProperties.Sort();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// cmdRefresh_Click runs when the refresh button is clciked.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void cmdRefresh_Click(object sender, EventArgs e)
+        {
+            this.RefreshGrid();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// grdProfileProperties_ItemCheckedChanged runs when a checkbox in the grid
+        /// is clicked.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void grdProfileProperties_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
+        {
+            string propertyName = e.Field;
+            bool propertyValue = e.Checked;
+
+            if (e.IsAll)
+            {
+                // Update All the properties
+                foreach (ProfilePropertyDefinition profProperty in this.ProfileProperties)
+                {
+                    switch (propertyName)
+                    {
+                        case "Required":
+                            profProperty.Required = propertyValue;
+                            break;
+                        case "Visible":
+                            profProperty.Visible = propertyValue;
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                // Update the indexed property
+                ProfilePropertyDefinition profileProperty = this.ProfileProperties[e.Item.ItemIndex];
+                switch (propertyName)
+                {
+                    case "Required":
+                        profileProperty.Required = propertyValue;
+                        break;
+                    case "Visible":
+                        profileProperty.Visible = propertyValue;
+                        break;
+                }
+            }
+
+            this.BindGrid();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// grdProfileProperties_ItemCommand runs when a Command event is raised in the
+        /// Grid.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void grdProfileProperties_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            int index = e.Item.ItemIndex;
+
+            switch (e.CommandName)
+            {
+                case "Delete":
+                    this.DeleteProperty(index);
+                    break;
+                case "MoveUp":
+                    this.MovePropertyUp(index);
+                    break;
+                case "MoveDown":
+                    this.MovePropertyDown(index);
+                    break;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated
+        /// event is responsible for disabling all the unneeded AutoPostBacks, along with assiging the appropriate
+        ///     client-side script for each event handler.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private void grdProfileProperties_ItemCreated(object sender, DataGridItemEventArgs e)
+        {
+            if (this.SupportsRichClient())
+            {
+                switch (e.Item.ItemType)
+                {
+                    case ListItemType.Header:
+                        // we combined the header label and checkbox in same place, so it is control 1 instead of 0
+                        ((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
+                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
+
+                        int column_visible = this._requiredColumnHidden ? COLUMN_VISIBLE - 1 : COLUMN_VISIBLE;
+                        ((WebControl)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + column_visible + ");");
+                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).AutoPostBack = false;
+                        break;
+                    case ListItemType.AlternatingItem:
+                    case ListItemType.Item:
+                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[0]).AutoPostBack = false;
+                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[0]).AutoPostBack = false;
+                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_DOWN].Controls[0], this.Page, false, this.grdProfileProperties.ClientID);
+                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_UP].Controls[0], this.Page, true, this.grdProfileProperties.ClientID);
+                        break;
+                }
+            }
+        }
     }
 }

@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System;
+    using System.Collections;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
@@ -26,9 +21,8 @@ namespace DotNetNuke.Services.Search
     [Serializable]
     public class SearchItemInfoCollection : CollectionBase
     {
-		#region "Constructors"
-
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class.
         /// </summary>
         public SearchItemInfoCollection()
@@ -36,35 +30,34 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> with which to initialize the collection.</param>
         public SearchItemInfoCollection(SearchItemInfoCollection value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class containing the specified array of <see cref="SearchItemInfo">SearchItemInfo</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchItemInfo">SearchItemInfo</see> objects with which to initialize the collection. </param>
         public SearchItemInfoCollection(SearchItemInfo[] value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollectionSearchItemInfoCollection</see> class containing the specified array of <see cref="SearchItemInfo">SearchItemInfo</see> objects.
         /// </summary>
         /// <param name="value">An arraylist of <see cref="SearchItemInfo">SearchItemInfo</see> objects with which to initialize the collection. </param>
         public SearchItemInfoCollection(ArrayList value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
-
-		#endregion
-
-		#region "Properties"
 
         /// <summary>
         /// Gets the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> at the specified index in the collection.
@@ -76,25 +69,23 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchItemInfo) List[index];
+                return (SearchItemInfo)this.List[index];
             }
+
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
-
-		#endregion
-
-		#region "Public Methods"
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchItemInfo">SearchItemInfo</see> to the end of the collection.
         /// </summary>
         /// <param name="value">An object of type <see cref="SearchItemInfo">SearchItemInfo</see> to add to the collection.</param>
+        /// <returns></returns>
         public int Add(SearchItemInfo value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         /// <summary>
@@ -104,17 +95,17 @@ namespace DotNetNuke.Services.Search
         /// <returns>The index in the collection of the specified object, if found; otherwise, -1.</returns>
         public int IndexOf(SearchItemInfo value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchItemInfo">SearchItemInfo</see> to the collection at the designated index.
         /// </summary>
-        /// <param name="index">An <see cref="System.Int32">Integer</see> to indicate the location to add the object to the collection.</param>
+        /// <param name="index">An <see cref="int">Integer</see> to indicate the location to add the object to the collection.</param>
         /// <param name="value">An object of type <see cref="SearchItemInfo">SearchItemInfo</see> to add to the collection.</param>
         public void Insert(int index, SearchItemInfo value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         /// <summary>
@@ -123,7 +114,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchItemInfo">SearchItemInfo</see> to remove to the collection.</param>
         public void Remove(SearchItemInfo value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         /// <summary>
@@ -133,7 +124,7 @@ namespace DotNetNuke.Services.Search
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         public bool Contains(SearchItemInfo value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         /// <summary>
@@ -144,7 +135,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Length - 1; i++)
             {
-                Add(value[i]);
+                this.Add(value[i]);
             }
         }
 
@@ -158,7 +149,7 @@ namespace DotNetNuke.Services.Search
             {
                 if (obj is SearchItemInfo)
                 {
-                    Add((SearchItemInfo) obj);
+                    this.Add((SearchItemInfo)obj);
                 }
             }
         }
@@ -171,7 +162,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                Add((SearchItemInfo) value.List[i]);
+                this.Add((SearchItemInfo)value.List[i]);
             }
         }
 
@@ -182,17 +173,17 @@ namespace DotNetNuke.Services.Search
         /// <param name="index">The index of the array at which to begin inserting.</param>
         public void CopyTo(SearchItemInfo[] array, int index)
         {
-            List.CopyTo(array, index);
+            this.List.CopyTo(array, index);
         }
 
         /// <summary>
         /// Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.
         /// </summary>
-        /// <returns>Array of type SearchItemInfo</returns>
+        /// <returns>Array of type SearchItemInfo.</returns>
         public SearchItemInfo[] ToArray()
         {
-            var arr = new SearchItemInfo[Count];
-            CopyTo(arr, 0);
+            var arr = new SearchItemInfo[this.Count];
+            this.CopyTo(arr, 0);
 
             return arr;
         }
@@ -207,9 +198,8 @@ namespace DotNetNuke.Services.Search
                     retValue.Add(info);
                 }
             }
+
             return retValue;
         }
-		
-		#endregion
     }
 }

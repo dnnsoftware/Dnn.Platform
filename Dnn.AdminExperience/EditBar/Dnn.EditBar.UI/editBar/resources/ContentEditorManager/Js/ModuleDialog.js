@@ -91,10 +91,17 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 paneName = paneName.toLowerCase();
             }
             $('.dnnSortable[id]').each(function () {
-                var paneId = $(this).attr('id').toLowerCase();
-                if (paneId.length >= paneName.length
-                        && paneId.indexOf(paneName) == (paneId.length - paneName.length)) {
-                    defaultPane = $(this);
+                var $pane = $(this);
+                var paneId = $pane.attr('id').toLowerCase();
+                var thisPaneName;
+                if ($pane.data('name')) {
+                    thisPaneName = $pane.data('name').toLowerCase();
+                } else {
+                    thisPaneName = paneId.replace(/^dnn_/, '').toLowerCase();
+                }
+                
+                if (paneName === paneId || paneName === thisPaneName) {
+                    defaultPane = $pane;
                     return false;
                 }
 

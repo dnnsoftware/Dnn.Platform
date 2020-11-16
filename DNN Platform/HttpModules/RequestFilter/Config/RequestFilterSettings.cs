@@ -1,26 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Services.Cache;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules.RequestFilter
 {
-    [Serializable, XmlRoot("RewriterConfig")]
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Services.Cache;
+
+    [Serializable]
+    [XmlRoot("RewriterConfig")]
     public class RequestFilterSettings
     {
         private const string RequestFilterConfig = "RequestFilter.Config";
@@ -39,26 +35,28 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _rules;
+                return this._rules;
             }
+
             set
             {
-                _rules = value;
+                this._rules = value;
             }
         }
 
         /// <summary>
-        /// Get the current settings from the xml config file
+        /// Get the current settings from the xml config file.
         /// </summary>
+        /// <returns></returns>
         public static RequestFilterSettings GetSettings()
         {
-            var settings = (RequestFilterSettings) DataCache.GetCache(RequestFilterConfig);
+            var settings = (RequestFilterSettings)DataCache.GetCache(RequestFilterConfig);
             if (settings == null)
             {
                 settings = new RequestFilterSettings();
                 string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.DotNetNuke);
 
-                //Create a FileStream for the Config file
+                // Create a FileStream for the Config file
                 using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var doc = new XPathDocument(fileReader);
@@ -81,12 +79,14 @@ namespace DotNetNuke.HttpModules.RequestFilter
                         }
                     }
                 }
-                if ((File.Exists(filePath)))
+
+                if (File.Exists(filePath))
                 {
-                    //Set back into Cache
+                    // Set back into Cache
                     DataCache.SetCache(RequestFilterConfig, settings, new DNNCacheDependency(filePath));
                 }
             }
+
             return settings;
         }
 
@@ -96,11 +96,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
             if (!File.Exists(filePath))
             {
                 string defaultConfigFile = Globals.ApplicationMapPath + Globals.glbConfigFolder + Globals.glbDotNetNukeConfig;
-                if ((File.Exists(defaultConfigFile)))
+                if (File.Exists(defaultConfigFile))
                 {
                     File.Copy(defaultConfigFile, filePath, true);
                 }
             }
+
             var doc = new XmlDocument { XmlResolver = null };
             doc.Load(filePath);
             XmlNode ruleRoot = doc.SelectSingleNode("/configuration/blockrequests");
@@ -125,6 +126,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 xmlRule.Attributes.Append(location);
                 ruleRoot.AppendChild(xmlRule);
             }
+
             var settings = new XmlWriterSettings();
             settings.Indent = true;
             using (XmlWriter writer = XmlWriter.Create(filePath, settings))

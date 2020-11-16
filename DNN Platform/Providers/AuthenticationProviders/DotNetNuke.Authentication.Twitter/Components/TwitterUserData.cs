@@ -1,47 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Runtime.Serialization;
-
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Authentication.Twitter.Components
 {
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Services.Authentication.OAuth;
+
     [DataContract]
     public class TwitterUserData : UserData
     {
-        #region Overrides
-
         public override string DisplayName
         {
-            get { return ScreenName; }
+            get { return this.ScreenName; }
             set { }
         }
 
         public override string Locale
         {
-            get { return LanguageCode; }
+            get { return this.LanguageCode; }
             set { }
         }
 
         public override string ProfileImage
         {
-            get { return ProfileImageUrl; }
+            get { return this.ProfileImageUrl; }
             set { }
         }
 
         public override string Website
         {
-            get { return Url; }
+            get { return this.Url; }
             set { }
         }
-
-        #endregion
 
         [DataMember(Name = "screen_name")]
         public string ScreenName { get; set; }

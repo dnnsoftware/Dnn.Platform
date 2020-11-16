@@ -1,87 +1,146 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Urls;
-
-#endregion
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Portals
 {
-    [Serializable]
-    public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable
-    {
-        public PortalAliasInfo() {}
+    using System;
+    using System.Data;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
 
-        public PortalAliasInfo(PortalAliasInfo alias)
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Urls;
+
+    using NewBrowserType = DotNetNuke.Abstractions.Urls.BrowserTypes;
+
+    /// <inheritdoc />
+    [Serializable]
+    public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPortalAliasInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
+        /// </summary>
+        public PortalAliasInfo()
         {
-            HTTPAlias = alias.HTTPAlias;
-            PortalAliasID = alias.PortalAliasID;
-            PortalID = alias.PortalID;
-            IsPrimary = alias.IsPrimary;
-            Redirect = alias.Redirect;
-            BrowserType = alias.BrowserType;
-            CultureCode = alias.CultureCode;
-            Skin = alias.Skin;
         }
 
-        #region Auto-Properties
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
+        /// </summary>
+        /// <param name="alias"></param>
+        public PortalAliasInfo(PortalAliasInfo alias)
+            : this((IPortalAliasInfo)alias)
+        {
+        }
 
-        public string HTTPAlias { get; set; }
-        public int PortalAliasID { get; set; }
-        public int PortalID { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
+        /// </summary>
+        /// <param name="alias"></param>
+        public PortalAliasInfo(IPortalAliasInfo alias)
+        {
+            this.ThisAsInterface.HttpAlias = alias.HttpAlias;
+            this.ThisAsInterface.PortalAliasId = alias.PortalAliasId;
+            this.ThisAsInterface.PortalId = alias.PortalId;
+            this.IsPrimary = alias.IsPrimary;
+            this.Redirect = alias.Redirect;
+            this.ThisAsInterface.BrowserType = alias.BrowserType;
+            this.CultureCode = alias.CultureCode;
+            this.Skin = alias.Skin;
+        }
+
+        /// <inheritdoc />
+        string IPortalAliasInfo.HttpAlias { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead.")]
+        public string HTTPAlias
+        {
+            get => this.ThisAsInterface.HttpAlias;
+            set => this.ThisAsInterface.HttpAlias = value;
+        }
+
+        /// <inheritdoc />
+        int IPortalAliasInfo.PortalAliasId { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalAliasId instead.")]
+        public int PortalAliasID
+        {
+            get => this.ThisAsInterface.PortalAliasId;
+            set => this.ThisAsInterface.PortalAliasId = value;
+        }
+
+        /// <inheritdoc />
+        int IPortalAliasInfo.PortalId { get; set; }
+
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalId instead.")]
+        public int PortalID
+        {
+            get => this.ThisAsInterface.PortalId;
+            set => this.ThisAsInterface.PortalId = value;
+        }
+
+        /// <inheritdoc />
         public bool IsPrimary { get; set; }
+
+        /// <inheritdoc />
         public bool Redirect { get; set; }
 
-        public BrowserTypes BrowserType { get; set; }
+        /// <summary>
+        /// Gets or sets the Browser Type.
+        /// </summary>
+        [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.BrowserType instead.")]
+        public BrowserTypes BrowserType
+        {
+            get => (BrowserTypes)this.ThisAsInterface.BrowserType;
+            set => this.ThisAsInterface.BrowserType = (NewBrowserType)value;
+        }
+
+        /// <inheritdoc />
+        NewBrowserType IPortalAliasInfo.BrowserType { get; set; }
+
+        /// <inheritdoc />
         public string CultureCode { get; set; }
+
+        /// <inheritdoc />
         public string Skin { get; set; }
 
-        #endregion
-
-        #region IHydratable Members
-
+        /// <inheritdoc />
         public int KeyID
         {
-            get { return PortalAliasID; }
-            set { PortalAliasID = value; }
+            get { return this.ThisAsInterface.PortalAliasId; }
+            set { this.ThisAsInterface.PortalAliasId = value; }
         }
 
+        private IPortalAliasInfo ThisAsInterface => this;
+
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
-            PortalAliasID = Null.SetNullInteger(dr["PortalAliasID"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            HTTPAlias = Null.SetNullString(dr["HTTPAlias"]);
-            IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
+            this.ThisAsInterface.PortalAliasId = Null.SetNullInteger(dr["PortalAliasID"]);
+            this.ThisAsInterface.PortalId = Null.SetNullInteger(dr["PortalID"]);
+            this.ThisAsInterface.HttpAlias = Null.SetNullString(dr["HTTPAlias"]);
+            this.IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
             var browserType = Null.SetNullString(dr["BrowserType"]);
-            BrowserType = String.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
+            this.BrowserType = string.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
                               ? BrowserTypes.Normal
                               : BrowserTypes.Mobile;
-            CultureCode = Null.SetNullString(dr["CultureCode"]);
-            Skin = Null.SetNullString(dr["Skin"]);
+            this.CultureCode = Null.SetNullString(dr["CultureCode"]);
+            this.Skin = Null.SetNullString(dr["Skin"]);
         }
 
-        #endregion
-
-        #region IXmlSerializable Members
-
+        /// <inheritdoc/>
         public XmlSchema GetSchema()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -90,65 +149,66 @@ namespace DotNetNuke.Entities.Portals
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 switch (reader.Name)
                 {
                     case "portalAlias":
                         break;
                     case "portalID":
-                        PortalID = reader.ReadElementContentAsInt();
+                        this.ThisAsInterface.PortalId = reader.ReadElementContentAsInt();
                         break;
                     case "portalAliasID":
-                        PortalAliasID = reader.ReadElementContentAsInt();
+                        this.ThisAsInterface.PortalAliasId = reader.ReadElementContentAsInt();
                         break;
                     case "HTTPAlias":
-                        HTTPAlias = reader.ReadElementContentAsString();
+                        this.ThisAsInterface.HttpAlias = reader.ReadElementContentAsString();
                         break;
                     case "skin":
-                        Skin = reader.ReadElementContentAsString();
+                        this.Skin = reader.ReadElementContentAsString();
                         break;
                     case "cultureCode":
-                        CultureCode = reader.ReadElementContentAsString();
+                        this.CultureCode = reader.ReadElementContentAsString();
                         break;
                     case "browserType":
                         string type = reader.ReadElementContentAsString();
-                        BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
+                        this.BrowserType = type.Equals("mobile", StringComparison.InvariantCultureIgnoreCase) ? BrowserTypes.Mobile : BrowserTypes.Normal;
                         break;
                     case "primary":
-                        IsPrimary = reader.ReadElementContentAsBoolean();
+                        this.IsPrimary = reader.ReadElementContentAsBoolean();
                         break;
                     default:
-                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }
+
                         break;
                 }
             }
         }
 
+        /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("portalAlias");
 
-            //write out properties
-            writer.WriteElementString("portalID", PortalID.ToString());
-            writer.WriteElementString("portalAliasID", PortalAliasID.ToString());
-            writer.WriteElementString("HTTPAlias", HTTPAlias);
-            writer.WriteElementString("skin", Skin);
-            writer.WriteElementString("cultureCode", CultureCode);
-            writer.WriteElementString("browserType", BrowserType.ToString().ToLowerInvariant());
-            writer.WriteElementString("primary", IsPrimary.ToString().ToLowerInvariant());
+            // write out properties
+            writer.WriteElementString("portalID", this.ThisAsInterface.PortalId.ToString());
+            writer.WriteElementString("portalAliasID", this.ThisAsInterface.PortalAliasId.ToString());
+            writer.WriteElementString("HTTPAlias", this.ThisAsInterface.HttpAlias);
+            writer.WriteElementString("skin", this.Skin);
+            writer.WriteElementString("cultureCode", this.CultureCode);
+            writer.WriteElementString("browserType", this.BrowserType.ToString().ToLowerInvariant());
+            writer.WriteElementString("primary", this.IsPrimary.ToString().ToLowerInvariant());
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
-
     }
 }

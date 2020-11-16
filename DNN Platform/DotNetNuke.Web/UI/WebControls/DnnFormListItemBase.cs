@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Collections;
+
     public abstract class DnnFormListItemBase : DnnFormItemBase
     {
         private IEnumerable _listSource;
@@ -20,15 +15,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _listSource;
+                return this._listSource;
             }
+
             set
             {
-                var changed = !Equals(_listSource, value);
+                var changed = !Equals(this._listSource, value);
                 if (changed)
                 {
-                    _listSource = value;
-                    BindList();
+                    this._listSource = value;
+                    this.BindList();
                 }
             }
         }

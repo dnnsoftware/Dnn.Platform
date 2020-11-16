@@ -1,38 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Tests.Integration.Executers;
-using DotNetNuke.Tests.Integration.Executers.Builders;
-using DotNetNuke.Tests.Integration.Executers.Dto;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Controllers;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Tests.Integration.Executers;
+    using DotNetNuke.Tests.Integration.Executers.Builders;
+    using DotNetNuke.Tests.Integration.Executers.Dto;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DDRMenuTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly string _hostName;
         private readonly string _hostPass;
-
-        #endregion
-
-        #region SetUp
 
         public DDRMenuTests()
         {
             var url = ConfigurationManager.AppSettings["siteUrl"];
-            _hostName = ConfigurationManager.AppSettings["hostUsername"];
-            _hostPass = ConfigurationManager.AppSettings["hostPassword"];
+            this._hostName = ConfigurationManager.AppSettings["hostUsername"];
+            this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
         [TestFixtureSetUp]
@@ -41,32 +36,22 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
             base.TestFixtureSetUp();
         }
 
-        #endregion
-
-        #region Tests
-
         [Test]
         public void Page_Should_Able_To_Duplicate_With_Ddr_Menu_On_It()
         {
-            //Create new page with DDR Menu on it
+            // Create new page with DDR Menu on it
             int tabId;
-            CreateNewPage(Null.NullInteger, out tabId);
+            this.CreateNewPage(Null.NullInteger, out tabId);
             int moduleId;
-            AddModuleToPage(tabId, "DDRMenu", out moduleId);
+            this.AddModuleToPage(tabId, "DDRMenu", out moduleId);
 
-            //apply module settings.
+            // apply module settings.
             ModuleController.SetModuleSettingValue(moduleId, "MenuStyle", "Menus/MainMenu");
 
-            //Copy Page
+            // Copy Page
             int copyTabId;
-            CreateNewPage(tabId, out copyTabId);
+            this.CreateNewPage(tabId, out copyTabId);
         }
-
-        
-
-        #endregion
-
-        #region Private Methods
 
         private IWebApiConnector CreateNewPage(int templateTabId, out int tabId)
         {
@@ -105,7 +90,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
                 Pane = "ContentPane",
                 AddExistingModule = false,
                 CopyModule = false,
-                Sort = -1
+                Sort = -1,
             };
             var headers = new Dictionary<string, string> { { "TabId", tabId.ToString() } };
             var response = connector.PostJson("API/internalservices/controlbar/AddModule", postData, headers)
@@ -114,7 +99,5 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
 
             return connector;
         }
-
-        #endregion
     }
 }

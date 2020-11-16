@@ -9,12 +9,12 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Razor.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Razor.pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Razor.xml" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.Data.3.1.1\lib\net45\WebMatrix.Data.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.WebData.3.1.1\lib\net45\WebMatrix.WebData.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebHelpers.3.1.1\lib\net45\Microsoft.Web.Helpers.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.Helpers.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.Razor.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.WebPages.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.WebPages.Razor.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\WebMatrix.Data.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\WebMatrix.WebData.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Web.Helpers.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>

@@ -1,61 +1,107 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.UI;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+
     public class MvcHostControl : ModuleControlBase, IActionable
     {
-        #region Fields
-
         private ModuleRequestResult _result;
         private string _controlKey;
 
-        #endregion
-
-        #region Constructors
-
         public MvcHostControl()
         {
-            _controlKey = String.Empty;
+            this._controlKey = string.Empty;
         }
 
         public MvcHostControl(string controlKey)
         {
-            _controlKey = controlKey;
+            this._controlKey = controlKey;
         }
 
-        #endregion
+        public ModuleActionCollection ModuleActions { get; private set; }
 
-        #region Private Methods
+        protected bool ExecuteModuleImmediately { get; set; } = true;
+
+        protected void ExecuteModule()
+        {
+            try
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+                var moduleExecutionEngine = this.GetModuleExecutionEngine();
+
+                this._result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
+
+                this.ModuleActions = this.LoadActions(this._result);
+
+                httpContext.SetModuleRequestResult(this._result);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (this.ExecuteModuleImmediately)
+            {
+                this.ExecuteModule();
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            try
+            {
+                if (this._result == null)
+                {
+                    return;
+                }
+
+                var mvcString = this.RenderModule(this._result);
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
+                {
+                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
-
             ModuleApplication moduleApplication = null;
 
-            //Check if the MVC Module overrides the base ModuleApplication class.
+            // Check if the MVC Module overrides the base ModuleApplication class.
             var businessControllerClass = desktopModule.BusinessControllerClass;
-            if (!String.IsNullOrEmpty(businessControllerClass))
+            if (!string.IsNullOrEmpty(businessControllerClass))
             {
                 var moduleApplicationType = Reflection.CreateType(businessControllerClass);
                 if (moduleApplicationType != null)
@@ -77,13 +123,13 @@ namespace DotNetNuke.Web.Mvc
                 var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
 
                 moduleApplication = new ModuleApplication
-                                            {
-                                                DefaultActionName = defaultControllerName,
-                                                DefaultControllerName = defaultActionName,
-                                                DefaultNamespaces = defaultNamespaces,
-                                                ModuleName = desktopModule.ModuleName,
-                                                FolderPath = desktopModule.FolderName
-                                            };
+                {
+                    DefaultActionName = defaultControllerName,
+                    DefaultControllerName = defaultActionName,
+                    DefaultNamespaces = defaultNamespaces,
+                    ModuleName = desktopModule.ModuleName,
+                    FolderPath = desktopModule.FolderName,
+                };
             }
 
             return moduleApplication;
@@ -104,23 +150,23 @@ namespace DotNetNuke.Web.Mvc
 
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
         {
-            var module = ModuleContext.Configuration;
+            var module = this.ModuleContext.Configuration;
 
-            //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
+            // TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
-            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
+            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(string.Empty, module.ModuleDefID);
 
             var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
 
-            var moduleApplication = GetModuleApplication(desktopModule, defaultRouteData);
+            var moduleApplication = this.GetModuleApplication(desktopModule, defaultRouteData);
 
             RouteData routeData;
 
             var queryString = httpContext.Request.QueryString;
 
-            if (String.IsNullOrEmpty(_controlKey))
+            if (string.IsNullOrEmpty(this._controlKey))
             {
-                _controlKey = queryString.GetValueOrDefault("ctl", String.Empty);
+                this._controlKey = queryString.GetValueOrDefault("ctl", string.Empty);
             }
 
             var moduleId = Null.NullInteger;
@@ -129,25 +175,25 @@ namespace DotNetNuke.Web.Mvc
                 int.TryParse(queryString["moduleid"], out moduleId);
             }
 
-            if (moduleId != ModuleContext.ModuleId && String.IsNullOrEmpty(_controlKey))
+            if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this._controlKey))
             {
-                //Set default routeData for module that is not the "selected" module
+                // Set default routeData for module that is not the "selected" module
                 routeData = defaultRouteData;
             }
             else
             {
-                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(_controlKey, module.ModuleDefID);
+                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(this._controlKey, module.ModuleDefID);
                 routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, control);
             }
 
             var moduleRequestContext = new ModuleRequestContext
-                                            {
-                                                DnnPage = Page,
-                                                HttpContext = httpContext,
-                                                ModuleContext = ModuleContext,
-                                                ModuleApplication = moduleApplication,
-                                                RouteData = routeData
-                                            };
+            {
+                DnnPage = this.Page,
+                HttpContext = httpContext,
+                ModuleContext = this.ModuleContext,
+                ModuleApplication = moduleApplication,
+                RouteData = routeData,
+            };
 
             return moduleRequestContext;
         }
@@ -160,7 +206,7 @@ namespace DotNetNuke.Web.Mvc
             {
                 foreach (ModuleAction action in result.ModuleActions)
                 {
-                    action.ID = ModuleContext.GetNextActionID();
+                    action.ID = this.ModuleContext.GetNextActionID();
                     actions.Add(action);
                 }
             }
@@ -182,67 +228,5 @@ namespace DotNetNuke.Web.Mvc
 
             return moduleOutput;
         }
-
-        protected void ExecuteModule()
-        {
-            try
-            {
-                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
-
-                var moduleExecutionEngine = GetModuleExecutionEngine();
-
-                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext));
-
-                ModuleActions = LoadActions(_result);
-
-                httpContext.SetModuleRequestResult(_result);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        #endregion
-
-        #region Properties
-
-        public ModuleActionCollection ModuleActions { get; private set; }
-
-        protected bool ExecuteModuleImmediately { get; set; } = true;
-
-        #endregion
-
-        #region Event Handlers
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (ExecuteModuleImmediately)
-            {
-                ExecuteModule();
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            try
-            {
-                if (_result == null) return;
-                var mvcString = RenderModule(_result);
-                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
-                {
-                    Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        #endregion
     }
 }

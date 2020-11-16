@@ -1,24 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Upgrade;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.Modules.Console.Components
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    using System;
+
+    using DotNetNuke.Entities.Modules;
+
+    /// <summary>Implements the module's business controller interface(s).</summary>
     public class BusinessController : IUpgradeable
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="version"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             try
@@ -29,6 +22,7 @@ namespace Dnn.Modules.Console.Components
 
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception)

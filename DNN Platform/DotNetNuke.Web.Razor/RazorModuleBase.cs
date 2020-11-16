@@ -1,19 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Web.UI;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.Razor
 {
+    using System;
+    using System.IO;
+    using System.Web.UI;
+
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Modules;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class RazorModuleBase : ModuleUserControlBase
     {
@@ -22,19 +18,19 @@ namespace DotNetNuke.Web.Razor
         {
             get
             {
-                var scriptFolder = AppRelativeTemplateSourceDirectory;
-                var fileRoot = Path.GetFileNameWithoutExtension(AppRelativeVirtualPath);
+                var scriptFolder = this.AppRelativeTemplateSourceDirectory;
+                var fileRoot = Path.GetFileNameWithoutExtension(this.AppRelativeVirtualPath);
                 var scriptFile = scriptFolder + "_" + fileRoot + ".cshtml";
 
-                if (! (File.Exists(Server.MapPath(scriptFile))))
+                if (!File.Exists(this.Server.MapPath(scriptFile)))
                 {
-                    //Try VB (vbhtml)
+                    // Try VB (vbhtml)
                     scriptFile = scriptFolder + "_" + fileRoot + ".vbhtml";
 
-                    if (!(File.Exists(Server.MapPath(scriptFile))))
+                    if (!File.Exists(this.Server.MapPath(scriptFile)))
                     {
-                        //Return ""
-                        scriptFile = "";
+                        // Return ""
+                        scriptFile = string.Empty;
                     }
                 }
 
@@ -48,13 +44,13 @@ namespace DotNetNuke.Web.Razor
             base.OnPreRender(e);
             try
             {
-                if (! (string.IsNullOrEmpty(RazorScriptFile)))
+                if (!string.IsNullOrEmpty(this.RazorScriptFile))
                 {
-                    var razorEngine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
+                    var razorEngine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
                     var writer = new StringWriter();
                     razorEngine.Render(writer);
 
-                    Controls.Add(new LiteralControl(writer.ToString()));
+                    this.Controls.Add(new LiteralControl(writer.ToString()));
                 }
             }
             catch (Exception ex)

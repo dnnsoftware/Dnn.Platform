@@ -1,29 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Users.Components;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
+    using Constants = Dnn.PersonaBar.Recyclebin.Components.Constants;
+
     [ConsoleCommand("restore-user", Constants.RecylcleBinCategory, "Prompt_RestoreUser_Description")]
     public class RestoreUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
         private IUserValidator _userValidator;
         private IRecyclebinController _recyclebinController;
 
-        private int UserId { get; set; }
-
-        public RestoreUser(): this (new UserValidator(), RecyclebinController.Instance)
+        public RestoreUser() : this(new UserValidator(), RecyclebinController.Instance)
         {
         }
 
@@ -33,27 +32,30 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
             this._recyclebinController = instance;
         }
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        private int UserId { get; set; }
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
-            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
+
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
         public override ConsoleResultModel Run()
         {
             UserInfo userInfo;
-            _userValidator.ValidateUser(UserId, PortalSettings, User, out userInfo);
-                
+            this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
+
             if (userInfo == null)
-                return new ConsoleErrorResultModel(string.Format(LocalizeString("UserNotFound"), UserId));
+                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
 
             if (!userInfo.IsDeleted)
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_RestoreNotRequired"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestoreNotRequired"));
 
             string message;
-            var restoredUser = _recyclebinController.RestoreUser(userInfo, out message);
+            var restoredUser = this._recyclebinController.RestoreUser(userInfo, out message);
             return restoredUser
-                ? new ConsoleResultModel(LocalizeString("UserRestored")) { Records = 1 }
+                ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1 }
                 : new ConsoleErrorResultModel(message);
         }
     }

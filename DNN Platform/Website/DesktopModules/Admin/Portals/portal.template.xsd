@@ -7,7 +7,6 @@
         <xs:element name="settings" maxOccurs="1" minOccurs="0">
           <xs:complexType>
             <xs:all>
-              <xs:element name="showcookieconsent" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="enableskinwidgets" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="enableautosave" type="xs:string" minOccurs="0" maxOccurs="1"/>
               <xs:element name="timetoautosave" type="xs:integer" minOccurs="0" maxOccurs="1" />
@@ -42,8 +41,16 @@
               <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="injectmodulehyperlink" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="addcompatiblehttpheader" type="xs:string" minOccurs="0" maxOccurs="1" />
-			  <xs:element name="allowuseruiculture" type="xs:string" minOccurs="0" maxOccurs="1" />
-			  <xs:element name="enablebrowserlanguage" type="xs:string" minOccurs="0" maxOccurs="1" />			  
+              <xs:element name="allowuseruiculture" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="enablebrowserlanguage" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="showcookieconsent" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="cookiemorelink" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentactive" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsenttermslastchange" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentconsentredirect" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentuserdeleteaction" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentdelay" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="dataconsentdelaymeasurement" type="xs:string" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>
@@ -64,18 +71,18 @@
                   <xs:all>
                     <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
                     <xs:element name="active" type="xs:string" minOccurs="1" maxOccurs="1" />
-                      <xs:element name="settings" minOccurs="0" maxOccurs="1">
-                          <xs:complexType>
-                              <xs:sequence>
-                                  <xs:element name="setting" minOccurs="0" maxOccurs="unbounded">
-                                      <xs:complexType>
-                                          <xs:attribute name="name" type="xs:string"/>
-                                          <xs:attribute name="value" type="xs:string"/>
-                                      </xs:complexType>
-                                  </xs:element>
-                              </xs:sequence>
-                          </xs:complexType>
-                      </xs:element>
+                    <xs:element name="settings" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="setting" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="name" type="xs:string"/>
+                              <xs:attribute name="value" type="xs:string"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
                   </xs:all>
                 </xs:complexType>
               </xs:element>
@@ -438,7 +445,7 @@
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element name="layout" minOccurs="0" maxOccurs="unbounded">
-                            <xs:complexType> 
+                            <xs:complexType>
                               <xs:all>
                                 <xs:element name="control" type="xs:string" minOccurs="1" maxOccurs="1" />
                               </xs:all>
@@ -576,8 +583,10 @@
       <xs:enumeration value="logintab"/>
       <xs:enumeration value="splashtab"/>
       <xs:enumeration value="404tab"/>
-	  <xs:enumeration value="500tab"/>
-	  <xs:enumeration value="searchtab"/>
+      <xs:enumeration value="500tab"/>
+      <xs:enumeration value="searchtab"/>
+      <xs:enumeration value="termstab"/>
+      <xs:enumeration value="privacytab"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="alignmentEnum">

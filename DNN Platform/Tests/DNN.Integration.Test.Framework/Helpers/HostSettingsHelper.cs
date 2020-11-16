@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DNN.Integration.Test.Framework.Helpers
 {
+    using System;
+
     public static class HostSettingsHelper
     {
         public static string GetHostSettingValue(string hostSettingName)
         {
-            var query = string.Format("SELECT TOP(1) SettingValue FROM {{objectQualifier}}HostSettings WHERE SettingName='" + hostSettingName +"';");
+            var query = string.Format("SELECT TOP(1) SettingValue FROM {{objectQualifier}}HostSettings WHERE SettingName='" + hostSettingName + "';");
             return DatabaseHelper.ExecuteScalar<string>(query);
         }
 
@@ -28,7 +28,9 @@ namespace DNN.Integration.Test.Framework.Helpers
         {
             var currentValue = GetHostSettingValue(settingName);
             if (!string.IsNullOrEmpty(currentValue))
+            {
                 return false;
+            }
 
             var query = string.Format(
                 @"INSERT INTO {{objectQualifier}}HostSettings (SettingName, SettingValue, SettingIsSecure, CreatedOnDate) " +

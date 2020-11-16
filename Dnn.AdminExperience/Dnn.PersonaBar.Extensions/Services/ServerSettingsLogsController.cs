@@ -1,21 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Servers.Components.Log;
-using DotNetNuke.Common;
-using DotNetNuke.Data;
-using DotNetNuke.Instrumentation;
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Servers.Services
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Servers.Components.Log;
+    using DotNetNuke.Common;
+    using DotNetNuke.Data;
+    using DotNetNuke.Instrumentation;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsLogsController : PersonaBarApiController
     {
@@ -32,17 +33,17 @@ namespace Dnn.PersonaBar.Servers.Services
                     Success = true,
                     Results = new
                     {
-                        LogList = _logController.GetLogFilesList(),
-                        UpgradeLogList = _logController.GetUpgradeLogList()
+                        LogList = this._logController.GetLogFilesList(),
+                        UpgradeLogList = this._logController.GetUpgradeLogList()
                     },
                     TotalResults = 1
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -52,23 +53,16 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
-
-                ValidateFilePath(logFilePath);
-
-                using (var reader = File.OpenText(logFilePath))
-                {
-                    var logText = reader.ReadToEnd();
-                    return Request.CreateResponse(HttpStatusCode.OK, logText);
-                }
+                return CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -77,41 +71,45 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var upgradeText = string.Empty;
                 var providerPath = DataProvider.Instance().GetProviderPath();
-                var logFilePath = Path.Combine(providerPath, logName + ".log.resources");
-
-                ValidateFilePath(logFilePath);
-
-                if (File.Exists(logFilePath))
-                {
-                    using (var reader = File.OpenText(logFilePath))
-                    {
-                        upgradeText = reader.ReadToEnd();
-                        upgradeText = upgradeText.Replace("\n", "<br>");
-                        reader.Close();
-                    }
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK, upgradeText);
+                var logFilePath = Path.Combine(providerPath, logName);
+                return CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
-        private void ValidateFilePath(string physicalPath)
+        [NonAction]
+        private static void ValidateFilePath(string physicalPath)
         {
             var fileInfo = new FileInfo(physicalPath);
             if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new ArgumentException("Invalid File Path");
+            }
+        }
+
+        [NonAction]
+        private HttpResponseMessage CreateLogFileResponse(string logFilePath)
+        {
+            ValidateFilePath(logFilePath);
+            if (!File.Exists(logFilePath))
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            }
+
+            using (var reader = File.OpenText(logFilePath))
+            {
+                var logText = reader.ReadToEnd();
+                return Request.CreateResponse(HttpStatusCode.OK, logText);
             }
         }
     }

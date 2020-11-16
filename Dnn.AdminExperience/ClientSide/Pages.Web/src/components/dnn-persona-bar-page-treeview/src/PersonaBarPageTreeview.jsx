@@ -4,7 +4,6 @@ import utils from "utils";
 import "./styles.less";
 import { SingleLineInput } from "@dnnsoftware/dnn-react-common";
 import PersonaBarPageIcon from "./_PersonaBarPageIcon";
-import PersonaBarDraftPencilIcon from "./_PersonaBarDraftPencilIcon";
 
 export class PersonaBarPageTreeview extends Component {
 
@@ -178,9 +177,6 @@ export class PersonaBarPageTreeview extends Component {
                                     item.name
                                 }
                             </span>
-                            <div className="draft-pencil">
-                                <PersonaBarDraftPencilIcon display={item.hasUnpublishedChanges} />
-                            </div>
                         </div>
                         {((item.childListItems && !item.isOpen) || !item.childListItems) && index === total && this.renderDropZone("after", item)}
                     </div>

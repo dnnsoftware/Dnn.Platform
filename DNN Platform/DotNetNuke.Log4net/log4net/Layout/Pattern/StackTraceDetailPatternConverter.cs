@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,13 +28,13 @@ using System;
 using System.Collections;
 using System.Text;
 
-using log4net.Util;
 using log4net.Core;
+using log4net.Util;
 
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Write the caller stack frames to the output
+    /// Write the caller stack frames to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -42,16 +42,16 @@ namespace log4net.Layout.Pattern
     /// type3.MethodCall3(type param,...) > type2.MethodCall2(type param,...) > type1.MethodCall1(type param,...)
     /// </para>
     /// </remarks>
-    /// <author>Adam Davies</author>
+    /// <author>Adam Davies.</author>
     internal class StackTraceDetailPatternConverter : StackTracePatternConverter
     {
         internal override string GetMethodInformation(MethodItem method)
         {
-            string returnValue="";
+            string returnValue = string.Empty;
 
             try
             {
-                string param = "";
+                string param = string.Empty;
                 string[] names = method.Parameters;
                 StringBuilder sb = new StringBuilder();
                 if (names != null && names.GetUpperBound(0) > 0)
@@ -68,7 +68,7 @@ namespace log4net.Layout.Pattern
                     param = sb.ToString();
                 }
 
-                returnValue=base.GetMethodInformation(method) + "(" + param + ")";
+                returnValue = base.GetMethodInformation(method) + "(" + param + ")";
             }
             catch (Exception ex)
             {
@@ -78,8 +78,6 @@ namespace log4net.Layout.Pattern
             return returnValue;
         }
 
-        #region Private Static Fields
-
         /// <summary>
         /// The fully qualified type of the StackTraceDetailPatternConverter class.
         /// </summary>
@@ -87,9 +85,7 @@ namespace log4net.Layout.Pattern
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(StackTracePatternConverter);
-
-        #endregion Private Static Fields
+        private static readonly Type declaringType = typeof(StackTracePatternConverter);
     }
 }
 #endif

@@ -32,6 +32,7 @@ export default class PageIcons extends Component {
                             selectedFile={props.page.iconFile}
                             folderName={props.page.iconFile ? props.page.iconFile.folderName: null}
                             fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/svg+xml"]}
+                            validationCode={props.validationCode}
                             browseActionText={Localization.get("BrowseAction")}                         // Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel
                             browseButtonText={Localization.get("BrowseButton")}                         // Browse Filesystem
                             defaultText={Localization.get("DragOver")}                                  // Drag and Drop a File                            
@@ -63,6 +64,7 @@ export default class PageIcons extends Component {
                             selectedFile={props.page.iconFileLarge}
                             folderName={props.page.iconFileLarge ? props.page.iconFileLarge.folderName : null}
                             fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/svg+xml"]}
+                            validationCode={props.validationCode}
                             browseActionText={Localization.get("BrowseAction")}                         // Press {save|[ENTER]} to save, or {cancel|[ESC]} to cancel
                             browseButtonText={Localization.get("BrowseButton")}                         // Browse Filesystem
                             defaultText={Localization.get("DragOver")}                                  // Drag and Drop a File                            
@@ -91,6 +93,7 @@ export default class PageIcons extends Component {
 
 PageIcons.propTypes = {
     page: PropTypes.object.isRequired,
+    validationCode: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired,
     components: PropTypes.array.isRequired

@@ -1,31 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using Telerik.Charting;
-using Telerik.Charting.Styles;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
+    using Telerik.Charting;
+    using Telerik.Charting.Styles;
+
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     public class DnnChartSeries : ChartSeries
     {
         public DnnChartSeries()
         {
         }
 
-        public DnnChartSeries(string name) : base(name)
+        public DnnChartSeries(string name)
+            : base(name)
         {
         }
 
-        public DnnChartSeries(string name, ChartSeriesType type) : base(name, type)
+        public DnnChartSeries(string name, ChartSeriesType type)
+            : base(name, type)
         {
         }
 
-        public DnnChartSeries(string name, ChartSeriesType type, ChartSeriesCollection parent) : base(name, type, parent)
+        public DnnChartSeries(string name, ChartSeriesType type, ChartSeriesCollection parent)
+            : base(name, type, parent)
         {
         }
 
@@ -40,7 +41,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnChartSeries(ChartSeriesCollection parent) : base(parent)
+        public DnnChartSeries(ChartSeriesCollection parent)
+            : base(parent)
         {
         }
     }

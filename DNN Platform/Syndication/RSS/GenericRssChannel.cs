@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Xml;
+
     /// <summary>
-    ///   Class to consume (or create) a channel in a late-bound way
+    ///   Class to consume (or create) a channel in a late-bound way.
     /// </summary>
     public sealed class GenericRssChannel : RssChannelBase<GenericRssElement, GenericRssElement>
     {
@@ -25,23 +20,24 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        public string this[string attributeName]
-        {
-            get
-            {
-                return GetAttributeValue(attributeName);
-            }
-            set
-            {
-                Attributes[attributeName] = value;
-            }
-        }
-
         public GenericRssElement Image
         {
             get
             {
-                return GetImage();
+                return this.GetImage();
+            }
+        }
+
+        public string this[string attributeName]
+        {
+            get
+            {
+                return this.GetAttributeValue(attributeName);
+            }
+
+            set
+            {
+                this.Attributes[attributeName] = value;
             }
         }
 
@@ -62,14 +58,14 @@ namespace DotNetNuke.Services.Syndication
         // Select method for programmatic databinding
         public IEnumerable SelectItems()
         {
-            return SelectItems(-1);
+            return this.SelectItems(-1);
         }
 
         public IEnumerable SelectItems(int maxItems)
         {
             var data = new ArrayList();
 
-            foreach (GenericRssElement element in Items)
+            foreach (GenericRssElement element in this.Items)
             {
                 if (maxItems > 0 && data.Count >= maxItems)
                 {

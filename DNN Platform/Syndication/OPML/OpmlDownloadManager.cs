@@ -1,29 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds
+    ///   Helper class that provides memory and disk caching of the downloaded feeds.
     /// </summary>
     internal class OpmlDownloadManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (OpmlDownloadManager));
         private const string OPML_Dir = "/OPML/";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
         private static readonly OpmlDownloadManager _theManager = new OpmlDownloadManager();
 
         private readonly Dictionary<string, Opml> _cache;
@@ -33,12 +28,12 @@ namespace DotNetNuke.Services.Syndication
         private OpmlDownloadManager()
         {
             // create in-memory cache
-            _cache = new Dictionary<string, Opml>();
+            this._cache = new Dictionary<string, Opml>();
 
-            _defaultTtlMinutes = 60;
+            this._defaultTtlMinutes = 60;
 
             // prepare disk directory
-            _directoryOnDisk = PrepareTempDir();
+            this._directoryOnDisk = PrepareTempDir();
         }
 
         public static Opml GetOpmlFeed(Uri uri)
@@ -50,13 +45,13 @@ namespace DotNetNuke.Services.Syndication
         {
             Opml opmlFeed = null;
 
-            lock (_cache)
+            lock (this._cache)
             {
-                if (_cache.TryGetValue(uri.AbsoluteUri, out opmlFeed))
+                if (this._cache.TryGetValue(uri.AbsoluteUri, out opmlFeed))
                 {
                     if (DateTime.UtcNow > opmlFeed.UtcExpiry)
                     {
-                        _cache.Remove(uri.AbsoluteUri);
+                        this._cache.Remove(uri.AbsoluteUri);
                         opmlFeed = null;
                     }
                 }
@@ -64,25 +59,60 @@ namespace DotNetNuke.Services.Syndication
 
             if (opmlFeed == null)
             {
-                opmlFeed = DownloadOpmlFeed(uri);
+                opmlFeed = this.DownloadOpmlFeed(uri);
 
-                lock (_cache)
+                lock (this._cache)
                 {
-                    _cache[uri.AbsoluteUri] = opmlFeed;
+                    this._cache[uri.AbsoluteUri] = opmlFeed;
                 }
             }
 
             return opmlFeed;
         }
 
+        private static string PrepareTempDir()
+        {
+            string tempDir = null;
+
+            try
+            {
+                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + OPML_Dir);
+
+                if (!Directory.Exists(d))
+                {
+                    Directory.CreateDirectory(d);
+                }
+
+                tempDir = d;
+            }
+            catch
+            {
+                // don't cache on disk if can't do it
+            }
+
+            return tempDir;
+        }
+
+        private static string GetTempFileNamePrefixFromUrl(Uri uri)
+        {
+            try
+            {
+                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
+            }
+            catch
+            {
+                return "opml";
+            }
+        }
+
         private Opml DownloadOpmlFeed(Uri uri)
         {
             // look for disk cache first
-            Opml opmlFeed = TryLoadFromDisk(uri);
+            Opml opmlFeed = this.TryLoadFromDisk(uri);
 
             if (opmlFeed != null)
             {
-                return (opmlFeed);
+                return opmlFeed;
             }
 
             // May fail under partial trust
@@ -94,31 +124,31 @@ namespace DotNetNuke.Services.Syndication
                 opmlDoc.Load(new MemoryStream(feed));
                 opmlFeed = Opml.LoadFromXml(opmlDoc);
 
-                opmlFeed.UtcExpiry = DateTime.UtcNow.AddMinutes(_defaultTtlMinutes);
+                opmlFeed.UtcExpiry = DateTime.UtcNow.AddMinutes(this._defaultTtlMinutes);
 
                 // save to disk
-                TrySaveToDisk(opmlDoc, uri, opmlFeed.UtcExpiry);
+                this.TrySaveToDisk(opmlDoc, uri, opmlFeed.UtcExpiry);
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
 
-            return (opmlFeed);
+            return opmlFeed;
         }
 
         private Opml TryLoadFromDisk(Uri uri)
         {
-            if (_directoryOnDisk == null)
+            if (this._directoryOnDisk == null)
             {
-                return (null); // no place to cache
+                return null; // no place to cache
             }
 
             // look for all files matching the prefix
             // looking for the one matching url that is not expired
             // removing expired (or invalid) ones
             string pattern = GetTempFileNamePrefixFromUrl(uri) + "_*.opml.resources";
-            string[] files = Directory.GetFiles(_directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(this._directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
 
             foreach (string opmlFilename in files)
             {
@@ -162,10 +192,10 @@ namespace DotNetNuke.Services.Syndication
                     {
                         File.Delete(opmlFilename);
                     }
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
 
                     // try next file
                     continue;
@@ -187,7 +217,7 @@ namespace DotNetNuke.Services.Syndication
 
         private void TrySaveToDisk(XmlDocument doc, Uri uri, DateTime utcExpiry)
         {
-            if (_directoryOnDisk == null)
+            if (this._directoryOnDisk == null)
             {
                 return;
             }
@@ -198,47 +228,11 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                doc.Save(Path.Combine(_directoryOnDisk, fileName));
+                doc.Save(Path.Combine(this._directoryOnDisk, fileName));
             }
             catch
             {
                 // can't save to disk - not a problem
-            }
-        }
-
-
-        private static string PrepareTempDir()
-        {
-            string tempDir = null;
-
-            try
-            {
-                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + OPML_Dir);
-
-                if (!Directory.Exists(d))
-                {
-                    Directory.CreateDirectory(d);
-                }
-
-                tempDir = d;
-            }
-            catch
-            {
-                // don't cache on disk if can't do it
-            }
-
-            return tempDir;
-        }
-
-        private static string GetTempFileNamePrefixFromUrl(Uri uri)
-        {
-            try
-            {
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
-            }
-            catch
-            {
-                return "opml";
             }
         }
     }

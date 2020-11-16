@@ -1,0 +1,7 @@
+/*
+DNN Custom Override Styles to fix issues in Editor tool bars and dialogs. 
+*/
+
+input.cke_dialog_ui_input_text{
+    margin-bottom: 4px;
+}

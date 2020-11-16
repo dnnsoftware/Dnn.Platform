@@ -1,19 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Portals;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Pages.Components.Security;
-using Dnn.PersonaBar.Pages.Components.Prompt.Commands;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Tests
 {
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Pages.Components.Prompt.Commands;
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetPageUnitTests
     {
@@ -30,32 +30,32 @@ namespace Dnn.PersonaBar.Pages.Tests
         [SetUp]
         public void RunBeforeAnyTest()
         {
-            _tab = new TabInfo();
-            _tab.TabID = _tabId;
-            _tab.PortalID = _testPortalId;
+            this._tab = new TabInfo();
+            this._tab.TabID = this._tabId;
+            this._tab.PortalID = this._testPortalId;
 
-            _portalSettings = new PortalSettings();
-            _portalSettings.PortalId = _testPortalId;
+            this._portalSettings = new PortalSettings();
+            this._portalSettings.PortalId = this._testPortalId;
 
-            _tabControllerMock = new Mock<ITabController>();
-            _securityServiceMock = new Mock<ISecurityService>();
-            _contentVerifierMock = new Mock<IContentVerifier>();
+            this._tabControllerMock = new Mock<ITabController>();
+            this._securityServiceMock = new Mock<ISecurityService>();
+            this._contentVerifierMock = new Mock<IContentVerifier>();
 
-            _tabControllerMock.SetReturnsDefault(_tab);
-            _securityServiceMock.SetReturnsDefault(true);
-            _contentVerifierMock.SetReturnsDefault(true);
+            this._tabControllerMock.SetReturnsDefault(this._tab);
+            this._securityServiceMock.SetReturnsDefault(true);
+            this._contentVerifierMock.SetReturnsDefault(true);
         }
 
         [Test]
         public void Run_GetPageWithValidCommand_ShouldSuccessResponse()
         {
-            // Arrange         
-            _tabControllerMock.Setup(t => t.GetTab(_tabId, _testPortalId)).Returns(_tab);
+            // Arrange
+            this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
 
-            SetupCommand();
+            this.SetupCommand();
 
             // Act
-            var result = _getCommand.Run();
+            var result = this._getCommand.Run();
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -67,15 +67,15 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommandForNonExistingTab_ShouldErrorResponse()
         {
-            // Arrange            
-            _tab = null;
+            // Arrange
+            this._tab = null;
 
-            _tabControllerMock.Setup(t => t.GetTab(_tabId, _testPortalId)).Returns(_tab);
+            this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
 
-            SetupCommand();
+            this.SetupCommand();
 
             // Act
-            var result = _getCommand.Run();
+            var result = this._getCommand.Run();
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -85,13 +85,13 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommandForRequestedPortalNotAllowed_ShouldErrorResponse()
         {
-            // Arrange            
-            _contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(_testPortalId, _portalSettings, false)).Returns(false);
+            // Arrange
+            this._contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(this._testPortalId, this._portalSettings, false)).Returns(false);
 
-            SetupCommand();
+            this.SetupCommand();
 
             // Act
-            var result = _getCommand.Run();
+            var result = this._getCommand.Run();
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -102,12 +102,12 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void Run_GetPageWithValidCommandForPortalNotAllowed_ShouldErrorResponse()
         {
             // Arrange
-            _securityServiceMock.Setup(s => s.CanManagePage(_tabId)).Returns(false);
+            this._securityServiceMock.Setup(s => s.CanManagePage(this._tabId)).Returns(false);
 
-            SetupCommand();
+            this.SetupCommand();
 
             // Act
-            var result = _getCommand.Run();
+            var result = this._getCommand.Run();
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -116,10 +116,10 @@ namespace Dnn.PersonaBar.Pages.Tests
 
         private void SetupCommand()
         {
-            _getCommand = new GetPage(_tabControllerMock.Object, _securityServiceMock.Object, _contentVerifierMock.Object);
+            this._getCommand = new GetPage(this._tabControllerMock.Object, this._securityServiceMock.Object, this._contentVerifierMock.Object);
 
-            var args = new[] { "get-page", _tabId.ToString() };
-            _getCommand.Initialize(args, _portalSettings, null, _tabId);
+            var args = new[] { "get-page", this._tabId.ToString() };
+            this._getCommand.Initialize(args, this._portalSettings, null, this._tabId);
         }
     }
 }

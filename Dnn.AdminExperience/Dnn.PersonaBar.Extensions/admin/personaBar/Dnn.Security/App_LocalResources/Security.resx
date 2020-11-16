@@ -195,18 +195,6 @@
   <data name="plAdministrator.Help" xml:space="preserve">
     <value>The Primary Administrator who will receive email notification of member activities.</value>
   </data>
-  <data name="Redirect_AfterLogin.Help" xml:space="preserve">
-    <value>Optionally select the page that users will be redirected to upon successful login.</value>
-  </data>
-  <data name="Redirect_AfterLogin.Text" xml:space="preserve">
-    <value>Redirect After Login</value>
-  </data>
-  <data name="Redirect_AfterLogout.Help" xml:space="preserve">
-    <value>Optionally select the page that users will be redirected to upon logout.</value>
-  </data>
-  <data name="Redirect_AfterLogout.Text" xml:space="preserve">
-    <value>Redirect After Logout</value>
-  </data>
   <data name="Security_RequireValidProfileAtLogin.Help" xml:space="preserve">
     <value>Check this box to require users to update their profile prior to login if the fields required for a valid profile have been modified.</value>
   </data>
@@ -480,12 +468,6 @@
   <data name="Registration_ExcludeTerms.Text" xml:space="preserve">
     <value>Excluded Terms</value>
   </data>
-  <data name="Redirect_AfterRegistration.Help" xml:space="preserve">
-    <value>Optionally select the page that users will be redirected to upon successful registration.</value>
-  </data>
-  <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
-    <value>Redirect After Registration</value>
-  </data>
   <data name="plEnableRegisterNotification.Help" xml:space="preserve">
     <value>Check this box to send email notification of new user registrations to the Primary Administrator.</value>
   </data>
@@ -679,13 +661,13 @@
     <value>Maximum upload size must be between 12 and {0}</value>
   </data>
   <data name="plFileExtensions.Help" xml:space="preserve">
-    <value>Enter the file extensions (separated by commas) that can be uploaded to the site by site administrators.</value>
+    <value>Enter the extensions (separated by commas) for files that can be uploaded to the site by site administrators.</value>
   </data>
   <data name="plFileExtensions.Text" xml:space="preserve">
     <value>Allowable File Extensions:</value>
   </data>
   <data name="OtherSettingsUpdateSuccess.Text" xml:space="preserve">
-    <value>Settings has been updated.</value>
+    <value>Settings have been updated.</value>
   </data>
   <data name="OtherSettingsError.Text" xml:space="preserve">
     <value>Could not update settings. Please try later.</value>
@@ -1157,9 +1139,15 @@
     <value>Force user logout in other browsers after the user's password has been changed.</value>
   </data>
   <data name="plDefaultEndUserExtensionWhitelist.Help" xml:space="preserve">
-    <value>Default list of file extensions end users are allowed to upload. Admin users can override this but they can never allow more file types than those set in the master list above. Note this list will be filtered by the list above when saving.</value>
+    <value>Default extension list for files that end users are allowed to upload. Admin users can override this, but they can never allow more file types than those set in the master list above. Note this list will be filtered by the list above when saving.</value>
   </data>
   <data name="plDefaultEndUserExtensionWhitelist.Text" xml:space="preserve">
     <value>Default End User Extension Whitelist</value>
+  </data>
+  <data name="RedirectionMovedToSiteSettings.Text" xml:space="preserve">
+    <value>Redirection has been moved to Site Settings</value>
+  </data>
+  <data name="IncorrectDisplayNameConfiguration.Text" xml:space="preserve">
+    <value>The Display Name configuration is not correct. Either provide Display Name Format or include Display Name in the list of fields.</value>
   </data>
 </root>

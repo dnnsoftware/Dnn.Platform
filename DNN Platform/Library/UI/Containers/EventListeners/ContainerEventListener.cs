@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.Containers.EventListeners
 {
     public class ContainerEventListener
@@ -9,17 +9,22 @@ namespace DotNetNuke.UI.Containers.EventListeners
         private readonly ContainerEventHandler _ContainerEvent;
         private readonly ContainerEventType _Type;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContainerEventListener"/> class.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="e"></param>
         public ContainerEventListener(ContainerEventType type, ContainerEventHandler e)
         {
-            _Type = type;
-            _ContainerEvent = e;
+            this._Type = type;
+            this._ContainerEvent = e;
         }
 
         public ContainerEventType EventType
         {
             get
             {
-                return _Type;
+                return this._Type;
             }
         }
 
@@ -27,7 +32,7 @@ namespace DotNetNuke.UI.Containers.EventListeners
         {
             get
             {
-                return _ContainerEvent;
+                return this._ContainerEvent;
             }
         }
     }

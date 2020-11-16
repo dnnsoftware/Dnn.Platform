@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Security.Attributes;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Services.Dto
 {
+    using Dnn.PersonaBar.Security.Attributes;
+
     public class UpdateRegistrationSettingsRequest
     {
         [UserRegistrationOption]
@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         [RegistrationFormTypeOption]
         public int RegistrationFormType { get; set; }
 
-        [RegistrationFields("RegistrationFormType", "RequireUniqueDisplayName")]
+        [RegistrationFields("RegistrationFormType", "RequireUniqueDisplayName", "DisplayNameFormat")]
         public string RegistrationFields { get; set; }
 
         public bool RequireUniqueDisplayName { get; set; }
@@ -41,9 +41,6 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         public bool RequireValidProfile { get; set; }
 
         public bool UseCaptchaRegister { get; set; }
-
-        [TabExist]
-        public int RedirectAfterRegistrationTabId { get; set; }
 
         public bool EnableRegisterNotification { get; set; }
     }

@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -249,15 +249,6 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>Definito dall'utente</value>
   </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Programma di miglioramento del prodotto</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Il programma di miglioramento del prodotto ci consente di capire meglio come possiamo migliorare DNN per te. I dati ci aiuteranno ad analizzare l'utilizzo e ciò che è importante per le persone che utilizzano il prodotto. Tutti i dati sono anonimi e solo per uso interno. Ulteriori informazioni sul &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;programma di miglioramento del prodotto&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Invia informazioni anonime sull'uso a DNN</value>
-  </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Eliminare i file più vecchi di</value>
   </data>
@@ -274,7 +265,7 @@
     <value>Controllo Permessi sui File e Cartelle</value>
   </data>
   <data name="FileAndFolderPermissionCheckFailed.Text" xml:space="preserve">
-    <value>&lt;div class="permission"&gt;&lt;img alt="Immagine che mostra le impostazioni di protezione della cartella principale del sito web, la quale deve essere impostata su Read, Write, e Change Control per gli account ASPNET o NT AUTHORITY / NETWORK SERVICES." src="..\403-3.gif" align="right" hspace="10"/&gt;&lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Il tuo sito non ha superato il controllo delle autorizzazioni.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;Utilizzando Esplora risorse, individuare le cartelle del Sito web ({0}). Fai clic destro sulla cartella e seleziona Condivisione e Protezione dal menu a comparsa. Selezionare la scheda Protezione. Aggiungere l'account utente appropriato e impostare le autorizzazioni.&lt;br/&gt;&lt;br/&gt;&lt;h3&gt;Se si sta usando Windows 2000 - IIS5&lt;/h3&gt;&lt;p&gt;L'utente ASPNET deve avere Read, Write, e Change Control della cartella virtuale del sito.&lt;/p&gt;&lt;h3&gt;Se stai usando Windows 2003, Windows Vista oppure Windows Server 2008 con  IIS6 or IIS7&lt;/h3&gt;&lt;p&gt;L'utente NT AUTHORITY\NETWORK SERVICE deve avere Read, Write, e Change Control della root virtulae del sito Web.&lt;/p&gt;&lt;h3&gt;Se si sta usando Windows 7 o Windows Server 2008 R2 con  IIS7.5&lt;/h3&gt;&lt;p&gt;L'utente  IIS AppPool\DefaultAppPool deve avere Read, Write, e Change Control della cartella virtuale del sito.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Ricontrolla&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
+    <value>&lt;div class="permission"&gt;&lt;img alt="Immagine che mostra le impostazioni di protezione della cartella principale del sito web, la quale deve essere impostata su Read, Write, e Change Control per gli account ASPNET o NT AUTHORITY / NETWORK SERVICES." src="..\403-3.gif" align="right" hspace="10"/&gt;&lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Il tuo sito non ha superato il controllo delle autorizzazioni.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;Utilizzando Esplora risorse, individuare le cartelle del Sito web ({0}). Fai clic destro sulla cartella e seleziona Condivisione e Protezione dal menu a comparsa. Selezionare la scheda Protezione. Aggiungere l'account utente appropriato e impostare le autorizzazioni.&lt;br/&gt;&lt;br/&gt;&lt;h3&gt;Se si sta usando Windows 8 o Windows Server 2008 R2 con  IIS7.5&lt;/h3&gt;&lt;p&gt;L'utente  IIS AppPool\DefaultAppPool deve avere Read, Write, e Change Control della cartella virtuale del sito.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Ricontrolla&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
     <value>Controllo File e Autorizzazioni Cartella</value>
@@ -354,14 +345,11 @@
   <data name="IsSqlServerDbo.Text" xml:space="preserve">
     <value>Il tuo utente del database non possiede le autorizzazioni dbo</value>
   </data>
-  <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DotNetNuke richiede. Net 4.0 o superiore per funzionare</value>
-  </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke richiede SQL 2008 (express o prodotto completo) per lavorare</value>
+    <value>DotNetNuke richiede SQL 2008 R2 (express o prodotto completo) per lavorare</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Controllo se la versione del database è SQL 2008 (express o prodotto completo) o superiore per funzionare</value>
+    <value>Controllo se la versione del database è SQL 2008 R2 (express o prodotto completo) o superiore per funzionare</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>La lingua che si desidera utilizzare sul sito.</value>

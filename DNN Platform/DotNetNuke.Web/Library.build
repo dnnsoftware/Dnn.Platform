@@ -20,6 +20,6 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.xml" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.DependencyInjection.pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.DependencyInjection.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="..\..\packages\WebFormsMvp.1.4.1.0\lib\WebFormsMvp.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\WebFormsMvp.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>

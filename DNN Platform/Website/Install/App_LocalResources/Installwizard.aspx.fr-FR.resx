@@ -249,15 +249,6 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>Défini par l'utilisateur</value>
   </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Programme d'amélioration du produit</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Le programme d'amélioration des produits nous permet de mieux comprendre comment nous pouvons améliorer DNN pour vous. Les données nous aideront à analyser l'utilisation et ce qui est important pour les personnes qui utilisent le produit. Toutes les données sont anonymes et à usage interne seulement. En savoir plus sur le &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;programme d'amélioration des produits&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Envoyer des informations d'utilisation anonymes à DNN</value>
-  </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Suppression des anciens fichiers pour</value>
   </data>
@@ -274,7 +265,7 @@
     <value>Vérification des permissions au niveau des fichiers et des dossiers</value>
   </data>
   <data name="FileAndFolderPermissionCheckFailed.Text" xml:space="preserve">
-    <value>&lt;div class="permission"&gt;&lt;img alt="Image montrant que les paramètres de sécurité du répertoire racine du site web doivent être définis sur Lecture, Ecriture, Modification pour les comptes ASPNET ou NT AUTHORITY/NETWORK SERVICE." src="..\403-3.gif" align="right" hspace="10"/&gt; &lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;La vérification des permissions a échoué pour votre site web.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;   &lt;p&gt;Naviguez jusqu'au dossier de votre site web  ( {0} ) en utilisateur l'explorateur Windows. Faites un clic droit sur le dossier, cliquez sur &amp;quot;Propriétés&amp;quot; puis  sur l'onglet &amp;quot;Sécurité&amp;quot;. Ajoutez l'utilisateur approprié et définissez les permissions associées.  &lt;/p&gt;  &lt;h3&gt;Si vous utilisez Windows 2000 - IIS5&lt;/h3&gt;   &lt;p&gt;Le compte utilisateur &lt;em&gt;ASPNET&lt;/em&gt; doit avoir les droits de lecture, écriture et modification sur le dossier virtuel de votre site web.&lt;/p&gt;   &lt;h3&gt;Si vous utilisez  Windows 2003, Windows Vista ou Windows Server 2008 avec IIS6 ou IIS7&lt;/h3&gt;   &lt;p&gt;Le compte utilisateur &lt;em&gt;NT AUTHORITY\NETWORK SERVICE&lt;/em&gt; doit avoir les droits de lecture, écriture et modification sur le dossier virtuel de votre site web.&lt;/p&gt;   &lt;h3&gt;Si vous utilisez Windows 7 ou Windows Server 2008 R2 avec IIS7.5&lt;/h3&gt;   &lt;p&gt;Le compte utilisateur &lt;em&gt;IIS AppPool\DefaultAppPool&lt;/em&gt; doit avoir les droits de lecture, écriture et modification sur le dossier virtuel de votre site web.&lt;/p&gt;  &lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Relancer la vérification&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
+    <value>&lt;div class="permission"&gt;&lt;img alt="Image montrant que les paramètres de sécurité du répertoire racine du site web doivent être définis sur Lecture, Ecriture, Modification pour les comptes ASPNET ou NT AUTHORITY/NETWORK SERVICE." src="..\403-3.gif" align="right" hspace="10"/&gt; &lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;La vérification des permissions a échoué pour votre site web.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;   &lt;p&gt;Naviguez jusqu'au dossier de votre site web  ( {0} ) en utilisateur l'explorateur Windows. Faites un clic droit sur le dossier, cliquez sur &amp;quot;Propriétés&amp;quot; puis  sur l'onglet &amp;quot;Sécurité&amp;quot;. Ajoutez l'utilisateur approprié et définissez les permissions associées.  &lt;/p&gt;   &lt;h3&gt;Si vous utilisez Windows 8 ou Windows Server 2008 R2 avec IIS7.5&lt;/h3&gt;   &lt;p&gt;Le compte utilisateur &lt;em&gt;IIS AppPool\DefaultAppPool&lt;/em&gt; doit avoir les droits de lecture, écriture et modification sur le dossier virtuel de votre site web.&lt;/p&gt;  &lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Relancer la vérification&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
     <value>Vérification des permissions de fichier et dossier</value>
@@ -354,14 +345,11 @@
   <data name="IsSqlServerDbo.Text" xml:space="preserve">
     <value>Votre utilisateur de base de données n'a pas les permissions dbo</value>
   </data>
-  <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DotNetNuke requiert .net 4.0 ou supérieur pour fonctionner</value>
-  </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke requiert SQL 2008 (express ou complet) pour fonctionner</value>
+    <value>DotNetNuke requiert SQL 2008 R2 (express ou complet) pour fonctionner</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Vérification de la version de base de données. SQL 2008 (express ou complet) ou supérieur est nécessaire pour le fonctionnement de DotNetNuke.</value>
+    <value>Vérification de la version de base de données. SQL 2008 R2 (express ou complet) ou supérieur est nécessaire pour le fonctionnement de DotNetNuke.</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>La langue que vous souhaitez utiliser pour votre site Web.</value>

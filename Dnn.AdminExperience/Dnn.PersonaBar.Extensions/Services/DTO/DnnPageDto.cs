@@ -1,18 +1,40 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class DnnPageDto
     {
+        public bool TranslatedVisible => !this.Default && this.TabName != null;
+
+        public bool PublishedVisible => !this.Default && this.IsTranslated;
+
+        public bool Default => this.DefaultLanguageGuid == Null.NullGuid;
+
+        public string LanguageStatus
+        {
+            get
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
+                if (this.CultureCode == portalSettings.DefaultLanguage)
+                    return Localization.GetString("Default.Text", this.LocalResourceFile);
+
+                return IsLanguagePublished(portalSettings.PortalId, this.CultureCode)
+                    ? ""
+                    : Localization.GetString("NotActive.Text", this.LocalResourceFile);
+            }
+        }
+
         public int TabId { get; set; }
         public string TabName { get; set; }
         public string Title { get; set; }
@@ -35,27 +57,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [JsonIgnore]
         public string LocalResourceFile { get; set; }
-
-        public bool TranslatedVisible => !Default && TabName != null;
-
-        public bool PublishedVisible => !Default && IsTranslated;
-
-        public bool Default => DefaultLanguageGuid == Null.NullGuid;
-
-        public string LanguageStatus
-        {
-            get
-            {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
-                if (CultureCode == portalSettings.DefaultLanguage)
-                    return Localization.GetString("Default.Text", LocalResourceFile);
-
-                return IsLanguagePublished(portalSettings.PortalId, CultureCode)
-                    ? ""
-                    : Localization.GetString("NotActive.Text", LocalResourceFile);
-            }
-        }
 
         private static bool IsLanguagePublished(int portalId, string code)
         {

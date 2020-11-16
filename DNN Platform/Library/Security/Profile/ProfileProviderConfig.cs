@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.ComponentModel;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Profile
 {
+    using System.ComponentModel;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Profile
@@ -17,7 +12,7 @@ namespace DotNetNuke.Security.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileProviderConfig class provides a wrapper to the Profile providers
-    /// configuration
+    /// configuration.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -28,9 +23,9 @@ namespace DotNetNuke.Security.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Provider Properties can be edited
+        /// Gets a value indicating whether gets whether the Provider Properties can be edited.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public static bool CanEditProviderProperties

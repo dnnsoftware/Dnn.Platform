@@ -1,49 +1,52 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.UI.Skins;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.UI.Skins;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinInstaller installs Skin Components to a DotNetNuke site
+    /// The SkinInstaller installs Skin Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SkinInstaller : FileInstaller
     {
-		#region "Private Members"
-
         private readonly ArrayList _SkinFiles = new ArrayList();
 
         private SkinPackageInfo SkinPackage;
         private SkinPackageInfo TempSkinPackage;
         private string _SkinName = Null.NullString;
-		
-		#endregion
-
-		#region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("skinFiles")
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the name of the Collection Node ("skinFiles").
+        /// </summary>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -55,9 +58,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("skinFile")
+        /// Gets the name of the Item Node ("skinFile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -69,35 +72,36 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PhysicalBasePath for the skin files
+        /// Gets the PhysicalBasePath for the skin files.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
             get
             {
-                string _PhysicalBasePath = RootPath + SkinRoot + "\\" + SkinPackage.SkinName;
+                string _PhysicalBasePath = this.RootPath + this.SkinRoot + "\\" + this.SkinPackage.SkinName;
                 if (!_PhysicalBasePath.EndsWith("\\"))
                 {
                     _PhysicalBasePath += "\\";
                 }
+
                 return _PhysicalBasePath.Replace("/", "\\");
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the root folder for the Skin
+        /// Gets the root folder for the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected string RootPath
         {
             get
             {
                 string _RootPath = Null.NullString;
-                if (Package.InstallerInfo.PortalID == Null.NullInteger && Package.PortalID == Null.NullInteger)
+                if (this.Package.InstallerInfo.PortalID == Null.NullInteger && this.Package.PortalID == Null.NullInteger)
                 {
                     _RootPath = Globals.HostMapPath;
                 }
@@ -105,29 +109,30 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     _RootPath = PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath;
                 }
+
                 return _RootPath;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of Skin Files
+        /// Gets the collection of Skin Files.
         /// </summary>
-        /// <value>A List(Of InstallFile)</value>
+        /// <value>A List(Of InstallFile).</value>
         /// -----------------------------------------------------------------------------
         protected ArrayList SkinFiles
         {
             get
             {
-                return _SkinFiles;
+                return this._SkinFiles;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the SkinName Node ("skinName")
+        /// Gets the name of the SkinName Node ("skinName").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinNameNodeName
         {
@@ -139,9 +144,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the RootName of the Skin
+        /// Gets the RootName of the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinRoot
         {
@@ -153,9 +158,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Type of the Skin
+        /// Gets the Type of the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinType
         {
@@ -164,63 +169,139 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "Skin";
             }
         }
-		
-		#endregion
-
-		#region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// The Install method installs the skin component.
         /// </summary>
-        /// <value>A String</value>
-        /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
+        public override void Install()
         {
-            get
-            {
-                return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
-            }
-        }
-		
-		#endregion
-
-		#region "Private Methods"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteSkinPackage method deletes the Skin Package
-        /// from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteSkinPackage()
-        {
+            bool bAdd = Null.NullBoolean;
             try
             {
-				//Attempt to get the Authentication Service
-                SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(Package.PackageID);
-                if (skinPackage != null)
+                // Attempt to get the Skin Package
+                this.TempSkinPackage = SkinController.GetSkinPackage(this.SkinPackage.PortalID, this.SkinPackage.SkinName, this.SkinType);
+                if (this.TempSkinPackage == null)
                 {
-                    SkinController.DeleteSkinPackage(skinPackage);
+                    bAdd = true;
+                    this.SkinPackage.PackageID = this.Package.PackageID;
                 }
-                Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
+                else
+                {
+                    this.SkinPackage.SkinPackageID = this.TempSkinPackage.SkinPackageID;
+                    if (this.TempSkinPackage.PackageID != this.Package.PackageID)
+                    {
+                        this.Completed = false;
+                        this.Log.AddFailure(Util.SKIN_Installed);
+                        return;
+                    }
+                    else
+                    {
+                        this.SkinPackage.PackageID = this.TempSkinPackage.PackageID;
+                    }
+                }
+
+                this.SkinPackage.SkinType = this.SkinType;
+                if (bAdd)
+                {
+                    // Add new skin package
+                    this.SkinPackage.SkinPackageID = SkinController.AddSkinPackage(this.SkinPackage);
+                }
+                else
+                {
+                    // Update skin package
+                    SkinController.UpdateSkinPackage(this.SkinPackage);
+                }
+
+                this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.SkinPackage.SkinName));
+
+                // install (copy the files) by calling the base class
+                base.Install();
+
+                // process the list of skin files
+                if (this.SkinFiles.Count > 0)
+                {
+                    this.Log.StartJob(Util.SKIN_BeginProcessing);
+                    string strMessage = Null.NullString;
+                    var NewSkin = new SkinFileProcessor(this.RootPath, this.SkinRoot, this.SkinPackage.SkinName);
+                    foreach (string skinFile in this.SkinFiles)
+                    {
+                        strMessage += NewSkin.ProcessFile(skinFile, SkinParser.Portable);
+                        skinFile.Replace(Globals.HostMapPath + "\\", "[G]");
+                        switch (Path.GetExtension(skinFile))
+                        {
+                            case ".htm":
+                                SkinController.AddSkin(this.SkinPackage.SkinPackageID, skinFile.Replace("htm", "ascx"));
+                                break;
+                            case ".html":
+                                SkinController.AddSkin(this.SkinPackage.SkinPackageID, skinFile.Replace("html", "ascx"));
+                                break;
+                            case ".ascx":
+                                SkinController.AddSkin(this.SkinPackage.SkinPackageID, skinFile);
+                                break;
+                        }
+                    }
+
+                    Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
+                    foreach (string strRow in arrMessage)
+                    {
+                        this.Log.AddInfo(HtmlUtils.StripTags(strRow, true));
+                    }
+
+                    this.Log.EndJob(Util.SKIN_EndProcessing);
+                }
+
+                this.Completed = true;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
-		
-		#endregion
-
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node
+        /// The Rollback method undoes the installation of the component in the event
+        /// that one of the other components fails.
         /// </summary>
-        /// <param name="file">The file represented by the node</param>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// -----------------------------------------------------------------------------
+        public override void Rollback()
+        {
+            // If Temp Skin exists then we need to update the DataStore with this
+            if (this.TempSkinPackage == null)
+            {
+                // No Temp Skin - Delete newly added Skin
+                this.DeleteSkinPackage();
+            }
+            else
+            {
+                // Temp Skin - Rollback to Temp
+                SkinController.UpdateSkinPackage(this.TempSkinPackage);
+            }
+
+            // Call base class to prcoess files
+            base.Rollback();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the skin component.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+            this.DeleteSkinPackage();
+
+            // Call base class to prcoess files
+            base.UnInstall();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ProcessFile method determines what to do with parsed "file" node.
+        /// </summary>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -232,30 +313,31 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "css":
                     if (file.Path.IndexOf(Globals.glbAboutPage, StringComparison.InvariantCultureIgnoreCase) < 0)
                     {
-                        SkinFiles.Add(PhysicalBasePath + file.FullName);
+                        this.SkinFiles.Add(this.PhysicalBasePath + file.FullName);
                     }
+
                     break;
             }
-            
-			//Call base method to set up for file processing
-			base.ProcessFile(file, nav);
+
+            // Call base method to set up for file processing
+            base.ProcessFile(file, nav);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ReadCustomManifest method reads the custom manifest items
+        /// The ReadCustomManifest method reads the custom manifest items.
         /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
-            SkinPackage = new SkinPackageInfo();
-            SkinPackage.PortalID = Package.PortalID;
+            this.SkinPackage = new SkinPackageInfo();
+            this.SkinPackage.PortalID = this.Package.PortalID;
 
-            //Get the Skin name
-            SkinPackage.SkinName = Util.ReadElement(nav, SkinNameNodeName);
+            // Get the Skin name
+            this.SkinPackage.SkinName = Util.ReadElement(nav, this.SkinNameNodeName);
 
-            //Call base class
+            // Call base class
             base.ReadCustomManifest(nav);
         }
 
@@ -267,143 +349,41 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
-			//Uninstall file
+            // Uninstall file
             base.UnInstallFile(unInstallFile);
 
             if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
             {
-				//Try to remove "processed file"
+                // Try to remove "processed file"
                 string fileName = unInstallFile.FullName;
                 fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
-                Util.DeleteFile(fileName, PhysicalBasePath, Log);
+                Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the skin component
+        /// The DeleteSkinPackage method deletes the Skin Package
+        /// from the data Store.
         /// </summary>
-        public override void Install()
+        /// -----------------------------------------------------------------------------
+        private void DeleteSkinPackage()
         {
-            bool bAdd = Null.NullBoolean;
             try
             {
-				//Attempt to get the Skin Package
-                TempSkinPackage = SkinController.GetSkinPackage(SkinPackage.PortalID, SkinPackage.SkinName, SkinType);
-                if (TempSkinPackage == null)
+                // Attempt to get the Authentication Service
+                SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
+                if (skinPackage != null)
                 {
-                    bAdd = true;
-                    SkinPackage.PackageID = Package.PackageID;
+                    SkinController.DeleteSkinPackage(skinPackage);
                 }
-                else
-                {
-                    SkinPackage.SkinPackageID = TempSkinPackage.SkinPackageID;
-                    if (TempSkinPackage.PackageID != Package.PackageID)
-                    {
-                        Completed = false;
-                        Log.AddFailure(Util.SKIN_Installed);
-                        return;
-                    }
-                    else
-                    {
-                        SkinPackage.PackageID = TempSkinPackage.PackageID;
-                    }
-                }
-                SkinPackage.SkinType = SkinType;
-                if (bAdd)
-                {
-					//Add new skin package
-                    SkinPackage.SkinPackageID = SkinController.AddSkinPackage(SkinPackage);
-                }
-                else
-                {
-					//Update skin package
-                    SkinController.UpdateSkinPackage(SkinPackage);
-                }
-                Log.AddInfo(string.Format(Util.SKIN_Registered, SkinPackage.SkinName));
 
-                //install (copy the files) by calling the base class
-                base.Install();
-
-                //process the list of skin files
-                if (SkinFiles.Count > 0)
-                {
-                    Log.StartJob(Util.SKIN_BeginProcessing);
-                    string strMessage = Null.NullString;
-                    var NewSkin = new SkinFileProcessor(RootPath, SkinRoot, SkinPackage.SkinName);
-                    foreach (string skinFile in SkinFiles)
-                    {
-                        strMessage += NewSkin.ProcessFile(skinFile, SkinParser.Portable);
-                        skinFile.Replace(Globals.HostMapPath + "\\", "[G]");
-                        switch (Path.GetExtension(skinFile))
-                        {
-                            case ".htm":
-                                SkinController.AddSkin(SkinPackage.SkinPackageID, skinFile.Replace("htm", "ascx"));
-                                break;
-                            case ".html":
-                                SkinController.AddSkin(SkinPackage.SkinPackageID, skinFile.Replace("html", "ascx"));
-                                break;
-                            case ".ascx":
-                                SkinController.AddSkin(SkinPackage.SkinPackageID, skinFile);
-                                break;
-                        }
-                    }
-                    Array arrMessage = strMessage.Split(new[] {"<br />"}, StringSplitOptions.None);
-                    foreach (string strRow in arrMessage)
-                    {
-                        Log.AddInfo(HtmlUtils.StripTags(strRow, true));
-                    }
-                    Log.EndJob(Util.SKIN_EndProcessing);
-                }
-                Completed = true;
+                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
-        /// that one of the other components fails
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Rollback()
-        {
-			//If Temp Skin exists then we need to update the DataStore with this 
-            if (TempSkinPackage == null)
-            {
-				//No Temp Skin - Delete newly added Skin
-                DeleteSkinPackage();
-            }
-            else
-            {
-				//Temp Skin - Rollback to Temp
-                SkinController.UpdateSkinPackage(TempSkinPackage);
-            }
-            
-			//Call base class to prcoess files
-			base.Rollback();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the skin component
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
-            DeleteSkinPackage();
-
-            //Call base class to prcoess files
-            base.UnInstall();
-        }
-		
-		#endregion
     }
 }

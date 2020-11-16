@@ -1,33 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Framework;
+
     // TODO: add interface metadata documentation
     // TODO: removed unused SPRoc and DataProvider layer
     internal class WorkflowRepository : ServiceLocator<IWorkflowRepository, WorkflowRepository>, IWorkflowRepository
     {
-        #region Members
         private readonly IWorkflowStateRepository _stateRepository;
-        #endregion
 
-        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowRepository"/> class.
+        /// </summary>
         public WorkflowRepository()
         {
-            _stateRepository = WorkflowStateRepository.Instance;
+            this._stateRepository = WorkflowStateRepository.Instance;
         }
-        #endregion
 
-        #region Public Methods
+        /// <inheritdoc/>
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
             using (var context = DataContext.Instance())
@@ -38,33 +38,36 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 // Worfklow States eager loading
                 foreach (var workflow in workflows)
                 {
-                    workflow.States = _stateRepository.GetWorkflowStates(workflow.WorkflowID);
+                    workflow.States = this._stateRepository.GetWorkflowStates(workflow.WorkflowID);
                 }
 
                 return workflows;
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Entities.Workflow> GetSystemWorkflows(int portalId)
         {
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<Entities.Workflow>();
                 var workflows = rep.Find("WHERE (PortalId = @0 OR PortalId IS NULL) AND IsSystem = 1", portalId).ToArray();
-                
+
                 // Worfklow States eager loading
                 foreach (var workflow in workflows)
                 {
-                    workflow.States = _stateRepository.GetWorkflowStates(workflow.WorkflowID);
+                    workflow.States = this._stateRepository.GetWorkflowStates(workflow.WorkflowID);
                 }
 
                 return workflows;
             }
         }
 
+        /// <inheritdoc/>
         public Entities.Workflow GetWorkflow(int workflowId)
         {
-            return CBO.GetCachedObject<Entities.Workflow>(new CacheItemArgs(
+            return CBO.GetCachedObject<Entities.Workflow>(
+                new CacheItemArgs(
                 GetWorkflowItemKey(workflowId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ =>
                 {
@@ -80,18 +83,20 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                         return null;
                     }
 
-                    workflow.States = _stateRepository.GetWorkflowStates(workflowId);
+                    workflow.States = this._stateRepository.GetWorkflowStates(workflowId);
                     return workflow;
                 });
         }
 
+        /// <inheritdoc/>
         public Entities.Workflow GetWorkflow(ContentItem item)
         {
-            var state = _stateRepository.GetWorkflowStateByID(item.StateID);
-            return state == null ? null : GetWorkflow(state.WorkflowID);
+            var state = this._stateRepository.GetWorkflowStateByID(item.StateID);
+            return state == null ? null : this.GetWorkflow(state.WorkflowID);
         }
 
         // TODO: validation
+        /// <inheritdoc/>
         public void AddWorkflow(Entities.Workflow workflow)
         {
             using (var context = DataContext.Instance())
@@ -102,6 +107,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 {
                     throw new WorkflowNameAlreadyExistsException();
                 }
+
                 rep.Insert(workflow);
             }
 
@@ -109,6 +115,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         }
 
         // TODO: validation
+        /// <inheritdoc/>
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
             using (var context = DataContext.Instance())
@@ -119,6 +126,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 {
                     throw new WorkflowNameAlreadyExistsException();
                 }
+
                 rep.Update(workflow);
             }
 
@@ -126,6 +134,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             CacheWorkflow(workflow);
         }
 
+        /// <inheritdoc/>
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
             using (var context = DataContext.Instance())
@@ -136,9 +145,18 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             DataCache.RemoveCache(GetWorkflowItemKey(workflow.WorkflowID));
         }
-        #endregion
 
-        #region Private Methods
+        internal static string GetWorkflowItemKey(int workflowId)
+        {
+            return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
+        }
+
+        /// <inheritdoc/>
+        protected override Func<IWorkflowRepository> GetFactory()
+        {
+            return () => new WorkflowRepository();
+        }
+
         private static bool DoesExistWorkflow(Entities.Workflow workflow, IRepository<Entities.Workflow> rep)
         {
             return rep.Find(
@@ -146,27 +164,15 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 workflow.PortalID, workflow.WorkflowName, workflow.WorkflowID).SingleOrDefault() != null;
         }
 
-        internal static string GetWorkflowItemKey(int workflowId)
-        {
-            return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
-        }
-
         private static void CacheWorkflow(Entities.Workflow workflow)
         {
             if (workflow.WorkflowID > 0)
             {
-                CBO.GetCachedObject<Entities.Workflow>(new CacheItemArgs(GetWorkflowItemKey(workflow.WorkflowID),
+                CBO.GetCachedObject<Entities.Workflow>(
+                    new CacheItemArgs(
+                    GetWorkflowItemKey(workflow.WorkflowID),
                     DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority), _ => workflow);
             }
         }
-
-        #endregion
-
-        #region Service Locator
-        protected override Func<IWorkflowRepository> GetFactory()
-        {
-            return () => new WorkflowRepository();
-        }
-        #endregion
     }
 }

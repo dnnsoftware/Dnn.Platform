@@ -1,21 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Data;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Common.Utilities
 {
+    using System.Collections.Generic;
+    using System.Data;
+
     public interface ICBO
     {
-        List<TObject> FillCollection<TObject>(IDataReader dr) where TObject : new();
+        List<TObject> FillCollection<TObject>(IDataReader dr)
+            where TObject : new();
 
-        TObject FillObject<TObject>(IDataReader dr) where TObject : new();
+        TObject FillObject<TObject>(IDataReader dr)
+            where TObject : new();
 
-        //SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr);
-
+        // SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr);
         TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary);
     }
 }

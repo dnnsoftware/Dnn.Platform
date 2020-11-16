@@ -1,30 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-
-using Moq;
-using DotNetNuke.Services.FileSystem;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Utilities.Mocks
 {
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using Moq;
+
     public class MockComponentProvider
     {
-        public static Mock<T> CreateNew<T>() where T : class
+        public static Mock<T> CreateNew<T>()
+            where T : class
         {
             if (ComponentFactory.Container == null)
             {
                 ResetContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var mockComp = ComponentFactory.GetComponent<Mock<T>>();
             var objComp = ComponentFactory.GetComponent<T>();
 
@@ -42,14 +42,15 @@ namespace DotNetNuke.Tests.Utilities.Mocks
             return mockComp;
         }
 
-        public static Mock<T> CreateNew<T>(string name) where T : class
+        public static Mock<T> CreateNew<T>(string name)
+            where T : class
         {
             if (ComponentFactory.Container == null)
             {
                 ResetContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var mockComp = ComponentFactory.GetComponent<Mock<T>>();
             var objComp = ComponentFactory.GetComponent<T>(name);
 
@@ -94,7 +95,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
 
         public static Mock<ILocaleController> CreateLocaleController()
         {
-            return CreateNew<ILocaleController>(); 
+            return CreateNew<ILocaleController>();
         }
 
         public static Mock<RoleProvider> CreateRoleProvider()

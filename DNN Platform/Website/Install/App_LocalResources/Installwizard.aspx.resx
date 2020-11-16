@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -174,17 +174,6 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>User Defined</value>
   </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Product Improvement Program</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>The product improvement program allows us to better understand how we can
-improve DNN for you. The data will help us analyze usage and what is important
-for people using the product. All of the data is anonymous and for internal use only. Learn more about the &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Product Improvement Program&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Send anonymous usage information to DNN</value>
-  </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
     <value>Checking File and Folder Permissions</value>
   </data>
@@ -210,7 +199,7 @@ for people using the product. All of the data is anonymous and for internal use 
     <value>Installation</value>
   </data>
   <data name="IntroDetail.Text" xml:space="preserve">
-    <value>&lt;a class="videoLink" href="https://www.dnnsoftware.com/Resources/Training/Training-Videos/Installation.aspx" target="new"&gt;View Installation Video&lt;/a&gt;</value>
+    <value>&lt;a class="videoLink" href="https://dnncommunity.org/How-To/-Download-and-Install" target="new"&gt;Check DNN Comunity website&lt;/a&gt;</value>
   </data>
   <data name="IsAbleToPerformDatabaseActionsCheck.Text" xml:space="preserve">
     <value>Checking database user has ability to perform necessary actions</value>
@@ -221,14 +210,11 @@ for people using the product. All of the data is anonymous and for internal use 
   <data name="IsSqlServerDbo.Text" xml:space="preserve">
     <value>Your database user does not have dbo permissions</value>
   </data>
-  <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DNN requires .net 4.0 or higher to work</value>
-  </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Checking database version is SQL 2008 (express or full product) or higher to work</value>
+    <value>Checking database version is SQL 2008 R2 (express or full product) or higher to work</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DNN requires SQL 2008 (express or full product) to work</value>
+    <value>DNN requires SQL 2008 R2 (express or full product) to work</value>
   </data>
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>
@@ -515,11 +501,7 @@ Standard Database setup option is unavailable</value>
 &lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Your site failed the permissions check.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;
 Using Windows Explorer, browse to the folders of your website ( {0} ). Right-click the folder and select Sharing and Security from the popup menu. Select the Security tab. Add the appropriate User Account and set the Permissions.
 &lt;br/&gt;&lt;br/&gt;
-&lt;h3&gt;If using Windows 2000 - IIS5&lt;/h3&gt;
-&lt;p&gt;The ASPNET User Account must have Read, Write, and Change Control of the virtual root of your website.&lt;/p&gt;
-&lt;h3&gt;If using Windows 2003, Windows Vista or Windows Server 2008 and  IIS6 or IIS7&lt;/h3&gt;
-&lt;p&gt;The NT AUTHORITY\NETWORK SERVICE User Account must have Read, Write, and Change Control of the virtual root of your Website.&lt;/p&gt;
-&lt;h3&gt;If using Windows 7 or Windows Server 2008 R2 and  IIS7.5&lt;/h3&gt;
+&lt;h3&gt;If using Windows 8 or greater, Windows Server 2008 R2 or greater, and  IIS7.5 or greater&lt;/h3&gt;
 &lt;p&gt;The IIS AppPool\DefaultAppPool User Account must have Read, Write, and Change Control of the virtual root of your Website.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Recheck&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="InstallVersion.Text" xml:space="preserve">

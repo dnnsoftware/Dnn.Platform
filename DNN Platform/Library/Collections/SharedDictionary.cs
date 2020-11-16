@@ -1,227 +1,320 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    /// <summary>An <see cref="IDictionary{TKey,TValue}"/> implementation designed to be shared across threads.</summary>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
     [Serializable]
     public class SharedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable
     {
-        private IDictionary<TKey, TValue> _dict;
+        private IDictionary<TKey, TValue> dict;
 
-        private bool _isDisposed;
-        private ILockStrategy _lockController;
+        private bool isDisposed;
+        private ILockStrategy lockController;
 
-        public SharedDictionary() : this(LockingStrategy.ReaderWriter)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
+        /// </summary>
+        public SharedDictionary()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="lockStrategy">The locking strategy to use.</param>
         public SharedDictionary(ILockStrategy lockStrategy)
         {
-            _dict = new Dictionary<TKey, TValue>();
-            _lockController = lockStrategy;
+            this.dict = new Dictionary<TKey, TValue>();
+            this.lockController = lockStrategy;
         }
 
-        public SharedDictionary(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
+        /// </summary>
+        /// <param name="strategy">The locking strategy to use.</param>
+        public SharedDictionary(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
-        internal IDictionary<TKey, TValue> BackingDictionary
+        /// <summary>
+        /// Finalizes an instance of the <see cref="SharedDictionary{TKey, TValue}"/> class.
+        /// </summary>
+        ~SharedDictionary()
         {
-            get
-            {
-                return _dict;
-            }
+            this.Dispose(false);
         }
 
-        #region IDictionary<TKey,TValue> Members
-
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
-        {
-            return IEnumerable_GetEnumerator();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return IEnumerable_GetEnumerator();
-        }
-
-        public void Add(KeyValuePair<TKey, TValue> item)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _dict.Add(item);
-        }
-
-        public void Clear()
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _dict.Clear();
-        }
-
-        public bool Contains(KeyValuePair<TKey, TValue> item)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _dict.Contains(item);
-        }
-
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            _dict.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(KeyValuePair<TKey, TValue> item)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _dict.Remove(item);
-        }
-
+        /// <inheritdoc/>
         public int Count
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict.Count;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.dict.Count;
             }
         }
 
+        /// <inheritdoc/>
         public bool IsReadOnly
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict.IsReadOnly;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.dict.IsReadOnly;
             }
         }
 
-        public bool ContainsKey(TKey key)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _dict.ContainsKey(key);
-        }
-
-        public void Add(TKey key, TValue value)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _dict.Add(key, value);
-        }
-
-        public bool Remove(TKey key)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _dict.Remove(key);
-        }
-
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _dict.TryGetValue(key, out value);
-        }
-
-        public TValue this[TKey key]
-        {
-            get
-            {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict[key];
-            }
-            set
-            {
-                EnsureNotDisposed();
-                EnsureWriteAccess();
-                _dict[key] = value;
-            }
-        }
-
+        /// <inheritdoc/>
         public ICollection<TKey> Keys
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict.Keys;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.dict.Keys;
             }
         }
 
+        /// <inheritdoc/>
         public ICollection<TValue> Values
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _dict.Values;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.dict.Values;
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets the backing dictionnary to use.
+        /// </summary>
+        internal IDictionary<TKey, TValue> BackingDictionary
+        {
+            get
+            {
+                return this.dict;
+            }
+        }
 
-        #region IDisposable Members
+        /// <inheritdoc/>
+        public TValue this[TKey key]
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.dict[key];
+            }
 
+            set
+            {
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this.dict[key] = value;
+            }
+        }
+
+        /// <inheritdoc/>
+        public IEnumerator GetEnumerator()
+        {
+            return this.IEnumerable_GetEnumerator();
+        }
+
+        /// <inheritdoc/>
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.dict.Add(item);
+        }
+
+        /// <inheritdoc/>
+        public void Clear()
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.dict.Clear();
+        }
+
+        /// <inheritdoc/>
+        public bool Contains(KeyValuePair<TKey, TValue> item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this.dict.Contains(item);
+        }
+
+        /// <inheritdoc/>
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            this.dict.CopyTo(array, arrayIndex);
+        }
+
+        /// <inheritdoc/>
+        public bool Remove(KeyValuePair<TKey, TValue> item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            return this.dict.Remove(item);
+        }
+
+        /// <inheritdoc/>
+        public bool ContainsKey(TKey key)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this.dict.ContainsKey(key);
+        }
+
+        /// <inheritdoc/>
+        public void Add(TKey key, TValue value)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.dict.Add(key, value);
+        }
+
+        /// <inheritdoc/>
+        public bool Remove(TKey key)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            return this.dict.Remove(key);
+        }
+
+        /// <inheritdoc/>
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this.dict.TryGetValue(key, out value);
+        }
+
+        /// <inheritdoc/>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
 
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
+        /// <summary>
+        /// Gets a read lock.
+        /// </summary>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock()
         {
-            return GetReadLock(TimeSpan.FromMilliseconds(-1));
+            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
+        /// <summary>
+        /// Gets a read lock for a specified amount of time.
+        /// </summary>
+        /// <param name="timeOut">The amount of time to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
         {
-            EnsureNotDisposed();
-            return _lockController.GetReadLock(timeOut);
+            this.EnsureNotDisposed();
+            return this.lockController.GetReadLock(timeOut);
         }
 
+        /// <summary>
+        /// Gets a read lock for a specified amount of time.
+        /// </summary>
+        /// <param name="millisecondTimeout">For how many milliseconds to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
         {
-            return GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+            return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
+        /// <summary>
+        /// Gets a write lock.
+        /// </summary>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock()
         {
-            return GetWriteLock(TimeSpan.FromMilliseconds(-1));
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
+        /// <summary>
+        /// Gets a write lock for the specified amount of time.
+        /// </summary>
+        /// <param name="timeOut">The amount of time to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
         {
-            EnsureNotDisposed();
-            return _lockController.GetWriteLock(timeOut);
+            this.EnsureNotDisposed();
+            return this.lockController.GetWriteLock(timeOut);
         }
 
+        /// <summary>
+        /// Gets a write lock for the specified amount of time.
+        /// </summary>
+        /// <param name="millisecondTimeout">The amount of milliseconds to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
         public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
         {
-            return GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
+        /// <summary>
+        /// Returns an enumerator to iterate through the collection.
+        /// </summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable_GetEnumerator()
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+
+            // todo nothing ensures read lock is held for life of enumerator
+            return this.dict.GetEnumerator();
+        }
+
+        /// <inheritdoc/>
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+        {
+            return this.IEnumerable_GetEnumerator();
+        }
+
+        /// <summary>
+        /// Disposes this instance resources.
+        /// </summary>
+        /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
+            {
+                if (disposing)
+                {
+                    // dispose managed resrources here
+                    this.dict = null;
+                }
+
+                // dispose unmanaged resrources here
+                this.lockController.Dispose();
+                this.lockController = null;
+                this.isDisposed = true;
+            }
+        }
 
         private void EnsureReadAccess()
         {
-            if (!(_lockController.ThreadCanRead))
+            if (!this.lockController.ThreadCanRead)
             {
                 throw new ReadLockRequiredException();
             }
@@ -229,49 +322,18 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureWriteAccess()
         {
-            if (!_lockController.ThreadCanWrite)
+            if (!this.lockController.ThreadCanWrite)
             {
                 throw new WriteLockRequiredException();
             }
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable_GetEnumerator()
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-
-            //todo nothing ensures read lock is held for life of enumerator
-            return _dict.GetEnumerator();
-        }
-
         private void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("SharedDictionary");
             }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing)
-                {
-                    //dispose managed resrources here
-                    _dict = null;
-                }
-
-                //dispose unmanaged resrources here
-                _lockController.Dispose();
-                _lockController = null;
-                _isDisposed = true;
-            }
-        }
-
-        ~SharedDictionary()
-        {
-            Dispose(false);
         }
     }
 }

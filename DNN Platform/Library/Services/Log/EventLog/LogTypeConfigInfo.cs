@@ -1,22 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
+    /// <inheritdoc />
     [Serializable]
-    public class LogTypeConfigInfo : LogTypeInfo
+    public partial class LogTypeConfigInfo : LogTypeInfo, ILogTypeConfigInfo
     {
-        #region NotificationThresholdTimeTypes enum
+        private string _mailFromAddress;
 
         public enum NotificationThresholdTimeTypes
         {
@@ -24,65 +21,82 @@ namespace DotNetNuke.Services.Log.EventLog
             Seconds = 1,
             Minutes = 2,
             Hours = 3,
-            Days = 4
+            Days = 4,
         }
 
-        #endregion
-
-        private string _mailFromAddress;
-
+        /// <inheritdoc />
         public DateTime StartDateTime
         {
             get
             {
-                switch (NotificationThresholdTimeType)
+                switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddSeconds((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddMinutes((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddHours((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddDays((int)((ILogTypeConfigInfo)this).NotificationThresholdTimeType * -1);
                     default:
                         return Null.NullDate;
                 }
             }
         }
 
+        /// <inheritdoc />
         public bool EmailNotificationIsActive { get; set; }
 
+        /// <inheritdoc />
         public string MailFromAddress
         {
-            get {                
+            get
+            {
                 var portalSettings = Globals.GetPortalSettings();
-                return 
-                    string.IsNullOrWhiteSpace(_mailFromAddress) 
-                    ? (portalSettings == null ? string.Empty : portalSettings.Email) 
-                    : _mailFromAddress; }
-            set { _mailFromAddress = value; }
+                return
+                    string.IsNullOrWhiteSpace(this._mailFromAddress)
+                    ? (portalSettings == null ? string.Empty : portalSettings.Email)
+                    : this._mailFromAddress;
+            }
+
+            set { this._mailFromAddress = value; }
         }
 
-
+        /// <inheritdoc />
         public string MailToAddress { get; set; }
 
+        /// <inheritdoc />
         public int NotificationThreshold { get; set; }
 
+        /// <inheritdoc />
         public int NotificationThresholdTime { get; set; }
 
-        public NotificationThresholdTimeTypes NotificationThresholdTimeType { get; set; }
+        public NotificationThresholdTimeTypes NotificationThresholdTimeType
+        {
+            get => (NotificationThresholdTimeTypes)((ILogTypeConfigInfo)this).NotificationThresholdTimeType;
+            set => ((ILogTypeConfigInfo)this).NotificationThresholdTimeType = (Abstractions.Logging.NotificationThresholdTimeType)value;
+        }
 
-        public string ID { get; set; }
+        /// <inheritdoc />
+        NotificationThresholdTimeType ILogTypeConfigInfo.NotificationThresholdTimeType { get; set; }
 
+        /// <inheritdoc />
+        string ILogTypeConfigInfo.Id { get; set; }
+
+        /// <inheritdoc />
         public bool LoggingIsActive { get; set; }
 
+        /// <inheritdoc />
         public string LogFileName { get; set; }
 
+        /// <inheritdoc />
         public string LogFileNameWithPath { get; set; }
 
-        public string LogTypePortalID { get; set; }
+        /// <inheritdoc />
+        string ILogTypeConfigInfo.LogTypePortalId { get; set; }
 
+        /// <inheritdoc />
         public string KeepMostRecent { get; set; }
     }
 }

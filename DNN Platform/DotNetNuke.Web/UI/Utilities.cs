@@ -1,65 +1,59 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Reflection;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI;
-using DotNetNuke.UI.ControlPanels;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class Utilities
     {
-        #region Private Methods
-
-        private static void AddMessageWindow(Control ctrl)
+        /// <summary>
+        /// Applies a custom CSS file for a control using a consistent naming pattern.
+        /// </summary>
+        /// <param name="targetControl">The control that should have a skin injected.</param>
+        /// <param name="controlSubSkinName">An optional sub-skin.</param>
+        /// <param name="controlName">An optional control name that might differ from the type.</param>
+        public static void ApplyControlSkin(Control targetControl, string controlSubSkinName = "", string controlName = "")
         {
-            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
+            ApplySkin(targetControl, string.Empty, controlName, controlSubSkinName);
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public static void ApplySkin(Control telerikControl)
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl)
         {
-            ApplySkin(telerikControl, "", "", "");
+            ApplySkin(targetControl, string.Empty, string.Empty, string.Empty);
         }
 
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName)
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName)
         {
-            ApplySkin(telerikControl, "", "", fallBackEmbeddedSkinName);
+            ApplySkin(targetControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
         }
 
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName)
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName)
         {
-            ApplySkin(telerikControl, "", controlName, fallBackEmbeddedSkinName);
+            ApplySkin(targetControl, string.Empty, controlName, fallBackEmbeddedSkinName);
         }
 
-        //Use selected skin's webcontrol skin if one exists
-        //or use _default skin's webcontrol skin if one exists
-        //or use embedded skin
-        public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
+        // Use selected skin's webcontrol skin if one exists
+        // or use _default skin's webcontrol skin if one exists
+        // or use embedded skin
+        [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.")]
+        public static void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
         {
             PropertyInfo skinProperty = null;
             PropertyInfo enableEmbeddedSkinsProperty = null;
@@ -67,73 +61,82 @@ namespace DotNetNuke.Web.UI
 
             try
             {
-                skinProperty = telerikControl.GetType().GetProperty("Skin");
-                enableEmbeddedSkinsProperty = telerikControl.GetType().GetProperty("EnableEmbeddedSkins");
+                skinProperty = targetControl.GetType().GetProperty("Skin");
+                enableEmbeddedSkinsProperty = targetControl.GetType().GetProperty("EnableEmbeddedSkins");
 
-                if ((string.IsNullOrEmpty(controlName)))
+                if (string.IsNullOrEmpty(controlName))
                 {
-                    controlName = telerikControl.GetType().BaseType.Name;
-                    if ((controlName.StartsWith("Rad") || controlName.StartsWith("Dnn")))
+                    controlName = targetControl.GetType().BaseType.Name;
+                    if (controlName.StartsWith("Rad") || controlName.StartsWith("Dnn"))
                     {
                         controlName = controlName.Substring(3);
                     }
                 }
 
-
-                string skinVirtualFolder = "";
+                string skinVirtualFolder = string.Empty;
                 if (PortalSettings.Current != null)
+                {
                     skinVirtualFolder = PortalSettings.Current.ActiveTab.SkinPath.Replace('\\', '/').Replace("//", "/");
+                }
                 else
-                    skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
+                {
+                    skinVirtualFolder = targetControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
+                }
 
-                string skinName = "";
-                string webControlSkinName = "";
+                string skinName = string.Empty;
+                string webControlSkinName = string.Empty;
                 if (skinProperty != null)
                 {
-                    var v = skinProperty.GetValue(telerikControl, null);
-                    if (v != null) 
+                    var v = skinProperty.GetValue(targetControl, null);
+                    if (v != null)
+                    {
                         webControlSkinName = v.ToString();
-
+                    }
                 }
-                if (string.IsNullOrEmpty(webControlSkinName)) webControlSkinName = "default";
 
-                if ((skinVirtualFolder.EndsWith("/")))
+                if (string.IsNullOrEmpty(webControlSkinName))
+                {
+                    webControlSkinName = "default";
+                }
+
+                if (skinVirtualFolder.EndsWith("/"))
                 {
                     skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                 }
+
                 int lastIndex = skinVirtualFolder.LastIndexOf("/");
-                if ((lastIndex > -1 && skinVirtualFolder.Length > lastIndex))
+                if (lastIndex > -1 && skinVirtualFolder.Length > lastIndex)
                 {
                     skinName = skinVirtualFolder.Substring(skinVirtualFolder.LastIndexOf("/") + 1);
                 }
 
                 string systemWebControlSkin = string.Empty;
-                if ((!string.IsNullOrEmpty(skinName) && !string.IsNullOrEmpty(skinVirtualFolder)))
+                if (!string.IsNullOrEmpty(skinName) && !string.IsNullOrEmpty(skinVirtualFolder))
                 {
-					systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
+                    systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
 
-                    //Check if the selected skin has the webcontrol skin
-                    if ((!File.Exists(systemWebControlSkin)))
+                    // Check if the selected skin has the webcontrol skin
+                    if (!File.Exists(systemWebControlSkin))
                     {
-                        systemWebControlSkin = "";
+                        systemWebControlSkin = string.Empty;
                     }
 
-                    //No skin, try default folder
-                    if ((string.IsNullOrEmpty(systemWebControlSkin)))
+                    // No skin, try default folder
+                    if (string.IsNullOrEmpty(systemWebControlSkin))
                     {
-                        skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/Skins/_default");
+                        skinVirtualFolder = targetControl.ResolveUrl("~/Portals/_default/Skins/_default");
                         skinName = "Default";
 
-                        if ((skinVirtualFolder.EndsWith("/")))
+                        if (skinVirtualFolder.EndsWith("/"))
                         {
                             skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                         }
 
-                        if ((!string.IsNullOrEmpty(skinName) && !string.IsNullOrEmpty(skinVirtualFolder)))
+                        if (!string.IsNullOrEmpty(skinName) && !string.IsNullOrEmpty(skinVirtualFolder))
                         {
                             systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
@@ -141,32 +144,32 @@ namespace DotNetNuke.Web.UI
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
 
-                            if ((!File.Exists(systemWebControlSkin)))
+                            if (!File.Exists(systemWebControlSkin))
                             {
-                                systemWebControlSkin = "";
+                                systemWebControlSkin = string.Empty;
                             }
                         }
                     }
                 }
 
-                if ((!string.IsNullOrEmpty(systemWebControlSkin)))
+                if (!string.IsNullOrEmpty(systemWebControlSkin))
                 {
                     string filePath = Path.Combine(skinVirtualFolder, "WebControlSkin");
                     filePath = Path.Combine(filePath, skinName);
                     filePath = Path.Combine(filePath, webControlSkinSubFolderName);
                     filePath = Path.Combine(filePath, string.Format("{0}.{1}.css", controlName, webControlSkinName));
                     filePath = filePath.Replace('\\', '/').Replace("//", "/").TrimEnd('/');
-                    
+
                     if (HttpContext.Current != null && HttpContext.Current.Handler is Page)
                     {
                         ClientResourceManager.RegisterStyleSheet(HttpContext.Current.Handler as Page, filePath, FileOrder.Css.ResourceCss);
                     }
 
-                    if (((skinProperty != null) && (enableEmbeddedSkinsProperty != null)))
+                    if ((skinProperty != null) && (enableEmbeddedSkinsProperty != null))
                     {
                         skinApplied = true;
-                        skinProperty.SetValue(telerikControl, webControlSkinName, null);
-                        enableEmbeddedSkinsProperty.SetValue(telerikControl, false, null);
+                        skinProperty.SetValue(targetControl, webControlSkinName, null);
+                        enableEmbeddedSkinsProperty.SetValue(targetControl, false, null);
                     }
                 }
             }
@@ -177,14 +180,14 @@ namespace DotNetNuke.Web.UI
 
             if (skinProperty != null && enableEmbeddedSkinsProperty != null && !skinApplied)
             {
-                if ((string.IsNullOrEmpty(fallBackEmbeddedSkinName)))
+                if (string.IsNullOrEmpty(fallBackEmbeddedSkinName))
                 {
                     fallBackEmbeddedSkinName = "Simple";
                 }
 
-                //Set fall back skin Embedded Skin
-                skinProperty.SetValue(telerikControl, fallBackEmbeddedSkinName, null);
-                enableEmbeddedSkinsProperty.SetValue(telerikControl, true, null);
+                // Set fall back skin Embedded Skin
+                skinProperty.SetValue(targetControl, fallBackEmbeddedSkinName, null);
+                enableEmbeddedSkinsProperty.SetValue(targetControl, true, null);
             }
         }
 
@@ -196,7 +199,7 @@ namespace DotNetNuke.Web.UI
                 if (image.Width > maxWidth)
                 {
                     img.Width = maxWidth;
-                    img.Height = Convert.ToInt32((image.Height*maxWidth)/(float) image.Width);
+                    img.Height = Convert.ToInt32((image.Height * maxWidth) / (float)image.Width);
                 }
                 else
                 {
@@ -209,7 +212,7 @@ namespace DotNetNuke.Web.UI
                 // Portrait
                 if (image.Height > maxHeight)
                 {
-                    img.Width = Convert.ToInt32((image.Width*maxHeight)/(float) image.Height);
+                    img.Width = Convert.ToInt32((image.Width * maxHeight) / (float)image.Height);
                     img.Height = maxHeight;
                 }
                 else
@@ -262,7 +265,8 @@ namespace DotNetNuke.Web.UI
         public static string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
         {
             AddMessageWindow(ctrl);
-            //function(text, mozEvent, oWidth, oHeight, callerObj, oTitle) 
+
+            // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
             return string.Format("return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');", message.Message, message.WindowWidth, message.WindowHeight, message.Title);
         }
 
@@ -273,6 +277,7 @@ namespace DotNetNuke.Web.UI
             {
                 _Value = Convert.ToString(value);
             }
+
             return _Value;
         }
 
@@ -286,6 +291,9 @@ namespace DotNetNuke.Web.UI
             ctrl.Page.ClientScript.RegisterClientScriptBlock(ctrl.GetType(), ctrl.ID + "_AlertOnPageLoad", GetClientAlert(ctrl, message), true);
         }
 
-        #endregion
+        private static void AddMessageWindow(Control ctrl)
+        {
+            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
+        }
     }
 }

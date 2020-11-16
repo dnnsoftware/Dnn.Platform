@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
     /// <summary>
-    /// This enum represents the possible list of WorkflowLogType
+    /// This enum represents the possible list of WorkflowLogType.
     /// </summary>
     public enum WorkflowLogType
     {
@@ -17,6 +17,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         WorkflowApproved = 5,
         WorkflowDiscarded = 6,
         CommentProvided = 10,
-        WorkflowError = 500
+        WorkflowError = 500,
     }
 }

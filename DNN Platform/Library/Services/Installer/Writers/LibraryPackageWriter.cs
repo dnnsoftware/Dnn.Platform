@@ -1,30 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The LibraryPackageWriter class
+    /// The LibraryPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class LibraryPackageWriter : PackageWriterBase
     {
-        public LibraryPackageWriter(PackageInfo package) : base(package)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LibraryPackageWriter"/> class.
+        /// </summary>
+        /// <param name="package"></param>
+        public LibraryPackageWriter(PackageInfo package)
+            : base(package)
         {
-            BasePath = "DesktopModules\\Libraries";
-            AssemblyPath = "bin";
+            this.BasePath = "DesktopModules\\Libraries";
+            this.AssemblyPath = "bin";
         }
 
+        /// <inheritdoc/>
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             base.GetFiles(includeSource, false);

@@ -1,52 +1,52 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Connections
 {
+    using System.Collections.Generic;
+
     public interface IConnector
     {
         /// <summary>
-        /// Id of the connector. It is required if SupportsMultiple is true.
-        /// </summary>
-        string Id { get; set; }
-
-        /// <summary>
-        /// Unique name of the connector. It is used to distinguish between different types of connectors.
+        /// Gets unique name of the connector. It is used to distinguish between different types of connectors.
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// Category of the connector. It can be used to sort similar type resources.
+        /// Gets category of the connector. It can be used to sort similar type resources.
         /// </summary>
         ConnectorCategories Type { get; }
 
         /// <summary>
-        /// Determines whether this connector supports multiple connections or not.
+        /// Gets a value indicating whether determines whether this connector supports multiple connections or not.
         /// </summary>
         bool SupportsMultiple { get; }
 
         /// <summary>
-        /// Display name of the connector.
-        /// </summary>
-        string DisplayName { get; set; }
-
-        /// <summary>
-        /// Icon url of the connector.
+        /// Gets icon url of the connector.
         /// </summary>
         string IconUrl { get; }
 
         /// <summary>
-        /// Plugins folder for the connector.
+        /// Gets plugins folder for the connector.
         /// </summary>
         string PluginFolder { get; }
 
         /// <summary>
-        /// Determines if it is engage connector or not.
+        /// Gets a value indicating whether determines if it is engage connector or not.
         /// </summary>
         bool IsEngageConnector { get; }
+
+        /// <summary>
+        /// Gets or sets id of the connector. It is required if SupportsMultiple is true.
+        /// </summary>
+        string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets display name of the connector.
+        /// </summary>
+        string DisplayName { get; set; }
 
         /// <summary>
         /// Checks if the connector has been configured or not.

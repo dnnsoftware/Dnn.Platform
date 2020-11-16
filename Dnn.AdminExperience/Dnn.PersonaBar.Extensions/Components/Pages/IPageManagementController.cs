@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Entities.Tabs;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using DotNetNuke.Entities.Tabs;
+
     public interface IPageManagementController
     {
         string GetCreatedInfo(TabInfo tab);
@@ -14,11 +14,9 @@ namespace Dnn.PersonaBar.Pages.Components
 
         string GetTabUrl(TabInfo tab);
 
-        /// <summary>
-        /// Returns true if tab has children, false otherwise
-        /// </summary>
-        /// <param name="tabInfo">Tab info object</param>
-        /// <returns>Returns true if tab has children, false otherwise</returns>
+        /// <summary>Gets a value indicating whether the given <paramref name="tabInfo"/> has children.</summary>
+        /// <param name="tabInfo">Tab info object.</param>
+        /// <returns>Returns true if tab has children, false otherwise.</returns>
         bool TabHasChildren(TabInfo tabInfo);
     }
 }

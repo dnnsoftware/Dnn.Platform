@@ -1,125 +1,133 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
+    using System;
+    using System.Collections;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+
     /// <summary>
     /// Summary description for PaletteQuantizer.
     /// </summary>
     [CLSCompliant(false)]
-    public  class PaletteQuantizer : Quantizer
-	{
-		/// <summary>
-		/// Construct the palette quantizer
-		/// </summary>
-		/// <param name="palette">The color palette to quantize to</param>
-		/// <remarks>
-		/// Palette quantization only requires a single quantization step
-		/// </remarks>
-		public PaletteQuantizer ( ArrayList palette ) : base ( true )
-		{
-			_colorMap = new Hashtable ( ) ;
+    public class PaletteQuantizer : Quantizer
+    {
+        /// <summary>
+        /// List of all colors in the palette.
+        /// </summary>
+        protected Color[] _colors;
 
-			_colors = new Color[palette.Count] ;
-			palette.CopyTo ( _colors ) ;
-		}
+        /// <summary>
+        /// Lookup table for colors.
+        /// </summary>
+        private readonly Hashtable _colorMap;
 
-		/// <summary>
-		/// Override this to process the pixel in the second pass of the algorithm
-		/// </summary>
-		/// <param name="pixel">The pixel to quantize</param>
-		/// <returns>The quantized value</returns>
-		protected  override byte QuantizePixel ( Color32 pixel )
-		{
-			byte	colorIndex = 0 ;
-			int		colorHash = pixel.ARGB ;	
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PaletteQuantizer"/> class.
+        /// Construct the palette quantizer.
+        /// </summary>
+        /// <param name="palette">The color palette to quantize to.</param>
+        /// <remarks>
+        /// Palette quantization only requires a single quantization step.
+        /// </remarks>
+        public PaletteQuantizer(ArrayList palette)
+            : base(true)
+        {
+            this._colorMap = new Hashtable();
 
-			// Check if the color is in the lookup table
-			if ( _colorMap.ContainsKey ( colorHash ) )
-				colorIndex = (byte)_colorMap[colorHash] ;
-			else
-			{
-				// Not found - loop through the palette and find the nearest match.
-				// Firstly check the alpha value - if 0, lookup the transparent color
-				if ( 0 == pixel.Alpha )
-				{
-					// Transparent. Lookup the first color with an alpha value of 0
-					for ( int index = 0 ; index < _colors.Length ; index++ )
-					{
-						if ( 0 == _colors[index].A )
-						{
-							colorIndex = (byte)index ;
-							break ;
-						}
-					}
-				}
-				else
-				{
-					// Not transparent...
-					int	leastDistance = int.MaxValue ;
-					int red = pixel.Red ;
-					int green = pixel.Green;
-					int blue = pixel.Blue;
+            this._colors = new Color[palette.Count];
+            palette.CopyTo(this._colors);
+        }
 
-					// Loop through the entire palette, looking for the closest color match
-					for ( int index = 0 ; index < _colors.Length ; index++ )
-					{
-						Color	paletteColor = _colors[index];
-						
-						int	redDistance = paletteColor.R - red ;
-						int	greenDistance = paletteColor.G - green ;
-						int	blueDistance = paletteColor.B - blue ;
+        /// <summary>
+        /// Override this to process the pixel in the second pass of the algorithm.
+        /// </summary>
+        /// <param name="pixel">The pixel to quantize.</param>
+        /// <returns>The quantized value.</returns>
+        protected override byte QuantizePixel(Color32 pixel)
+        {
+            byte colorIndex = 0;
+            int colorHash = pixel.ARGB;
 
-						int		distance = ( redDistance * redDistance ) + 
-										   ( greenDistance * greenDistance ) + 
-										   ( blueDistance * blueDistance ) ;
+            // Check if the color is in the lookup table
+            if (this._colorMap.ContainsKey(colorHash))
+            {
+                colorIndex = (byte)this._colorMap[colorHash];
+            }
+            else
+            {
+                // Not found - loop through the palette and find the nearest match.
+                // Firstly check the alpha value - if 0, lookup the transparent color
+                if (pixel.Alpha == 0)
+                {
+                    // Transparent. Lookup the first color with an alpha value of 0
+                    for (int index = 0; index < this._colors.Length; index++)
+                    {
+                        if (this._colors[index].A == 0)
+                        {
+                            colorIndex = (byte)index;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    // Not transparent...
+                    int leastDistance = int.MaxValue;
+                    int red = pixel.Red;
+                    int green = pixel.Green;
+                    int blue = pixel.Blue;
 
-						if ( distance < leastDistance )
-						{
-							colorIndex = (byte)index ;
-							leastDistance = distance ;
+                    // Loop through the entire palette, looking for the closest color match
+                    for (int index = 0; index < this._colors.Length; index++)
+                    {
+                        Color paletteColor = this._colors[index];
 
-							// And if it's an exact match, exit the loop
-							if ( 0 == distance )
-								break ;
-						}
-					}
-				}
+                        int redDistance = paletteColor.R - red;
+                        int greenDistance = paletteColor.G - green;
+                        int blueDistance = paletteColor.B - blue;
 
-				// Now I have the color, pop it into the hashtable for next time
-				_colorMap.Add ( colorHash , colorIndex ) ;
-			}
+                        int distance = (redDistance * redDistance) +
+                                           (greenDistance * greenDistance) +
+                                           (blueDistance * blueDistance);
 
-			return colorIndex ;
-		}
+                        if (distance < leastDistance)
+                        {
+                            colorIndex = (byte)index;
+                            leastDistance = distance;
 
-		/// <summary>
-		/// Retrieve the palette for the quantized image
-		/// </summary>
-		/// <param name="palette">Any old palette, this is overrwritten</param>
-		/// <returns>The new color palette</returns>
-		protected override ColorPalette GetPalette ( ColorPalette palette )
-		{
-			for ( int index = 0 ; index < _colors.Length ; index++ )
-				palette.Entries[index] = _colors[index] ;
+                            // And if it's an exact match, exit the loop
+                            if (distance == 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
 
-			return palette ;
-		}
+                // Now I have the color, pop it into the hashtable for next time
+                this._colorMap.Add(colorHash, colorIndex);
+            }
 
-		/// <summary>
-		/// Lookup table for colors
-		/// </summary>
-		private readonly Hashtable _colorMap ;
+            return colorIndex;
+        }
 
-		/// <summary>
-		/// List of all colors in the palette
-		/// </summary>
-		protected Color[] _colors ;
-	}
+        /// <summary>
+        /// Retrieve the palette for the quantized image.
+        /// </summary>
+        /// <param name="palette">Any old palette, this is overrwritten.</param>
+        /// <returns>The new color palette.</returns>
+        protected override ColorPalette GetPalette(ColorPalette palette)
+        {
+            for (int index = 0; index < this._colors.Length; index++)
+            {
+                palette.Entries[index] = this._colors[index];
+            }
+
+            return palette;
+        }
+    }
 }

@@ -25,18 +25,11 @@ Community review of submitted pull requests is encouraged, and all pull requests
 At the current time the following community members are designated approvers.
 
 * Mitchel Sellers ([mitchelsellers](https://github.com/mitchelsellers)) - Community Technology Advisory Group Lead
-* Oliver Hine ([ohine](https://github.com/ohine))
 * Brian Dukes ([bdukes](https://github.com/bdukes))
 * Peter Donker ([donker](https://github.com/donker)) - Community Developer Advisory Group Lead
 * Daniel Valadas ([valadas](https://github.com/valadas))
 * Matt Rutledge ([mtrutledge](https://github.com/mtrutledge))
-* Vicenç Masanas ([vmasanas](https://github.com/vmasanas))
-* Erik van Ballegoij ([erikvb](https://github.com/erikvb))
-
-Additionally, the following individuals from ESW/DNN Corp are approved reviewers.
-
-* Daniel Aguilera ([daguiler](https://github.com/daguiler)) - CTO
-* Ash Prasad ([ashishpd](https://github.com/ashishpd)) - VP of Engineering
+* David Poindexter ([david-poindexter](https://github.com/david-poindexter)) - Community Strategy Advisory Group Lead
 
 ### Review Minimums
 An individual performing the code review should validate at a minimum the following.
@@ -50,10 +43,16 @@ If a reviewer has suggestions for improvement, those should be noted in the pull
 
 *If you have questions about a pull request or an idea for a pull request, please reach out to one of the approvers before submitting to ensure a streamlined process.*
 
+### Draft PR's
+For proper management of pull requests the team will utilize the "Draft" option within a pull request to identify something that is being submitted for consideration and in need of review/comment or other special review from the team.  Individuals should coordinate with the Approvers group prior to submitting any Draft pull requests as they are special cases.
+
+### On-Hold Tag
+The Approvers group will add the "On-Hold" tag to any pull request that is targeting a major or minor release until it is ready for merging.  This is done as an administrative process to prevent accidental merging and is not a reflection of rejection of the submitted code. The associated milestone will be updated when the "On-Hold" tag has been added for clear communication regarding expectations.
+
+Examples of requests of this nature include technology or dependency changes that could introduce major/minor breaking changes.
+
 ## Merging & Closing of Requests
 Once a pull request has been reviewed by two designated approvers it may be merged and the pull request closed.
-
-> This **_MUST NOT_** be done by the submitter of the Pull Request for ANY reason!  
 
 ### Execption for Build Process Pull Requests
 A special exception has been granted to reduce the number of Designed Approval reviews to 1 for all pull requests related to Build Support when incrementing versions in prepration of a release, or reconfiguration of the environment for the next version. 
@@ -68,10 +67,3 @@ We follow the process outlined in the [Versioning Policy](VERSIONING_POLICY.md) 
 The review team will work to respond to all pull requests in a timely fashion.  If changes or additional information is requested a pull request will remain open allowing the submitter to update their contribution accordingly.  If a request for additional information or changes is not completed with 90 days of request the Pull Request will be closed to keep the pipeline clear.  Once the needed information has been gathered the information can be re-submitted via a new Pull Request.  
 
 For expedited processing you may reference the prior Pull Request.
-
-### Items for Future Releases
-If an item was submitted that will be integrated into a future release that is not currently in the development pipeline it is possible that the Pull Request will remain open. 
-
-In this situation the reviewing team will approve the request, tag the request with a specific version milestone and add a comment noting when and why it will be included in the particularly identified release.
-
-This most often will apply to technology or dependency changes that require alignment with Major, Minor, Revision build inclusion.  

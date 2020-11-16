@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+
     public partial class Styles : SkinObjectBase
     {
         private bool _useSkinPath = true;
@@ -31,11 +26,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _useSkinPath;
+                return this._useSkinPath;
             }
+
             set
             {
-                _useSkinPath = value;
+                this._useSkinPath = value;
             }
         }
 
@@ -44,36 +40,38 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            AddStyleSheet();
+            this.AddStyleSheet();
         }
 
         protected void AddStyleSheet()
         {
-            //Find the placeholder control
-            Control objCSS = Page.FindControl("CSS");
+            // Find the placeholder control
+            Control objCSS = this.Page.FindControl("CSS");
             if (objCSS != null)
             {
-                //First see if we have already added the <LINK> control
-                Control objCtrl = Page.Header.FindControl(ID);
+                // First see if we have already added the <LINK> control
+                Control objCtrl = this.Page.Header.FindControl(this.ID);
                 if (objCtrl == null)
                 {
                     string skinpath = string.Empty;
-                    if (UseSkinPath)
+                    if (this.UseSkinPath)
                     {
-                        skinpath = ((Skin) Parent).SkinPath;
+                        skinpath = ((Skin)this.Parent).SkinPath;
                     }
+
                     var objLink = new HtmlLink();
-                    objLink.ID = Globals.CreateValidID(Name);
+                    objLink.ID = Globals.CreateValidID(this.Name);
                     objLink.Attributes["rel"] = "stylesheet";
                     objLink.Attributes["type"] = "text/css";
-                    objLink.Href = skinpath + StyleSheet;
-                    if (Media != "")
+                    objLink.Href = skinpath + this.StyleSheet;
+                    if (this.Media != string.Empty)
                     {
-                        objLink.Attributes["media"] = Media; //NWS: add support for "media" attribute
+                        objLink.Attributes["media"] = this.Media; // NWS: add support for "media" attribute
                     }
-                    if (IsFirst)
+
+                    if (this.IsFirst)
                     {
-						//Find the first HtmlLink
+                        // Find the first HtmlLink
                         int iLink;
                         for (iLink = 0; iLink <= objCSS.Controls.Count - 1; iLink++)
                         {
@@ -82,11 +80,12 @@ namespace DotNetNuke.UI.Skins.Controls
                                 break;
                             }
                         }
-                        AddLink(objCSS, iLink, objLink);
+
+                        this.AddLink(objCSS, iLink, objLink);
                     }
                     else
                     {
-                        AddLink(objCSS, -1, objLink);
+                        this.AddLink(objCSS, -1, objLink);
                     }
                 }
             }
@@ -94,7 +93,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         protected void AddLink(Control cssRoot, int InsertAt, HtmlLink link)
         {
-            if (string.IsNullOrEmpty(Condition))
+            if (string.IsNullOrEmpty(this.Condition))
             {
                 if (InsertAt == -1)
                 {
@@ -108,7 +107,7 @@ namespace DotNetNuke.UI.Skins.Controls
             else
             {
                 var openif = new Literal();
-                openif.Text = string.Format("<!--[if {0}]>", Condition);
+                openif.Text = string.Format("<!--[if {0}]>", this.Condition);
                 var closeif = new Literal();
                 closeif.Text = "<![endif]-->";
                 if (InsertAt == -1)
@@ -119,8 +118,8 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-					//Since we want to add at a specific location, we do this in reverse order
-                    //this allows us to use the same insertion point
+                    // Since we want to add at a specific location, we do this in reverse order
+                    // this allows us to use the same insertion point
                     cssRoot.Controls.AddAt(InsertAt, closeif);
                     cssRoot.Controls.AddAt(InsertAt, link);
                     cssRoot.Controls.AddAt(InsertAt, openif);

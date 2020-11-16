@@ -1,186 +1,102 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using DotNetNuke.Services.Exceptions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-    [Serializable]
-    public class LogInfo
-    {
-		#region Constructors
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Services.Exceptions;
+
+    /// <inheritdoc />
+    [Serializable]
+    public partial class LogInfo : ILogInfo
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogInfo"/> class.
+        /// </summary>
         public LogInfo()
         {
-            LogGUID = Guid.NewGuid().ToString();
-            BypassBuffering = false;
-            LogProperties = new LogProperties();
-            LogPortalID = -1;
-            LogPortalName = "";
-            LogUserID = -1;
-            LogEventID = -1;
-            LogUserName = "";
-			Exception = new ExceptionInfo();
+            ((ILogInfo)this).LogGuid = Guid.NewGuid().ToString();
+            this.BypassBuffering = false;
+            ((ILogInfo)this).LogProperties = new LogProperties();
+            ((ILogInfo)this).LogPortalId = -1;
+            this.LogPortalName = string.Empty;
+            ((ILogInfo)this).LogUserId = -1;
+            ((ILogInfo)this).LogEventId = -1;
+            this.LogUserName = string.Empty;
+            this.Exception = new ExceptionInfo();
         }
 
-        public LogInfo(string content) : this()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogInfo"/> class.
+        /// </summary>
+        /// <param name="content"></param>
+        public LogInfo(string content)
+            : this()
         {
-            Deserialize(content);
+            this.Deserialize(content);
         }
-		
-		#endregion
 
-		#region "Properties"
+        /// <inheritdoc />
+        string ILogInfo.LogGuid { get; set; }
 
-        public string LogGUID { get; set; }
+        /// <inheritdoc />
+        string ILogInfo.LogFileId { get; set; }
 
-        public string LogFileID { get; set; }
-
+        /// <inheritdoc />
         public string LogTypeKey { get; set; }
 
-        public int LogUserID { get; set; }
+        /// <inheritdoc />
+        int ILogInfo.LogUserId { get; set; }
 
-        public int LogEventID { get; set; }
+        /// <inheritdoc />
+        int ILogInfo.LogEventId { get; set; }
 
+        /// <inheritdoc />
         public string LogUserName { get; set; }
 
-        public int LogPortalID { get; set; }
+        /// <inheritdoc />
+        int ILogInfo.LogPortalId { get; set; }
 
+        /// <inheritdoc />
         public string LogPortalName { get; set; }
 
+        /// <inheritdoc />
         public DateTime LogCreateDate { get; set; }
 
+        /// <inheritdoc />
         public long LogCreateDateNum { get; set; }
 
-        public LogProperties LogProperties { get; set; }
+        public LogProperties LogProperties
+        {
+            get => (LogProperties)((ILogInfo)this).LogProperties;
+            set => ((ILogInfo)this).LogProperties = value;
+        }
 
+        /// <inheritdoc />
+        ILogProperties ILogInfo.LogProperties { get; set; }
+
+        /// <inheritdoc />
         public bool BypassBuffering { get; set; }
 
+        /// <inheritdoc />
         public string LogServerName { get; set; }
 
-        public string LogConfigID { get; set; }
+        /// <inheritdoc />
+        string ILogInfo.LogConfigId { get; set; }
 
-		public ExceptionInfo Exception { get; set; }
-
-        #endregion
-
-		#region Public Methods
-
-        public void AddProperty(string PropertyName, string PropertyValue)
+        public ExceptionInfo Exception
         {
-            try
-            {
-                if (PropertyValue == null)
-                {
-                    PropertyValue = string.Empty;
-                }
-                if (PropertyName.Length > 50)
-                {
-                    PropertyName = PropertyName.Substring(0, 50);
-                }
-                if (PropertyValue.Length > 500)
-                {
-                    PropertyValue = "(TRUNCATED TO 500 CHARS): " + PropertyValue.Substring(0, 500);
-                }
-                var objLogDetailInfo = new LogDetailInfo();
-                objLogDetailInfo.PropertyName = PropertyName;
-                objLogDetailInfo.PropertyValue = PropertyValue;
-                LogProperties.Add(objLogDetailInfo);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.Exceptions.LogException(exc);
-            }
+            get => (ExceptionInfo)((ILogInfo)this).Exception;
+            set => ((ILogInfo)this).Exception = value;
         }
 
-        public void Deserialize(string content)
-        {
-            using (XmlReader reader = XmlReader.Create(new StringReader(content)))
-            {
-                if (reader.Read())
-                {
-                    ReadXml(reader);
-                }
-                reader.Close();
-            }
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            if (reader.HasAttributes)
-            {
-                while (reader.MoveToNextAttribute())
-                {
-                    switch (reader.Name)
-                    {
-                        case "LogGUID":
-                            LogGUID = reader.ReadContentAsString();
-                            break;
-                        case "LogFileID":
-                            LogFileID = reader.ReadContentAsString();
-                            break;
-                        case "LogTypeKey":
-                            LogTypeKey = reader.ReadContentAsString();
-                            break;
-                        case "LogUserID":
-                            LogUserID = reader.ReadContentAsInt();
-                            break;
-                        case "LogEventID":
-                            LogEventID = reader.ReadContentAsInt();
-                            break;
-                        case "LogUserName":
-                            LogUserName = reader.ReadContentAsString();
-                            break;
-                        case "LogPortalID":
-                            LogPortalID = reader.ReadContentAsInt();
-                            break;
-                        case "LogPortalName":
-                            LogPortalName = reader.ReadContentAsString();
-                            break;
-                        case "LogCreateDate":
-                            LogCreateDate = DateTime.Parse(reader.ReadContentAsString());
-                            break;
-                        case "LogCreateDateNum":
-                            LogCreateDateNum = reader.ReadContentAsLong();
-                            break;
-                        case "BypassBuffering":
-                            BypassBuffering = bool.Parse(reader.ReadContentAsString());
-                            break;
-                        case "LogServerName":
-                            LogServerName = reader.ReadContentAsString();
-                            break;
-						case "LogConfigID":
-							LogConfigID = reader.ReadContentAsString();
-							break;
-					}
-                }
-            }
-			
-            //Check for LogProperties child node
-            reader.Read();
-            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
-            {
-                reader.ReadStartElement("LogProperties");
-                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !String.IsNullOrEmpty(reader.LocalName))
-                {
-                    LogProperties.ReadXml(reader);
-                }
-			}
-			//Check for Exception child node
-			if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
-	        {
-				Exception.ReadXml(reader);
-	        }
-        }
+        /// <inheritdoc />
+        IExceptionInfo ILogInfo.Exception { get; set; }
 
         public static bool IsSystemType(string PropName)
         {
@@ -199,7 +115,121 @@ namespace DotNetNuke.Services.Log.EventLog
                 case "LogServerName":
                     return true;
             }
+
             return false;
+        }
+
+        /// <inheritdoc />
+        public void AddProperty(string PropertyName, string PropertyValue)
+        {
+            try
+            {
+                if (PropertyValue == null)
+                {
+                    PropertyValue = string.Empty;
+                }
+
+                if (PropertyName.Length > 50)
+                {
+                    PropertyName = PropertyName.Substring(0, 50);
+                }
+
+                if (PropertyValue.Length > 500)
+                {
+                    PropertyValue = "(TRUNCATED TO 500 CHARS): " + PropertyValue.Substring(0, 500);
+                }
+
+                var objLogDetailInfo = new LogDetailInfo();
+                objLogDetailInfo.PropertyName = PropertyName;
+                objLogDetailInfo.PropertyValue = PropertyValue;
+                this.LogProperties.Add(objLogDetailInfo);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+        }
+
+        public void Deserialize(string content)
+        {
+            using (XmlReader reader = XmlReader.Create(new StringReader(content)))
+            {
+                if (reader.Read())
+                {
+                    this.ReadXml(reader);
+                }
+
+                reader.Close();
+            }
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            if (reader.HasAttributes)
+            {
+                while (reader.MoveToNextAttribute())
+                {
+                    switch (reader.Name)
+                    {
+                        case "LogGUID":
+                            ((ILogInfo)this).LogGuid = reader.ReadContentAsString();
+                            break;
+                        case "LogFileID":
+                            ((ILogInfo)this).LogFileId = reader.ReadContentAsString();
+                            break;
+                        case "LogTypeKey":
+                            this.LogTypeKey = reader.ReadContentAsString();
+                            break;
+                        case "LogUserID":
+                            ((ILogInfo)this).LogUserId = reader.ReadContentAsInt();
+                            break;
+                        case "LogEventID":
+                            ((ILogInfo)this).LogEventId = reader.ReadContentAsInt();
+                            break;
+                        case "LogUserName":
+                            this.LogUserName = reader.ReadContentAsString();
+                            break;
+                        case "LogPortalID":
+                            ((ILogInfo)this).LogPortalId = reader.ReadContentAsInt();
+                            break;
+                        case "LogPortalName":
+                            this.LogPortalName = reader.ReadContentAsString();
+                            break;
+                        case "LogCreateDate":
+                            this.LogCreateDate = DateTime.Parse(reader.ReadContentAsString());
+                            break;
+                        case "LogCreateDateNum":
+                            this.LogCreateDateNum = reader.ReadContentAsLong();
+                            break;
+                        case "BypassBuffering":
+                            this.BypassBuffering = bool.Parse(reader.ReadContentAsString());
+                            break;
+                        case "LogServerName":
+                            this.LogServerName = reader.ReadContentAsString();
+                            break;
+                        case "LogConfigID":
+                            ((ILogInfo)this).LogConfigId = reader.ReadContentAsString();
+                            break;
+                    }
+                }
+            }
+
+            // Check for LogProperties child node
+            reader.Read();
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
+            {
+                reader.ReadStartElement("LogProperties");
+                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
+                {
+                    this.LogProperties.ReadXml(reader);
+                }
+            }
+
+            // Check for Exception child node
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
+            {
+                this.Exception.ReadXml(reader);
+            }
         }
 
         public string Serialize()
@@ -210,56 +240,57 @@ namespace DotNetNuke.Services.Log.EventLog
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
-                WriteXml(writer);
+                this.WriteXml(writer);
                 writer.Close();
                 return sb.ToString();
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var str = new StringBuilder();
-            str.Append("<p><strong>LogGUID:</strong>" + LogGUID + "</p>");
-            str.Append("<p><strong>LogType:</strong>" + LogTypeKey + "</p>");
-            str.Append("<p><strong>UserID:</strong>" + LogUserID + "</p>");
-            str.Append("<p><strong>EventID:</strong>" + LogEventID + "</p>");
-            str.Append("<p><strong>Username:</strong>" + LogUserName + "</p>");
-            str.Append("<p><strong>PortalID:</strong>" + LogPortalID + "</p>");
-            str.Append("<p><strong>PortalName:</strong>" + LogPortalName + "</p>");
-            str.Append("<p><strong>CreateDate:</strong>" + LogCreateDate + "</p>");
-            str.Append("<p><strong>ServerName:</strong>" + LogServerName + "</p>");
-            str.Append(LogProperties.ToString());
-	        if (!string.IsNullOrEmpty(Exception.ExceptionHash))
-	        {
-				str.Append(Exception.ToString());
-			}
+            str.Append("<p><strong>LogGUID:</strong>" + ((ILogInfo)this).LogGuid + "</p>");
+            str.Append("<p><strong>LogType:</strong>" + this.LogTypeKey + "</p>");
+            str.Append("<p><strong>UserID:</strong>" + ((ILogInfo)this).LogUserId + "</p>");
+            str.Append("<p><strong>EventID:</strong>" + ((ILogInfo)this).LogEventId + "</p>");
+            str.Append("<p><strong>Username:</strong>" + this.LogUserName + "</p>");
+            str.Append("<p><strong>PortalID:</strong>" + ((ILogInfo)this).LogPortalId + "</p>");
+            str.Append("<p><strong>PortalName:</strong>" + this.LogPortalName + "</p>");
+            str.Append("<p><strong>CreateDate:</strong>" + this.LogCreateDate + "</p>");
+            str.Append("<p><strong>ServerName:</strong>" + this.LogServerName + "</p>");
+            str.Append(this.LogProperties.ToString());
+            if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
+            {
+                str.Append(this.Exception.ToString());
+            }
+
             return str.ToString();
         }
 
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("log");
-            writer.WriteAttributeString("LogGUID", LogGUID);
-            writer.WriteAttributeString("LogFileID", LogFileID);
-            writer.WriteAttributeString("LogTypeKey", LogTypeKey);
-            writer.WriteAttributeString("LogUserID", LogUserID.ToString());
-            writer.WriteAttributeString("LogEventID", LogEventID.ToString());
-            writer.WriteAttributeString("LogUserName", LogUserName);
-            writer.WriteAttributeString("LogPortalID", LogPortalID.ToString());
-            writer.WriteAttributeString("LogPortalName", LogPortalName);
-            writer.WriteAttributeString("LogCreateDate", LogCreateDate.ToString());
-            writer.WriteAttributeString("LogCreateDateNum", LogCreateDateNum.ToString());
-            writer.WriteAttributeString("BypassBuffering", BypassBuffering.ToString());
-            writer.WriteAttributeString("LogServerName", LogServerName);
-			writer.WriteAttributeString("LogConfigID", LogConfigID);
-            LogProperties.WriteXml(writer);
-	        if (!string.IsNullOrEmpty(Exception.ExceptionHash))
-	        {
-		        Exception.WriteXml(writer);
-	        }
+            writer.WriteAttributeString("LogGUID", ((ILogInfo)this).LogGuid);
+            writer.WriteAttributeString("LogFileID", ((ILogInfo)this).LogFileId);
+            writer.WriteAttributeString("LogTypeKey", this.LogTypeKey);
+            writer.WriteAttributeString("LogUserID", ((ILogInfo)this).LogUserId.ToString());
+            writer.WriteAttributeString("LogEventID", ((ILogInfo)this).LogEventId.ToString());
+            writer.WriteAttributeString("LogUserName", this.LogUserName);
+            writer.WriteAttributeString("LogPortalID", ((ILogInfo)this).LogPortalId.ToString());
+            writer.WriteAttributeString("LogPortalName", this.LogPortalName);
+            writer.WriteAttributeString("LogCreateDate", this.LogCreateDate.ToString());
+            writer.WriteAttributeString("LogCreateDateNum", this.LogCreateDateNum.ToString());
+            writer.WriteAttributeString("BypassBuffering", this.BypassBuffering.ToString());
+            writer.WriteAttributeString("LogServerName", this.LogServerName);
+            writer.WriteAttributeString("LogConfigID", ((ILogInfo)this).LogConfigId);
+            this.LogProperties.WriteXml(writer);
+            if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
+            {
+                this.Exception.WriteXml(writer);
+            }
+
             writer.WriteEndElement();
         }
-		
-		#endregion
     }
 }

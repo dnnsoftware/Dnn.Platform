@@ -1,20 +1,34 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using Newtonsoft.Json;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class ModuleControlDto
     {
+        public ModuleControlDto()
+        {
+        }
+
+        public ModuleControlDto(ModuleControlInfo moduleControl)
+        {
+            this.Id = moduleControl.ModuleControlID;
+            this.DefinitionId = moduleControl.ModuleDefID;
+            this.Key = moduleControl.ControlKey;
+            this.Title = moduleControl.ControlTitle;
+            this.Source = moduleControl.ControlSrc;
+            this.Type = moduleControl.ControlType;
+            this.Order = moduleControl.ViewOrder;
+            this.Icon = moduleControl.IconFile;
+            this.HelpUrl = moduleControl.HelpURL;
+            this.SupportPopups = moduleControl.SupportsPopUps;
+            this.SupportPartialRendering = moduleControl.SupportsPartialRendering;
+        }
+
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -29,7 +43,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         [JsonProperty("source")]
         public string Source { get; set; }
-
 
         [JsonProperty("type")]
         public SecurityAccessLevel Type { get; set; }
@@ -49,41 +62,21 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [JsonProperty("supportPartialRendering")]
         public bool SupportPartialRendering { get; set; }
 
-        public ModuleControlDto()
-        {
-            
-        }
-
-        public ModuleControlDto(ModuleControlInfo moduleControl)
-        {
-            Id = moduleControl.ModuleControlID;
-            DefinitionId = moduleControl.ModuleDefID;
-            Key = moduleControl.ControlKey;
-            Title = moduleControl.ControlTitle;
-            Source = moduleControl.ControlSrc;
-            Type = moduleControl.ControlType;
-            Order = moduleControl.ViewOrder;
-            Icon = moduleControl.IconFile;
-            HelpUrl = moduleControl.HelpURL;
-            SupportPopups = moduleControl.SupportsPopUps;
-            SupportPartialRendering = moduleControl.SupportsPartialRendering;
-        }
-
         public ModuleControlInfo ToModuleControlInfo()
         {
             return new ModuleControlInfo
             {
-                ModuleControlID = Id,
-                ModuleDefID = DefinitionId,
-                ControlKey = Key,
-                ControlTitle = Title,
-                ControlSrc = Source,
-                ControlType = Type,
-                ViewOrder = Order,
-                IconFile = Icon,
-                HelpURL = HelpUrl,
-                SupportsPartialRendering = SupportPartialRendering,
-                SupportsPopUps = SupportPopups
+                ModuleControlID = this.Id,
+                ModuleDefID = this.DefinitionId,
+                ControlKey = this.Key,
+                ControlTitle = this.Title,
+                ControlSrc = this.Source,
+                ControlType = this.Type,
+                ViewOrder = this.Order,
+                IconFile = this.Icon,
+                HelpURL = this.HelpUrl,
+                SupportsPartialRendering = this.SupportPartialRendering,
+                SupportsPopUps = this.SupportPopups
             };
         }
     }

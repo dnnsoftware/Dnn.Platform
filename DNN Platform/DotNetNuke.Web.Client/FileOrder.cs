@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.Client
 {
     /// <summary>
@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.Client
     public class FileOrder
     {
         /// <summary>
-        /// Defines load order of key JavaScript files within the framework
+        /// Defines load order of key JavaScript files within the framework.
         /// </summary>
         public enum Js
         {
@@ -24,21 +24,24 @@ namespace DotNetNuke.Web.Client
             /// </summary>
             // ReSharper disable InconsistentNaming
             jQuery = 5,
+
             // ReSharper restore InconsistentNaming
 
-			/// <summary>
-			/// jQuery Migrate file has the priority of 6, it should appear just after jquery.
-			/// </summary>
-			// ReSharper disable InconsistentNaming
-			jQueryMigrate = 6,
-			// ReSharper restore InconsistentNaming
+            /// <summary>
+            /// jQuery Migrate file has the priority of 6, it should appear just after jquery.
+            /// </summary>
+            // ReSharper disable InconsistentNaming
+            jQueryMigrate = 6,
+
+            // ReSharper restore InconsistentNaming
 
             /// <summary>
             /// jQuery UI (CDN or local file) has the priority of 10
             /// </summary>
 // ReSharper disable InconsistentNaming
             jQueryUI = 10,
-// ReSharper restore InconsistentNaming
+
+            // ReSharper restore InconsistentNaming
 
             /// <summary>
             /// /js/dnn.xml.js has the priority of 15
@@ -75,19 +78,19 @@ namespace DotNetNuke.Web.Client
             /// </summary>
             DnnControlsLabelEdit = 45,
 
-			/// <summary>
-			/// /js/dnn.modalpopup.js has the priority of 50
-			/// </summary>
-			DnnModalPopup = 50,
+            /// <summary>
+            /// /js/dnn.modalpopup.js has the priority of 50
+            /// </summary>
+            DnnModalPopup = 50,
 
-			/// <summary>
-			/// jQuery Hover Intent JS File has the priority of 55
-			/// </summary>
-			HoverIntent = 55
+            /// <summary>
+            /// jQuery Hover Intent JS File has the priority of 55
+            /// </summary>
+            HoverIntent = 55,
         }
 
         /// <summary>
-        /// Defines load order of key CSS files within the framework
+        /// Defines load order of key CSS files within the framework.
         /// </summary>
         public enum Css
         {

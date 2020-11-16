@@ -1,0 +1,48 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.collapsible-logitemdetail {
+  display: table;
+  width: 100%;
+  &.false {
+    border-top: 2px solid @curiousBlue !important;
+    border-bottom: 2px solid @curiousBlue !important;
+    position: relative;
+    top: -1px;
+  }
+  &:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+  }
+  .logitem-collapsible > div {
+    float: left;
+    padding-bottom: 25px;
+  }
+  div.collapsible-logitemdetail-header {
+    width: 100%;
+    float: left;
+    position: relative;
+    padding: 15px 0 15px 0;
+    box-sizing: border-box;
+    .term-header {
+      cursor: pointer;
+      .term-label-typename {
+        width: 20%;
+        float: left;
+      }
+      .term-label-filename {
+        width: 35%;
+        float: left;
+      }
+      .term-label-modifieddate {
+        width: 35%;
+        float: left;
+      }
+      .term-label-size {
+        width: 10%;
+        float: left;
+      }
+      .term-label-wrapper {
+        padding: 0 5px 0 5px;
+        word-wrap: break-word;
+      }
+    }
+  }
+}

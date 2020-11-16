@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      BaseUserInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The BaseUserInfo class provides a base Entity for an online user
+    /// The BaseUserInfo class provides a base Entity for an online user.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -32,7 +27,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the PortalId for this online user
+        /// Gets or sets and sets the PortalId for this online user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -40,17 +35,18 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _PortalID;
+                return this._PortalID;
             }
+
             set
             {
-                _PortalID = value;
+                this._PortalID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the TabId for this online user
+        /// Gets or sets and sets the TabId for this online user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -58,17 +54,18 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _TabID;
+                return this._TabID;
             }
+
             set
             {
-                _TabID = value;
+                this._TabID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the CreationDate for this online user
+        /// Gets or sets and sets the CreationDate for this online user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -76,17 +73,18 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _CreationDate;
+                return this._CreationDate;
             }
+
             set
             {
-                _CreationDate = value;
+                this._CreationDate = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the LastActiveDate for this online user
+        /// Gets or sets and sets the LastActiveDate for this online user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -94,11 +92,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _LastActiveDate;
+                return this._LastActiveDate;
             }
+
             set
             {
-                _LastActiveDate = value;
+                this._LastActiveDate = value;
             }
         }
     }

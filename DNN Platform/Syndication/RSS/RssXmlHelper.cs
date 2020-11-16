@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Xml;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Xml;
+
     internal class RssXmlHelper
     {
         /// <summary>
-        ///   Internal helper class for XML to RSS conversion (and for generating XML from RSS)
+        ///   Internal helper class for XML to RSS conversion (and for generating XML from RSS).
         /// </summary>
         /// <param name = "doc"></param>
         /// <returns></returns>
@@ -67,10 +62,12 @@ namespace DotNetNuke.Services.Syndication
                             {
                                 channelAttributes = ParseAttributesFromXml(n);
                             }
+
                             if (n.Name == "image")
                             {
                                 imageAttributes = ParseAttributesFromXml(n);
                             }
+
                             if (n.Name == "item")
                             {
                                 itemsAttributesList.Add(ParseAttributesFromXml(n));

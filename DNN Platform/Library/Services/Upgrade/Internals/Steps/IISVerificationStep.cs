@@ -1,13 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Microsoft.Win32;
-using System;
-using System.Web;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
+    using System;
+    using System.Web;
+
+    using Microsoft.Win32;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Performs verifications about the IIS environment.
     /// </summary>
@@ -18,27 +21,27 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// </summary>
         public override void Execute()
         {
-            Status = StepStatus.Running;
+            this.Status = StepStatus.Running;
 
-            Details = Localization.Localization.GetString("CheckingIIS", LocalInstallResourceFile);
+            this.Details = Localization.GetString("CheckingIIS", this.LocalInstallResourceFile);
 
             // Checks for integrated pipeline mode.
             if (!HttpRuntime.UsingIntegratedPipeline)
             {
-                Errors.Add(Localization.Localization.GetString("IISVerificationFail", LocalInstallResourceFile));
-                Status = StepStatus.Abort;
+                this.Errors.Add(Localization.GetString("IISVerificationFail", this.LocalInstallResourceFile));
+                this.Status = StepStatus.Abort;
                 return;
             }
 
             // Check for .Net Framework 4.7.2
             if (!IsDotNetVersionAtLeast(461808))
             {
-                Errors.Add(Localization.Localization.GetString("DotNetVersion472Required", LocalInstallResourceFile));
-                Status = StepStatus.Abort;
+                this.Errors.Add(Localization.GetString("DotNetVersion472Required", this.LocalInstallResourceFile));
+                this.Status = StepStatus.Abort;
                 return;
             }
 
-            Status = StepStatus.Done;
+            this.Status = StepStatus.Done;
         }
 
         private static bool IsDotNetVersionAtLeast(int version)

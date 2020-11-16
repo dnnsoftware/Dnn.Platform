@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditorProviderSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FileListPageSize>20</FileListPageSize>
+  <FileListViewMode>DetailView</FileListViewMode>
+  <DefaultLinkMode>RelativeURL</DefaultLinkMode>
+  <UseAnchorSelector>true</UseAnchorSelector>
+  <ShowPageLinksTabFirst>false</ShowPageLinksTabFirst>
+  <SubDirs>false</SubDirs>
+  <InjectSyntaxJs>true</InjectSyntaxJs>
+  <BrowserRootDirId>-1</BrowserRootDirId>
+  <UploadDirId>-1</UploadDirId>
+  <ResizeHeight>-1</ResizeHeight>
+  <ResizeWidth>-1</ResizeWidth>
+  <ToolBarRoles>
+    <ToolbarRoles>
+      <RoleId>0</RoleId>
+      <Toolbar>Full</Toolbar>
+    </ToolbarRoles>
+  </ToolBarRoles>
+  <BrowserMode>None</BrowserMode>
+  <Browser>standard</Browser>
+  <BrowserRoles>0;Administrators;</BrowserRoles>
+  <SettingMode>Portal</SettingMode>
+  <Config allowedContent="false" autoGrow_bottomSpace="0" autoGrow_maxHeight="0" autoGrow_minHeight="200" autoGrow_onStartup="false" autoParagraph="true" autosave_delay="25" autoUpdateElement="true" baseFloatZIndex="10000" basicEntities="true" blockedKeystrokes="[ CKEDITOR.CTRL + 66, CKEDITOR.CTRL + 73, CKEDITOR.CTRL + 85 ]" browserContextMenuOnCtrl="true" clipboard_defaultContentType="html" colorButton_colors="00923E,F8C100,28166F" colorButton_enableMore="true" contentsLangDirection="Inherit" dataIndentationChars="	" defaultLanguage="en" defaultLinkType="url" dialog_backgroundCoverColor="white" dialog_backgroundCoverOpacity="0.5" dialog_buttonsOrder="OS" dialog_magnetDistance="20" dialog_startupFocusTab="false" disableNativeSpellChecker="true" disableNativeTableHandles="true" disableObjectResizing="false" disableReadonlyStyling="false" div_wrapTable="false" docType="&lt;!DOCTYPE html&gt;" enableTabKeyTools="true" enterMode="P" entities="true" entities_additional="#39" entities_greek="false" entities_latin="false" entities_processNumerical="false" extraPlugins="dnnpages,wordcount,notification" filebrowserWindowFeatures="location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes" filebrowserWindowHeight="70%" filebrowserWindowWidth="80%" fillEmptyBlocks="true" flashAddEmbedTag="false" flashConvertOnEdit="false" flashEmbedTagOnly="false" floatSpaceDockedOffsetX="0" floatSpaceDockedOffsetY="0" floatSpacePinnedOffsetX="0" floatSpacePinnedOffsetY="0" fontSize_sizes="12px;2.3em;130%;larger;x-small" font_names="Arial;Times New Roman;Verdana" forceEnterMode="false" forcePasteAsPlainText="false" forceSimpleAmpersand="false" format_tags="p;h1;h2;h3;h4;h5;h6;pre;address;div" fullPage="false" height="200" htmlEncodeOutput="false" ignoreEmptyParagraph="true" image_previewText="Lorem ipsum dolor..." image_removeLinkByEmptyURL="true" indentOffset="40" indentUnit="px" linkShowAdvancedTab="true" linkShowTargetTab="true" magicline_color="#FF0000" magicline_holdDistance="0.5" magicline_keystrokeNext="0" magicline_keystrokePrevious="0" magicline_putEverywhere="false" magicline_triggerOffset="30" menu_groups="clipboard,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div" menu_subMenuDelay="400" oembed_maxWidth="0" oembed_maxHeight="0" pasteFromWordCleanupFile="" pasteFromWordNumberedHeadingToList="false" pasteFromWordPromptCleanup="false" pasteFromWordRemoveFontStyles="true" pasteFromWordRemoveStyles="true" protectedSource="( /&lt;i class[\s\S]*?&gt;[\s\S]*?&lt;/i&gt;/gi ),( /&lt;span class[\s\S]*?&gt;[\s\S]*?&lt;/span&gt;/gi ),( /&lt;em class[\s\S]*?&gt;[\s\S]*?&lt;/em&gt;/gi ),( /&lt;button class[\s\S]*?&gt;[\s\S]*?&lt;/button&gt;/gi )]" readOnly="false" removeFormatAttributes="class,style,lang,width,height,align,hspace,valign" removeFormatTags="b,big,code,del,dfn,em,font,i,ins,kbd,q,samp,small,span,strike,strong,sub,sup,tt,u,var" resize_dir="both" resize_enabled="true" resize_maxHeight="600" resize_maxWidth="3000" resize_minHeight="250" resize_minWidth="750" scayt_autoStartup="false" scayt_maxSuggestions="0" shiftEnterMode="BR" skin="moono" smiley_columns="8" sourceAreaTabSize="20" startupFocus="false" startupMode="wysiwyg" startupOutlineBlocks="false" startupShowBorders="true" tabIndex="0" tabSpaces="0" templates="default" templates_replaceContent="true" toolbarCanCollapse="false" toolbarGroupCycling="true" toolbarLocation="Top" toolbarStartupExpanded="true" undoStackSize="20" useComputedState="true" width="99%">
+    <CodeMirror theme="default" lineNumbers="true" lineWrapping="true" matchBrackets="true" autoCloseTags="false" enableSearchTools="true" enableCodeFolding="true" enableCodeFormatting="true" autoFormatOnStart="false" codemirror="true" highlightMatches="true" showTabs="false" showFormatButton="true" showCommentButton="true" showUncommentButton="true">
+      <HighlightActiveLine>true</HighlightActiveLine>
+    </CodeMirror>
+    <WordCount showCharCount="false" showWordCount="true" />
+  </Config>
+</EditorProviderSettings>

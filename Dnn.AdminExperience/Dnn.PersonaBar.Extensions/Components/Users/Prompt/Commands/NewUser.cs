@@ -1,39 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Common;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Users.Components.Contracts;
-using Dnn.PersonaBar.Users.Components.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Common;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components.Contracts;
+    using Dnn.PersonaBar.Users.Components.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("new-user", Constants.UsersCategory, "Prompt_NewUser_Description")]
     public class NewUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("email", "Prompt_NewUser_FlagEmail", "String", true)]
         private const string FlagEmail = "email";
+
         [FlagParameter("username", "Prompt_NewUser_FlagUsername", "String", true)]
         private const string FlagUsername = "username";
+
         [FlagParameter("firstname", "Prompt_NewUser_FlagFirstname", "String", true)]
         private const string FlagFirstname = "firstname";
+
         [FlagParameter("lastname", "Prompt_NewUser_FlagLastname", "String", true)]
         private const string FlagLastname = "lastname";
+
         [FlagParameter("password", "Prompt_NewUser_FlagPassword", "String", "auto-generated")]
         private const string FlagPassword = "password";
+
         [FlagParameter("approved", "Prompt_NewUser_FlagApproved", "Boolean", "true")]
         private const string FlagApproved = "approved";
+
         [FlagParameter("notify", "Prompt_NewUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
         private string Username { get; set; }
@@ -45,19 +52,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
-            Email = GetFlagValue(FlagEmail, "Email", string.Empty, true);
-            Username = GetFlagValue(FlagUsername, "Username", string.Empty, true);
-            FirstName = GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
-            LastName = GetFlagValue(FlagLastname, "LastName", string.Empty, true);
-            Password = GetFlagValue(FlagPassword, "Password", string.Empty);
-            Approved = GetFlagValue(FlagApproved, "Approved", true);
-            Notify = GetFlagValue(FlagNotify, "Notify", false);
-            if (string.IsNullOrEmpty(Email)) return;
+
+            this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty, true);
+            this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty, true);
+            this.FirstName = this.GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);
+            this.LastName = this.GetFlagValue(FlagLastname, "LastName", string.Empty, true);
+            this.Password = this.GetFlagValue(FlagPassword, "Password", string.Empty);
+            this.Approved = this.GetFlagValue(FlagApproved, "Approved", true);
+            this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
+            if (string.IsNullOrEmpty(this.Email)) return;
             var emailVal = new EmailValidator();
-            if (!emailVal.IsValid(Email))
+            if (!emailVal.IsValid(this.Email))
             {
-                AddMessage(LocalizeString("Email.RegExError"));
+                this.AddMessage(this.LocalizeString("Email.RegExError"));
             }
         }
 
@@ -65,15 +72,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             var settings = new RegisterationDetails
             {
-                PortalSettings = PortalSettings,
-                Email = Email,
-                FirstName = FirstName,
-                LastName = LastName,
-                UserName = Username,
-                Password = Password,
-                Notify = Notify,
-                Authorize = Approved,
-                RandomPassword = string.IsNullOrEmpty(Password),
+                PortalSettings = this.PortalSettings,
+                Email = this.Email,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                UserName = this.Username,
+                Password = this.Password,
+                Notify = this.Notify,
+                Authorize = this.Approved,
+                RandomPassword = string.IsNullOrEmpty(this.Password),
                 IgnoreRegistrationMode = true
             };
             try
@@ -81,15 +88,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 var userInfo = RegisterController.Instance.Register(settings);
                 var lstResult = new List<UserModel>
                 {
-                    new UserModel(UserController.Instance.GetUser(PortalId, userInfo.UserId))
+                    new UserModel(UserController.Instance.GetUser(this.PortalId, userInfo.UserId))
                 };
-                return new ConsoleResultModel(LocalizeString("UserCreated")) { Data = lstResult, Records = lstResult.Count };
+                return new ConsoleResultModel(this.LocalizeString("UserCreated")) { Data = lstResult, Records = lstResult.Count };
             }
             catch (Exception ex)
             {
                 return new ConsoleErrorResultModel(ex.Message);
             }
         }
-
     }
 }

@@ -1,24 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using PetaPoco;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using global::PetaPoco;
+
     public static class PetaPocoHelper
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
-
         private const string SqlProviderName = "System.Data.SqlClient";
 
-        #region Public Methods
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
         {
@@ -64,10 +63,14 @@ namespace DotNetNuke.Data.PetaPoco
                 using (var cmd = new SqlCommand(procedureName, con))
                 {
                     if (!tableParameterName.StartsWith("@"))
+                    {
                         tableParameterName = "@" + tableParameterName;
+                    }
 
                     if (timeoutSec > 0)
+                    {
                         cmd.CommandTimeout = timeoutSec;
+                    }
 
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(tableParameterName, dataTable);
@@ -81,10 +84,12 @@ namespace DotNetNuke.Data.PetaPoco
                         Logger.Error("[2] Error executing SQL: " + cmd.CommandText + Environment.NewLine + ex.Message);
                         throw;
                     }
+
                     con.Close();
                 }
             }
         }
+
         public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> args)
         {
             BulkInsert(connectionString, procedureName, tableParameterName, dataTable, Null.NullInteger, args);
@@ -98,10 +103,14 @@ namespace DotNetNuke.Data.PetaPoco
                 using (var cmd = new SqlCommand(procedureName, con))
                 {
                     if (!tableParameterName.StartsWith("@"))
+                    {
                         tableParameterName = "@" + tableParameterName;
+                    }
 
                     if (timeoutSec > 0)
+                    {
                         cmd.CommandTimeout = timeoutSec;
+                    }
 
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(tableParameterName, dataTable);
@@ -109,6 +118,7 @@ namespace DotNetNuke.Data.PetaPoco
                     {
                         cmd.Parameters.AddWithValue(arg.Key, arg.Value);
                     }
+
                     con.Open();
                     try
                     {
@@ -119,6 +129,7 @@ namespace DotNetNuke.Data.PetaPoco
                         Logger.Error("[2] Error executing SQL: " + cmd.CommandText);
                         throw;
                     }
+
                     con.Close();
                 }
             }
@@ -154,6 +165,7 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     Logger.Error("[3] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                 }
+
                 throw;
             }
         }
@@ -216,7 +228,5 @@ namespace DotNetNuke.Data.PetaPoco
                 }
             }
         }
-
-        #endregion
     }
 }

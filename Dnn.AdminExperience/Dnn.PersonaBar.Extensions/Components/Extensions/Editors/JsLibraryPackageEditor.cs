@@ -1,27 +1,26 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
+    using System;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+
     public class JsLibraryPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
 
-        #region IPackageEditor Implementation
-
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
-            var usedBy = PackageController.Instance.GetPackageDependencies(d => 
+            var usedBy = PackageController.Instance.GetPackageDependencies(d =>
                             d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) &&
                             d.Version <= package.Version).Select(d => d.PackageId);
 
@@ -74,7 +73,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 return false;
             }
         }
-
-        #endregion
     }
 }

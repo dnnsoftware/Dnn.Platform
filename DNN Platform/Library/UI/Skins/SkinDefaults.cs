@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+
     public enum SkinDefaultType
     {
         SkinInfo,
-        ContainerInfo
+        ContainerInfo,
     }
 
     [Serializable]
@@ -33,20 +28,21 @@ namespace DotNetNuke.UI.Skins
             var dnndoc = new XmlDocument { XmlResolver = null };
             dnndoc.Load(filePath);
             XmlNode defaultElement = dnndoc.SelectSingleNode("/configuration/skinningdefaults/" + nodename);
-            _folder = defaultElement.Attributes["folder"].Value;
-            _defaultName = defaultElement.Attributes["default"].Value;
-            _adminDefaultName = defaultElement.Attributes["admindefault"].Value;
+            this._folder = defaultElement.Attributes["folder"].Value;
+            this._defaultName = defaultElement.Attributes["default"].Value;
+            this._adminDefaultName = defaultElement.Attributes["admindefault"].Value;
         }
 
         public string AdminDefaultName
         {
             get
             {
-                return _adminDefaultName;
+                return this._adminDefaultName;
             }
+
             set
             {
-                _adminDefaultName = value;
+                this._adminDefaultName = value;
             }
         }
 
@@ -54,11 +50,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _defaultName;
+                return this._defaultName;
             }
+
             set
             {
-                _defaultName = value;
+                this._defaultName = value;
             }
         }
 
@@ -66,18 +63,13 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _folder;
+                return this._folder;
             }
+
             set
             {
-                _folder = value;
+                this._folder = value;
             }
-        }
-
-        private static object GetSkinDefaultsCallback(CacheItemArgs cacheItemArgs)
-        {
-            var defaultType = (SkinDefaultType) cacheItemArgs.ParamList[0];
-            return new SkinDefaults(defaultType);
         }
 
         public static SkinDefaults GetSkinDefaults(SkinDefaultType DefaultType)
@@ -86,6 +78,12 @@ namespace DotNetNuke.UI.Skins
                 CBO.GetCachedObject<SkinDefaults>(
                     new CacheItemArgs(string.Format(DataCache.SkinDefaultsCacheKey, DefaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, DefaultType),
                     GetSkinDefaultsCallback);
+        }
+
+        private static object GetSkinDefaultsCallback(CacheItemArgs cacheItemArgs)
+        {
+            var defaultType = (SkinDefaultType)cacheItemArgs.ParamList[0];
+            return new SkinDefaults(defaultType);
         }
     }
 }

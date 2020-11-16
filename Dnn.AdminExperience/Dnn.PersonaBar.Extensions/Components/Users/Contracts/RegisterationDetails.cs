@@ -1,12 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Runtime.Serialization;
-using DotNetNuke.Entities.Portals;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components.Contracts
 {
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Entities.Portals;
+
     [DataContract]
     public class RegisterationDetails
     {
@@ -21,11 +22,8 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
         public bool Authorize { get; set; }
         public bool Notify { get; set; }
         public bool RandomPassword { get; set; }
-        /// <summary>
-        /// When set to true, whatever registration mode is set, it will always add user
-        /// Please check below issue for this property
-        /// https://dnntracker.atlassian.net/browse/SOCIAL-3158
-        /// </summary>
+
+        /// <summary>Gets of sets a value indicating whether, whatever registration mode is set, it will always add user.</summary>
         [IgnoreDataMember]
         public bool IgnoreRegistrationMode { get; set; }
     }

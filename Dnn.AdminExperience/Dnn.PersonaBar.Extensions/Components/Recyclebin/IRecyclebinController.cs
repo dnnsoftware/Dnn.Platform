@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-﻿using System.Collections.Generic;
-using System.Text;
-using Dnn.PersonaBar.Recyclebin.Components.Dto;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
+    using System.Collections.Generic;
+    using System.Text;
+
+    using Dnn.PersonaBar.Recyclebin.Components.Dto;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+
     public interface IRecyclebinController
     {
         string LocalizeString(string key);
@@ -20,7 +21,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false);
 
         void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false);
-        
+
         void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors);
 
         void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors);

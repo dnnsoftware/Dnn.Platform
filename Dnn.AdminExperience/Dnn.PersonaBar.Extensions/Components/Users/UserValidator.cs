@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using System.Collections.Generic;
-using System.Net;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+
     public class UserValidator : IUserValidator
     {
         private IPortalController _portalController;
@@ -38,16 +39,16 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             KeyValuePair<HttpStatusCode, string> response;
-            userInfo = _userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
+            userInfo = this._userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
 
             if (userInfo == null)
             {
-                var portals = _portalController.GetPortals();
+                var portals = this._portalController.GetPortals();
 
                 foreach (var portal in portals)
                 {
                     var portalInfo = portal as PortalInfo;
-                    userInfo = _userControllerWrapper.GetUserById(portalInfo.PortalID, userId.Value);
+                    userInfo = this._userControllerWrapper.GetUserById(portalInfo.PortalID, userId.Value);
 
                     if (userInfo != null)
                     {
@@ -56,7 +57,7 @@ namespace Dnn.PersonaBar.Users.Components
                 }
 
                 if (userInfo != null &&
-                    !_contentVerifier.IsContentExistsForRequestedPortal(
+                    !this._contentVerifier.IsContentExistsForRequestedPortal(
                         userInfo.PortalID,
                         portalSettings,
                         true

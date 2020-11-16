@@ -1,31 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
-    public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager> , IWorkflowActionManager
-    {
-        #region Members
-        private readonly IWorkflowActionRepository _workflowActionRepository;
-        #endregion
+    using System;
 
-        #region Constructor
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+
+    public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager>, IWorkflowActionManager
+    {
+        private readonly IWorkflowActionRepository _workflowActionRepository;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowActionManager"/> class.
+        /// </summary>
         public WorkflowActionManager()
         {
-            _workflowActionRepository = WorkflowActionRepository.Instance;
+            this._workflowActionRepository = WorkflowActionRepository.Instance;
         }
-        #endregion
 
-        #region Public Methods
+        /// <inheritdoc/>
         public IWorkflowAction GetWorkflowActionInstance(int contentTypeId, WorkflowActionTypes actionType)
         {
-            var action = _workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
+            var action = this._workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
             if (action == null)
             {
                 return null;
@@ -34,6 +34,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
             return Reflection.CreateInstance(Reflection.CreateType(action.ActionSource)) as IWorkflowAction;
         }
 
+        /// <inheritdoc/>
         public void RegisterWorkflowAction(WorkflowAction workflowAction)
         {
             Requires.NotNull("workflowAction", workflowAction);
@@ -44,15 +45,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
                 throw new ArgumentException("The specified ActionSource does not implement the IWorkflowAction interface");
             }
 
-            _workflowActionRepository.AddWorkflowAction(workflowAction);
+            this._workflowActionRepository.AddWorkflowAction(workflowAction);
         }
-        #endregion
 
-        #region Service Locator
+        /// <inheritdoc/>
         protected override Func<IWorkflowActionManager> GetFactory()
         {
             return () => new WorkflowActionManager();
         }
-        #endregion
     }
 }

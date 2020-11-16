@@ -21,6 +21,15 @@ class PageDetailsFooter extends Component {
 
     onChangeValue(key, value) {
         const {onChangeField} = this.props;
+
+        switch (key) {
+            case "startDate":
+            case "endDate":
+                // the DatePicker returns strings, but we need dates
+                value = new Date(value);
+                break;
+        }
+
         onChangeField(key, value);
     }
 

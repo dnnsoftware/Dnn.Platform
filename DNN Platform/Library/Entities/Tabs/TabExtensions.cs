@@ -1,22 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Tabs
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static class TabExtensions
     {
         public static bool ContainsAlias(this List<TabAliasSkinInfo> aliases, string httpAlias)
         {
-            return aliases.Any(tas => System.String.Compare(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase) == 0);
+            return aliases.Any(tas => string.Compare(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         public static TabAliasSkinInfo FindByHttpAlias(this List<TabAliasSkinInfo> aliases, string httpAlias)
         {
-            return aliases.FirstOrDefault(tas => System.String.Compare(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase) == 0);
+            return aliases.FirstOrDefault(tas => string.Compare(httpAlias, tas.HttpAlias, System.StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         public static int GetNextAvailableSeqNum(this List<TabUrlInfo> redirects, bool positive)
@@ -29,7 +29,8 @@ namespace DotNetNuke.Entities.Tabs
                     if (redirect.SeqNum >= seqNum)
                     {
                         seqNum = redirect.SeqNum + 1;
-                        //602 : when seqnum == 0, then duplicate key problems arise
+
+                        // 602 : when seqnum == 0, then duplicate key problems arise
                         if (seqNum == 0)
                         {
                             seqNum++;
@@ -42,7 +43,8 @@ namespace DotNetNuke.Entities.Tabs
                     if (redirect.SeqNum <= seqNum)
                     {
                         seqNum = redirect.SeqNum - 1;
-                        //602 : don't allow seqnum to become zero
+
+                        // 602 : don't allow seqnum to become zero
                         if (seqNum == 0)
                         {
                             seqNum--;
@@ -50,6 +52,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             return seqNum;
         }
 
@@ -77,7 +80,8 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
-            //look at the results
+
+            // look at the results
             if (lastCustomUrl != null)
             {
                 result = lastCustomUrl;
@@ -86,6 +90,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 result = lastSystemUrl;
             }
+
             return result;
         }
     }

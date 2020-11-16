@@ -1,15 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Common.Internal
 {
-    
+    using System;
+    using System.Web;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+
+    /// <summary>
+    /// A collection of Dnn global methods and properties.
+    /// </summary>
     public interface IGlobals
     {
         /// <summary>
@@ -18,16 +21,17 @@ namespace DotNetNuke.Common.Internal
         string ApplicationPath { get; }
 
         /// <summary>
-        /// Gets or sets the host map path.
+        /// Gets the host map path.
         /// </summary>
-        /// <value>ApplicationMapPath + "Portals\_default\"</value>
+        /// <value>ApplicationMapPath + "Portals\_default\".</value>
         string HostMapPath { get; }
 
         /// <summary>
-        /// Returns the folder path under the root for the portal 
+        /// Returns the folder path under the root for the portal.
         /// </summary>
-        /// <param name="fileNamePath">The folder the absolute path</param>
+        /// <param name="fileNamePath">The folder the absolute path.</param>
         /// <param name="portalId">Portal Id.</param>
+        /// <returns>The subfolder path.</returns>
         string GetSubFolderPath(string fileNamePath, int portalId);
 
         /// <summary>
@@ -42,25 +46,30 @@ namespace DotNetNuke.Common.Internal
         /// <summary>
         /// Gets Link click url.
         /// </summary>
-        /// <param name="Link">The link</param>
-        /// <param name="TabID">The Tab ID</param>
-        /// <param name="ModuleID">The Module ID</param>
-        /// <param name="TrackClicks">Check whether it has to track clicks</param>
-        /// <param name="ForceDownload">Check whether it has to force the download</param>
-        /// <param name="PortalId">The Portal ID</param>
-        /// <param name="EnableUrlLanguage">Check whether the portal has enabled  ulr languages</param>
-        /// <param name="portalGuid">The Portal GUID</param>
-        /// <returns></returns>
-        string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, bool ForceDownload, int PortalId,
-                         bool EnableUrlLanguage, string portalGuid);
+        /// <param name="link">The link.</param>
+        /// <param name="tabId">The Tab ID.</param>
+        /// <param name="moduleId">The Module ID.</param>
+        /// <param name="trackClicks">Check whether it has to track clicks.</param>
+        /// <param name="forceDownload">Check whether it has to force the download.</param>
+        /// <param name="portalId">The Portal ID.</param>
+        /// <param name="enableUrlLanguage">Check whether the portal has enabled  ulr languages.</param>
+        /// <param name="portalGuid">The Portal GUID.</param>
+        /// <returns>The url for the link click.</returns>
+        string LinkClick(
+            string link,
+            int tabId,
+            int moduleId,
+            bool trackClicks,
+            bool forceDownload,
+            int portalId,
+            bool enableUrlLanguage,
+            string portalGuid);
 
         /// <summary>
-        /// Generates the correctly formatted url
+        /// Generates the correctly formatted url.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="url">The url to format.</param>
-        /// <returns>The formatted (resolved) url</returns>
+        /// <returns>The formatted (resolved) url.</returns>
         string ResolveUrl(string url);
 
         /// <summary>
@@ -71,67 +80,67 @@ namespace DotNetNuke.Common.Internal
         bool IsHostTab(int tabId);
 
         /// <summary>
-        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified
+        /// Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified.
         /// </summary>
-        /// <param name="strURL">The URL</param>
-        /// <returns>The formatted URL</returns>
+        /// <param name="strURL">The URL.</param>
+        /// <returns>The formatted URL.</returns>
         string AddHTTP(string strURL);
 
         /// <summary>
         /// Gets the portal domain name.
         /// </summary>
         /// <param name="strPortalAlias">The portal alias.</param>
-        /// <param name="Request">The request or <c>null</c>.</param>
+        /// <param name="request">The request or <c>null</c>.</param>
         /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
-        /// <returns>domain name</returns>
-        string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP);
-        
+        /// <returns>domain name.</returns>
+        string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP);
+
         /// <summary>
         /// Gets the name of the domain.
         /// </summary>
-        /// <param name="requestedUri">The requested Uri</param>
-        /// <returns>domain name</returns>
+        /// <param name="requestedUri">The requested Uri.</param>
+        /// <returns>domain name.</returns>
         string GetDomainName(Uri requestedUri);
 
         /// <summary>
-        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost )
+        /// returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).
         /// </summary>
-        /// <param name="requestedUri">The requested Uri</param>
+        /// <param name="requestedUri">The requested Uri.</param>
         /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
-        /// <returns>domain name</returns>
+        /// <returns>domain name.</returns>
         string GetDomainName(Uri requestedUri, bool parsePortNumber);
 
         /// <summary>
         /// Formats the help URL, adding query-string parameters and a protocol (if missing).
         /// </summary>
-        /// <param name="HelpUrl">The help URL.</param>
+        /// <param name="helpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
-        /// <param name="Name">The name of the module.</param>
+        /// <param name="name">The name of the module.</param>
         /// <returns>Formatted URL.</returns>
-        string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name);
+        string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name);
 
         /// <summary>
         /// Formats the help URL, adding query-string parameters and a protocol (if missing).
         /// </summary>
-        /// <param name="HelpUrl">The help URL.</param>
+        /// <param name="helpUrl">The help URL.</param>
         /// <param name="objPortalSettings">The portal settings.</param>
-        /// <param name="Name">The name of the module.</param>
-        /// <param name="Version">The version of the module.</param>
+        /// <param name="name">The name of the module.</param>
+        /// <param name="version">The version of the module.</param>
         /// <returns>Formatted URL.</returns>
-        string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version);
+        string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name, string version);
 
         /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
-        /// <returns>URL to access denied view</returns>
+        /// <returns>URL to access denied view.</returns>
         string AccessDeniedURL();
 
         /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
-        /// <param name="Message">The message to display.</param>
-        /// <returns>URL to access denied view</returns>
-        string AccessDeniedURL(string Message);
+        /// <param name="message">The message to display.</param>
+        /// <returns>URL to access denied view.</returns>
+        string AccessDeniedURL(string message);
 
         /// <summary>
         /// Gets the login URL.
@@ -257,63 +266,63 @@ namespace DotNetNuke.Common.Internal
         /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
-        /// Assumes Default.aspx, and that portalsettings are saved to Context
+        /// Assumes Default.aspx, and that portalsettings are saved to Context.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <returns>The formatted (friendly) URL.</returns>
         string FriendlyUrl(TabInfo tab, string path);
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
         /// This overload includes an optional page to include in the url.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the url.</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <returns>The formatted (friendly) URL.</returns>
         string FriendlyUrl(TabInfo tab, string path, string pageName);
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
-        /// This overload includes the portal settings for the site
+        /// This overload includes the portal settings for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
-        /// <param name="settings">The portal settings</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <returns>The formatted (friendly) URL.</returns>
         string FriendlyUrl(TabInfo tab, string path, PortalSettings settings);
 
         /// <summary>
-        /// Generates the correctly formatted friendly URL
+        /// Generates the correctly formatted friendly URL.
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the URL, and the portal 
-        /// settings for the site
+        /// This overload includes an optional page to include in the URL, and the portal
+        /// settings for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the URL.</param>
-        /// <param name="settings">The portal settings</param>
-        /// <returns>The formatted (friendly) url</returns>
+        /// <param name="settings">The portal settings.</param>
+        /// <returns>The formatted (friendly) url.</returns>
         string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings);
 
         /// <summary>
-        /// Generates the correctly formatted friendly url
+        /// Generates the correctly formatted friendly url.
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the url, and the portal 
-        /// alias for the site
+        /// This overload includes an optional page to include in the url, and the portal
+        /// alias for the site.
         /// </remarks>
-        /// <param name="tab">The current tab</param>
+        /// <param name="tab">The current tab.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page to include in the URL.</param>
-        /// <param name="portalAlias">The portal alias for the site</param>
-        /// <returns>The formatted (friendly) URL</returns>
+        /// <param name="portalAlias">The portal alias for the site.</param>
+        /// <returns>The formatted (friendly) URL.</returns>
         string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
     }
 }

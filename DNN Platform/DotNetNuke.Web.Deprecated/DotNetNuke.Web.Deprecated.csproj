@@ -166,7 +166,7 @@
     <Compile Include="UI\WebControls\DnnToolBarButton.cs" />
     <Compile Include="UI\WebControls\DnnToolBarDropDown.cs" />
     <Compile Include="UI\WebControls\DnnToolBarSplitButton.cs" />
-    <Compile Include="UI\WebControls\Core Wrappers\DnnRadTab.cs" />
+    <Compile Include="UI\WebControls\DnnRadTab.cs" />
     <Compile Include="UI\WebControls\DnnAsyncUpload.cs" />
     <Compile Include="UI\WebControls\DnnBinaryImage.cs" />
     <Compile Include="UI\WebControls\DnnCalendar.cs" />
@@ -283,6 +283,9 @@
     <Compile Include="UI\WebControls\DnnGridButtonColumn.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="dnn_Web_Deprecated.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -301,6 +304,11 @@
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

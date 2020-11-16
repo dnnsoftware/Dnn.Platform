@@ -1,54 +1,60 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using System.Web;
-using System.Reflection;
-using DotNetNuke.Web.Mvc.Common;
-using Microsoft.Web.Infrastructure.DynamicValidationHelper;
-using DotNetNuke.Common;
-using Microsoft.Extensions.DependencyInjection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Web.Infrastructure.DynamicValidationHelper;
+
     public class ModuleApplication
     {
+        internal static readonly string MvcVersion = GetMvcVersionString();
         protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         protected const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         protected const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
-
-        public RequestContext RequestContext { get; private set; }
-        internal static readonly string MvcVersion = GetMvcVersionString();
         private const string MvcVersionHeaderName = "X-AspNetMvc-Version";
-        private static bool DisableMvcResponseHeader { get; set; }
-
-        private bool _initialized;
         private readonly object _lock = new object();
 
-        public ModuleApplication():this(null, false)
+        private bool _initialized;
+
+        public ModuleApplication()
+            : this(null, false)
         {
         }
-        public ModuleApplication(bool disableMvcResponseHeader) : this(null, disableMvcResponseHeader)
+
+        public ModuleApplication(bool disableMvcResponseHeader)
+            : this(null, disableMvcResponseHeader)
         {
         }
+
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)
         {
-            RequestContext = requestContext;
+            this.RequestContext = requestContext;
+
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             DisableMvcResponseHeader = disableMvcResponseHeader;
-            ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
-            ViewEngines = new ViewEngineCollection();
-            //ViewEngines.Add(new ModuleDelegatingViewEngine());
+            this.ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
+            this.ViewEngines = new ViewEngineCollection();
+
+            // ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
+
+        public RequestContext RequestContext { get; private set; }
 
         public virtual IControllerFactory ControllerFactory { get; set; }
 
@@ -63,24 +69,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
-
-        protected void EnsureInitialized()
-        {
-            // Double-check lock to wait for initialization
-            // TODO: Is there a better (preferably using events and waits) way to do this?
-            if (_initialized) return;
-            lock (_lock)
-            {
-                if (_initialized) return;
-                Init();
-                _initialized = true;
-            }
-        }
+        private static bool DisableMvcResponseHeader { get; set; }
 
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
-            EnsureInitialized();
-            RequestContext = RequestContext ?? new RequestContext(context.HttpContext, context.RouteData);
+            this.EnsureInitialized();
+            this.RequestContext = this.RequestContext ?? new RequestContext(context.HttpContext, context.RouteData);
             var currentContext = HttpContext.Current;
             if (currentContext != null)
             {
@@ -90,13 +84,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     ValidationUtility.EnableDynamicValidation(currentContext);
                 }
             }
-            AddVersionHeader(RequestContext.HttpContext);
-            RemoveOptionalRoutingParameters();
 
-            var controllerName = RequestContext.RouteData.GetRequiredString("controller");
+            this.AddVersionHeader(this.RequestContext.HttpContext);
+            this.RemoveOptionalRoutingParameters();
 
-            //Construct the controller using the ControllerFactory
-            var controller = ControllerFactory.CreateController(RequestContext, controllerName);
+            var controllerName = this.RequestContext.RouteData.GetRequiredString("controller");
+
+            // Construct the controller using the ControllerFactory
+            var controller = this.ControllerFactory.CreateController(this.RequestContext, controllerName);
             try
             {
                 // Check if the controller supports IDnnController
@@ -115,62 +110,58 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ModuleContext = context.ModuleContext;
 
-                moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                                    context.ModuleContext.Configuration.DesktopModule.FolderName,
-                                                    Localization.LocalResourceDirectory,
-                                                    controllerName);
+                moduleController.LocalResourceFile = string.Format(
+                    "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                    context.ModuleContext.Configuration.DesktopModule.FolderName,
+                    Localization.LocalResourceDirectory,
+                    controllerName);
 
-                moduleController.ViewEngineCollectionEx = ViewEngines;
+                moduleController.ViewEngineCollectionEx = this.ViewEngines;
+
                 // Execute the controller and capture the result
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
-                moduleController.Execute(RequestContext);
+                moduleController.Execute(this.RequestContext);
                 var result = moduleController.ResultOfLastExecute;
 
                 // Return the final result
                 return new ModuleRequestResult
-                                {
-                                    ActionResult = result,
-                                    ControllerContext = moduleController.ControllerContext,
-                                    ModuleActions = moduleController.ModuleActions,
-                                    ModuleContext = context.ModuleContext,
-                                    ModuleApplication = this
-                                };
+                {
+                    ActionResult = result,
+                    ControllerContext = moduleController.ControllerContext,
+                    ModuleActions = moduleController.ModuleActions,
+                    ModuleContext = context.ModuleContext,
+                    ModuleApplication = this,
+                };
             }
             finally
             {
-                ControllerFactory.ReleaseController(controller);
+                this.ControllerFactory.ReleaseController(controller);
             }
         }
 
         protected internal virtual void Init()
         {
-            var prefix = NormalizeFolderPath(FolderPath);
+            var prefix = NormalizeFolderPath(this.FolderPath);
             string[] masterFormats =
-            { 
+            {
                 string.Format(CultureInfo.InvariantCulture, ControllerMasterFormat, prefix),
-                string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix)
+                string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix),
             };
             string[] viewFormats =
-            { 
+            {
                 string.Format(CultureInfo.InvariantCulture, ControllerViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, SharedViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, ControllerPartialFormat, prefix),
-                string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix)
+                string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix),
             };
 
-            ViewEngines.Add(new RazorViewEngine
-                                    {
-                                        MasterLocationFormats = masterFormats,
-                                        ViewLocationFormats = viewFormats,
-                                        PartialViewLocationFormats = viewFormats
-                                    });
-        }
-
-        protected static string NormalizeFolderPath(string path)
-        {
-            // Remove leading and trailing slashes
-            return !string.IsNullOrEmpty(path) ? path.Trim('/') : path;
+            this.ViewEngines.Add(new RazorViewEngine
+            {
+                MasterLocationFormats = masterFormats,
+                ViewLocationFormats = viewFormats,
+                PartialViewLocationFormats = viewFormats,
+            });
         }
 
         protected internal virtual void AddVersionHeader(HttpContextBase httpContext)
@@ -181,12 +172,31 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             }
         }
 
-        private void RemoveOptionalRoutingParameters()
+        protected static string NormalizeFolderPath(string path)
         {
-            var rvd = RequestContext.RouteData.Values;
+            // Remove leading and trailing slashes
+            return !string.IsNullOrEmpty(path) ? path.Trim('/') : path;
+        }
 
-            // Ensure delegate is stateless
-            rvd.RemoveFromDictionary((entry) => entry.Value == UrlParameter.Optional);
+        protected void EnsureInitialized()
+        {
+            // Double-check lock to wait for initialization
+            // TODO: Is there a better (preferably using events and waits) way to do this?
+            if (this._initialized)
+            {
+                return;
+            }
+
+            lock (this._lock)
+            {
+                if (this._initialized)
+                {
+                    return;
+                }
+
+                this.Init();
+                this._initialized = true;
+            }
         }
 
         private static string GetMvcVersionString()
@@ -195,6 +205,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             // This code originally used Assembly.GetName(), but that requires FileIOPermission, which isn't granted in
             // medium trust. However, Assembly.FullName *is* accessible in medium trust.
             return new AssemblyName(typeof(MvcHandler).Assembly.FullName).Version.ToString(2);
+        }
+
+        private void RemoveOptionalRoutingParameters()
+        {
+            var rvd = this.RequestContext.RouteData.Values;
+
+            // Ensure delegate is stateless
+            rvd.RemoveFromDictionary((entry) => entry.Value == UrlParameter.Optional);
         }
     }
 }

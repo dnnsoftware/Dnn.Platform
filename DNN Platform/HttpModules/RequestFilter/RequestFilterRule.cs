@@ -1,18 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Web;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules.RequestFilter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
     [Serializable]
     public class RequestFilterRule
     {
@@ -23,7 +18,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         private List<string> _Values = new List<string>();
 
         /// <summary>
-        /// Initializes a new instance of the RequestFilterRule class.
+        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
         /// </summary>
         /// <param name="serverVariable"></param>
         /// <param name="values"></param>
@@ -32,29 +27,38 @@ namespace DotNetNuke.HttpModules.RequestFilter
         /// <param name="location"></param>
         public RequestFilterRule(string serverVariable, string values, RequestFilterOperatorType op, RequestFilterRuleType action, string location)
         {
-            _ServerVariable = serverVariable;
-            SetValues(values, op);
-            _Operator = op;
-            _Action = action;
-            _Location = location;
+            this._ServerVariable = serverVariable;
+            this.SetValues(values, op);
+            this._Operator = op;
+            this._Action = action;
+            this._Location = location;
         }
 
         /// <summary>
-        /// Initializes a new instance of the RequestFilterRule class.
+        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
         /// </summary>
         public RequestFilterRule()
         {
+        }
+
+        public string RawValue
+        {
+            get
+            {
+                return string.Join(" ", this._Values.ToArray());
+            }
         }
 
         public string ServerVariable
         {
             get
             {
-                return _ServerVariable;
+                return this._ServerVariable;
             }
+
             set
             {
-                _ServerVariable = value;
+                this._ServerVariable = value;
             }
         }
 
@@ -62,19 +66,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Values;
+                return this._Values;
             }
+
             set
             {
-                _Values = value;
-            }
-        }
-
-        public string RawValue
-        {
-            get
-            {
-                return string.Join(" ", _Values.ToArray());
+                this._Values = value;
             }
         }
 
@@ -82,11 +79,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Action;
+                return this._Action;
             }
+
             set
             {
-                _Action = value;
+                this._Action = value;
             }
         }
 
@@ -94,11 +92,12 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Operator;
+                return this._Operator;
             }
+
             set
             {
-                _Operator = value;
+                this._Operator = value;
             }
         }
 
@@ -106,57 +105,59 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             get
             {
-                return _Location;
+                return this._Location;
             }
+
             set
             {
-                _Location = value;
+                this._Location = value;
             }
         }
 
         public void SetValues(string values, RequestFilterOperatorType op)
         {
-            _Values.Clear();
-            if ((op != RequestFilterOperatorType.Regex))
+            this._Values.Clear();
+            if (op != RequestFilterOperatorType.Regex)
             {
-                string[] vals = values.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                string[] vals = values.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string value in vals)
                 {
-                    _Values.Add(value.ToUpperInvariant());
+                    this._Values.Add(value.ToUpperInvariant());
                 }
             }
             else
             {
-                _Values.Add(values);
+                this._Values.Add(values);
             }
         }
 
         public bool Matches(string ServerVariableValue)
         {
-            switch (Operator)
+            switch (this.Operator)
             {
                 case RequestFilterOperatorType.Equal:
-                    return Values.Contains(ServerVariableValue.ToUpperInvariant());
+                    return this.Values.Contains(ServerVariableValue.ToUpperInvariant());
                 case RequestFilterOperatorType.NotEqual:
-                    return !Values.Contains(ServerVariableValue.ToUpperInvariant());
+                    return !this.Values.Contains(ServerVariableValue.ToUpperInvariant());
                 case RequestFilterOperatorType.Regex:
-                    return Regex.IsMatch(ServerVariableValue, Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    return Regex.IsMatch(ServerVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
+
             return false;
         }
 
         public void Execute()
         {
             HttpResponse response = HttpContext.Current.Response;
-            switch (Action)
+            switch (this.Action)
             {
                 case RequestFilterRuleType.Redirect:
-                    response.Redirect(Location, true);
+                    response.Redirect(this.Location, true);
                     break;
                 case RequestFilterRuleType.PermanentRedirect:
                     response.StatusCode = 301;
                     response.Status = "301 Moved Permanently";
-                    response.RedirectLocation = Location;
+                    response.RedirectLocation = this.Location;
                     response.End();
                     break;
                 case RequestFilterRuleType.NotFound:

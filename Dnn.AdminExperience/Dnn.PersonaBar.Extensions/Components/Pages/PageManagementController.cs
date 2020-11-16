@@ -1,18 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Framework;
+
     public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
@@ -20,11 +21,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public PageManagementController()
         {
-            _tabController = TabController.Instance;
+            this._tabController = TabController.Instance;
         }
-        
-        
-        #region Public Methods
 
         public string GetCreatedInfo(TabInfo tab)
         {
@@ -46,7 +44,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public string GetTabHierarchy(TabInfo tab)
         {
-            _tabController.PopulateBreadCrumbs(ref tab);
+            this._tabController.PopulateBreadCrumbs(ref tab);
             return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
         }
 
@@ -86,7 +84,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return url;
         }
-        #endregion
 
         protected override Func<IPageManagementController> GetFactory()
         {

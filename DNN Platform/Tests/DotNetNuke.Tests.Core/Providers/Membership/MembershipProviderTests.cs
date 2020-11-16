@@ -1,27 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Reflection;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Tests.Utilities;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Providers.Membership
 {
+    using System;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Membership;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class MembershipProviderTests : DnnUnitTest
     {
@@ -67,8 +68,8 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         {
         }
 
-        //TODO: Must be moved to integration tests.
-        //Note: this is the only test in core unit testing project that requires a working db connection to run.
+        // TODO: Must be moved to integration tests.
+        // Note: this is the only test in core unit testing project that requires a working db connection to run.
         [Test]
         [Ignore]
         public void Password_Should_Saved_In_History_During_Create_User()
@@ -76,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
             var user = CreateNewUser();
 
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", AppDomain.CurrentDomain.BaseDirectory);
-            simulator.SimulateRequest(new Uri(WebsiteAppPath));
+            simulator.SimulateRequest(new Uri(this.WebsiteAppPath));
             HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
             HttpContextSource.RegisterInstance(httpContextBase);
 
@@ -117,7 +118,8 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
 
             UserInfo user = null;
 
-            Assert.DoesNotThrow(() =>
+            Assert.DoesNotThrow(
+                () =>
             {
                 user = new UserInfo
                 {
@@ -131,7 +133,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
                     {
                         Approved = true,
                         Password = Constants.DefaultPassword
-                    }
+                    },
                 };
             }, "Make sure your connection string is set correctly in the App.config file");
 

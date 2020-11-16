@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Reflection;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Reflection;
+
     public class Null
     {
         public static short NullShort
@@ -73,7 +68,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -93,7 +88,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        //sets a field to an application encoded null value ( used in BLL layer )
+        // sets a field to an application encoded null value ( used in BLL layer )
         public static object SetNull(object objValue, object objField)
         {
             object returnValue = null;
@@ -139,19 +134,20 @@ namespace DotNetNuke.Common.Utilities
                 {
                     returnValue = NullGuid;
                 }
-                else //complex object
+                else // complex object
                 {
                     returnValue = null;
                 }
             }
-            else //return value
+            else // return value
             {
                 returnValue = objValue;
             }
+
             return returnValue;
         }
 
-        //sets a field to an application encoded null value ( used in BLL layer )
+        // sets a field to an application encoded null value ( used in BLL layer )
         public static object SetNull(PropertyInfo objPropertyInfo)
         {
             object returnValue = null;
@@ -190,20 +186,22 @@ namespace DotNetNuke.Common.Utilities
                     returnValue = NullGuid;
                     break;
                 default:
-                    //Enumerations default to the first entry
+                    // Enumerations default to the first entry
                     Type pType = objPropertyInfo.PropertyType;
-                    if (pType.BaseType.Equals(typeof (Enum)))
+                    if (pType.BaseType.Equals(typeof(Enum)))
                     {
                         Array objEnumValues = Enum.GetValues(pType);
                         Array.Sort(objEnumValues);
                         returnValue = Enum.ToObject(pType, objEnumValues.GetValue(0));
                     }
-                    else //complex object
+                    else // complex object
                     {
                         returnValue = null;
                     }
+
                     break;
             }
+
             return returnValue;
         }
 
@@ -215,6 +213,13 @@ namespace DotNetNuke.Common.Utilities
         public static DateTime SetNullDateTime(object objValue)
         {
             return objValue != DBNull.Value ? Convert.ToDateTime(objValue) : NullDate;
+        }
+
+        public static DateTime SetNullDateTime(object objValue, DateTimeKind dateTimeKind)
+        {
+            return objValue != DBNull.Value
+                ? DateTime.SpecifyKind(Convert.ToDateTime(objValue), dateTimeKind)
+                : NullDate;
         }
 
         public static int SetNullInteger(object objValue)
@@ -238,10 +243,11 @@ namespace DotNetNuke.Common.Utilities
             {
                 return new Guid(objValue.ToString());
             }
+
             return Guid.Empty;
         }
 
-        //convert an application encoded null value to a database null value ( used in DAL )
+        // convert an application encoded null value to a database null value ( used in DAL )
         public static object GetNull(object objField, object objDBNull)
         {
             object returnValue = objField;
@@ -293,7 +299,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else if (objField is DateTime)
             {
-				//compare the Date part of the DateTime with the DatePart of the NullDate ( this avoids subtle time differences )
+                // compare the Date part of the DateTime with the DatePart of the NullDate ( this avoids subtle time differences )
                 if (Convert.ToDateTime(objField).Date == NullDate.Date)
                 {
                     returnValue = objDBNull;
@@ -322,15 +328,16 @@ namespace DotNetNuke.Common.Utilities
             }
             else if (objField is Guid)
             {
-                if (((Guid) objField).Equals(NullGuid))
+                if (((Guid)objField).Equals(NullGuid))
                 {
                     returnValue = objDBNull;
                 }
             }
+
             return returnValue;
         }
 
-        //checks if a field contains an application encoded null value
+        // checks if a field contains an application encoded null value
         public static bool IsNull(object objField)
         {
             bool isNull = false;
@@ -362,7 +369,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 else if (objField is DateTime)
                 {
-                    var objDate = (DateTime) objField;
+                    var objDate = (DateTime)objField;
                     isNull = objDate.Date.Equals(NullDate.Date);
                 }
                 else if (objField is string)
@@ -377,7 +384,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     isNull = objField.Equals(NullGuid);
                 }
-                else //complex object
+                else // complex object
                 {
                     isNull = false;
                 }
@@ -386,6 +393,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 isNull = true;
             }
+
             return isNull;
         }
     }

@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -249,15 +249,6 @@
   <data name="DbSecurityUserDefined.Text" xml:space="preserve">
     <value>benutzerdefiniert</value>
   </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Produktverbesserungsprogramm</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Das Produktverbesserungsprogramm ermöglicht uns, besser zu verstehen, wie wir DNN für Sie verbessern können. Die Daten helfen uns, die Nutzung zu analysieren und was für die Nutzer des Produkts wichtig ist. Alle Daten sind anonym und nur für den internen Gebrauch bestimmt. Erfahren Sie mehr über das &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Produktverbesserungsprogramm&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Senden Sie anonyme Nutzungsinformationen an DNN</value>
-  </data>
   <data name="DeletingOldFiles.Text" xml:space="preserve">
     <value>Ältere Dateien löschen für </value>
   </data>
@@ -278,8 +269,6 @@
 &lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Ihre Website hat die Berechtigungsprüfung nicht bestanden.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;
 Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken Sie das Verzeichnis mit der rechten Maustaste an und wählen Sie Sicherheit und Berechtigungen im Kontextmenü und dann den Reiter Berechtigungen. Fügen Sie hier das entsprechenden Benutzerkonto hinzu und gewähren Sie die Berechtigungen.
 &lt;br/&gt;&lt;br/&gt;
-&lt;h3&gt;Falls Sie Windows Server 2003, Windows Vista oder Windows Server 2008 mit IIS6 oder IIS7 verwenden&lt;/h3&gt;
-&lt;p&gt;Das Konto NT AUTHORITY\Netzwerkdienst muss die Berechtigungen Lesen, Schreiben und Ändern für das Basisverzeichnis der Website erhalten.&lt;/p&gt;
 &lt;h3&gt;Falls Sie Windows 7, Windows 8 oder Windows Server 2008 R2 bzw. 2012 verwenden mit IIS7.5&lt;/h3&gt;
 &lt;p&gt;Das Benutzerkonto IIS AppPool\DefaultAppPool muss die Berechtigungen Lesen, Schreiben und Ändern für das Basisverzeichnis der Website erhalten.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Recheck&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
@@ -361,14 +350,11 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
   <data name="IsSqlServerDbo.Text" xml:space="preserve">
     <value>Ihr Datenbank-Benutzer verfügt nicht über die DBO-Berechtigungen.</value>
   </data>
-  <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DotNetNuke erfordert mindestens Version 4.0 des .Net-Frameworks.</value>
-  </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke erfordert mindestens Version 2008 des Microsoft SQL Servers (Express oder höher).</value>
+    <value>DotNetNuke erfordert mindestens Version 2008 R2 des Microsoft SQL Servers (Express oder höher).</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Prüfe, ob mindestens SQL-Server 2008 (Express oder höher) installiert ist.</value>
+    <value>Prüfe, ob mindestens SQL-Server 2008 R2 (Express oder höher) installiert ist.</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>Wählen Sie hier die Standardsprache, die Sie für Ihre Website verwenden wollen.</value>

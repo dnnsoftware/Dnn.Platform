@@ -1,23 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+
     [ConsoleCommand("reload", Constants.GeneralCategory, "Prompt_Reload_Description")]
     public class Reload : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;
 
-        public string ResultHtml => Localization.GetString("Prompt_Reload_ResultHtml", LocalResourceFile);
+        public string ResultHtml => Localization.GetString("Prompt_Reload_ResultHtml", this.LocalResourceFile);
+
         public string ValidationMessage
         {
             get
@@ -40,6 +42,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
         {
             throw new NotImplementedException();
         }
-
     }
 }

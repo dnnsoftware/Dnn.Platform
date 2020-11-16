@@ -1,18 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Application;
-using DotNetNuke.Entities.Host;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Entities.Host;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
@@ -21,31 +16,31 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         public string CssClass { get; set; }
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                hypDotNetNuke.CssClass = CssClass;
+                this.hypDotNetNuke.CssClass = this.CssClass;
             }
-			
-            //get Product Name and Legal Copyright from constants (Medium Trust)
-            hypDotNetNuke.Text = DotNetNukeContext.Current.Application.LegalCopyright;
-            hypDotNetNuke.NavigateUrl = DotNetNukeContext.Current.Application.Url;
-            
-			//show copyright credits?
-			Visible = Host.DisplayCopyright;
+
+            // get Product Name and Legal Copyright from constants (Medium Trust)
+            this.hypDotNetNuke.Text = DotNetNukeContext.Current.Application.LegalCopyright;
+            this.hypDotNetNuke.NavigateUrl = DotNetNukeContext.Current.Application.Url;
+
+            // show copyright credits?
+            this.Visible = Host.DisplayCopyright;
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

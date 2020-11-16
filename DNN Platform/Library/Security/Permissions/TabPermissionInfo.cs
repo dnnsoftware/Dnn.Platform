@@ -1,148 +1,134 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : TabPermissionInfo
+    /// Class    : TabPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// TabPermissionInfo provides the Entity Layer for Tab Permissions
+    /// TabPermissionInfo provides the Entity Layer for Tab Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("permission")]
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
         private int _TabID;
-        //local property declarations
-		private int _TabPermissionID;
-		
-		#endregion
-		
-		#region "Constructors"
 
-         /// -----------------------------------------------------------------------------
+        // local property declarations
+        private int _TabPermissionID;
+
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new TabPermissionInfo
+        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
+        /// Constructs a new TabPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
-       public TabPermissionInfo()
+        public TabPermissionInfo()
         {
-            _TabPermissionID = Null.NullInteger;
-            _TabID = Null.NullInteger;
+            this._TabPermissionID = Null.NullInteger;
+            this._TabID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new TabPermissionInfo
+        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
+        /// Constructs a new TabPermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
-        public TabPermissionInfo(PermissionInfo permission) : this()
+        public TabPermissionInfo(PermissionInfo permission)
+            : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Tab Permission ID
+        /// Gets or sets and sets the Tab Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("tabpermissionid")]
         public int TabPermissionID
         {
             get
             {
-                return _TabPermissionID;
+                return this._TabPermissionID;
             }
+
             set
             {
-                _TabPermissionID = value;
+                this._TabPermissionID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Tab ID
+        /// Gets or sets and sets the Tab ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("tabid")]
         public int TabID
         {
             get
             {
-                return _TabID;
+                return this._TabID;
             }
+
             set
             {
-                _TabID = value;
+                this._TabID = value;
             }
         }
-		
-		#endregion
-
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a TabPermissionInfo from a Data Reader
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            //Call the base classes fill method to ppoulate base class proeprties
-			base.FillInternal(dr);
-            TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
-            TabID = Null.SetNullInteger(dr["TabID"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Key ID
-        /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
         {
             get
             {
-                return TabPermissionID;
+                return this.TabPermissionID;
             }
+
             set
             {
-                TabPermissionID = value;
+                this.TabPermissionID = value;
             }
         }
 
-        #endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a TabPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            // Call the base classes fill method to ppoulate base class proeprties
+            this.FillInternal(dr);
+            this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
+            this.TabID = Null.SetNullInteger(dr["TabID"]);
+        }
     }
 }

@@ -1,24 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchItemInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchItemInfo represents a Search Item
+    /// The SearchItemInfo represents a Search Item.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -40,64 +35,124 @@ namespace DotNetNuke.Services.Search
         private int _TabId;
         private string _Title;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
         public SearchItemInfo()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content)
-            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, "", Null.NullInteger)
+            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, string.Empty, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Guid"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid)
             : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, Guid, Null.NullInteger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Image"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, int Image)
-            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, "", Image)
+            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, string.Empty, Image)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Guid"></param>
+        /// <param name="Image"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid, int Image)
         {
-            _Title = Title;
-            _Description = Description;
-            _Author = Author;
-            _PubDate = PubDate;
-            _ModuleId = ModuleID;
-            _SearchKey = SearchKey;
-            _Content = Content;
-            _GUID = Guid;
-            _ImageFileId = Image;
-            _HitCount = 0;
+            this._Title = Title;
+            this._Description = Description;
+            this._Author = Author;
+            this._PubDate = PubDate;
+            this._ModuleId = ModuleID;
+            this._SearchKey = SearchKey;
+            this._Content = Content;
+            this._GUID = Guid;
+            this._ImageFileId = Image;
+            this._HitCount = 0;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
+        /// <param name="Author"></param>
+        /// <param name="PubDate"></param>
+        /// <param name="ModuleID"></param>
+        /// <param name="SearchKey"></param>
+        /// <param name="Content"></param>
+        /// <param name="Guid"></param>
+        /// <param name="Image"></param>
+        /// <param name="TabID"></param>
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid, int Image, int TabID)
         {
-            _Title = Title;
-            _Description = Description;
-            _Author = Author;
-            _PubDate = PubDate;
-            _ModuleId = ModuleID;
-            _SearchKey = SearchKey;
-            _Content = Content;
-            _GUID = Guid;
-            _ImageFileId = Image;
-            _HitCount = 0;
-            _TabId = TabID;
+            this._Title = Title;
+            this._Description = Description;
+            this._Author = Author;
+            this._PubDate = PubDate;
+            this._ModuleId = ModuleID;
+            this._SearchKey = SearchKey;
+            this._Content = Content;
+            this._GUID = Guid;
+            this._ImageFileId = Image;
+            this._HitCount = 0;
+            this._TabId = TabID;
         }
-
 
         public int SearchItemId
         {
             get
             {
-                return _SearchItemId;
+                return this._SearchItemId;
             }
+
             set
             {
-                _SearchItemId = value;
+                this._SearchItemId = value;
             }
         }
 
@@ -105,11 +160,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Title;
+                return this._Title;
             }
+
             set
             {
-                _Title = value;
+                this._Title = value;
             }
         }
 
@@ -117,11 +173,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Description;
+                return this._Description;
             }
+
             set
             {
-                _Description = value;
+                this._Description = value;
             }
         }
 
@@ -129,11 +186,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Author;
+                return this._Author;
             }
+
             set
             {
-                _Author = value;
+                this._Author = value;
             }
         }
 
@@ -141,11 +199,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _PubDate;
+                return this._PubDate;
             }
+
             set
             {
-                _PubDate = value;
+                this._PubDate = value;
             }
         }
 
@@ -153,11 +212,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
+
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -165,11 +225,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchKey;
+                return this._SearchKey;
             }
+
             set
             {
-                _SearchKey = value;
+                this._SearchKey = value;
             }
         }
 
@@ -177,11 +238,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Content;
+                return this._Content;
             }
+
             set
             {
-                _Content = value;
+                this._Content = value;
             }
         }
 
@@ -189,11 +251,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _GUID;
+                return this._GUID;
             }
+
             set
             {
-                _GUID = value;
+                this._GUID = value;
             }
         }
 
@@ -201,11 +264,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _ImageFileId;
+                return this._ImageFileId;
             }
+
             set
             {
-                _ImageFileId = value;
+                this._ImageFileId = value;
             }
         }
 
@@ -213,11 +277,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _HitCount;
+                return this._HitCount;
             }
+
             set
             {
-                _HitCount = value;
+                this._HitCount = value;
             }
         }
 
@@ -225,11 +290,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
+
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
     }

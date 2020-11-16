@@ -15,7 +15,7 @@
         html = "<fieldset>";
         html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='to'>" + opts.toText + "</label></div><input type='text' id='to' name='to'/></div>";
         html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='subject'>" + opts.subjectText + "</label></div><input type='text' id='subject' name='subject' maxlength='400'/></div>";
-        html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='bodytext'>" + opts.messageText + "</label></div><textarea rows='2' cols='20' id='bodytext' name='bodytext'/></div>";
+        html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='bodytext'>" + opts.messageText + "</label></div><textarea rows='2' cols='20' id='bodytext' name='bodytext'></textarea></div>";
 
         if (opts.showAttachments) {
             html += "<div class='dnnFormItem'><div class='dnnLabel'<label>" + opts.attachmentsText + "</label></div><div><button type='button' id='fileFromSite' class='dnnTertiaryAction'><span>" + opts.browseText + "</span></button><div class='fileUploadArea'><input id='uploadFileId' type='file' name='files[]' data-text='" + opts.uploadText + "' /></div><div class='messageAttachments'><ul></ul></div></div></div>";

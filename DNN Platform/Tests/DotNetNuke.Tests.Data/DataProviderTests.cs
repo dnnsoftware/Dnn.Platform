@@ -1,36 +1,34 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Tests.Data.Fakes;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Data
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Tests.Data.Fakes;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DataProviderTests
     {
         [Test]
         public void DataProvider_Instance_Method_Returns_Instance()
         {
-            //Arrange
+            // Arrange
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(new Dictionary<string, string>()));
 
-            //Act
+            // Act
             var provider = DataProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<DataProvider>(provider);
             Assert.IsInstanceOf<FakeDataProvider>(provider);
         }
@@ -38,16 +36,16 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DataProvider_ConnectionString_Property_Is_Valid()
         {
-            //Arrange
+            // Arrange
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(new Dictionary<string, string>()));
 
             var connectionString = Config.GetConnectionString();
 
-            //Act
+            // Act
             var provider = DataProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.AreEqual(connectionString, provider.ConnectionString);
         }
 
@@ -56,17 +54,17 @@ namespace DotNetNuke.Tests.Data
         [TestCase("dbo.")]
         public void DataProvider_DatabaseOwner_Property_Is_Valid(string databaseOwner)
         {
-            //Arrange
+            // Arrange
             var settings = new Dictionary<string, string>();
             settings["databaseOwner"] = databaseOwner;
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
 
-            //Act
+            // Act
             var provider = DataProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.AreEqual(databaseOwner, provider.DatabaseOwner);
         }
 
@@ -75,17 +73,17 @@ namespace DotNetNuke.Tests.Data
         [TestCase("dnn_")]
         public void DataProvider_ObjectQualifier_Property_Is_Valid(string objectQualifier)
         {
-            //Arrange
+            // Arrange
             var settings = new Dictionary<string, string>();
             settings["objectQualifier"] = objectQualifier;
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
 
-            //Act
+            // Act
             var provider = DataProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.AreEqual(objectQualifier, provider.ObjectQualifier);
         }
 
@@ -94,17 +92,17 @@ namespace DotNetNuke.Tests.Data
         [TestCase("FakeDataProvider")]
         public void DataProvider_ProviderName_Property_Is_Valid(string providerName)
         {
-            //Arrange
+            // Arrange
             var settings = new Dictionary<string, string>();
             settings["providerName"] = providerName;
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
 
-            //Act
+            // Act
             var provider = DataProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.AreEqual(providerName, provider.ProviderName);
         }
 
@@ -113,19 +111,18 @@ namespace DotNetNuke.Tests.Data
         [TestCase("someOtherPath")]
         public void DataProvider_ProviderPath_Property_Is_Valid(string providerPath)
         {
-            //Arrange
+            // Arrange
             var settings = new Dictionary<string, string>();
             settings["providerPath"] = providerPath;
 
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DataProvider>(new FakeDataProvider(settings));
 
-            //Act
+            // Act
             var provider = DataProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.AreEqual(providerPath, provider.ProviderPath);
         }
-
     }
 }

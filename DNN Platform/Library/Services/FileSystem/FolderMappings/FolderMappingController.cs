@@ -1,55 +1,51 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem.Internal;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     public class FolderMappingController : ComponentBase<IFolderMappingController, FolderMappingController>, IFolderMappingController
     {
-        #region Constructor
+        private const string CacheKeyPrefix = "GetFolderMappingSettings";
+        private static readonly DataProvider dataProvider = DataProvider.Instance();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderMappingController"/> class.
+        /// </summary>
         internal FolderMappingController()
         {
         }
 
-        #endregion
-
-        #region Private Variables
-
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
-        private const string CacheKeyPrefix = "GetFolderMappingSettings";
-
-        #endregion
-
-        #region Public Methods
-
+        /// <inheritdoc/>
         public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {
             var defaultFolderMapping = Config.GetSection("dotnetnuke/folder") != null ?
-                GetFolderMappings(portalId).Find(fm => fm.FolderProviderType == Config.GetDefaultProvider("folder").Name) :
-                GetFolderMapping(portalId, "Standard");
-            return defaultFolderMapping ?? GetFolderMapping(portalId, "Standard");
+                this.GetFolderMappings(portalId).Find(fm => fm.FolderProviderType == Config.GetDefaultProvider("folder").Name) :
+                this.GetFolderMapping(portalId, "Standard");
+            return defaultFolderMapping ?? this.GetFolderMapping(portalId, "Standard");
         }
 
+        /// <inheritdoc/>
         public int AddFolderMapping(FolderMappingInfo objFolderMapping)
         {
-            objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(objFolderMapping.PortalID,
-                                                                             objFolderMapping.MappingName,
-                                                                             objFolderMapping.FolderProviderType,
-                                                                             UserController.Instance.GetCurrentUserInfo().UserID);
+            objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(
+                objFolderMapping.PortalID,
+                objFolderMapping.MappingName,
+                objFolderMapping.FolderProviderType,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             UpdateFolderMappingSettings(objFolderMapping);
 
@@ -58,6 +54,7 @@ namespace DotNetNuke.Services.FileSystem
             return objFolderMapping.FolderMappingID;
         }
 
+        /// <inheritdoc/>
         public void DeleteFolderMapping(int portalID, int folderMappingID)
         {
             var folderManager = FolderManager.Instance;
@@ -94,7 +91,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (folderMappingFolders.Count() > 0)
                 {
-                    var defaultFolderMapping = GetDefaultFolderMapping(portalID);
+                    var defaultFolderMapping = this.GetDefaultFolderMapping(portalID);
 
                     foreach (var folderMappingFolder in folderMappingFolders)
                     {
@@ -109,46 +106,56 @@ namespace DotNetNuke.Services.FileSystem
             ClearFolderMappingSettingsCache(folderMappingID);
         }
 
+        /// <inheritdoc/>
         public void UpdateFolderMapping(FolderMappingInfo objFolderMapping)
         {
-            dataProvider.UpdateFolderMapping(objFolderMapping.FolderMappingID,
-                                             objFolderMapping.MappingName,
-                                             objFolderMapping.Priority,
-                                             UserController.Instance.GetCurrentUserInfo().UserID);
+            dataProvider.UpdateFolderMapping(
+                objFolderMapping.FolderMappingID,
+                objFolderMapping.MappingName,
+                objFolderMapping.Priority,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearFolderMappingCache(objFolderMapping.PortalID);
             UpdateFolderMappingSettings(objFolderMapping);
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int folderMappingID)
         {
             return CBO.FillObject<FolderMappingInfo>(dataProvider.GetFolderMapping(folderMappingID));
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, int folderMappingID)
         {
-            return GetFolderMappings(portalId).SingleOrDefault(fm => fm.FolderMappingID == folderMappingID);
+            return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.FolderMappingID == folderMappingID);
         }
 
+        /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, string mappingName)
         {
-            return GetFolderMappings(portalId).SingleOrDefault(fm => fm.MappingName == mappingName);
+            return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.MappingName == mappingName);
         }
 
+        /// <inheritdoc/>
         public List<FolderMappingInfo> GetFolderMappings(int portalId)
         {
-            var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
-            return CBO.GetCachedObject<List<FolderMappingInfo>>(new CacheItemArgs(cacheKey,
-                                                                    DataCache.FolderMappingCacheTimeOut,
-                                                                    DataCache.FolderMappingCachePriority),
-                                                                (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
+            var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
+            return CBO.GetCachedObject<List<FolderMappingInfo>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.FolderMappingCacheTimeOut,
+                DataCache.FolderMappingCachePriority),
+                (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
         }
 
+        /// <inheritdoc/>
         public void AddDefaultFolderTypes(int portalID)
         {
             dataProvider.AddDefaultFolderTypes(portalID);
         }
 
+        /// <inheritdoc/>
         public Hashtable GetFolderMappingSettings(int folderMappingID)
         {
             var strCacheKey = CacheKeyPrefix + folderMappingID;
@@ -180,15 +187,13 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     CBO.CloseDataReader(dr, true);
                 }
+
                 var intCacheTimeout = 20 * Convert.ToInt32(Host.PerformanceSetting);
                 DataCache.SetCache(strCacheKey, objSettings, TimeSpan.FromMinutes(intCacheTimeout));
             }
+
             return objSettings;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static void UpdateFolderMappingSettings(FolderMappingInfo objFolderMapping)
         {
@@ -228,7 +233,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static void ClearFolderMappingCache(int portalId)
         {
-            var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
+            var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
         }
 
@@ -236,7 +241,5 @@ namespace DotNetNuke.Services.FileSystem
         {
             DataCache.RemoveCache(CacheKeyPrefix + folderMappingID);
         }
-
-        #endregion
     }
 }

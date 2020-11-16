@@ -1,29 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dnn.PersonaBar.SiteSettings.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.SiteSettings.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Dnn.PersonaBar.SiteSettings.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
     internal class LanguagesControllerTasks
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesControllerTasks));
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
         private const string LocalizationProgressFile = "PersonaBarLocalizationProgress.txt";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesControllerTasks));
 
         public static void LocalizeSitePages(LocalizationProgress progress, int portalId, bool translatePages, string defaultLanguage)
         {
@@ -126,6 +127,23 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             });
         }
 
+        internal static LocalizationProgress ReadProgressFile()
+        {
+            var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
+#if true
+            var text = File.ReadAllText(path);
+            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
+#else
+            using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
+            {
+                var bytes = new byte[file.Length];
+                file.Read(bytes, 0, bytes.Length);
+                var text = Encoding.UTF8.GetString(bytes);
+                return JsonConvert.DeserializeObject<LocalizationProgress>(text);
+            }
+#endif
+        }
+
         private static IList<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
         {
             var results = new List<TabInfo>();
@@ -183,7 +201,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 progress.TimeEstimated = (total - stepNo) * 100;
 
                 SaveProgressToFile(progress);
-                
+
                 if (locale.Code == defaultLocale || string.IsNullOrEmpty(locale.Code))
                 {
                     TabController.Instance.LocalizeTab(currentTab, locale, true);
@@ -212,23 +230,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 var bytes = Encoding.UTF8.GetBytes(text);
                 file.Write(bytes, 0, bytes.Length);
                 file.Flush();
-            }
-#endif
-        }
-
-        internal static LocalizationProgress ReadProgressFile()
-        {
-            var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-#if true
-            var text = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
-#else
-            using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
-            {
-                var bytes = new byte[file.Length];
-                file.Read(bytes, 0, bytes.Length);
-                var text = Encoding.UTF8.GetString(bytes);
-                return JsonConvert.DeserializeObject<LocalizationProgress>(text);
             }
 #endif
         }

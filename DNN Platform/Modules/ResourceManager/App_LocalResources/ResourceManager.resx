@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddAsset.Text" xml:space="preserve">
+    <value>Add Asset</value>
+  </data>
+  <data name="AddFolder.Text" xml:space="preserve">
+    <value>Add Folder</value>
+  </data>
+  <data name="AssetsPanelEmpty_Subtitle.Text" xml:space="preserve">
+    <value>Use the tools above to add an asset or create a folder</value>
+  </data>
+  <data name="AssetsPanelEmpty_Title.Text" xml:space="preserve">
+    <value>This Folder is Empty</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Close.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Database.Text" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="DeleteFileDialogHeader.Text" xml:space="preserve">
+    <value>Confirm delete</value>
+  </data>
+  <data name="DeleteFileDialogMessage.Text" xml:space="preserve">
+    <value>Are you sure to delete the file?</value>
+  </data>
+  <data name="DeleteFolderDialogHeader.Text" xml:space="preserve">
+    <value>Confirm delete</value>
+  </data>
+  <data name="DeleteFolderDialogMessage.Text" xml:space="preserve">
+    <value>Are you sure to delete the folder?</value>
+  </data>
+  <data name="FileAlreadyExistsMessage.Text" xml:space="preserve">
+    <value>The file you want to upload already exists in this folder.</value>
+  </data>
+  <data name="FileUploadedMessage.Text" xml:space="preserve">
+    <value>File Uploaded.</value>
+  </data>
+  <data name="FileUploadStoppedMessage.Text" xml:space="preserve">
+    <value>File upload stopped</value>
+  </data>
+  <data name="FolderNamePlaceholder.Text" xml:space="preserve">
+    <value>Enter folder name</value>
+  </data>
+  <data name="FolderNameRequiredMessage.Text" xml:space="preserve">
+    <value>The folder name is required</value>
+  </data>
+  <data name="FolderParent.Text" xml:space="preserve">
+    <value>Folder Parent</value>
+  </data>
+  <data name="FolderTypeRequiredMessage.Text" xml:space="preserve">
+    <value>The folder type is required</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Secure.Text" xml:space="preserve">
+    <value>Secure</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="UserHasNoPermissionToDeleteFolder.Error" xml:space="preserve">
+    <value>The user does not have permission to delete folder.</value>
+  </data>
+  <data name="UserHasNoPermissionToDownload.Error" xml:space="preserve">
+    <value>The user does not have permission to download this file.</value>
+  </data>
+  <data name="FileUploadPanelMessage.Text" xml:space="preserve">
+    <value>Drag and Drop a File or Select an Option</value>
+  </data>
+  <data name="AssetsPanelNoSearchResults.Text" xml:space="preserve">
+    <value>Your Search Produced No Results</value>
+  </data>
+  <data name="SearchInputPlaceholder.Text" xml:space="preserve">
+    <value>Search Files</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="UrlCopiedMessage.Text" xml:space="preserve">
+    <value>Url copied to clipboard</value>
+  </data>
+  <data name="Created.Text" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="LastModified.Text" xml:space="preserve">
+    <value>Last Modified</value>
+  </data>
+  <data name="Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="URL.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="ItemNameRequiredMessage.Text" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="UserHasNoPermissionToReadFileProperties.Error" xml:space="preserve">
+    <value>User has no permission to read file properties.</value>
+  </data>
+  <data name="GenericErrorMessage.Text" xml:space="preserve">
+    <value>An error has ocurred.</value>
+  </data>
+  <data name="ItemSavedMessage.Text" xml:space="preserve">
+    <value>Item saved.</value>
+  </data>
+  <data name="FolderType.Text" xml:space="preserve">
+    <value>Folder Type</value>
+  </data>
+  <data name="CreatedOnDate.Text" xml:space="preserve">
+    <value>Created on Date</value>
+  </data>
+  <data name="ItemName.Text" xml:space="preserve">
+    <value>Item Name</value>
+  </data>
+  <data name="LastModifiedOnDate.Text" xml:space="preserve">
+    <value>Last Modified on Date</value>
+  </data>
+  <data name="FileSizeErrorMessage.Text" xml:space="preserve">
+    <value> is too big. The maximun file size allowed is </value>
+  </data>
+  <data name="UserHasNoPermissionToDeleteFile.Error" xml:space="preserve">
+    <value>The user does not have permission to delete file.</value>
+  </data>
+  <data name="UserHasNoPermissionToManageFileProperties.Error" xml:space="preserve">
+    <value>User has no permission to manage file properties.</value>
+  </data>
+  <data name="UserHasNoPermissionToManageFolder.Error" xml:space="preserve">
+    <value>The user does not have permission to manage this folder.</value>
+  </data>
+  <data name="NoFolderSelected.Text" xml:space="preserve">
+    <value>No Folder Selected</value>
+  </data>
+  <data name="SearchFolder.Text" xml:space="preserve">
+    <value>Search Folder</value>
+  </data>
+  <data name="DisabledForAnonymousUsersMessage.Text" xml:space="preserve">
+    <value>Disabled for anonymous users.</value>
+  </data>
+  <data name="UserHasNoPermissionToAddFolders.Error" xml:space="preserve">
+    <value>The user does not have permission to add new folders.</value>
+  </data>
+  <data name="GroupIconCantBeDeleted.Error" xml:space="preserve">
+    <value>The Group Icon file can't be deleted.</value>
+  </data>
+  <data name="InvalidExtensionMessage.Text" xml:space="preserve">
+    <value> is not of a type that is allowed to be uploaded</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SyncThisFolder.Text" xml:space="preserve">
+    <value>Sync This Folder</value>
+  </data>
+  <data name="SyncThisFolderAndSubfolders.Text" xml:space="preserve">
+    <value>Sync This Folder &amp; Subfolders</value>
+  </data>
+  <data name="ManageFolderTypes.Text" xml:space="preserve">
+    <value>Manage Folder Types</value>
+  </data>
+  <data name="AddFolderType.Text" xml:space="preserve">
+    <value>Add Folder Type</value>
+  </data>
+  <data name="FolderProvider.Text" xml:space="preserve">
+    <value>Folder Provider</value>
+  </data>
+  <data name="FolderTypeDefinitions.Text" xml:space="preserve">
+    <value>Folder Type Definitions</value>
+  </data>
+  <data name="EditFolderType.Text" xml:space="preserve">
+    <value>Edit Folder Type</value>
+  </data>
+  <data name="RemoveFolderType.Text" xml:space="preserve">
+    <value>Remove Folder Type</value>
+  </data>
+  <data name="RemoveFolderTypeDialogBody.Text" xml:space="preserve">
+    <value>Are you sure you want to remove this folder type?</value>
+  </data>
+  <data name="RemoveFolderTypeDialogHeader.Text" xml:space="preserve">
+    <value>Remove Folder Type</value>
+  </data>
+  <data name="MoveItem.Text" xml:space="preserve">
+    <value>Move Item</value>
+  </data>
+  <data name="NewLocation.Text" xml:space="preserve">
+    <value>New Location</value>
+  </data>
+</root>

@@ -1,23 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Security.Permissions;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
+    using DotNetNuke.Security.Permissions;
+
     /// <summary>
-    /// This entity represents a state permission
+    /// This entity represents a state permission.
     /// </summary>
     public class WorkflowStatePermission : PermissionInfoBase
     {
         /// <summary>
-        /// Workflow state permission Id
+        /// Gets or sets workflow state permission Id.
         /// </summary>
         public int WorkflowStatePermissionID { get; set; }
 
         /// <summary>
-        /// State Id
+        /// Gets or sets state Id.
         /// </summary>
         public int StateID { get; set; }
     }

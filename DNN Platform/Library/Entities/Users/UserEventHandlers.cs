@@ -1,21 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.ComponentModel.Composition;
-using System.Globalization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Users
 {
+    using System.ComponentModel.Composition;
+    using System.Globalization;
+
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+
     [Export(typeof(IUserEventHandlers))]
     public class UserEventHandlers : IUserEventHandlers
     {
+        /// <inheritdoc/>
         public void UserAuthenticated(object sender, UserEventArgs args)
         {
         }
 
+        /// <inheritdoc/>
         public void UserCreated(object sender, UserEventArgs args)
         {
             UserRegistrationEmailNotifier.NotifyAdministrator(args.User);
@@ -26,24 +29,29 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <inheritdoc/>
         public void UserRemoved(object sender, UserEventArgs args)
         {
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
+        /// <inheritdoc/>
         public void UserDeleted(object sender, UserEventArgs args)
         {
         }
 
+        /// <inheritdoc/>
         public void UserApproved(object sender, UserEventArgs args)
         {
             if (args.SendNotification)
             {
                 UserRegistrationEmailNotifier.NotifyUser(args.User, MessageType.UserRegistrationPublic);
             }
+
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
+        /// <inheritdoc/>
         public void UserUpdated(object sender, UpdateUserEventArgs args)
         {
         }

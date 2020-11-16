@@ -1,28 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using Dnn.EditBar.UI.Controllers;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.EditBar.UI.HttpModules
 {
+    using System;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+
+    using Dnn.EditBar.UI.Controllers;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.UI.Skins.EventListeners;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Newtonsoft.Json;
+
     public class EditBarModule : IHttpModule
     {
         private static readonly object LockAppStarted = new object();
@@ -34,6 +36,7 @@ namespace Dnn.EditBar.UI.HttpModules
             {
                 return;
             }
+
             lock (LockAppStarted)
             {
                 if (_hasAppStarted)
@@ -41,30 +44,30 @@ namespace Dnn.EditBar.UI.HttpModules
                     return;
                 }
 
-                ApplicationStart();
+                this.ApplicationStart();
                 _hasAppStarted = true;
             }
-        }
-
-        private void ApplicationStart()
-        {
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, OnSkinInit));
         }
 
         public void Dispose()
         {
         }
 
+        private void ApplicationStart()
+        {
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, this.OnSkinInit));
+        }
+
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
-            if (DotNetNukeContext.Current.Application.SKU != "DNN")
+            if (Host.DisableEditBar)
             {
                 return;
             }
 
             var request = e.Skin.Page.Request;
             var isSpecialPageMode = request.QueryString["dnnprintmode"] == "true" || request.QueryString["popUp"] == "true";
-            if (isSpecialPageMode 
+            if (isSpecialPageMode
                     || Globals.IsAdminControl())
             {
                 return;

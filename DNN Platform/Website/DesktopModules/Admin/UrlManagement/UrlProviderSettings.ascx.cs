@@ -1,56 +1,59 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.UrlManagement
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class ProviderSettings : ModuleUserControlBase
     {
+        private readonly INavigationManager _navigationManager;
+
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
-        private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
-        private readonly INavigationManager _navigationManager;
 
         public ProviderSettings()
         {
-            _navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
+
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            cmdUpdate.Click += cmdUpdate_Click;
-            cmdCancel.Click += cmdCancel_Click;
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
 
-            _providerId = Convert.ToInt32(Request.Params["ProviderId"]);
+            this._providerId = Convert.ToInt32(this.Request.Params["ProviderId"]);
 
-            var provider = ExtensionUrlProviderController.GetModuleProviders(ModuleContext.PortalId)
-                                .SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == _providerId);
+            var provider = ExtensionUrlProviderController.GetModuleProviders(this.ModuleContext.PortalId)
+                                .SingleOrDefault(p => p.ProviderConfig.ExtensionUrlProviderId == this._providerId);
 
             if (provider != null)
             {
                 var settingsControlSrc = provider.ProviderConfig.SettingsControlSrc;
 
-                var settingsControl = Page.LoadControl(settingsControlSrc);
+                var settingsControl = this.Page.LoadControl(settingsControlSrc);
 
-                providerSettingsPlaceHolder.Controls.Add(settingsControl);
+                this.providerSettingsPlaceHolder.Controls.Add(settingsControl);
 
-// ReSharper disable SuspiciousTypeConversion.Global
-                _providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
-// ReSharper restore SuspiciousTypeConversion.Global
-                if (_providerSettingsControl != null)
+                // ReSharper disable SuspiciousTypeConversion.Global
+                this._providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
+
+                // ReSharper restore SuspiciousTypeConversion.Global
+                if (this._providerSettingsControl != null)
                 {
-                    _providerSettingsControl.Provider = provider.ProviderConfig;
+                    this._providerSettingsControl.Provider = provider.ProviderConfig;
                 }
             }
         }
@@ -58,41 +61,41 @@ namespace DotNetNuke.Modules.UrlManagement
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (_providerSettingsControl != null)
+            if (this._providerSettingsControl != null)
             {
-                _providerSettingsControl.LoadSettings();
+                this._providerSettingsControl.LoadSettings();
             }
 
-            if (DisplayMode == "editor" || DisplayMode == "settings")
+            if (this.DisplayMode == "editor" || this.DisplayMode == "settings")
             {
-                cmdCancel.Visible = false;
+                this.cmdCancel.Visible = false;
             }
         }
 
-        void cmdCancel_Click(object sender, EventArgs e)
+        private void cmdCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(_navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+            this.Response.Redirect(this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
-        void cmdUpdate_Click(object sender, EventArgs e)
+        private void cmdUpdate_Click(object sender, EventArgs e)
         {
             if (!this.Page.IsValid)
             {
                 return;
             }
 
-            if (_providerSettingsControl != null)
+            if (this._providerSettingsControl != null)
             {
-                var settings = _providerSettingsControl.SaveSettings();
+                var settings = this._providerSettingsControl.SaveSettings();
                 foreach (var setting in settings)
                 {
-                    ExtensionUrlProviderController.SaveSetting(_providerId, ModuleContext.PortalId, setting.Key, setting.Value);
+                    ExtensionUrlProviderController.SaveSetting(this._providerId, this.ModuleContext.PortalId, setting.Key, setting.Value);
                 }
             }
 
-            if (DisplayMode != "editor" && DisplayMode != "settings")
+            if (this.DisplayMode != "editor" && this.DisplayMode != "settings")
             {
-                Response.Redirect(_navigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+                this.Response.Redirect(this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
             }
         }
     }

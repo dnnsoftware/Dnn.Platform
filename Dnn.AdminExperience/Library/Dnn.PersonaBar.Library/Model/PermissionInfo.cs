@@ -1,35 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Library.Model
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : MenuPermissionInfo
+    /// Class    : MenuPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// MenuPermissionInfo provides the Entity Layer for Module Permissions
+    /// MenuPermissionInfo provides the Entity Layer for Module Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class PermissionInfo : BaseEntityInfo, IHydratable
     {
-        #region "Public Properties"
-
-
         [XmlElement("permissionId")]
         public int PermissionId { get; set; }
 
@@ -42,46 +35,40 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("permissionName")]
         public string PermissionName { get; set; }
 
-        #endregion
-
-        #region IHydratable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            base.FillInternal(dr);
-
-            
-            PermissionId = Null.SetNullInteger(dr["PermissionId"]);
-            MenuId = Null.SetNullInteger(dr["MenuId"]);
-            PermissionKey = Null.SetNullString(dr["PermissionKey"]);
-            PermissionName = Null.SetNullString(dr["PermissionName"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Key ID
-        /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
         {
             get
             {
-                return PermissionId;
+                return this.PermissionId;
             }
+
             set
             {
-                PermissionId = value;
+                this.PermissionId = value;
             }
         }
 
-        #endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a MenuPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+
+            this.PermissionId = Null.SetNullInteger(dr["PermissionId"]);
+            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
+            this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
+            this.PermissionName = Null.SetNullString(dr["PermissionName"]);
+        }
     }
 }

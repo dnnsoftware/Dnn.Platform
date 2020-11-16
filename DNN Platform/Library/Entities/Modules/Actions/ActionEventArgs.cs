@@ -1,70 +1,70 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    ///-----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
+    using System;
+
+    /// -----------------------------------------------------------------------------
+    /// Project     : DotNetNuke
     /// Namespace   : DotNetNuke.Entities.Modules.Actions
-    /// Class		: ActionEventArgs
-    ///-----------------------------------------------------------------------------
+    /// Class       : ActionEventArgs
+    /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ActionEventArgs provides a custom EventARgs class for Action Events
+    /// ActionEventArgs provides a custom EventARgs class for Action Events.
     /// </summary>
     /// <remarks></remarks>
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     public class ActionEventArgs : EventArgs
     {
         private readonly ModuleAction _action;
         private readonly ModuleInfo _moduleConfiguration;
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ActionEventArgs"/> class.
         /// </summary>
         /// <param name="Action"></param>
         /// <param name="ModuleConfiguration"></param>
         /// <remarks></remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ActionEventArgs(ModuleAction Action, ModuleInfo ModuleConfiguration)
         {
-            _action = Action;
-            _moduleConfiguration = ModuleConfiguration;
+            this._action = Action;
+            this._moduleConfiguration = ModuleConfiguration;
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        /// <value></value>
+        /// <value>
+        ///
+        /// </value>
         /// <remarks></remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ModuleAction Action
         {
             get
             {
-                return _action;
+                return this._action;
             }
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        /// <value></value>
+        /// <value>
+        ///
+        /// </value>
         /// <remarks></remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {
             get
             {
-                return _moduleConfiguration;
+                return this._moduleConfiguration;
             }
         }
     }

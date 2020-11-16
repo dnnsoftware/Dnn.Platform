@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using DNN.Integration.Test.Framework.Helpers;
-using DNN.Integration.Test.Framework.Scripts;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DNN.Integration.Test.Framework.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Text;
+
+    using DNN.Integration.Test.Framework.Helpers;
+    using DNN.Integration.Test.Framework.Scripts;
+
     public static class ModuleController
     {
         private const string PortalIdMarker = @"'$[portal_id]'";
@@ -46,7 +47,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             var result = DatabaseHelper.ExecuteQuery(script);
 
             if (result.Count > 0 && result[0].ContainsKey("ModulePermissionId"))
+            {
                 return int.Parse(result[0]["ModulePermissionId"].ToString());
+            }
 
             return -1;
         }
@@ -57,11 +60,11 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Deletes a module from the specified tab and clears host cache
+        /// Deletes a module from the specified tab and clears host cache.
         /// </summary>
-        /// <param name="tabId">tabId on which module is deleted</param>
-        /// <param name="moduleId">moduleId that is deleted</param>
-        /// <param name="softDelete">if True, then softdeleted, otherwise harddeleted</param>
+        /// <param name="tabId">tabId on which module is deleted.</param>
+        /// <param name="moduleId">moduleId that is deleted.</param>
+        /// <param name="softDelete">if True, then softdeleted, otherwise harddeleted.</param>
         public static void DeleteTabModule(int tabId, int moduleId, bool softDelete)
         {
             DatabaseHelper.ExecuteStoredProcedure("DeleteTabModule", tabId, moduleId, softDelete);

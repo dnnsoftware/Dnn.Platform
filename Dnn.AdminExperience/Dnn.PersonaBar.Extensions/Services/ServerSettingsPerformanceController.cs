@@ -1,29 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Servers.Components.PerformanceSettings;
-using Dnn.PersonaBar.Servers.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Client;
-using static System.Boolean;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Servers.Services
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Servers.Components.PerformanceSettings;
+    using Dnn.PersonaBar.Servers.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Client;
+
+    using static System.Boolean;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {
@@ -33,10 +35,10 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// GET: api/Servers/GetPerformanceSettings
         /// <summary>
-        /// Gets performance settings
+        /// Gets performance settings.
         /// </summary>
         /// <param></param>
-        /// <returns>performance settings</returns>
+        /// <returns>performance settings.</returns>
         [HttpGet]
         public HttpResponseMessage GetPerformanceSettings()
         {
@@ -47,7 +49,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     PortalName = PortalSettings.Current.PortalName,
 
-                    CachingProvider = _performanceController.GetCachingProvider(),
+                    CachingProvider = this._performanceController.GetCachingProvider(),
                     PageStatePersistence = Host.PageStatePersister,
                     ModuleCacheProvider = Host.ModuleCachingMethod,
                     PageCacheProvider = Host.PageCachingMethod,
@@ -61,48 +63,32 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostEnableCompositeFiles = Host.CrmEnableCompositeFiles,
                     HostMinifyCss = Host.CrmMinifyCss,
                     HostMinifyJs = Host.CrmMinifyJs,
-                    CurrentPortalVersion = GetPortalVersion(portalId),
+                    CurrentPortalVersion = this.GetPortalVersion(portalId),
                     PortalEnableCompositeFiles = Parse(PortalController.GetPortalSetting(ClientResourceSettings.EnableCompositeFilesKey, portalId, "false")),
                     PortalMinifyCss = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyCssKey, portalId, "false")),
                     PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
 
                     // Options
-                    CachingProviderOptions = _performanceController.GetCachingProviderOptions(),
-                    PageStatePersistenceOptions = _performanceController.GetPageStatePersistenceOptions(),
-                    ModuleCacheProviders = _performanceController.GetModuleCacheProviders(),
-                    PageCacheProviders = _performanceController.GetPageCacheProviders(),
-                    CacheSettingOptions = _performanceController.GetCacheSettingOptions(),
-                    AuthCacheabilityOptions = _performanceController.GetCacheabilityOptions(),
-                    UnauthCacheabilityOptions = _performanceController.GetCacheabilityOptions()
+                    CachingProviderOptions = this._performanceController.GetCachingProviderOptions(),
+                    PageStatePersistenceOptions = this._performanceController.GetPageStatePersistenceOptions(),
+                    ModuleCacheProviders = this._performanceController.GetModuleCacheProviders(),
+                    PageCacheProviders = this._performanceController.GetPageCacheProviders(),
+                    CacheSettingOptions = this._performanceController.GetCacheSettingOptions(),
+                    AuthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
+                    UnauthCacheabilityOptions = this._performanceController.GetCacheabilityOptions()
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, perfSettings);
+                return this.Request.CreateResponse(HttpStatusCode.OK, perfSettings);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-        }
-
-        private int GetPortalVersion(int portalId)
-        {
-            var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
-            int version;
-            if (int.TryParse(settingValue, out version))
-            {
-                if (version == 0)
-                {
-                    version = 1;
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.VersionKey, "1", true);
-                }
-            }
-
-            return version;
         }
 
         /// POST: api/Servers/IncrementPortalVersion
         /// <summary>
-        /// Increment portal resources management version
+        /// Increment portal resources management version.
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -110,24 +96,24 @@ namespace Dnn.PersonaBar.Servers.Services
         public HttpResponseMessage IncrementPortalVersion()
         {
             try
-            { 
+            {
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.IncrementCrmVersion(portalId);
                 PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
                 PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "p", false);
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/Servers/IncrementHostVersion
         /// <summary>
-        /// Increment host resources management version
+        /// Increment host resources management version.
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -141,18 +127,18 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
                 PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "h", false);
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-}
+        }
 
         /// POST: api/Servers/UpdatePerformanceSettings
         /// <summary>
-        /// Updates performance settings
+        /// Updates performance settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -163,10 +149,10 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var portalId = PortalSettings.Current.PortalId;
-                SaveCachingProvider(request.CachingProvider);
+                this.SaveCachingProvider(request.CachingProvider);
                 HostController.Instance.Update("PageStatePersister", request.PageStatePersistence);
                 HostController.Instance.Update("ModuleCaching", request.ModuleCacheProvider, false);
-                if (_performanceController.GetPageCacheProviders().Any())
+                if (this._performanceController.GetPageCacheProviders().Any())
                 {
                     HostController.Instance.Update("PageCaching", request.PageCacheProvider, false);
                 }
@@ -200,13 +186,29 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 DataCache.ClearCache();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private int GetPortalVersion(int portalId)
+        {
+            var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
+            int version;
+            if (int.TryParse(settingValue, out version))
+            {
+                if (version == 0)
+                {
+                    version = 1;
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.VersionKey, "1", true);
+                }
+            }
+
+            return version;
         }
 
         private void SaveCachingProvider(string cachingProvider)

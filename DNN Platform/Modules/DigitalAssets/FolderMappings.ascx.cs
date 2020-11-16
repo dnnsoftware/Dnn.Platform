@@ -1,47 +1,43 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Application;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
-using Globals = DotNetNuke.Common.Globals;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+    using Telerik.Web.UI;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public partial class FolderMappings : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
-        public FolderMappings()
-        {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-        #region Private Variables
 
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
 
-        #endregion
-
-        #region Properties
+        public FolderMappings()
+        {
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         public int FolderPortalID
         {
             get
             {
-                return IsHostMenu ? Null.NullInteger : PortalId;
+                return this.IsHostMenu ? Null.NullInteger : this.PortalId;
             }
         }
 
@@ -51,58 +47,57 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 try
                 {
-                    var obj = Session["FolderMappingsList"];
+                    var obj = this.Session["FolderMappingsList"];
                     if (obj == null)
                     {
-                        obj = _folderMappingController.GetFolderMappings(FolderPortalID);
+                        obj = this._folderMappingController.GetFolderMappings(this.FolderPortalID);
                         if (obj != null)
                         {
-                            Session["FolderMappingsList"] = obj;
+                            this.Session["FolderMappingsList"] = obj;
                         }
                         else
                         {
                             obj = new List<FolderMappingInfo>();
                         }
                     }
+
                     return (List<FolderMappingInfo>)obj;
                 }
                 catch
                 {
-                    Session["FolderMappingsList"] = null;
+                    this.Session["FolderMappingsList"] = null;
                 }
+
                 return new List<FolderMappingInfo>();
             }
-            set { Session["FolderMappingsList"] = value; }
+
+            set { this.Session["FolderMappingsList"] = value; }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            if (!UserInfo.IsSuperUser && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+            if (!this.UserInfo.IsSuperUser && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
             {
-                Response.Redirect(Globals.AccessDeniedURL(), true);
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
             }
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-            CancelButton.NavigateUrl = _navigationManager.NavigateURL();
-            NewMappingButton.Click += OnNewMappingClick;
+            JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
+            this.CancelButton.NavigateUrl = this._navigationManager.NavigateURL();
+            this.NewMappingButton.Click += this.OnNewMappingClick;
 
-            if (!IsPostBack)
+            if (!this.IsPostBack)
             {
-                Session["FolderMappingsList"] = null;
+                this.Session["FolderMappingsList"] = null;
 
-                if (ModuleConfiguration.ModuleControl.SupportsPopUps)
+                if (this.ModuleConfiguration.ModuleControl.SupportsPopUps)
                 {
-                    MappingsGrid.Rebind();
+                    this.MappingsGrid.Rebind();
                 }
             }
         }
@@ -111,60 +106,69 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             if (e.CommandName == "Edit")
             {
-                Response.Redirect(_navigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
+                this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "EditFolderMapping", "mid=" + this.ModuleId, "popUp=true", "ItemID=" + e.CommandArgument.ToString()));
             }
             else
             {
-                var folderMappingsList = FolderMappingsList;
+                var folderMappingsList = this.FolderMappingsList;
                 var folderMapping = folderMappingsList.Find(f => f.FolderMappingID == int.Parse(e.CommandArgument.ToString()));
 
                 switch (e.CommandName)
                 {
                     case "Delete":
-                        _folderMappingController.DeleteFolderMapping(folderMapping.PortalID, folderMapping.FolderMappingID);
+                        this._folderMappingController.DeleteFolderMapping(folderMapping.PortalID, folderMapping.FolderMappingID);
                         folderMappingsList.Remove(folderMapping);
                         break;
                     default:
                         break;
                 }
 
-                FolderMappingsList = folderMappingsList;
-                MappingsGrid.Rebind();
+                this.FolderMappingsList = folderMappingsList;
+                this.MappingsGrid.Rebind();
             }
         }
 
         protected void MappingsGrid_OnItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem) return;
+            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem)
+            {
+                return;
+            }
 
-            var folderMapping = (e.Item.DataItem as FolderMappingInfo);
+            var folderMapping = e.Item.DataItem as FolderMappingInfo;
             if (folderMapping == null || !folderMapping.IsEditable)
             {
                 return;
             }
 
-            var cmdEditMapping = (e.Item.FindControl("EditMappingButton") as CommandButton);
-            if (cmdEditMapping != null) cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
+            var cmdEditMapping = e.Item.FindControl("EditMappingButton") as CommandButton;
+            if (cmdEditMapping != null)
+            {
+                cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
+            }
 
-            var cmdDeleteMapping = (e.Item.FindControl("DeleteMappingButton") as CommandButton);
-            if (cmdDeleteMapping == null) return;
+            var cmdDeleteMapping = e.Item.FindControl("DeleteMappingButton") as CommandButton;
+            if (cmdDeleteMapping == null)
+            {
+                return;
+            }
 
             cmdDeleteMapping.ToolTip = Localization.GetString("cmdDelete");
 
-            var deleteMessage = string.Format(Localization.GetString("DeleteConfirm", LocalResourceFile), folderMapping.MappingName);
+            var deleteMessage = string.Format(Localization.GetString("DeleteConfirm", this.LocalResourceFile), folderMapping.MappingName);
             cmdDeleteMapping.OnClientClick = "return confirm(\"" + ClientAPI.GetSafeJSString(deleteMessage) + "\");";
         }
 
         protected void MappingsGrid_OnNeedDataSource(object source, GridNeedDataSourceEventArgs e)
         {
-            MappingsGrid.DataSource = FolderMappingsList;
+            this.MappingsGrid.DataSource = this.FolderMappingsList;
         }
 
         protected void OnNewMappingClick(object sender, EventArgs e)
         {
             try
             {
-                Response.Redirect(_navigationManager.NavigateURL(TabId, "EditFolderMapping", "mid=" + ModuleId, "popUp=true"));
+                this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "EditFolderMapping", "mid=" + this.ModuleId, "popUp=true"));
             }
             catch (Exception exc)
             {
@@ -172,20 +176,13 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void UpdateFolderMappings(IList<FolderMappingInfo> folderMappingsList)
         {
             for (var i = 3; i < folderMappingsList.Count; i++)
             {
                 folderMappingsList[i].Priority = i + 1;
-                _folderMappingController.UpdateFolderMapping(folderMappingsList[i]);
+                this._folderMappingController.UpdateFolderMapping(folderMappingsList[i]);
             }
         }
-
-        #endregion
-
     }
 }

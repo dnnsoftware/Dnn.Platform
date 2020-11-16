@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
-import { InputGroup, Dropdown, PagePicker, Switch, Label, Button } from "@dnnsoftware/dnn-react-common";
+import { InputGroup, Dropdown, Switch, Label, Button } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -150,36 +150,7 @@ class BasicSettingsPanelBody extends Component {
                             onSelect={this.onSettingChange.bind(this, "PrimaryAdministratorId") }
                             enabled={canEdit} />
                     </InputGroup>
-                    <InputGroup>
-                        <Label
-                            tooltipMessage={resx.get("Redirect_AfterLogin.Help") }
-                            label={resx.get("Redirect_AfterLogin") } />
-                        <PagePicker
-                            serviceFramework={util.utilities.sf}
-                            style={{ width: "100%", zIndex: 2 }}
-                            selectedTabId={state.basicLoginSettings.RedirectAfterLoginTabId}
-                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId") }
-                            defaultLabel={state.basicLoginSettings.RedirectAfterLoginTabName !== "" ? state.basicLoginSettings.RedirectAfterLoginTabName : noneSpecifiedText}
-                            noneSpecifiedText={noneSpecifiedText}
-                            CountText={"{0} Results"}
-                            PortalTabsParameters={RedirectAfterLoginParameters}
-                            enabled={canEdit} />
-                    </InputGroup>
-                    <InputGroup>
-                        <Label
-                            tooltipMessage={resx.get("Redirect_AfterLogout.Help") }
-                            label={resx.get("Redirect_AfterLogout") } />
-                        <PagePicker
-                            serviceFramework={util.utilities.sf}
-                            style={{ width: "100%", zIndex: 1 }}
-                            selectedTabId={state.basicLoginSettings.RedirectAfterLogoutTabId}
-                            OnSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId") }
-                            defaultLabel={state.basicLoginSettings.RedirectAfterLogoutTabName !== "" ? state.basicLoginSettings.RedirectAfterLogoutTabName : noneSpecifiedText}
-                            noneSpecifiedText={noneSpecifiedText}
-                            CountText={"{0} Results"}
-                            PortalTabsParameters={RedirectAfterLogoutParameters}
-                            enabled={canEdit} />
-                    </InputGroup>
+                    <div style={{paddingBottom: "15px", fontStyle: "italic"}}>{resx.get("RedirectionMovedToSiteSettings")}</div>
                     <InputGroup>
                         <div className="loginSettings-row_switch" style={{ margin: "0" }}>
                             <Label

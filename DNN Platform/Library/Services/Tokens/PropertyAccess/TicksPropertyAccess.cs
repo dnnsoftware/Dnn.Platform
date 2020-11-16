@@ -1,24 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-
-using DotNetNuke.Entities.Users;
-
-#endregion
-
-// ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.Tokens
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Users;
+
     public class TicksPropertyAccess : IPropertyAccess
     {
-        #region IPropertyAccess Members
+        /// <inheritdoc/>
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.secureforCaching;
+            }
+        }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
@@ -30,18 +34,9 @@ namespace DotNetNuke.Services.Tokens
                 case "ticksperday":
                     return TimeSpan.TicksPerDay.ToString(formatProvider);
             }
+
             PropertyNotFound = true;
             return string.Empty;
         }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.secureforCaching;
-            }
-        }
-
-        #endregion
     }
 }

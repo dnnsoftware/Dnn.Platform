@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Linq;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// Interface of VocabularyController.
-	/// </summary>
-	/// <seealso cref="VocabularyController"/>
+    using System.Linq;
+
+    /// <summary>
+    /// Interface of VocabularyController.
+    /// </summary>
+    /// <seealso cref="VocabularyController"/>
     public interface IVocabularyController
     {
         int AddVocabulary(Vocabulary vocabulary);

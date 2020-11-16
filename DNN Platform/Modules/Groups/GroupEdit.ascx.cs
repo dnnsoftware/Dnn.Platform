@@ -1,159 +1,168 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Common.Utilities;
-using System.IO;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class GroupEdit : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public GroupEdit()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
         }
-
-        private void InitializeComponent()
-        {
-            Load += Page_Load;
-            btnSave.Click += Save_Click;
-            btnCancel.Click += Cancel_Click;
-        }
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            imgGroup.Src = Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/") + "sample-group-profile.jpg";
-            if (!Page.IsPostBack && GroupId > 0)
+            this.imgGroup.Src = this.Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/") + "sample-group-profile.jpg";
+            if (!this.Page.IsPostBack && this.GroupId > 0)
             {
-                var roleInfo = RoleController.Instance.GetRoleById(PortalId, GroupId);
+                var roleInfo = RoleController.Instance.GetRoleById(this.PortalId, this.GroupId);
 
                 if (roleInfo != null)
                 {
-                    if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                    if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                     {
-                        if (roleInfo.CreatedByUserID != UserInfo.UserID)
+                        if (roleInfo.CreatedByUserID != this.UserInfo.UserID)
                         {
-                            Response.Redirect(ModuleContext.NavigateUrl(TabId, "", false, new String[] { "groupid=" + GroupId.ToString() }));
+                            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, new string[] { "groupid=" + this.GroupId.ToString() }));
                         }
                     }
 
-                    txtGroupName.Visible = !roleInfo.IsSystemRole;
-                    reqGroupName.Enabled = !roleInfo.IsSystemRole;
+                    this.txtGroupName.Visible = !roleInfo.IsSystemRole;
+                    this.reqGroupName.Enabled = !roleInfo.IsSystemRole;
 
-                    if(!roleInfo.IsSystemRole)
-                        txtGroupName.Text = roleInfo.RoleName;
+                    if (!roleInfo.IsSystemRole)
+                    {
+                        this.txtGroupName.Text = roleInfo.RoleName;
+                    }
                     else
-                        litGroupName.Text = roleInfo.RoleName;
+                    {
+                        this.litGroupName.Text = roleInfo.RoleName;
+                    }
 
-                    txtDescription.Text = roleInfo.Description;
-                    rdAccessTypePrivate.Checked = !roleInfo.IsPublic;
-                    rdAccessTypePublic.Checked = roleInfo.IsPublic;
-
+                    this.txtDescription.Text = roleInfo.Description;
+                    this.rdAccessTypePrivate.Checked = !roleInfo.IsPublic;
+                    this.rdAccessTypePublic.Checked = roleInfo.IsPublic;
 
                     if (roleInfo.Settings.ContainsKey("ReviewMembers"))
                     {
-                        chkMemberApproved.Checked = Convert.ToBoolean(roleInfo.Settings["ReviewMembers"].ToString());
+                        this.chkMemberApproved.Checked = Convert.ToBoolean(roleInfo.Settings["ReviewMembers"].ToString());
                     }
-                    imgGroup.Src = roleInfo.PhotoURL;
+
+                    this.imgGroup.Src = roleInfo.PhotoURL;
                 }
                 else
                 {
-                    Response.Redirect(ModuleContext.NavigateUrl(TabId, "", false));
+                    this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false));
                 }
             }
         }
+
+        private void InitializeComponent()
+        {
+            this.Load += this.Page_Load;
+            this.btnSave.Click += this.Save_Click;
+            this.btnCancel.Click += this.Cancel_Click;
+        }
+
         private void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(ModuleContext.NavigateUrl(TabId, "", false, new String[] { "groupid=" + GroupId.ToString() }));
+            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, new string[] { "groupid=" + this.GroupId.ToString() }));
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
-            if (GroupId > 0)
+            if (this.GroupId > 0)
             {
                 Security.PortalSecurity ps = Security.PortalSecurity.Instance;
 
-                txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
-                txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
-                txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
-                txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+                this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
+                this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+                this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
+                this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 
-                var roleInfo = RoleController.Instance.GetRoleById(PortalId, GroupId);
+                var roleInfo = RoleController.Instance.GetRoleById(this.PortalId, this.GroupId);
                 if (roleInfo != null)
                 {
-
-                    if (txtGroupName.Visible) //if this is visible assume that we're editing the groupname
+                    if (this.txtGroupName.Visible) // if this is visible assume that we're editing the groupname
                     {
-                        if (txtGroupName.Text != roleInfo.RoleName)
+                        if (this.txtGroupName.Text != roleInfo.RoleName)
                         {
-                            if (RoleController.Instance.GetRoleByName(PortalId, txtGroupName.Text) != null)
+                            if (RoleController.Instance.GetRoleByName(this.PortalId, this.txtGroupName.Text) != null)
                             {
-                                lblInvalidGroupName.Visible = true;
+                                this.lblInvalidGroupName.Visible = true;
                                 return;
                             }
                         }
                     }
 
-                    if(!roleInfo.IsSystemRole)
+                    if (!roleInfo.IsSystemRole)
                     {
-                        roleInfo.RoleName = txtGroupName.Text;
+                        roleInfo.RoleName = this.txtGroupName.Text;
                     }
 
-                    roleInfo.Description = txtDescription.Text;
-                    roleInfo.IsPublic = rdAccessTypePublic.Checked;
+                    roleInfo.Description = this.txtDescription.Text;
+                    roleInfo.IsPublic = this.rdAccessTypePublic.Checked;
 
                     if (roleInfo.Settings.ContainsKey("ReviewMembers"))
-                        roleInfo.Settings["ReviewMembers"] = chkMemberApproved.Checked.ToString();
+                    {
+                        roleInfo.Settings["ReviewMembers"] = this.chkMemberApproved.Checked.ToString();
+                    }
                     else
-                        roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
+                    {
+                        roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
+                    }
 
                     RoleController.Instance.UpdateRoleSettings(roleInfo, true);
                     RoleController.Instance.UpdateRole(roleInfo);
 
-                    if (inpFile.PostedFile.ContentLength > 0)
+                    if (this.inpFile.PostedFile.ContentLength > 0)
                     {
                         IFileManager _fileManager = FileManager.Instance;
                         IFolderManager _folderManager = FolderManager.Instance;
-                        var rootFolderPath = PathUtils.Instance.FormatFolderPath(PortalSettings.HomeDirectory);
+                        var rootFolderPath = PathUtils.Instance.FormatFolderPath(this.PortalSettings.HomeDirectory);
 
-                        IFolderInfo groupFolder = _folderManager.GetFolder(PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                        IFolderInfo groupFolder = _folderManager.GetFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                         if (groupFolder == null)
                         {
-                            groupFolder = _folderManager.AddFolder(PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                            groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                         }
+
                         if (groupFolder != null)
                         {
-                            var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
-                            var fileInfo = _fileManager.AddFile(groupFolder, fileName, inpFile.PostedFile.InputStream, true);
+                            var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
+                            var fileInfo = _fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true);
                             roleInfo.IconFile = "FileID=" + fileInfo.FileId;
                             RoleController.Instance.UpdateRole(roleInfo);
                         }
                     }
 
-                    //Clear Roles Cache
+                    // Clear Roles Cache
                     DataCache.RemoveCache("GetRoles");
-
                 }
 
-                Response.Redirect(_navigationManager.NavigateURL(TabId, "", new String[] { "groupid=" + GroupId.ToString() }));
+                this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, new string[] { "groupid=" + this.GroupId.ToString() }));
             }
         }
     }

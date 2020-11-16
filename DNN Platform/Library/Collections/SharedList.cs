@@ -1,229 +1,294 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    /// <summary>An <see cref="IList{T}"/> implementation designed to be shared across threads.</summary>
+    /// <typeparam name="T">The type of value in the list.</typeparam>
     public class SharedList<T> : IList<T>, IDisposable
     {
-        private readonly List<T> _list = new List<T>();
-        private ILockStrategy _lockStrategy;
+        private readonly List<T> list = new List<T>();
+        private ILockStrategy lockStrategy;
 
-        public SharedList() : this(LockingStrategy.ReaderWriter)
+        private bool isDisposed;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedList{T}"/> class.
+        /// </summary>
+        public SharedList()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedList{T}"/> class.
+        /// </summary>
+        /// <param name="lockStrategy">The locking strategy to use.</param>
         public SharedList(ILockStrategy lockStrategy)
         {
-            _lockStrategy = lockStrategy;
+            this.lockStrategy = lockStrategy;
         }
 
-        public SharedList(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedList{T}"/> class.
+        /// </summary>
+        /// <param name="strategy">The locking strategy to use.</param>
+        public SharedList(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
-        internal IList<T> BackingList
+        /// <summary>
+        /// Finalizes an instance of the <see cref="SharedList{T}"/> class.
+        /// </summary>
+        ~SharedList()
         {
-            get
-            {
-                return _list;
-            }
+            this.Dispose(false);
         }
 
-        #region IList<T> Members
-
-        public void Add(T item)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Add(item);
-        }
-
-        public void Clear()
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Clear();
-        }
-
-        public bool Contains(T item)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.Contains(item);
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            _list.CopyTo(array, arrayIndex);
-        }
-
+        /// <inheritdoc/>
         public int Count
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _list.Count;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.list.Count;
             }
         }
 
+        /// <inheritdoc/>
         public bool IsReadOnly
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return ((ICollection<T>) _list).IsReadOnly;
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return ((ICollection<T>)this.list).IsReadOnly;
             }
         }
 
-        public bool Remove(T item)
+        /// <summary>
+        /// Gets the backing list to use.
+        /// </summary>
+        internal IList<T> BackingList
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            return _list.Remove(item);
+            get
+            {
+                return this.list;
+            }
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.GetEnumerator();
-        }
-
-        public int IndexOf(T item)
-        {
-            EnsureNotDisposed();
-            EnsureReadAccess();
-            return _list.IndexOf(item);
-        }
-
-        public void Insert(int index, T item)
-        {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.Insert(index, item);
-        }
-
+        /// <inheritdoc/>
         public T this[int index]
         {
             get
             {
-                EnsureNotDisposed();
-                EnsureReadAccess();
-                return _list[index];
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this.list[index];
             }
+
             set
             {
-                EnsureNotDisposed();
-                EnsureWriteAccess();
-                _list[index] = value;
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this.list[index] = value;
             }
         }
 
+        /// <inheritdoc/>
+        public void Add(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.list.Add(item);
+        }
+
+        /// <inheritdoc/>
+        public void Clear()
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.list.Clear();
+        }
+
+        /// <inheritdoc/>
+        public bool Contains(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this.list.Contains(item);
+        }
+
+        /// <inheritdoc/>
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            this.list.CopyTo(array, arrayIndex);
+        }
+
+        /// <inheritdoc/>
+        public bool Remove(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            return this.list.Remove(item);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerator<T> GetEnumerator()
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this.list.GetEnumerator();
+        }
+
+        /// <inheritdoc/>
+        public int IndexOf(T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureReadAccess();
+            return this.list.IndexOf(item);
+        }
+
+        /// <inheritdoc/>
+        public void Insert(int index, T item)
+        {
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.list.Insert(index, item);
+        }
+
+        /// <inheritdoc/>
         public void RemoveAt(int index)
         {
-            EnsureNotDisposed();
-            EnsureWriteAccess();
-            _list.RemoveAt(index);
+            this.EnsureNotDisposed();
+            this.EnsureWriteAccess();
+            this.list.RemoveAt(index);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator1();
-        }
-
-        #endregion
-
-        #region "IDisposable Support"
-
-        private bool _isDisposed;
-
+        /// <inheritdoc/>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        // To detect redundant calls
-
+        /// <summary>
+        /// Ensures the instance is not disposed.
+        /// </summary>
         public void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("SharedList");
             }
         }
 
-        // IDisposable
+        /// <summary>
+        /// Gets a read lock on the resource.
+        /// </summary>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
+        public ISharedCollectionLock GetReadLock()
+        {
+            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        /// <summary>
+        /// Gets a read lock on the resource for the specified amount of time.
+        /// </summary>
+        /// <param name="timeOut">The amount of time to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
+        public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
+        {
+            this.EnsureNotDisposed();
+            return this.lockStrategy.GetReadLock(timeOut);
+        }
+
+        /// <summary>
+        /// Gets a read lock on the resource for the specified amount of time.
+        /// </summary>
+        /// <param name="millisecondTimeout">The number of milliseconds to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
+        public ISharedCollectionLock GetReadLock(int millisecondTimeout)
+        {
+            return this.GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+        }
+
+        /// <summary>
+        /// Gets a write lock on the resource for the specified amount of time.
+        /// </summary>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
+        public ISharedCollectionLock GetWriteLock()
+        {
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        /// <summary>
+        /// Gets a write lock on the resource for the specified amount of time.
+        /// </summary>
+        /// <param name="timeOut">The amount of time to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
+        public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
+        {
+            this.EnsureNotDisposed();
+            return this.lockStrategy.GetWriteLock(timeOut);
+        }
+
+        /// <summary>
+        /// Gets a write lock on the resource for the specified amount of time.
+        /// </summary>
+        /// <param name="millisecondTimeout">The number of milliseconds to lock for.</param>
+        /// <returns>An <see cref="ISharedCollectionLock"/> instance.</returns>
+        public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
+        {
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+        }
+
+        /// <summary>
+        /// Gets an enumerator to iterate through the collection.
+        /// </summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator GetEnumerator1()
+        {
+            return this.GetEnumerator();
+        }
+
+        /// <inheritdoc/>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator1();
+        }
+
+        /// <summary>
+        /// Disposes this instance resources.
+        /// </summary>
+        /// <param name="disposing">Indicates if this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
                     // dispose managed state (managed objects).
                 }
 
-                _lockStrategy.Dispose();
-                _lockStrategy = null;
+                this.lockStrategy.Dispose();
+                this.lockStrategy = null;
             }
-            _isDisposed = true;
-        }
 
-        ~SharedList()
-        {
-            Dispose(false);
-        }
-
-        #endregion
-
-        public ISharedCollectionLock GetReadLock()
-        {
-            return GetReadLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
-        {
-            EnsureNotDisposed();
-            return _lockStrategy.GetReadLock(timeOut);
-        }
-
-        public ISharedCollectionLock GetReadLock(int millisecondTimeout)
-        {
-            return GetReadLock(TimeSpan.FromMilliseconds(millisecondTimeout));
-        }
-
-        public ISharedCollectionLock GetWriteLock()
-        {
-            return GetWriteLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetWriteLock(TimeSpan timeOut)
-        {
-            EnsureNotDisposed();
-            return _lockStrategy.GetWriteLock(timeOut);
-        }
-
-        public ISharedCollectionLock GetWriteLock(int millisecondTimeout)
-        {
-            return GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
+            this.isDisposed = true;
         }
 
         private void EnsureReadAccess()
         {
-            if (!(_lockStrategy.ThreadCanRead))
+            if (!this.lockStrategy.ThreadCanRead)
             {
                 throw new ReadLockRequiredException();
             }
@@ -231,15 +296,10 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureWriteAccess()
         {
-            if (!_lockStrategy.ThreadCanWrite)
+            if (!this.lockStrategy.ThreadCanWrite)
             {
                 throw new WriteLockRequiredException();
             }
-        }
-
-        public IEnumerator GetEnumerator1()
-        {
-            return GetEnumerator();
         }
     }
 }

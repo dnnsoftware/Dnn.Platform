@@ -1,30 +1,35 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Content.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-
-using NUnit.Framework;
-using FileController = DotNetNuke.Entities.Content.AttachmentController;
-using Util = DotNetNuke.Entities.Content.Common.Util;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Content
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Content.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
+    using NUnit.Framework;
+
+    using FileController = DotNetNuke.Entities.Content.AttachmentController;
+    using Util = DotNetNuke.Entities.Content.Common.Util;
+
     [TestFixture]
     public class AttachmentControllerTests
     {
@@ -33,66 +38,23 @@ namespace DotNetNuke.Tests.Content
         [SetUp]
         public void SetUp()
         {
-            //Register MockCachingProvider
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+
+            // Register MockCachingProvider
+            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             MockComponentProvider.ResetContainer();
         }
-
-        #region Utility methods
-
-        private static Mock<IDataService> DataServiceFactory()
-        {
-            var dataService = new Mock<IDataService>();
-
-            dataService.Setup(ds =>
-             ds.SynchronizeMetaData(
-                 It.IsAny<ContentItem>(),
-                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>(),
-                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>()))
-             .Callback<ContentItem, IEnumerable<KeyValuePair<string, string>>, IEnumerable<KeyValuePair<string, string>>>(
-                 (ci, added, deleted) =>
-                 {
-                     deleted.ToList().ForEach(
-                         item => dataService.Object.DeleteMetaData(ci, item.Key, item.Value));
-
-                     added.ToList().ForEach(
-                         item => dataService.Object.AddMetaData(ci, item.Key, item.Value));
-                 });
-
-            // Register controller types that are dependent on our IDataService.
-            var contentController = new ContentController(dataService.Object);
-
-            ComponentFactory.RegisterComponentInstance<IAttachmentController>(new FileController(contentController));
-            ComponentFactory.RegisterComponentInstance<IContentController>(contentController);
-            ComponentFactory.RegisterComponentInstance<IFileManager>(MockHelper.CreateMockFileManager().Object);
-
-            return dataService;
-        }
-
-        private static Mock<IDataService> DataServiceFactoryWithLocalMetaData(ref Dictionary<string, string> metadata)
-        {
-            var dataService = DataServiceFactory();
-
-            var closure = metadata;
-
-            dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(() => MockHelper.CreateMetaDataReaderFromDictionary(closure));
-            dataService.Setup(ds => ds.AddMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>())).
-                Callback<ContentItem, string, string>((ci, name, value) => closure[name] = value);
-            dataService.Setup(ds => ds.DeleteMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback<ContentItem, string, string>((ci, key, val) => closure.Remove(key));
-
-            return dataService;
-        }
-
-        #endregion
-
-        #region FileController Tests
 
         [Test]
         public void Test_Add_File_To_Content_Item_Without_Metadata()
@@ -104,7 +66,7 @@ namespace DotNetNuke.Tests.Content
 
             // Return empty set of metadata.
             dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(MockHelper.CreateEmptyMetaDataReader);
-            
+
             var content = ContentTestHelper.CreateValidContentItem();
             content.Metadata.Clear();
 
@@ -120,7 +82,7 @@ namespace DotNetNuke.Tests.Content
             fileController.AddFileToContent(contentId, ContentTestHelper.CreateValidFile(0));
 
             dataService.Verify(
-                ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, new[] {0}.ToJson()));
+                ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, new[] { 0 }.ToJson()));
         }
 
         [Test]
@@ -130,7 +92,7 @@ namespace DotNetNuke.Tests.Content
                 {
                     ContentTestHelper.CreateValidFile(0),
                     ContentTestHelper.CreateValidFile(1),
-                    ContentTestHelper.CreateValidFile(2)
+                    ContentTestHelper.CreateValidFile(2),
                 };
 
             var dataService = DataServiceFactory();
@@ -141,7 +103,7 @@ namespace DotNetNuke.Tests.Content
                 ds =>
                     ds.GetMetaData(It.IsAny<int>())).Returns(
                         () => MockHelper.CreateMetaDataReaderWithFiles(files, new IFileInfo[0], new IFileInfo[0]));
-            
+
             var contentItem = Util.GetContentController().GetContentItem(Constants.CONTENT_ValidContentItemId);
             Assert.IsNotNull(contentItem);
 
@@ -166,7 +128,7 @@ namespace DotNetNuke.Tests.Content
 
             // Use a closure to store the metadata locally in this method.
             var data = new Dictionary<string, string>();
-            
+
             dataService.Setup(
                 ds =>
                     ds.GetMetaData(It.IsAny<int>())).Returns(
@@ -207,7 +169,7 @@ namespace DotNetNuke.Tests.Content
 
             dataService.Verify(
                 ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0]"), Times.Once());
-            
+
             dataService.Verify(
                 ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0,1]"), Times.Once());
         }
@@ -257,7 +219,7 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(0, emptyFiles.Count);
         }
 
-        /// <remarks>This test should be moved elsewhere (cb)</remarks>
+        /// <remarks>This test should be moved elsewhere (cb).</remarks>
         [Test]
         public void Set_MetaData_To_Same_Value_Doesnt_Update_Database_Entry()
         {
@@ -275,7 +237,7 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Never());
 
             contentItem.ContentTitle = "Foobar";
-            
+
             contentController.UpdateContentItem(contentItem);
 
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
@@ -289,7 +251,6 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Never());
 
-
             // Really update
             contentItem.ContentTitle = "SNAFU";
 
@@ -298,7 +259,49 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Exactly(2));
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
         }
-        
-        #endregion
+
+        private static Mock<IDataService> DataServiceFactory()
+        {
+            var dataService = new Mock<IDataService>();
+
+            dataService.Setup(ds =>
+             ds.SynchronizeMetaData(
+                 It.IsAny<ContentItem>(),
+                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>(),
+                 It.IsAny<IEnumerable<KeyValuePair<string, string>>>()))
+             .Callback<ContentItem, IEnumerable<KeyValuePair<string, string>>, IEnumerable<KeyValuePair<string, string>>>(
+                 (ci, added, deleted) =>
+                 {
+                     deleted.ToList().ForEach(
+                         item => dataService.Object.DeleteMetaData(ci, item.Key, item.Value));
+
+                     added.ToList().ForEach(
+                         item => dataService.Object.AddMetaData(ci, item.Key, item.Value));
+                 });
+
+            // Register controller types that are dependent on our IDataService.
+            var contentController = new ContentController(dataService.Object);
+
+            ComponentFactory.RegisterComponentInstance<IAttachmentController>(new FileController(contentController));
+            ComponentFactory.RegisterComponentInstance<IContentController>(contentController);
+            ComponentFactory.RegisterComponentInstance<IFileManager>(MockHelper.CreateMockFileManager().Object);
+
+            return dataService;
+        }
+
+        private static Mock<IDataService> DataServiceFactoryWithLocalMetaData(ref Dictionary<string, string> metadata)
+        {
+            var dataService = DataServiceFactory();
+
+            var closure = metadata;
+
+            dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(() => MockHelper.CreateMetaDataReaderFromDictionary(closure));
+            dataService.Setup(ds => ds.AddMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>())).
+                Callback<ContentItem, string, string>((ci, name, value) => closure[name] = value);
+            dataService.Setup(ds => ds.DeleteMetaData(It.IsAny<ContentItem>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<ContentItem, string, string>((ci, key, val) => closure.Remove(key));
+
+            return dataService;
+        }
     }
 }

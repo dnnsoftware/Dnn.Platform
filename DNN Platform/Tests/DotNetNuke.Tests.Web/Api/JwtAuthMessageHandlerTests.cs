@@ -1,34 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Cryptography;
-using System.Threading;
-using Dnn.AuthServices.Jwt.Auth;
-using Dnn.AuthServices.Jwt.Components.Entity;
-using Dnn.AuthServices.Jwt.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Web.ConfigSection;
-using Moq;
-using NUnit.Framework;
-using System.Text;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Data;
-using DotNetNuke.Security.Membership;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Threading;
+
+    using Dnn.AuthServices.Jwt.Auth;
+    using Dnn.AuthServices.Jwt.Components.Entity;
+    using Dnn.AuthServices.Jwt.Data;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using DotNetNuke.Web.ConfigSection;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class JwtAuthMessageHandlerTests
     {
-        #region setting/mocked data and methods
+        // { "type":"JWT","alg":"HS256"} . {"sub":"host","nbf":1,"exp":4102444799,"sid":"0123456789ABCDEF"} . (HS256_KEY="secret")
+        private const string ValidToken =
+            "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ";
 
         private Mock<DataProvider> _mockDataProvider;
         private Mock<MembershipProvider> _mockMembership;
@@ -37,43 +40,146 @@ namespace DotNetNuke.Tests.Web.Api
         private Mock<IUserController> _mockUserController;
         private Mock<IPortalController> _mockPortalController;
 
-        //{ "type":"JWT","alg":"HS256"} . {"sub":"host","nbf":1,"exp":4102444799,"sid":"0123456789ABCDEF"} . (HS256_KEY="secret")
-        private const string ValidToken =
-            "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ";
-
         public void SetupMockServices()
         {
             MockComponentProvider.CreateDataCacheProvider();
 
-            _mockDataService = new Mock<Entities.Portals.Data.IDataService>();
-            _mockDataProvider = MockComponentProvider.CreateDataProvider();
-            _mockPortalController = new Mock<IPortalController>();
-            _mockUserController = new Mock<IUserController>();
-            _mockMembership = MockComponentProvider.CreateNew<MembershipProvider>();
+            this._mockDataService = new Mock<Entities.Portals.Data.IDataService>();
+            this._mockDataProvider = MockComponentProvider.CreateDataProvider();
+            this._mockPortalController = new Mock<IPortalController>();
+            this._mockUserController = new Mock<IUserController>();
+            this._mockMembership = MockComponentProvider.CreateNew<MembershipProvider>();
 
-            _mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
-            _mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
-            _mockDataProvider.Setup(d => d.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(GetUser);
-            _mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(GetPortalGroups);
-            Entities.Portals.Data.DataService.RegisterInstance(_mockDataService.Object);
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
+            this._mockDataProvider.Setup(d => d.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(GetUser);
+            this._mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(this.GetPortalGroups);
+            Entities.Portals.Data.DataService.RegisterInstance(this._mockDataService.Object);
 
-            _mockMembership.Setup(m => m.PasswordRetrievalEnabled).Returns(true);
-            _mockMembership.Setup(m => m.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
+            this._mockMembership.Setup(m => m.PasswordRetrievalEnabled).Returns(true);
+            this._mockMembership.Setup(m => m.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
 
-            _mockJwtDataService = new Mock<IDataService>();
-            _mockJwtDataService.Setup(x => x.GetTokenById(It.IsAny<string>())).Returns((string sid) => GetPersistedToken(sid));
-            DataService.RegisterInstance(_mockJwtDataService.Object);
+            this._mockJwtDataService = new Mock<IDataService>();
+            this._mockJwtDataService.Setup(x => x.GetTokenById(It.IsAny<string>())).Returns((string sid) => GetPersistedToken(sid));
+            DataService.RegisterInstance(this._mockJwtDataService.Object);
 
-            PortalController.SetTestableInstance(_mockPortalController.Object);
-            _mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(
-                new PortalInfo {PortalID = 0, PortalGroupID = -1, UserTabId = 55});
-            _mockPortalController.Setup(x => x.GetPortalSettings(It.IsAny<int>())).Returns((int portalId) => new Dictionary<string, string>());
-            _mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(() => new PortalSettings());
+            PortalController.SetTestableInstance(this._mockPortalController.Object);
+            this._mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(
+                new PortalInfo { PortalID = 0, PortalGroupID = -1, UserTabId = 55 });
+            this._mockPortalController.Setup(x => x.GetPortalSettings(It.IsAny<int>())).Returns((int portalId) => new Dictionary<string, string>());
+            this._mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(() => new PortalSettings());
 
-            UserController.SetTestableInstance(_mockUserController.Object);
-            _mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
+            UserController.SetTestableInstance(this._mockUserController.Object);
+            this._mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
                 (int portalId, int userId) => GetUserByIdCallback(portalId, userId));
-            //_mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
+
+            // _mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
+        }
+
+        [Test]
+        public void ReturnsResponseAsReceived()
+        {
+            // Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { RequestMessage = new HttpRequestMessage() };
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response2 = handler.OnOutboundResponse(response, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual(response, response2);
+        }
+
+        [Test]
+        public void MissingAuthoizationHeaderReturnsNullResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
+        }
+
+        [Test]
+        public void WrongAuthoizationSchemeReturnsNullResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+            request.Headers.Authorization = AuthenticationHeaderValue.Parse("Basic ");
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
+        }
+
+        [Test]
+        public void MissingAuthoizationTokenReturnsNullResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+            request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer ");
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
+        }
+
+        [Test]
+        public void AuthoizationTokenWithMissingComponentsReturnsNullResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+            request.Headers.Authorization = AuthenticationHeaderValue.Parse(
+                "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0");
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
+        }
+
+        [Test]
+        public void AuthoizationTokenWithWrongSchemeTypeReturnsNullResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+            request.Headers.Authorization = AuthenticationHeaderValue.Parse(
+                "Bearer eyJ0eXBlIjoieHh4IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ");
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
+        }
+
+        [Test]
+        public void AuthoizationTokenWithoorResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+            request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer " + ValidToken);
+
+            // Act
+            this.SetupMockServices();
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
         }
 
         private static IDataReader GetUser()
@@ -108,24 +214,6 @@ namespace DotNetNuke.Tests.Web.Api
             return table.CreateDataReader();
         }
 
-        private IDataReader GetPortalGroups()
-        {
-            var table = new DataTable("ModuleDefinitions");
-            var pkId = table.Columns.Add("PortalGroupID", typeof(int));
-            table.Columns.Add("MasterPortalID", typeof(int));
-            table.Columns.Add("PortalGroupName", typeof(string));
-            table.Columns.Add("PortalGroupDescription", typeof(string));
-            table.Columns.Add("AuthenticationDomain", typeof(string));
-            table.Columns.Add("CreatedByUserID", typeof(int));
-            table.Columns.Add("CreatedOnDate", typeof(DateTime));
-            table.Columns.Add("LastModifiedByUserID", typeof(int));
-            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            table.PrimaryKey = new[] { pkId };
-
-            table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
-            return table.CreateDataReader();
-        }
-
         private static IDataReader GetPortalsCallBack(string culture)
         {
             return GetPortalCallBack(0, culture);
@@ -146,7 +234,7 @@ namespace DotNetNuke.Tests.Web.Api
                 "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
                 "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
                 "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                "CultureCode"
+                "CultureCode",
             };
 
             foreach (var col in cols)
@@ -168,6 +256,7 @@ namespace DotNetNuke.Tests.Web.Api
         private static PersistedToken GetPersistedToken(string sessionId)
         {
             if ("0123456789ABCDEF".Equals(sessionId))
+            {
                 return new PersistedToken
                 {
                     TokenId = sessionId,
@@ -177,6 +266,7 @@ namespace DotNetNuke.Tests.Web.Api
                     TokenHash = GetHashedStr(ValidToken),
                     RenewalHash = "renewal-hash",
                 };
+            }
 
             return null;
         }
@@ -188,139 +278,28 @@ namespace DotNetNuke.Tests.Web.Api
                 switch (userId)
                 {
                     case 1:
-                        return new UserInfo {UserID = userId, Username = "host", DisplayName = "Host User"};
+                        return new UserInfo { UserID = userId, Username = "host", DisplayName = "Host User" };
                     case 2:
-                        return new UserInfo {UserID = userId, Username = "admin", DisplayName = "Admin User"};
+                        return new UserInfo { UserID = userId, Username = "admin", DisplayName = "Admin User" };
                     case 3:
-                        return new UserInfo {UserID = userId, Username = "reguser", DisplayName = "Registered User"};
+                        return new UserInfo { UserID = userId, Username = "reguser", DisplayName = "Registered User" };
                 }
             }
 
             return null;
         }
 
-        #endregion
-
-        [Test]
-        public void ReturnsResponseAsReceived()
-        {
-            //Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK) {RequestMessage = new HttpRequestMessage()};
-
-            //Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response2 = handler.OnOutboundResponse(response, new CancellationToken());
-
-            //Assert
-            Assert.AreEqual(response, response2);
-        }
-
-        [Test]
-        public void MissingAuthoizationHeaderReturnsNullResponse()
-        {
-            //Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-
-            //Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
-
-            //Assert
-            Assert.IsNull(response);
-        }
-
-        [Test]
-        public void WrongAuthoizationSchemeReturnsNullResponse()
-        {
-            //Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-            request.Headers.Authorization = AuthenticationHeaderValue.Parse("Basic ");
-
-            //Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
-
-            //Assert
-            Assert.IsNull(response);
-        }
-
-        [Test]
-        public void MissingAuthoizationTokenReturnsNullResponse()
-        {
-            //Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-            request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer ");
-
-            //Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
-
-            //Assert
-            Assert.IsNull(response);
-        }
-
-        [Test]
-        public void AuthoizationTokenWithMissingComponentsReturnsNullResponse()
-        {
-            //Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-            request.Headers.Authorization = AuthenticationHeaderValue.Parse(
-                "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0");
-
-            //Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
-
-            //Assert
-            Assert.IsNull(response);
-        }
-
-        [Test]
-        public void AuthoizationTokenWithWrongSchemeTypeReturnsNullResponse()
-        {
-            //Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-            request.Headers.Authorization = AuthenticationHeaderValue.Parse(
-                "Bearer eyJ0eXBlIjoieHh4IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ");
-
-            //Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
-
-            //Assert
-            Assert.IsNull(response);
-        }
-
-        [Test]
-        public void AuthoizationTokenWithoorResponse()
-        {
-            //Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-            request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer " + ValidToken);
-
-            //Act
-            SetupMockServices();
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
-
-            //Assert
-            Assert.IsNull(response);
-        }
-
-        //todo unit test actual authentication code
+        // todo unit test actual authentication code
         // very hard to unit test inbound authentication code as it dips into untestable bits of
         // UserController, etc. Need to write controllers with interfaces and ServiceLocator<>.
 
-        #region helpers
-
-        //private static string DecodeBase64(string b64Str)
-        //{
+        // private static string DecodeBase64(string b64Str)
+        // {
         //    // fix Base64 string padding
         //    var mod = b64Str.Length % 4;
         //    if (mod != 0) b64Str += new string('=', 4 - mod);
         //    return Encoding.UTF8.GetString(Convert.FromBase64String(b64Str));
-        //}
-
+        // }
         private static string EncodeBase64(byte[] data)
         {
             return Convert.ToBase64String(data).TrimEnd('=');
@@ -334,6 +313,22 @@ namespace DotNetNuke.Tests.Web.Api
             }
         }
 
-        #endregion
+        private IDataReader GetPortalGroups()
+        {
+            var table = new DataTable("ModuleDefinitions");
+            var pkId = table.Columns.Add("PortalGroupID", typeof(int));
+            table.Columns.Add("MasterPortalID", typeof(int));
+            table.Columns.Add("PortalGroupName", typeof(string));
+            table.Columns.Add("PortalGroupDescription", typeof(string));
+            table.Columns.Add("AuthenticationDomain", typeof(string));
+            table.Columns.Add("CreatedByUserID", typeof(int));
+            table.Columns.Add("CreatedOnDate", typeof(DateTime));
+            table.Columns.Add("LastModifiedByUserID", typeof(int));
+            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            table.PrimaryKey = new[] { pkId };
+
+            table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
+            return table.CreateDataReader();
+        }
     }
 }

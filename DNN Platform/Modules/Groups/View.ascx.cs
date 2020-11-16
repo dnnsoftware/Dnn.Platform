@@ -1,57 +1,50 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Common;
-using DotNetNuke.Framework;
-using DotNetNuke.Abstractions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ViewSocialGroups class displays the content
+    /// The ViewSocialGroups class displays the content.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class View : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public View()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
         }
 
         private void InitializeComponent()
         {
-            Load += Page_Load;
+            this.Load += this.Page_Load;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, EventArgs e)
@@ -59,25 +52,23 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                if (GroupId < 0) {
-                    if (TabId != GroupListTabId && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) {
-                       Response.Redirect(_navigationManager.NavigateURL(GroupListTabId));
+                if (this.GroupId < 0)
+                {
+                    if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                    {
+                        this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
                     }
                 }
-                GroupsModuleBase ctl = (GroupsModuleBase)LoadControl(ControlPath);
-                ctl.ModuleConfiguration = this.ModuleConfiguration;
-                plhContent.Controls.Clear();
-                plhContent.Controls.Add(ctl);
 
+                GroupsModuleBase ctl = (GroupsModuleBase)this.LoadControl(this.ControlPath);
+                ctl.ModuleConfiguration = this.ModuleConfiguration;
+                this.plhContent.Controls.Clear();
+                this.plhContent.Controls.Add(ctl);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
-
     }
 }

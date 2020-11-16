@@ -19,7 +19,7 @@ const hotspotStyles = {
 
 const PersonaBarPageHeader = ({ title, children, tooltip, titleMaxWidth, titleCharLimit }) => {
 
-    titleCharLimit = titleCharLimit ? titleCharLimit : 20;
+    titleCharLimit = titleCharLimit ? titleCharLimit : 50;
 
     const renderTitle = () => {
         switch (true) {

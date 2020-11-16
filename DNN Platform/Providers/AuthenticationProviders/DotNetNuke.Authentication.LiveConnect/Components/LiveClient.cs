@@ -1,44 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Script.Serialization;
-
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Authentication.LiveConnect.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Script.Serialization;
+
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+
     public class LiveClient : OAuthClientBase
     {
-        #region Constructors
-
-        public LiveClient(int portalId, AuthMode mode) : base(portalId, mode, "Live")
+        public LiveClient(int portalId, AuthMode mode)
+            : base(portalId, mode, "Live")
         {
-            //DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
+            // DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
             // Add TokenMethod of Post to conform to other OAuth extensions
-            TokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");
-            AuthorizationEndpoint = new Uri("https://login.live.com/oauth20_authorize.srf");
-            MeGraphEndpoint = new Uri("https://apis.live.net/v5.0/me");
+            this.TokenMethod = HttpMethod.POST;
+            this.TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");
+            this.AuthorizationEndpoint = new Uri("https://login.live.com/oauth20_authorize.srf");
+            this.MeGraphEndpoint = new Uri("https://apis.live.net/v5.0/me");
 
-            Scope = HttpContext.Current.Server.UrlEncode("wl.signin wl.basic wl.emails");
+            this.Scope = HttpContext.Current.Server.UrlEncode("wl.signin wl.basic wl.emails");
 
-            AuthTokenName = "LiveUserToken";
+            this.AuthTokenName = "LiveUserToken";
 
-            OAuthVersion = "2.0";
+            this.OAuthVersion = "2.0";
 
-            LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
-
-        #endregion
 
         protected override TimeSpan GetExpiry(string responseText)
         {

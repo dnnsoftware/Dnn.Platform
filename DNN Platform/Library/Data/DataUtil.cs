@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-using System.Text;
-using DotNetNuke.Collections;
-using DotNetNuke.ComponentModel.DataAnnotations;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Data
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Text;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     internal static class DataUtil
     {
         internal static string GenerateExecuteStoredProcedureSql(string procedureName, params object[] args)
@@ -31,6 +32,7 @@ namespace DotNetNuke.Data
                     { // Add output for output params
                         parameterFormat += " output";
                     }
+
                     parameterName = param.ParameterName;
                 }
 
@@ -91,15 +93,15 @@ namespace DotNetNuke.Data
 
         internal static bool GetIsCacheable(Type type)
         {
-            return (GetAttribute<CacheableAttribute>(type) != null);
+            return GetAttribute<CacheableAttribute>(type) != null;
         }
 
         internal static TProperty GetPrimaryKey<TEntity, TProperty>(TEntity item)
         {
             Type modelType = typeof(TEntity);
 
-            //Get the primary key
-            var primaryKeyName = GetPrimaryKeyProperty(modelType, String.Empty);
+            // Get the primary key
+            var primaryKeyName = GetPrimaryKeyProperty(modelType, string.Empty);
 
             return GetPropertyValue<TEntity, TProperty>(item, primaryKeyName);
         }
@@ -140,7 +142,7 @@ namespace DotNetNuke.Data
 
         internal static string GetTableName(Type type)
         {
-            return GetTableName(type, String.Empty);
+            return GetTableName(type, string.Empty);
         }
 
         internal static string GetTableName(Type type, string defaultName)
@@ -159,7 +161,7 @@ namespace DotNetNuke.Data
         internal static string ReplaceTokens(string sql)
         {
             var isSqlCe = DataProvider.Instance().Settings.GetValueOrDefault("isSqlCe", false);
-            return sql.Replace("{databaseOwner}", (isSqlCe) ? String.Empty : DataProvider.Instance().DatabaseOwner)
+            return sql.Replace("{databaseOwner}", isSqlCe ? string.Empty : DataProvider.Instance().DatabaseOwner)
                         .Replace("{objectQualifier}", DataProvider.Instance().ObjectQualifier);
         }
     }

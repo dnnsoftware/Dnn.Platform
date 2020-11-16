@@ -1,25 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties
+    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -28,29 +24,24 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     {
         private readonly INavigationManager _navigationManager;
 
-        public AuthenticationEditor()
-        {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-		#region "Private Members"
-
         private AuthenticationInfo _AuthSystem;
         private AuthenticationSettingsBase _SettingsControl;
 
-        #endregion
-
-        #region "Protected Properties"
+        public AuthenticationEditor()
+        {
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         protected AuthenticationInfo AuthSystem
         {
             get
             {
-                if (_AuthSystem == null)
+                if (this._AuthSystem == null)
                 {
-                    _AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(PackageID);
+                    this._AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
                 }
-                return _AuthSystem;
+
+                return this._AuthSystem;
             }
         }
 
@@ -66,87 +57,42 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (_SettingsControl == null && !string.IsNullOrEmpty(AuthSystem.SettingsControlSrc))
+                if (this._SettingsControl == null && !string.IsNullOrEmpty(this.AuthSystem.SettingsControlSrc))
                 {
-                    _SettingsControl = (AuthenticationSettingsBase) LoadControl("~/" + AuthSystem.SettingsControlSrc);
+                    this._SettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
                 }
-                return _SettingsControl;
+
+                return this._SettingsControl;
             }
         }
-
-		#endregion
-
-		#region "Private Methods"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This routine Binds the Authentication System
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void BindAuthentication()
-        {
-            if (AuthSystem != null)
-            {
-                if (AuthSystem.AuthenticationType == "DNN")
-                {
-                    authenticationFormReadOnly.DataSource = AuthSystem;
-                    authenticationFormReadOnly.DataBind();
-                }
-                else
-                {
-                    authenticationForm.DataSource = AuthSystem;
-                    authenticationForm.DataBind();
-                }
-                authenticationFormReadOnly.Visible = IsSuperTab && (AuthSystem.AuthenticationType == "DNN");
-                authenticationForm.Visible = IsSuperTab && AuthSystem.AuthenticationType != "DNN";
-
-
-                if (SettingsControl != null)
-                {
-					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-                    //this is necessary for the Localization in PageBase
-                    SettingsControl.ID = Path.GetFileNameWithoutExtension(AuthSystem.SettingsControlSrc);
-
-                    //Add Container to Controls
-                    pnlSettings.Controls.AddAt(0, SettingsControl);
-                }
-                else
-                {
-                    cmdUpdate.Visible = false;
-                }
-            }
-        }
-
-		#endregion
-
-		#region "Public Methods"
 
         public override void Initialize()
         {
-            pnlSettings.Visible = !IsSuperTab;
-            if (IsSuperTab)
+            this.pnlSettings.Visible = !this.IsSuperTab;
+            if (this.IsSuperTab)
             {
-                lblHelp.Text = Localization.GetString("HostHelp", LocalResourceFile);
+                this.lblHelp.Text = Localization.GetString("HostHelp", this.LocalResourceFile);
             }
             else
             {
-                if (SettingsControl == null)
+                if (this.SettingsControl == null)
                 {
-                    lblHelp.Text = Localization.GetString("NoSettings", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("NoSettings", this.LocalResourceFile);
                 }
                 else
                 {
-                    lblHelp.Text = Localization.GetString("AdminHelp", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("AdminHelp", this.LocalResourceFile);
                 }
             }
-            BindAuthentication();
+
+            this.BindAuthentication();
         }
 
         public override void UpdatePackage()
         {
-            if (authenticationForm.IsValid)
+            if (this.authenticationForm.IsValid)
             {
-                var authInfo = authenticationForm.DataSource as AuthenticationInfo;
+                var authInfo = this.authenticationForm.DataSource as AuthenticationInfo;
                 if (authInfo != null)
                 {
                     AuthenticationController.UpdateAuthentication(authInfo);
@@ -154,30 +100,65 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-		#endregion
-
-		#region "Event Handlers"
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdUpdate.Click += cmdUpdate_Click;
-            var displayMode = DisplayMode;
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            var displayMode = this.DisplayMode;
             if (displayMode == "editor" || displayMode == "settings")
             {
-                AuthEditorHead.Visible = AuthEditorHead.EnableViewState = false;
+                this.AuthEditorHead.Visible = this.AuthEditorHead.EnableViewState = false;
             }
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
-            SettingsControl?.UpdateSettings();
+            this.SettingsControl?.UpdateSettings();
 
-            var displayMode = DisplayMode;
+            var displayMode = this.DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+            {
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+            }
         }
 
-		#endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This routine Binds the Authentication System.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void BindAuthentication()
+        {
+            if (this.AuthSystem != null)
+            {
+                if (this.AuthSystem.AuthenticationType == "DNN")
+                {
+                    this.authenticationFormReadOnly.DataSource = this.AuthSystem;
+                    this.authenticationFormReadOnly.DataBind();
+                }
+                else
+                {
+                    this.authenticationForm.DataSource = this.AuthSystem;
+                    this.authenticationForm.DataBind();
+                }
+
+                this.authenticationFormReadOnly.Visible = this.IsSuperTab && (this.AuthSystem.AuthenticationType == "DNN");
+                this.authenticationForm.Visible = this.IsSuperTab && this.AuthSystem.AuthenticationType != "DNN";
+
+                if (this.SettingsControl != null)
+                {
+                    // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+                    // this is necessary for the Localization in PageBase
+                    this.SettingsControl.ID = Path.GetFileNameWithoutExtension(this.AuthSystem.SettingsControlSrc);
+
+                    // Add Container to Controls
+                    this.pnlSettings.Controls.AddAt(0, this.SettingsControl);
+                }
+                else
+                {
+                    this.cmdUpdate.Visible = false;
+                }
+            }
+        }
     }
 }

@@ -1,246 +1,87 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-    public class EventLogController : ServiceLocator<IEventLogController, EventLogController>, IEventLogController
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+
+    /// <inheritdoc />
+    public partial class EventLogController : IEventLogger, IEventLogConfigService, IEventLogService
     {
-        #region EventLogType enum
+        private IEventLogger EventLogger => this;
 
-        public enum EventLogType
+        private IEventLogConfigService EventLogConfigService => this;
+
+        private IEventLogService EventLogService => this;
+
+        /// <inheritdoc />
+        void IEventLogger.AddLog(string name, string value, Abstractions.Logging.EventLogType logType)
         {
-            USER_CREATED,
-            USER_DELETED,
-            LOGIN_SUPERUSER,
-            LOGIN_SUCCESS,
-            LOGIN_FAILURE,
-            LOGIN_USERLOCKEDOUT,
-            LOGIN_USERNOTAPPROVED,
-            CACHE_REFRESHED,
-            PASSWORD_SENT_SUCCESS,
-            PASSWORD_SENT_FAILURE,
-            LOG_NOTIFICATION_FAILURE,
-            PORTAL_CREATED,
-            PORTAL_DELETED,
-            PORTALGROUP_CREATED,
-            PORTALGROUP_DELETED,
-            PORTAL_ADDEDTOPORTALGROUP,
-            PORTAL_REMOVEDFROMPORTALGROUP,
-            TAB_CREATED,
-            TAB_UPDATED,
-            TAB_DELETED,
-            TAB_SENT_TO_RECYCLE_BIN,
-            TAB_RESTORED,
-            USER_ROLE_CREATED,
-            USER_ROLE_DELETED,
-            USER_ROLE_UPDATED,
-            ROLE_CREATED,
-            ROLE_UPDATED,
-            ROLE_DELETED,
-            MODULE_CREATED,
-            MODULE_UPDATED,
-            MODULE_DELETED,
-            MODULE_SENT_TO_RECYCLE_BIN,
-            MODULE_RESTORED,
-            SCHEDULER_EVENT_STARTED,
-            SCHEDULER_EVENT_PROGRESSING,
-            SCHEDULER_EVENT_COMPLETED,
-            APPLICATION_START,
-            APPLICATION_END,
-            APPLICATION_SHUTTING_DOWN,
-            SCHEDULER_STARTED,
-            SCHEDULER_SHUTTING_DOWN,
-            SCHEDULER_STOPPED,
-            ADMIN_ALERT,
-            HOST_ALERT,
-            CACHE_REMOVED,
-            CACHE_EXPIRED,
-            CACHE_UNDERUSED,
-            CACHE_DEPENDENCYCHANGED,
-            CACHE_OVERFLOW,
-            CACHE_REFRESH,
-            LISTENTRY_CREATED,
-            LISTENTRY_UPDATED,
-            LISTENTRY_DELETED,
-            DESKTOPMODULE_CREATED,
-            DESKTOPMODULE_UPDATED,
-            DESKTOPMODULE_DELETED,
-            SKINCONTROL_CREATED,
-            SKINCONTROL_UPDATED,
-            SKINCONTROL_DELETED,
-            PORTALALIAS_CREATED,
-            PORTALALIAS_UPDATED,
-            PORTALALIAS_DELETED,
-            PROFILEPROPERTY_CREATED,
-            PROFILEPROPERTY_UPDATED,
-            PROFILEPROPERTY_DELETED,
-            USER_UPDATED,
-            DESKTOPMODULEPERMISSION_CREATED,
-            DESKTOPMODULEPERMISSION_UPDATED,
-            DESKTOPMODULEPERMISSION_DELETED,
-            PERMISSION_CREATED,
-            PERMISSION_UPDATED,
-            PERMISSION_DELETED,
-            TABPERMISSION_CREATED,
-            TABPERMISSION_UPDATED,
-            TABPERMISSION_DELETED,
-            AUTHENTICATION_CREATED,
-            AUTHENTICATION_UPDATED,
-            AUTHENTICATION_DELETED,
-            FILE_ADDED,
-            FILE_CHANGED,
-            FILE_DELETED,
-            FILE_DOWNLOADED,
-            FILE_MOVED,
-            FILE_OVERWRITTEN,
-            FILE_RENAMED,
-            FILE_METADATACHANGED,
-            FOLDER_CREATED,
-            FOLDER_UPDATED,
-            FOLDER_DELETED,
-            PACKAGE_CREATED,
-            PACKAGE_UPDATED,
-            PACKAGE_DELETED,
-            LANGUAGEPACK_CREATED,
-            LANGUAGEPACK_UPDATED,
-            LANGUAGEPACK_DELETED,
-            LANGUAGE_CREATED,
-            LANGUAGE_UPDATED,
-            LANGUAGE_DELETED,
-            LIBRARY_UPDATED,
-            SKINPACKAGE_CREATED,
-            SKINPACKAGE_UPDATED,
-            SKINPACKAGE_DELETED,
-            SCHEDULE_CREATED,
-            SCHEDULE_UPDATED,
-            SCHEDULE_DELETED,
-            HOST_SETTING_CREATED,
-            HOST_SETTING_UPDATED,
-            HOST_SETTING_DELETED,
-            PORTALDESKTOPMODULE_CREATED,
-            PORTALDESKTOPMODULE_UPDATED,
-            PORTALDESKTOPMODULE_DELETED,
-            TABMODULE_CREATED,
-            TABMODULE_UPDATED,
-            TABMODULE_DELETED,
-            TABMODULE_SETTING_CREATED,
-            TABMODULE_SETTING_UPDATED,
-            TABMODULE_SETTING_DELETED,
-            MODULE_SETTING_CREATED,
-            MODULE_SETTING_UPDATED,
-            MODULE_SETTING_DELETED,
-            PORTAL_SETTING_CREATED,
-            PORTAL_SETTING_UPDATED,
-            PORTAL_SETTING_DELETED,
-            PORTALINFO_CREATED,
-            PORTALINFO_UPDATED,
-            PORTALINFO_DELETED,
-            AUTHENTICATION_USER_CREATED,
-            AUTHENTICATION_USER_UPDATED,
-            AUTHENTICATION_USER_DELETED,
-            LANGUAGETOPORTAL_CREATED,
-            LANGUAGETOPORTAL_UPDATED,
-            LANGUAGETOPORTAL_DELETED,
-            TAB_ORDER_UPDATED,
-            TAB_SETTING_CREATED,
-            TAB_SETTING_UPDATED,
-            TAB_SETTING_DELETED,
-            HOST_SQL_EXECUTED,
-            USER_RESTORED,
-            USER_REMOVED,
-            USER_IMPERSONATED,
-            USERNAME_UPDATED,
-            IP_LOGIN_BANNED,
-            PAGE_NOT_FOUND_404,
-            TABURL_CREATED,
-            TABURL_UPDATED,
-            TABURL_DELETED,
-            SCRIPT_COLLISION,
-            POTENTIAL_PAYPAL_PAYMENT_FRAUD,
-            WEBSERVER_CREATED,
-            WEBSERVER_UPDATED,
-            WEBSERVER_DISABLED,
-            WEBSERVER_ENABLED,
-            WEBSERVER_PINGFAILED,
-            FOLDER_MOVED
+            this.EventLogger.AddLog(name, value, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
         }
 
-        #endregion
-
-        protected override Func<IEventLogController> GetFactory()
+        /// <inheritdoc />
+        void IEventLogger.AddLog(string name, string value, IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
         {
-            return () => new EventLogController();
+            this.EventLogger.AddLog(name, value, portalSettings, userID, logType.ToString());
         }
 
-        #region IEventLogController Members
-
-        public void AddLog(string propertyName, string propertyValue, EventLogType logType)
-        {
-            AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
-        }
-
-        public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)
-        {
-            AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
-        }
-
-        public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
+        /// <inheritdoc />
+        void IEventLogger.AddLog(string name, string value, IPortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
-            var logDetailInfo = new LogDetailInfo {PropertyName = propertyName, PropertyValue = propertyValue};
+            var logDetailInfo = new LogDetailInfo { PropertyName = name, PropertyValue = value };
             properties.Add(logDetailInfo);
-            AddLog(properties, portalSettings, userID, logType, false);
+            this.AddLog(properties, portalSettings, userID, logType, false);
         }
 
-        public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
+        /// <inheritdoc />
+        void IEventLogger.AddLog(ILogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
         {
-            //supports adding a custom string for LogType
+            // supports adding a custom string for LogType
             var log = new LogInfo
-                {
-                    LogUserID = userID,
-                    LogTypeKey = logTypeKey,
-                    LogProperties = properties,
-                    BypassBuffering = bypassBuffering
-                };
+            {
+                LogUserID = userID,
+                LogTypeKey = logTypeKey,
+                LogProperties = (LogProperties)properties,
+                BypassBuffering = bypassBuffering,
+            };
+
             if (portalSettings != null)
             {
                 log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
+
             LogController.Instance.AddLog(log);
         }
 
-        public void AddLog(PortalSettings portalSettings, int userID, EventLogType logType)
+        /// <inheritdoc />
+        void IEventLogger.AddLog(IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
         {
-            AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
+            this.EventLogger.AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
         }
 
-        public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType)
+        /// <inheritdoc />
+        void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, Abstractions.Logging.EventLogType logType)
         {
-            AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
+            this.AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
         }
 
-        public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType)
+        /// <inheritdoc />
+        void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType)
         {
             var log = new LogInfo { LogUserID = userID, LogTypeKey = logType };
             if (portalSettings != null)
@@ -339,113 +180,108 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             else
             {
-                //Serialise using XmlSerializer
+                // Serialise using XmlSerializer
                 log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
             }
 
             LogController.Instance.AddLog(log);
         }
 
-        #endregion
-
-        #region ILogController Members
-
-        public void AddLog(LogInfo logInfo)
+        /// <inheritdoc />
+        void IEventLogger.AddLog(ILogInfo logInfo)
         {
-            LogController.Instance.AddLog(logInfo);
+            LogController.Instance.AddLog((LogInfo)logInfo);
         }
 
-        public void AddLogType(string configFile, string fallbackConfigFile)
+        /// <inheritdoc />
+        void IEventLogConfigService.AddLogType(string configFile, string fallbackConfigFile)
         {
             LogController.Instance.AddLogType(configFile, fallbackConfigFile);
         }
 
-        public void AddLogType(LogTypeInfo logType)
+        /// <inheritdoc />
+        void IEventLogConfigService.AddLogType(ILogTypeInfo logType)
         {
-            LogController.Instance.AddLogType(logType);
+            LogController.Instance.AddLogType((LogTypeInfo)logType);
         }
 
-        public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        /// <inheritdoc />
+        void IEventLogConfigService.AddLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
         {
-            LogController.Instance.AddLogTypeConfigInfo(logTypeConfig);
+            LogController.Instance.AddLogTypeConfigInfo((LogTypeConfigInfo)logTypeConfig);
         }
 
-        public void ClearLog()
+        /// <inheritdoc />
+        void IEventLogService.ClearLog()
         {
             LogController.Instance.ClearLog();
         }
 
-        public void DeleteLog(LogInfo logInfo)
+        /// <inheritdoc />
+        void IEventLogService.DeleteLog(ILogInfo logInfo)
         {
-            LogController.Instance.DeleteLog(logInfo);
+            LogController.Instance.DeleteLog((LogInfo)logInfo);
         }
 
-        public void DeleteLogType(LogTypeInfo logType)
+        /// <inheritdoc />
+        void IEventLogConfigService.DeleteLogType(ILogTypeInfo logType)
         {
-            LogController.Instance.DeleteLogType(logType);
+            LogController.Instance.DeleteLogType((LogTypeInfo)logType);
         }
 
-        public void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        /// <inheritdoc />
+        void IEventLogConfigService.DeleteLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
         {
-            LogController.Instance.DeleteLogTypeConfigInfo(logTypeConfig);
+            LogController.Instance.DeleteLogTypeConfigInfo((LogTypeConfigInfo)logTypeConfig);
         }
 
-        public List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
+        /// <inheritdoc />
+        IEnumerable<ILogInfo> IEventLogService.GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
         {
             return LogController.Instance.GetLogs(portalID, logType, pageSize, pageIndex, ref totalRecords);
         }
 
-        public ArrayList GetLogTypeConfigInfo()
+        /// <inheritdoc />
+        IEnumerable<ILogTypeConfigInfo> IEventLogConfigService.GetLogTypeConfigInfo()
         {
-            return LogController.Instance.GetLogTypeConfigInfo();
+            return LogController.Instance.GetLogTypeConfigInfo().Cast<ILogTypeConfigInfo>();
         }
 
-        public LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
+        /// <inheritdoc />
+        ILogTypeConfigInfo IEventLogConfigService.GetLogTypeConfigInfoByID(string id)
         {
             return LogController.Instance.GetLogTypeConfigInfoByID(id);
         }
 
-        public Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary()
+        /// <inheritdoc />
+        IDictionary<string, ILogTypeInfo> IEventLogConfigService.GetLogTypeInfoDictionary()
         {
-            return LogController.Instance.GetLogTypeInfoDictionary();
+            return LogController.Instance.GetLogTypeInfoDictionary()
+                .ToDictionary(key => key.Key, value => (ILogTypeInfo)value.Value);
         }
 
-        public object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType)
+        /// <inheritdoc />
+        public ILogInfo GetLog(string logGuid)
         {
-            return LogController.Instance.GetSingleLog(log, returnType);
+            return LogController.Instance.GetLog(logGuid);
         }
 
-        public void PurgeLogBuffer()
+        /// <inheritdoc />
+        void IEventLogService.PurgeLogBuffer()
         {
             LogController.Instance.PurgeLogBuffer();
         }
 
-        public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        /// <inheritdoc />
+        void IEventLogConfigService.UpdateLogTypeConfigInfo(ILogTypeConfigInfo logTypeConfig)
         {
-            LogController.Instance.UpdateLogTypeConfigInfo(logTypeConfig);
+            LogController.Instance.UpdateLogTypeConfigInfo((LogTypeConfigInfo)logTypeConfig);
         }
 
-        public virtual void UpdateLogType(LogTypeInfo logType)
+        /// <inheritdoc />
+        void IEventLogConfigService.UpdateLogType(ILogTypeInfo logType)
         {
-            LogController.Instance.UpdateLogType(logType);
+            LogController.Instance.UpdateLogType((LogTypeInfo)logType);
         }
-
-
-        #endregion
-
-        #region Helper Methods
-
-        public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
-        {
-            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
-            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
-            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
-
-            LogController.Instance.AddLog(log);
-        }
-
-        #endregion
-
     }
 }

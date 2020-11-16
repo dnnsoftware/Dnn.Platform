@@ -1,77 +1,99 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Text;
-using System.Web;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.UI.UserControls;
-using Microsoft.Extensions.DependencyInjection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Common.Internal
 {
+    using System;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>
+    /// A collection of Dnn global methods and properties.
+    /// </summary>
     public class GlobalsImpl : IGlobals
     {
-        protected INavigationManager NavigationManager { get; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GlobalsImpl"/> class.
+        /// </summary>
         public GlobalsImpl()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         public string ApplicationPath
         {
             get { return Globals.ApplicationPath; }
         }
 
+        /// <inheritdoc/>
         public string HostMapPath
         {
             get { return Globals.HostMapPath; }
         }
 
+        /// <summary>
+        /// Gets a navigation manager to provide navigation services.
+        /// </summary>
+        protected INavigationManager NavigationManager { get; }
+
+        /// <inheritdoc/>
         public string GetSubFolderPath(string strFileNamePath, int portalId)
         {
             return Globals.GetSubFolderPath(strFileNamePath, portalId);
         }
 
+        /// <inheritdoc/>
         public string LinkClick(string link, int tabId, int moduleId)
         {
             return Globals.LinkClick(link, tabId, moduleId);
         }
 
+        /// <inheritdoc/>
         public string LinkClick(string link, int tabID, int moduleID, bool trackClicks, bool forceDownload, int portalId, bool enableUrlLanguage, string portalGuid)
         {
-            return Globals.LinkClick(link, tabID, moduleID, trackClicks, forceDownload, portalId, enableUrlLanguage,portalGuid);
+            return Globals.LinkClick(link, tabID, moduleID, trackClicks, forceDownload, portalId, enableUrlLanguage, portalGuid);
         }
 
+        /// <inheritdoc/>
         public string ResolveUrl(string url)
         {
             return Globals.ResolveUrl(url);
         }
 
+        /// <inheritdoc/>
         public bool IsHostTab(int tabId)
         {
             return Globals.IsHostTab(tabId);
         }
 
+        /// <inheritdoc/>
         public string AddHTTP(string strURL)
         {
             return Globals.AddHTTP(strURL);
         }
 
-        public string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)
+        /// <inheritdoc/>
+        public string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP)
         {
-            return Globals.GetPortalDomainName(strPortalAlias, Request, blnAddHTTP);
+            return Globals.GetPortalDomainName(strPortalAlias, request, blnAddHTTP);
         }
 
+        /// <inheritdoc/>
         public string GetDomainName(Uri requestedUri)
         {
-            return GetDomainName(requestedUri, false);
+            return this.GetDomainName(requestedUri, false);
         }
 
+        /// <inheritdoc/>
         public string GetDomainName(Uri requestedUri, bool parsePortNumber)
         {
             var domainName = new StringBuilder();
@@ -83,15 +105,17 @@ namespace DotNetNuke.Common.Internal
             // Binary, else '?' isn't taken literally; only interested in one (left) string
             string uri = requestedUri.ToString();
             string hostHeader = Config.GetSetting("HostHeader");
-            if (!String.IsNullOrEmpty(hostHeader))
+            if (!string.IsNullOrEmpty(hostHeader))
             {
-                uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), "");
+                uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), string.Empty);
             }
+
             int queryIndex = uri.IndexOf("?", StringComparison.Ordinal);
             if (queryIndex > -1)
             {
                 uri = uri.Substring(0, queryIndex);
             }
+
             string[] url = uri.Split('/');
             for (queryIndex = 2; queryIndex <= url.GetUpperBound(0); queryIndex++)
             {
@@ -114,137 +138,162 @@ namespace DotNetNuke.Common.Internal
                         //   we'll use reverse match,
                         //   - but that means we are checking position of left end of the match;
                         //   - and to do that, we need to ensure the string we test against is long enough;
-                        if ((url[queryIndex].Length >= ".aspx".Length))
+                        if (url[queryIndex].Length >= ".aspx".Length)
                         {
-                            if (url[queryIndex].LastIndexOf(".aspx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".aspx".Length)) ||
-                                url[queryIndex].LastIndexOf(".axd", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".axd".Length)) ||
-                                url[queryIndex].LastIndexOf(".ashx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".ashx".Length)))
+                            if (url[queryIndex].LastIndexOf(".aspx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - ".aspx".Length) ||
+                                url[queryIndex].LastIndexOf(".axd", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - ".axd".Length) ||
+                                url[queryIndex].LastIndexOf(".ashx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - ".ashx".Length))
                             {
                                 break;
                             }
                         }
+
                         // non of the exclusionary names found
-                        domainName.Append((!String.IsNullOrEmpty(domainName.ToString()) ? "/" : "") + url[queryIndex]);
+                        domainName.Append((!string.IsNullOrEmpty(domainName.ToString()) ? "/" : string.Empty) + url[queryIndex]);
                         break;
                 }
+
                 if (needExit)
                 {
                     break;
                 }
             }
+
             if (parsePortNumber)
             {
                 if (domainName.ToString().IndexOf(":", StringComparison.Ordinal) != -1)
                 {
                     if (!Globals.UsePortNumber())
                     {
-                        domainName = domainName.Replace(":" + requestedUri.Port, "");
+                        domainName = domainName.Replace(":" + requestedUri.Port, string.Empty);
                     }
                 }
             }
+
             return domainName.ToString();
         }
 
-        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
+        /// <inheritdoc/>
+        public string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name)
         {
-            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name);
+            return Globals.FormatHelpUrl(helpUrl, objPortalSettings, name);
         }
 
-        public string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name, string Version)
+        /// <inheritdoc/>
+        public string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name, string version)
         {
-            return Globals.FormatHelpUrl(HelpUrl, objPortalSettings, Name, Version);
+            return Globals.FormatHelpUrl(helpUrl, objPortalSettings, name, version);
         }
 
+        /// <inheritdoc/>
         public string AccessDeniedURL()
         {
             return Globals.AccessDeniedURL();
         }
 
-        public string AccessDeniedURL(string Message)
+        /// <inheritdoc/>
+        public string AccessDeniedURL(string message)
         {
-            return Globals.AccessDeniedURL(Message);
+            return Globals.AccessDeniedURL(message);
         }
 
+        /// <inheritdoc/>
         public string LoginURL(string returnURL, bool @override)
         {
             return Globals.LoginURL(returnURL, @override);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL()
         {
-            return NavigationManager.NavigateURL();
+            return this.NavigationManager.NavigateURL();
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID)
         {
-            return NavigationManager.NavigateURL(tabID);
+            return this.NavigationManager.NavigateURL(tabID);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(string controlKey)
         {
-            return NavigationManager.NavigateURL(controlKey);
+            return this.NavigationManager.NavigateURL(controlKey);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, string controlKey)
         {
-            return NavigationManager.NavigateURL(tabID, controlKey);
+            return this.NavigationManager.NavigateURL(tabID, controlKey);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path)
         {
             return Globals.FriendlyUrl(tab, path);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             return Globals.FriendlyUrl(tab, path, pageName);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, settings);
+            return Globals.FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, pageName, settings);
+            return Globals.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
+        /// <inheritdoc/>
         public string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return Globals.FriendlyUrl(tab, path, pageName, portalAlias);

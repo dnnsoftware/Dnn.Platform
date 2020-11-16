@@ -1,53 +1,64 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : DesktopModulePermissionCollection
+    /// Class    : DesktopModulePermissionCollection
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionCollection provides the a custom collection for DesktopModulePermissionInfo
-    /// objects
+    /// objects.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModulePermissionCollection : CollectionBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
         public DesktopModulePermissionCollection()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
+        /// <param name="DesktopModulePermissions"></param>
         public DesktopModulePermissionCollection(ArrayList DesktopModulePermissions)
         {
-            AddRange(DesktopModulePermissions);
+            this.AddRange(DesktopModulePermissions);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
+        /// <param name="DesktopModulePermissions"></param>
         public DesktopModulePermissionCollection(DesktopModulePermissionCollection DesktopModulePermissions)
         {
-            AddRange(DesktopModulePermissions);
+            this.AddRange(DesktopModulePermissions);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
+        /// </summary>
+        /// <param name="DesktopModulePermissions"></param>
+        /// <param name="DesktopModulePermissionID"></param>
         public DesktopModulePermissionCollection(ArrayList DesktopModulePermissions, int DesktopModulePermissionID)
         {
             foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)
             {
                 if (permission.DesktopModulePermissionID == DesktopModulePermissionID)
                 {
-                    Add(permission);
+                    this.Add(permission);
                 }
             }
         }
@@ -56,17 +67,18 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (DesktopModulePermissionInfo) List[index];
+                return (DesktopModulePermissionInfo)this.List[index];
             }
+
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
         public int Add(DesktopModulePermissionInfo value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         public int Add(DesktopModulePermissionInfo value, bool checkForDuplicates)
@@ -74,12 +86,12 @@ namespace DotNetNuke.Security.Permissions
             int id = Null.NullInteger;
             if (!checkForDuplicates)
             {
-                id = Add(value);
+                id = this.Add(value);
             }
             else
             {
                 bool isMatch = false;
-                foreach (PermissionInfoBase permission in List)
+                foreach (PermissionInfoBase permission in this.List)
                 {
                     if (permission.PermissionID == value.PermissionID && permission.UserID == value.UserID && permission.RoleID == value.RoleID)
                     {
@@ -87,9 +99,10 @@ namespace DotNetNuke.Security.Permissions
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
-                    id = Add(value);
+                    id = this.Add(value);
                 }
             }
 
@@ -100,7 +113,7 @@ namespace DotNetNuke.Security.Permissions
         {
             foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
@@ -108,55 +121,57 @@ namespace DotNetNuke.Security.Permissions
         {
             foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
         public bool CompareTo(DesktopModulePermissionCollection objDesktopModulePermissionCollection)
         {
-            if (objDesktopModulePermissionCollection.Count != Count)
+            if (objDesktopModulePermissionCollection.Count != this.Count)
             {
                 return false;
             }
-            InnerList.Sort(new CompareDesktopModulePermissions());
+
+            this.InnerList.Sort(new CompareDesktopModulePermissions());
             objDesktopModulePermissionCollection.InnerList.Sort(new CompareDesktopModulePermissions());
-            for (int i = 0; i <= Count - 1; i++)
+            for (int i = 0; i <= this.Count - 1; i++)
             {
                 if (objDesktopModulePermissionCollection[i].DesktopModulePermissionID != this[i].DesktopModulePermissionID || objDesktopModulePermissionCollection[i].AllowAccess != this[i].AllowAccess)
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
         public bool Contains(DesktopModulePermissionInfo value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         public int IndexOf(DesktopModulePermissionInfo value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         public void Insert(int index, DesktopModulePermissionInfo value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         public void Remove(DesktopModulePermissionInfo value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         public void Remove(int permissionID, int roleID, int userID)
         {
-            foreach (PermissionInfoBase permission in List)
+            foreach (PermissionInfoBase permission in this.List)
             {
                 if (permission.PermissionID == permissionID && permission.UserID == userID && permission.RoleID == roleID)
                 {
-                    List.Remove(permission);
+                    this.List.Remove(permission);
                     break;
                 }
             }
@@ -165,16 +180,17 @@ namespace DotNetNuke.Security.Permissions
         public List<PermissionInfoBase> ToList()
         {
             var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in List)
+            foreach (PermissionInfoBase permission in this.List)
             {
                 list.Add(permission);
             }
+
             return list;
         }
 
         public string ToString(string key)
         {
-            return PermissionController.BuildPermissions(List, key);
+            return PermissionController.BuildPermissions(this.List, key);
         }
     }
 }

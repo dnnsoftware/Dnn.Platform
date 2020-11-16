@@ -1,88 +1,76 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.UI.Skins;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
-	/// -----------------------------------------------------------------------------
-	/// Project	 : DotNetNuke
-	/// Class	 : DotNetNuke.UI.Containers.Icon
-	/// 
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// Contains the attributes of an Icon.  
-	/// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
-	/// </summary>
-	/// <remarks>
-	/// </remarks>
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.UI.Skins;
+
+    /// -----------------------------------------------------------------------------
+    /// Project  : DotNetNuke
+    /// Class    : DotNetNuke.UI.Containers.Icon
+    ///
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// Contains the attributes of an Icon.
+    /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
     public partial class Icon : SkinObjectBase
     {
-		#region "Public Members"
-
         public string BorderWidth { get; set; }
-        public string CssClass { get; set; }
-		
-		#endregion
 
-		#region "Event Handlers"
+        public string CssClass { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             try
             {
-				//public attributes
-                if (!String.IsNullOrEmpty(BorderWidth))
+                // public attributes
+                if (!string.IsNullOrEmpty(this.BorderWidth))
                 {
-                    imgIcon.BorderWidth = Unit.Parse(BorderWidth);
+                    this.imgIcon.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
-                if (!String.IsNullOrEmpty(CssClass))
+
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
-                    imgIcon.CssClass = CssClass;
+                    this.imgIcon.CssClass = this.CssClass;
                 }
-                Visible = false;
-                if ((ModuleControl != null) && (ModuleControl.ModuleContext.Configuration != null))
+
+                this.Visible = false;
+                if ((this.ModuleControl != null) && (this.ModuleControl.ModuleContext.Configuration != null))
                 {
-                    var iconFile = GetIconFileUrl();
+                    var iconFile = this.GetIconFileUrl();
                     if (!string.IsNullOrEmpty(iconFile))
                     {
                         if (Globals.IsAdminControl())
                         {
-                            iconFile = $"~/DesktopModules/{ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
+                            iconFile = $"~/DesktopModules/{this.ModuleControl.ModuleContext.Configuration.DesktopModule.FolderName}/{iconFile}";
                         }
 
-                        imgIcon.ImageUrl = iconFile;
-                        imgIcon.AlternateText = ModuleControl.ModuleContext.Configuration.ModuleTitle;
-                        Visible = true;
+                        this.imgIcon.ImageUrl = iconFile;
+                        this.imgIcon.AlternateText = this.ModuleControl.ModuleContext.Configuration.ModuleTitle;
+                        this.Visible = true;
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string GetIconFileUrl()
         {
-            var iconFile = ModuleControl.ModuleContext.Configuration.IconFile;
-            if ((string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~")))
+            var iconFile = this.ModuleControl.ModuleContext.Configuration.IconFile;
+            if (string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~"))
             {
                 return iconFile;
             }
@@ -95,12 +83,10 @@ namespace DotNetNuke.UI.Containers
             }
             else
             {
-                fileInfo = FileManager.Instance.GetFile(PortalSettings.PortalId, iconFile);
+                fileInfo = FileManager.Instance.GetFile(this.PortalSettings.PortalId, iconFile);
             }
 
             return fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconFile;
         }
-
-        #endregion
     }
 }

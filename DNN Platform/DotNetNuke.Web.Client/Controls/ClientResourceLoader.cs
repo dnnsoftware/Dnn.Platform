@@ -1,13 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web;
-using System.Web.UI;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
+    using System.Web;
+    using System.Web.UI;
+
     using ClientDependency.Core.Controls;
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceLoader : ClientDependencyLoader
     {
-        private bool AsyncPostBackHandlerEnabled 
+        private bool AsyncPostBackHandlerEnabled
         {
             get
             {
@@ -26,12 +26,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         protected override void OnPreRender(System.EventArgs e)
         {
-            foreach (var path in Paths)
+            foreach (var path in this.Paths)
             {
                 path.Name = path.Name.ToLowerInvariant();
             }
 
-            if (AsyncPostBackHandlerEnabled)
+            if (this.AsyncPostBackHandlerEnabled)
             {
                 const string handlerScript = @"
 var loadScriptInSingleMode = function(){
@@ -131,7 +131,7 @@ Sys._ScriptLoader.getInstance().loadScripts = function(){
 };
 }(jQuery));
 ";
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
             }
 
             base.OnPreRender(e);

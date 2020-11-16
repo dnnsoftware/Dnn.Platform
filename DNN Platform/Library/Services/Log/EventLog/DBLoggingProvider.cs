@@ -1,42 +1,384 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Threading;
-using System.Web;
-using System.Web.Caching;
-using System.Xml;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Scheduling;
-
-#endregion
-
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Scheduling;
+
     public class DBLoggingProvider : LoggingProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DBLoggingProvider));
+        public const string LogTypeCacheKey = "LogTypes";
+        public const string LogTypeInfoCacheKey = "GetLogTypeConfigInfo";
+        public const string LogTypeInfoByKeyCacheKey = "GetLogTypeConfigInfoByKey";
+
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
         private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
 
-        public const string LogTypeCacheKey = "LogTypes";
-        public const string LogTypeInfoCacheKey = "GetLogTypeConfigInfo";
-        public const string LogTypeInfoByKeyCacheKey = "GetLogTypeConfigInfoByKey";
+        /// <inheritdoc/>
+        public override void AddLog(LogInfo logInfo)
+        {
+            string configPortalID = logInfo.LogPortalID != Null.NullInteger
+                                        ? logInfo.LogPortalID.ToString()
+                                        : "*";
+            var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
+            if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
+            {
+                return;
+            }
+
+            logInfo.LogConfigID = logTypeConfigInfo.ID;
+            var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
+            SchedulingProvider scheduler = SchedulingProvider.Instance();
+            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false
+                || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
+            {
+                WriteLog(logQueueItem);
+            }
+            else
+            {
+                LogQueue.Add(logQueueItem);
+            }
+        }
+
+        // ReSharper disable once InconsistentNaming
+        /// <inheritdoc/>
+        public override void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
+        {
+            DataProvider.Instance().AddLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
+            DataCache.RemoveCache(LogTypeCacheKey);
+        }
+
+        /// <inheritdoc/>
+        public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive,
+                                                  string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
+        {
+            int intThreshold = -1;
+            int intThresholdTime = -1;
+            int intThresholdTimeType = -1;
+            int intKeepMostRecent = -1;
+            if (Globals.NumberMatchRegex.IsMatch(threshold))
+            {
+                intThreshold = Convert.ToInt32(threshold);
+            }
+
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
+            {
+                intThresholdTime = Convert.ToInt32(thresholdTime);
+            }
+
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
+            {
+                intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
+            }
+
+            if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
+            {
+                intKeepMostRecent = Convert.ToInt32(keepMostRecent);
+            }
+
+            DataProvider.Instance().AddLogTypeConfigInfo(
+                loggingIsActive,
+                logTypeKey,
+                logTypePortalID,
+                intKeepMostRecent,
+                emailNotificationIsActive,
+                intThreshold,
+                intThresholdTime,
+                intThresholdTimeType,
+                mailFromAddress,
+                mailToAddress);
+            DataCache.RemoveCache(LogTypeInfoCacheKey);
+            DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
+        }
+
+        /// <inheritdoc/>
+        public override void ClearLog()
+        {
+            DataProvider.Instance().ClearLog();
+        }
+
+        /// <inheritdoc/>
+        public override void DeleteLog(LogInfo logInfo)
+        {
+            DataProvider.Instance().DeleteLog(logInfo.LogGUID);
+        }
+
+        /// <inheritdoc/>
+        public override void DeleteLogType(string logTypeKey)
+        {
+            DataProvider.Instance().DeleteLogType(logTypeKey);
+            DataCache.RemoveCache(LogTypeCacheKey);
+        }
+
+        /// <inheritdoc/>
+        public override void DeleteLogTypeConfigInfo(string id)
+        {
+            DataProvider.Instance().DeleteLogTypeConfigInfo(id);
+            DataCache.RemoveCache(LogTypeInfoCacheKey);
+            DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
+        }
+
+        /// <inheritdoc/>
+        public override List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
+        {
+            var logs = new List<LogInfo>();
+            FillLogs(DataProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex), logs, ref totalRecords);
+            return logs;
+        }
+
+        /// <inheritdoc/>
+        public override ArrayList GetLogTypeConfigInfo()
+        {
+            var list = (ArrayList)DataCache.GetCache(LogTypeInfoCacheKey);
+            if (list == null)
+            {
+                IDataReader dr = null;
+                try
+                {
+                    dr = DataProvider.Instance().GetLogTypeConfigInfo();
+                    list = CBO.FillCollection(dr, typeof(LogTypeConfigInfo));
+                    DataCache.SetCache(LogTypeInfoCacheKey, list);
+                    FillLogTypeConfigInfoByKey(list);
+                }
+                finally
+                {
+                    if (dr == null)
+                    {
+                        list = new ArrayList();
+                    }
+                    else
+                    {
+                        CBO.CloseDataReader(dr, true);
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        /// <inheritdoc/>
+        public override LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
+        {
+            return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)));
+        }
+
+        /// <inheritdoc/>
+        public override ArrayList GetLogTypeInfo()
+        {
+            return CBO.GetCachedObject<ArrayList>(
+                new CacheItemArgs(LogTypeCacheKey, 20, CacheItemPriority.Normal),
+                c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof(LogTypeInfo)));
+        }
+
+        /// <inheritdoc/>
+        public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
+        {
+            var log = (LogInfo)this.GetLog(logInfo.LogGUID);
+
+            if (returnType == ReturnType.LogInfoObjects)
+            {
+                return log;
+            }
+
+            var xmlDoc = new XmlDocument { XmlResolver = null };
+            if (log != null)
+            {
+                xmlDoc.LoadXml(log.Serialize());
+            }
+
+            return xmlDoc.DocumentElement;
+        }
+
+        /// <inheritdoc />
+        public override ILogInfo GetLog(string logGuid)
+        {
+            IDataReader dr = DataProvider.Instance().GetSingleLog(logGuid);
+            LogInfo log = null;
+            try
+            {
+                if (dr != null)
+                {
+                    dr.Read();
+                    log = FillLogInfo(dr);
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return log;
+        }
+
+        /// <inheritdoc/>
+        public override bool LoggingIsEnabled(string logType, int portalID)
+        {
+            string configPortalID = portalID.ToString();
+            if (portalID == -1)
+            {
+                configPortalID = "*";
+            }
+
+            LogTypeConfigInfo configInfo = this.GetLogTypeConfigInfoByKey(logType, configPortalID);
+            if (configInfo == null)
+            {
+                return false;
+            }
+
+            return configInfo.LoggingIsActive;
+        }
+
+        /// <inheritdoc/>
+        public override void PurgeLogBuffer()
+        {
+            if (!LockQueueLog.TryEnterWriteLock(WriterLockTimeout))
+            {
+                return;
+            }
+
+            try
+            {
+                for (int i = LogQueue.Count - 1; i >= 0; i += -1)
+                {
+                    LogQueueItem logQueueItem = LogQueue[i];
+
+                    // in case the log was removed
+                    // by another thread simultaneously
+                    if (logQueueItem != null)
+                    {
+                        WriteLog(logQueueItem);
+                        LogQueue.Remove(logQueueItem);
+                    }
+                }
+            }
+            finally
+            {
+                LockQueueLog.ExitWriteLock();
+            }
+
+            DataProvider.Instance().PurgeLog();
+        }
+
+        /// <inheritdoc/>
+        public override void SendLogNotifications()
+        {
+            List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
+            foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
+            {
+                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
+                string log = string.Empty;
+                try
+                {
+                    while (dr.Read())
+                    {
+                        LogInfo logInfo = FillLogInfo(dr);
+                        log += logInfo.Serialize() + Environment.NewLine + Environment.NewLine;
+                    }
+                }
+                finally
+                {
+                    CBO.CloseDataReader(dr, true);
+                }
+
+                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
+                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
+            }
+        }
+
+        /// <inheritdoc/>
+        public override bool SupportsEmailNotification()
+        {
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override bool SupportsInternalViewer()
+        {
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public override bool SupportsSendToCoreTeam()
+        {
+            return false;
+        }
+
+        /// <inheritdoc/>
+        public override bool SupportsSendViaEmail()
+        {
+            return true;
+        }
+
+        // ReSharper disable once InconsistentNaming
+        /// <inheritdoc/>
+        public override void UpdateLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
+        {
+            DataProvider.Instance().UpdateLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
+            DataCache.RemoveCache(LogTypeCacheKey);
+        }
+
+        /// <inheritdoc/>
+        public override void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
+        {
+            var intThreshold = -1;
+            var intThresholdTime = -1;
+            var intThresholdTimeType = -1;
+            var intKeepMostRecent = -1;
+            if (Globals.NumberMatchRegex.IsMatch(threshold))
+            {
+                intThreshold = Convert.ToInt32(threshold);
+            }
+
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
+            {
+                intThresholdTime = Convert.ToInt32(thresholdTime);
+            }
+
+            if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
+            {
+                intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
+            }
+
+            if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
+            {
+                intKeepMostRecent = Convert.ToInt32(keepMostRecent);
+            }
+
+            DataProvider.Instance().UpdateLogTypeConfigInfo(
+                id,
+                loggingIsActive,
+                logTypeKey,
+                logTypePortalID,
+                intKeepMostRecent,
+                emailNotificationIsActive,
+                intThreshold,
+                intThresholdTime,
+                intThresholdTimeType,
+                mailFromAddress,
+                mailToAddress);
+            DataCache.RemoveCache(LogTypeInfoCacheKey);
+            DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
+        }
 
         private static Hashtable FillLogTypeConfigInfoByKey(ArrayList arr)
         {
@@ -44,50 +386,22 @@ namespace DotNetNuke.Services.Log.EventLog
             int i;
             for (i = 0; i <= arr.Count - 1; i++)
             {
-                var logTypeConfigInfo = (LogTypeConfigInfo) arr[i];
-                if (String.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
+                var logTypeConfigInfo = (LogTypeConfigInfo)arr[i];
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
                 {
                     logTypeConfigInfo.LogTypeKey = "*";
                 }
-                if (String.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
+
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
                 {
                     logTypeConfigInfo.LogTypePortalID = "*";
                 }
+
                 ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalID, logTypeConfigInfo);
             }
+
             DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
             return ht;
-        }
-
-        private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
-        {
-            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(GetLogTypeConfigInfo());
-            var logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey[logTypeKey + "|" + logTypePortalID];
-            if (logTypeConfigInfo == null)
-            {
-                logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey["*|" + logTypePortalID];
-                if (logTypeConfigInfo == null)
-                {
-                    logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey[logTypeKey + "|*"];
-                    if (logTypeConfigInfo == null)
-                    {
-                        logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey["*|*"];
-                    }
-                    else
-                    {
-                        return logTypeConfigInfo;
-                    }
-                }
-                else
-                {
-                    return logTypeConfigInfo;
-                }
-            }
-            else
-            {
-                return logTypeConfigInfo;
-            }
-            return logTypeConfigInfo;
         }
 
         private static LogInfo FillLogInfo(IDataReader dr)
@@ -131,6 +445,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 Logger.Error(exc);
             }
+
             return obj;
         }
 
@@ -143,6 +458,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     LogInfo logInfo = FillLogInfo(dr);
                     logs.Add(logInfo);
                 }
+
                 dr.NextResult();
                 while (dr.Read())
                 {
@@ -173,11 +489,11 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         HtmlUtils.WriteError(response, logTypeConfigInfo.LogFileNameWithPath, message);
                     }
+
                     HtmlUtils.WriteFooter(response);
                     response.End();
                 }
             }
-            
         }
 
         private static void WriteLog(LogQueueItem logQueueItem)
@@ -190,18 +506,19 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     LogInfo objLogInfo = logQueueItem.LogInfo;
                     string logProperties = objLogInfo.LogProperties.Serialize();
-                    DataProvider.Instance().AddLog(objLogInfo.LogGUID,
-                                                   objLogInfo.LogTypeKey,
-                                                   objLogInfo.LogUserID,
-                                                   objLogInfo.LogUserName,
-                                                   objLogInfo.LogPortalID,
-                                                   objLogInfo.LogPortalName,
-                                                   objLogInfo.LogCreateDate,
-                                                   objLogInfo.LogServerName,
-                                                   logProperties,
-                                                   Convert.ToInt32(objLogInfo.LogConfigID),
-												   objLogInfo.Exception,
-                                                   logTypeConfigInfo.EmailNotificationIsActive);
+                    DataProvider.Instance().AddLog(
+                        objLogInfo.LogGUID,
+                        objLogInfo.LogTypeKey,
+                        objLogInfo.LogUserID,
+                        objLogInfo.LogUserName,
+                        objLogInfo.LogPortalID,
+                        objLogInfo.LogPortalName,
+                        objLogInfo.LogCreateDate,
+                        objLogInfo.LogServerName,
+                        logProperties,
+                        Convert.ToInt32(objLogInfo.LogConfigID),
+                        objLogInfo.Exception,
+                        logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
                         if (LockNotif.TryEnterWriteLock(ReaderLockTimeout))
@@ -234,296 +551,36 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        public override void AddLog(LogInfo logInfo)
+        private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
         {
-            string configPortalID = logInfo.LogPortalID != Null.NullInteger 
-                                        ? logInfo.LogPortalID.ToString() 
-                                        : "*";
-            var logTypeConfigInfo = GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
-            if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
+            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
+            var logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|" + logTypePortalID];
+            if (logTypeConfigInfo == null)
             {
-                return;
-            }
-            logInfo.LogConfigID = logTypeConfigInfo.ID;
-            var logQueueItem = new LogQueueItem {LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo};
-            SchedulingProvider scheduler = SchedulingProvider.Instance();
-            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false 
-                || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
-            {
-                WriteLog(logQueueItem);
-            }
-            else
-            {
-                LogQueue.Add(logQueueItem);
-            }
-        }
-
-        // ReSharper disable once InconsistentNaming
-        public override void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
-        {
-            DataProvider.Instance().AddLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
-            DataCache.RemoveCache(LogTypeCacheKey);
-        }
-
-        public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive,
-                                                  string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
-        {
-            int intThreshold = -1;
-            int intThresholdTime = -1;
-            int intThresholdTimeType = -1;
-            int intKeepMostRecent = -1;
-            if (Globals.NumberMatchRegex.IsMatch(threshold))
-            {
-                intThreshold = Convert.ToInt32(threshold);
-            }
-            if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
-            {
-                intThresholdTime = Convert.ToInt32(thresholdTime);
-            }
-            if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
-            {
-                intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
-            }
-            if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
-            {
-                intKeepMostRecent = Convert.ToInt32(keepMostRecent);
-            }
-            DataProvider.Instance().AddLogTypeConfigInfo(loggingIsActive,
-                                                         logTypeKey,
-                                                         logTypePortalID,
-                                                         intKeepMostRecent,
-                                                         emailNotificationIsActive,
-                                                         intThreshold,
-                                                         intThresholdTime,
-                                                         intThresholdTimeType,
-                                                         mailFromAddress,
-                                                         mailToAddress);
-            DataCache.RemoveCache(LogTypeInfoCacheKey);
-            DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
-        }
-
-        public override void ClearLog()
-        {
-            DataProvider.Instance().ClearLog();
-        }
-
-        public override void DeleteLog(LogInfo logInfo)
-        {
-            DataProvider.Instance().DeleteLog(logInfo.LogGUID);
-        }
-
-        public override void DeleteLogType(string logTypeKey)
-        {
-            DataProvider.Instance().DeleteLogType(logTypeKey);
-            DataCache.RemoveCache(LogTypeCacheKey);
-        }
-
-        public override void DeleteLogTypeConfigInfo(string id)
-        {
-            DataProvider.Instance().DeleteLogTypeConfigInfo(id);
-            DataCache.RemoveCache(LogTypeInfoCacheKey);
-            DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
-        }
-
-        public override List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            var logs = new List<LogInfo>();
-            FillLogs(DataProvider.Instance().GetLogs(portalID, logType, pageSize, pageIndex), logs, ref totalRecords);
-            return logs;
-        }
-
-        public override ArrayList GetLogTypeConfigInfo()
-        {
-            var list = (ArrayList)DataCache.GetCache(LogTypeInfoCacheKey);
-            if (list == null)
-            {
-                IDataReader dr = null;
-                try
+                logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|" + logTypePortalID];
+                if (logTypeConfigInfo == null)
                 {
-                    dr = DataProvider.Instance().GetLogTypeConfigInfo();
-                    list = CBO.FillCollection(dr, typeof (LogTypeConfigInfo));
-                    DataCache.SetCache(LogTypeInfoCacheKey, list);
-                    FillLogTypeConfigInfoByKey(list);
-                }
-                finally
-                {
-                    if (dr == null)
+                    logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|*"];
+                    if (logTypeConfigInfo == null)
                     {
-                        list = new ArrayList();
+                        logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|*"];
                     }
                     else
                     {
-                        CBO.CloseDataReader(dr, true);
+                        return logTypeConfigInfo;
                     }
                 }
-            }
-            return list;
-        }
-
-        public override LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
-        {
-            return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)));
-        }
-
-        public override ArrayList GetLogTypeInfo()
-        {
-            return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(LogTypeCacheKey, 20, CacheItemPriority.Normal),
-                c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof (LogTypeInfo)));
-        }
-
-        public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)
-        {
-            IDataReader dr = DataProvider.Instance().GetSingleLog(logInfo.LogGUID);
-            LogInfo log = null;
-            try
-            {
-                if (dr != null)
+                else
                 {
-                    dr.Read();
-                    log = FillLogInfo(dr);
+                    return logTypeConfigInfo;
                 }
             }
-            finally
+            else
             {
-                CBO.CloseDataReader(dr, true);
+                return logTypeConfigInfo;
             }
-            if (returnType == ReturnType.LogInfoObjects)
-            {
-                return log;
-            }
-            var xmlDoc = new XmlDocument { XmlResolver = null };
-            if (log != null)
-            {
-                xmlDoc.LoadXml(log.Serialize());
-            }
-            return xmlDoc.DocumentElement;
-        }
 
-        public override bool LoggingIsEnabled(string logType, int portalID)
-        {
-            string configPortalID = portalID.ToString();
-            if (portalID == -1)
-            {
-                configPortalID = "*";
-            }
-            LogTypeConfigInfo configInfo = GetLogTypeConfigInfoByKey(logType, configPortalID);
-            if (configInfo == null)
-            {
-                return false;
-            }
-            return configInfo.LoggingIsActive;
-        }
-
-        public override void PurgeLogBuffer()
-        {
-            if (!LockQueueLog.TryEnterWriteLock(WriterLockTimeout)) return;
-            try
-            {
-                for (int i = LogQueue.Count - 1; i >= 0; i += -1)
-                {
-                    LogQueueItem logQueueItem = LogQueue[i];
-                    //in case the log was removed
-                    //by another thread simultaneously
-                    if (logQueueItem != null)
-                    {
-                        WriteLog(logQueueItem);
-                        LogQueue.Remove(logQueueItem);
-                    }
-                }
-            }
-            finally
-            {
-                LockQueueLog.ExitWriteLock();
-            }
-            DataProvider.Instance().PurgeLog();
-        }
-
-        public override void SendLogNotifications()
-        {
-            List<LogTypeConfigInfo> configInfos = CBO.FillCollection<LogTypeConfigInfo>(DataProvider.Instance().GetEventLogPendingNotifConfig());
-            foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
-            {
-                IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
-                string log = "";
-                try
-                {
-                    while (dr.Read())
-                    {
-                        LogInfo logInfo = FillLogInfo(dr);
-                        log += logInfo.Serialize() + Environment.NewLine + Environment.NewLine;
-                    }
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
-                Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
-                DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
-            }
-        }
-
-        public override bool SupportsEmailNotification()
-        {
-            return true;
-        }
-
-        public override bool SupportsInternalViewer()
-        {
-            return true;
-        }
-
-        public override bool SupportsSendToCoreTeam()
-        {
-            return false;
-        }
-
-        public override bool SupportsSendViaEmail()
-        {
-            return true;
-        }
-
-        // ReSharper disable once InconsistentNaming
-        public override void UpdateLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
-        {
-            DataProvider.Instance().UpdateLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
-            DataCache.RemoveCache(LogTypeCacheKey);
-        }
-
-        public override void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
-        {
-            var intThreshold = -1;
-            var intThresholdTime = -1;
-            var intThresholdTimeType = -1;
-            var intKeepMostRecent = -1;
-            if (Globals.NumberMatchRegex.IsMatch(threshold))
-            {
-                intThreshold = Convert.ToInt32(threshold);
-            }
-            if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
-            {
-                intThresholdTime = Convert.ToInt32(thresholdTime);
-            }
-            if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
-            {
-                intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
-            }
-            if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
-            {
-                intKeepMostRecent = Convert.ToInt32(keepMostRecent);
-            }
-            DataProvider.Instance().UpdateLogTypeConfigInfo(id,
-                                                            loggingIsActive,
-                                                            logTypeKey,
-                                                            logTypePortalID,
-                                                            intKeepMostRecent,
-                                                            emailNotificationIsActive,
-                                                            intThreshold,
-                                                            intThresholdTime,
-                                                            intThresholdTimeType,
-                                                            mailFromAddress,
-                                                            mailToAddress);
-            DataCache.RemoveCache(LogTypeInfoCacheKey);
-            DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
+            return logTypeConfigInfo;
         }
     }
 }

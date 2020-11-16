@@ -33,7 +33,7 @@ const logsTabActions = {
                 return;
             }
             
-            const logName = log.value;
+            const logName = log.name;
             const upgradeLog = log.upgradeLog;
             dispatch({
                 type: ActionTypes.LOAD_LOG,

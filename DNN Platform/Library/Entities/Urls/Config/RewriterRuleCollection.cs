@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls.Config
 {
+    using System;
+    using System.Collections;
+
     [Serializable]
     public class RewriterRuleCollection : CollectionBase
     {
@@ -18,17 +13,18 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             get
             {
-                return (RewriterRule) List[index];
+                return (RewriterRule)this.List[index];
             }
+
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
         public void Add(RewriterRule r)
         {
-            InnerList.Add(r);
+            this.InnerList.Add(r);
         }
     }
 }

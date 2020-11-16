@@ -1,27 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Users;
+
     /// <summary>
     /// Do not implement.  This interface is meant for reference and unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
-    public interface IPortalController    
+    public interface IPortalController
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a new portal alias
+        /// Creates a new portal alias.
         /// </summary>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="portalAlias">Portal Alias to be created</param>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalAlias">Portal Alias to be created.</param>
         /// -----------------------------------------------------------------------------
         void AddPortalAlias(int portalId, string portalAlias);
 
@@ -67,9 +68,9 @@ namespace DotNetNuke.Entities.Portals
                          string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>
-        /// Get all the available portal templates grouped by culture
+        /// Get all the available portal templates grouped by culture.
         /// </summary>
-        /// <returns>List of PortalTemplateInfo objects</returns>
+        /// <returns>List of PortalTemplateInfo objects.</returns>
         IList<PortalController.PortalTemplateInfo> GetAvailablePortalTemplates();
 
         /// <summary>
@@ -86,18 +87,18 @@ namespace DotNetNuke.Entities.Portals
         IPortalSettings GetCurrentSettings();
 
         /// <summary>
-        ///   Gets information of a portal
+        ///   Gets information of a portal.
         /// </summary>
-        /// <param name = "portalId">Id of the portal</param>
-        /// <returns>PortalInfo object with portal definition</returns>
+        /// <param name = "portalId">Id of the portal.</param>
+        /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId);
 
         /// <summary>
-        ///   Gets information of a portal
+        ///   Gets information of a portal.
         /// </summary>
-        /// <param name = "portalId">Id of the portal</param>
+        /// <param name = "portalId">Id of the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <returns>PortalInfo object with portal definition</returns>
+        /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId, string cultureCode);
 
         /// <summary>
@@ -115,9 +116,9 @@ namespace DotNetNuke.Entities.Portals
         List<PortalInfo> GetPortalList(string cultureCode);
 
         /// <summary>
-        /// Gets information from all portals
+        /// Gets information from all portals.
         /// </summary>
-        /// <returns>ArrayList of PortalInfo objects</returns>
+        /// <returns>ArrayList of PortalInfo objects.</returns>
         ArrayList GetPortals();
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace DotNetNuke.Entities.Portals
         /// Gets the portal settings dictionary.
         /// </summary>
         /// <param name="portalId">The portal ID.</param>
-        /// <param name="cultureCode">The culture code</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>portal settings.</returns>
         Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode);
 
@@ -139,35 +140,35 @@ namespace DotNetNuke.Entities.Portals
         /// Gets the portal space used bytes.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
-        /// <returns>Space used in bytes</returns>
+        /// <returns>Space used in bytes.</returns>
         long GetPortalSpaceUsedBytes(int portalId = -1);
 
         /// <summary>
-        /// Load info for a portal template
+        /// Load info for a portal template.
         /// </summary>
-        /// <param name="templateFileName">The file name of the portal template</param>
-        /// <param name="cultureCode">the culture code if any for the localization of the portal template</param>
-        /// <returns>A portal template</returns>
+        /// <param name="templateFileName">The file name of the portal template.</param>
+        /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
+        /// <returns>A portal template.</returns>
         PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
         /// <summary>
-        /// Verifies if there's enough space to upload a new file on the given portal
+        /// Verifies if there's enough space to upload a new file on the given portal.
         /// </summary>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="fileSizeBytes">Size of the file being uploaded</param>
-        /// <returns>True if there's enough space available to upload the file</returns>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
+        /// <returns>True if there's enough space available to upload the file.</returns>
         bool HasSpaceAvailable(int portalId, long fileSizeBytes);
 
         /// <summary>
         ///   Remaps the Special Pages such as Home, Profile, Search
-        ///   to their localized versions
+        ///   to their localized versions.
         /// </summary>
         /// <remarks>
         /// </remarks>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
         /// <summary>
-        /// Removes the related PortalLocalization record from the database, adds optional clear cache
+        /// Removes the related PortalLocalization record from the database, adds optional clear cache.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -177,9 +178,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Processess a template file for the new portal.
         /// </summary>
-        /// <param name="portalId">PortalId of the new portal</param>
-        /// <param name="template">The template</param>
-        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="portalId">PortalId of the new portal.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
         /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
         /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
         /// <remarks>
@@ -188,10 +189,10 @@ namespace DotNetNuke.Entities.Portals
         void ParseTemplate(int portalId, PortalController.PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
         /// <summary>
-        /// Processes the resource file for the template file selected
+        /// Processes the resource file for the template file selected.
         /// </summary>
-        /// <param name="portalPath">New portal's folder</param>
-        /// <param name="resoureceFile">full path to the resource file</param>
+        /// <param name="portalPath">New portal's folder.</param>
+        /// <param name="resoureceFile">full path to the resource file.</param>
         /// <remarks>
         /// The resource file is a zip file with the same name as the selected template file and with
         /// an extension of .resources (to disable this file being downloaded).
@@ -207,7 +208,7 @@ namespace DotNetNuke.Entities.Portals
         void UpdatePortalExpiry(int portalId, string cultureCode);
 
         /// <summary>
-        /// Updates basic portal information
+        /// Updates basic portal information.
         /// </summary>
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
@@ -221,5 +222,3 @@ namespace DotNetNuke.Entities.Portals
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }
-        
-    

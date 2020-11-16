@@ -1,41 +1,62 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Web.Api;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class PortalAliasRouteManagerTests
     {
+        private Mock<IPortalAliasService> mockPortalAliasService;
+
         [SetUp]
         public void SetUp()
         {
+            var services = new ServiceCollection();
             var navigationManagerMock = new Mock<INavigationManager>();
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
+
+            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
+            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
+
+            this.mockPortalAliasService = new Mock<IPortalAliasService>();
+            this.mockPortalAliasService.As<IPortalAliasController>();
+
+            services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
+            services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
+            services.AddScoped<IPortalAliasService>(_ => this.mockPortalAliasService.Object);
+
+            Globals.DependencyProvider = services.BuildServiceProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
+
+            this.mockPortalAliasService = null;
+
             PortalController.ClearInstance();
-            PortalAliasController.ClearInstance();
             TestableGlobals.ClearInstance();
         }
-
 
         [Test]
         [TestCase("mfn", "url", 0, "API/mfn/url")]
@@ -44,13 +65,12 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("fee/foo", "{contoller}/{action}/{id}", 4, "{prefix0}/{prefix1}/{prefix2}/{prefix3}/API/fee/foo/{contoller}/{action}/{id}")]
         public void GetRouteUrl(string moduleFolderName, string url, int count, string expected)
         {
-            //Arrange
+            // Arrange
 
-
-            //Act
+            // Act
             string result = new PortalAliasRouteManager().GetRouteUrl(moduleFolderName, url, count);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, result);
         }
 
@@ -59,156 +79,165 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("name", -1, typeof(ArgumentOutOfRangeException), "count should be >= 0")]
         public void GetRouteUrlThrowsOnBadArguments(string moduleFolderName, int count, Type expectedException, string message)
         {
-            //Arrange
+            // Arrange
 
-
-            //Act
+            // Act
             try
             {
                 new PortalAliasRouteManager().GetRouteUrl(moduleFolderName, "url", count);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if(e.GetType() == expectedException)
+                if (e.GetType() == expectedException)
                 {
                     Assert.Pass();
                     return;
                 }
             }
 
-            //Assert
+            // Assert
             Assert.Fail(message);
         }
 
         [Test]
         public void ParentPortalOnVirtualDirReturnsAnEmptyPrefix()
         {
-            //Arrange
-            var mockPortalController = new Mock<IPortalController>();
-            var portals = new ArrayList {new PortalInfo {PortalID = 1}};
-            mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
-            PortalController.SetTestableInstance(mockPortalController.Object);
-
-            var mockPortalAliasController = new Mock<IPortalAliasController>();
-            mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
-                {new PortalAliasInfo {HTTPAlias = "valid.lvh.me/vdir"}});
-            PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
-
-            var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("/vdir");
-            TestableGlobals.SetTestableInstance(mockGlobals.Object);
-
-            //Act
-            List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
-
-            //Assert
-            CollectionAssert.AreEquivalent(new[] {0}, prefixes);
-        }
-
-        [Test]
-        public void SingleParentPortalReturnsAnEmptyPrefix()
-        {
-            //Arrange
-            var mockPortalController = new Mock<IPortalController>();
-            var portals = new ArrayList {new PortalInfo {PortalID = 1}};
-            mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
-            PortalController.SetTestableInstance(mockPortalController.Object);
-
-            var mockPortalAliasController = new Mock<IPortalAliasController>();
-            mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
-                {new PortalAliasInfo {HTTPAlias = "valid.lvh.me"}});
-            PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
-
-            var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("");
-            TestableGlobals.SetTestableInstance(mockGlobals.Object);
-
-            //Act
-            List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
-
-            //Assert
-            CollectionAssert.AreEquivalent(new[] {0}, prefixes);
-        }
-
-        [Test]
-        public void PrefixCountsAreCached()
-        {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             var portals = new ArrayList { new PortalInfo { PortalID = 1 } };
             mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            var mockPortalAliasController = new Mock<IPortalAliasController>();
-            mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[] { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
-            PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                });
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                });
 
             var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("");
+            mockGlobals.Setup(x => x.ApplicationPath).Returns("/vdir");
             TestableGlobals.SetTestableInstance(mockGlobals.Object);
 
-            //Act
+            // Act
+            List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
+
+            // Assert
+            CollectionAssert.AreEquivalent(new[] { 0 }, prefixes);
+        }
+
+        [Test]
+        public void SingleParentPortalReturnsAnEmptyPrefix()
+        {
+            // Arrange
+            var mockPortalController = new Mock<IPortalController>();
+            var portals = new ArrayList { new PortalInfo { PortalID = 1 } };
+            mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                });
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                });
+
+            var mockGlobals = new Mock<IGlobals>();
+            mockGlobals.Setup(x => x.ApplicationPath).Returns(string.Empty);
+            TestableGlobals.SetTestableInstance(mockGlobals.Object);
+
+            // Act
+            List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
+
+            // Assert
+            CollectionAssert.AreEquivalent(new[] { 0 }, prefixes);
+        }
+
+        [Test]
+        public void PrefixCountsAreCached()
+        {
+            // Arrange
+            var mockPortalController = new Mock<IPortalController>();
+            var portals = new ArrayList { new PortalInfo { PortalID = 1 } };
+            mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[] { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[] { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
+
+            var mockGlobals = new Mock<IGlobals>();
+            mockGlobals.Setup(x => x.ApplicationPath).Returns(string.Empty);
+            TestableGlobals.SetTestableInstance(mockGlobals.Object);
+
+            // Act
             var parm = new PortalAliasRouteManager();
             parm.GetRoutePrefixCounts();
             parm.GetRoutePrefixCounts();
 
-            //Assert
+            // Assert
             mockPortalController.Verify(x => x.GetPortals(), Times.Once());
         }
 
         [Test]
         public void PrefixCountsCacheCanBeCleared()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             var portals = new ArrayList { new PortalInfo { PortalID = 1 } };
             mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            var mockPortalAliasController = new Mock<IPortalAliasController>();
-            mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[] { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
-            PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[] { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[] { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
 
             var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("");
+            mockGlobals.Setup(x => x.ApplicationPath).Returns(string.Empty);
             TestableGlobals.SetTestableInstance(mockGlobals.Object);
 
-            //Act
+            // Act
             var parm = new PortalAliasRouteManager();
             parm.GetRoutePrefixCounts();
             parm.ClearCachedData();
             parm.GetRoutePrefixCounts();
 
-            //Assert
+            // Assert
             mockPortalController.Verify(x => x.GetPortals(), Times.Exactly(2));
         }
 
         [Test]
         public void VirtralDirWithChildPortalHasABlankAndASinglePrefix()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
-            var portals = new ArrayList {new PortalInfo {PortalID = 1}};
+            var portals = new ArrayList { new PortalInfo { PortalID = 1 } };
             mockPortalController.Setup(x => x.GetPortals()).Returns(portals);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            var mockPortalAliasController = new Mock<IPortalAliasController>();
-            mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo {HTTPAlias = "valid.lvh.me/vdir"},
-                    new PortalAliasInfo {HTTPAlias = "valid.lvh.me/vdir/child"}
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir/child" },
                 });
-            PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
+            this.mockPortalAliasService.As<IPortalAliasController>()
+                .Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir/child" },
+                });
 
             var mockGlobals = new Mock<IGlobals>();
             mockGlobals.Setup(x => x.ApplicationPath).Returns("/vdir");
             TestableGlobals.SetTestableInstance(mockGlobals.Object);
 
-            //Act
+            // Act
             List<int> prefixes = new PortalAliasRouteManager().GetRoutePrefixCounts().ToList();
 
-            //Assert
-            CollectionAssert.AreEqual(new[] {1, 0}, prefixes);
+            // Assert
+            CollectionAssert.AreEqual(new[] { 1, 0 }, prefixes);
         }
 
         [Test]
@@ -217,13 +246,12 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("first", "second", 99, "first-second-99")]
         public void GetRouteNameHashesNameInCorrectFormat(string moduleFolderName, string routeName, int count, string expected)
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
+            // Act
             var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, count);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, result);
         }
 
@@ -233,13 +261,12 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("first", "second", "ce.lvh.me/child1/child2/child3/child4/child5", "first-second-5")]
         public void GetRouteNameWithPortalAliasInfoHashesNameInCorrectFormat(string moduleFolderName, string routeName, string httpAlias, string expected)
         {
-            //Arrange
+            // Arrange
 
+            // Act
+            var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, new PortalAliasInfo { HTTPAlias = httpAlias });
 
-            //Act
-            var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, new PortalAliasInfo {HTTPAlias = httpAlias});
-
-            //Assert
+            // Assert
             Assert.AreEqual(expected, result);
         }
 
@@ -249,68 +276,65 @@ namespace DotNetNuke.Tests.Web.Api
         [ExpectedException(typeof(ArgumentException))]
         public void GetRouteNameThrowsOnEmptyModuleFolderName(string moduleFolderName)
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
-            new PortalAliasRouteManager().GetRouteName(moduleFolderName, "", 0);
+            // Act
+            new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0);
 
-            //Assert
+            // Assert
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void GetRouteNameThrowsOnCountLessThan0()
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
-            new PortalAliasRouteManager().GetRouteName("foo", "", -1);
+            // Act
+            new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1);
 
-            //Assert
+            // Assert
         }
 
         [Test]
-        public void GetAllRouteValuesWorksWithNullRouteValues   ()
+        public void GetAllRouteValuesWorksWithNullRouteValues()
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
-            new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo {HTTPAlias = ""}, null);
+            // Act
+            new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = string.Empty }, null);
 
-            //Assert
+            // Assert
             Assert.Pass();
         }
 
         [Test]
         public void GetAllRouteValuesPreservesPassedInRouteValues()
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
-            var result = new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo {HTTPAlias = ""},
-                                                               new {value1 = 1, value2 = 2});
+            // Act
+            var result = new PortalAliasRouteManager().GetAllRouteValues(
+                new PortalAliasInfo { HTTPAlias = string.Empty },
+                new { value1 = 1, value2 = 2 });
 
-            //Assert
-            var expected = new Dictionary<string, object> {{"value1", 1}, {"value2", 2}};
+            // Assert
+            var expected = new Dictionary<string, object> { { "value1", 1 }, { "value2", 2 } };
             CollectionAssert.AreEquivalent(expected, result);
         }
 
         [Test]
         public void GetAllRouteValuesExtractsChildPortalParams()
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
+            // Act
             var result =
-                new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo {HTTPAlias = "ce.lvh.me/child"},
-                                                                   null);
+                new PortalAliasRouteManager().GetAllRouteValues(
+                    new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child" },
+                    null);
 
-            //Assert
+            // Assert
             var expected = new Dictionary<string, object> { { "prefix0", "child" } };
             CollectionAssert.AreEquivalent(expected, result);
         }
@@ -318,16 +342,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void GetAllRouteValuesExtractsManyChildPortalParamsAndPreservesRouteValues()
         {
-            //Arrange
+            // Arrange
 
-
-            //Act
+            // Act
             var result =
-                new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child0/child1/child2/child3" },
-                                                                   new {value1 = 1, value2 = 2});
+                new PortalAliasRouteManager().GetAllRouteValues(
+                    new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child0/child1/child2/child3" },
+                    new { value1 = 1, value2 = 2 });
 
-            //Assert
-            var expected = new Dictionary<string, object> { { "prefix0", "child0" }, { "prefix1", "child1" }, { "prefix2", "child2" }, { "prefix3", "child3" }, { "value1", 1}, {"value2", 2} };
+            // Assert
+            var expected = new Dictionary<string, object> { { "prefix0", "child0" }, { "prefix1", "child1" }, { "prefix2", "child2" }, { "prefix3", "child3" }, { "value1", 1 }, { "value2", 2 } };
             CollectionAssert.AreEquivalent(expected, result);
         }
     }

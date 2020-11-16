@@ -1,38 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Data;
-using DotNetNuke.Framework.Providers;
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Servers.Components.Log
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Services.FileSystem;
+
     public class LogController
     {
-        public List<string> GetLogFilesList()
+        public List<LogFile> GetLogFilesList()
         {
-            var files = Directory.GetFiles(Globals.ApplicationMapPath + @"\portals\_default\logs", "*.resources");
-            var fileList = (from file in files select Path.GetFileName(file)).ToList();
-            return fileList;
+            var logPath = Globals.ApplicationMapPath + @"\portals\_default\logs";
+            return GetLogList(logPath, "*.resources");
         }
 
-        public ArrayList GetUpgradeLogList()
+        public List<LogFile> GetUpgradeLogList()
         {
             var objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
             var strProviderPath = DataProvider.Instance().GetProviderPath();
-            var arrScriptFiles = new ArrayList();
-            var arrFiles = Directory.GetFiles(strProviderPath, "*." + objProviderConfiguration.DefaultProvider);
-            foreach (var strFile in arrFiles)
-            {
-                arrScriptFiles.Add(Path.GetFileNameWithoutExtension(strFile));
-            }
-            arrScriptFiles.Sort();
-            return arrScriptFiles;
+            return GetLogList(strProviderPath, "*.log.resources");
+        }
+
+        private static List<LogFile> GetLogList(string logPath, string searchPattern)
+        {
+            var fileSizeFormatProvider = new FileSizeFormatProvider();
+            return (
+                from file in new DirectoryInfo(logPath).EnumerateFiles(searchPattern)
+                select new LogFile
+                {
+                    Name = file.Name,
+                    LastWriteTimeUtc = file.LastWriteTimeUtc,
+                    Size = string.Format(fileSizeFormatProvider, "{0:fs}", file.Length),
+                })
+                .ToList();
         }
     }
 }

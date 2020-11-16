@@ -1,35 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web.Caching;
-using System.Xml;
-using System.Xml.XPath;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Cache;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.EditBar.UI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.Caching;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Cache;
+
     internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
-
-        #region Overrides of ServiceLocator
-
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
-
-        #endregion
 
         public string CultureName
         {
@@ -50,7 +42,10 @@ namespace Dnn.EditBar.UI.Controllers
             return dictionary;
         }
 
-        #region Private Methods
+        protected override Func<ILocalizationController> GetFactory()
+        {
+            return () => new LocalizationController();
+        }
 
         private static string GetNameAttribute(XmlNode node)
         {
@@ -96,12 +91,13 @@ namespace Dnn.EditBar.UI.Controllers
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
-                // ReSharper restore AssignNullToNotNullAttribute
 
+                // ReSharper restore AssignNullToNotNullAttribute
                 AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+
                 // ReSharper restore AssignNullToNotNullAttribute
                 {
                     if (navigator.NodeType == XPathNodeType.Comment)
@@ -130,7 +126,5 @@ namespace Dnn.EditBar.UI.Controllers
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AddPageTests : IntegrationTestBase
     {
@@ -26,11 +27,11 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             {
                 BulkPages = "Page_" + rnd,
                 ParentId = -1,
-                Keywords = "",
-                Tags = "",
+                Keywords = string.Empty,
+                Tags = string.Empty,
                 IncludeInMenu = true,
                 StartDate = null,
-                EndDate = null
+                EndDate = null,
             };
 
             Console.WriteLine(@"Add bulk pages request = {0}", JsonConvert.SerializeObject(addPagesDto));
@@ -48,16 +49,21 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             Assert.IsNotNullOrEmpty(result2.Response.Pages.First().ErrorMessage);
         }
 
-        #region helper classes
         [JsonObject]
         public class BulkPage
         {
             public string BulkPages { get; set; }
+
             public int ParentId { get; set; }
+
             public string Keywords { get; set; }
+
             public string Tags { get; set; }
+
             public bool IncludeInMenu { get; set; }
+
             public DateTime? StartDate { get; set; }
+
             public DateTime? EndDate { get; set; }
         }
 
@@ -65,8 +71,11 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPageResponseItem
         {
             public string PageName { get; set; }
+
             public int Status { get; set; }
+
             public int TabId { get; set; }
+
             public string ErrorMessage { get; set; }
         }
 
@@ -74,6 +83,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPageResponse
         {
             public int OverallStatus { get; set; }
+
             public IEnumerable<BulkPageResponseItem> Pages { get; set; }
         }
 
@@ -81,8 +91,8 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPageResponseWrapper
         {
             public int Status { get; set; }
+
             public BulkPageResponse Response { get; set; }
         }
-        #endregion
     }
 }

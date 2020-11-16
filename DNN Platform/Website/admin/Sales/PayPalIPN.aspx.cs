@@ -1,43 +1,34 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Admin.Sales
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Net;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
+
     using Host = DotNetNuke.Entities.Host.Host;
 
     public partial class PayPalIPN : PageBase
     {
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -46,22 +37,25 @@ namespace DotNetNuke.Modules.Admin.Sales
             try
             {
                 bool blnValid = true;
-//                string strTransactionID;
+
+                // string strTransactionID;
                 int intRoleID = 0;
-                int intPortalID = PortalSettings.PortalId;
+                int intPortalID = this.PortalSettings.PortalId;
                 int intUserID = 0;
-//                string strDescription;
+
+                // string strDescription;
                 double dblAmount = 0;
-//                string strEmail;
+
+                // string strEmail;
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
                 string strPost = "cmd=_notify-validate";
-                foreach (string strName in Request.Form)
+                foreach (string strName in this.Request.Form)
                 {
-                    string strValue = Request.Form[strName];
+                    string strValue = this.Request.Form[strName];
                     switch (strName)
                     {
-                        case "txn_type": //get the transaction type
+                        case "txn_type": // get the transaction type
                             string strTransactionType = strValue;
                             switch (strTransactionType)
                             {
@@ -76,49 +70,52 @@ namespace DotNetNuke.Modules.Admin.Sales
                                     blnValid = false;
                                     break;
                             }
+
                             break;
-                        case "payment_status": //verify the status
+                        case "payment_status": // verify the status
                             if (strValue != "Completed")
                             {
                                 blnValid = false;
                             }
+
                             break;
-                        case "txn_id": //verify the transaction id for duplicates
-//                            strTransactionID = strValue;
+                        case "txn_id": // verify the transaction id for duplicates
+                                       //                            strTransactionID = strValue;
                             break;
-                        case "receiver_email": //verify the PayPalId
+                        case "receiver_email": // verify the PayPalId
                             strPayPalID = strValue;
                             break;
                         case "mc_gross": // verify the price
                             dblAmount = double.Parse(strValue);
                             break;
-                        case "item_number": //get the RoleID
-                            intRoleID = Int32.Parse(strValue);
-                            //RoleInfo objRole = objRoles.GetRole(intRoleID, intPortalID);
+                        case "item_number": // get the RoleID
+                            intRoleID = int.Parse(strValue);
+
+                            // RoleInfo objRole = objRoles.GetRole(intRoleID, intPortalID);
                             break;
-                        case "item_name": //get the product description
-//                            strDescription = strValue;
+                        case "item_name": // get the product description
+                                          //                            strDescription = strValue;
                             break;
-                        case "custom": //get the UserID
-                            intUserID = Int32.Parse(strValue);
+                        case "custom": // get the UserID
+                            intUserID = int.Parse(strValue);
                             break;
-                        case "email": //get the email
-//                            strEmail = strValue;
+                        case "email": // get the email
+                                      //                            strEmail = strValue;
                             break;
                     }
-                    
-					//reconstruct post for postback validation
-					strPost += string.Format("&{0}={1}", Globals.HTTPPOSTEncode(strName), Globals.HTTPPOSTEncode(strValue));
+
+                    // reconstruct post for postback validation
+                    strPost += string.Format("&{0}={1}", Globals.HTTPPOSTEncode(strName), Globals.HTTPPOSTEncode(strValue));
                 }
-                
-				//postback to verify the source
-				if (blnValid)
+
+                // postback to verify the source
+                if (blnValid)
                 {
-                    Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(PortalSettings.PortalId);
+                    Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
                     string strPayPalURL;
 
                     // Sandbox mode
-                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                    if (settings.ContainsKey("paypalsandbox") && !string.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].Equals("true", StringComparison.InvariantCultureIgnoreCase))
                     {
                         strPayPalURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?";
                     }
@@ -126,6 +123,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     {
                         strPayPalURL = "https://www.paypal.com/cgi-bin/webscr?";
                     }
+
                     var objRequest = Globals.GetExternalRequest(strPayPalURL);
                     objRequest.Method = "POST";
                     objRequest.ContentLength = strPost.Length;
@@ -136,23 +134,25 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
 
                     string strResponse;
-                    using (var objResponse = (HttpWebResponse) objRequest.GetResponse())
+                    using (var objResponse = (HttpWebResponse)objRequest.GetResponse())
                     {
                         using (var sr = new StreamReader(objResponse.GetResponseStream()))
                         {
                             strResponse = sr.ReadToEnd();
                         }
                     }
+
                     switch (strResponse)
                     {
                         case "VERIFIED":
                             break;
                         default:
-                            //possible fraud
-							blnValid = false;
+                            // possible fraud
+                            blnValid = false;
                             break;
                     }
                 }
+
                 if (blnValid)
                 {
                     int intAdministratorRoleId = 0;
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                     if (intRoleID == intAdministratorRoleId)
                     {
-						//admin portal renewal
+                        // admin portal renewal
                         strProcessorID = Host.ProcessorUserId.ToLowerInvariant();
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLowerInvariant()) == strProcessorID))
@@ -178,16 +178,16 @@ namespace DotNetNuke.Modules.Admin.Sales
                             var log = new LogInfo
                             {
                                 LogPortalID = intPortalID,
-                                LogPortalName = PortalSettings.PortalName,
+                                LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
-                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
                             };
                             LogController.Instance.AddLog(log);
                         }
                     }
                     else
                     {
-						//user subscription
+                        // user subscription
                         RoleInfo objRoleInfo = RoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
                         float rolePrice = objRoleInfo.ServiceFee;
                         float trialPrice = objRoleInfo.TrialFee;
@@ -200,19 +200,23 @@ namespace DotNetNuke.Modules.Admin.Sales
                             var log = new LogInfo
                             {
                                 LogPortalID = intPortalID,
-                                LogPortalName = PortalSettings.PortalName,
+                                LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
-                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
                             };
                             LogController.Instance.AddLog(log);
                         }
                     }
                 }
             }
-            catch (Exception exc) //Page failed to load
+            catch (Exception exc) // Page failed to load
             {
                 Exceptions.ProcessPageLoadException(exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

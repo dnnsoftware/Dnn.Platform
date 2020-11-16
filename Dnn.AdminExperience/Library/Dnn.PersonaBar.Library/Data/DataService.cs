@@ -1,13 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using DotNetNuke.Common.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+
     public class DataService : IDataService
     {
         protected static readonly DotNetNuke.Data.DataProvider DataProvider = DotNetNuke.Data.DataProvider.Instance();
@@ -15,7 +16,8 @@ namespace Dnn.PersonaBar.Library.Data
         public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
             string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", 
+            return DataProvider.ExecuteScalar<int>(
+                "PersonaBar_SavePersonaBarMenu",
                 identifier, moduleName, folderName, controller, resourceKey, path,
                 Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
                 Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId, Null.GetNull(iconFile, DBNull.Value));
@@ -62,7 +64,7 @@ namespace Dnn.PersonaBar.Library.Data
             int userId, bool allowAccees, int currentUserId)
         {
             return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenuPermission", DataProvider.GetNull(portalId), menuId, permissionId,
-                GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
+                this.GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
         }
 
         public IDataReader GetPersonbaBarMenuPermissionsByPortal(int portalId)
@@ -82,7 +84,8 @@ namespace Dnn.PersonaBar.Library.Data
 
         public int SavePersonaBarPermission(int menuId, string permissionKey, string permissionName, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarPermission", 
+            return DataProvider.ExecuteScalar<int>(
+                "PersonaBar_SavePersonaBarPermission",
                 Null.GetNull(menuId, DBNull.Value), permissionKey, permissionName, currentUserId);
         }
 
@@ -104,7 +107,10 @@ namespace Dnn.PersonaBar.Library.Data
         private object GetRoleNull(int roleId)
         {
             if (roleId.ToString() == "-4")
+            {
                 return DBNull.Value;
+            }
+
             return (object)roleId;
         }
     }

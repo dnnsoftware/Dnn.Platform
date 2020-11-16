@@ -1,13 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities.Mocks;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Entities.Tabs
 {
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TabControllerTests
     {
@@ -16,7 +16,7 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         {
             MockComponentProvider.CreateDataProvider();
         }
-        
+
         [TearDown]
         public void TearDown()
         {
@@ -55,13 +55,13 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         [TestCase("Register")]
         public void IsValidadTab_Returns_False_For_Forbidden_PageNames(string tabName)
         {
-            //Arrange
+            // Arrange
             string invalidType;
 
-            //Act
+            // Act
             var isValid = TabController.IsValidTabName(tabName, out invalidType);
 
-            //Assert
+            // Assert
             Assert.IsFalse(isValid, "A forbidden tab name is allowed");
             Assert.AreEqual("InvalidTabName", invalidType, "The invalidType is not the expected one");
         }
@@ -69,13 +69,13 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         [Test]
         public void IsValidadTab_Returns_False_For_Empty_PageNames()
         {
-            //Arrange
+            // Arrange
             string invalidType;
 
-            //Act
-            var isValid = TabController.IsValidTabName("", out invalidType);
+            // Act
+            var isValid = TabController.IsValidTabName(string.Empty, out invalidType);
 
-            //Assert
+            // Assert
             Assert.IsFalse(isValid, "An empty tab name is allowed");
             Assert.AreEqual("EmptyTabName", invalidType, "The invalidType is not the expected one");
         }
@@ -86,15 +86,15 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         [TestCase("products")]
         public void IsValidadTab_Returns_True_For_Regular_PageNames(string tabName)
         {
-            //Arrange
+            // Arrange
             string invalidType;
 
-            //Act
+            // Act
             var isValid = TabController.IsValidTabName(tabName, out invalidType);
 
-            //Assert
+            // Assert
             Assert.IsTrue(isValid, "A regular tab name is not allowed");
-            Assert.AreEqual("", invalidType, "The invalidType is not the expected one");
+            Assert.AreEqual(string.Empty, invalidType, "The invalidType is not the expected one");
         }
     }
 }

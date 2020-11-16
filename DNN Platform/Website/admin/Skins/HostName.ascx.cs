@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Services.Exceptions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Services.Exceptions;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <returns></returns>
@@ -23,15 +18,11 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         public string CssClass { get; set; }
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -39,17 +30,22 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
-                    hypHostName.CssClass = CssClass;
+                    this.hypHostName.CssClass = this.CssClass;
                 }
-                hypHostName.Text = Host.HostTitle;
-                hypHostName.NavigateUrl = Globals.AddHTTP(Host.HostURL);
+
+                this.hypHostName.Text = Host.HostTitle;
+                this.hypHostName.NavigateUrl = Globals.AddHTTP(Host.HostURL);
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

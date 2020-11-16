@@ -1,14 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+
     public static class Util
     {
         public static List<int> CreateIntegerList(int count)
@@ -18,6 +18,7 @@ namespace DotNetNuke.Tests.Utilities
             {
                 list.Add(i);
             }
+
             return list;
         }
 
@@ -39,7 +40,7 @@ namespace DotNetNuke.Tests.Utilities
                     result = (TMember)property.GetValue(instance, null);
                 }
             }
-            else if(member.MemberType == MemberTypes.Field)
+            else if (member.MemberType == MemberTypes.Field)
             {
                 var field = member as FieldInfo;
                 if (field != null)
@@ -65,7 +66,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static string GetFileName(string testFilesFolder, string fileName)
         {
-            string fullName = String.Format("{0}\\{1}", testFilesFolder, fileName);
+            string fullName = string.Format("{0}\\{1}", testFilesFolder, fileName);
             if (!fullName.ToLowerInvariant().EndsWith(".csv") && !fullName.ToLowerInvariant().EndsWith(".sql"))
             {
                 fullName += ".csv";
@@ -82,13 +83,14 @@ namespace DotNetNuke.Tests.Utilities
             {
                 stream = new FileStream(GetFileName(testFilesFolder, fileName), FileMode.Open, FileAccess.Read);
             }
+
             return stream;
         }
 
         public static string ReadStream(string testFilesFolder, string fileName)
         {
-            string text = String.Empty;
-            Stream stream = GetFileStream(testFilesFolder,fileName);
+            string text = string.Empty;
+            Stream stream = GetFileStream(testFilesFolder, fileName);
             if (stream != null)
             {
                 using (var reader = new StreamReader(GetFileStream(testFilesFolder, fileName)))
@@ -96,23 +98,24 @@ namespace DotNetNuke.Tests.Utilities
                     text = reader.ReadToEnd();
                 }
             }
+
             return text;
         }
 
         public static void ReadStream(string testFilesFolder, string fileName, Action<string, string> onReadLine)
         {
-            string text = String.Empty;
+            string text = string.Empty;
             var stream = GetFileStream(testFilesFolder, fileName);
             if (stream != null)
             {
                 using (var reader = new StreamReader(GetFileStream(testFilesFolder, fileName)))
                 {
                     string line;
-                    string header = String.Empty;
+                    string header = string.Empty;
                     int count = 0;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        //Ignore first line
+                        // Ignore first line
                         if (count > 0)
                         {
                             onReadLine(line, header);
@@ -121,12 +124,11 @@ namespace DotNetNuke.Tests.Utilities
                         {
                             header = line;
                         }
+
                         count++;
                     }
                 }
             }
         }
     }
-
 }
-

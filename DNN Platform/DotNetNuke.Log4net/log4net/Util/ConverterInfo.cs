@@ -1,8 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-/*
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace log4net.Util
+{
+    /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,12 +25,10 @@
  *
 */
 
-using System;
+    using System;
 
-namespace log4net.Util
-{
     /// <summary>
-    /// Wrapper class used to map converter names to converter types
+    /// Wrapper class used to map converter names to converter types.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -43,56 +43,57 @@ namespace log4net.Util
         private readonly PropertiesDictionary properties = new PropertiesDictionary();
 
         /// <summary>
-        /// default constructor
+        /// Initializes a new instance of the <see cref="ConverterInfo"/> class.
+        /// default constructor.
         /// </summary>
         public ConverterInfo()
         {
         }
 
         /// <summary>
-        /// Gets or sets the name of the conversion pattern
+        /// Gets or sets the name of the conversion pattern.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The name of the pattern in the format string
+        /// The name of the pattern in the format string.
         /// </para>
         /// </remarks>
         public string Name
         {
-            get { return m_name; }
-            set { m_name = value; }
+            get { return this.m_name; }
+            set { this.m_name = value; }
         }
 
         /// <summary>
-        /// Gets or sets the type of the converter
+        /// Gets or sets the type of the converter.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The value specified must extend the 
+        /// The value specified must extend the
         /// <see cref="PatternConverter"/> type.
         /// </para>
         /// </remarks>
         public Type Type
         {
-            get { return m_type; }
-            set { m_type = value; }
+            get { return this.m_type; }
+            set { this.m_type = value; }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entry"></param>
         public void AddProperty(PropertyEntry entry)
         {
-            properties[entry.Key] = entry.Value;
+            this.properties[entry.Key] = entry.Value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public PropertiesDictionary Properties
         {
-            get { return properties; }
+            get { return this.properties; }
         }
     }
 }

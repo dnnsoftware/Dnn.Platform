@@ -1,18 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using Moq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Mvc
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using Moq;
+
     public class MockHelper
     {
         public static HttpContextBase CreateMockHttpContext()
@@ -38,7 +39,7 @@ namespace DotNetNuke.Tests.Web.Mvc
                        .Returns(mockRequest.Object);
             mockContext.SetupGet(c => c.Response)
                        .Returns(mockResponse.Object);
-            
+
             return mockContext.Object;
         }
 
@@ -87,7 +88,7 @@ namespace DotNetNuke.Tests.Web.Mvc
 
         public static ControllerContext CreateMockControllerContext(HttpContextBase httpContext, RouteData routeData)
         {
-            return new ControllerContext(httpContext?? CreateMockHttpContext(), routeData, new Mock<ControllerBase>().Object);
+            return new ControllerContext(httpContext ?? CreateMockHttpContext(), routeData, new Mock<ControllerBase>().Object);
         }
 
         public static ViewContext CreateViewContext(string url)
@@ -96,14 +97,16 @@ namespace DotNetNuke.Tests.Web.Mvc
             routeData.Values["controller"] = "Controller";
             routeData.Values["action"] = "Action";
             routeData.Values["id"] = "Id";
-            var controllerContext = new ControllerContext(CreateMockHttpContext(url),
-                                                                        routeData,
-                                                                        new Mock<ControllerBase>().Object);
-            return new ViewContext(controllerContext,
-                                   new Mock<IView>().Object,
-                                   new ViewDataDictionary(),
-                                   new TempDataDictionary(),
-                                   new StringWriter());
+            var controllerContext = new ControllerContext(
+                CreateMockHttpContext(url),
+                routeData,
+                new Mock<ControllerBase>().Object);
+            return new ViewContext(
+                controllerContext,
+                new Mock<IView>().Object,
+                new ViewDataDictionary(),
+                new TempDataDictionary(),
+                new StringWriter());
         }
     }
 }

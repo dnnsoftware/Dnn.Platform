@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Permissions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security.Permissions;
+
     [Serializable]
     public class PortalDesktopModuleInfo : BaseEntityInfo
     {
@@ -21,36 +16,39 @@ namespace DotNetNuke.Entities.Modules
         private DesktopModulePermissionCollection _permissions;
 
         [XmlIgnore]
-        public int PortalDesktopModuleID { get; set; }
-
-        [XmlIgnore]
         public DesktopModuleInfo DesktopModule
         {
             get
             {
-                if (_desktopModule == null)
+                if (this._desktopModule == null)
                 {
-                    _desktopModule = DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(DesktopModuleID, PortalID) : new DesktopModuleInfo();
+                    this._desktopModule = this.DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID) : new DesktopModuleInfo();
                 }
-                return _desktopModule;
+
+                return this._desktopModule;
             }
         }
-        [XmlIgnore]
-        public int DesktopModuleID { get; set; }
-
-        public string FriendlyName { get; set; }
 
         public DesktopModulePermissionCollection Permissions
         {
             get
             {
-                if (_permissions == null)
+                if (this._permissions == null)
                 {
-                    _permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(PortalDesktopModuleID));
+                    this._permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
                 }
-                return _permissions;
+
+                return this._permissions;
             }
         }
+
+        [XmlIgnore]
+        public int PortalDesktopModuleID { get; set; }
+
+        [XmlIgnore]
+        public int DesktopModuleID { get; set; }
+
+        public string FriendlyName { get; set; }
 
         [XmlIgnore]
         public int PortalID { get; set; }

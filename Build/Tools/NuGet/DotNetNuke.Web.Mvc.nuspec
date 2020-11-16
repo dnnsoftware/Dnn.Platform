@@ -19,8 +19,8 @@
       <dependency id="DotNetNuke.Web.Client" version="$version$" />
       <dependency id="DotNetNuke.WebApi" version="$version$" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.1.3" />
-      <dependency id="Microsoft.AspNet.Razor" version="3.1.1" />
-      <dependency id="Microsoft.AspNet.WebPages" version="3.1.1" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.1.2" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.1.2" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
     </dependencies>
   </metadata>

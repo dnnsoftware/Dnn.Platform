@@ -1,21 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.Hosting;
-using System.IO;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Instance.Utilities
 {
+    using System;
+    using System.IO;
+    using System.Web.Hosting;
+
     /// <summary>
     /// Used to simulate an HttpRequest.
     /// </summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
-        readonly string _host;
+        private readonly string _host;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedHttpRequest"/> class.
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.
         /// </summary>
         /// <param name="appVirtualDir">App virtual dir.</param>
@@ -24,11 +25,15 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <param name="query">Query.</param>
         /// <param name="output">Output.</param>
         /// <param name="host">Host.</param>
-        public SimulatedHttpRequest(string appVirtualDir, string appPhysicalDir, string page, string query, TextWriter output, string host): base(appVirtualDir, appPhysicalDir, page, query, output)
+        public SimulatedHttpRequest(string appVirtualDir, string appPhysicalDir, string page, string query, TextWriter output, string host)
+            : base(appVirtualDir, appPhysicalDir, page, query, output)
         {
             if (string.IsNullOrEmpty(host))
+            {
                 throw new ArgumentNullException("host", "Host cannot be null nor empty.");
-            _host = host;
+            }
+
+            this._host = host;
         }
 
         /// <summary>
@@ -37,7 +42,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <returns></returns>
         public override string GetServerName()
         {
-            return _host;
+            return this._host;
         }
 
         /// <summary>
@@ -47,11 +52,13 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <returns></returns>
         public override string MapPath(string virtualPath)
         {
-            var path = "";
-            var appPath = GetAppPath();
+            var path = string.Empty;
+            var appPath = this.GetAppPath();
 
             if (appPath != null)
+            {
                 path = Path.Combine(appPath, virtualPath);
+            }
 
             return path;
         }

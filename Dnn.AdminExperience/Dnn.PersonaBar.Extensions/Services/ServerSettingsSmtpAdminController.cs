@@ -1,27 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Servers.Services.Dto;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Web.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Servers.Services
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Servers.Services.Dto;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class ServerSettingsSmtpAdminController : PersonaBarApiController
     {
@@ -37,7 +40,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var smtpSettings = new
                 {
                     smtpServerMode = PortalController.GetPortalSetting("SMTPmode", portalId, "h"),
-                    host = new{},
+                    host = new { },
                     site = new
                     {
                         smtpServer = PortalController.GetPortalSetting("SMTPServer", portalId, string.Empty),
@@ -48,14 +51,15 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
                         smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
                     },
-                    portalName = PortalSettings.Current.PortalName
+                    portalName = PortalSettings.Current.PortalName,
+                    hideCoreSettings = ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes.GetValueOrDefault("hideCoreSettings", false),
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
+                return this.Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -68,7 +72,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
 
-                //admins can only change site settings
+                // admins can only change site settings
                 PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                 PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
@@ -80,18 +84,18 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new {success = true});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/Servers/SendTestEmail
         /// <summary>
-        /// Tests SMTP settings
+        /// Tests SMTP settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -102,15 +106,15 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var smtpHostMode = request.SmtpServerMode == "h";
-                var mailFrom = smtpHostMode ? Host.HostEmail : PortalSettings.Email;
-                var mailTo = UserInfo.Email;
+                var mailFrom = smtpHostMode ? Host.HostEmail : this.PortalSettings.Email;
+                var mailTo = this.UserInfo.Email;
 
                 var errMessage = Mail.SendMail(mailFrom,
                     mailTo,
                     "",
                     "",
                     MailPriority.Normal,
-                    Localization.GetSystemMessage(PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
+                    Localization.GetSystemMessage(this.PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
                     MailFormat.Text,
                     Encoding.UTF8,
                     "",
@@ -122,19 +126,23 @@ namespace Dnn.PersonaBar.Servers.Services
                     smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
 
                 var success = string.IsNullOrEmpty(errMessage);
-                return Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
+                return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
                 {
                     success,
                     errMessage,
                     confirmationMessage =
-                        string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
-                        mailFrom, mailTo)
+                        string.Format(
+                            Localization.GetString(
+                                "EmailSentMessage",
+                                Components.Constants.ServersResourcersPath),
+                            mailFrom,
+                            mailTo),
                 });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

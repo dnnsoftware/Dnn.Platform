@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -290,11 +290,7 @@
 &lt;p&gt;&lt;strong&gt;&lt;font color='red'&gt;Su sitio ha fallado las verificaciones de permisos.&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;
 Utilice el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). Vaya a las propiedades de la carpeta, y seleccione la pestaña Seguridad. Añada las cuentas y permisos necesarios.
 &lt;br/&gt;&lt;br/&gt;
-&lt;h3&gt;Si utiliza Windows 2000 - IIS5&lt;/h3&gt;
-&lt;p&gt;La cuenta ASPNET tiene que tener permisos de Lectura, Escritura y Modificación en la carpeta raíz de la web.&lt;/p&gt;
-&lt;h3&gt;Si utiliza Windows 2003, Windows Vista o Windows Server 2008 y  IIS6 o IIS7&lt;/h3&gt;
-&lt;p&gt;La cuenta NT AUTHORITY\SERVICIO DE RED tiene que tener permisos de Lectura, Escritura y Modificación en la carpeta raíz de la web.&lt;/p&gt;
-&lt;h3&gt;Si utiliza Windows 7 o Windows Server 2008 R2 y  IIS7.5&lt;/h3&gt;
+&lt;h3&gt;Si utiliza Windows 8 o Windows Server 2008 R2 y  IIS7.5&lt;/h3&gt;
 &lt;p&gt;La cuenta IIS AppPool\DefaultAppPool tiene que tener permisos de Lectura, Escritura y Modificación en la carpeta raíz de la web.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Verificar de nuevo&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
@@ -317,15 +313,6 @@ Utilice el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
   </data>
   <data name="IISVerificationFail.Text" xml:space="preserve">
     <value>El grupo de aplicaciones de IIS tiene que ejecutarse en Modo Integrado</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>El programa de mejoras del producto nos permite entender mejor como mejorar DNN para usted. Los datos enviados nos ayudarán a analizar el uso y lo que es más importante para los usuarios del producto. Todos los datos enviados son anónimos y para uso interno. Ver más información sobre el &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de Mejoras del Producto&lt;/a&gt;.</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Enviar información anónima de uso a DNN</value>
-  </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Programa de mejoras del producto</value>
   </data>
   <data name="InitHostSetting.Text" xml:space="preserve">
     <value>Inicializando configuración del sistema </value>
@@ -384,14 +371,11 @@ Utilice el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
   <data name="IsSqlServerDbo.Text" xml:space="preserve">
     <value>El usuario de base de datos no tiene permisos de dbo</value>
   </data>
-  <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DotNetNuke necesita la versión .NET 4.0 o superior</value>
-  </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke necesita la versión SQL Server 2008 (Express o normal)</value>
+    <value>DotNetNuke necesita la versión SQL Server 2008 R2 (Express o normal)</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Verificando si la base de datos es SQL Server 2008</value>
+    <value>Verificando si la base de datos es SQL Server 2008 R2</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>Seleccione el idioma que quiere utilizar para su sitio web.</value>

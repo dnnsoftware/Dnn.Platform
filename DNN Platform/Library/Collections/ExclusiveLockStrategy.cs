@@ -1,63 +1,42 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Threading;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Threading;
+
+    /// <summary>
+    /// Represents an exclusive locking strategy.
+    /// </summary>
     public class ExclusiveLockStrategy : ILockStrategy
     {
-        private readonly object _lock = new object();
+        private readonly object @lock = new object();
 
-        private bool _isDisposed;
-        private Thread _lockedThread;
+        private bool isDisposed;
+        private Thread lockedThread;
 
-        #region ILockStrategy Members
-
-        public ISharedCollectionLock GetReadLock()
-        {
-            return GetLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetReadLock(TimeSpan timeout)
-        {
-            return GetLock(timeout);
-        }
-
-        public ISharedCollectionLock GetWriteLock()
-        {
-            return GetLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
-        {
-            return GetLock(timeout);
-        }
-
+        /// <inheritdoc/>
         public bool ThreadCanRead
         {
             get
             {
-                EnsureNotDisposed();
-                return IsThreadLocked();
+                this.EnsureNotDisposed();
+                return this.IsThreadLocked();
             }
         }
 
+        /// <inheritdoc/>
         public bool ThreadCanWrite
         {
             get
             {
-                EnsureNotDisposed();
-                return IsThreadLocked();
+                this.EnsureNotDisposed();
+                return this.IsThreadLocked();
             }
         }
 
+        /// <inheritdoc/>
         public bool SupportsConcurrentReads
         {
             get
@@ -66,25 +45,59 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        public void Dispose()
+        /// <inheritdoc/>
+        public ISharedCollectionLock GetReadLock()
         {
-            _isDisposed = true;
-            //todo remove disposable from interface?
+            return this.GetLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        #endregion
+        /// <inheritdoc/>
+        public ISharedCollectionLock GetReadLock(TimeSpan timeout)
+        {
+            return this.GetLock(timeout);
+        }
+
+        /// <inheritdoc/>
+        public ISharedCollectionLock GetWriteLock()
+        {
+            return this.GetLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        /// <inheritdoc/>
+        public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
+        {
+            return this.GetLock(timeout);
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            this.isDisposed = true;
+
+            // todo remove disposable from interface?
+        }
+
+        /// <summary>
+        /// Releases the exclusive lock.
+        /// </summary>
+        public void Exit()
+        {
+            this.EnsureNotDisposed();
+            Monitor.Exit(this.@lock);
+            this.lockedThread = null;
+        }
 
         private ISharedCollectionLock GetLock(TimeSpan timeout)
         {
-            EnsureNotDisposed();
-            if (IsThreadLocked())
+            this.EnsureNotDisposed();
+            if (this.IsThreadLocked())
             {
                 throw new LockRecursionException();
             }
 
-            if (Monitor.TryEnter(_lock, timeout))
+            if (Monitor.TryEnter(this.@lock, timeout))
             {
-                _lockedThread = Thread.CurrentThread;
+                this.lockedThread = Thread.CurrentThread;
                 return new MonitorLock(this);
             }
             else
@@ -93,34 +106,14 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        private ISharedCollectionLock GetLock()
-        {
-            EnsureNotDisposed();
-            if (IsThreadLocked())
-            {
-                throw new LockRecursionException();
-            }
-
-            Monitor.Enter(_lock);
-            _lockedThread = Thread.CurrentThread;
-            return new MonitorLock(this);
-        }
-
         private bool IsThreadLocked()
         {
-            return Thread.CurrentThread.Equals(_lockedThread);
-        }
-
-        public void Exit()
-        {
-            EnsureNotDisposed();
-            Monitor.Exit(_lock);
-            _lockedThread = null;
+            return Thread.CurrentThread.Equals(this.lockedThread);
         }
 
         private void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this.isDisposed)
             {
                 throw new ObjectDisposedException("ExclusiveLockStrategy");
             }

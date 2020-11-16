@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Tests.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Data.Models
 {
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Tests.Utilities;
+
     [PrimaryKey(Constants.TABLENAME_Person_Key)]
     [TableName(Constants.TABLENAME_Person)]
     public class Person
     {
         public int? Age { get; set; }
+
         public int ID { get; set; }
 
         [ColumnName(Constants.COLUMNNAME_PersonName)]

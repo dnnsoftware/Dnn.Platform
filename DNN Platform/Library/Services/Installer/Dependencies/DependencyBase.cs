@@ -1,28 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Dependencies
 {
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The DependencyBase is a base class for Installer Dependencies
+    /// The DependencyBase is a base class for Installer Dependencies.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public abstract class DependencyBase : IDependency
     {
-        #region IDependency Members
-
+        /// <inheritdoc/>
         public virtual string ErrorMessage
         {
             get
@@ -31,6 +25,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public virtual bool IsValid
         {
             get
@@ -39,10 +34,9 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public virtual void ReadManifest(XPathNavigator dependencyNav)
         {
         }
-
-        #endregion
     }
 }

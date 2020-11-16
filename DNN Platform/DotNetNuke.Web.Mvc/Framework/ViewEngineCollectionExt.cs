@@ -1,27 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using DotNetNuke.Framework;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Caching;
-using System.Web.Mvc;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web.Caching;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public static class ViewEngineCollectionExt
     {
-        //Enable the call to ViewEngineCollection FindView method with useCache=false
-        public static ViewEngineResult FindView(this ViewEngineCollection viewEngineCollection,
+        // Enable the call to ViewEngineCollection FindView method with useCache=false
+        public static ViewEngineResult FindView(
+            this ViewEngineCollection viewEngineCollection,
             ControllerContext controllerContext,
             string viewName, string masterName, bool useCache)
         {
@@ -34,7 +36,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                     {
                         new Func<IViewEngine, ViewEngineResult>(
                             e => e.FindView(controllerContext, viewName, masterName, false)),
-                        false
+                        false,
                     });
 
                 return useCache ? CBO.GetCachedObject<ViewEngineResult>(cachArg, CallFind) : CallFind(cachArg);
@@ -45,8 +47,9 @@ namespace DotNetNuke.Web.Mvc.Framework
             }
         }
 
-        //Enable the call to ViewEngineCollection FindPartialView method with useCache=false
-        public static ViewEngineResult FindPartialView(this ViewEngineCollection viewEngineCollection,
+        // Enable the call to ViewEngineCollection FindPartialView method with useCache=false
+        public static ViewEngineResult FindPartialView(
+            this ViewEngineCollection viewEngineCollection,
             ControllerContext controllerContext, string partialViewName, bool useCache)
         {
             try
@@ -58,7 +61,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                     {
                         new Func<IViewEngine, ViewEngineResult>(
                             e => e.FindPartialView(controllerContext, partialViewName, false)),
-                        false
+                        false,
                     });
 
                 return useCache ? CBO.GetCachedObject<ViewEngineResult>(cachArg, CallFind) : CallFind(cachArg);
@@ -76,7 +79,8 @@ namespace DotNetNuke.Web.Mvc.Framework
             var target = cacheItem.Params[1];
             var parameters = cacheItem.Params[2] as object[];
             return
-                factoryType.InvokeMember(name,
+                factoryType.InvokeMember(
+                    name,
                     BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, target, parameters)
                     as ViewEngineResult;
         }

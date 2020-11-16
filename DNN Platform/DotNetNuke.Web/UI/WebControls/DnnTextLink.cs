@@ -1,28 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Localization;
+
     public class DnnTextLink : WebControl, ILocalizable
     {
         private bool _localize = true;
         private HyperLink _textHyperlinkControl;
 
-        public DnnTextLink() : base("span")
+        public DnnTextLink()
+            : base("span")
         {
-            CssClass = "dnnTextLink";
-            DisabledCssClass = "dnnTextLink disabled";
+            this.CssClass = "dnnTextLink";
+            this.DisabledCssClass = "dnnTextLink disabled";
         }
 
         [Bindable(true)]
@@ -33,14 +30,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.Text;
+                return this.TextHyperlinkControl.Text;
             }
+
             set
             {
-                TextHyperlinkControl.Text = value;
+                this.TextHyperlinkControl.Text = value;
             }
         }
 
+        /// <inheritdoc/>
         [Bindable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -49,11 +48,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.ToolTip;
+                return this.TextHyperlinkControl.ToolTip;
             }
+
             set
             {
-                TextHyperlinkControl.ToolTip = value;
+                this.TextHyperlinkControl.ToolTip = value;
             }
         }
 
@@ -65,11 +65,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.NavigateUrl;
+                return this.TextHyperlinkControl.NavigateUrl;
             }
+
             set
             {
-                TextHyperlinkControl.NavigateUrl = value;
+                this.TextHyperlinkControl.NavigateUrl = value;
             }
         }
 
@@ -81,11 +82,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.Target;
+                return this.TextHyperlinkControl.Target;
             }
+
             set
             {
-                TextHyperlinkControl.Target = value;
+                this.TextHyperlinkControl.Target = value;
             }
         }
 
@@ -97,102 +99,104 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["DisabledCssClass"] == null ? string.Empty : (string) ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
+
             set
             {
-                ViewState["DisabledCssClass"] = value;
+                this.ViewState["DisabledCssClass"] = value;
             }
         }
+
+        /// <inheritdoc/>
+        public bool Localize
+        {
+            get
+            {
+                return this._localize;
+            }
+
+            set
+            {
+                this._localize = value;
+            }
+        }
+
+        /// <inheritdoc/>
+        public string LocalResourceFile { get; set; }
 
         private HyperLink TextHyperlinkControl
         {
             get
             {
-                if (_textHyperlinkControl == null)
+                if (this._textHyperlinkControl == null)
                 {
-                    _textHyperlinkControl = new HyperLink();
+                    this._textHyperlinkControl = new HyperLink();
                 }
-                return _textHyperlinkControl;
+
+                return this._textHyperlinkControl;
             }
         }
 
-        protected override void CreateChildControls()
+        /// <inheritdoc/>
+        public virtual void LocalizeStrings()
         {
-            Controls.Clear();
-            Controls.Add(TextHyperlinkControl);
+            if (this.Localize)
+            {
+                if (!string.IsNullOrEmpty(this.ToolTip))
+                {
+                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
+                }
+
+                if (!string.IsNullOrEmpty(this.Text))
+                {
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
+
+                    if (string.IsNullOrEmpty(this.ToolTip))
+                    {
+                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
+                    }
+
+                    if (string.IsNullOrEmpty(this.ToolTip))
+                    {
+                        this.ToolTip = this.Text;
+                    }
+                }
+            }
         }
 
-        #region "Protected Methods"
+        /// <inheritdoc/>
+        protected override void CreateChildControls()
+        {
+            this.Controls.Clear();
+            this.Controls.Add(this.TextHyperlinkControl);
+        }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
-            LocalizeStrings();
+            this.LocalizeStrings();
 
-            if ((!Enabled))
+            if (!this.Enabled)
             {
-                if ((!string.IsNullOrEmpty(DisabledCssClass)))
+                if (!string.IsNullOrEmpty(this.DisabledCssClass))
                 {
-                    CssClass = DisabledCssClass;
-                }
-                NavigateUrl = "javascript:void(0);";
-            }
-
-            base.RenderBeginTag(writer);
-            base.RenderChildren(writer);
-            base.RenderEndTag(writer);
-        }
-
-        #endregion
-
-        #region "ILocalizable Implementation"
-
-        public bool Localize
-        {
-            get
-            {
-                return _localize;
-            }
-            set
-            {
-                _localize = value;
-            }
-        }
-
-        public string LocalResourceFile { get; set; }
-
-        public virtual void LocalizeStrings()
-        {
-            if ((Localize))
-            {
-                if ((!string.IsNullOrEmpty(ToolTip)))
-                {
-                    ToolTip = Localization.GetString(ToolTip, LocalResourceFile);
+                    this.CssClass = this.DisabledCssClass;
                 }
 
-                if ((!string.IsNullOrEmpty(Text)))
-                {
-                    Text = Localization.GetString(Text, LocalResourceFile);
-
-                    if ((string.IsNullOrEmpty(ToolTip)))
-                    {
-                        ToolTip = Localization.GetString(string.Format("{0}.ToolTip", Text), LocalResourceFile);
-                    }
-
-                    if ((string.IsNullOrEmpty(ToolTip)))
-                    {
-                        ToolTip = Text;
-                    }
-                }
+                this.NavigateUrl = "javascript:void(0);";
             }
-        }
 
-        #endregion
+            this.RenderBeginTag(writer);
+            this.RenderChildren(writer);
+            this.RenderEndTag(writer);
+        }
     }
 }

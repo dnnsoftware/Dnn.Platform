@@ -1,12 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Data;
-using DotNetNuke.Services.Social.Messaging;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 {
+    using System.Data;
+
+    using DotNetNuke.Services.Social.Messaging;
+
     internal class UserPreferenceDataReaderMockHelper
     {
         internal static IDataReader CreateEmptyUserPreferenceReader()
@@ -38,11 +39,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 
         private static void AddUserPreferenceToTable(DataTable table, UserPreference userPreference)
         {
-            table.Rows.Add(new object[] {
-                1, 
+            table.Rows.Add(new object[]
+            {
+                1,
                 userPreference.PortalId,
-                userPreference.UserId, 
-                userPreference.MessagesEmailFrequency, 
+                userPreference.UserId,
+                userPreference.MessagesEmailFrequency,
                 userPreference.NotificationsEmailFrequency,
             });
         }

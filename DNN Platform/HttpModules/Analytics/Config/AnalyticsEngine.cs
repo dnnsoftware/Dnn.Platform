@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules.Config
 {
+    using System;
+
     [Serializable]
     public class AnalyticsEngine
     {
@@ -22,11 +17,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _engineType;
+                return this._engineType;
             }
+
             set
             {
-                _engineType = value;
+                this._engineType = value;
             }
         }
 
@@ -34,11 +30,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _scriptTemplate;
+                return this._scriptTemplate;
             }
+
             set
             {
-                _scriptTemplate = value;
+                this._scriptTemplate = value;
             }
         }
 
@@ -46,11 +43,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _elementId;
+                return this._elementId;
             }
+
             set
             {
-                _elementId = value;
+                this._elementId = value;
             }
         }
 
@@ -58,11 +56,12 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _injectTop;
+                return this._injectTop;
             }
+
             set
             {
-                _injectTop = value;
+                this._injectTop = value;
             }
         }
     }

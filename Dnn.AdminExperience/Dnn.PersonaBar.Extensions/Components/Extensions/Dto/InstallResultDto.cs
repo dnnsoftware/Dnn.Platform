@@ -1,18 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Services.Installer.Log;
-using Newtonsoft.Json;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Services.Installer.Log;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class InstallResultDto
     {
@@ -30,19 +26,19 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public void Failed(string message)
         {
-            Success = false;
-            Message = message;
+            this.Success = false;
+            this.Message = message;
         }
 
         public void Succeed()
         {
-            Success = true;
-            Message = string.Empty;
+            this.Success = true;
+            this.Message = string.Empty;
         }
 
         public void AddLogs(IEnumerable<LogEntry> logs)
         {
-            Logs = logs?.Select(
+            this.Logs = logs?.Select(
                 l => new InstallerLogEntry
                 {
                     Type = l.Type.ToString(),

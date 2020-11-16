@@ -1,114 +1,121 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Log.EventLog;
-using Moq;
-
-using NUnit.Framework;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Text;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Moq;
+
+    using NUnit.Framework;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+    
     [TestFixture]
     public class FileManagerTests
     {
-        #region Private Variables
-
-        private FileManager _fileManager;
-        private Mock<IFolderManager> _folderManager;
-        private Mock<IFolderPermissionController> _folderPermissionController;
-        private Mock<IPortalController> _portalController;
-        private Mock<IFolderMappingController> _folderMappingController;
-        private Mock<IGlobals> _globals;
-        private Mock<ICBO> _cbo;
-        private Mock<DataProvider> _mockData;
-        private Mock<FolderProvider> _mockFolder;
-        private Mock<CachingProvider> _mockCache;
-        private Mock<FileManager> _mockFileManager;
-        private Mock<IFolderInfo> _folderInfo;
-        private Mock<IFileInfo> _fileInfo;
-        private Mock<IPathUtils> _pathUtils;
-        private Mock<IFileVersionController> _fileVersionController;
-        private Mock<IWorkflowManager> _workflowManager;
-        private Mock<IEventHandlersContainer<IFileEventHandlers>> _fileEventHandlersContainer;
-        private Mock<IFileLockingController> _mockFileLockingController;
-        private Mock<IFileDeletionController> _mockFileDeletionController;
-        private Mock<IHostController> _hostController;
-
-        #endregion
-
-        #region Setup & TearDown
+        private FileManager fileManager;
+        private Mock<IFolderManager> folderManager;
+        private Mock<IFolderPermissionController> folderPermissionController;
+        private Mock<IPortalController> portalController;
+        private Mock<IFolderMappingController> folderMappingController;
+        private Mock<IGlobals> globals;
+        private Mock<ICBO> cbo;
+        private Mock<DataProvider> mockData;
+        private Mock<FolderProvider> mockFolder;
+        private Mock<CachingProvider> mockCache;
+        private Mock<FileManager> mockFileManager;
+        private Mock<IFolderInfo> folderInfo;
+        private Mock<IFileInfo> fileInfo;
+        private Mock<IPathUtils> pathUtils;
+        private Mock<IFileVersionController> fileVersionController;
+        private Mock<IWorkflowManager> workflowManager;
+        private Mock<IEventHandlersContainer<IFileEventHandlers>> fileEventHandlersContainer;
+        private Mock<IFileLockingController> mockFileLockingController;
+        private Mock<IFileDeletionController> mockFileDeletionController;
+        private Mock<IHostController> hostController;
 
         [SetUp]
         public void Setup()
         {
-            _mockData = MockComponentProvider.CreateDataProvider();
-            _mockFolder = MockComponentProvider.CreateFolderProvider(Constants.FOLDER_ValidFolderProviderType);
-            _mockCache = MockComponentProvider.CreateDataCacheProvider();
+            this.mockData = MockComponentProvider.CreateDataProvider();
+            this.mockFolder = MockComponentProvider.CreateFolderProvider(Constants.FOLDER_ValidFolderProviderType);
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
 
-            _folderManager = new Mock<IFolderManager>();
-            _folderPermissionController = new Mock<IFolderPermissionController>();
-            _portalController = new Mock<IPortalController>();
-            _hostController = new Mock<IHostController>();
-            _folderMappingController = new Mock<IFolderMappingController>();
-            _fileVersionController = new Mock<IFileVersionController>();
-            _workflowManager = new Mock<IWorkflowManager>();
-            _fileEventHandlersContainer = new Mock<IEventHandlersContainer<IFileEventHandlers>>();
-            _globals = new Mock<IGlobals>();
-            _cbo = new Mock<ICBO>();
-            _pathUtils = new Mock<IPathUtils>();
-            _mockFileLockingController = new Mock<IFileLockingController>();
-            _mockFileDeletionController = new Mock<IFileDeletionController>();
-            
+            this.folderManager = new Mock<IFolderManager>();
+            this.folderPermissionController = new Mock<IFolderPermissionController>();
+            this.portalController = new Mock<IPortalController>();
+            this.hostController = new Mock<IHostController>();
+            this.hostController.As<IHostSettingsService>();
+            this.folderMappingController = new Mock<IFolderMappingController>();
+            this.fileVersionController = new Mock<IFileVersionController>();
+            this.workflowManager = new Mock<IWorkflowManager>();
+            this.fileEventHandlersContainer = new Mock<IEventHandlersContainer<IFileEventHandlers>>();
+            this.globals = new Mock<IGlobals>();
+            this.cbo = new Mock<ICBO>();
+            this.pathUtils = new Mock<IPathUtils>();
+            this.mockFileLockingController = new Mock<IFileLockingController>();
+            this.mockFileDeletionController = new Mock<IFileDeletionController>();
+
             EventLogController.SetTestableInstance(Mock.Of<IEventLogController>());
-            FolderManager.RegisterInstance(_folderManager.Object);
-            FolderPermissionController.SetTestableInstance(_folderPermissionController.Object);
-            PortalController.SetTestableInstance(_portalController.Object);
-            HostController.RegisterInstance(_hostController.Object);
-            FolderMappingController.RegisterInstance(_folderMappingController.Object);
-            TestableGlobals.SetTestableInstance(_globals.Object);
-            CBO.SetTestableInstance(_cbo.Object);
-            PathUtils.RegisterInstance(_pathUtils.Object);
-            FileVersionController.RegisterInstance(_fileVersionController.Object);
-            WorkflowManager.SetTestableInstance(_workflowManager.Object);
-            EventHandlersContainer<IFileEventHandlers>.RegisterInstance(_fileEventHandlersContainer.Object);
-            _mockFileManager = new Mock<FileManager> { CallBase = true };
+            FolderManager.RegisterInstance(this.folderManager.Object);
+            FolderPermissionController.SetTestableInstance(this.folderPermissionController.Object);
+            PortalController.SetTestableInstance(this.portalController.Object);
+            FolderMappingController.RegisterInstance(this.folderMappingController.Object);
+            TestableGlobals.SetTestableInstance(this.globals.Object);
+            CBO.SetTestableInstance(this.cbo.Object);
+            PathUtils.RegisterInstance(this.pathUtils.Object);
+            FileVersionController.RegisterInstance(this.fileVersionController.Object);
+            WorkflowManager.SetTestableInstance(this.workflowManager.Object);
+            EventHandlersContainer<IFileEventHandlers>.RegisterInstance(this.fileEventHandlersContainer.Object);
+            this.mockFileManager = new Mock<FileManager> { CallBase = true };
 
-            _folderInfo = new Mock<IFolderInfo>();
-            _fileInfo = new Mock<IFileInfo>();
+            this.folderInfo = new Mock<IFolderInfo>();
+            this.fileInfo = new Mock<IFileInfo>();
 
-            _fileManager = new FileManager();
+            this.fileManager = new FileManager();
 
-            FileLockingController.SetTestableInstance(_mockFileLockingController.Object);
-            FileDeletionController.SetTestableInstance(_mockFileDeletionController.Object);
+            FileLockingController.SetTestableInstance(this.mockFileLockingController.Object);
+            FileDeletionController.SetTestableInstance(this.mockFileDeletionController.Object);
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
+            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.hostController.Object);
+            serviceCollection.AddTransient<IEventLogger>(container => Mock.Of<IEventLogger>());
+            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
         [TearDown]
         public void TearDown()
         {
+            Globals.DependencyProvider = null;
             TestableGlobals.ClearInstance();
             CBO.ClearInstance();
 
@@ -117,18 +124,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
             PortalController.ClearInstance();
-
         }
-
-        #endregion
-
-        #region AddFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Folder()
         {
-            _fileManager.AddFile(null, It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>());
+            this.fileManager.AddFile(null, It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>());
         }
 
         [Test]
@@ -137,112 +139,102 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentException))]
         public void AddFile_Throws_On_Null_Or_Empty_FileName(string fileName)
         {
-            _fileManager.AddFile(_folderInfo.Object, fileName, It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>());
+            this.fileManager.AddFile(this.folderInfo.Object, fileName, It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>());
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AddFile_Throws_On_Null_FileContent()
         {
-            _fileManager.AddFile(_folderInfo.Object, It.IsAny<string>(), null, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>());
+            this.fileManager.AddFile(this.folderInfo.Object, It.IsAny<string>(), null, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>());
         }
 
         [Test]
         [ExpectedException(typeof(PermissionsNotMetException))]
         public void AddFile_Throws_When_Permissions_Are_Not_Met()
         {
-            _folderPermissionController.Setup(fpc => fpc.CanAddFolder(_folderInfo.Object)).Returns(false);
+            this.folderPermissionController.Setup(fpc => fpc.CanAddFolder(this.folderInfo.Object)).Returns(false);
 
-            _fileManager.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, new MemoryStream(), It.IsAny<bool>(), true, It.IsAny<string>());
+            this.fileManager.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, new MemoryStream(), It.IsAny<bool>(), true, It.IsAny<string>());
         }
 
         [Test]
         [ExpectedException(typeof(NoSpaceAvailableException))]
         public void AddFile_Throws_When_Portal_Has_No_Space_Available()
         {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this.folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
 
-            _mockData.Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            this.mockData.Setup(c => c.GetProviderPath()).Returns(string.Empty);
 
             var fileContent = new MemoryStream();
 
-            _globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
+            this.globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
 
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
-            _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(false);
-            
-            _mockFileManager.Setup(fm => fm.CreateFileContentItem()).Returns(new ContentItem());
-            _mockFileManager.Setup(fm => fm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
+            this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(false);
 
-            _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+            this.mockFileManager.Setup(fm => fm.CreateFileContentItem()).Returns(new ContentItem());
+            this.mockFileManager.Setup(fm => fm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
+
+            this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
         }
 
         [Test]
         public void AddFile_Checks_Space_For_Stream_Length()
         {
-            //Arrange
-            PrepareFileSecurityCheck();
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.WorkflowID).Returns(Null.NullInteger);
+            // Arrange
+            this.PrepareFileSecurityCheck();
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.WorkflowID).Returns(Null.NullInteger);
 
             var fileContent = new MemoryStream(Encoding.ASCII.GetBytes("some data here"));
 
-            _portalController.Setup(pc => pc.HasSpaceAvailable(It.IsAny<int>(), It.IsAny<long>())).Returns(true);
+            this.portalController.Setup(pc => pc.HasSpaceAvailable(It.IsAny<int>(), It.IsAny<long>())).Returns(true);
 
-            _globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
-
+            this.globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
 
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(false);
-            _mockFolder.Setup(mf => mf.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
+            this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(false);
+            this.mockFolder.Setup(mf => mf.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
 
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
-            _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
-            _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
+            this.mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
+            this.mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
 
+            this.workflowManager.Setup(we => we.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 
-            _workflowManager.Setup(we => we.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
+            // Act
+            this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
 
-            //Act
-            _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
-
-            //Assert
-            _portalController.Verify(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length));
-        }
-
-        class UnSeekableStream : MemoryStream
-        {
-            public override bool CanSeek
-            {
-                get { return false; }
-            }
+            // Assert
+            this.portalController.Verify(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length));
         }
 
         [Test]
         [ExpectedException(typeof(InvalidFileExtensionException))]
         public void AddFile_Throws_When_Extension_Is_Invalid()
         {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
 
             var fileContent = new MemoryStream();
 
-            _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+            this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
 
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(false);
 
-            _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+            this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
         }
 
         [TestCase("invalid_script.svg")]
@@ -251,35 +243,850 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(InvalidFileContentException))]
         public void AddFile_Throws_When_File_Content_Is_Invalid(string fileName)
         {
-            PrepareFileSecurityCheck();
+            this.PrepareFileSecurityCheck();
 
             using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Resources\\{fileName}")))
             {
-                _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
-                _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
+                this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+                this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
 
-                _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+                this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
             }
         }
 
         [Test]
         public void AddFile_No_Error_When_File_Content_Is_Valid()
         {
-            PrepareFileSecurityCheck();
+            this.PrepareFileSecurityCheck();
 
             using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\valid.svg")))
             {
-                _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
-                _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
-                _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
+                this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+                this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
+                this.mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
 
-                _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+                this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidSvgFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
             }
+        }
+
+        [Test]
+        public void AddFile_Does_Not_Call_FolderProvider_AddFile_When_Not_Overwritting_And_File_Exists()
+        {
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.WorkflowID).Returns(Null.NullInteger);
+
+            var fileContent = new MemoryStream();
+
+            this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
+
+            this.globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true);
+            this.mockFolder.Setup(mf => mf.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent));
+            this.mockFolder.Setup(mf => mf.GetHashCode(It.IsAny<IFileInfo>())).Returns("aaa");
+
+            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
+            this.mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
+            this.mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
+
+            this.workflowManager.Setup(wc => wc.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
+
+            this.mockData.Setup(
+                md =>
+                md.AddFile(
+                    It.IsAny<int>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<long>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<string>(),
+                    It.IsAny<DateTime>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<DateTime>(),
+                    It.IsAny<DateTime>(),
+                    It.IsAny<bool>(),
+                    It.IsAny<int>()))
+               .Returns(Constants.FOLDER_ValidFileId);
+
+            this.mockData.Setup(md => md.UpdateFileLastModificationTime(It.IsAny<int>(), It.IsAny<DateTime>()));
+
+            this.mockFileManager.Object.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
+
+            this.mockFolder.Verify(mf => mf.AddFile(It.IsAny<IFolderInfo>(), It.IsAny<string>(), It.IsAny<Stream>()), Times.Never());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CopyFile_Throws_On_Null_File()
+        {
+            this.fileManager.CopyFile(null, this.folderInfo.Object);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CopyFile_Throws_On_Null_DestinationFolder()
+        {
+            this.fileManager.CopyFile(this.fileInfo.Object, null);
+        }
+
+        [Test]
+        public void CopyFile_Calls_FileManager_AddFile_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Not_Equal()
+        {
+            const int sourceFolderMappingID = Constants.FOLDER_ValidFolderMappingID;
+            const int destinationFolderMappingID = Constants.FOLDER_ValidFolderMappingID + 1;
+
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.ContentType).Returns(Constants.CONTENTTYPE_ValidContentType);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(sourceFolderMappingID);
+
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(destinationFolderMappingID);
+
+            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var fileContent = new MemoryStream(bytes);
+
+            this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(fileContent);
+            this.mockFileManager.Setup(mfm => mfm.CopyContentItem(It.IsAny<int>())).Returns(Constants.CONTENT_ValidContentItemId);
+            this.mockFileManager.Setup(mfm => mfm.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<Stream>(), true, true, Constants.CONTENTTYPE_ValidContentType));
+
+            this.mockFileManager.Object.CopyFile(this.fileInfo.Object, this.folderInfo.Object);
+
+            this.mockFileManager.Verify(fm => fm.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, true, Constants.CONTENTTYPE_ValidContentType), Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(PermissionsNotMetException))]
+        public void CopyFile_Throws_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Equal_And_Cannot_Add_Folder()
+        {
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.folderPermissionController.Setup(fpc => fpc.CanAddFolder(this.folderInfo.Object)).Returns(false);
+
+            this.fileManager.CopyFile(this.fileInfo.Object, this.folderInfo.Object);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NoSpaceAvailableException))]
+        public void CopyFile_Throws_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Equal_And_Portal_Has_No_Space_Available()
+        {
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.fileInfo.Setup(fi => fi.Size).Returns(Constants.FOLDER_ValidFileSize);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+
+            this.folderPermissionController.Setup(fpc => fpc.CanAddFolder(this.folderInfo.Object)).Returns(true);
+            this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFileSize)).Returns(false);
+
+            this.fileManager.CopyFile(this.fileInfo.Object, this.folderInfo.Object);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DeleteFile_Throws_On_Null_File()
+        {
+            this.fileManager.DeleteFile(null);
+        }
+
+        [Test]
+        public void DeleteFile_Calls_FileDeletionControllerDeleteFile()
+        {
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(this.fileInfo.Object)).Verifiable();
+
+            this.mockFileManager.Object.DeleteFile(this.fileInfo.Object);
+
+            this.mockFileDeletionController.Verify();
+        }
+
+        [Test]
+        [ExpectedException(typeof(FolderProviderException))]
+        public void DeleteFile_Throws_WhenFileDeletionControllerThrows()
+        {
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(this.fileInfo.Object))
+                                       .Throws<FolderProviderException>();
+
+            this.mockFileManager.Object.DeleteFile(this.fileInfo.Object);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DownloadFile_Throws_On_Null_File()
+        {
+            this.fileManager.WriteFileToResponse(null, ContentDisposition.Inline);
+        }
+
+        [Test]
+        [ExpectedException(typeof(PermissionsNotMetException))]
+        public void DownloadFile_Throws_When_Permissions_Are_Not_Met()
+        {
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.folderPermissionController.Setup(fpc => fpc.CanViewFolder(this.folderInfo.Object)).Returns(false);
+
+            this.fileManager.WriteFileToResponse(this.fileInfo.Object, ContentDisposition.Inline);
+        }
+
+        [Test]
+        public void DownloadFile_Calls_FileManager_AutoSyncFile_When_File_AutoSync_Is_Enabled()
+        {
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.folderPermissionController.Setup(fpc => fpc.CanViewFolder(this.folderInfo.Object)).Returns(true);
+
+            this.mockFileManager.Setup(mfm => mfm.IsFileAutoSyncEnabled()).Returns(true);
+            this.mockFileManager.Setup(mfm => mfm.AutoSyncFile(this.fileInfo.Object)).Verifiable();
+            this.mockFileManager.Setup(mfm => mfm.WriteFileToHttpContext(this.fileInfo.Object, It.IsAny<ContentDisposition>()));
+
+            this.mockFileManager.Object.WriteFileToResponse(this.fileInfo.Object, ContentDisposition.Inline);
+
+            this.mockFileManager.Verify();
+        }
+
+        [Test]
+        public void DownloadFile_Does_Not_Call_FileManager_AutoSyncFile_When_File_AutoSync_Is_Not_Enabled()
+        {
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.folderPermissionController.Setup(fpc => fpc.CanViewFolder(this.folderInfo.Object)).Returns(true);
+
+            this.mockFileManager.Setup(mfm => mfm.IsFileAutoSyncEnabled()).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.WriteFileToHttpContext(this.fileInfo.Object, It.IsAny<ContentDisposition>()));
+
+            this.mockFileManager.Object.WriteFileToResponse(this.fileInfo.Object, ContentDisposition.Inline);
+
+            this.mockFileManager.Verify(mfm => mfm.AutoSyncFile(this.fileInfo.Object), Times.Never());
+        }
+
+        [Test]
+        public void DownloadFile_Calls_FileManager_WriteBytesToHttpContext()
+        {
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.folderPermissionController.Setup(fpc => fpc.CanViewFolder(this.folderInfo.Object)).Returns(true);
+
+            this.mockFileManager.Setup(mfm => mfm.IsFileAutoSyncEnabled()).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.WriteFileToHttpContext(this.fileInfo.Object, It.IsAny<ContentDisposition>())).Verifiable();
+
+            this.mockFileManager.Object.WriteFileToResponse(this.fileInfo.Object, ContentDisposition.Inline);
+
+            this.mockFileManager.Verify();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ExistsFile_Throws_On_Null_Folder()
+        {
+            this.fileManager.FileExists(null, It.IsAny<string>());
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ExistsFile_Throws_On_Null_Or_Empty_FileName(string fileName)
+        {
+            this.fileManager.FileExists(this.folderInfo.Object, fileName);
+        }
+
+        [Test]
+        public void ExistsFile_Calls_FileManager_GetFile()
+        {
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.mockFileManager.Setup(mfm => mfm.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns<IFileInfo>(null).Verifiable();
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
+
+            this.mockFileManager.Verify();
+        }
+
+        [Test]
+        public void ExistsFile_Calls_FolderProvider_ExistsFile()
+        {
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.mockFileManager.Setup(mfm => mfm.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(this.fileInfo.Object);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true).Verifiable();
+
+            this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
+
+            this.mockFolder.Verify();
+        }
+
+        [Test]
+        public void ExistsFile_Returns_True_When_File_Exists()
+        {
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.mockFileManager.Setup(mfm => mfm.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(this.fileInfo.Object);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true);
+
+            var result = this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void ExistsFile_Returns_False_When_File_Does_Not_Exist()
+        {
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.mockFileManager.Setup(mfm => mfm.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(this.fileInfo.Object);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(false);
+
+            var result = this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FolderProviderException))]
+        public void ExistsFile_Throws_When_FolderProvider_Throws()
+        {
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.mockFileManager.Setup(mfm => mfm.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(this.fileInfo.Object);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFolder.Setup(mf => mf.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName)).Throws<Exception>();
+
+            this.mockFileManager.Object.FileExists(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetFile_Throws_On_Null_Or_Empty_FileName(string fileName)
+        {
+            this.fileManager.GetFile(this.folderInfo.Object, fileName);
+        }
+
+        [Test]
+        public void GetFile_Calls_DataProvider_GetFile()
+        {
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
+
+            this.fileManager.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName);
+
+            this.mockData.Verify();
+        }
+
+        [Test]
+        public void GetFile_Handles_Path_In_Portal_Root()
+        {
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderManager.Setup(x => x.GetFolder(Constants.CONTENT_ValidPortalId, string.Empty)).Returns(this.folderInfo.Object).Verifiable();
+            this.mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
+
+            this.fileManager.GetFile(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFileName);
+
+            this.folderManager.Verify();
+            this.mockData.Verify();
+        }
+
+        [Test]
+        public void GetFile_Handles_Path_Beyond_Portal_Root()
+        {
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
+            this.folderManager.Setup(x => x.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(this.folderInfo.Object).Verifiable();
+            this.mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
+
+            this.fileManager.GetFile(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath + Constants.FOLDER_ValidFileName);
+
+            this.folderManager.Verify();
+            this.mockData.Verify();
+        }
+
+        [Test]
+        public void GetFileByID_Does_Not_Call_DataCache_GetCache_If_FileId_Is_Not_Valid()
+        {
+            this.mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(this.fileInfo.Object).Verifiable();
+
+            this.fileManager.GetFile(Constants.FOLDER_InvalidFileId);
+
+            this.mockCache.Verify(mc => mc.GetItem(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void GetFileByID_Calls_DataCache_GetCache_First()
+        {
+            this.mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(this.fileInfo.Object).Verifiable();
+
+            this.fileManager.GetFile(Constants.FOLDER_ValidFileId);
+
+            this.mockCache.Verify();
+        }
+
+        [Test]
+        public void GetFileByID_Calls_DataProvider_GetFileById_When_File_Is_Not_In_Cache()
+        {
+            this.mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(null);
+
+            this.fileManager.GetFile(Constants.FOLDER_ValidFileId);
+
+            this.mockData.Verify(md => md.GetFileById(Constants.FOLDER_ValidFileId, It.IsAny<bool>()), Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void MoveFile_Throws_On_Null_File()
+        {
+            this.fileManager.MoveFile(null, this.folderInfo.Object);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void MoveFile_Throws_On_Null_DestinationFolder()
+        {
+            this.fileManager.MoveFile(this.fileInfo.Object, null);
+        }
+
+        [Test]
+        public void MoveFile_Calls_FolderProvider_AddFile_And_DeleteFile_And_FileManager_UpdateFile()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            var fileContent = new MemoryStream();
+
+            this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(fileContent);
+            string someString;
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(this.fileInfo.Object, out someString)).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.MoveVersions(this.fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
+
+            this.mockFolder.Setup(mf => mf.AddFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
+            this.mockFolder.Setup(mf => mf.DeleteFile(this.fileInfo.Object)).Verifiable();
+
+            this.mockFileManager.Setup(mfm => mfm.UpdateFile(this.fileInfo.Object)).Verifiable();
+
+            this.mockFileManager.Object.MoveFile(this.fileInfo.Object, this.folderInfo.Object);
+
+            this.mockFolder.Verify();
+            this.mockFileManager.Verify();
+        }
+
+        [Test]
+        public void MoveFile_Updates_FolderId_And_Folder()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            this.fileInfo.Setup(fi => fi.Folder).Returns(Constants.FOLDER_ValidFolderRelativePath);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_OtherValidFolderRelativePath);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.fileInfo.SetupSet(fi => fi.FolderId = Constants.FOLDER_OtherValidFolderId).Verifiable();
+            this.fileInfo.SetupSet(fi => fi.Folder = Constants.FOLDER_OtherValidFolderRelativePath).Verifiable();
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            var fileContent = new MemoryStream();
+
+            this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(fileContent);
+            string someString;
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(this.fileInfo.Object, out someString)).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.MoveVersions(this.fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
+            this.mockFileManager.Object.MoveFile(this.fileInfo.Object, this.folderInfo.Object);
+
+            this.fileInfo.Verify();
+        }
+
+        [Test]
+        public void MoveFile_Calls_DeleteFile_When_A_File_With_The_Same_Name_Exists_On_The_Destination_Folder()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            var fileContent = new MemoryStream();
+
+            this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(fileContent);
+            string someString;
+            this.mockFileLockingController.Setup(mflc => mflc.IsFileLocked(this.fileInfo.Object, out someString)).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.MoveVersions(this.fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
+
+            var existingFile = new FileInfo();
+            this.mockFileManager.Setup(mfm => mfm.GetFile(this.folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(existingFile);
+
+            this.mockFileManager.Setup(mfm => mfm.DeleteFile(existingFile)).Verifiable();
+
+            this.mockFileManager.Object.MoveFile(this.fileInfo.Object, this.folderInfo.Object);
+
+            this.mockFileManager.Verify();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RenameFile_Throws_On_Null_File()
+        {
+            this.fileManager.RenameFile(null, It.IsAny<string>());
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void RenameFile_Throws_On_Null_Or_Empty_NewFileName(string newFileName)
+        {
+            this.fileManager.RenameFile(this.fileInfo.Object, newFileName);
+        }
+
+        [Test]
+        public void RenameFile_Calls_FolderProvider_RenameFile_When_FileNames_Are_Distinct_And_NewFileName_Does_Not_Exist()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.mockFileManager.Setup(mfm => mfm.FileExists(this.folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.UpdateFile(this.fileInfo.Object));
+            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
+
+            var folderMapping = new FolderMappingInfo();
+            folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFileManager.Object.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName);
+
+            this.mockFolder.Verify(mf => mf.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName), Times.Once());
+        }
+
+        [Test]
+        public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_FileNames_Are_Equal()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+
+            this.fileManager.RenameFile(this.fileInfo.Object, Constants.FOLDER_ValidFileName);
+
+            this.mockFolder.Verify(mf => mf.RenameFile(this.fileInfo.Object, It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        [ExpectedException(typeof(FileAlreadyExistsException))]
+        public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_NewFileName_Exists()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.mockFileManager.Setup(mfm => mfm.FileExists(this.folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(true);
+            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
+
+            this.mockFileManager.Object.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName);
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidFileExtensionException))]
+        public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_InvalidExtensionType()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+            this.mockFileManager.Setup(fm => fm.IsAllowedExtension(It.IsAny<string>())).Returns(false);
+
+            this.mockFileManager.Object.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherInvalidFileNameExtension);
+        }
+
+        [Test]
+        [ExpectedException(typeof(FolderProviderException))]
+        public void RenameFile_Throws_When_FolderProvider_Throws()
+        {
+            this.fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this.fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this.fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            this.fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+
+            this.folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this.folderInfo.Object);
+
+            this.mockFileManager.Setup(mfm => mfm.FileExists(this.folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.UpdateFile(this.fileInfo.Object));
+            this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
+
+            var folderMapping = new FolderMappingInfo();
+            folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
+
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this.mockFolder.Setup(mf => mf.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName)).Throws<Exception>();
+
+            this.mockFileManager.Object.RenameFile(this.fileInfo.Object, Constants.FOLDER_OtherValidFileName);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UnzipFile_Throws_On_Null_File()
+        {
+            this.fileManager.UnzipFile(null, It.IsAny<IFolderInfo>());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UnzipFile_Throws_On_Null_DestinationFolder()
+        {
+            this.fileManager.UnzipFile(It.IsAny<IFileInfo>(), null);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UnzipFile_Throws_When_File_Extension_Is_Not_Zip()
+        {
+            this.fileInfo.Setup(fi => fi.Extension).Returns("txt");
+
+            this.fileManager.UnzipFile(this.fileInfo.Object, It.IsAny<IFolderInfo>());
+        }
+
+        [Test]
+        public void UnzipFile_Calls_FileManager_ExtractFiles()
+        {
+            this.fileInfo.Setup(fi => fi.Extension).Returns("zip");
+
+            this.mockFileManager.Setup(mfm => mfm.ExtractFiles(this.fileInfo.Object, this.folderInfo.Object, null)).Verifiable();
+
+            this.mockFileManager.Object.UnzipFile(this.fileInfo.Object, this.folderInfo.Object);
+
+            this.mockFileManager.Verify();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateFile_Throws_On_Null_File()
+        {
+            this.fileManager.UpdateFile(null);
+        }
+
+        [Test]
+        public void UpdateFile_Calls_DataProvider_UpdateFile()
+        {
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+            this.mockFileManager.Object.UpdateFile(this.fileInfo.Object);
+
+            this.mockData.Verify(
+                md => md.UpdateFile(
+                It.IsAny<int>(),
+                It.IsAny<Guid>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<long>(),
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                It.IsAny<string>(),
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                It.IsAny<string>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<bool>(),
+                It.IsAny<int>()),
+                Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateFile_Throws_On_Null_File_Overload()
+        {
+            this.fileManager.UpdateFile(null, It.IsAny<Stream>());
+        }
+
+        [Test]
+        public void UpdateFile_Sets_With_And_Height_When_File_Is_Image()
+        {
+            var image = new Bitmap(10, 20);
+
+            this.mockFileManager.Setup(mfm => mfm.IsImageFile(this.fileInfo.Object)).Returns(true);
+            this.mockFileManager.Setup(mfm => mfm.GetImageFromStream(It.IsAny<Stream>())).Returns(image);
+            this.mockFileManager.Setup(mfm => mfm.GetHash(this.fileInfo.Object));
+
+            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var stream = new MemoryStream(bytes);
+
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            this.folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            this.mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
+            this.mockFileManager.Object.UpdateFile(this.fileInfo.Object, stream);
+
+            this.fileInfo.VerifySet(fi => fi.Width = 10);
+            this.fileInfo.VerifySet(fi => fi.Height = 20);
+        }
+
+        [Test]
+        public void UpdateFile_Sets_SHA1Hash()
+        {
+            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var stream = new MemoryStream(bytes);
+
+            this.mockFileManager.Setup(mfm => mfm.IsImageFile(this.fileInfo.Object)).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.GetHash(stream)).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            this.folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            this.mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
+            this.mockFileManager.Object.UpdateFile(this.fileInfo.Object, stream);
+
+            this.fileInfo.VerifySet(fi => fi.SHA1Hash = Constants.FOLDER_UnmodifiedFileHash);
+        }
+
+        [Test]
+        public void UpdateFile_Calls_FileManager_UpdateFile_Overload()
+        {
+            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var stream = new MemoryStream(bytes);
+
+            this.mockFileManager.Setup(mfm => mfm.IsImageFile(this.fileInfo.Object)).Returns(false);
+            this.mockFileManager.Setup(mfm => mfm.GetHash(this.fileInfo.Object)).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
+            this.fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            this.folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            this.mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
+            this.mockFileManager.Object.UpdateFile(this.fileInfo.Object, stream);
+
+            this.mockFileManager.Verify(mfm => mfm.UpdateFile(this.fileInfo.Object), Times.Once());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetSeekableStream_Throws_On_Null_Stream()
+        {
+            this.fileManager.GetSeekableStream(null);
+        }
+
+        [Test]
+        public void GetSeekableStream_Returns_The_Same_Stream_If_It_Is_Seekable()
+        {
+            var inputStream = new MemoryStream();
+            var seekableStream = this.fileManager.GetSeekableStream(inputStream);
+
+            Assert.AreEqual(inputStream, seekableStream);
+        }
+
+        [Test]
+        public void GetSeekableStream_Calls_GetHostMapPath_And_Creates_A_Temporary_FileStream_With_Resx_Extension()
+        {
+            var inputStream = new Mock<Stream>();
+            inputStream.Setup(s => s.CanSeek).Returns(false);
+            inputStream.Setup(s => s.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Returns(0);
+
+            this.mockFileManager.Setup(mfm => mfm.GetHostMapPath()).Returns(string.Empty).Verifiable();
+            this.mockFileManager.Setup(mfm => mfm.GetAutoDeleteFileStream(It.Is((string x) => x.EndsWith(".resx")))).Returns(new MemoryStream()).Verifiable();
+
+            this.mockFileManager.Object.GetSeekableStream(inputStream.Object);
+
+            this.mockFileManager.Verify();
         }
 
         private void PrepareFileSecurityCheck()
         {
-            _mockData.Setup(p => p.GetListEntriesByListName("FileSecurityChecker", string.Empty, Null.NullInteger)).Returns(() =>
+            this.mockData.Setup(p => p.GetListEntriesByListName("FileSecurityChecker", string.Empty, Null.NullInteger)).Returns(() =>
             {
                 var dataTable = new DataTable();
                 dataTable.Columns.Add("EntryID", typeof(int));
@@ -306,879 +1113,27 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
                 dataTable.Rows.Add(1, "FileSecurityChecker", "svg",
                     "DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke",
-                    0, 0, -1, -0, "", -1, 1, "", "", "", 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
+                    0, 0, -1, -0, string.Empty, -1, 1, string.Empty, string.Empty, string.Empty, 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
 
                 return dataTable.CreateDataReader();
             });
-            _hostController.Setup(c => c.GetString("PerformanceSetting")).Returns("NoCaching");
-            _globals.Setup(g => g.HostMapPath).Returns(AppDomain.CurrentDomain.BaseDirectory);
+            this.hostController.Setup(c => c.GetString("PerformanceSetting")).Returns("NoCaching");
+            this.globals.Setup(g => g.HostMapPath).Returns(AppDomain.CurrentDomain.BaseDirectory);
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
 
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            this.folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            this.folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this.folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
         }
 
-        [Test]
-        public void AddFile_Does_Not_Call_FolderProvider_AddFile_When_Not_Overwritting_And_File_Exists()
+        private class UnSeekableStream : MemoryStream
         {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.WorkflowID).Returns(Null.NullInteger);
-            
-            var fileContent = new MemoryStream();
-
-            _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
-
-            _globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true);
-            _mockFolder.Setup(mf => mf.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent));
-            _mockFolder.Setup(mf => mf.GetHashCode(It.IsAny<IFileInfo>())).Returns("aaa");
-
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
-            _mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
-            _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
-
-            _workflowManager.Setup(wc => wc.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
-
-            _mockData.Setup(
-                md =>
-                md.AddFile(It.IsAny<int>(),
-                           It.IsAny<Guid>(),
-                           It.IsAny<Guid>(),
-                           It.IsAny<string>(),
-                           It.IsAny<string>(),
-                           It.IsAny<long>(),
-                           It.IsAny<int>(),
-                           It.IsAny<int>(),
-                           It.IsAny<string>(),
-                           It.IsAny<string>(),
-                           It.IsAny<int>(),
-                           It.IsAny<int>(),
-                           It.IsAny<string>(),
-                           It.IsAny<DateTime>(),
-                           It.IsAny<string>(),
-                           It.IsAny<string>(),
-                           It.IsAny<DateTime>(),
-                           It.IsAny<DateTime>(),
-                           It.IsAny<bool>(),
-                           It.IsAny<int>()))
-               .Returns(Constants.FOLDER_ValidFileId);
-            
-            _mockData.Setup(md => md.UpdateFileLastModificationTime(It.IsAny<int>(), It.IsAny<DateTime>()));
-
-            _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
-
-            _mockFolder.Verify(mf => mf.AddFile(It.IsAny<IFolderInfo>(), It.IsAny<string>(), It.IsAny<Stream>()), Times.Never());
+            public override bool CanSeek
+            {
+                get { return false; }
+            }
         }
-        
-        #endregion
-
-        #region CopyFile
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CopyFile_Throws_On_Null_File()
-        {
-            _fileManager.CopyFile(null, _folderInfo.Object);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void CopyFile_Throws_On_Null_DestinationFolder()
-        {
-            _fileManager.CopyFile(_fileInfo.Object, null);
-        }
-
-        [Test]
-        public void CopyFile_Calls_FileManager_AddFile_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Not_Equal()
-        {
-            const int sourceFolderMappingID = Constants.FOLDER_ValidFolderMappingID;
-            const int destinationFolderMappingID = Constants.FOLDER_ValidFolderMappingID + 1;
-
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.ContentType).Returns(Constants.CONTENTTYPE_ValidContentType);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(sourceFolderMappingID);
-
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(destinationFolderMappingID);
-
-            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var fileContent = new MemoryStream(bytes);
-
-            _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
-            _mockFileManager.Setup(mfm => mfm.CopyContentItem(It.IsAny<int>())).Returns(Constants.CONTENT_ValidContentItemId);
-            _mockFileManager.Setup(mfm => mfm.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<Stream>(), true, true, Constants.CONTENTTYPE_ValidContentType));
-
-            _mockFileManager.Object.CopyFile(_fileInfo.Object, _folderInfo.Object);
-
-            _mockFileManager.Verify(fm => fm.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, true, Constants.CONTENTTYPE_ValidContentType), Times.Once());
-        }
-
-        [Test]
-        [ExpectedException(typeof(PermissionsNotMetException))]
-        public void CopyFile_Throws_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Equal_And_Cannot_Add_Folder()
-        {
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _folderPermissionController.Setup(fpc => fpc.CanAddFolder(_folderInfo.Object)).Returns(false);
-
-            _fileManager.CopyFile(_fileInfo.Object, _folderInfo.Object);
-        }
-
-        [Test]
-        [ExpectedException(typeof(NoSpaceAvailableException))]
-        public void CopyFile_Throws_When_FolderMapping_Of_Source_And_Destination_Folders_Are_Equal_And_Portal_Has_No_Space_Available()
-        {
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _fileInfo.Setup(fi => fi.Size).Returns(Constants.FOLDER_ValidFileSize);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-
-            _folderPermissionController.Setup(fpc => fpc.CanAddFolder(_folderInfo.Object)).Returns(true);
-            _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFileSize)).Returns(false);
-
-            _fileManager.CopyFile(_fileInfo.Object, _folderInfo.Object);
-        }
-
-        #endregion
-
-        #region DeleteFile
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteFile_Throws_On_Null_File()
-        {
-            _fileManager.DeleteFile(null);
-        }
-
-        [Test]
-        public void DeleteFile_Calls_FileDeletionControllerDeleteFile()
-        {
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(_fileInfo.Object)).Verifiable();
-
-            _mockFileManager.Object.DeleteFile(_fileInfo.Object);
-
-            _mockFileDeletionController.Verify();
-        }
-
-        [Test]
-        [ExpectedException(typeof(FolderProviderException))]
-        public void DeleteFile_Throws_WhenFileDeletionControllerThrows()
-        {
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(_fileInfo.Object))
-                                       .Throws<FolderProviderException>();
-
-            _mockFileManager.Object.DeleteFile(_fileInfo.Object);
-        }
-
-        #endregion
-
-        #region WriteFileToResponse
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DownloadFile_Throws_On_Null_File()
-        {
-            _fileManager.WriteFileToResponse(null, ContentDisposition.Inline);
-        }
-
-        [Test]
-        [ExpectedException(typeof(PermissionsNotMetException))]
-        public void DownloadFile_Throws_When_Permissions_Are_Not_Met()
-        {
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _folderPermissionController.Setup(fpc => fpc.CanViewFolder(_folderInfo.Object)).Returns(false);
-
-            _fileManager.WriteFileToResponse(_fileInfo.Object, ContentDisposition.Inline);
-        }
-
-        [Test]
-        public void DownloadFile_Calls_FileManager_AutoSyncFile_When_File_AutoSync_Is_Enabled()
-        {
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _folderPermissionController.Setup(fpc => fpc.CanViewFolder(_folderInfo.Object)).Returns(true);
-
-            _mockFileManager.Setup(mfm => mfm.IsFileAutoSyncEnabled()).Returns(true);
-            _mockFileManager.Setup(mfm => mfm.AutoSyncFile(_fileInfo.Object)).Verifiable();
-            _mockFileManager.Setup(mfm => mfm.WriteFileToHttpContext(_fileInfo.Object, It.IsAny<ContentDisposition>()));
-
-            _mockFileManager.Object.WriteFileToResponse(_fileInfo.Object, ContentDisposition.Inline);
-
-            _mockFileManager.Verify();
-        }
-
-        [Test]
-        public void DownloadFile_Does_Not_Call_FileManager_AutoSyncFile_When_File_AutoSync_Is_Not_Enabled()
-        {
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _folderPermissionController.Setup(fpc => fpc.CanViewFolder(_folderInfo.Object)).Returns(true);
-
-            _mockFileManager.Setup(mfm => mfm.IsFileAutoSyncEnabled()).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.WriteFileToHttpContext(_fileInfo.Object, It.IsAny<ContentDisposition>()));
-
-            _mockFileManager.Object.WriteFileToResponse(_fileInfo.Object, ContentDisposition.Inline);
-
-            _mockFileManager.Verify(mfm => mfm.AutoSyncFile(_fileInfo.Object), Times.Never());
-        }
-
-        [Test]
-        public void DownloadFile_Calls_FileManager_WriteBytesToHttpContext()
-        {
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _folderPermissionController.Setup(fpc => fpc.CanViewFolder(_folderInfo.Object)).Returns(true);
-
-            _mockFileManager.Setup(mfm => mfm.IsFileAutoSyncEnabled()).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.WriteFileToHttpContext(_fileInfo.Object, It.IsAny<ContentDisposition>())).Verifiable();
-
-            _mockFileManager.Object.WriteFileToResponse(_fileInfo.Object, ContentDisposition.Inline);
-
-            _mockFileManager.Verify();
-        }
-
-        #endregion
-
-        #region FileExists
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ExistsFile_Throws_On_Null_Folder()
-        {
-            _fileManager.FileExists(null, It.IsAny<string>());
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ExistsFile_Throws_On_Null_Or_Empty_FileName(string fileName)
-        {
-            _fileManager.FileExists(_folderInfo.Object, fileName);
-        }
-
-        [Test]
-        public void ExistsFile_Calls_FileManager_GetFile()
-        {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-
-            _mockFileManager.Setup(mfm => mfm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns<IFileInfo>(null).Verifiable();
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFileManager.Object.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
-
-            _mockFileManager.Verify();
-        }
-
-        [Test]
-        public void ExistsFile_Calls_FolderProvider_ExistsFile()
-        {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _mockFileManager.Setup(mfm => mfm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(_fileInfo.Object);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true).Verifiable();
-
-            _mockFileManager.Object.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
-
-            _mockFolder.Verify();
-        }
-
-        [Test]
-        public void ExistsFile_Returns_True_When_File_Exists()
-        {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _mockFileManager.Setup(mfm => mfm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(_fileInfo.Object);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(true);
-
-            var result = _mockFileManager.Object.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
-
-            Assert.IsTrue(result);
-        }
-
-        [Test]
-        public void ExistsFile_Returns_False_When_File_Does_Not_Exist()
-        {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _mockFileManager.Setup(mfm => mfm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(_fileInfo.Object);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(false);
-
-            var result = _mockFileManager.Object.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
-
-            Assert.IsFalse(result);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FolderProviderException))]
-        public void ExistsFile_Throws_When_FolderProvider_Throws()
-        {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _mockFileManager.Setup(mfm => mfm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(_fileInfo.Object);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Throws<Exception>();
-
-            _mockFileManager.Object.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
-        }
-
-        #endregion
-
-        #region GetFile
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void GetFile_Throws_On_Null_Or_Empty_FileName(string fileName)
-        {
-            _fileManager.GetFile(_folderInfo.Object, fileName);
-        }
-
-        [Test]
-        public void GetFile_Calls_DataProvider_GetFile()
-        {
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-
-            _mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
-
-            _fileManager.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName);
-
-            _mockData.Verify();
-        }
-
-        [Test]
-        public void GetFile_Handles_Path_In_Portal_Root()
-        {
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderManager.Setup(x => x.GetFolder(Constants.CONTENT_ValidPortalId, "")).Returns(_folderInfo.Object).Verifiable();
-            _mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
-
-            _fileManager.GetFile(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFileName);
-
-            _folderManager.Verify();
-            _mockData.Verify();
-        }
-
-        [Test]
-        public void GetFile_Handles_Path_Beyond_Portal_Root()
-        {
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderManager.Setup(x => x.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(_folderInfo.Object).Verifiable();
-            _mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
-
-            _fileManager.GetFile(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath + Constants.FOLDER_ValidFileName);
-
-            _folderManager.Verify();
-            _mockData.Verify();
-        }
-
-        #endregion
-
-        #region GetFile
-
-        [Test]
-        public void GetFileByID_Does_Not_Call_DataCache_GetCache_If_FileId_Is_Not_Valid()
-        {
-            _mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(_fileInfo.Object).Verifiable();
-
-            _fileManager.GetFile(Constants.FOLDER_InvalidFileId);
-
-            _mockCache.Verify(mc => mc.GetItem(It.IsAny<string>()), Times.Never());
-        }
-
-        [Test]
-        public void GetFileByID_Calls_DataCache_GetCache_First()
-        {
-            _mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(_fileInfo.Object).Verifiable();
-
-            _fileManager.GetFile(Constants.FOLDER_ValidFileId);
-
-            _mockCache.Verify();
-        }
-
-        [Test]
-        public void GetFileByID_Calls_DataProvider_GetFileById_When_File_Is_Not_In_Cache()
-        {
-            _mockCache.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(null);
-
-            _fileManager.GetFile(Constants.FOLDER_ValidFileId);
-
-            _mockData.Verify(md => md.GetFileById(Constants.FOLDER_ValidFileId, It.IsAny<bool>()), Times.Once());
-        }
-
-        #endregion
-
-        #region MoveFile
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MoveFile_Throws_On_Null_File()
-        {
-            _fileManager.MoveFile(null, _folderInfo.Object);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MoveFile_Throws_On_Null_DestinationFolder()
-        {
-            _fileManager.MoveFile(_fileInfo.Object, null);
-        }
-
-        [Test]
-        public void MoveFile_Calls_FolderProvider_AddFile_And_DeleteFile_And_FileManager_UpdateFile()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            var fileContent = new MemoryStream();
-
-            _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
-            string someString;
-            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.MoveVersions(_fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
-
-            _mockFolder.Setup(mf => mf.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
-            _mockFolder.Setup(mf => mf.DeleteFile(_fileInfo.Object)).Verifiable();
-
-            _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object)).Verifiable();
-
-            _mockFileManager.Object.MoveFile(_fileInfo.Object, _folderInfo.Object);
-
-            _mockFolder.Verify();
-            _mockFileManager.Verify();
-        }
-
-        [Test]
-        public void MoveFile_Updates_FolderId_And_Folder()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            _fileInfo.Setup(fi => fi.Folder).Returns(Constants.FOLDER_ValidFolderRelativePath);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
-
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_OtherValidFolderRelativePath);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _fileInfo.SetupSet(fi => fi.FolderId = Constants.FOLDER_OtherValidFolderId).Verifiable();
-            _fileInfo.SetupSet(fi => fi.Folder = Constants.FOLDER_OtherValidFolderRelativePath).Verifiable();
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            var fileContent = new MemoryStream();
-
-            _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
-            string someString;
-            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.MoveVersions(_fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
-            _mockFileManager.Object.MoveFile(_fileInfo.Object, _folderInfo.Object);
-
-            _fileInfo.Verify();
-        }
-
-        [Test]
-        public void MoveFile_Calls_DeleteFile_When_A_File_With_The_Same_Name_Exists_On_The_Destination_Folder()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
-
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_OtherValidFolderId);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            var fileContent = new MemoryStream();
-
-            _mockFileManager.Setup(mfm => mfm.GetFileContent(_fileInfo.Object)).Returns(fileContent);
-            string someString;
-            _mockFileLockingController.Setup(mflc => mflc.IsFileLocked(_fileInfo.Object, out someString)).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.MoveVersions(_fileInfo.Object, It.IsAny<IFolderInfo>(), It.IsAny<FolderProvider>(), It.IsAny<FolderProvider>()));
-
-            var existingFile = new FileInfo();
-            _mockFileManager.Setup(mfm => mfm.GetFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, It.IsAny<bool>())).Returns(existingFile);
-
-            _mockFileManager.Setup(mfm => mfm.DeleteFile(existingFile)).Verifiable();
-
-            _mockFileManager.Object.MoveFile(_fileInfo.Object, _folderInfo.Object);
-
-            _mockFileManager.Verify();
-        }
-
-        #endregion
-
-        #region RenameFile
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void RenameFile_Throws_On_Null_File()
-        {
-            _fileManager.RenameFile(null, It.IsAny<string>());
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void RenameFile_Throws_On_Null_Or_Empty_NewFileName(string newFileName)
-        {
-            _fileManager.RenameFile(_fileInfo.Object, newFileName);
-        }
-
-        [Test]
-        public void RenameFile_Calls_FolderProvider_RenameFile_When_FileNames_Are_Distinct_And_NewFileName_Does_Not_Exist()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _mockFileManager.Setup(mfm => mfm.FileExists(_folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object));
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
-
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFileManager.Object.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName);
-
-            _mockFolder.Verify(mf => mf.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName), Times.Once());
-        }
-
-        [Test]
-        public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_FileNames_Are_Equal()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-
-            _fileManager.RenameFile(_fileInfo.Object, Constants.FOLDER_ValidFileName);
-
-            _mockFolder.Verify(mf => mf.RenameFile(_fileInfo.Object, It.IsAny<string>()), Times.Never());
-        }
-
-        [Test]
-        [ExpectedException(typeof(FileAlreadyExistsException))]
-        public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_NewFileName_Exists()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _mockFileManager.Setup(mfm => mfm.FileExists(_folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(true);
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
-
-            _mockFileManager.Object.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName);
-        }
-
-        [Test]
-        [ExpectedException(typeof(InvalidFileExtensionException))]
-        public void RenameFile_Does_Not_Call_FolderProvider_RenameFile_When_InvalidExtensionType()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-            _mockFileManager.Setup(fm => fm.IsAllowedExtension(It.IsAny<string>())).Returns(false);
-
-            _mockFileManager.Object.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherInvalidFileNameExtension);
-        }
-
-        [Test]
-        [ExpectedException(typeof(FolderProviderException))]
-        public void RenameFile_Throws_When_FolderProvider_Throws()
-        {
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-
-            _mockFileManager.Setup(mfm => mfm.FileExists(_folderInfo.Object, Constants.FOLDER_OtherValidFileName, It.IsAny<bool>())).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.UpdateFile(_fileInfo.Object));
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_OtherValidFileName)).Returns(true);
-
-            var folderMapping = new FolderMappingInfo();
-            folderMapping.FolderProviderType = Constants.FOLDER_ValidFolderProviderType;
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName)).Throws<Exception>();
-
-            _mockFileManager.Object.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName);
-        }
-
-        #endregion
-
-        #region UnzipFile
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void UnzipFile_Throws_On_Null_File()
-        {
-            _fileManager.UnzipFile(null, It.IsAny<IFolderInfo>());
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void UnzipFile_Throws_On_Null_DestinationFolder()
-        {
-            _fileManager.UnzipFile(It.IsAny<IFileInfo>(), null);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void UnzipFile_Throws_When_File_Extension_Is_Not_Zip()
-        {
-            _fileInfo.Setup(fi => fi.Extension).Returns("txt");
-
-            _fileManager.UnzipFile(_fileInfo.Object, It.IsAny<IFolderInfo>());
-        }
-
-        [Test]
-        public void UnzipFile_Calls_FileManager_ExtractFiles()
-        {
-            _fileInfo.Setup(fi => fi.Extension).Returns("zip");
-
-            _mockFileManager.Setup(mfm => mfm.ExtractFiles(_fileInfo.Object, _folderInfo.Object, null)).Verifiable();
-
-            _mockFileManager.Object.UnzipFile(_fileInfo.Object, _folderInfo.Object);
-
-            _mockFileManager.Verify();
-        }
-
-        #endregion
-
-        #region UpdateFile
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void UpdateFile_Throws_On_Null_File()
-        {
-            _fileManager.UpdateFile(null);
-        }
-
-        [Test]
-        public void UpdateFile_Calls_DataProvider_UpdateFile()
-        {
-            _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
-            _mockFileManager.Object.UpdateFile(_fileInfo.Object);
-
-            _mockData.Verify(md => md.UpdateFile(
-                It.IsAny<int>(),
-                It.IsAny<Guid>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<long>(),
-                It.IsAny<int>(),
-                It.IsAny<int>(),
-                It.IsAny<string>(),
-                It.IsAny<int>(),
-                It.IsAny<int>(),
-                It.IsAny<string>(),
-                It.IsAny<DateTime>(),
-                It.IsAny<string>(),
-                It.IsAny<string>(),
-                It.IsAny<DateTime>(),
-                It.IsAny<DateTime>(),
-                It.IsAny<bool>(),
-                It.IsAny<int>()),
-                Times.Once());
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void UpdateFile_Throws_On_Null_File_Overload()
-        {
-            _fileManager.UpdateFile(null, It.IsAny<Stream>());
-        }
-
-        [Test]
-        public void UpdateFile_Sets_With_And_Height_When_File_Is_Image()
-        {
-            var image = new Bitmap(10, 20);
-
-            _mockFileManager.Setup(mfm => mfm.IsImageFile(_fileInfo.Object)).Returns(true);
-            _mockFileManager.Setup(mfm => mfm.GetImageFromStream(It.IsAny<Stream>())).Returns(image);
-            _mockFileManager.Setup(mfm => mfm.GetHash(_fileInfo.Object));
-
-            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var stream = new MemoryStream(bytes);
-
-            _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
-
-            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
-            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
-
-            _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
-
-            _fileInfo.VerifySet(fi => fi.Width = 10);
-            _fileInfo.VerifySet(fi => fi.Height = 20);
-        }
-
-        [Test]
-        public void UpdateFile_Sets_SHA1Hash()
-        {
-            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var stream = new MemoryStream(bytes);
-
-            _mockFileManager.Setup(mfm => mfm.IsImageFile(_fileInfo.Object)).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.GetHash(stream)).Returns(Constants.FOLDER_UnmodifiedFileHash);
-
-            _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
-
-            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
-            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
-
-            _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
-
-            _fileInfo.VerifySet(fi => fi.SHA1Hash = Constants.FOLDER_UnmodifiedFileHash);
-        }
-
-        [Test]
-        public void UpdateFile_Calls_FileManager_UpdateFile_Overload()
-        {
-            var bytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var stream = new MemoryStream(bytes);
-
-            _mockFileManager.Setup(mfm => mfm.IsImageFile(_fileInfo.Object)).Returns(false);
-            _mockFileManager.Setup(mfm => mfm.GetHash(_fileInfo.Object)).Returns(Constants.FOLDER_UnmodifiedFileHash);
-
-            _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
-
-            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
-            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
-
-            _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
-
-            _mockFileManager.Verify(mfm => mfm.UpdateFile(_fileInfo.Object), Times.Once());
-        }
-
-        #endregion
-
-        #region GetSeekableStream
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void GetSeekableStream_Throws_On_Null_Stream()
-        {
-            _fileManager.GetSeekableStream(null);
-        }
-
-        [Test]
-        public void GetSeekableStream_Returns_The_Same_Stream_If_It_Is_Seekable()
-        {
-            var inputStream = new MemoryStream();
-            var seekableStream = _fileManager.GetSeekableStream(inputStream);
-
-            Assert.AreEqual(inputStream, seekableStream);
-        }
-
-        [Test]
-        public void GetSeekableStream_Calls_GetHostMapPath_And_Creates_A_Temporary_FileStream_With_Resx_Extension()
-        {
-            var inputStream = new Mock<Stream>();
-            inputStream.Setup(s => s.CanSeek).Returns(false);
-            inputStream.Setup(s => s.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Returns(0);
-
-            _mockFileManager.Setup(mfm => mfm.GetHostMapPath()).Returns("").Verifiable();
-            _mockFileManager.Setup(mfm => mfm.GetAutoDeleteFileStream(It.Is((string x) => x.EndsWith(".resx")))).Returns(new MemoryStream()).Verifiable();
-
-            _mockFileManager.Object.GetSeekableStream(inputStream.Object);
-
-            _mockFileManager.Verify();
-        }
-
-
-        #endregion        
     }
 }

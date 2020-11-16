@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.IO;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.FileSystem.Internal
 {
+    using System.IO;
+
     /// <summary>
     /// Internal class to check file security.
     /// </summary>
@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// </summary>
         /// <param name="fileName">The File Name.</param>
         /// <param name="fileContent">The File Content.</param>
+        /// <returns></returns>
         bool Validate(string fileName, Stream fileContent);
     }
 }

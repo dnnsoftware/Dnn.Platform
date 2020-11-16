@@ -1,12 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using DotNetNuke.Abstractions.Logging;
+
+    using System.Collections;
+    using System.Collections.Generic;
+
     public interface ILogController
     {
         void AddLog(LogInfo logInfo);
@@ -34,6 +36,13 @@ namespace DotNetNuke.Services.Log.EventLog
         Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary();
 
         object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
+
+        /// <summary>
+        /// Retrieves a single event log via the Log Guid.
+        /// </summary>
+        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <returns>The <see cref="ILogInfo"/>.</returns>
+        ILogInfo GetLog(string logGuid);
 
         void PurgeLogBuffer();
 

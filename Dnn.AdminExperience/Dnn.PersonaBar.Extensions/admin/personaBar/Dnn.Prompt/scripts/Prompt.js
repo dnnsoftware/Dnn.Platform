@@ -11,8 +11,7 @@ define(['jquery', 'main/extension', 'main/config'], function ($, ext, cf) {
             return {
                 utility: utility,
                 settings: params.settings,
-                moduleName: 'Prompt',
-                version: "1.0.0"
+                moduleName: 'Prompt'
             };
         };
         utility.loadBundleScript('modules/dnn.Prompt/scripts/bundles/prompt-bundle.js');

@@ -1,50 +1,53 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+
+    /// <summary>
+    /// An <see cref="ISharedCollectionLock"/> implementation which uses an <see cref="ExclusiveLockStrategy"/>.
+    /// </summary>
     internal class MonitorLock : IDisposable, ISharedCollectionLock
     {
-        private ExclusiveLockStrategy _lockStrategy;
-
-        public MonitorLock(ExclusiveLockStrategy lockStrategy)
-        {
-            _lockStrategy = lockStrategy;
-        }
-
-        #region "IDisposable Support"
+        private ExclusiveLockStrategy lockStrategy;
 
         // To detect redundant calls
-        private bool _isDisposed;
+        private bool isDisposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MonitorLock"/> class.
+        /// </summary>
+        /// <param name="lockStrategy">An <see cref="ExclusiveLockStrategy"/> instance to use.</param>
+        public MonitorLock(ExclusiveLockStrategy lockStrategy)
+        {
+            this.lockStrategy = lockStrategy;
+        }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
-            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(true);
+            // Do not change this code.  Put cleanup code in Dispose(bool disposing) below.
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases resources before final disposal.
+        /// </summary>
+        /// <param name="disposing">A value indicating if the instance is currently beeing disposed.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
-                    _lockStrategy.Exit();
-                    _lockStrategy = null;
+                    this.lockStrategy.Exit();
+                    this.lockStrategy = null;
                 }
             }
-            _isDisposed = true;
-        }
 
-        #endregion
+            this.isDisposed = true;
+        }
     }
 }

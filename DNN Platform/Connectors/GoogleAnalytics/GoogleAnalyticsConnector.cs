@@ -1,51 +1,46 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Analytics.Config;
-using DotNetNuke.Services.Connections;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DNN.Connectors.GoogleAnalytics
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Analytics.Config;
+    using DotNetNuke.Services.Connections;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
+    /// <summary>
+    /// Connector to provide configuration for Google Analytics support.
+    /// </summary>
     public class GoogleAnalyticsConnector : IConnector
     {
-        #region Properties
-
         private const string DefaultDisplayName = "Google Analytics";
 
+        private string displayName;
+
+        /// <inheritdoc/>
         public string Name
         {
             get { return "Core Google Analytics Connector"; }
         }
 
-        private string _displayName;
-
-        public string DisplayName
-        {
-            get
-            {
-                return
-                    string.IsNullOrEmpty(_displayName) ? DefaultDisplayName : _displayName;
-            }
-
-            set { _displayName = value; }
-        }
-
+        /// <inheritdoc/>
         public string IconUrl
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics/Images/GoogleAnalytics_32X32_Standard.png"; }
         }
 
+        /// <inheritdoc/>
         public string PluginFolder
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics/"; }
         }
 
+        /// <inheritdoc/>
         public bool IsEngageConnector
         {
             get
@@ -54,40 +49,45 @@ namespace DNN.Connectors.GoogleAnalytics
             }
         }
 
-        public string Id { get; set; }
-
+        /// <inheritdoc/>
         public ConnectorCategories Type => ConnectorCategories.Analytics;
 
+        /// <inheritdoc/>
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
 
-        #endregion
+        /// <inheritdoc/>
+        public string DisplayName
+        {
+            get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
+            set => this.displayName = value;
+        }
 
-        #region Public Methods
+        /// <inheritdoc/>
+        public string Id { get; set; }
+
+        /// <inheritdoc/>
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
-
             return new List<IConnector> { this };
-
         }
 
+        /// <inheritdoc/>
         public void DeleteConnector(int portalId)
         {
-
-
         }
 
+        /// <inheritdoc/>
         public bool HasConfig(int portalId)
         {
-            IDictionary<string, string> config = GetConfig(portalId);
+            IDictionary<string, string> config = this.GetConfig(portalId);
 
-            return (config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"]));
-
+            return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, string> GetConfig(int portalId)
         {
-
             var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
             var portalSettings = new PortalSettings(portalId);
 
@@ -102,7 +102,6 @@ namespace DNN.Connectors.GoogleAnalytics
 
             if (analyticsConfig != null)
             {
-
                 foreach (AnalyticsSetting setting in analyticsConfig.Settings)
                 {
                     switch (setting.SettingName.ToLower())
@@ -114,13 +113,13 @@ namespace DNN.Connectors.GoogleAnalytics
                             urlParameter = setting.SettingValue;
                             break;
                         case "trackforadmin":
-                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
+                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "anonymizeip":
-                            anonymizeIp = HandleCustomBoolean(setting.SettingValue);
+                            anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "trackuserid":
-                            trackUserId = HandleCustomBoolean(setting.SettingValue);
+                            trackUserId = this.HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -134,43 +133,27 @@ namespace DNN.Connectors.GoogleAnalytics
             var configItems = new Dictionary<string, string>
             {
                 { "TrackingID", trackingId },
-                { "UrlParameter", urlParameter},
-                { "TrackAdministrators", trackForAdmin},
-                { "AnonymizeIp", anonymizeIp},
-                { "TrackUserId", trackUserId},
-                { "DataConsent", HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
-                { "isDeactivating", HandleCustomBoolean("false") }
+                { "UrlParameter", urlParameter },
+                { "TrackAdministrators", trackForAdmin },
+                { "AnonymizeIp", anonymizeIp },
+                { "TrackUserId", trackUserId },
+                { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
+                { "isDeactivating", this.HandleCustomBoolean("false") },
             };
 
             return configItems;
         }
 
-        /// <summary>
-        /// Handles custom conversion from "true" => "true"
-        /// Anything else to "" to support the strange knockout handling of string as booleans
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private string HandleCustomBoolean(string value)
-        {
-            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
-            {
-                return "true";
-            }
-            return "";
-        }
-
+        /// <inheritdoc/>
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-
             customErrorMessage = string.Empty;
             bool isValid;
 
             try
             {
-
                 var isDeactivating = false;
 
                 bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
@@ -199,50 +182,48 @@ namespace DNN.Connectors.GoogleAnalytics
                     anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
                     trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (String.IsNullOrEmpty(trackingID))
+                    if (string.IsNullOrEmpty(trackingID))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                     }
-
                 }
 
                 if (isValid)
                 {
-
                     var config = new AnalyticsConfiguration
                     {
-                        Settings = new AnalyticsSettingCollection()
+                        Settings = new AnalyticsSettingCollection(),
                     };
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackingId",
-                        SettingValue = trackingID
+                        SettingValue = trackingID,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "UrlParameter",
-                        SettingValue = urlParameter
+                        SettingValue = urlParameter,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin
+                        SettingValue = trackForAdmin,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "AnonymizeIp",
-                        SettingValue = anonymizeIp
+                        SettingValue = anonymizeIp,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackUserId",
-                        SettingValue = trackUserId
+                        SettingValue = trackUserId,
                     });
 
                     AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
@@ -257,7 +238,20 @@ namespace DNN.Connectors.GoogleAnalytics
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Handles custom conversion from "true" => "true"
+        /// Anything else to "" to support the strange knockout handling of string as booleans.
+        /// </summary>
+        /// <param name="value">The string representing a boolean.</param>
+        /// <returns>The string representing a boolean after the correction.</returns>
+        private string HandleCustomBoolean(string value)
+        {
+            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                return "true";
+            }
 
+            return string.Empty;
+        }
     }
 }

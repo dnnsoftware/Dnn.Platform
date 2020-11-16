@@ -1,33 +1,35 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto.Jobs;
-using DotNetNuke.Common.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.ExportImport.Components.Models
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto.Jobs;
+    using DotNetNuke.Common.Utilities;
+
     public class ExportImportResult
     {
-        public int JobId { get; set; }
-        public IList<LogItem> CompleteLog { get; private set; }
+        public ExportImportResult()
+        {
+            this.CompleteLog = this.CompleteLog = new List<LogItem>();
+        }
 
         public IList<LogItem> Summary
         {
-            get { return CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
+            get { return this.CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
         }
 
-        public ExportImportResult()
-        {
-            CompleteLog = CompleteLog = new List<LogItem>();
-        }
+        public int JobId { get; set; }
+
+        public IList<LogItem> CompleteLog { get; private set; }
 
         public LogItem AddSummary(string name, string value)
         {
-            return AddLogEntry(name, value, ReportLevel.Info);
+            return this.AddLogEntry(name, value, ReportLevel.Info);
         }
 
         public LogItem AddLogEntry(string name, string value, ReportLevel level = ReportLevel.Verbose)
@@ -40,7 +42,7 @@ namespace Dnn.ExportImport.Components.Models
                 CreatedOnDate = DateUtils.GetDatabaseUtcTime(),
             };
 
-            CompleteLog.Add(item);
+            this.CompleteLog.Add(item);
             return item;
         }
     }

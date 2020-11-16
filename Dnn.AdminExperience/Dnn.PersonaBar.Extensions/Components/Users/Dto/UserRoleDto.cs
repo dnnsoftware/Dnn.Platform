@@ -1,15 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Runtime.Serialization;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+
     [DataContract]
     public class UserRoleDto
     {
@@ -69,13 +70,13 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         {
             return new UserRoleInfo()
             {
-                UserRoleID = Id,
-                UserID = UserId,
-                FullName = DisplayName,
-                RoleID = RoleId,
-                RoleName = RoleName,
-                EffectiveDate = StartTime,
-                ExpiryDate = ExpiresTime,
+                UserRoleID = this.Id,
+                UserID = this.UserId,
+                FullName = this.DisplayName,
+                RoleID = this.RoleId,
+                RoleName = this.RoleName,
+                EffectiveDate = this.StartTime,
+                ExpiryDate = this.ExpiresTime,
             };
         }
 

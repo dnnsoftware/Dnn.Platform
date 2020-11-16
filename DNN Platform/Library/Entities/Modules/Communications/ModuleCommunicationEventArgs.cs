@@ -1,32 +1,41 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Communications
 {
+    using System;
+
     public class ModuleCommunicationEventArgs : EventArgs
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleCommunicationEventArgs"/> class.
+        /// </summary>
         public ModuleCommunicationEventArgs()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleCommunicationEventArgs"/> class.
+        /// </summary>
+        /// <param name="text"></param>
         public ModuleCommunicationEventArgs(string text)
         {
-            Text = text;
+            this.Text = text;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleCommunicationEventArgs"/> class.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <param name="sender"></param>
+        /// <param name="target"></param>
         public ModuleCommunicationEventArgs(string type, object value, string sender, string target)
         {
-            Type = type;
-            Value = value;
-            Sender = sender;
-            Target = target;
+            this.Type = type;
+            this.Value = value;
+            this.Sender = sender;
+            this.Target = target;
         }
 
         public string Sender { get; set; }

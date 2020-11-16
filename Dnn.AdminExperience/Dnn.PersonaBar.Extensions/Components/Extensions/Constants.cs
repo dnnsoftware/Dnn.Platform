@@ -1,7 +1,9 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+using System;
+
 namespace Dnn.PersonaBar.Extensions.Components
 {
     public enum PackageTypes
@@ -12,7 +14,6 @@ namespace Dnn.PersonaBar.Extensions.Components
         Auth_System = AuthSystem,
         Container,
         CoreLanguagePack,
-        DashboardControl,
         ExtensionLanguagePack,
         EvoqConnector,
         JavascriptLibrary,
@@ -51,8 +52,6 @@ namespace Dnn.PersonaBar.Extensions.Components
         internal const string DefaultProviderImage = "icon_provider.gif";
         internal const string DefaultLibraryImage = "icon_library.png";
         internal const string DefaultWidgetImage = "icon_widget.png";
-        internal const string DefaultDashboardImage = "icon_dashboard.png";
-
         internal const string DnnAuthTypeName = "DNN";
         internal const string SharedResources = Library.Constants.PersonaBarRelativePath + "/Modules/Dnn.Extensions/App_LocalResources/Extensions.resx";
     }

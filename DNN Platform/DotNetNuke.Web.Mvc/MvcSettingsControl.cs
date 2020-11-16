@@ -1,29 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc
 {
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+
     public class MvcSettingsControl : MvcHostControl, ISettingsControl
     {
-        public MvcSettingsControl() : base("Settings")
+        public MvcSettingsControl()
+            : base("Settings")
         {
-            ExecuteModuleImmediately = false;
+            this.ExecuteModuleImmediately = false;
         }
 
         public void LoadSettings()
         {
-            ExecuteModule();
+            this.ExecuteModule();
         }
 
         public void UpdateSettings()
         {
-            ExecuteModule();
+            this.ExecuteModule();
 
-            ModuleController.Instance.UpdateModule(ModuleContext.Configuration);
+            ModuleController.Instance.UpdateModule(this.ModuleContext.Configuration);
         }
     }
 }

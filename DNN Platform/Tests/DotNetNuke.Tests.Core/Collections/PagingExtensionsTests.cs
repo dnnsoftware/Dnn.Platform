@@ -1,34 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Tests.Utilities;
-
-using NUnit.Framework;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Collections
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PagingExtensionsTests
     {
         [Test]
         public void PagingExtensions_InPagesOf_Returns_PageSelector()
         {
-            //Arrange
+            // Arrange
             IQueryable<int> queryable = Util.CreateIntegerList(Constants.PAGE_TotalCount).AsQueryable();
 
-            //Act
+            // Act
             PageSelector<int> pageSelector = queryable.InPagesOf(Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<PageSelector<int>>(pageSelector);
         }
 
@@ -39,13 +33,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(4, 4)]
         public void PagingExtensions_ToPagedList_Returns_PagedList_From_Enumerable(int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             List<int> enumerable = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             IPagedList<int> pagedList = enumerable.ToPagedList(index, pageSize);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IPagedList<int>>(pagedList);
         }
 
@@ -57,13 +51,13 @@ namespace DotNetNuke.Tests.Core.Collections
         public void PagingExtensions_ToPagedList_Returns_PagedList_From_Enumerable_With_Correct_Index_AndPageSize(
             int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             List<int> enumerable = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             IPagedList<int> pagedList = enumerable.ToPagedList(index, pageSize);
 
-            //Assert
+            // Assert
             Assert.AreEqual(index, pagedList.PageIndex);
             Assert.AreEqual(pageSize, pagedList.PageSize);
         }
@@ -75,13 +69,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(4, 4)]
         public void PagingExtensions_ToPagedList_Returns_PagedList_From_Queryable(int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> queryable = Util.CreateIntegerList(Constants.PAGE_TotalCount).AsQueryable();
 
-            //Act
+            // Act
             IPagedList<int> pagedList = queryable.ToPagedList(index, pageSize);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IPagedList<int>>(pagedList);
         }
 
@@ -93,13 +87,13 @@ namespace DotNetNuke.Tests.Core.Collections
         public void PagingExtensions_ToPagedList_Returns_PagedList_From_Queryable_With_Correct_Index_AndPageSize(
             int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> queryable = Util.CreateIntegerList(Constants.PAGE_TotalCount).AsQueryable();
 
-            //Act
+            // Act
             IPagedList<int> pagedList = queryable.ToPagedList(index, pageSize);
 
-            //Assert
+            // Assert
             Assert.AreEqual(index, pagedList.PageIndex);
             Assert.AreEqual(pageSize, pagedList.PageSize);
         }

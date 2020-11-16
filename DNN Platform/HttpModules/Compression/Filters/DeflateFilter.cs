@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.IO;
-using System.IO.Compression;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules.Compression
 {
+    using System.IO;
+    using System.IO.Compression;
+
     /// <summary>
     /// Summary description for DeflateFilter.
     /// </summary>
@@ -18,11 +13,13 @@ namespace DotNetNuke.HttpModules.Compression
     {
         private readonly DeflateStream m_stream;
 
-        public DeflateFilter(Stream baseStream) : base(baseStream)
+        public DeflateFilter(Stream baseStream)
+            : base(baseStream)
         {
-            m_stream = new DeflateStream(baseStream, CompressionMode.Compress);
+            this.m_stream = new DeflateStream(baseStream, CompressionMode.Compress);
         }
 
+        /// <inheritdoc/>
         public override string ContentEncoding
         {
             get
@@ -31,23 +28,27 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
+        /// <inheritdoc/>
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (!HasWrittenHeaders)
+            if (!this.HasWrittenHeaders)
             {
-                WriteHeaders();
+                this.WriteHeaders();
             }
-            m_stream.Write(buffer, offset, count);
+
+            this.m_stream.Write(buffer, offset, count);
         }
 
+        /// <inheritdoc/>
         public override void Close()
         {
-            m_stream.Close();
+            this.m_stream.Close();
         }
 
+        /// <inheritdoc/>
         public override void Flush()
         {
-            m_stream.Flush();
+            this.m_stream.Flush();
         }
     }
 }

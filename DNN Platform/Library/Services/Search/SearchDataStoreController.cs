@@ -1,28 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.DataStore
     /// Class:      SearchDataStoreController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchDataStoreController is the Business Controller class for SearchDataStore
+    /// The SearchDataStoreController is the Business Controller class for SearchDataStore.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -38,18 +33,18 @@ namespace DotNetNuke.Services.Search
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void DeleteSearchItem(int SearchItemId)
-        {            
+        {
         }
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void DeleteSearchItemWords(int SearchItemId)
-        {            
+        {
         }
 
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchItemInfo GetSearchItem(int ModuleId, string SearchKey)
         {
-            var empty=new SearchItemInfo();
+            var empty = new SearchItemInfo();
             return empty;
         }
 
@@ -69,12 +64,13 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSearchResults gets the search results for a single word
+        /// GetSearchResults gets the search results for a single word.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="PortalID">A Id of the Portal</param>
-        /// <param name="Word">The word</param>
+        /// <param name="PortalID">A Id of the Portal.</param>
+        /// <param name="Word">The word.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalID, string Word)
@@ -92,11 +88,12 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSearchSettings gets the search settings for a single module
+        /// GetSearchSettings gets the search settings for a single module.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="ModuleId">The Id of the Module</param>
+        /// <param name="ModuleId">The Id of the Module.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, string> GetSearchSettings(int ModuleId)
         {
@@ -113,7 +110,7 @@ namespace DotNetNuke.Services.Search
                     }
                     else
                     {
-                        dicSearchSettings[dr.GetString(0)] = "";
+                        dicSearchSettings[dr.GetString(0)] = string.Empty;
                     }
                 }
             }
@@ -125,12 +122,13 @@ namespace DotNetNuke.Services.Search
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return dicSearchSettings;
         }
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void UpdateSearchItem(SearchItemInfo item)
-        {            
+        {
         }
     }
 }

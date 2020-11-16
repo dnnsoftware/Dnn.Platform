@@ -97,6 +97,9 @@
     <Compile Include="Components\AzureConnector.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\ServicesController.cs" />
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="AzureConnector.dnn" />
     <Content Include="connector.css" />
     <Content Include="connector.htm" />
@@ -130,6 +133,10 @@
       <Project>{b267ce88-dffc-4bd8-9962-319e79c52526}</Project>
       <Name>DotNetNuke.Providers.FolderProviders</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Module.build" />

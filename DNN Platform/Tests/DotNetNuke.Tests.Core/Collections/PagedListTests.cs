@@ -1,22 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Tests.Utilities;
-
-using NUnit.Framework;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Collections
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PagedListTests
     {
@@ -27,14 +21,14 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(12, 2)]
         public void PagedList_Constructor_Succeeds_When_Given_Valid_Index(int totalCount, int pageIndex)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> list = Util.CreateIntegerList(totalCount).AsQueryable();
 
-            //Act
+            // Act
             new PagedList<int>(list, pageIndex, Constants.PAGE_RecordCount);
 
-            //Assert
-            //asserted by no exception :)
+            // Assert
+            // asserted by no exception :)
         }
 
         [Test]
@@ -44,16 +38,15 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(12, 2)]
         public void PagedList_Constructor_Overload_Succeeds_When_Given_Valid_Index(int totalCount, int pageIndex)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount).AsQueryable();
 
-            //Act
+            // Act
             new PagedList<int>(list, totalCount, pageIndex, Constants.PAGE_RecordCount);
 
-            //Assert
-            //asserted by no exception :)
+            // Assert
+            // asserted by no exception :)
         }
-
 
         [Test]
         [TestCase(0, 1)]
@@ -61,7 +54,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(7, 2)]
         public void PagedList_Constructor_Throws_When_Given_InValid_Index(int totalCount, int pageIndex)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> list = Util.CreateIntegerList(totalCount).AsQueryable();
 
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, pageIndex, Constants.PAGE_RecordCount));
@@ -73,7 +66,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(7, 2)]
         public void PagedList_Constructor_Overload_Throws_When_Given_InValid_Index(int totalCount, int pageIndex)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount).AsQueryable();
 
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, Constants.PAGE_RecordCount));
@@ -85,7 +78,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(7, 2)]
         public void PagedList_Constructor_Throws_When_Given_Invalid_PageSize(int totalCount, int pageIndex)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> list = Util.CreateIntegerList(totalCount).AsQueryable();
 
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, pageIndex, -1));
@@ -97,29 +90,29 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(7, 2)]
         public void PagedList_Constructor_Overload_Throws_When_Given_Invalid_PageSize(int totalCount, int pageIndex)
         {
-            //Arrange
+            // Arrange
             IQueryable<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount).AsQueryable();
 
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, -1));
         }
-        
+
         [Test]
         public void PagedList_Constructor_Throws_When_Given_Negative_Index()
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, Constants.PAGE_NegativeIndex, Constants.PAGE_RecordCount));
         }
 
         [Test]
         public void PagedList_Constructor_Overload_Throws_When_Given_Negative_Index()
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_RecordCount);
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, Constants.PAGE_TotalCount, Constants.PAGE_NegativeIndex, Constants.PAGE_RecordCount));
         }
 
@@ -129,13 +122,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(Constants.PAGE_Last, false)]
         public void PagedList_HasNextPage_Has_Correct_Value_When_Given_Valid_Index(int index, bool hasNext)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.AreEqual(hasNext, pagedList.HasNextPage);
         }
 
@@ -145,13 +138,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(Constants.PAGE_Last, true)]
         public void PagedList_HasPreviousPage_Has_Correct_Value_When_Given_Valid_Index(int index, bool hasPrevious)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.AreEqual(hasPrevious, pagedList.HasPreviousPage);
         }
 
@@ -161,13 +154,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(Constants.PAGE_Last, false)]
         public void PagedList_IsFirstPage_Has_Correct_Value_When_Given_Valid_Index(int index, bool isFirst)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.AreEqual(isFirst, pagedList.IsFirstPage);
         }
 
@@ -177,13 +170,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(Constants.PAGE_Last, true)]
         public void PagedList_IsLastPage_Has_Correct_Value_When_Given_Valid_Index(int index, bool isLast)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.AreEqual(isLast, pagedList.IsLastPage);
         }
 
@@ -193,13 +186,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(Constants.PAGE_Last)]
         public void PagedList_Returns_Correct_Page_When_Given_Valid_Index(int index)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.AreEqual(index, pagedList.PageIndex);
         }
 
@@ -208,13 +201,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(8)]
         public void PagedList_Returns_Correct_RecordCount_When_Given_Valid_Index(int pageSize)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, Constants.PAGE_First, pageSize);
 
-            //Assert
+            // Assert
             Assert.AreEqual(pageSize, pagedList.PageSize);
         }
 
@@ -225,16 +218,16 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(4, 4)]
         public void PagedList_Returns_Correct_Values_When_Given_Valid_Index_And_PageSize(int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, pageSize);
 
-            //Assert
+            // Assert
             for (int i = 0; i < pageSize; i++)
             {
-                Assert.AreEqual(index*pageSize + i, pagedList[i]);
+                Assert.AreEqual((index * pageSize) + i, pagedList[i]);
             }
         }
 
@@ -245,13 +238,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(1, 10, 3)]
         public void PagedList_Sets_Correct_PageCount(int index, int pageSize, int pageCount)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, pageSize);
 
-            //Assert
+            // Assert
             Assert.AreEqual(pageCount, pagedList.PageCount);
         }
 
@@ -262,13 +255,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(4, 4)]
         public void PagedList_Sets_TotalCount_To_Total_Number_Of_Items(int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             List<int> list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
 
-            //Act
+            // Act
             var pagedList = new PagedList<int>(list, index, pageSize);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.PAGE_TotalCount, pagedList.TotalCount);
         }
     }

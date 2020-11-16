@@ -1,15 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+    using System.Web.Mvc.Html;
+
     /// <summary>
     /// Provides a way to render object values as HTML.
     /// </summary>
@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the specified expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property in the object that is represented by the expression.
         /// </returns>
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns HTML markup for each property in the object that is represented by the specified expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for each property.
         /// </returns>

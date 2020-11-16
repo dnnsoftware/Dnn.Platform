@@ -1,61 +1,298 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Journal.Internal;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Journal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Journal.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
     public class ServicesController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesController));
-
         private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
 
-        private static readonly string [] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
 
-        #region Public Methods
-        public class CreateDTO
+        private static readonly string[] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage Create(CreateDTO postData)
         {
-            public string Text { get; set; }
-            public int ProfileId { get; set; }
-            public string JournalType { get; set; }
-            public string ItemData { get; set; }
-            public string SecuritySet { get; set; }
-            public int GroupId { get; set; }
-            public IList<MentionDTO> Mentions { get; set; }
+            try
+            {
+                int userId = this.UserInfo.UserID;
+                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
+
+                if (postData.ProfileId == -1)
+                {
+                    postData.ProfileId = userId;
+                }
+
+                this.checkProfileAccess(postData.ProfileId, this.UserInfo);
+
+                this.checkGroupAccess(postData);
+
+                var journalItem = this.prepareJournalItem(postData, mentionedUsers);
+
+                JournalController.Instance.SaveJournalItem(journalItem, this.ActiveModule);
+
+                var originalSummary = journalItem.Summary;
+                this.SendMentionNotifications(mentionedUsers, journalItem, originalSummary);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, journalItem);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
         }
 
-        public class MentionDTO
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage Delete(JournalIdDTO postData)
         {
-            public string DisplayName { get; set; }
-            public int UserId { get; set; }
+            try
+            {
+                var jc = JournalController.Instance;
+                var ji = jc.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+
+                if (ji == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
+                }
+
+                if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                {
+                    jc.DeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage SoftDelete(JournalIdDTO postData)
+        {
+            try
+            {
+                var jc = JournalController.Instance;
+                var ji = jc.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+
+                if (ji == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
+                }
+
+                if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                {
+                    jc.SoftDeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage PreviewUrl(PreviewDTO postData)
+        {
+            try
+            {
+                var link = Utilities.GetLinkData(postData.Url);
+                return this.Request.CreateResponse(HttpStatusCode.OK, link);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
+        {
+            try
+            {
+                var jp = new JournalParser(this.PortalSettings, this.ActiveModule.ModuleID, postData.ProfileId, postData.GroupId, this.UserInfo);
+                return this.Request.CreateResponse(HttpStatusCode.OK, jp.GetList(postData.RowIndex, postData.MaxRows), "text/html");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                throw new HttpException(500, exc.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage Like(JournalIdDTO postData)
+        {
+            try
+            {
+                JournalController.Instance.LikeJournalItem(postData.JournalId, this.UserInfo.UserID, this.UserInfo.DisplayName);
+                var ji = JournalController.Instance.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+                var jp = new JournalParser(this.PortalSettings, this.ActiveModule.ModuleID, ji.ProfileId, -1, this.UserInfo);
+                var isLiked = false;
+                var likeList = jp.GetLikeListHTML(ji, ref isLiked);
+                likeList = Utilities.LocalizeControl(likeList);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { LikeList = likeList, Liked = isLiked });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage CommentSave(CommentSaveDTO postData)
+        {
+            try
+            {
+                var comment = Utilities.RemoveHTML(HttpUtility.UrlDecode(postData.Comment));
+
+                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
+                var originalComment = comment;
+                comment = this.ParseMentions(comment, postData.Mentions, ref mentionedUsers);
+                var ci = new CommentInfo { JournalId = postData.JournalId, Comment = comment };
+                ci.UserId = this.UserInfo.UserID;
+                ci.DisplayName = this.UserInfo.DisplayName;
+                JournalController.Instance.SaveComment(ci);
+
+                var ji = JournalController.Instance.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+                var jp = new JournalParser(this.PortalSettings, this.ActiveModule.ModuleID, ji.ProfileId, -1, this.UserInfo);
+
+                this.SendMentionNotifications(mentionedUsers, ji, originalComment, "Comment");
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, jp.GetCommentRow(ji, ci), "text/html");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage CommentDelete(CommentDeleteDTO postData)
+        {
+            try
+            {
+                var ci = JournalController.Instance.GetComment(postData.CommentId);
+                if (ci == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "delete failed");
+                }
+
+                var ji = JournalController.Instance.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+
+                if (ji == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
+                }
+
+                if (ci.UserId == this.UserInfo.UserID || ji.UserId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                {
+                    JournalController.Instance.DeleteComment(postData.JournalId, postData.CommentId);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage GetSuggestions(string keyword)
+        {
+            try
+            {
+                var findedUsers = new List<SuggestDTO>();
+                var relations = RelationshipController.Instance.GetUserRelationships(this.UserInfo);
+                foreach (var ur in relations)
+                {
+                    var targetUserId = ur.UserId == this.UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
+                    var targetUser = UserController.GetUserById(this.PortalSettings.PortalId, targetUserId);
+                    var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
+                    if (ur.Status == RelationshipStatus.Accepted && targetUser != null
+                        && ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == this.UserInfo.UserID)
+                                || relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends)
+                        && (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
+                                || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace("-", " ").ToLowerInvariant()))
+                        && findedUsers.All(s => s.userId != targetUser.UserID))
+                    {
+                        findedUsers.Add(new SuggestDTO
+                        {
+                            displayName = targetUser.DisplayName.Replace(" ", "-"),
+                            userId = targetUser.UserID,
+                            avatar = targetUser.Profile.PhotoURL,
+                            key = keyword,
+                        });
+                    }
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, findedUsers.Cast<object>().Take(5));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
         }
 
         private static bool IsImageFile(string relativePath)
@@ -66,14 +303,15 @@ namespace DotNetNuke.Modules.Journal
             }
 
             if (relativePath.Contains("?"))
-	        {
-		        relativePath = relativePath.Substring(0,
-			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
-	        }
+            {
+                relativePath = relativePath.Substring(
+                    0,
+                    relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+            }
 
-            
-            var extension = relativePath.Substring(relativePath.LastIndexOf(".",
-            StringComparison.Ordinal) + 1).ToLowerInvariant();
+            var extension = relativePath.Substring(relativePath.LastIndexOf(
+                ".",
+                StringComparison.Ordinal) + 1).ToLowerInvariant();
             return AcceptedFileExtensions.Contains(extension);
         }
 
@@ -82,48 +320,13 @@ namespace DotNetNuke.Modules.Journal
             return !string.IsNullOrEmpty(url) && !url.Contains("//");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-		[DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage Create(CreateDTO postData)
-        {
-            try
-            {
-                int userId = UserInfo.UserID;
-                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
-
-                if (postData.ProfileId == -1)
-                {
-                    postData.ProfileId = userId;
-                }
-
-                checkProfileAccess(postData.ProfileId, UserInfo);
-
-                checkGroupAccess(postData);
-
-                var journalItem = prepareJournalItem(postData, mentionedUsers);
-
-                JournalController.Instance.SaveJournalItem(journalItem, ActiveModule);
-
-                var originalSummary = journalItem.Summary;
-                SendMentionNotifications(mentionedUsers, journalItem, originalSummary);
-
-                return Request.CreateResponse(HttpStatusCode.OK, journalItem);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
         // Check if a user can post content on a specific profile's page
         private void checkProfileAccess(int profileId, UserInfo currentUser)
         {
             if (profileId != currentUser.UserID)
             {
-                var profileUser = UserController.Instance.GetUser(PortalSettings.PortalId, profileId);
-                if (profileUser == null || (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !Utilities.AreFriends(profileUser, currentUser)))
+                var profileUser = UserController.Instance.GetUser(this.PortalSettings.PortalId, profileId);
+                if (profileUser == null || (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName) && !Utilities.AreFriends(profileUser, currentUser)))
                 {
                     throw new ArgumentException("you have no permission to post journal on current profile page.");
                 }
@@ -136,10 +339,10 @@ namespace DotNetNuke.Modules.Journal
             {
                 postData.ProfileId = -1;
 
-                RoleInfo roleInfo = RoleController.Instance.GetRoleById(ActiveModule.OwnerPortalID, postData.GroupId);
+                RoleInfo roleInfo = RoleController.Instance.GetRoleById(this.ActiveModule.OwnerPortalID, postData.GroupId);
                 if (roleInfo != null)
                 {
-                    if (!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !UserInfo.IsInRole(roleInfo.RoleName))
+                    if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName) && !this.UserInfo.IsInRole(roleInfo.RoleName))
                     {
                         throw new ArgumentException("you have no permission to post journal on current group.");
                     }
@@ -172,12 +375,12 @@ namespace DotNetNuke.Modules.Journal
             {
                 JournalId = -1,
                 JournalTypeId = journalTypeId,
-                PortalId = ActiveModule.OwnerPortalID,
-                UserId = UserInfo.UserID,
+                PortalId = this.ActiveModule.OwnerPortalID,
+                UserId = this.UserInfo.UserID,
                 SocialGroupId = postData.GroupId,
                 ProfileId = postData.ProfileId,
-                Summary = postData.Text ?? "",
-                SecuritySet = postData.SecuritySet
+                Summary = postData.Text ?? string.Empty,
+                SecuritySet = postData.SecuritySet,
             };
             ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
             ji.Summary = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Summary));
@@ -192,10 +395,10 @@ namespace DotNetNuke.Modules.Journal
             ji.Summary = Utilities.RemoveHTML(ji.Summary);
             ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
 
-            //parse the mentions context in post data
+            // parse the mentions context in post data
             var originalSummary = ji.Summary;
 
-            ji.Summary = ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
+            ji.Summary = this.ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
 
             if (ji.Summary.Length > 2000)
             {
@@ -224,7 +427,7 @@ namespace DotNetNuke.Modules.Journal
                     var fileId = Convert.ToInt32(ji.ItemData.Url.Replace("fileid=", string.Empty).Trim());
                     var file = FileManager.Instance.GetFile(fileId);
 
-                    if (!IsCurrentUserFile(file))
+                    if (!this.IsCurrentUserFile(file))
                     {
                         throw new ArgumentException("you have no permission to attach files not belongs to you.");
                     }
@@ -244,273 +447,6 @@ namespace DotNetNuke.Modules.Journal
             return ji;
         }
 
-        public class JournalIdDTO
-        {
-            public int JournalId { get; set; }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage Delete(JournalIdDTO postData)
-        {
-            try
-            {
-                var jc = JournalController.Instance;
-                var ji = jc.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
-
-                if (ji == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
-                }
-
-                if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                {
-                    jc.DeleteJournalItem(PortalSettings.PortalId, UserInfo.UserID, postData.JournalId);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                }
-
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage SoftDelete(JournalIdDTO postData)
-        {
-            try
-            {
-                var jc = JournalController.Instance;
-                var ji = jc.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
-
-                if (ji == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
-                }
-
-                if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                {
-                    jc.SoftDeleteJournalItem(PortalSettings.PortalId, UserInfo.UserID, postData.JournalId);
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
-                }
-
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        
-        public class PreviewDTO
-        {
-            public string Url { get; set; }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-		[DnnAuthorize]
-        public HttpResponseMessage PreviewUrl(PreviewDTO postData)
-        {
-            try
-            {
-                var link = Utilities.GetLinkData(postData.Url);
-                return Request.CreateResponse(HttpStatusCode.OK, link);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-        
-        public class GetListForProfileDTO
-        {
-            public int ProfileId { get; set; }
-            public int GroupId { get; set; }
-            public int RowIndex { get; set; }
-            public int MaxRows { get; set; }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
-        {
-            try
-            {
-                
-                var jp = new JournalParser(PortalSettings, ActiveModule.ModuleID, postData.ProfileId, postData.GroupId, UserInfo);
-                return Request.CreateResponse(HttpStatusCode.OK, jp.GetList(postData.RowIndex, postData.MaxRows), "text/html");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                throw new HttpException(500, exc.Message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage Like(JournalIdDTO postData)
-        {
-            try
-            {
-                JournalController.Instance.LikeJournalItem(postData.JournalId, UserInfo.UserID, UserInfo.DisplayName);
-                var ji = JournalController.Instance.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
-                var jp = new JournalParser(PortalSettings, ActiveModule.ModuleID, ji.ProfileId, -1, UserInfo);
-                var isLiked = false;
-                var likeList = jp.GetLikeListHTML(ji, ref isLiked);
-                likeList = Utilities.LocalizeControl(likeList);
-                return Request.CreateResponse(HttpStatusCode.OK, new { LikeList = likeList, Liked = isLiked });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        public class CommentSaveDTO
-        {
-            public int JournalId { get; set; }
-            public string Comment { get; set; }
-            public IList<MentionDTO> Mentions { get; set; } 
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage CommentSave(CommentSaveDTO postData)
-        {
-            try
-            {
-                var comment = Utilities.RemoveHTML(HttpUtility.UrlDecode(postData.Comment));
-
-                IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
-                var originalComment = comment;
-                comment = ParseMentions(comment, postData.Mentions, ref mentionedUsers);
-                var ci = new CommentInfo { JournalId = postData.JournalId, Comment = comment };
-                ci.UserId = UserInfo.UserID;
-                ci.DisplayName = UserInfo.DisplayName;
-                JournalController.Instance.SaveComment(ci);
-
-                var ji = JournalController.Instance.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
-                var jp = new JournalParser(PortalSettings, ActiveModule.ModuleID, ji.ProfileId, -1, UserInfo);
-
-                SendMentionNotifications(mentionedUsers, ji, originalComment, "Comment");
-
-                return Request.CreateResponse(HttpStatusCode.OK, jp.GetCommentRow(ji, ci), "text/html");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        public class CommentDeleteDTO
-        {
-            public int JournalId { get; set; }
-            public int CommentId { get; set; }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage CommentDelete(CommentDeleteDTO postData)
-        {
-            try
-            {
-                var ci = JournalController.Instance.GetComment(postData.CommentId);
-                if (ci == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "delete failed");
-                }
-
-                var ji = JournalController.Instance.GetJournalItem(ActiveModule.OwnerPortalID, UserInfo.UserID, postData.JournalId);
-
-                if (ji == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
-                }
-
-                if (ci.UserId == UserInfo.UserID || ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                {
-                    JournalController.Instance.DeleteComment(postData.JournalId, postData.CommentId);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                }
-
-                return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        public class SuggestDTO
-        {
-            public string displayName { get; set; }
-            public int userId { get; set; }
-            public string avatar { get; set; }
-            public string key { get; set; }
-        }
-
-		[HttpGet]
-		[DnnAuthorize(DenyRoles = "Unverified Users")]
-		public HttpResponseMessage GetSuggestions(string keyword)
-		{
-			try
-			{
-                var findedUsers = new List<SuggestDTO>();
-				var relations = RelationshipController.Instance.GetUserRelationships(UserInfo);
-				foreach (var ur in relations)
-				{
-					var targetUserId = ur.UserId == UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
-					var targetUser = UserController.GetUserById(PortalSettings.PortalId, targetUserId);
-					var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
-					if (ur.Status == RelationshipStatus.Accepted && targetUser != null
-						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == UserInfo.UserID)
-								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends
-							)
-						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
-                                || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace("-", " ").ToLowerInvariant())
-							)
-                        && findedUsers.All(s => s.userId != targetUser.UserID)
-						)
-					{
-						findedUsers.Add(new SuggestDTO
-							                {
-                                                displayName = targetUser.DisplayName.Replace(" ", "-"),
-											    userId = targetUser.UserID,
-											    avatar = targetUser.Profile.PhotoURL,
-                                                key = keyword
-							                });
-					}
-				}
-
-				return Request.CreateResponse(HttpStatusCode.OK, findedUsers.Cast<object>().Take(5));
-			}
-			catch (Exception exc)
-			{
-				Logger.Error(exc);
-				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-			}
-        }
-
-        #endregion
-
-        #region Private Methods
         private string ParseMentions(string content, IList<MentionDTO> mentions, ref IDictionary<string, UserInfo> mentionedUsers)
         {
             if (mentions == null || mentions.Count == 0)
@@ -520,29 +456,31 @@ namespace DotNetNuke.Modules.Journal
 
             foreach (var mention in mentions)
             {
-                var user = UserController.GetUserById(PortalSettings.PortalId, mention.UserId);
+                var user = UserController.GetUserById(this.PortalSettings.PortalId, mention.UserId);
 
                 if (user != null)
                 {
-                    var relationship = RelationshipController.Instance.GetFollowingRelationship(UserInfo, user) ??
-                                       RelationshipController.Instance.GetFriendRelationship(UserInfo, user);
+                    var relationship = RelationshipController.Instance.GetFollowingRelationship(this.UserInfo, user) ??
+                                       RelationshipController.Instance.GetFriendRelationship(this.UserInfo, user);
                     if (relationship != null && relationship.Status == RelationshipStatus.Accepted)
                     {
-                        var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
-                                                     Globals.UserProfileURL(user.UserID),
-                                                     MentionIdentityChar + user.DisplayName);
+                        var userLink = string.Format(
+                            "<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
+                            Globals.UserProfileURL(user.UserID),
+                            MentionIdentityChar + user.DisplayName);
                         content = content.Replace(MentionIdentityChar + mention.DisplayName, userLink);
 
                         mentionedUsers.Add(mention.DisplayName, user);
                     }
                 }
             }
+
             return content;
         }
 
         private void SendMentionNotifications(IDictionary<string, UserInfo> mentionedUsers, JournalItem item, string originalSummary, string type = "Post")
         {
-            //send notification to the mention users
+            // send notification to the mention users
             var subjectTemplate = Utilities.GetSharedResource("Notification_Mention.Subject");
             var bodyTemplate = Utilities.GetSharedResource("Notification_Mention.Body");
             var mentionType = Utilities.GetSharedResource("Notification_MentionType_" + type);
@@ -556,17 +494,18 @@ namespace DotNetNuke.Modules.Journal
                 {
                     mentionText = mentionText.Substring(0, MentionNotificationLength) + MentionNotificationSuffix;
                 }
+
                 var notification = new Notification
                 {
-                    Subject = string.Format(subjectTemplate, UserInfo.DisplayName, mentionType),
+                    Subject = string.Format(subjectTemplate, this.UserInfo.DisplayName, mentionType),
                     Body = string.Format(bodyTemplate, mentionText),
                     NotificationTypeID = notificationType.NotificationTypeId,
-                    SenderUserID = UserInfo.UserID,
+                    SenderUserID = this.UserInfo.UserID,
                     IncludeDismissAction = true,
-                    Context = string.Format("{0}_{1}", UserInfo.UserID, item.JournalId)
+                    Context = string.Format("{0}_{1}", this.UserInfo.UserID, item.JournalId),
                 };
 
-                Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });
+                Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, this.PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });
             }
         }
 
@@ -577,7 +516,7 @@ namespace DotNetNuke.Modules.Journal
                 return false;
             }
 
-            var userFolders = GetUserFolders();
+            var userFolders = this.GetUserFolders();
 
             return userFolders.Any(f => file.FolderId == f.FolderID);
         }
@@ -586,9 +525,9 @@ namespace DotNetNuke.Modules.Journal
         {
             var folders = new List<IFolderInfo>();
 
-            var userFolder = FolderManager.Instance.GetUserFolder(UserInfo);
+            var userFolder = FolderManager.Instance.GetUserFolder(this.UserInfo);
             folders.Add(userFolder);
-            folders.AddRange(GetSubFolders(userFolder));
+            folders.AddRange(this.GetSubFolders(userFolder));
 
             return folders;
         }
@@ -599,12 +538,82 @@ namespace DotNetNuke.Modules.Journal
             foreach (var folder in FolderManager.Instance.GetFolders(parentFolder))
             {
                 folders.Add(folder);
-                folders.AddRange(GetSubFolders(folder));
+                folders.AddRange(this.GetSubFolders(folder));
             }
 
             return folders;
         }
 
-        #endregion
+        public class CreateDTO
+        {
+            public string Text { get; set; }
+
+            public int ProfileId { get; set; }
+
+            public string JournalType { get; set; }
+
+            public string ItemData { get; set; }
+
+            public string SecuritySet { get; set; }
+
+            public int GroupId { get; set; }
+
+            public IList<MentionDTO> Mentions { get; set; }
+        }
+
+        public class MentionDTO
+        {
+            public string DisplayName { get; set; }
+
+            public int UserId { get; set; }
+        }
+
+        public class JournalIdDTO
+        {
+            public int JournalId { get; set; }
+        }
+
+        public class PreviewDTO
+        {
+            public string Url { get; set; }
+        }
+
+        public class GetListForProfileDTO
+        {
+            public int ProfileId { get; set; }
+
+            public int GroupId { get; set; }
+
+            public int RowIndex { get; set; }
+
+            public int MaxRows { get; set; }
+        }
+
+        public class CommentSaveDTO
+        {
+            public int JournalId { get; set; }
+
+            public string Comment { get; set; }
+
+            public IList<MentionDTO> Mentions { get; set; }
+        }
+
+        public class CommentDeleteDTO
+        {
+            public int JournalId { get; set; }
+
+            public int CommentId { get; set; }
+        }
+
+        public class SuggestDTO
+        {
+            public string displayName { get; set; }
+
+            public int userId { get; set; }
+
+            public string avatar { get; set; }
+
+            public string key { get; set; }
+        }
     }
 }

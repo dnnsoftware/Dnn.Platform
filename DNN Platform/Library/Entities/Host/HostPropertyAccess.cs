@@ -1,25 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Globalization;
-
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Host
 {
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
     public class HostPropertyAccess : DictionaryPropertyAccess
     {
-        public HostPropertyAccess() : base(HostController.Instance.GetSettingsDictionary())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HostPropertyAccess"/> class.
+        /// </summary>
+        public HostPropertyAccess()
+            : base(HostController.Instance.GetSettingsDictionary())
         {
         }
 
+        /// <inheritdoc/>
         public override string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
             if (propertyName.ToLowerInvariant() == "hosttitle" || CurrentScope == Scope.Debug)

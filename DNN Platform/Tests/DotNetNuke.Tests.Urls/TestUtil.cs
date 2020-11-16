@@ -1,55 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Tests.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Tests.Utilities;
+
     public class TestUtil
     {
-        internal static void AddUser(int portalId, string userName, string password, string vanityUrl)
-        {
-            var user = UserController.GetUserByName(portalId, userName);
-            if (user == null)
-            {
-                //Add User
-                user = new UserInfo
-                {
-                    PortalID = portalId,
-                    Username = userName,
-                    Email = userName + "@changeme.invalid",
-                    VanityUrl = vanityUrl,
-                    Membership = { Password = password, Approved = true }
-                };
-                UserController.CreateUser(ref user);
-            }
-            else
-            {
-                //Update User
-                user.VanityUrl = vanityUrl;
-                user.IsDeleted = false;
-                UserController.UpdateUser(portalId, user);
-            }
-        }
-
-        internal static void DeleteUser(int portalId, string userName)
-        {
-            var user = UserController.GetUserByName(portalId, userName);
-            if (user != null)
-            {
-                UserController.RemoveUser(user);
-            }
-        }
-
-
         internal static string EmbeddedFilePath
         {
             get { return "DotNetNuke.Tests.Urls.TestFiles"; }
@@ -66,9 +30,43 @@ namespace DotNetNuke.Tests.Urls
             }
         }
 
+        internal static void AddUser(int portalId, string userName, string password, string vanityUrl)
+        {
+            var user = UserController.GetUserByName(portalId, userName);
+            if (user == null)
+            {
+                // Add User
+                user = new UserInfo
+                {
+                    PortalID = portalId,
+                    Username = userName,
+                    Email = userName + "@changeme.invalid",
+                    VanityUrl = vanityUrl,
+                    Membership = { Password = password, Approved = true },
+                };
+                UserController.CreateUser(ref user);
+            }
+            else
+            {
+                // Update User
+                user.VanityUrl = vanityUrl;
+                user.IsDeleted = false;
+                UserController.UpdateUser(portalId, user);
+            }
+        }
+
+        internal static void DeleteUser(int portalId, string userName)
+        {
+            var user = UserController.GetUserByName(portalId, userName);
+            if (user != null)
+            {
+                UserController.RemoveUser(user);
+            }
+        }
+
         internal static string GetEmbeddedFileName(string fileName)
         {
-            string fullName = String.Format("{0}.{1}", EmbeddedFilePath, fileName);
+            string fullName = string.Format("{0}.{1}", EmbeddedFilePath, fileName);
             if (!fullName.ToLowerInvariant().EndsWith(".csv"))
             {
                 fullName += ".csv";
@@ -86,7 +84,7 @@ namespace DotNetNuke.Tests.Urls
         {
             string replaceCharWithChar = testFields.GetValue("ReplaceChars");
 
-            if (!String.IsNullOrEmpty(replaceCharWithChar))
+            if (!string.IsNullOrEmpty(replaceCharWithChar))
             {
                 string[] pairs = replaceCharWithChar.Split(';');
                 foreach (string pair in pairs)
@@ -98,10 +96,12 @@ namespace DotNetNuke.Tests.Urls
                     {
                         key = vals[0];
                     }
+
                     if (vals.GetUpperBound(0) >= 1)
                     {
                         val = vals[1];
                     }
+
                     if (key != null && val != null)
                     {
                         replaceCharacterDictionary.Add(key, val);

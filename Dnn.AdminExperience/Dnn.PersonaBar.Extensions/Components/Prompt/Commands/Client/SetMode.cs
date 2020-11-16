@@ -1,25 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+
     [ConsoleCommand("set-mode", Constants.GeneralCategory, "Prompt_SetMode_Description")]
     public class SetMode : IConsoleCommand
     {
-        public string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
         private const string FlagMode = "mode";
 
-        public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", LocalResourceFile);
+        public string LocalResourceFile => Constants.LocalResourcesFile;
+
+        public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", this.LocalResourceFile);
 
         public string ValidationMessage
         {
@@ -43,6 +45,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
         {
             throw new NotImplementedException();
         }
-
     }
 }

@@ -1,28 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Web;
-using System.Web.UI;
-using Dnn.PersonaBar.Security.Services.Dto;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Components
 {
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Security.Cryptography;
+    using System.Web;
+    using System.Web.UI;
+
+    using Dnn.PersonaBar.Security.Services.Dto;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Localization;
+
     public class SecurityController
     {
         private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
@@ -32,10 +33,10 @@ namespace Dnn.PersonaBar.Security.Components
             var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
             UserControl uc = new UserControl();
             var authProviders = (from authProvider in authSystems
-                let authLoginControl = (AuthenticationLoginBase) uc.LoadControl("~/" + authProvider.LoginControlSrc)
-                let oAuthLoginControl = authLoginControl as OAuthLoginBase
-                where oAuthLoginControl == null && authLoginControl.Enabled
-                select authProvider.AuthenticationType);
+                                 let authLoginControl = (AuthenticationLoginBase)uc.LoadControl("~/" + authProvider.LoginControlSrc)
+                                 let oAuthLoginControl = authLoginControl as OAuthLoginBase
+                                 where oAuthLoginControl == null && authLoginControl.Enabled
+                                 select authProvider.AuthenticationType);
 
             return authProviders;
         }
@@ -80,7 +81,7 @@ namespace Dnn.PersonaBar.Security.Components
                         ChildTabs = new List<TabDto>()
                     };
 
-                    AddChildNodes(node, portalInfo, cultureCode);
+                    this.AddChildNodes(node, portalInfo, cultureCode);
                     rootNode.ChildTabs.Add(node);
                 }
             }
@@ -100,12 +101,10 @@ namespace Dnn.PersonaBar.Security.Components
                     table.Load(reader);
                     tables.Add(table);
                 }
-                while (!reader.IsClosed); 
+                while (!reader.IsClosed);
             }
             return tables;
         }
-
-        #region Private Methods
 
         private void AddChildNodes(TabDto parentNode, PortalInfo portal, string cultureCode)
         {
@@ -114,7 +113,7 @@ namespace Dnn.PersonaBar.Security.Components
                 parentNode.ChildTabs.Clear();
                 int parentId;
                 int.TryParse(parentNode.TabId, out parentId);
-                var tabs = GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
+                var tabs = this.GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
 
                 foreach (var tab in tabs)
                 {
@@ -126,7 +125,7 @@ namespace Dnn.PersonaBar.Security.Components
                             TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                             ParentTabId = tab.ParentId
                         };
-                        AddChildNodes(node, portal, cultureCode);
+                        this.AddChildNodes(node, portal, cultureCode);
                         parentNode.ChildTabs.Add(node);
                     }
                 }
@@ -138,7 +137,5 @@ namespace Dnn.PersonaBar.Security.Components
             var filteredTabs = tabs.Where(kvp => !kvp.Value.IsSystem && !kvp.Value.IsDeleted && !kvp.Value.DisableLink).Select(kvp => kvp.Value);
             return new TabCollection(filteredTabs);
         }
-
-        #endregion
     }
 }

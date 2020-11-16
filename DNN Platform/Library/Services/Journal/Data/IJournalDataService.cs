@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Journal
 {
+    using System;
+    using System.Data;
+
     public interface IJournalDataService
     {
         IDataReader Journal_ListForSummary(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows);
@@ -34,16 +29,22 @@ namespace DotNetNuke.Services.Journal
         void Journal_SoftDeleteByGroupId(int portalId, int groupId);
 
         IDataReader Journal_Get(int portalId, int currentUserId, int journalId);
+
         IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck);
+
         IDataReader Journal_GetByKey(int portalId, string objectKey);
+
         IDataReader Journal_GetByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted);
+
         int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
+
         int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
 
         int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
+
         int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
 
@@ -66,7 +67,9 @@ namespace DotNetNuke.Services.Journal
         void Journal_Comment_Like(int journalId, int commentId, int userId, string displayName);
 
         IDataReader Journal_Comment_LikeList(int portalId, int journalId, int commentId);
+
         void Journal_Comments_ToggleDisable(int portalId, int journalId, bool disable);
+
         void Journal_Comments_ToggleHidden(int portalId, int journalId, bool hidden);
 
         IDataReader Journal_Types_List(int portalId);

@@ -1,29 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.Script.Serialization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Web.Script.Serialization;
+
     /// <summary>
-    ///   Json Extensions based on the JavaScript Serializer in System.web
+    ///   Json Extensions based on the JavaScript Serializer in System.web.
     /// </summary>
     public static class JsonExtensionsWeb
     {
-        private static JavaScriptSerializer SerializerFactory()
-        {
-            // Allow large JSON strings to be serialized and deserialized.
-            return new JavaScriptSerializer {MaxJsonLength = Int32.MaxValue};
-        }
-
         /// <summary>
-        ///   Serializes a type to Json. Note the type must be marked Serializable 
+        ///   Serializes a type to Json. Note the type must be marked Serializable
         ///   or include a DataContract attribute.
         /// </summary>
         /// <param name = "value"></param>
@@ -36,7 +25,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Extension method on object that serializes the value to Json. 
+        ///   Extension method on object that serializes the value to Json.
         ///   Note the type must be marked Serializable or include a DataContract attribute.
         /// </summary>
         /// <param name = "value"></param>
@@ -47,7 +36,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Deserializes a json string into a specific type. 
+        ///   Deserializes a json string into a specific type.
         ///   Note that the type specified must be serializable.
         /// </summary>
         /// <param name = "json"></param>
@@ -55,16 +44,16 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static object FromJsonString(string json, Type type)
         {
-            // *** Have to use Reflection with a 'dynamic' non constant type instance 
+            // *** Have to use Reflection with a 'dynamic' non constant type instance
             var ser = SerializerFactory();
 
-            object result = ser.GetType().GetMethod("Deserialize").MakeGenericMethod(type).Invoke(ser, new object[1] {json});
+            object result = ser.GetType().GetMethod("Deserialize").MakeGenericMethod(type).Invoke(ser, new object[1] { json });
             return result;
         }
 
         /// <summary>
-        ///   Extension method to string that deserializes a json string 
-        ///   into a specific type. 
+        ///   Extension method to string that deserializes a json string
+        ///   into a specific type.
         ///   Note that the type specified must be serializable.
         /// </summary>
         /// <param name = "json"></param>
@@ -81,6 +70,12 @@ namespace DotNetNuke.Common.Utilities
 
             var result = ser.Deserialize<TType>(json);
             return result;
+        }
+
+        private static JavaScriptSerializer SerializerFactory()
+        {
+            // Allow large JSON strings to be serialized and deserialized.
+            return new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
         }
     }
 }

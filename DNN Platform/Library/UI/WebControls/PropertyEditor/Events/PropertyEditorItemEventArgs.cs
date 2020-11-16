@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -17,7 +12,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PropertyEditorItemEventArgs class is a cusom EventArgs class for
-    /// handling Event Args
+    /// handling Event Args.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,20 +21,21 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new PropertyEditorItemEventArgs
+        /// Initializes a new instance of the <see cref="PropertyEditorItemEventArgs"/> class.
+        /// Constructs a new PropertyEditorItemEventArgs.
         /// </summary>
-        /// <param name="editor">The editor created</param>
+        /// <param name="editor">The editor created.</param>
         /// -----------------------------------------------------------------------------
         public PropertyEditorItemEventArgs(EditorInfo editor)
         {
-            Editor = editor;
+            this.Editor = editor;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the proeprty has changed
+        /// Gets or sets and sets whether the proeprty has changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public EditorInfo Editor { get; set; }
     }

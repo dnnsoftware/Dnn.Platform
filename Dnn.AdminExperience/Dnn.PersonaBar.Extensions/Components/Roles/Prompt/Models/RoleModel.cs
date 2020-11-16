@@ -1,34 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Library.Prompt.Common;
-using DotNetNuke.Security.Roles;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
+    using Dnn.PersonaBar.Library.Prompt.Common;
+    using DotNetNuke.Security.Roles;
+
     public class RoleModel : RoleModelBase
     {
-        public string Description { get; set; }
-        public string CreatedDate { get; set; }
-        public int CreatedBy { get; set; }
-
-        #region Constructors
         public RoleModel()
         {
         }
+
         public RoleModel(RoleInfo role) : base(role)
         {
-            ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
-            CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
-            CreatedBy = role.CreatedByUserID;
-            Description = role.Description;
+            this.ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
+            this.CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
+            this.CreatedBy = role.CreatedByUserID;
+            this.Description = role.Description;
         }
-        #endregion
 
-        #region Command Links
-        public string __CreatedBy => $"get-user {CreatedBy}";
+        public string __CreatedBy => $"get-user {this.CreatedBy}";
 
-        #endregion
+        public string Description { get; set; }
+        public string CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
     }
 }

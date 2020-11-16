@@ -1,44 +1,54 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Tokens;
-using System.IO;
-using System.Text.RegularExpressions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Modules.Journal.Components;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Journal.Controls {
+namespace DotNetNuke.Modules.Journal.Controls
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:JournalListControl runat=server></{0}:JournalListControl>")]
-    public class JournalListControl : WebControl {
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public PortalSettings portalSettings {
-            get {
+    public class JournalListControl : WebControl
+    {
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public PortalSettings portalSettings
+        {
+            get
+            {
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public UserInfo userInfo {
-            get {
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public UserInfo userInfo
+        {
+            get
+            {
                 return UserController.Instance.GetCurrentUserInfo();
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int JournalId
         {
             get
@@ -62,16 +72,18 @@ namespace DotNetNuke.Modules.Journal.Controls {
 
         public int CurrentIndex { get; set; }
 
-        protected override void Render(HtmlTextWriter output) 
+        protected override void Render(HtmlTextWriter output)
         {
-            if (Enabled) {
-                if (CurrentIndex < 0) {
-                    CurrentIndex = 0;
+            if (this.Enabled)
+            {
+                if (this.CurrentIndex < 0)
+                {
+                    this.CurrentIndex = 0;
                 }
-                JournalParser jp = new JournalParser(portalSettings, ModuleId, ProfileId, SocialGroupId, userInfo){JournalId = JournalId};
-                output.Write(jp.GetList(CurrentIndex, PageSize));
+
+                JournalParser jp = new JournalParser(this.portalSettings, this.ModuleId, this.ProfileId, this.SocialGroupId, this.userInfo) { JournalId = this.JournalId };
+                output.Write(jp.GetList(this.CurrentIndex, this.PageSize));
             }
-            
         }
     }
 }

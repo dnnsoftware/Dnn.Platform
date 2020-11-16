@@ -1,15 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
 {
+    using System;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UsersFiltersTests : IntegrationTestBase
     {
@@ -35,8 +36,8 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
                 int userId, fileId;
                 string userName;
                 WebApiTestHelper.PrepareNewUser(out userId, out userName, out fileId);
-                _userIds[i] = userId;
-                _userNames[i] = userName;
+                this._userIds[i] = userId;
+                this._userNames[i] = userName;
                 Console.WriteLine(@"Created test users => id: {0}, username: {1}", userId, userName);
             }
 
@@ -44,23 +45,23 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             var userIdx = 0;
 
             // make first user as admin
-            var makeAdminItem = new { RoleId = 0, UserId = _userIds[userIdx] };
+            var makeAdminItem = new { RoleId = 0, UserId = this._userIds[userIdx] };
             var response = hostConnector.PostJson(MakeAdminApi, makeAdminItem).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
-            Assert.AreEqual(_userNames[userIdx], result.displayName.ToString());
+            Assert.AreEqual(this._userNames[userIdx], result.displayName.ToString());
 
             // Unauthorize the next 2 new users
             for (userIdx = 1; userIdx <= 2; userIdx++)
             {
-                var unauthorizeLink = string.Format(UnauthorizeApi, _userIds[userIdx]);
-                response = hostConnector.PostJson(unauthorizeLink, "").Content.ReadAsStringAsync().Result;
+                var unauthorizeLink = string.Format(UnauthorizeApi, this._userIds[userIdx]);
+                response = hostConnector.PostJson(unauthorizeLink, string.Empty).Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject<dynamic>(response);
                 Assert.IsTrue(bool.Parse(result.Success.ToString()));
             }
 
             // soft delete the next new user
-            var deleteLink = string.Format(DeleteApi, _userIds[userIdx]);
-            response = hostConnector.PostJson(deleteLink, "").Content.ReadAsStringAsync().Result;
+            var deleteLink = string.Format(DeleteApi, this._userIds[userIdx]);
+            response = hostConnector.PostJson(deleteLink, string.Empty).Content.ReadAsStringAsync().Result;
             result = JsonConvert.DeserializeObject<dynamic>(response);
             Assert.IsTrue(bool.Parse(result.Success.ToString()));
         }
@@ -94,7 +95,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             // Arrange: all is done in TestFixtureSetUp()
 
             // Act
-            var adminConnector = WebApiTestHelper.LoginUser(_userNames[0]);
+            var adminConnector = WebApiTestHelper.LoginUser(this._userNames[0]);
             var response = adminConnector.GetContent(apiMethod, null).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
 

@@ -1,80 +1,162 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Web;
-using System.Web.UI;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.DDRMenu.DNNCommon
 {
-	public class DNNContext : IDisposable
-	{
-		public static DNNContext Current { get { return (DNNContext)HttpContext.Current.Items[DataName]; } private set { HttpContext.Current.Items[DataName] = value; } }
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.UI;
 
-		private readonly DNNContext savedContext;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
 
-		public Control HostControl { get; private set; }
+    /// <summary>
+    /// Provides Dnn context for the DDR Menu.
+    /// </summary>
+    public class DNNContext : IDisposable
+    {
+        private static string moduleName;
+        private static string moduleFolder;
+        private static string dataName;
 
-		private Page _Page;
-		public Page Page { get { return _Page ?? (_Page = HostControl.Page); } }
+        private readonly DNNContext savedContext;
+        private bool isDisposed;
+        private Page page;
+        private PortalSettings portalSettings;
+        private TabInfo activeTab;
+        private string skinPath;
 
-		private PortalSettings _PortalSettings;
-		public PortalSettings PortalSettings { get { return _PortalSettings ?? (_PortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DNNContext"/> class.
+        /// </summary>
+        /// <param name="hostControl">The control that hosts the menu.</param>
+        public DNNContext(Control hostControl)
+        {
+            this.HostControl = hostControl;
 
-		private TabInfo _ActiveTab;
-		public TabInfo ActiveTab { get { return _ActiveTab ?? (_ActiveTab = PortalSettings.ActiveTab); } }
+            this.savedContext = Current;
+            Current = this;
+        }
 
-		private string _SkinPath;
-		public string SkinPath { get { return _SkinPath ?? (_SkinPath = ActiveTab.SkinPath); } }
+        /// <summary>
+        /// Gets the module name.
+        /// </summary>
+        public static string ModuleName
+        {
+            get { return moduleName ?? (moduleName = GetModuleNameFromAssembly()); }
+        }
 
-		private static string _ModuleName;
-		public static string ModuleName { get { return _ModuleName ?? (_ModuleName = GetModuleNameFromAssembly()); } }
+        /// <summary>
+        /// Gets the module folder.
+        /// </summary>
+        public static string ModuleFolder
+        {
+            get
+            {
+                return moduleFolder ??
+                       (moduleFolder =
+                        string.Format(
+                            "~/DesktopModules/{0}/", DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalSettings.Current.PortalId).FolderName));
+            }
+        }
 
-		private static string _ModuleFolder;
-		public static string ModuleFolder
-		{
-			get
-			{
-				return _ModuleFolder ??
-				       (_ModuleFolder =
-				        String.Format(
-				        	"~/DesktopModules/{0}/", DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalSettings.Current.PortalId).FolderName));
-			}
-		}
+        /// <summary>
+        /// Gets the current Dnn context.
+        /// </summary>
+        public static DNNContext Current
+        {
+            get { return (DNNContext)HttpContext.Current.Items[DataName]; }
+            private set { HttpContext.Current.Items[DataName] = value; }
+        }
 
-		private static string _DataName;
-		private static string DataName { get { return _DataName ?? (_DataName = "DDRMenu.DNNContext." + ModuleName); } }
+        /// <summary>
+        /// Gets a reference to the page.
+        /// </summary>
+        public Page Page
+        {
+            get { return this.page ?? (this.page = this.HostControl.Page); }
+        }
 
-		public DNNContext(Control hostControl)
-		{
-			HostControl = hostControl;
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
+        public PortalSettings PortalSettings
+        {
+            get { return this.portalSettings ?? (this.portalSettings = (PortalSettings)PortalController.Instance.GetCurrentSettings()); }
+        }
 
-			savedContext = Current;
-			Current = this;
-		}
+        /// <summary>
+        /// Gets the currently active tab (page).
+        /// </summary>
+        public TabInfo ActiveTab
+        {
+            get { return this.activeTab ?? (this.activeTab = this.PortalSettings.ActiveTab); }
+        }
 
-		public string ResolveUrl(string relativeUrl)
-		{
-			return HostControl.ResolveUrl(relativeUrl);
-		}
+        /// <summary>
+        /// Gets the path to the skin (theme).
+        /// </summary>
+        public string SkinPath
+        {
+            get { return this.skinPath ?? (this.skinPath = this.ActiveTab.SkinPath); }
+        }
 
-		private static string GetModuleNameFromAssembly()
-		{
-			var moduleFullName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
-// ReSharper disable PossibleNullReferenceException
-			return moduleFullName.Substring(moduleFullName.LastIndexOf('.') + 1);
-// ReSharper restore PossibleNullReferenceException
-		}
+        /// <summary>
+        /// Gets the host control.
+        /// </summary>
+        public Control HostControl { get; private set; }
 
-		public void Dispose()
-		{
-			Current = savedContext;
-		}
-	}
+        private static string DataName
+        {
+            get { return dataName ?? (dataName = "DDRMenu.DNNContext." + ModuleName); }
+        }
+
+        /// <summary>
+        /// Converts a url into one that is usable on the requesting Client.
+        /// </summary>
+        /// <param name="relativeUrl">The relative url.</param>
+        /// <returns>The converted url.</returns>
+        public string ResolveUrl(string relativeUrl)
+        {
+            return this.HostControl.ResolveUrl(relativeUrl);
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes this instance resources.
+        /// </summary>
+        /// <param name="disposing">A value indicating if the current instance is disposing.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                // free managed resources.
+            }
+
+            Current = this.savedContext;
+            this.isDisposed = true;
+        }
+
+        private static string GetModuleNameFromAssembly()
+        {
+            var moduleFullName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+
+            return moduleFullName.Substring(moduleFullName.LastIndexOf('.') + 1);
+        }
+    }
 }

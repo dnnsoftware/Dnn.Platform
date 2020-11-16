@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Common
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Common;
+
     internal class PropertyHelper
     {
         private static readonly MethodInfo CallPropertyGetterByReferenceOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetterByReference", BindingFlags.NonPublic | BindingFlags.Static);
@@ -22,30 +23,14 @@ namespace DotNetNuke.Web.Mvc.Common
         {
             Requires.NotNull("property", property);
 
-            Name = property.Name;
-            _valueGetter = MakeFastPropertyGetter(property);
+            this.Name = property.Name;
+            this._valueGetter = MakeFastPropertyGetter(property);
         }
 
         // Implementation of the fast getter.
         private delegate TValue ByRefFunc<TDeclaringType, TValue>(ref TDeclaringType arg);
 
         public virtual string Name { get; protected set; }
-
-        private static object CallPropertyGetter<TDeclaringType, TValue>(Func<TDeclaringType, TValue> getter, object @this)
-        {
-            return getter((TDeclaringType)@this);
-        }
-
-        private static object CallPropertyGetterByReference<TDeclaringType, TValue>(ByRefFunc<TDeclaringType, TValue> getter, object @this)
-        {
-            TDeclaringType unboxed = (TDeclaringType)@this;
-            return getter(ref unboxed);
-        }
-
-        private static PropertyHelper CreateInstance(PropertyInfo property)
-        {
-            return new PropertyHelper(property);
-        }
 
         /// <summary>
         /// Creates and caches fast property helpers that expose getters for every public get property on the underlying type.
@@ -55,46 +40,6 @@ namespace DotNetNuke.Web.Mvc.Common
         public static PropertyHelper[] GetProperties(object instance)
         {
             return GetProperties(instance, CreateInstance, ReflectionCache);
-        }
-
-        protected static PropertyHelper[] GetProperties(object instance,
-                                                Func<PropertyInfo, PropertyHelper> createPropertyHelper,
-                                                ConcurrentDictionary<Type, PropertyHelper[]> cache)
-        {
-            // Using an array rather than IEnumerable, as this will be called on the hot path numerous times.
-            PropertyHelper[] helpers;
-
-            Type type = instance.GetType();
-
-            if (!cache.TryGetValue(type, out helpers))
-            {
-                // We avoid loading indexed properties using the where statement.
-                // Indexed properties are not useful (or valid) for grabbing properties off an anonymous object.
-                IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                                           .Where(prop => prop.GetIndexParameters().Length == 0 &&
-                                                                          prop.GetMethod != null);
-
-                var newHelpers = new List<PropertyHelper>();
-
-                foreach (PropertyInfo property in properties)
-                {
-                    PropertyHelper propertyHelper = createPropertyHelper(property);
-
-                    newHelpers.Add(propertyHelper);
-                }
-
-                helpers = newHelpers.ToArray();
-                cache.TryAdd(type, helpers);
-            }
-
-            return helpers;
-        }
-
-        public object GetValue(object instance)
-        {
-            //Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
-
-            return _valueGetter(instance);
         }
 
         /// <summary>
@@ -135,6 +80,62 @@ namespace DotNetNuke.Web.Mvc.Common
             }
 
             return (Func<object, object>)callPropertyGetterDelegate;
+        }
+
+        public object GetValue(object instance)
+        {
+            // Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
+            return this._valueGetter(instance);
+        }
+
+        protected static PropertyHelper[] GetProperties(
+            object instance,
+            Func<PropertyInfo, PropertyHelper> createPropertyHelper,
+            ConcurrentDictionary<Type, PropertyHelper[]> cache)
+        {
+            // Using an array rather than IEnumerable, as this will be called on the hot path numerous times.
+            PropertyHelper[] helpers;
+
+            Type type = instance.GetType();
+
+            if (!cache.TryGetValue(type, out helpers))
+            {
+                // We avoid loading indexed properties using the where statement.
+                // Indexed properties are not useful (or valid) for grabbing properties off an anonymous object.
+                IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                                           .Where(prop => prop.GetIndexParameters().Length == 0 &&
+                                                                          prop.GetMethod != null);
+
+                var newHelpers = new List<PropertyHelper>();
+
+                foreach (PropertyInfo property in properties)
+                {
+                    PropertyHelper propertyHelper = createPropertyHelper(property);
+
+                    newHelpers.Add(propertyHelper);
+                }
+
+                helpers = newHelpers.ToArray();
+                cache.TryAdd(type, helpers);
+            }
+
+            return helpers;
+        }
+
+        private static object CallPropertyGetter<TDeclaringType, TValue>(Func<TDeclaringType, TValue> getter, object @this)
+        {
+            return getter((TDeclaringType)@this);
+        }
+
+        private static object CallPropertyGetterByReference<TDeclaringType, TValue>(ByRefFunc<TDeclaringType, TValue> getter, object @this)
+        {
+            TDeclaringType unboxed = (TDeclaringType)@this;
+            return getter(ref unboxed);
+        }
+
+        private static PropertyHelper CreateInstance(PropertyInfo property)
+        {
+            return new PropertyHelper(property);
         }
     }
 }

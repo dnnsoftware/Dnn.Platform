@@ -1,44 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
-using DotNetNuke.ComponentModel;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.ComponentModel;
+
     public abstract class LoggingProvider
     {
-        #region ReturnType enum
-
+        [Obsolete("Deprecated in 9.8.0. Not suitable replacement, use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public enum ReturnType
         {
-            LogInfoObjects,
-            XML
+            LogInfoObjects = 0,
+            XML = 1,
         }
 
-        #endregion
-		
-		#region "Shared/Static Methods"
-
-        //return the provider
-		public static LoggingProvider Instance()
+        // return the provider
+        public static LoggingProvider Instance()
         {
             return ComponentFactory.GetComponent<LoggingProvider>();
         }
-		
-		#endregion
-
-		#region "Abstract Methods"
 
         public abstract void AddLog(LogInfo logInfo);
 
@@ -67,6 +52,13 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public abstract object GetSingleLog(LogInfo logInfo, ReturnType returnType);
 
+        /// <summary>
+        /// Retrieves a single event log via the Log Guid.
+        /// </summary>
+        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+        /// <returns>The <see cref="ILogInfo"/>.</returns>
+        public abstract ILogInfo GetLog(string logGuid);
+
         public abstract bool LoggingIsEnabled(string logType, int portalID);
 
         public abstract void PurgeLogBuffer();
@@ -84,7 +76,5 @@ namespace DotNetNuke.Services.Log.EventLog
         public abstract void UpdateLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner);
 
         public abstract void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string notificationThresholdTime, string notificationThresholdTimeType, string mailFromAddress, string mailToAddress);
-
-		#endregion
     }
 }

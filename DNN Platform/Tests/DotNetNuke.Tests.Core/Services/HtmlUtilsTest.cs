@@ -1,13 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Common.Utilities;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Services
 {
+    using DotNetNuke.Common.Utilities;
+    using NUnit.Framework;
+
     /// <summary>
     /// </summary>
     [TestFixture]
@@ -17,7 +16,7 @@ namespace DotNetNuke.Tests.Core.Services
             "Hello World!<br /><br />This is a sample HTML text for testing!<br /><br /><img alt=\"HappyFaceAlt\" title=\"HappyFaceTitle\" test=\"noShow\" src=\"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" /><br /><br /><img alt=\"\" src=\"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" /><br /><br /><a href=\"https://www.dnnsoftware.com\">DotNetNuke Corp.</a>";
 
         private const string Filters = "alt|href|src|title";
-        private string _expected = "";
+        private string _expected = string.Empty;
 
         [SetUp]
         public void SetUp()
@@ -49,74 +48,74 @@ namespace DotNetNuke.Tests.Core.Services
         {
         }
 
-        #region HTML Cleaning Tests
-
         [Test]
         public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_With_Attribute_Values()
         {
             // Arrange
-            SetUp();
-            _expected =
+            this.SetUp();
+            this._expected =
                 "Hello World This is a sample HTML text for testing DotNetNuke Corp HappyFaceAlt HappyFaceTitle /dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif https://www.dnnsoftware.com ";
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
+
             // Assert
-            Assert.AreEqual(_expected, retValue);
+            Assert.AreEqual(this._expected, retValue);
 
             // TearDown
-            TearDown();
+            this.TearDown();
         }
 
         [Test]
         public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_Without_Attribute_Values()
         {
             // Arrange
-            SetUp();
-            _expected = "Hello World This is a sample HTML text for testing DotNetNuke Corp ";
+            this.SetUp();
+            this._expected = "Hello World This is a sample HTML text for testing DotNetNuke Corp ";
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
+
             // Assert
-            Assert.AreEqual(_expected, retValue);
+            Assert.AreEqual(this._expected, retValue);
 
             // TearDown
-            TearDown();
+            this.TearDown();
         }
 
         [Test]
         public void HtmlUtils_StripUnspecifiedTags_Should_Return_Attribute_Values()
         {
             // Arrange
-            SetUp();
-            _expected =
+            this.SetUp();
+            this._expected =
                 "Hello World!This is a sample HTML text for testing!DotNetNuke Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"https://www.dnnsoftware.com\"";
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
+
             // Assert
-            Assert.AreEqual(_expected, retValue);
+            Assert.AreEqual(this._expected, retValue);
 
             // TearDown
-            TearDown();
+            this.TearDown();
         }
 
         [Test]
         public void HtmlUtils_StripUnspecifiedTags_Should_Not_Return_Attribute_Values()
         {
             // Arrange
-            SetUp();
-            _expected = "Hello World!This is a sample HTML text for testing!DotNetNuke Corp.";
+            this.SetUp();
+            this._expected = "Hello World!This is a sample HTML text for testing!DotNetNuke Corp.";
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
+
             // Assert
-            Assert.AreEqual(_expected, retValue);
+            Assert.AreEqual(this._expected, retValue);
 
             // TearDown
-            TearDown();
+            this.TearDown();
         }
-
-        #endregion
     }
 }

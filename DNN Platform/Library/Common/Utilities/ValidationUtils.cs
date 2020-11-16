@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Security;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Common.Utilities
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Security;
+
     public sealed class ValidationUtils
     {
         internal static string GetDecryptionKey()
         {
             var machineKey = Config.GetDecryptionkey();
-            var key = $"{machineKey ?? ""}{Host.GUID.Replace("-", string.Empty)}";
+            var key = $"{machineKey ?? string.Empty}{Host.GUID.Replace("-", string.Empty)}";
             return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
 
-        internal static string ComputeValidationCode(IList<object> parameters)
+        public static string ComputeValidationCode(IList<object> parameters)
         {
             if (parameters != null && parameters.Any())
             {

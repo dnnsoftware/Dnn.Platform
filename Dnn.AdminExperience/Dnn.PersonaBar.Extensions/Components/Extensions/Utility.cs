@@ -1,23 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     public static class Utility
     {
-
         public static IEnumerable<ListItemDto> GetAllLanguagesList()
         {
             var locales = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
-            return locales.Select(l => new ListItemDto {Id = l.LanguageId, Name = l.EnglishName});
+            return locales.Select(l => new ListItemDto { Id = l.LanguageId, Name = l.EnglishName });
         }
 
         public static IEnumerable<ListItemDto> GetAllPackagesListExceptLangPacks()
@@ -32,6 +32,5 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             return packages.OrderBy(p => p.Name);
         }
-
     }
 }

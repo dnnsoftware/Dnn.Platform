@@ -116,6 +116,7 @@
     <Compile Include="PersonaBar\Content\Pages\AddPageTests.cs" />
     <Compile Include="PersonaBar\Content\Pages\PageUrlsTests.cs" />
     <Compile Include="PersonaBar\Manage\Users\UsersFiltersTests.cs" />
+    <Compile Include="Services\Installer\TestLogSource.cs" />
     <Compile Include="Tests\FriendsTests.cs" />
     <Compile Include="Tests\Library\ImageHandlerTests.cs" />
     <Compile Include="Tests\Portals\PortalInfoTests.cs" />
@@ -167,8 +168,14 @@
       <Name>DotNetNuke.Tests.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="..\App.config">
       <Link>App.config</Link>
       <SubType>Designer</SubType>

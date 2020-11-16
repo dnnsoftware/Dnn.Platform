@@ -1,28 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Abstractions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Modules.Admin.Modules
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
@@ -33,47 +29,42 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ModulePermissions : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
-        public ModulePermissions()
-        {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-        #region Private Members
 
         private int _moduleId = -1;
         private ModuleInfo _module;
 
+        public ModulePermissions()
+        {
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
         private ModuleInfo Module
         {
-            get { return _module ?? (_module = ModuleController.Instance.GetModule(_moduleId, TabId, false)); }
+            get { return this._module ?? (this._module = ModuleController.Instance.GetModule(this._moduleId, this.TabId, false)); }
         }
 
         private string ReturnURL
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            //get ModuleId
-            if ((Request.QueryString["ModuleId"] != null))
+            // get ModuleId
+            if (this.Request.QueryString["ModuleId"] != null)
             {
-                _moduleId = Int32.Parse(Request.QueryString["ModuleId"]);
+                this._moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
             }
 
-            //Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, String.Empty, Module))
+            // Verify that the current user has access to edit this module
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, string.Empty, this.Module))
             {
-                Response.Redirect(Globals.AccessDeniedURL(), true);
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
             }
         }
 
@@ -81,21 +72,21 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             base.OnLoad(e);
 
-            cmdUpdate.Click += OnUpdateClick;
+            this.cmdUpdate.Click += this.OnUpdateClick;
 
             try
             {
-                cancelHyperLink.NavigateUrl = ReturnURL;
+                this.cancelHyperLink.NavigateUrl = this.ReturnURL;
 
-                if (Page.IsPostBack == false)
+                if (this.Page.IsPostBack == false)
                 {
-                    dgPermissions.TabId = PortalSettings.ActiveTab.TabID;
-                    dgPermissions.ModuleID = _moduleId;
+                    this.dgPermissions.TabId = this.PortalSettings.ActiveTab.TabID;
+                    this.dgPermissions.ModuleID = this._moduleId;
 
-                    if (Module != null)
+                    if (this.Module != null)
                     {
-                        cmdUpdate.Visible = ModulePermissionController.HasModulePermission(Module.ModulePermissions, "EDIT,MANAGE") || TabPermissionController.CanAddContentToPage();
-                        permissionsRow.Visible = ModulePermissionController.CanAdminModule(Module) || TabPermissionController.CanAddContentToPage();
+                        this.cmdUpdate.Visible = ModulePermissionController.HasModulePermission(this.Module.ModulePermissions, "EDIT,MANAGE") || TabPermissionController.CanAddContentToPage();
+                        this.permissionsRow.Visible = ModulePermissionController.CanAdminModule(this.Module) || TabPermissionController.CanAddContentToPage();
                     }
                 }
             }
@@ -109,15 +100,15 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             try
             {
-                if (Page.IsValid)
+                if (this.Page.IsValid)
                 {
-                    Module.ModulePermissions.Clear();
-                    Module.ModulePermissions.AddRange(dgPermissions.Permissions);
+                    this.Module.ModulePermissions.Clear();
+                    this.Module.ModulePermissions.AddRange(this.dgPermissions.Permissions);
 
-                    ModulePermissionController.SaveModulePermissions(Module);
+                    ModulePermissionController.SaveModulePermissions(this.Module);
 
-                    //Navigate back to admin page
-                    Response.Redirect(ReturnURL, true);
+                    // Navigate back to admin page
+                    this.Response.Redirect(this.ReturnURL, true);
                 }
             }
             catch (Exception exc)
@@ -125,8 +116,5 @@ namespace DotNetNuke.Modules.Admin.Modules
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

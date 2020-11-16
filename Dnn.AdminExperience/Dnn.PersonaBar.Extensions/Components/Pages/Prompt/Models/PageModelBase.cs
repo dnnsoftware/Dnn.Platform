@@ -1,11 +1,35 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 {
     public class PageModelBase
     {
+        public PageModelBase()
+        {
+        }
+
+        public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
+        {
+            this.Name = tab.TabName;
+            this.ParentId = tab.ParentId;
+            this.Path = tab.TabPath;
+            this.TabId = tab.TabID;
+            this.Skin = tab.SkinSrc;
+            this.Title = tab.Title;
+            this.IncludeInMenu = tab.IsVisible;
+            this.IsDeleted = tab.IsDeleted;
+        }
+
+        public string __TabId => $"get-page {this.TabId}";
+
+        public string __ParentId => $"list-pages --parentid {this.ParentId}";
+
+        public string __IncludeInMenu => $"list-pages --visible{(this.IncludeInMenu ? "" : " false")}";
+
+        public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? "" : " false")}";
+
         public int TabId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
@@ -14,33 +38,5 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         public string Path { get; set; }
         public bool IncludeInMenu { get; set; }
         public bool IsDeleted { get; set; }
-
-        #region Command Links
-        public string __TabId => $"get-page {TabId}";
-
-        public string __ParentId => $"list-pages --parentid {ParentId}";
-
-        public string __IncludeInMenu => $"list-pages --visible{(IncludeInMenu ? "" : " false")}";
-
-        public string __IsDeleted => $"list-pages --deleted{(IsDeleted ? "" : " false")}";
-
-        #endregion
-
-        #region constructors
-        public PageModelBase()
-        {
-        }
-        public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
-        {
-            Name = tab.TabName;
-            ParentId = tab.ParentId;
-            Path = tab.TabPath;
-            TabId = tab.TabID;
-            Skin = tab.SkinSrc;
-            Title = tab.Title;
-            IncludeInMenu = tab.IsVisible;
-            IsDeleted = tab.IsDeleted;
-        }
-        #endregion
     }
 }

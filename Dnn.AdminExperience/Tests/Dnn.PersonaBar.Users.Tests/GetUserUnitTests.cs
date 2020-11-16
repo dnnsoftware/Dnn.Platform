@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Moq;
-using NUnit.Framework;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Library.Prompt.Models;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Users;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetUserUnitTests : CommandTests<GetUser>
     {
@@ -20,20 +20,9 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
 
-        protected override string CommandName { get { return "Get-User"; } }
-
-        protected override void ChildSetup()
+        protected override string CommandName
         {
-            _userId = 3;
-            _userInfo = GetUser(_userId, false);
-
-            _userValidatorMock = new Mock<IUserValidator>();
-            _userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-        }
-
-        protected override GetUser CreateCommand()
-        {
-            return new GetUser(_userValidatorMock.Object, _userControllerWrapperMock.Object);
+            get { return "Get-User"; }
         }
 
         [Test]
@@ -42,51 +31,51 @@ namespace Dnn.PersonaBar.Users.Tests
             // Arrange
             var recCount = 0;
 
-            _userControllerWrapperMock
+            this._userControllerWrapperMock
                 .Setup(c => c.GetUsersByEmail(
-                    testPortalId,
+                    this.testPortalId,
                     It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<int>(),
                     ref recCount,
                     It.IsAny<bool>(),
                     It.IsAny<bool>()))
-                .Returns(_userId);
+                .Returns(this._userId);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(_userId, portalSettings, null, out _userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+                .Returns(this.errorResultModel);
 
-            // Act 
-            var result = RunCommand("--email", "user1@g.com");
+            // Act
+            var result = this.RunCommand("--email", "user1@g.com");
 
             // Assert
             Assert.IsFalse(result.IsError);
         }
 
-        [TestCase()]
+        [TestCase]
         public void Run_GetUserByUserNameWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange
             var recCount = 0;
 
-            _userControllerWrapperMock
+            this._userControllerWrapperMock
                 .Setup(c => c.GetUsersByUserName(
-                    testPortalId,
+                    this.testPortalId,
                     It.IsAny<string>(),
                     It.IsAny<int>(),
                     It.IsAny<int>(),
                     ref recCount,
                     It.IsAny<bool>(),
                     It.IsAny<bool>()))
-                .Returns(_userId);
+                .Returns(this._userId);
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(_userId, portalSettings, null, out _userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+                .Returns(this.errorResultModel);
 
-            // Act 
-            var result = RunCommand("--username", "user1");
+            // Act
+            var result = this.RunCommand("--username", "user1");
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -95,13 +84,13 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_GetUserWithValidCommand_ShouldSuccessResponse()
         {
-            // Arrange            
-            _userValidatorMock
-             .Setup(u => u.ValidateUser(_userId, portalSettings, null, out _userInfo))
-             .Returns(errorResultModel);
+            // Arrange
+            this._userValidatorMock
+             .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+             .Returns(this.errorResultModel);
 
-            // Act 
-            var result = RunCommand(_userId.ToString());
+            // Act
+            var result = this.RunCommand(this._userId.ToString());
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -110,18 +99,32 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_GetUserWithValidCommand_ShouldErrorResponse()
         {
-            // Arrange            
-            errorResultModel = new ConsoleErrorResultModel();
+            // Arrange
+            this.errorResultModel = new ConsoleErrorResultModel();
 
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(_userId, portalSettings, null, out _userInfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+                .Returns(this.errorResultModel);
 
-            // Act 
-            var result = RunCommand(_userId.ToString());
+            // Act
+            var result = this.RunCommand(this._userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
+        }
+
+        protected override void ChildSetup()
+        {
+            this._userId = 3;
+            this._userInfo = this.GetUser(this._userId, false);
+
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+        }
+
+        protected override GetUser CreateCommand()
+        {
+            return new GetUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
         }
     }
 }

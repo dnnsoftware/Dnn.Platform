@@ -1,19 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Entities.Portals
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PortalSettingsTests
     {
@@ -31,316 +32,316 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         [Test]
         public void Constructor_Creates_Registration_Property()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var settings = new PortalSettings();
 
-            //Assert
+            // Assert
             Assert.IsNotNull(settings.Registration);
         }
 
         [Test]
         public void Constructor_Sets_PortalId_When_Passed_PortalId()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidPortalId, settings.PortalId);
         }
 
         [Test]
         public void Constructor_Sets_PortalId_When_Passed_PortalAlias()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidPortalId, settings.PortalId);
         }
 
         [Test]
         public void Constructor_Sets_PortalAlias_When_Passed_PortalAlias()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             Assert.AreEqual(portalAlias, settings.PortalAlias);
         }
 
         [Test]
         public void Constructor_Sets_PortalId_When_Passed_Portal()
         {
-            //Arrange
+            // Arrange
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portal = CreatePortal(ValidPortalId);
+            var portal = this.CreatePortal(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portal);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidPortalId, settings.PortalId);
         }
 
         [Test]
         public void Constructor_Does_Not_Set_PortalId_When_Passed_Null_Portal()
         {
-            //Arrange
+            // Arrange
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portal = CreatePortal(ValidPortalId);
+            var portal = this.CreatePortal(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, (PortalInfo)null);
 
-            //Assert
+            // Assert
             Assert.AreEqual(InValidPortalId, settings.PortalId);
         }
 
         [Test]
         public void Constructor_Calls_PortalController_GetPortal_When_Passed_PortalId()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
-            //Assert
+            // Assert
             mockPortalController.Verify(c => c.GetPortal(ValidPortalId));
         }
 
         [Test]
         public void Constructor_Calls_PortalController_GetPortal_When_Passed_PortalAlias()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             mockPortalController.Verify(c => c.GetPortal(ValidPortalId));
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Portal()
         {
-            //Arrange
-             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+            // Arrange
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portal = CreatePortal(ValidPortalId);
+            var portal = this.CreatePortal(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portal);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings));
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Valid_PortalAlias()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings));
         }
 
         [Test]
         public void Constructor_Does_Not_Call_PortalSettingsController_LoadPortal_When_Portal_Is_Null()
         {
-            //Arrange
+            // Arrange
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            //Act
-            var settings = new PortalSettings(ValidTabId, (PortalInfo) null);
+            // Act
+            var settings = new PortalSettings(ValidTabId, (PortalInfo)null);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortal(It.IsAny<PortalInfo>(), settings), Times.Never);
         }
 
         [Test]
         public void Constructor_Does_Not_Call_PortalSettingsController_LoadPortal_When_Passed_InValid_PortalAlias()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(InValidPortalId);
+            var portalAlias = this.CreatePortalAlias(InValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings), Times.Never);
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_PortalId()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortalSettings(settings));
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_Portal()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portal = CreatePortal(ValidPortalId);
+            var portal = this.CreatePortal(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portal);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortalSettings(settings));
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_PortalAlias()
         {
-            //Arrange
+            // Arrange
             var mockPortalController = new Mock<IPortalController>();
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.LoadPortalSettings(settings));
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_GetActiveTab_When_Passed_Portal()
         {
-            //Arrange
+            // Arrange
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portal = CreatePortal(ValidPortalId);
+            var portal = this.CreatePortal(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portal);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId, settings));
         }
 
         [Test]
         public void Constructor_Calls_PortalSettingsController_GetActiveTab_When_Passed_Valid_PortalAlias()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId, settings));
         }
 
         [Test]
         public void Constructor_Does_Not_Call_PortalSettingsController_GetActiveTab_When_Portal_Is_Null()
         {
-            //Arrange
+            // Arrange
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, (PortalInfo)null);
 
-            //Assert
-            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId,settings), Times.Never);
+            // Assert
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId, settings), Times.Never);
         }
 
         [Test]
         public void Constructor_Does_Not_Call_PortalSettingsController_GetActiveTab_When_Passed_InValid_PortalAlias()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = CreatePortalAlias(InValidPortalId);
+            var portalAlias = this.CreatePortalAlias(InValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
-            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId,settings), Times.Never);
+            // Assert
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId, settings), Times.Never);
         }
 
         [Test]
         public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_PortalId()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
@@ -349,18 +350,18 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Setup(c => c.GetActiveTab(ValidTabId, It.IsAny<PortalSettings>()))
                 .Returns(new TabInfo());
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
-            //Assert
+            // Assert
             Assert.NotNull(settings.ActiveTab);
         }
 
         [Test]
         public void Constructor_Sets_ActiveTab_Property_To_Null_If_InValid_TabId_And_PortalId()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
@@ -369,35 +370,35 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Setup(c => c.GetActiveTab(InValidTabId, It.IsAny<PortalSettings>()))
                 .Returns((TabInfo)null);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, ValidPortalId);
 
-            //Assert
+            // Assert
             Assert.Null(settings.ActiveTab);
         }
 
         [Test]
         public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_Portal()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
             mockPortalSettingsController
                 .Setup(c => c.GetActiveTab(ValidTabId, It.IsAny<PortalSettings>()))
                 .Returns(new TabInfo());
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portal);
 
-            //Assert
+            // Assert
             Assert.NotNull(settings.ActiveTab);
         }
 
         [Test]
         public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_PortalAlias()
         {
-            //Arrange
-            var portal = CreatePortal(ValidPortalId);
+            // Arrange
+            var portal = this.CreatePortal(ValidPortalId);
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(c => c.GetPortal(ValidPortalId)).Returns(portal);
             PortalController.SetTestableInstance(mockPortalController.Object);
@@ -406,12 +407,12 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Setup(c => c.GetActiveTab(ValidTabId, It.IsAny<PortalSettings>()))
                 .Returns(new TabInfo());
 
-            var portalAlias = CreatePortalAlias(ValidPortalId);
+            var portalAlias = this.CreatePortalAlias(ValidPortalId);
 
-            //Act
+            // Act
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
-            //Assert
+            // Assert
             Assert.NotNull(settings.ActiveTab);
         }
 

@@ -1,28 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-
-
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Scheduling;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.TaskScheduler.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Scheduling;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class TaskSchedulerController
     {
+        private static readonly string SchedulersToRunOnSameWebServerKey = "SchedulersToRunOnSameWebServer";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
 
         private string LocalResourcesFile
@@ -38,14 +35,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             if (timeLapse != Null.NullInteger)
             {
                 var str = Null.NullString;
-                var strPrefix = Localization.GetString("TimeLapsePrefix", LocalResourcesFile);
-                var strSec = Localization.GetString("Second", LocalResourcesFile);
-                var strMn = Localization.GetString("Minute", LocalResourcesFile);
-                var strHour = Localization.GetString("Hour", LocalResourcesFile);
-                var strDay = Localization.GetString("Day", LocalResourcesFile);
-                var strWeek = Localization.GetString("Week", LocalResourcesFile);
-                var strMonth = Localization.GetString("Month", LocalResourcesFile);
-                var strYear = Localization.GetString("Year", LocalResourcesFile);
+                var strPrefix = Localization.GetString("TimeLapsePrefix", this.LocalResourcesFile);
+                var strSec = Localization.GetString("Second", this.LocalResourcesFile);
+                var strMn = Localization.GetString("Minute", this.LocalResourcesFile);
+                var strHour = Localization.GetString("Hour", this.LocalResourcesFile);
+                var strDay = Localization.GetString("Day", this.LocalResourcesFile);
+                var strWeek = Localization.GetString("Week", this.LocalResourcesFile);
+                var strMonth = Localization.GetString("Month", this.LocalResourcesFile);
+                var strYear = Localization.GetString("Year", this.LocalResourcesFile);
                 var strSecs = Localization.GetString("Seconds");
                 var strMns = Localization.GetString("Minutes");
                 var strHours = Localization.GetString("Hours");
@@ -79,12 +76,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 }
                 return str;
             }
-            return Localization.GetString("n/a", LocalResourcesFile);
+            return Localization.GetString("n/a", this.LocalResourcesFile);
         }
 
         public void StopSchedule()
         {
-            SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", LocalResourcesFile));
+            SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", this.LocalResourcesFile));
         }
 
         public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement,
@@ -119,6 +116,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             scheduleItem.Servers = string.IsNullOrEmpty(servers) ? Null.NullString : servers;
             return scheduleItem;
         }
+
         public IEnumerable<ScheduleItem> GetScheduleItems(bool? enabled, string serverName = "", string taskName = "")
         {
             try
@@ -149,6 +147,41 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 Logger.Error(exc);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets a list of servers to be recommended for a particular scheduler.
+        /// </summary>
+        /// <param name="schedulerId">Scheduler Id.</param>
+        /// <returns>List of recommended servers for specified <paramref name="schedulerId"/>.</returns>
+        public IEnumerable<string> GetRecommendedServers(int schedulerId)
+        {
+            var hostSettingsService = Globals.DependencyProvider.GetRequiredService<IHostSettingsService>();
+
+            var schedulerIds = hostSettingsService.GetString(SchedulersToRunOnSameWebServerKey, string.Empty)
+                .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(x => int.TryParse(x, out var id))
+                .Select(x => int.Parse(x))
+                .ToArray();
+
+            if (!schedulerIds.Contains(schedulerId))
+            {
+                return new string[0];
+            }
+
+            var servers = SchedulingProvider.Instance().GetSchedule()
+                .Cast<ScheduleItem>()
+                .Where(x => x.ScheduleID != schedulerId
+                    && x.Enabled
+                    && schedulerIds.Contains(x.ScheduleID)
+                    && !string.IsNullOrWhiteSpace(x.Servers))
+                .SelectMany(x => x.Servers
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim()))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x);
+
+            return servers;
         }
     }
 }

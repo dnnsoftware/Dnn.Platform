@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinInfo
-    /// 
+    /// Project  : DotNetNuke
+    /// Class    : SkinInfo
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///     Handles the Business Object for Skins
+    ///     Handles the Business Object for Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -34,11 +29,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinId;
+                return this._SkinId;
             }
+
             set
             {
-                _SkinId = value;
+                this._SkinId = value;
             }
         }
 
@@ -46,11 +42,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
+
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -58,11 +55,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinRoot;
+                return this._SkinRoot;
             }
+
             set
             {
-                _SkinRoot = value;
+                this._SkinRoot = value;
             }
         }
 
@@ -70,11 +68,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinType;
+                return this._SkinType;
             }
+
             set
             {
-                _SkinType = value;
+                this._SkinType = value;
             }
         }
 
@@ -82,11 +81,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinSrc;
+                return this._SkinSrc;
             }
+
             set
             {
-                _SkinSrc = value;
+                this._SkinSrc = value;
             }
         }
     }

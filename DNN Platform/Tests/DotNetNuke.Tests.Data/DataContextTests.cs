@@ -1,24 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Configuration;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Tests.Utilities;
-using NUnit.Framework;
-using PetaPoco;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Data
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+    using PetaPoco;
+
     [TestFixture]
     public class DataContextTests
     {
         // ReSharper disable InconsistentNaming
-
         [SetUp]
         public void SetUp()
         {
@@ -26,11 +25,11 @@ namespace DotNetNuke.Tests.Data
             ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
             ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
             {
-                {"name", "SqlDataProvider"},
-                {"type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
-                {"connectionStringName", "SiteSqlServer"},
-                {"objectQualifier", ""},
-                {"databaseOwner", "dbo."}
+                { "name", "SqlDataProvider" },
+                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
+                { "connectionStringName", "SiteSqlServer" },
+                { "objectQualifier", string.Empty },
+                { "databaseOwner", "dbo." },
             });
         }
 
@@ -42,12 +41,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DataContext_Instance_Method_Returns_PetaPocoDataContext()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = DataContext.Instance();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IDataContext>(context);
             Assert.IsInstanceOf<PetaPocoDataContext>(context);
         }
@@ -55,13 +54,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DataContext_Instance_Method_Returns_Default_PetaPocoDataContext_Instance()
         {
-            //Arrange
+            // Arrange
             var connectionString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
 
-            //Act
+            // Act
             var context = (PetaPocoDataContext)DataContext.Instance();
 
-            //Assert
+            // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }
@@ -71,13 +70,13 @@ namespace DotNetNuke.Tests.Data
         [TestCase("Test")]
         public void DataContext_Instance_Method_Returns_Named_PetaPocoDataContext_Instance(string name)
         {
-            //Arrange
+            // Arrange
             var connectionString = ConfigurationManager.ConnectionStrings[name].ConnectionString;
 
-            //Act
+            // Act
             var context = (PetaPocoDataContext)DataContext.Instance(name);
 
-            //Assert
+            // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }

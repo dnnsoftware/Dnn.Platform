@@ -1,21 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using System.Data.SqlServerCe;
-using System.IO;
-using System.Text.RegularExpressions;
-using DotNetNuke.Data;
-using DotNetNuke.Tests.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Data
 {
+    using System;
+    using System.Data;
+    using System.Data.SqlServerCe;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Tests.Utilities;
+
     public class DataUtil
     {
-        #region Public Methods
-
         public static void CreateDatabase(string databaseName)
         {
             if (File.Exists(databaseName))
@@ -48,32 +47,32 @@ namespace DotNetNuke.Tests.Data
 
         public static string GetConnectionString(string databaseName)
         {
-            return String.Format("Data Source = {0};", databaseName);
+            return string.Format("Data Source = {0};", databaseName);
         }
 
         public static T GetFieldValue<T>(string databaseName, string tableName, string field, string primaryKeyField, string primaryKeyValue)
         {
-            return ExecuteQuery(databaseName, String.Format(DataResources.GetFieldValue, field, tableName, primaryKeyField, primaryKeyValue), (cmd) => (T)cmd.ExecuteScalar());
+            return ExecuteQuery(databaseName, string.Format(DataResources.GetFieldValue, field, tableName, primaryKeyField, primaryKeyValue), (cmd) => (T)cmd.ExecuteScalar());
         }
 
         public static int GetLastAddedRecordID(string databaseName, string tableName, string primaryKeyField)
         {
-            return ExecuteScalar(databaseName, String.Format(DataResources.GetLastAddedRecordID, tableName, primaryKeyField));
+            return ExecuteScalar(databaseName, string.Format(DataResources.GetLastAddedRecordID, tableName, primaryKeyField));
         }
 
         public static int GetRecordCount(string databaseName, string tableName)
         {
-            return ExecuteScalar(databaseName, String.Format(DataResources.RecordCountScript, tableName));
+            return ExecuteScalar(databaseName, string.Format(DataResources.RecordCountScript, tableName));
         }
 
         public static int GetRecordCount(string databaseName, string tableName, string field, string value)
         {
-            return ExecuteScalar(databaseName, String.Format(DataResources.GetRecordCountByField, tableName, field, value));
+            return ExecuteScalar(databaseName, string.Format(DataResources.GetRecordCountByField, tableName, field, value));
         }
 
         public static DataTable GetTable(string databaseName, string tableName)
         {
-            return ExecuteQuery<DataTable>(databaseName, String.Format(DataResources.GetTable, tableName),
+            return ExecuteQuery<DataTable>(databaseName, string.Format(DataResources.GetTable, tableName),
                                             (cmd) =>
                                             {
                                                 var reader = cmd.ExecuteReader();
@@ -97,12 +96,11 @@ namespace DotNetNuke.Tests.Data
                 {
                     index = 0;
                 }
-                ExecuteNonQuery(Constants.PETAPOCO_DatabaseName, String.Format(Constants.PETAPOCO_InsertDogRow, _dogNames[index], _dogAges[index]));
-                index++;
-            }            
-        }
 
-        #endregion
+                ExecuteNonQuery(Constants.PETAPOCO_DatabaseName, string.Format(Constants.PETAPOCO_InsertDogRow, _dogNames[index], _dogAges[index]));
+                index++;
+            }
+        }
 
         private static TReturn ExecuteQuery<TReturn>(string databaseName, string sqlScript, Func<SqlCeCommand, TReturn> command)
         {

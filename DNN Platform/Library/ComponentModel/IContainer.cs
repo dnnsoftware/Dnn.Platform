@@ -1,31 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.ComponentModel
 {
+    using System;
+    using System.Collections;
+
     public interface IContainer
     {
         string Name { get; }
 
-        void RegisterComponent<TComponent>() where TComponent : class;
+        void RegisterComponent<TComponent>()
+            where TComponent : class;
 
-        void RegisterComponent<TComponent>(string name) where TComponent : class;
+        void RegisterComponent<TComponent>(string name)
+            where TComponent : class;
 
-        void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle) where TComponent : class;
+        void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle)
+            where TComponent : class;
 
-        void RegisterComponent<TContract, TComponent>() where TComponent : class;
+        void RegisterComponent<TContract, TComponent>()
+            where TComponent : class;
 
-        void RegisterComponent<TContract, TComponent>(string name) where TComponent : class;
+        void RegisterComponent<TContract, TComponent>(string name)
+            where TComponent : class;
 
-        void RegisterComponent<TContract, TComponent>(string name, ComponentLifeStyleType lifestyle) where TComponent : class;
+        void RegisterComponent<TContract, TComponent>(string name, ComponentLifeStyleType lifestyle)
+            where TComponent : class;
 
         void RegisterComponent(Type componentType);
 

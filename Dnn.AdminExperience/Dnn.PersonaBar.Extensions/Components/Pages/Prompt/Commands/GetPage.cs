@@ -1,39 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Pages.Components.Prompt.Models;
-using Dnn.PersonaBar.Pages.Components.Security;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Library.Helper;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Pages.Components.Prompt.Models;
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("get-page", Constants.PagesCategory, "Prompt_GetPage_Description")]
     public class GetPage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
-
         [FlagParameter("name", "Prompt_GetPage_FlagName", "String")]
         private const string FlagName = "name";
+
         [FlagParameter("id", "Prompt_GetPage_FlagId", "Integer")]
         private const string FlagId = "id";
+
         [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
         private readonly ITabController _tabController;
         private readonly ISecurityService _securityService;
         private readonly IContentVerifier _contentVerifier;
-
-        private int PageId { get; set; } = -1;
-        private string PageName { get; set; }
-        private int ParentId { get; set; } = -1;
 
         public GetPage() :
             this(TabController.Instance, SecurityService.Instance, new ContentVerifier())
@@ -44,49 +41,55 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             ITabController tabController,
             ISecurityService securityService,
             IContentVerifier contentVerifier
-            )
+        )
         {
             this._tabController = tabController;
             this._securityService = securityService;
             this._contentVerifier = contentVerifier;
         }
 
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
+        private int PageId { get; set; } = -1;
+        private string PageName { get; set; }
+        private int ParentId { get; set; } = -1;
+
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
 
-            PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
-            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
-            ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
-            if (PageId == -1 && string.IsNullOrEmpty(PageName))
+            this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
+            this.PageName = this.GetFlagValue(FlagName, "Page Name", string.Empty);
+            this.ParentId = this.GetFlagValue(FlagParentId, "Parent Id", -1);
+            if (this.PageId == -1 && string.IsNullOrEmpty(this.PageName))
             {
-                AddMessage(LocalizeString("Prompt_ParameterRequired"));
+                this.AddMessage(this.LocalizeString("Prompt_ParameterRequired"));
             }
         }
 
         public override ConsoleResultModel Run()
         {
             var lst = new List<PageModel>();
-            var tab = PageId != -1
-                ? _tabController.GetTab(PageId, PortalId)
-                : (ParentId > 0
-                    ? _tabController.GetTabByName(PageName, PortalId, ParentId)
-                    : _tabController.GetTabByName(PageName, PortalId));
+            var tab = this.PageId != -1
+                ? this._tabController.GetTab(this.PageId, this.PortalId)
+                : (this.ParentId > 0
+                    ? this._tabController.GetTabByName(this.PageName, this.PortalId, this.ParentId)
+                    : this._tabController.GetTabByName(this.PageName, this.PortalId));
 
             if (tab != null)
             {
-                if (!_securityService.CanManagePage(PageId))
+                if (!this._securityService.CanManagePage(this.PageId))
                 {
-                    return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
+                    return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
                 }
 
-                if (_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+                if (this._contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, this.PortalSettings))
                 {
                     lst.Add(new PageModel(tab));
-                    return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = LocalizeString("Prompt_PageFound") };
+                    return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = this.LocalizeString("Prompt_PageFound") };
                 }
             }
 
-            return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
+            return new ConsoleErrorResultModel(this.LocalizeString("Prompt_PageNotFound"));
         }
     }
 }

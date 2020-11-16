@@ -1,28 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Xml.Serialization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
+    using System.Xml.Serialization;
+
     [XmlInclude(typeof(ClientBoolean))]
     [XmlInclude(typeof(ClientNumber))]
     [XmlInclude(typeof(ClientString))]
     public class ClientOption
     {
-        public string Name { get; set; }
-        public string Value { get; set; }
-
         public ClientOption()
         {
         }
 
         public ClientOption(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
+
+        public string Name { get; set; }
+
+        public string Value { get; set; }
     }
 
     public class ClientString : ClientOption
@@ -33,8 +34,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientString(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 
@@ -46,8 +47,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientNumber(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 
@@ -59,8 +60,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientBoolean(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 }

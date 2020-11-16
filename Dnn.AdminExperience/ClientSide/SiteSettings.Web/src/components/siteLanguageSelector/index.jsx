@@ -65,6 +65,11 @@ class SiteLanguageSelector extends Component {
 
     onSiteChange(event) {
         let {state, props} = this;
+
+        if(event.value === state.portalId){
+            return;
+        }
+
         props.dispatch(SearchActions.getCultureList(event.value, () => {
             let culture = this.validateCultureCode();
             if (state.cultureCode !== culture) {

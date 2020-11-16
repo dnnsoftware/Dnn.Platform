@@ -55,8 +55,8 @@ class ExtensionDetailRow extends Component {
                         {this.getInUseDisplay(props._package.friendlyName, props._package.packageId)}
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[4]}>
-                        <a href={props._package.upgradeUrl} target="_blank" rel="noopener noreferrer" aria-label="Update">
-                            <img src={props._package.upgradeIndicator} alt="Update"/>
+                        <a href={props._package.url} target="_blank" rel="noopener noreferrer" aria-label="Update">
+                            <img src={props._package.upgradeIndicator} alt="Update" />
                         </a>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[5]} style={{ paddingRight: 0 }}>

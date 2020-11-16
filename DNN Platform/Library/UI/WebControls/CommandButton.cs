@@ -1,27 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Class:      CommandButton
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CommandButton Class provides an enhanced Button control for DotNetNuke
+    /// The CommandButton Class provides an enhanced Button control for DotNetNuke.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -33,456 +28,473 @@ namespace DotNetNuke.UI.WebControls
         private LinkButton link;
         private LiteralControl separator;
 
+        public event EventHandler Click;
+
+        public event CommandEventHandler Command;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Separator between Buttons
+        /// Gets or sets the Separator between Buttons.
         /// </summary>
-        /// <remarks>Defaults to 1 non-breaking spaces</remarks>
-        /// <value>A String</value>
+        /// <remarks>Defaults to 1 non-breaking spaces.</remarks>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
             get
             {
-                EnsureChildControls();
-                return separator.Text;
+                this.EnsureChildControls();
+                return this.separator.Text;
             }
+
             set
             {
-                EnsureChildControls();
-                separator.Text = value;
+                this.EnsureChildControls();
+                this.separator.Text = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the control causes Validation to occur
+        /// Gets or sets a value indicating whether gets or sets whether the control causes Validation to occur.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool CausesValidation
         {
             get
             {
-                EnsureChildControls();
-                return link.CausesValidation;
+                this.EnsureChildControls();
+                return this.link.CausesValidation;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.CausesValidation = value;
-                link.CausesValidation = value;
+                this.EnsureChildControls();
+                this.icon.CausesValidation = value;
+                this.link.CausesValidation = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the command argument for this command button
+        /// Gets or sets the command argument for this command button.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CommandArgument
         {
             get
             {
-                EnsureChildControls();
-                return link.CommandArgument;
+                this.EnsureChildControls();
+                return this.link.CommandArgument;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.CommandArgument = value;
-                link.CommandArgument = value;
+                this.EnsureChildControls();
+                this.icon.CommandArgument = value;
+                this.link.CommandArgument = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the command name for this command button
+        /// Gets or sets the command name for this command button.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CommandName
         {
             get
             {
-                EnsureChildControls();
-                return link.CommandName;
+                this.EnsureChildControls();
+                return this.link.CommandName;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.CommandName = value;
-                link.CommandName = value;
+                this.EnsureChildControls();
+                this.icon.CommandName = value;
+                this.link.CommandName = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the link is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the link is displayed.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
             get
             {
-                EnsureChildControls();
-                return link.Visible;
+                this.EnsureChildControls();
+                return this.link.Visible;
             }
+
             set
             {
-                EnsureChildControls();
-                link.Visible = value;
+                this.EnsureChildControls();
+                this.link.Visible = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the icon is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
             get
             {
-                EnsureChildControls();
-                return icon.Visible;
+                this.EnsureChildControls();
+                return this.icon.Visible;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.Visible = value;
+                this.EnsureChildControls();
+                this.icon.Visible = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Image used for the Icon
+        /// Gets or sets the Image used for the Icon.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ImageUrl
         {
             get
             {
-                EnsureChildControls();                
-                if (string.IsNullOrEmpty(icon.ImageUrl))
-                    icon.ImageUrl = Entities.Icons.IconController.IconURL(IconKey, IconSize, IconStyle);
+                this.EnsureChildControls();
+                if (string.IsNullOrEmpty(this.icon.ImageUrl))
+                {
+                    this.icon.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
+                }
 
-                return icon.ImageUrl;
+                return this.icon.ImageUrl;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.ImageUrl = value;
+                this.EnsureChildControls();
+                this.icon.ImageUrl = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Key to obtain ImageURL
+        /// Gets or sets the Icon Key to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Siz to obtain ImageURL
+        /// Gets or sets the Icon Siz to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconSize { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Style to obtain ImageURL
+        /// Gets or sets the Icon Style to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconStyle { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the "onClick" Attribute
+        /// Gets or sets the "onClick" Attribute.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string OnClick
         {
             get
             {
-                EnsureChildControls();
-                return link.Attributes["onclick"];
+                this.EnsureChildControls();
+                return this.link.Attributes["onclick"];
             }
+
             set
             {
-                EnsureChildControls();
-                if (String.IsNullOrEmpty(value))
+                this.EnsureChildControls();
+                if (string.IsNullOrEmpty(value))
                 {
-                    icon.Attributes.Remove("onclick");
-                    link.Attributes.Remove("onclick");
+                    this.icon.Attributes.Remove("onclick");
+                    this.link.Attributes.Remove("onclick");
                 }
                 else
                 {
-                    icon.Attributes.Add("onclick", value);
-                    link.Attributes.Add("onclick", value);
+                    this.icon.Attributes.Add("onclick", value);
+                    this.link.Attributes.Add("onclick", value);
                 }
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the "OnClientClick" Property
+        ///   Gets or sets the "OnClientClick" Property.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string OnClientClick
         {
             get
             {
-                EnsureChildControls();
-                return link.OnClientClick;
+                this.EnsureChildControls();
+                return this.link.OnClientClick;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.OnClientClick = value;
-                link.OnClientClick = value;
+                this.EnsureChildControls();
+                this.icon.OnClientClick = value;
+                this.link.OnClientClick = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Resource Key used for the Control
+        /// Gets or sets the Resource Key used for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ResourceKey
         {
             get
             {
-                EnsureChildControls();
-                return link.Attributes["resourcekey"];
+                this.EnsureChildControls();
+                return this.link.Attributes["resourcekey"];
             }
+
             set
             {
-                EnsureChildControls();
-                if (String.IsNullOrEmpty(value))
+                this.EnsureChildControls();
+                if (string.IsNullOrEmpty(value))
                 {
-                    icon.Attributes.Remove("resourcekey");
-                    link.Attributes.Remove("resourcekey");
+                    this.icon.Attributes.Remove("resourcekey");
+                    this.link.Attributes.Remove("resourcekey");
                 }
                 else
                 {
-                    icon.Attributes.Add("resourcekey", value);
-                    link.Attributes.Add("resourcekey", value);
+                    this.icon.Attributes.Add("resourcekey", value);
+                    this.link.Attributes.Add("resourcekey", value);
                 }
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Text used for the Control
+        /// Gets or sets the Text used for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Text
         {
             get
             {
-                EnsureChildControls();
-                return link.Text;
+                this.EnsureChildControls();
+                return this.link.Text;
             }
+
             set
             {
-                EnsureChildControls();
-                link.Text = value;
+                this.EnsureChildControls();
+                this.link.Text = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the tooltip resource key used for the Control
+        /// Gets or sets the tooltip resource key used for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ToolTipKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Validation Group that this control "validates"
+        /// Gets or sets the Validation Group that this control "validates".
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ValidationGroup
         {
             get
             {
-                EnsureChildControls();
-                return link.ValidationGroup;
+                this.EnsureChildControls();
+                return this.link.ValidationGroup;
             }
+
             set
             {
-                EnsureChildControls();
-                icon.ValidationGroup = value;
-                link.ValidationGroup = value;
+                this.EnsureChildControls();
+                this.icon.ValidationGroup = value;
+                this.link.ValidationGroup = value;
             }
         }
 
         public string LocalResourceFile { get; set; }
 
-        public event EventHandler Click;
-        public event CommandEventHandler Command;
+        public void RegisterForPostback()
+        {
+            AJAX.RegisterPostBackControl(this.link);
+            AJAX.RegisterPostBackControl(this.icon);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateChildControls overrides the Base class's method to correctly build the
-        /// control based on the configuration
+        /// control based on the configuration.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-            Controls.Clear();
-            if (String.IsNullOrEmpty(CssClass))
+            this.Controls.Clear();
+            if (string.IsNullOrEmpty(this.CssClass))
             {
-                CssClass = "CommandButton";
+                this.CssClass = "CommandButton";
             }
-            icon = new ImageButton();
-            icon.Visible = true;
-            icon.CausesValidation = true;
-            icon.Click += RaiseImageClick;
-            icon.Command += RaiseCommand;
-            Controls.Add(icon);
-            separator = new LiteralControl();
-            separator.Text = "&nbsp;";
-            Controls.Add(separator);
-            link = new LinkButton();
-            link.Visible = true;
-            link.CausesValidation = true;
-            link.Click += RaiseClick;
-            link.Command += RaiseCommand;
-            Controls.Add(link);
-            if (DisplayIcon && !String.IsNullOrEmpty(ImageUrl))
+
+            this.icon = new ImageButton();
+            this.icon.Visible = true;
+            this.icon.CausesValidation = true;
+            this.icon.Click += this.RaiseImageClick;
+            this.icon.Command += this.RaiseCommand;
+            this.Controls.Add(this.icon);
+            this.separator = new LiteralControl();
+            this.separator.Text = "&nbsp;";
+            this.Controls.Add(this.separator);
+            this.link = new LinkButton();
+            this.link.Visible = true;
+            this.link.CausesValidation = true;
+            this.link.Click += this.RaiseClick;
+            this.link.Command += this.RaiseCommand;
+            this.Controls.Add(this.link);
+            if (this.DisplayIcon && !string.IsNullOrEmpty(this.ImageUrl))
             {
-                icon.EnableViewState = EnableViewState;
+                this.icon.EnableViewState = this.EnableViewState;
             }
-            if (DisplayLink)
+
+            if (this.DisplayLink)
             {
-                link.CssClass = CssClass;
-                link.EnableViewState = EnableViewState;
+                this.link.CssClass = this.CssClass;
+                this.link.EnableViewState = this.EnableViewState;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnButtonClick raises the CommandButton control's Click event
+        /// OnButtonClick raises the CommandButton control's Click event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnButtonClick(EventArgs e)
         {
-            if (Click != null)
+            if (this.Click != null)
             {
-                Click(this, e);
+                this.Click(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnCommand raises the CommandButton control's Command event
+        /// OnCommand raises the CommandButton control's Command event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnCommand(CommandEventArgs e)
         {
-            if (Command != null)
+            if (this.Command != null)
             {
-                Command(this, e);
+                this.Command(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs just before the Render phase of the Page Life Cycle
+        /// OnPreRender runs just before the Render phase of the Page Life Cycle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            EnsureChildControls();
-            separator.Visible = DisplayLink && DisplayIcon;
+            this.EnsureChildControls();
+            this.separator.Visible = this.DisplayLink && this.DisplayIcon;
 
-            LocalResourceFile = UIUtilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = UIUtilities.GetLocalResourceFile(this);
 
             var tooltipText = string.Empty;
-            if (!string.IsNullOrEmpty(ToolTipKey))
+            if (!string.IsNullOrEmpty(this.ToolTipKey))
             {
-                tooltipText = Localization.GetString(ToolTipKey, LocalResourceFile);
+                tooltipText = Localization.GetString(this.ToolTipKey, this.LocalResourceFile);
             }
 
-            if (string.IsNullOrEmpty(tooltipText) && !string.IsNullOrEmpty(ToolTip))
+            if (string.IsNullOrEmpty(tooltipText) && !string.IsNullOrEmpty(this.ToolTip))
             {
-                tooltipText = ToolTip;
+                tooltipText = this.ToolTip;
             }
 
             if (!string.IsNullOrEmpty(tooltipText))
             {
-                icon.ToolTip = link.ToolTip = icon.AlternateText = tooltipText;
+                this.icon.ToolTip = this.link.ToolTip = this.icon.AlternateText = tooltipText;
             }
         }
 
-        public void RegisterForPostback()
-        {
-            AJAX.RegisterPostBackControl(link);
-            AJAX.RegisterPostBackControl(icon);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RaiseClick runs when one of the contained Link buttons is clciked
-        /// </summary>
-        /// <remarks>It raises a Click Event.
-        /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An EventArgs object</param>
-        /// -----------------------------------------------------------------------------
-        private void RaiseClick(object sender, EventArgs e)
-        {
-            OnButtonClick(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RaiseCommand runs when one of the contained Link buttons is clicked
+        /// RaiseImageClick runs when the Image button is clicked.
         /// </summary>
         /// <remarks>It raises a Command Event.
         /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An CommandEventArgs object</param>
-        /// -----------------------------------------------------------------------------
-        private void RaiseCommand(object sender, CommandEventArgs e)
-        {
-            OnCommand(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RaiseImageClick runs when the Image button is clicked
-        /// </summary>
-        /// <remarks>It raises a Command Event.
-        /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An ImageClickEventArgs object</param>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An ImageClickEventArgs object.</param>
         /// -----------------------------------------------------------------------------
         protected void RaiseImageClick(object sender, ImageClickEventArgs e)
         {
-            OnButtonClick(new EventArgs());
+            this.OnButtonClick(new EventArgs());
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RaiseClick runs when one of the contained Link buttons is clciked.
+        /// </summary>
+        /// <remarks>It raises a Click Event.
+        /// </remarks>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An EventArgs object.</param>
+        /// -----------------------------------------------------------------------------
+        private void RaiseClick(object sender, EventArgs e)
+        {
+            this.OnButtonClick(e);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RaiseCommand runs when one of the contained Link buttons is clicked.
+        /// </summary>
+        /// <remarks>It raises a Command Event.
+        /// </remarks>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An CommandEventArgs object.</param>
+        /// -----------------------------------------------------------------------------
+        private void RaiseCommand(object sender, CommandEventArgs e)
+        {
+            this.OnCommand(e);
         }
     }
 }

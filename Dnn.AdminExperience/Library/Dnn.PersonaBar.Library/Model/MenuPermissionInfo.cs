@@ -1,162 +1,146 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Permissions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Library.Model
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security.Permissions;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : MenuPermissionInfo
+    /// Class    : MenuPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// MenuPermissionInfo provides the Entity Layer for Module Permissions
+    /// MenuPermissionInfo provides the Entity Layer for Module Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class MenuPermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
         private int _menuId;
 
-        //local property declarations
+        // local property declarations
         private int _menuPermissionId;
-		
-		#endregion
-		
-		#region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new MenuPermissionInfo
+        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
+        /// Constructs a new MenuPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo()
         {
-            _menuPermissionId = Null.NullInteger;
-            _menuId = Null.NullInteger;
+            this._menuPermissionId = Null.NullInteger;
+            this._menuId = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new MenuPermissionInfo
+        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
+        /// Constructs a new MenuPermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
-        public MenuPermissionInfo(PermissionInfo permission) : this()
+        public MenuPermissionInfo(PermissionInfo permission)
+            : this()
         {
-            ModuleDefID = Null.NullInteger;
-            PermissionCode = "PERSONABAR_MENU";
-            PermissionID = permission.PermissionId;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = Null.NullInteger;
+            this.PermissionCode = "PERSONABAR_MENU";
+            this.PermissionID = permission.PermissionId;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Permission ID
+        /// Gets or sets and sets the Module Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("menupermissionid")]
         public int MenuPermissionId
         {
             get
             {
-                return _menuPermissionId;
+                return this._menuPermissionId;
             }
+
             set
             {
-                _menuPermissionId = value;
+                this._menuPermissionId = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module ID
+        /// Gets or sets and sets the Module ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("menuid")]
         public int MenuId
         {
             get
             {
-                return _menuId;
+                return this._menuId;
             }
+
             set
             {
-                _menuId = value;
+                this._menuId = value;
             }
         }
 
         [XmlElement("portalid")]
         public int PortalId { get; set; }
 
-        #endregion
-
-        #region IHydratable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            base.FillInternal(dr);
-            MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
-            MenuId = Null.SetNullInteger(dr["MenuId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Key ID
-        /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
         {
             get
             {
-                return MenuPermissionId;
+                return this.MenuPermissionId;
             }
+
             set
             {
-                MenuPermissionId = value;
+                this.MenuPermissionId = value;
             }
         }
 
-        #endregion
-		
-		#region "Public Methods"
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a MenuPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
+            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two MenuPermissionInfo objects are equivalent/equal
+        /// Compares if two MenuPermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="other">a ModulePermissionObject</param>
+        /// <param name="other">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
@@ -170,20 +154,22 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
-            return (AllowAccess == other.AllowAccess) && (MenuId == other.MenuId) && (RoleID == other.RoleID) && (PermissionID == other.PermissionID);
+
+            return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two MenuPermissionInfo objects are equivalent/equal
+        /// Compares if two MenuPermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="obj">a ModulePermissionObject</param>
+        /// <param name="obj">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
@@ -197,25 +183,26 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return false;
             }
+
             if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if (obj.GetType() != typeof (MenuPermissionInfo))
+
+            if (obj.GetType() != typeof(MenuPermissionInfo))
             {
                 return false;
             }
-            return Equals((MenuPermissionInfo) obj);
+
+            return this.Equals((MenuPermissionInfo)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_menuId * 397) ^ _menuPermissionId;
+                return (this._menuId * 397) ^ this._menuPermissionId;
             }
         }
-		
-		#endregion
     }
 }

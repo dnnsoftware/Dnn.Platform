@@ -1,18 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Web.UI;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Communications
 {
+    using System.Web.UI;
+
     /// <summary>
-    /// Specifies communications between modules. 
-    /// There are listeners and communicators
+    /// Specifies communications between modules.
+    /// There are listeners and communicators.
     /// </summary>
     public class ModuleCommunicate
     {
@@ -30,7 +25,7 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return _ModuleCommunicators;
+                return this._ModuleCommunicators;
             }
         }
 
@@ -44,10 +39,9 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return _ModuleListeners;
+                return this._ModuleListeners;
             }
         }
-
 
         /// <summary>
         /// Loads the communicator.
@@ -55,41 +49,40 @@ namespace DotNetNuke.Entities.Modules.Communications
         /// <param name="ctrl">The control.</param>
         public void LoadCommunicator(Control ctrl)
         {
-            // Check and see if the module implements IModuleCommunicator 
+            // Check and see if the module implements IModuleCommunicator
             if (ctrl is IModuleCommunicator)
             {
-                Add((IModuleCommunicator) ctrl);
+                this.Add((IModuleCommunicator)ctrl);
             }
 
-            // Check and see if the module implements IModuleListener 
+            // Check and see if the module implements IModuleListener
             if (ctrl is IModuleListener)
             {
-                Add((IModuleListener) ctrl);
+                this.Add((IModuleListener)ctrl);
             }
         }
 
         private int Add(IModuleCommunicator item)
         {
-            int returnData = _ModuleCommunicators.Add(item);
+            int returnData = this._ModuleCommunicators.Add(item);
 
             int i = 0;
-            for (i = 0; i <= _ModuleListeners.Count - 1; i++)
+            for (i = 0; i <= this._ModuleListeners.Count - 1; i++)
             {
-                item.ModuleCommunication += _ModuleListeners[i].OnModuleCommunication;
+                item.ModuleCommunication += this._ModuleListeners[i].OnModuleCommunication;
             }
-
 
             return returnData;
         }
 
         private int Add(IModuleListener item)
         {
-            int returnData = _ModuleListeners.Add(item);
+            int returnData = this._ModuleListeners.Add(item);
 
             int i = 0;
-            for (i = 0; i <= _ModuleCommunicators.Count - 1; i++)
+            for (i = 0; i <= this._ModuleCommunicators.Count - 1; i++)
             {
-                _ModuleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
+                this._ModuleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
             }
 
             return returnData;

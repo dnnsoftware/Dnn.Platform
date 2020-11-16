@@ -132,24 +132,9 @@ class DefaultPagesSettingsPanelBody extends Component {
         let TabParameters_2 = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: true });
         let TabParameters_Login = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false, validateTab: "Account Login" });
         let TabParameters_Search = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: false, validateTab: "Search Results" });
+        let TabParameters_Anonymous = Object.assign(Object.assign({}, TabParameters), { disabledNotSelectable: true, roles: "-1" });
         if (state.defaultPagesSettings) {
             const columnOne = <div key="column-one" className="left-column">
-                <InputGroup>
-                    <Label
-                        tooltipMessage={resx.get("plSplashTabId.Help")}
-                        label={resx.get("plSplashTabId")}
-                    />
-                    <PagePicker
-                        serviceFramework={util.utilities.sf}
-                        style={{ width: "100%", zIndex: 6 }}
-                        selectedTabId={state.defaultPagesSettings.SplashTabId ? state.defaultPagesSettings.SplashTabId : -1}
-                        OnSelect={this.onSettingChange.bind(this, "SplashTabId")}
-                        defaultLabel={state.defaultPagesSettings.SplashTabName ? state.defaultPagesSettings.SplashTabName : noneSpecifiedText}
-                        noneSpecifiedText={noneSpecifiedText}
-                        CountText={"{0} Results"}
-                        PortalTabsParameters={TabParameters_1}
-                    />
-                </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plHomeTabId.Help")}
@@ -157,7 +142,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
-                        style={{ width: "100%", zIndex: 5 }}
+                        style={{ width: "100%", zIndex: 7 }}
                         selectedTabId={state.defaultPagesSettings.HomeTabId ? state.defaultPagesSettings.HomeTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "HomeTabId")}
                         defaultLabel={state.defaultPagesSettings.HomeTabName ? state.defaultPagesSettings.HomeTabName : noneSpecifiedText}
@@ -173,7 +158,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
-                        style={{ width: "100%", zIndex: 4 }}
+                        style={{ width: "100%", zIndex: 6 }}
                         selectedTabId={state.defaultPagesSettings.LoginTabId ? state.defaultPagesSettings.LoginTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "LoginTabId")}
                         defaultLabel={state.defaultPagesSettings.LoginTabName ? state.defaultPagesSettings.LoginTabName : noneSpecifiedText}
@@ -192,7 +177,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
-                        style={{ width: "100%", zIndex: 3 }}
+                        style={{ width: "100%", zIndex: 5 }}
                         selectedTabId={state.defaultPagesSettings.RegisterTabId ? state.defaultPagesSettings.RegisterTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "RegisterTabId")}
                         defaultLabel={state.defaultPagesSettings.RegisterTabName ? state.defaultPagesSettings.RegisterTabName : noneSpecifiedText}
@@ -208,7 +193,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                     />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
-                        style={{ width: "100%", zIndex: 2 }}
+                        style={{ width: "100%", zIndex: 4 }}
                         selectedTabId={state.defaultPagesSettings.UserTabId ? state.defaultPagesSettings.UserTabId : -1}
                         OnSelect={this.onSettingChange.bind(this, "UserTabId")}
                         defaultLabel={state.defaultPagesSettings.UserTabName ? state.defaultPagesSettings.UserTabName : noneSpecifiedText}
@@ -217,8 +202,69 @@ class DefaultPagesSettingsPanelBody extends Component {
                         PortalTabsParameters={TabParameters_1}
                     />
                 </InputGroup>
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("Redirect_AfterLogin.Help") }
+                        label={resx.get("Redirect_AfterLogin") } />
+                    <PagePicker
+                        serviceFramework={util.utilities.sf}
+                        style={{ width: "100%", zIndex: 3 }}
+                        selectedTabId={state.defaultPagesSettings.RedirectAfterLoginTabId ? state.defaultPagesSettings.RedirectAfterLoginTabId : -1}
+                        OnSelect={this.onSettingChange.bind(this, "RedirectAfterLoginTabId") }
+                        defaultLabel={state.defaultPagesSettings.RedirectAfterLoginTabName ? state.defaultPagesSettings.RedirectAfterLoginTabName : noneSpecifiedText}
+                        noneSpecifiedText={noneSpecifiedText}
+                        CountText={"{0} Results"}
+                        PortalTabsParameters={TabParameters_2}
+                     />
+                </InputGroup>
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("Redirect_AfterLogout.Help") }
+                        label={resx.get("Redirect_AfterLogout") } />
+                    <PagePicker
+                        serviceFramework={util.utilities.sf}
+                        style={{ width: "100%", zIndex: 2 }}
+                        selectedTabId={state.defaultPagesSettings.RedirectAfterLogoutTabId ? state.defaultPagesSettings.RedirectAfterLogoutTabId : -1}
+                        OnSelect={this.onSettingChange.bind(this, "RedirectAfterLogoutTabId") }
+                        defaultLabel={state.defaultPagesSettings.RedirectAfterLogoutTabName ? state.defaultPagesSettings.RedirectAfterLogoutTabName : noneSpecifiedText}
+                        noneSpecifiedText={noneSpecifiedText}
+                        CountText={"{0} Results"}
+                        PortalTabsParameters={TabParameters_Anonymous}
+                    />
+                </InputGroup>
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("Redirect_AfterRegistration.Help") }
+                        label={resx.get("Redirect_AfterRegistration") } />
+                    <PagePicker
+                        serviceFramework={util.utilities.sf}
+                        style={{ width: "100%", zIndex: 1 }}
+                        selectedTabId={state.defaultPagesSettings.RedirectAfterRegistrationTabId ? state.defaultPagesSettings.RedirectAfterRegistrationTabId : -1}
+                        OnSelect={this.onSettingChange.bind(this, "RedirectAfterRegistrationTabId") }
+                        defaultLabel={state.defaultPagesSettings.RedirectAfterRegistrationTabName ? state.defaultPagesSettings.RedirectAfterRegistrationTabName : noneSpecifiedText}
+                        noneSpecifiedText={noneSpecifiedText}
+                        CountText={"{0} Results"}
+                        PortalTabsParameters={TabParameters_2}
+                    />
+                </InputGroup>
             </div>;
             const columnTwo = <div key="column-two" className="right-column">
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("plSplashTabId.Help")}
+                        label={resx.get("plSplashTabId")}
+                    />
+                    <PagePicker
+                        serviceFramework={util.utilities.sf}
+                        style={{ width: "100%", zIndex: 7 }}
+                        selectedTabId={state.defaultPagesSettings.SplashTabId ? state.defaultPagesSettings.SplashTabId : -1}
+                        OnSelect={this.onSettingChange.bind(this, "SplashTabId")}
+                        defaultLabel={state.defaultPagesSettings.SplashTabName ? state.defaultPagesSettings.SplashTabName : noneSpecifiedText}
+                        noneSpecifiedText={noneSpecifiedText}
+                        CountText={"{0} Results"}
+                        PortalTabsParameters={TabParameters_1}
+                    />
+                </InputGroup>
                 <InputGroup>
                     <Label
                         tooltipMessage={resx.get("plSearchTabId.Help")}

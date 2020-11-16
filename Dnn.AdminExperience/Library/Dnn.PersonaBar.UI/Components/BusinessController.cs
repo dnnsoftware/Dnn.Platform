@@ -1,30 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Permissions;
-using Dnn.PersonaBar.Library.Repository;
-using Dnn.PersonaBar.UI.Components.Controllers;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Installers;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.UI.Components
 {
+    using System;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Permissions;
+    using Dnn.PersonaBar.Library.Repository;
+    using Dnn.PersonaBar.UI.Components.Controllers;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Installers;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     public class BusinessController : IUpgradeable
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
@@ -35,28 +36,49 @@ namespace Dnn.PersonaBar.UI.Components
             switch (version)
             {
                 case "01.00.00":
-                    UpdateControlPanel();
-                    CreateAdminLinks();
+                    this.UpdateControlPanel();
+                    this.CreateAdminLinks();
                     break;
                 case "01.04.00":
-                    UpdateEditPermissions();
+                    this.UpdateEditPermissions();
                     break;
                 case "03.00.00":
-                    RemovePersonaBarOldAssemblies();
+                    this.RemovePersonaBarOldAssemblies();
                     break;
             }
 
             return "Success";
         }
 
+        private static void RemoveAssembly(string assemblyName)
+        {
+            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
+
+            var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
+                p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
+                && p.PackageType.Equals("PersonaBar", StringComparison.OrdinalIgnoreCase));
+            if (packageInfo != null)
+            {
+                var fileName = assemblyName + ".dll";
+                if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
+                {
+                    Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
+                }
+            }
+            else
+            {
+                Logger.InstallLogInfo(Util.ASSEMBLY_InUse + " - " + assemblyName);
+            }
+        }
+
         private void CreateAdminLinks()
         {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                CreatePageLinks(portal.PortalID, "Admin");
+                this.CreatePageLinks(portal.PortalID, "Admin");
             }
 
-            CreatePageLinks(Null.NullInteger, "Host");
+            this.CreatePageLinks(Null.NullInteger, "Host");
         }
 
         private void CreatePageLinks(int portalId, string parentPath)
@@ -87,7 +109,7 @@ namespace Dnn.PersonaBar.UI.Components
                 var portalId = portal.PortalID;
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
-                    menuItems.ForEach(i => SaveEditPermission(portalId, i));
+                    menuItems.ForEach(i => this.SaveEditPermission(portalId, i));
                 }
             }
         }
@@ -116,7 +138,7 @@ namespace Dnn.PersonaBar.UI.Components
                             PermissionID = editPermission.PermissionId,
                             RoleID = p.RoleID,
                             UserID = p.UserID,
-                            AllowAccess = p.AllowAccess
+                            AllowAccess = p.AllowAccess,
                         };
 
                         MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
@@ -148,7 +170,7 @@ namespace Dnn.PersonaBar.UI.Components
                 "Dnn.PersonaBar.TaskScheduler",
                 "Dnn.PersonaBar.Themes",
                 "Dnn.PersonaBar.Users",
-                "Dnn.PersonaBar.Vocabularies"
+                "Dnn.PersonaBar.Vocabularies",
             };
 
             foreach (string assemblyName in assemblies)
@@ -156,28 +178,5 @@ namespace Dnn.PersonaBar.UI.Components
                 RemoveAssembly(assemblyName);
             }
         }
-        
-        private static void RemoveAssembly(string assemblyName)
-        {
-            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
-
-            var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
-                p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
-                && p.PackageType.Equals("PersonaBar", StringComparison.OrdinalIgnoreCase));
-            if (packageInfo != null)
-            {
-                var fileName = assemblyName + ".dll";
-                if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
-                {
-                    Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
-                }
-            }
-            else
-            {
-                Logger.InstallLogInfo(Util.ASSEMBLY_InUse + " - " + assemblyName);
-            }
-        }
     }
-
-    
 }

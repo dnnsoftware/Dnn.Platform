@@ -1,21 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SectionHeadControl is a user control that provides all the server code to allow a
@@ -28,27 +23,20 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public class SectionHeadControl : UserControl
     {
-		#region "Private Members"
-
+        protected ImageButton imgIcon;
+        protected Label lblTitle;
+        protected Panel pnlRule;
         private bool _includeRule;
         private bool _isExpanded = true;
         private string _javaScript = "__dnn_SectionMaxMin";
         private string _maxImageUrl = "images/plus.gif";
         private string _minImageUrl = "images/minus.gif";
-        protected ImageButton imgIcon;
-        protected Label lblTitle;
-        protected Panel pnlRule;
-		
-		#endregion
-
-		#region "Public Properties"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CssClass determines the Css Class used for the Title Text
+        /// Gets or sets cssClass determines the Css Class used for the Title Text.
         /// </summary>
-        /// <value>A string representing the name of the css class</value>
+        /// <value>A string representing the name of the css class.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -56,20 +44,21 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return lblTitle.CssClass;
+                return this.lblTitle.CssClass;
             }
+
             set
             {
-                lblTitle.CssClass = value;
+                this.lblTitle.CssClass = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IncludeRule determines whether there is a horizontal rule displayed under the
-        /// header text
+        /// Gets or sets a value indicating whether includeRule determines whether there is a horizontal rule displayed under the
+        /// header text.
         /// </summary>
-        /// <value>A string representing true or false</value>
+        /// <value>A string representing true or false.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -77,17 +66,18 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _includeRule;
+                return this._includeRule;
             }
+
             set
             {
-                _includeRule = value;
+                this._includeRule = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IsExpanded determines whether the section is expanded or collapsed.
+        /// Gets or sets a value indicating whether isExpanded determines whether the section is expanded or collapsed.
         /// </summary>
         /// <value>Boolean value that determines whether the panel is expanded (true)
         /// or collapsed (false).  The default is true.</value>
@@ -98,20 +88,21 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return DNNClientAPI.MinMaxContentVisibile(imgIcon, -1, !_isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
+                return DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
             }
+
             set
             {
-                _isExpanded = value;
-                DNNClientAPI.MinMaxContentVisibile(imgIcon, -1, !_isExpanded, DNNClientAPI.MinMaxPersistanceType.Page, value);
+                this._isExpanded = value;
+                DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page, value);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// JavaScript is the name of the javascript function implementation.
+        /// Gets or sets javaScript is the name of the javascript function implementation.
         /// </summary>
-        /// <value>A string representing the name of the javascript function implementation</value>
+        /// <value>A string representing the name of the javascript function implementation.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -119,20 +110,21 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _javaScript;
+                return this._javaScript;
             }
+
             set
             {
-                _javaScript = value;
+                this._javaScript = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The MaxImageUrl is the url of the image displayed when the contained panel is
+        /// Gets or sets the MaxImageUrl is the url of the image displayed when the contained panel is
         /// collapsed.
         /// </summary>
-        /// <value>A string representing the url of the Max Image</value>
+        /// <value>A string representing the url of the Max Image.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -140,20 +132,21 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _maxImageUrl;
+                return this._maxImageUrl;
             }
+
             set
             {
-                _maxImageUrl = value;
+                this._maxImageUrl = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The MinImageUrl is the url of the image displayed when the contained panel is
+        /// Gets or sets the MinImageUrl is the url of the image displayed when the contained panel is
         /// expanded.
         /// </summary>
-        /// <value>A string representing the url of the Min Image</value>
+        /// <value>A string representing the url of the Min Image.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -161,39 +154,40 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _minImageUrl;
+                return this._minImageUrl;
             }
+
             set
             {
-                _minImageUrl = value;
+                this._minImageUrl = value;
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// The ResourceKey is the key used to identify the Localization Resource for the
- /// title text.
- /// </summary>
- /// <value>A string representing the ResourceKey.</value>
- /// <remarks>
- /// </remarks>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the
+        /// title text.
+        /// </summary>
+        /// <value>A string representing the ResourceKey.</value>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public string ResourceKey { get; set; }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// The Section is the Id of the DHTML object  that contains the xection content
- /// title text.
- /// </summary>
- /// <value>A string representing the Section.</value>
- /// <remarks>
- /// </remarks>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Section is the Id of the DHTML object  that contains the xection content
+        /// title text.
+        /// </summary>
+        /// <value>A string representing the Section.</value>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public string Section { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Text is the name or title of the section
+        /// Gets or sets the Text is the name or title of the section.
         /// </summary>
         /// <value>A string representing the Title Text.</value>
         /// <remarks>
@@ -203,21 +197,18 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return lblTitle.Text;
+                return this.lblTitle.Text;
             }
+
             set
             {
-                lblTitle.Text = value;
+                this.lblTitle.Text = value;
             }
         }
 
-		#endregion
-
-		#region "Event Handlers"
-		
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Assign resource key to label for localization
+        /// Assign resource key to label for localization.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -229,13 +220,13 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				//set the resourcekey attribute to the label
-                if (!String.IsNullOrEmpty(ResourceKey))
+                // set the resourcekey attribute to the label
+                if (!string.IsNullOrEmpty(this.ResourceKey))
                 {
-                    lblTitle.Attributes["resourcekey"] = ResourceKey;
+                    this.lblTitle.Attributes["resourcekey"] = this.ResourceKey;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -243,7 +234,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Renders the SectionHeadControl
+        /// Renders the SectionHeadControl.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -255,18 +246,18 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                var ctl = (HtmlControl) Parent.FindControl(Section);
+                var ctl = (HtmlControl)this.Parent.FindControl(this.Section);
                 if (ctl != null)
                 {
-                    lblTitle.Attributes.Add("onclick", imgIcon.ClientID + ".click();");
-                    lblTitle.Attributes.Add("style", "cursor: pointer");
-                    DNNClientAPI.EnableMinMax(imgIcon, ctl, !IsExpanded, Page.ResolveUrl(MinImageUrl), Page.ResolveUrl(MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
+                    this.lblTitle.Attributes.Add("onclick", this.imgIcon.ClientID + ".click();");
+                    this.lblTitle.Attributes.Add("style", "cursor: pointer");
+                    DNNClientAPI.EnableMinMax(this.imgIcon, ctl, !this.IsExpanded, this.Page.ResolveUrl(this.MinImageUrl), this.Page.ResolveUrl(this.MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
-				
-                //optionlly show hr
-                pnlRule.Visible = _includeRule;
+
+                // optionlly show hr
+                this.pnlRule.Visible = this._includeRule;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -274,13 +265,11 @@ namespace DotNetNuke.UI.UserControls
 
         protected void imgIcon_Click(object sender, ImageClickEventArgs e)
         {
-            var ctl = (HtmlControl) Parent.FindControl(Section);
+            var ctl = (HtmlControl)this.Parent.FindControl(this.Section);
             if (ctl != null)
             {
-                IsExpanded = !IsExpanded;
+                this.IsExpanded = !this.IsExpanded;
             }
         }
-		
-		#endregion
     }
 }

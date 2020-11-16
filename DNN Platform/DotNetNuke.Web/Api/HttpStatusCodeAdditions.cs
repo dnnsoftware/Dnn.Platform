@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.Api
 {
     /// <summary>
-    /// Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework
+    /// Enumeration that contains HTTP Status Codes that are not included in the HttpStatusCode enumeration provided by the .NET framework.
     /// </summary>
     public enum HttpStatusCodeAdditions
     {
@@ -17,6 +17,6 @@ namespace DotNetNuke.Web.Api
         ///     <cref>http://tools.ietf.org/html/rfc4918</cref>
         /// </see>
         /// </summary>
-        UnprocessableEntity = 422
+        UnprocessableEntity = 422,
     }
 }

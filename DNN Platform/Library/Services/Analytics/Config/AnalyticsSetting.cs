@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Analytics.Config
 {
+    using System;
+
     [Serializable]
     public class AnalyticsSetting
     {
@@ -20,11 +15,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _settingName;
+                return this._settingName;
             }
+
             set
             {
-                _settingName = value;
+                this._settingName = value;
             }
         }
 
@@ -32,11 +28,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return _settingValue;
+                return this._settingValue;
             }
+
             set
             {
-                _settingValue = value;
+                this._settingValue = value;
             }
         }
     }

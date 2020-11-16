@@ -86,7 +86,7 @@ class TestUrlPanelBody extends Component {
             isMultiLanguage: false,
             excludeAdminTabs: false,
             disabledNotSelectable: false,
-            roles: "0",
+            roles: props.adminRoleId ? props.adminRoleId.toString() : "0",
             sortOrder: 0
         };
 
@@ -257,7 +257,8 @@ TestUrlPanelBody.propTypes = {
     identifiedPage: PropTypes.string,
     redirectionReason: PropTypes.string,
     redirectionResult: PropTypes.string,
-    operationMessages: PropTypes.string
+    operationMessages: PropTypes.string,
+    adminRoleId: PropTypes.number
 };
 
 function mapStateToProps(state) {
@@ -269,7 +270,8 @@ function mapStateToProps(state) {
         identifiedPage: state.seo.identifiedPage,
         redirectionReason: state.seo.redirectionReason,
         redirectionResult: state.seo.redirectionResult,
-        operationMessages: state.seo.operationMessages
+        operationMessages: state.seo.operationMessages,
+        adminRoleId: state.seo.adminRoleId
     };
 }
 

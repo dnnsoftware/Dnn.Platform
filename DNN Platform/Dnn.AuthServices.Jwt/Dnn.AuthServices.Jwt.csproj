@@ -73,6 +73,7 @@
     <Compile Include="Components\Entity\LoginData.cs" />
     <Compile Include="Components\Entity\PersistedToken.cs" />
     <Compile Include="Components\Entity\RenewalDto.cs" />
+    <Compile Include="Components\Schedule\PurgeExpiredTokensTask.cs" />
     <Compile Include="Data\IDataService.cs" />
     <Compile Include="Data\DataService.cs" />
     <Compile Include="Components\Entity\LoginResultData.cs" />
@@ -81,6 +82,10 @@
     <Compile Include="Services\ServiceRouteMapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <Content Include="Data\Scripts\09.08.00.SqlDataProvider" />
     <None Include="Dnn.Jwt.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -94,6 +99,10 @@
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
@@ -107,7 +116,10 @@
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

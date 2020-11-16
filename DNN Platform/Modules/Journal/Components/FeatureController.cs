@@ -1,8 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-/*
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace DotNetNuke.Modules.Journal.Components
+{
+    /*
 ' Copyright (c) 2011 DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,108 +16,104 @@
 '
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
 
-namespace DotNetNuke.Modules.Journal.Components {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Entities;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Controller class for Journal
+    /// The Controller class for Journal.
     /// </summary>
     /// -----------------------------------------------------------------------------
-
-    //uncomment the interfaces to add the support.
+    // uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
-        protected INavigationManager NavigationManager { get; }
         public FeatureController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Optional Interfaces
+        protected INavigationManager NavigationManager { get; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ExportModule implements the IPortable ExportModule Interface
+        /// ExportModule implements the IPortable ExportModule Interface.
         /// </summary>
-        /// <param name="moduleID">The Id of the module to be exported</param>
+        /// <param name="moduleID">The Id of the module to be exported.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public string ExportModule(int moduleID) {
-            //string strXML = "";
+        public string ExportModule(int moduleID)
+        {
+            // string strXML = "";
 
-            //List<JournalInfo> colJournals = GetJournals(ModuleID);
-            //if (colJournals.Count != 0)
-            //{
+            // List<JournalInfo> colJournals = GetJournals(ModuleID);
+            // if (colJournals.Count != 0)
+            // {
             //    strXML += "<Journals>";
 
-            //    foreach (JournalInfo objJournal in colJournals)
+            // foreach (JournalInfo objJournal in colJournals)
             //    {
             //        strXML += "<Journal>";
             //        strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objJournal.Content) + "</content>";
             //        strXML += "</Journal>";
             //    }
             //    strXML += "</Journals>";
-            //}
+            // }
 
-            //return strXML;
-
+            // return strXML;
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ImportModule implements the IPortable ImportModule Interface
+        /// ImportModule implements the IPortable ImportModule Interface.
         /// </summary>
-        /// <param name="moduleID">The Id of the module to be imported</param>
-        /// <param name="content">The content to be imported</param>
-        /// <param name="version">The version of the module to be imported</param>
-        /// <param name="userId">The Id of the user performing the import</param>
+        /// <param name="moduleID">The Id of the module to be imported.</param>
+        /// <param name="content">The content to be imported.</param>
+        /// <param name="version">The version of the module to be imported.</param>
+        /// <param name="userId">The Id of the user performing the import.</param>
         /// -----------------------------------------------------------------------------
-        public void ImportModule(int moduleID, string content, string version, int userId) {
-            //XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
-            //foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
-            //{
+        public void ImportModule(int moduleID, string content, string version, int userId)
+        {
+            // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
+            // foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
+            // {
             //    JournalInfo objJournal = new JournalInfo();
             //    objJournal.ModuleId = ModuleID;
             //    objJournal.Content = xmlJournal.SelectSingleNode("content").InnerText;
             //    objJournal.CreatedByUser = UserID;
             //    AddJournal(objJournal);
-            //}
-
+            // }
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpgradeModule implements the IUpgradeable Interface
+        /// UpgradeModule implements the IUpgradeable Interface.
         /// </summary>
-        /// <param name="version">The current version of the module</param>
+        /// <param name="version">The current version of the module.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public string UpgradeModule(string version) {
+        public string UpgradeModule(string version)
+        {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-
-        #endregion
-
-        #region Implement ModuleSearchBase
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
@@ -134,7 +132,8 @@ namespace DotNetNuke.Modules.Journal.Components {
                         while (reader.Read())
                         {
                             var journalId = Convert.ToInt32(reader["JournalId"]);
-                            //var journalTypeId = reader["JournalTypeId"].ToString();
+
+                            // var journalTypeId = reader["JournalTypeId"].ToString();
                             var userId = Convert.ToInt32(reader["UserId"]);
                             var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
                             var profileId = reader["ProfileId"].ToString();
@@ -163,11 +162,11 @@ namespace DotNetNuke.Modules.Journal.Components {
                                     AuthorUserId = userId,
                                     Keywords = new Dictionary<string, string>
                                     {
-                                        {"TabId", tabId},
-                                        {"TabModuleId", tabModuleId},
-                                        {"ProfileId", profileId},
-                                        {"GroupId", groupId}
-                                    }
+                                        { "TabId", tabId },
+                                        { "TabModuleId", tabModuleId },
+                                        { "ProfileId", profileId },
+                                        { "GroupId", groupId }
+                                    },
                                 };
 
                                 searchDocuments.Add(key, searchDocument);
@@ -189,8 +188,8 @@ namespace DotNetNuke.Modules.Journal.Components {
                             break;
                         }
 
-                        //index comments for this journal
-                        AddCommentItems(journalIds, searchDocuments);
+                        // index comments for this journal
+                        this.AddCommentItems(journalIds, searchDocuments);
                     }
                 }
             }
@@ -201,10 +200,6 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             return searchDocuments.Values.ToList();
         }
-
-        #endregion
-
-        #region Implement IModuleSearchController
 
         public bool HasViewPermission(SearchResult searchResult)
         {
@@ -236,7 +231,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                 return true;
             }
 
-            //do not show items in private group
+            // do not show items in private group
             if (securityKeys.Any(s => s.StartsWith("R")))
             {
                 var groupId = Convert.ToInt32(securityKeys.First(s => s.StartsWith("R")).Substring(1));
@@ -274,28 +269,25 @@ namespace DotNetNuke.Modules.Journal.Components {
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
-            //var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
+
+            // var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
             if (groupId > 0 && tabId > 0)
             {
-                url = NavigationManager.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
+                url = this.NavigationManager.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
             }
             else if (tabId == portalSettings.UserTabId)
             {
-                url = NavigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
+                url = this.NavigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
             }
             else
             {
-                url = NavigationManager.NavigateURL(tabId, string.Empty, "jid=" + journalId);
+                url = this.NavigationManager.NavigateURL(tabId, string.Empty, "jid=" + journalId);
             }
 
             return url;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void AddCommentItems(Dictionary<int, int> journalIds, IDictionary<string, SearchDocument> searchDocuments)
         {
@@ -313,8 +305,5 @@ namespace DotNetNuke.Modules.Journal.Components {
                 }
             }
         }
-
-        #endregion
     }
-
 }

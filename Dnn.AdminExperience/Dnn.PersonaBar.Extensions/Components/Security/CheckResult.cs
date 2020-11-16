@@ -1,41 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Components
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Services.Localization;
+
     public class CheckResult
     {
         public CheckResult(SeverityEnum severity, string checkname)
         {
-            Severity = severity;
-            CheckName = checkname;
-            Notes = new List<string>();
+            this.Severity = severity;
+            this.CheckName = checkname;
+            this.Notes = new List<string>();
         }
-
-        public SeverityEnum Severity { get; set; }
-        public string CheckName { get; set; }
 
         public string Reason
         {
             get
             {
-                return Localization.GetString(CheckName + "Reason", LocalResourceFile);
+                return Localization.GetString(this.CheckName + "Reason", this.LocalResourceFile);
             }
         }
 
         public string FailureText
         {
-            get { return Localization.GetString(CheckName + "Failure", LocalResourceFile); }
+            get { return Localization.GetString(this.CheckName + "Failure", this.LocalResourceFile); }
         }
 
         public string SuccessText
         {
-            get { return Localization.GetString(CheckName + "Success", LocalResourceFile); }
+            get { return Localization.GetString(this.CheckName + "Success", this.LocalResourceFile); }
         }
 
         public string CheckNameText
@@ -43,9 +41,12 @@ namespace Dnn.PersonaBar.Security.Components
             get
             {
 
-                return CheckName + " : " + Localization.GetString(CheckName + "Name", LocalResourceFile);
+                return this.CheckName + " : " + Localization.GetString(this.CheckName + "Name", this.LocalResourceFile);
             }
         }
+
+        public SeverityEnum Severity { get; set; }
+        public string CheckName { get; set; }
 
         public IList<String> Notes { get; set; }
 

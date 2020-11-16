@@ -1,20 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Web.UI;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Tokens
 {
+    using System.Web.UI;
+
     public class HtmlTokenReplace : TokenReplace
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlTokenReplace"/> class.
+        /// </summary>
+        /// <param name="page"></param>
         public HtmlTokenReplace(Page page)
             : base(Scope.DefaultSettings)
         {
-            PropertySource["css"] = new CssPropertyAccess(page);
-            PropertySource["js"] = new JavaScriptPropertyAccess(page);
-            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
-            PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
+            this.PropertySource["css"] = new CssPropertyAccess(page);
+            this.PropertySource["js"] = new JavaScriptPropertyAccess(page);
+            this.PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
+            this.PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
         }
     }
 }

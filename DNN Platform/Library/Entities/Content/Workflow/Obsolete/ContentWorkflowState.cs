@@ -1,43 +1,45 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+
 // ReSharper enable CheckNamespace
 {
+    using System;
+
     /// <summary>
-    /// This entity represents a Workflow State
+    /// This entity represents a Workflow State.
     /// </summary>
-    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]    
-    public class ContentWorkflowState 
+    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+    public class ContentWorkflowState
     {
         /// <summary>
-        /// State Id
+        /// Gets or sets state Id.
         /// </summary>
         public int StateID { get; set; }
 
         /// <summary>
-        /// Workflow associated to the state
+        /// Gets or sets workflow associated to the state.
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// State name
+        /// Gets or sets state name.
         /// </summary>
         public string StateName { get; set; }
 
         /// <summary>
-        /// State Order
+        /// Gets or sets state Order.
         /// </summary>
         public int Order { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool SendEmail { get; set; }
 
-        public bool SendMessage { get; set; } 
+        public bool SendMessage { get; set; }
 
         public bool IsDisposalState { get; set; }
 

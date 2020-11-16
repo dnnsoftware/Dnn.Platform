@@ -1,14 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Microsoft.Extensions.DependencyInjection;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.DependencyInjection
 {
+    using System;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// An interface for adding extension points to the DNN Startup Logic.
     /// </summary>
+    [CLSCompliant(false)]
     public interface IDnnStartup
     {
         /// <summary>
@@ -19,6 +21,7 @@ namespace DotNetNuke.DependencyInjection
         /// <param name="services">
         /// Service Collection used to registering services in the container.
         /// </param>
+        [CLSCompliant(false)]
         void ConfigureServices(IServiceCollection services);
     }
 }

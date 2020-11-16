@@ -10,7 +10,8 @@ const siteInfoActions = {
                         generalSettings: data.Settings,
                         replacementCharacterList: data.ReplacementCharacterList,
                         deletedPageHandlingTypes: data.DeletedPageHandlingTypes,
-                        clientModified: false
+                        clientModified: false,
+                        adminRoleId: data.AdminRoleId
                     }
                 });
                 if (callback) {
