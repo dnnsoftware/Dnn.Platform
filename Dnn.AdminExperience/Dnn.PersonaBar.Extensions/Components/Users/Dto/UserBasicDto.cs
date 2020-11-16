@@ -33,10 +33,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.RequestsRemoval = user.RequestsRemoval;
             this.IsSuperUser = user.IsSuperUser;
             this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
+            this.AvatarUrl = Utilities.GetProfileAvatar(this.UserId);
         }
 
         [DataMember(Name = "avatar")]
-        public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
+        public string AvatarUrl { get; set; }
 
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
