@@ -138,7 +138,14 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                     else if (attribute is PortalSettingAttribute && portalId != -1)
                     {
-                        PortalController.UpdatePortalSetting(portalId, mapping.FullParameterName, settingValueAsString);
+                        var psa = (PortalSettingAttribute)attribute;
+                        PortalController.UpdatePortalSetting(
+                            portalId,
+                            mapping.FullParameterName,
+                            settingValueAsString,
+                            true,
+                            psa.LocaleSensitive ? System.Threading.Thread.CurrentThread.CurrentCulture.Name : string.Empty,
+                            psa.IsSecure);
                     }
                     else if (attribute is HostSettingAttribute)
                     {
@@ -169,7 +176,14 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
                 else if (attribute is PortalSettingAttribute && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = PortalController.Instance.GetPortalSettings(portalId)[mapping.FullParameterName];
+                    var psa = (PortalSettingAttribute)attribute;
+                    settingValue = PortalController.Instance.GetPortalSettings(
+                        portalId,
+                        psa.LocaleSensitive ? System.Threading.Thread.CurrentThread.CurrentCulture.Name : string.Empty)[mapping.FullParameterName];
+                    if (psa.IsSecure)
+                    {
+                        settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+                    }
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule != null && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
