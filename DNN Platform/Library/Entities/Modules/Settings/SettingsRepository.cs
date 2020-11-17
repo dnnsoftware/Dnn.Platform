@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                             mapping.FullParameterName,
                             settingValueAsString,
                             true,
-                            psa.LocaleSensitive ? System.Threading.Thread.CurrentThread.CurrentCulture.Name : string.Empty,
+                            string.Empty,
                             psa.IsSecure);
                     }
                     else if (attribute is HostSettingAttribute)
@@ -177,9 +177,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 else if (attribute is PortalSettingAttribute && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
                 {
                     var psa = (PortalSettingAttribute)attribute;
-                    settingValue = PortalController.Instance.GetPortalSettings(
-                        portalId,
-                        psa.LocaleSensitive ? System.Threading.Thread.CurrentThread.CurrentCulture.Name : string.Empty)[mapping.FullParameterName];
+                    settingValue = PortalController.Instance.GetPortalSettings(portalId, string.Empty)[mapping.FullParameterName];
                     if (psa.IsSecure)
                     {
                         settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
