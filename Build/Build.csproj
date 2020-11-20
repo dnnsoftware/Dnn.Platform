@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <!-- Make sure start same folder .NET Core CLI and Visual Studio -->
+    <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Cake.FileHelpers" Version="3.3.0" />
+    <PackageReference Include="Cake.Frosting" Version="1.0.0-rc0001" />
+    <PackageReference Include="Cake.Powershell" Version="0.4.8" />
+    <PackageReference Include="Cake.XdtTransform" Version="0.18.1" />
+    <PackageReference Include="Dnn.CakeUtils" Version="1.1.10" />
+    <PackageReference Include="GitVersion.CommandLine" Version="5.5.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TestPlatform" Version="16.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NUnitTestAdapter" Version="2.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+</Project>

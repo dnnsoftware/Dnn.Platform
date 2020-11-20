@@ -134,3 +134,6 @@ DNN [Pp]latform/Modules/ResourceManager/**/scripts/*-bundle.*
 !DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
 
 yarn-error.log
+
+/Build/bin/
+/.dotnet/
