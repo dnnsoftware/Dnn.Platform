@@ -3,12 +3,12 @@
 
 using System;
 using System.IO;
+using Cake.Common;
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
 using Cake.Common.Tools.GitVersion;
 using Cake.FileHelpers;
 using Cake.Frosting;
-using Cake.Powershell;
 using Cake.XdtTransform;
 using Dnn.CakeUtils;
 using Newtonsoft.Json;
@@ -18,7 +18,7 @@ public sealed class BuildServerSetVersion : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
-        context.StartPowershellScript($"Write-Host ##vso[build.updatebuildnumber]{context.version.FullSemVer}.{context.buildId}");
+        context.StartAndReturnProcess($"pwsh -Command \"Write-Host ##vso[build.updatebuildnumber]{context.version.FullSemVer}.{context.buildId}\"");
     }
 }
 

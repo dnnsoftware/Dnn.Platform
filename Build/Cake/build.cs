@@ -5,9 +5,9 @@ using Cake.Common.IO;
 using Cake.Common.IO.Paths;
 using Cake.Common.Tools.GitVersion;
 using Cake.Core;
+using Cake.Core.IO;
 using Cake.FileHelpers;
 using Cake.Frosting;
-using Cake.Powershell;
 using Dnn.CakeUtils;
 using Newtonsoft.Json;
 
@@ -15,45 +15,59 @@ public class Context : FrostingContext
 {
     public Context(ICakeContext context)
         : base(context)
-    {
+    { 
+        try
+        {
+            //////////////////////////////////////////////////////////////////////
+            // ARGUMENTS
+            //////////////////////////////////////////////////////////////////////
 
-        //////////////////////////////////////////////////////////////////////
-        // ARGUMENTS
-        //////////////////////////////////////////////////////////////////////
+            this.target = context.Argument("target", "Default");
+            context.Information($"Target: {target}");
+            this.configuration = context.Argument("configuration", "Release");
+            context.Information($"Configuration: {configuration}");
 
-        this.target = this.Argument("target", "Default");
-        this.configuration = this.Argument("configuration", "Release");
+            //////////////////////////////////////////////////////////////////////
+            // PREPARATION
+            //////////////////////////////////////////////////////////////////////
 
+            // Define directories.
+            this.tempFolder = "./Temp/";
+            this.tempDir = context.Directory(tempFolder);
+            context.Information($"TempDir: {tempDir}");
 
-        //////////////////////////////////////////////////////////////////////
-        // PREPARATION
-        //////////////////////////////////////////////////////////////////////
+            this.artifactsFolder = "./Artifacts/";
+            this.artifactsDir = context.Directory(this.artifactsFolder);
+            context.Information($"ArtifactsDir: {artifactsDir}");
+            
+            this.websiteFolder = "./Website/";
+            this.websiteDir = context.Directory(this.websiteFolder);
+            context.Information($"WebsiteDir: {websiteDir}");
 
-        // Define directories.
-        this.tempFolder = "./Temp/";
-        this.tempDir = this.Directory(tempFolder);
-        this.artifactsFolder = "./Artifacts/";
-        this.artifactsDir = this.Directory(this.artifactsFolder);
-        this.websiteFolder = "./Website/";
-        this.websiteDir = this.Directory(this.websiteFolder);
+            // Global information variables
+            this.isRunningInCI = false;
 
-        // Global information variables
-        this.isRunningInCI = false;
+            this.dnnSolutionPath = "./DNN_Platform.sln";
+            this.connectionString = @"server=(localdb)\MSSQLLocalDB";
+            
+            this.sqlDataProviderExists = false;
 
-        this.dnnSolutionPath = "./DNN_Platform.sln";
-        this.connectionString = @"server=(localdb)\MSSQLLocalDB";
-        
-        this.sqlDataProviderExists = false;
+            var settingsFile = "settings.local.json";
+            this.Settings = this.LoadSettings(settingsFile);
+            WriteSettings(settingsFile);
 
-        var settingsFile = "settings.local.json";
-        this.Settings = this.LoadSettings(settingsFile);
-        WriteSettings(settingsFile);
+            this.buildId = context.EnvironmentVariable("BUILD_BUILDID") ?? "0";
+            context.Information($"BuildId: {buildId}");
+            this.buildNumber = "";
+            this.productVersion = "";
 
-        this.buildId = this.EnvironmentVariable("BUILD_BUILDID") ?? "0";
-        this.buildNumber = "";
-        this.productVersion = "";
-        
-        this.unversionedManifests = this.FileReadLines("./Build/Cake/unversionedManifests.txt");
+            this.unversionedManifests = context.FileReadLines("./Cake/unversionedManifests.txt");
+        }
+        catch (Exception exc)
+        {
+            this.Error(exc);
+            throw;
+        }
     }
 
     public string[] unversionedManifests { get; set; }
@@ -147,8 +161,8 @@ public sealed class Lifetime : FrostingLifetime<Context>
         if (context.Settings.Version == "auto" && !context.isRunningInCI)
         {
             // Temporarily commit all changes to prevent checking in scripted changes like versioning.
-            context.StartPowershellScript("git add .");
-            context.StartPowershellScript("git commit --allow-empty -m 'backup'");
+            Git(context, "add .");
+            Git(context, "commit --allow-empty -m 'backup'");
         }
     }
 
@@ -157,10 +171,18 @@ public sealed class Lifetime : FrostingLifetime<Context>
         if (context.Settings.Version == "auto" && !context.isRunningInCI)
         {
             // Undoes the script changes to all tracked files.
-            context.StartPowershellScript("git reset --hard");
+            Git(context, "reset --hard");
+            
             // Undoes the setup commit keeping file states as before this build script ran.
-            context.StartPowershellScript("git reset HEAD^");
+            Git(context, "reset HEAD^");
         }
+    }
+
+    private static void Git(ICakeContext context, string arguments)
+    {
+        context.Information($"git ${arguments}");
+        using var process = context.StartAndReturnProcess("git", new ProcessSettings {Arguments = arguments});
+        process.WaitForExit();
     }
 }
 

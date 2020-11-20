@@ -3,7 +3,6 @@
 using Cake.Frosting;
 
 [Dependency(typeof(CleanArtifacts))]
-[Dependency(typeof(CleanArtifacts))]
 [Dependency(typeof(UpdateDnnManifests))]
 [Dependency(typeof(GenerateChecksum))]
 [Dependency(typeof(SetPackageVersions))]
