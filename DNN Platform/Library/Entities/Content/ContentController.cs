@@ -272,10 +272,11 @@ namespace DotNetNuke.Entities.Content
             DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
             if (readdItem)
             {
-                CBO.GetCachedObject<ContentItem>(
+                CBO.Instance.GetCachedObject<ContentItem>(
                     new CacheItemArgs(
                     GetContentItemCacheKey(contentItem.ContentItemId),
-                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem,
+                    false);
             }
         }
 

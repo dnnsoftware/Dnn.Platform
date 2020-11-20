@@ -170,15 +170,14 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_AddContentItem_Sets_Override_CreatedByUserId_And_LastModifiedUserId()
         {
-            // TODO - This unit test is failing because the UserController can't be mocked. We should
-            // be able to mock out the Cache object that will allow us to specify the UserID. The only
-            // challenge with that, is it will make this unit test very brittle
-
             // Arrange
             int expectedUserId = 5;
             Mock<IUserController> mockUserController = new Mock<IUserController>();
             mockUserController.Setup(user => user.GetCurrentUserInfo()).Returns(new UserInfo { UserID = expectedUserId });
             UserController.SetTestableInstance(mockUserController.Object);
+
+            Mock<ICBO> mockCBO = new Mock<ICBO>();
+            CBO.SetTestableInstance(mockCBO.Object);
 
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>())).Returns(Constants.CONTENT_AddContentItemId);
@@ -200,6 +199,7 @@ namespace DotNetNuke.Tests.Content
 
             // Cleanup
             UserController.ClearInstance();
+            CBO.ClearInstance();
         }
 
         [Test]
