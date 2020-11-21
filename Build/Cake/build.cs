@@ -48,7 +48,6 @@ public class Context : FrostingContext
             this.isRunningInCI = false;
 
             this.dnnSolutionPath = "./DNN_Platform.sln";
-            this.connectionString = @"server=(localdb)\MSSQLLocalDB";
             
             this.sqlDataProviderExists = false;
 
@@ -60,8 +59,6 @@ public class Context : FrostingContext
             context.Information($"BuildId: {buildId}");
             this.buildNumber = "";
             this.productVersion = "";
-
-            this.unversionedManifests = context.FileReadLines("./Cake/unversionedManifests.txt");
         }
         catch (Exception exc)
         {
@@ -70,8 +67,6 @@ public class Context : FrostingContext
         }
     }
 
-    public string[] unversionedManifests { get; set; }
-
     public string productVersion { get; set; }
 
     public string buildNumber { get; set; }
@@ -79,8 +74,6 @@ public class Context : FrostingContext
     public string buildId { get; set; }
 
     public bool sqlDataProviderExists { get; set; }
-
-    public string connectionString { get; set; }
 
     public string dnnSolutionPath { get; set; }
 

@@ -76,7 +76,8 @@ public sealed class UpdateDnnManifests : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
-        foreach (var file in context.GetFilesByPatterns(".", new string[] {"**/*.dnn"}, context.unversionedManifests))
+        var unversionedManifests = context.FileReadLines("./Build/Cake/unversionedManifests.txt");
+        foreach (var file in context.GetFilesByPatterns(".", new[] {"**/*.dnn"}, unversionedManifests))
         {
             if (context.Settings.Version == "off") return;
             context.Information("Transforming: " + file);

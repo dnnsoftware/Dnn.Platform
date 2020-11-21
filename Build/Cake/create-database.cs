@@ -17,6 +17,8 @@ public sealed class BuildWithDatabase : FrostingTask<Context>
 
 public sealed class CreateDatabase : FrostingTask<Context>
 {
+    private string connectionString = @"server=(localdb)\MSSQLLocalDB";
+
     public override void Run(Context context)
     {
         var deleteScript = "if db_id('Dnn_Platform') is not null DROP DATABASE Dnn_Platform;";
@@ -41,7 +43,7 @@ public sealed class CreateDatabase : FrostingTask<Context>
 
         if (createDbStatus)
         {
-            context.connectionString = @"server=(localdb)\MSSQLLocalDB;Database=Dnn_Platform;Trusted_Connection=True;";
+            connectionString = @"server=(localdb)\MSSQLLocalDB;Database=Dnn_Platform;Trusted_Connection=True;";
 
             var schemaScriptName = context.XmlPeek("./Website/Install/DotNetNuke.install.config.resources", "/dotnetnuke/scripts/script[@name='Schema']");
             var dataScriptName = context.XmlPeek("./Website/Install/DotNetNuke.install.config.resources", "/dotnetnuke/scripts/script[@name='Data']");
@@ -126,7 +128,7 @@ public sealed class CreateDatabase : FrostingTask<Context>
     {
         try
         {
-            using (var connection = new System.Data.SqlClient.SqlConnection(context.connectionString))
+            using (var connection = new System.Data.SqlClient.SqlConnection(connectionString))
             {
                 connection.Open();
 
