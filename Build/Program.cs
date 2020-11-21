@@ -33,5 +33,6 @@ public class Program : IFrostingStartup
         services.UseTool(new Uri("nuget:?package=GitVersion.CommandLine&version=5.0.1"));
         services.UseTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=16.8.0"));
         services.UseTool(new Uri("nuget:?package=NUnitTestAdapter&version=2.3.0"));
+        services.UseTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.0"));
     }
 }
