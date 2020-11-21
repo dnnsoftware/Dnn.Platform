@@ -3,15 +3,23 @@
 
 using System;
 using System.IO;
-using Cake.Common;
+using System.Linq;
+using System.Security.Cryptography;
+
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
 using Cake.Common.Tools.GitVersion;
+using Cake.Core;
+using Cake.Core.IO;
 using Cake.FileHelpers;
 using Cake.Frosting;
 using Cake.XdtTransform;
+
 using Dnn.CakeUtils;
+
 using Newtonsoft.Json;
+
+using Path = System.IO.Path;
 
 [Dependency(typeof(SetVersion))]
 public sealed class BuildServerSetVersion : FrostingTask<Context>
@@ -37,7 +45,7 @@ public sealed class SetVersion : FrostingTask<Context>
             var assemblyInfo = new AssemblyInfo("SolutionInfo.cs");
             var requestedVersion = context.Settings.Version == "off"
                 ? assemblyInfo.GetVersion()
-                : new System.Version(context.Settings.Version);
+                : new Version(context.Settings.Version);
             context.version.Major = requestedVersion.Major;
             context.version.Minor = requestedVersion.Minor;
             context.version.Patch = requestedVersion.Build;
@@ -56,8 +64,8 @@ public sealed class SetVersion : FrostingTask<Context>
         context.Information(JsonConvert.SerializeObject(context.version));
         if (context.Settings.Version != "off")
         {
-            Dnn.CakeUtils.Utilities.UpdateAssemblyInfoVersion(
-                new System.Version(context.version.Major, context.version.Minor, context.version.Patch,
+            Utilities.UpdateAssemblyInfoVersion(
+                new Version(context.version.Major, context.version.Minor, context.version.Patch,
                     context.version.CommitsSinceVersionSource ?? 0),
                 context.version.InformationalVersion, "SolutionInfo.cs");
         }
@@ -118,7 +126,7 @@ public sealed class SetPackageVersions : FrostingTask<Context>
         // Set all package.json in Admin Experience to the current version and to consume the current (local) version of dnn-react-common.
         foreach (var file in packages)
         {
-            context.Information($"Updating {file.ToString()} to version {context.version.FullSemVer}");
+            context.Information($"Updating {file} to version {context.version.FullSemVer}");
             context.ReplaceRegexInFiles(file.ToString(), @"""version"": "".*""", $@"""version"": ""{context.version.FullSemVer}""");
             context.ReplaceRegexInFiles(file.ToString(), @"""@dnnsoftware\/dnn-react-common"": "".*""",
                 $@"""@dnnsoftware/dnn-react-common"": ""{context.version.FullSemVer}""");
@@ -138,14 +146,14 @@ public sealed class GenerateChecksum : FrostingTask<Context>
         var content = $@"<checksums>
   <sum name=""Default.aspx"" version=""{context.version.MajorMinorPatch}"" type=""Platform"" sum=""{hash}"" />
 </checksums>";
-        System.IO.File.WriteAllText(destFile, content);
+        File.WriteAllText(destFile, content);
     }
 
     private static string CalculateSha(string filename)
     {
-        using (var sha = System.Security.Cryptography.SHA256.Create())
+        using (var sha = SHA256.Create())
         {
-            using (var stream = System.IO.File.OpenRead(filename))
+            using (var stream = File.OpenRead(filename))
             {
                 var hash = sha.ComputeHash(stream);
                 return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
