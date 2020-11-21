@@ -29,7 +29,7 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=BuildServerSetVersion --verbosity=diagnostic'
+    arguments: '--target=BuildServerSetVersion'
 
 - script: 'sqllocaldb start mssqllocaldb'
   displayName: 'Start Sql LocalDb Service'
@@ -58,14 +58,14 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=$(CakeTarget) --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
+    arguments: '--target=$(CakeTarget) --verbosity=diagnostic --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
 
 - task: PowerShell@2
   displayName: 'Run Unit Tests via Cake'
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=UnitTests'
+    arguments: '--target=UnitTests --verbosity=diagnostic'
   continueOnError: true
   condition: and(succeeded(), eq(variables['RunTests'], 'True'))
 
