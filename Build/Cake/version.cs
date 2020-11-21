@@ -18,7 +18,7 @@ public sealed class BuildServerSetVersion : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
-        context.StartAndReturnProcess($"pwsh -Command \"Write-Host ##vso[build.updatebuildnumber]{context.version.FullSemVer}.{context.buildId}\"");
+        Console.WriteLine($"##vso[build.updatebuildnumber]{context.version.FullSemVer}.{context.buildId}");
     }
 }
 
