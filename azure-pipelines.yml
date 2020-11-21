@@ -29,7 +29,7 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=BuildServerSetVersion'
+    arguments: '--target=BuildServerSetVersion --verbosity=diagnostic'
 
 - script: 'sqllocaldb start mssqllocaldb'
   displayName: 'Start Sql LocalDb Service'
