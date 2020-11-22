@@ -51,7 +51,7 @@ public class Context : FrostingContext
             
             this.sqlDataProviderExists = false;
 
-            var settingsFile = "settings.local.json";
+            var settingsFile = "../settings.local.json";
             this.Settings = this.LoadSettings(settingsFile);
             WriteSettings(settingsFile);
 
@@ -95,20 +95,12 @@ public class Context : FrostingContext
 
     public string target { get; set; }
 
-    private void WriteSettings(string settingsFile)
-    {
-        using (var sw = new System.IO.StreamWriter(settingsFile))
-        {
-            sw.WriteLine(JsonConvert.SerializeObject(Settings, Formatting.Indented));
-        }
-    }
-
     public PackagingPatterns packagingPatterns { get; set; }
 
     public LocalSettings Settings { get; set; }
+
     public GitVersion version { get; set; }
 
-    
     public string GetBuildNumber()
     {
         return buildNumber;
@@ -130,6 +122,14 @@ public class Context : FrostingContext
     public string GetProductVersion()
     {
         return productVersion;
+    }
+
+    private void WriteSettings(string settingsFile)
+    {
+        using (var sw = new System.IO.StreamWriter(settingsFile))
+        {
+            sw.WriteLine(JsonConvert.SerializeObject(Settings, Formatting.Indented));
+        }
     }
 
     private LocalSettings LoadSettings(string settingsFile) {
