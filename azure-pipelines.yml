@@ -11,6 +11,16 @@ variables:
   # ReleaseMode: Beta
   # RunTests: True
 
+trigger:
+  batch: true
+  branches:
+    include: '*'
+
+pr:
+  autoCancel: true
+  branches:
+    include: '*'
+
 steps:
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
