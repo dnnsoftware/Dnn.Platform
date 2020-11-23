@@ -6,7 +6,7 @@ namespace Dnn.EditBar.UI.Items
 {
     using System;
     using System.Linq;
-
+    using System.Net;
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Entities.Portals;
@@ -50,21 +50,21 @@ namespace Dnn.EditBar.UI.Items
 
                 var moduleList = ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "Common", string.Empty).Select(m =>
                 {
-                    var selected = m.Value.FriendlyName == "HTML" ? " selected" : string.Empty;
-                    return $"<option value=\"{m.Value.DesktopModuleID}\"{selected}>{m.Value.FriendlyName}</option>";
+                    var selected = string.Equals(m.Value.DesktopModule.ModuleName, "DNN_HTML", StringComparison.InvariantCultureIgnoreCase) ? " selected" : string.Empty;
+                    return $"<option value=\"{m.Value.DesktopModuleID}\"{selected}>{WebUtility.HtmlEncode(m.Value.FriendlyName)}</option>";
                 });
                 var panes = string.Empty;
                 foreach (string paneName in portalSettings.ActiveTab.Panes)
                 {
-                    var selected = paneName == "ContentPane" ? " selected" : string.Empty;
-                    panes += $"<option value=\"{paneName}\"{selected}>{paneName}</options>";
+                    var selected = string.Equals(paneName, "ContentPane", StringComparison.InvariantCultureIgnoreCase) ? " selected" : string.Empty;
+                    panes += $"<option value=\"{WebUtility.HtmlEncode(paneName)}\"{selected}>{WebUtility.HtmlEncode(paneName)}</options>";
                 }
 
-                var toolTip = DotNetNuke.Services.Localization.Localization.GetString("QuickAddModule.Tooltip", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+                var toolTip = DotNetNuke.Services.Localization.Localization.GetString("QuickAddModule.Tooltip", LocalResourceFile);
                 var moduleSelect = $"<select id=\"menu-QuickAddModule-module\">{string.Join(string.Empty, moduleList)}</select>";
                 var paneSelect = $"<select id=\"menu-QuickAddModule-pane\">{panes}</select>";
                 var addButton = $"<select id=\"menu-QuickAddModule-btn\"><option value=\"TOP\" class=\"menu-QuickAddModule-opt\">TOP</option><option value=\"BOTTOM\" class=\"menu-QuickAddModule-opt\">BOTTOM</option><option value=\"ADD\" class=\"menu-QuickAddModule-opt\" selected style=\"display:none\"></option></select>";
-                return $"<div>{moduleSelect}{paneSelect}{addButton}</div><div class=\"submenuEditBar\">{toolTip}</div>";
+                return $"<div>{moduleSelect}{paneSelect}{addButton}</div><div class=\"submenuEditBar\">{WebUtility.HtmlEncode(toolTip)}</div>";
             }
         }
 
