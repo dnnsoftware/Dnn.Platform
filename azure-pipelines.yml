@@ -30,9 +30,7 @@ steps:
   displayName: 'Use .NET Core sdk'
   inputs:
     packageType: sdk
-    version: 5.x
-    includePreviewVersions: true
-    installationPath: $(Agent.ToolsDirectory)/dotnet
+    version: 3.1
 
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
