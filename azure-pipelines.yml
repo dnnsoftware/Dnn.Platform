@@ -31,6 +31,7 @@ steps:
   inputs:
     packageType: sdk
     version: 5.x
+    includePreviewVersions: true
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: PowerShell@2
