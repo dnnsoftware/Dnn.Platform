@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddModuleNow.Text" xml:space="preserve">
+  <data name="QuickAddModule.Text" xml:space="preserve">
     <value>Quick Add Module</value>
   </data>
-  <data name="AddModuleNow.Tooltip" xml:space="preserve">
+  <data name="QuickAddModule.Tooltip" xml:space="preserve">
     <value>Add Module Immediately To Specified Pane</value>
   </data>
 </root>

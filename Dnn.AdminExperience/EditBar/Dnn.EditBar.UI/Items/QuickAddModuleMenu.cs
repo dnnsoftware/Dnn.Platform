@@ -14,17 +14,17 @@ namespace Dnn.EditBar.UI.Items
     using DotNetNuke.Web.Components.Controllers;
 
     [Serializable]
-    public class AddModuleNowMenu : BaseMenuItem
+    public class QuickAddModuleMenu : BaseMenuItem
     {
-        private const string LocalResourceFile = "~/DesktopModules/Admin/Dnn.EditBar/App_LocalResources/AddModuleNow.resx";
+        private const string LocalResourceFile = "~/DesktopModules/Admin/Dnn.EditBar/App_LocalResources/QuickAddModule.resx";
 
-        public override string Name { get; } = "AddModuleNow";
+        public override string Name { get; } = "QuickAddModule";
 
         public override string Text
         {
             get
             {
-                return DotNetNuke.Services.Localization.Localization.GetString("AddModuleNow", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+                return DotNetNuke.Services.Localization.Localization.GetString("QuickAddModule", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             }
         }
 
@@ -60,14 +60,14 @@ namespace Dnn.EditBar.UI.Items
                     panes += $"<option value=\"{paneName}\"{selected}>{paneName}</options>";
                 }
 
-                var toolTip = DotNetNuke.Services.Localization.Localization.GetString("AddModuleNow.Tooltip", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
-                return $"<div><select id=\"menu-AddModuleNow-module\">{string.Join(string.Empty, moduleList)}</select><select id=\"menu-AddModuleNow-pane\">{panes}</select><button href=\"javascript: void(0);\">{this.Text}</button></div><div class=\"submenuEditBar\">{toolTip}</div>";
+                var toolTip = DotNetNuke.Services.Localization.Localization.GetString("QuickAddModule.Tooltip", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
+                return $"<div><select id=\"menu-QuickAddModule-module\">{string.Join(string.Empty, moduleList)}</select><select id=\"menu-QuickAddModule-pane\">{panes}</select><button href=\"javascript: void(0);\">{this.Text}</button></div><div class=\"submenuEditBar\">{toolTip}</div>";
             }
         }
 
         public override string Parent { get; } = Constants.LeftMenu;
 
-        public override string Loader { get; } = "AddModuleNow";
+        public override string Loader { get; } = "QuickAddModule";
 
         public override int Order { get; } = 4;
 

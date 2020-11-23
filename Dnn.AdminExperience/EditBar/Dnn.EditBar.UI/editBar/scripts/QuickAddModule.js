@@ -10,7 +10,7 @@
       callback();
     }
 
-    $('#menu-AddModuleNow button').click(function () {
+    $('#menu-QuickAddModule button').click(function () {
       util.sf.moduleRoot = "internalservices";
       util.sf.controller = "controlBar";
       util.sf.post(
@@ -18,8 +18,8 @@
         {
           Visibility: 0,
           Position: "BOTTOM",
-          Module: $("#menu-AddModuleNow-module").val(),
-          Pane: $("#menu-AddModuleNow-pane").val(),
+          Module: $("#menu-QuickAddModule-module").val(),
+          Pane: $("#menu-QuickAddModule-pane").val(),
           AddExistingModule: false,
           CopyModule: false,
         },
