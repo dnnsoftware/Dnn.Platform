@@ -48,7 +48,7 @@ namespace Dnn.EditBar.UI.Items
                     return string.Empty;
                 }
 
-                var moduleList = ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "All", string.Empty).Select(m =>
+                var moduleList = ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "Common", string.Empty).Select(m =>
                 {
                     var selected = m.Value.FriendlyName == "HTML" ? " selected" : string.Empty;
                     return $"<option value=\"{m.Value.DesktopModuleID}\"{selected}>{m.Value.FriendlyName}</option>";
@@ -69,7 +69,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Loader { get; } = "AddModuleNow";
 
-        public override int Order { get; } = 7;
+        public override int Order { get; } = 4;
 
         public override bool Visible()
         {
