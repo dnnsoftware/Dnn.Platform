@@ -61,7 +61,10 @@ namespace Dnn.EditBar.UI.Items
                 }
 
                 var toolTip = DotNetNuke.Services.Localization.Localization.GetString("QuickAddModule.Tooltip", LocalResourceFile, System.Threading.Thread.CurrentThread.CurrentCulture.Name);
-                return $"<div><select id=\"menu-QuickAddModule-module\">{string.Join(string.Empty, moduleList)}</select><select id=\"menu-QuickAddModule-pane\">{panes}</select><button href=\"javascript: void(0);\">{this.Text}</button></div><div class=\"submenuEditBar\">{toolTip}</div>";
+                var moduleSelect = $"<select id=\"menu-QuickAddModule-module\">{string.Join(string.Empty, moduleList)}</select>";
+                var paneSelect = $"<select id=\"menu-QuickAddModule-pane\">{panes}</select>";
+                var addButton = $"<select id=\"menu-QuickAddModule-btn\"><option value=\"TOP\" class=\"menu-QuickAddModule-opt\">TOP</option><option value=\"BOTTOM\" class=\"menu-QuickAddModule-opt\">BOTTOM</option><option value=\"ADD\" class=\"menu-QuickAddModule-opt\" selected style=\"display:none\"></option></select>";
+                return $"<div>{moduleSelect}{paneSelect}{addButton}</div><div class=\"submenuEditBar\">{toolTip}</div>";
             }
         }
 

@@ -10,14 +10,17 @@
       callback();
     }
 
-    $('#menu-QuickAddModule button').click(function () {
+    $('#menu-QuickAddModule-btn').change(function () {
+      var pos = $('#menu-QuickAddModule-btn').val();
+      $('#menu-QuickAddModule-btn').prop('selectedIndex', 0);
+      $('#menu-QuickAddModule-btn').val("");
       util.sf.moduleRoot = "internalservices";
       util.sf.controller = "controlBar";
       util.sf.post(
         "AddModule",
         {
           Visibility: 0,
-          Position: "BOTTOM",
+          Position: pos,
           Module: $("#menu-QuickAddModule-module").val(),
           Pane: $("#menu-QuickAddModule-pane").val(),
           AddExistingModule: false,
