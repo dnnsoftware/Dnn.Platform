@@ -174,8 +174,10 @@ public sealed class Lifetime : FrostingLifetime<Context>
     private static void Git(ICakeContext context, string arguments)
     {
         context.Information($"git ${arguments}");
-        using var process = context.StartAndReturnProcess("git", new ProcessSettings {Arguments = arguments});
-        process.WaitForExit();
+        using (var process = context.StartAndReturnProcess("git", new ProcessSettings {Arguments = arguments}))
+        {
+            process.WaitForExit();
+        }
     }
 }
 
