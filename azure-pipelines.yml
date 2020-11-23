@@ -4,6 +4,7 @@ pool:
 variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
+  buildPlatform: '64x'
   # The following variables are defined as settable at queue time, so they cannot be included here
   # Branch.CdfProvider: dnn
   # Branch.CkEditor: development
