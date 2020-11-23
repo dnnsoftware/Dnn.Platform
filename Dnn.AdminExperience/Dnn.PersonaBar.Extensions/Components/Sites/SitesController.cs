@@ -836,6 +836,12 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteElementString("dataconsentdelaymeasurement", setting);
             }
 
+            settingsDictionary.TryGetValue("ShowQuickModuleAddMenu", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("showquickmoduleaddmenu", setting);
+            }
+
             //End Portal Settings
             writer.WriteEndElement();
         }

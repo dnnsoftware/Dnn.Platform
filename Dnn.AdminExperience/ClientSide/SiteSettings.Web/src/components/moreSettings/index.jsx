@@ -369,6 +369,22 @@ class MoreSettingsPanelBody extends Component {
                   )}
                 />
               </InputGroup>
+              <InputGroup>
+                <Label
+                  labelType="inline"
+                  tooltipMessage={resx.get("plShowQuickModuleAddMenu.Help")}
+                  label={resx.get("plShowQuickModuleAddMenu")}
+                />
+                <Switch
+                  onText={resx.get("SwitchOn")}
+                  offText={resx.get("SwitchOff")}
+                  value={state.otherSettings.ShowQuickModuleAddMenu}
+                  onChange={this.onSettingChange.bind(
+                    this,
+                    "ShowQuickModuleAddMenu"
+                  )}
+                />
+              </InputGroup>
             </div>
           </GridSystem>
           <div className="sectionTitle">{resx.get("WhitelistSettings")}</div>

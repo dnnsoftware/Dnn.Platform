@@ -79,6 +79,11 @@ namespace Dnn.EditBar.UI.Items
                 return false;
             }
 
+            if (!portalSettings.ShowQuickModuleAddMenu)
+            {
+                return false;
+            }
+
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit
                 && ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "All", string.Empty).Any();
         }
