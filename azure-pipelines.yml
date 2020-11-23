@@ -5,7 +5,7 @@ variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
   - name: "buildPlatform"
-    value: "64x"
+    value: "x64"
   # The following variables are defined as settable at queue time, so they cannot be included here
   # Branch.CdfProvider: dnn
   # Branch.CkEditor: development
