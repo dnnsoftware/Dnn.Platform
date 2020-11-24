@@ -14,12 +14,14 @@ variables:
 trigger:
   batch: true
   branches:
-    include: '*'
+    include:
+      - '*'
 
 pr:
   autoCancel: true
   branches:
-    include: '*'
+    include:
+      - '*'
 
 steps:
 - task: PowerShell@2
