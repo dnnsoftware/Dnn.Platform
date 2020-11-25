@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
                 else if (attribute is PortalSettingAttribute psa && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = PortalController.Instance.GetPortalSettings(portalId, string.Empty)[mapping.FullParameterName];
+                    settingValue = PortalController.Instance.GetPortalSettings(portalId)[mapping.FullParameterName];
                     if (psa.IsSecure)
                     {
                         settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
