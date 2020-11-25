@@ -138,7 +138,6 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                     else if (attribute is PortalSettingAttribute psa && portalId != -1)
                     {
-                        var psa = (PortalSettingAttribute)attribute;
                         PortalController.UpdatePortalSetting(
                             portalId,
                             mapping.FullParameterName,
