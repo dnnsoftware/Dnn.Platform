@@ -175,7 +175,6 @@ namespace DotNetNuke.Entities.Modules.Settings
                 }
                 else if (attribute is PortalSettingAttribute psa && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
                 {
-                    var psa = (PortalSettingAttribute)attribute;
                     settingValue = PortalController.Instance.GetPortalSettings(portalId, string.Empty)[mapping.FullParameterName];
                     if (psa.IsSecure)
                     {
