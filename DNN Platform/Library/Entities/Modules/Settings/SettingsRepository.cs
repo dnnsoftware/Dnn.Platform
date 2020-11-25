@@ -142,8 +142,8 @@ namespace DotNetNuke.Entities.Modules.Settings
                             portalId,
                             mapping.FullParameterName,
                             settingValueAsString,
-                            true,
-                            string.Empty,
+                            clearCache: true,
+                            cultureCode: Null.NullString,
                             psa.IsSecure);
                     }
                     else if (attribute is HostSettingAttribute)
