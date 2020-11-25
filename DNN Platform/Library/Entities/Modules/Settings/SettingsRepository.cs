@@ -136,7 +136,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                         this.moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
-                    else if (attribute is PortalSettingAttribute && portalId != -1)
+                    else if (attribute is PortalSettingAttribute psa && portalId != -1)
                     {
                         var psa = (PortalSettingAttribute)attribute;
                         PortalController.UpdatePortalSetting(
