@@ -12,13 +12,11 @@ public sealed class EnsureAllProjectsBuilt : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
-        context.MSBuild("DNN_Platform.sln",
-            new MSBuildSettings
-            {
-                Verbosity = Verbosity.Minimal,
-                ToolVersion = MSBuildToolVersion.VS2017,
-                Configuration = context.configuration
-            });
+        var buildSettings = new MSBuildSettings()
+            .SetConfiguration(context.configuration)
+            .SetPlatformTarget(PlatformTarget.MSIL)
+            .SetMaxCpuCount(4);
+        context.MSBuild("DNN_Platform.sln", buildSettings);
     }
 }
 
