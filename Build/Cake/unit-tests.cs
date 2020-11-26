@@ -6,21 +6,9 @@ using Cake.Common.Tools.VSWhere.Latest;
 using Cake.Core.Diagnostics;
 using Cake.Frosting;
 
-[Dependency(typeof(UpdateDnnManifests))]
-[Dependency(typeof(RestoreNuGetPackages))]
-public sealed class EnsureAllProjectsBuilt : FrostingTask<Context>
-{
-    public override void Run(Context context)
-    {
-        var buildSettings = new MSBuildSettings()
-            .SetConfiguration(context.configuration)
-            .SetPlatformTarget(PlatformTarget.MSIL)
-            .SetMaxCpuCount(4);
-        context.MSBuild("DNN_Platform.sln", buildSettings);
-    }
-}
-
-[Dependency(typeof(EnsureAllProjectsBuilt))]
+/// <summary>
+/// Runs units tests on solution. Make sure to build the solution before running this task.
+/// </summary>
 public sealed class UnitTests : FrostingTask<Context>
 {
     public override void Run(Context context)
@@ -40,7 +28,7 @@ public sealed class UnitTests : FrostingTask<Context>
                     Parallel = true,
                     EnableCodeCoverage = true,
                     FrameworkVersion = VSTestFrameworkVersion.NET45,
-                    TestAdapterPath = @"tools\NUnitTestAdapter.2.1.1\tools"
+                    TestAdapterPath = @"tools\NUnitTestAdapter.2.3.0\build"
                 }));
         }
     }
