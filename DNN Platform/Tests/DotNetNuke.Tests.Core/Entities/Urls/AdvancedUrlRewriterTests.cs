@@ -15,6 +15,7 @@
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
     using DotNetNuke.Tests.Utilities.Mocks;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
@@ -56,7 +57,7 @@
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
             var websiteRootPath = path.Substring(0, path.IndexOf(DNNPlatformText, StringComparison.Ordinal));
             var physicalAppPath = Path.Combine(websiteRootPath, WebsiteText);
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator(ApplicationPath, physicalAppPath);
+            var simulator = new HttpSimulator(ApplicationPath, physicalAppPath);
             simulator.SimulateRequest(new Uri(SampleHttpsUrl));
             HttpContext.Current.Items.Add(UrlRewriteItemName, FullUrl);
             var serviceCollection = new ServiceCollection();
