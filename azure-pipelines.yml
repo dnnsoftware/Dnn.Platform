@@ -26,11 +26,6 @@ pr:
       - '*'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
-  inputs:
-    packageType: sdk
-    version: 3.1
 
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
