@@ -10,7 +10,9 @@
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Services.Cache;
@@ -53,6 +55,9 @@
             const string WebsiteText = "Website";
             const string ApplicationPath = "/";
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
+            ComponentFactory.Container = null;
+            PortalController.ClearInstance();
+            Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
             var websiteRootPath = path.Substring(0, path.IndexOf(DNNPlatformText, StringComparison.Ordinal));
