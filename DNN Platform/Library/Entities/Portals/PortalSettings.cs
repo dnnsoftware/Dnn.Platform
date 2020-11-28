@@ -715,7 +715,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, true);
+                return PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
             }
         }
 
