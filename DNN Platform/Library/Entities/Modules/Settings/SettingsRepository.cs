@@ -15,6 +15,8 @@ namespace DotNetNuke.Entities.Modules.Settings
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc/>
@@ -206,7 +208,14 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (attribute.IsSecure)
                 {
-                    settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+                    try
+                    {
+                        settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+                    }
+                    catch (Exception ex)
+                    {
+                        Exceptions.LogException(new ModuleLoadException(string.Format(Localization.GetString("ErrorDecryptingSetting", Localization.SharedResourceFile), mapping.FullParameterName), ex, ctlModule));
+                    }
                 }
 
                 if (settingValue != null && property.CanWrite)
