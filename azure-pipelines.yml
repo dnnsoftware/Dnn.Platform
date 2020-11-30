@@ -1,5 +1,5 @@
 pool:
-  name: Hosted VS2017
+  vmImage: 'windows-latest'
 
 variables:
   - name: "Build.ArtifactStagingDirectory"
@@ -8,6 +8,7 @@ variables:
   # Branch.CdfProvider: dnn
   # Branch.CkEditor: development
   # CakeTarget: BuildAll
+  # CakeVerbosity: Normal # valid values include Quiet, Minimal, Normal, Verbose, Diagnostic
   # ReleaseMode: Beta
   # RunTests: True
 
@@ -24,12 +25,13 @@ pr:
       - '*'
 
 steps:
+
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '-Target BuildServerSetVersion'
+    arguments: '--target=BuildServerSetVersion --verbosity=$(CakeVerbosity)'
 
 - script: 'sqllocaldb start mssqllocaldb'
   displayName: 'Start Sql LocalDb Service'
@@ -58,14 +60,14 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '-Target $(CakeTarget) -ScriptArgs ''--CkBranch="$(Branch.CkEditor)"'',''--CdfBranch="$(Branch.CdfProvider)"'''
+    arguments: '--target=$(CakeTarget) --verbosity=$(CakeVerbosity) --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
 
 - task: PowerShell@2
   displayName: 'Run Unit Tests via Cake'
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '-Target UnitTests'
+    arguments: '--target=UnitTests --verbosity=$(CakeVerbosity)'
   continueOnError: true
   condition: and(succeeded(), eq(variables['RunTests'], 'True'))
 
