@@ -4,12 +4,11 @@ pool:
 variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
-  - name: "buildPlatform"
-    value: "x64"
   # The following variables are defined as settable at queue time, so they cannot be included here
   # Branch.CdfProvider: dnn
   # Branch.CkEditor: development
   # CakeTarget: BuildAll
+  # CakeVerbosity: Normal # valid values include Quiet, Minimal, Normal, Verbose, Diagnostic
   # ReleaseMode: Beta
   # RunTests: True
 
@@ -32,7 +31,7 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=BuildServerSetVersion'
+    arguments: '--target=BuildServerSetVersion --verbosity=$(CakeVerbosity)'
 
 - script: 'sqllocaldb start mssqllocaldb'
   displayName: 'Start Sql LocalDb Service'
@@ -61,14 +60,14 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=$(CakeTarget) --verbosity=diagnostic --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
+    arguments: '--target=$(CakeTarget) --verbosity=$(CakeVerbosity) --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
 
 - task: PowerShell@2
   displayName: 'Run Unit Tests via Cake'
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=UnitTests --verbosity=diagnostic'
+    arguments: '--target=UnitTests --verbosity=$(CakeVerbosity)'
   continueOnError: true
   condition: and(succeeded(), eq(variables['RunTests'], 'True'))
 
