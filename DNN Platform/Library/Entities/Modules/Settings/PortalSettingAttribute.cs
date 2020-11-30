@@ -12,9 +12,5 @@ namespace DotNetNuke.Entities.Modules.Settings
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class PortalSettingAttribute : ParameterAttributeBase
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the settings should be stored securely. This encrypts the value of the parameter.
-        /// </summary>
-        public bool IsSecure { get; set; } = false;
     }
 }

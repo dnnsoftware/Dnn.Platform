@@ -13,18 +13,15 @@ namespace DotNetNuke.Entities.Modules.Settings
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc/>
-    public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
+    public abstract class SettingsRepository<T> : ISettingsRepository<T>
+        where T : class, new()
     {
         private readonly IModuleController moduleController;
-
-        private static ISerializationManager SerializationManager =>
-            Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.
@@ -46,6 +43,9 @@ namespace DotNetNuke.Entities.Modules.Settings
                 return "SettingsRepository_" + type.FullName.Replace(".", "_");
             }
         }
+
+        private static ISerializationManager SerializationManager =>
+    Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
         private IList<ParameterMapping> Mapping { get; }
 
@@ -117,6 +117,8 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private void SaveSettings(int portalId, ModuleInfo moduleContext, T settings)
         {
+            var hostSettingsService = Globals.DependencyProvider.GetRequiredService<Abstractions.Application.IHostSettingsService>();
+
             this.Mapping.ForEach(mapping =>
             {
                 var attribute = mapping.Attribute;
@@ -124,15 +126,25 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
                 {
-                    var settingValueAsString = SerializationController.SerializeProperty(settings, property, attribute.Serializer);
+                    var settingValueAsString = SerializationManager.SerializeProperty(settings, property, attribute.Serializer);
 
-                    if (attribute is ModuleSettingAttribute && moduleContext != null)
+                    if (attribute is ModuleSettingAttribute msa && moduleContext != null)
                     {
+                        if (msa.IsSecure)
+                        {
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(settingValueAsString, Config.GetDecryptionkey(), Host.Host.GUID);
+                        }
+
                         this.moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.ModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
-                    else if (attribute is TabModuleSettingAttribute && moduleContext != null)
+                    else if (attribute is TabModuleSettingAttribute tmsa && moduleContext != null)
                     {
+                        if (tmsa.IsSecure)
+                        {
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(settingValueAsString, Config.GetDecryptionkey(), Host.Host.GUID);
+                        }
+
                         this.moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
@@ -144,11 +156,16 @@ namespace DotNetNuke.Entities.Modules.Settings
                             settingValueAsString,
                             clearCache: true,
                             cultureCode: Null.NullString,
-                            psa.IsSecure);
+                            isSecure: psa.IsSecure);
                     }
-                    else if (attribute is HostSettingAttribute)
+                    else if (attribute is HostSettingAttribute hsa)
                     {
-                        HostController.Instance.Update(mapping.FullParameterName, settingValueAsString);
+                        if (hsa.IsSecure)
+                        {
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(settingValueAsString, Config.GetDecryptionkey(), Host.Host.GUID);
+                        }
+
+                        hostSettingsService.Update(mapping.FullParameterName, settingValueAsString);
                     }
                 }
             });
@@ -160,6 +177,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             var ctlModule = (ModuleInfo)args.ParamList[0];
             var portalId = ctlModule == null ? (int)args.ParamList[1] : ctlModule.PortalID;
             var settings = new T();
+            var hostSettings = Globals.DependencyProvider.GetRequiredService<Abstractions.Application.IHostSettingsService>().GetSettings();
 
             this.Mapping.ForEach(mapping =>
             {
@@ -169,17 +187,13 @@ namespace DotNetNuke.Entities.Modules.Settings
                 var property = mapping.Property;
 
                 // TODO: Make more extensible, enable other attributes to be defined
-                if (attribute is HostSettingAttribute && HostController.Instance.GetSettings().ContainsKey(mapping.FullParameterName))
+                if (attribute is HostSettingAttribute hsa && hostSettings.ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = HostController.Instance.GetSettings()[mapping.FullParameterName].Value;
+                    settingValue = hostSettings[mapping.FullParameterName].Value;
                 }
-                else if (attribute is PortalSettingAttribute psa && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
+                else if (attribute is PortalSettingAttribute && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = PortalController.Instance.GetPortalSettings(portalId)[mapping.FullParameterName];
-                    if (psa.IsSecure)
-                    {
-                        settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
-                    }
                 }
                 else if (attribute is TabModuleSettingAttribute && ctlModule != null && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
@@ -188,6 +202,11 @@ namespace DotNetNuke.Entities.Modules.Settings
                 else if (attribute is ModuleSettingAttribute && ctlModule != null && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = (string)ctlModule.ModuleSettings[mapping.FullParameterName];
+                }
+
+                if (attribute.IsSecure)
+                {
+                    settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
                 }
 
                 if (settingValue != null && property.CanWrite)
