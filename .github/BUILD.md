@@ -49,7 +49,7 @@ You'll need to be running IIS and SQL server (Express) locally for this to work.
 The build process uses a local settings file which is excluded from source control so you won't accidentally upload this to Github. First open up Powershell at the root of this repository and run the following:
 
 ```
-.\Build.ps1 -Target CreateSettings
+.\Build.ps1 --target=CreateSettings
 ```
 
 This will create a file called `settings.local.json` at the root with the following content:
@@ -87,7 +87,7 @@ The settings are as follows:
 Once you've set up the above, run the following in Powershell:
 
 ```
-.\Build.ps1 -Target ResetDevSite
+.\Build.ps1 --target=ResetDevSite
 ```
 
 This will attempt to delete all content in `WebsitePath` and will build DNN to that location.
