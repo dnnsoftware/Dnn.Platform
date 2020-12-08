@@ -98,9 +98,13 @@ namespace DotNetNuke.Security
         public enum FilterFlag
         {
             MultiLine = 1,
+            [Obsolete("Deprecated in 9.8.1. Scheduled removal in V11.0.0. A direct call to HttpUtility.HtmlEncode should be used")]
             NoMarkup = 2,
+            [Obsolete("Deprecated in 9.8.1. Scheduled removal in V11.0.0. A direct call to HttpUtility.HtmlEncode should be used")]
             NoScripting = 4,
+            [Obsolete("Deprecated in 9.8.1. Scheduled removal in V11.0.0. Parameterized SQL should be preferred for SQL Injection Protection")]
             NoSQL = 8,
+            [Obsolete("Deprecated in 9.8.1. Scheduled removal in V11.0.0. Individual string replacement should be completed")]
             NoAngleBrackets = 16,
             NoProfanity = 32,
         }
@@ -373,7 +377,7 @@ namespace DotNetNuke.Security
 
             if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
             {
-                tempInput = this.FormatDisableScripting(tempInput);
+                tempInput = FilterStrings(tempInput)
             }
 
             if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
@@ -871,7 +875,7 @@ namespace DotNetNuke.Security
         {
             // setup up list of search terms as items may be used twice
             var tempInput = strInput;
-            if (string.IsNullOrEmpty(tempInput))
+            if (string.IsNullOrWhiteSpace(tempInput))
             {
                 return tempInput;
             }
@@ -978,25 +982,6 @@ namespace DotNetNuke.Security
                 context.Session.Clear();
                 context.Session.Abandon();
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This function uses Regex search strings to remove HTML tags which are
-        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
-        /// to provide more robust checking as additional holes are found.
-        /// </summary>
-        /// <param name="strInput">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private string FormatDisableScripting(string strInput)
-        {
-            return string.IsNullOrWhiteSpace(strInput)
-                ? strInput
-                : FilterStrings(strInput);
         }
     }
 }
