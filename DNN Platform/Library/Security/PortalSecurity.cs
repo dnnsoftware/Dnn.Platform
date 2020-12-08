@@ -377,7 +377,7 @@ namespace DotNetNuke.Security
 
             if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
             {
-                tempInput = FilterStrings(tempInput)
+                tempInput = FilterStrings(tempInput);
             }
 
             if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
