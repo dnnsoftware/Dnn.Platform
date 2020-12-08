@@ -153,22 +153,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                 }
 
-                // check for insecure account defaults
-                var qsDelimiter = "?";
-                if (redirectURL.Contains("?"))
-                {
-                    qsDelimiter = "&";
-                }
-
-                if (this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD)
-                {
-                    redirectURL = redirectURL + qsDelimiter + "runningDefault=1";
-                }
-                else if (this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD)
-                {
-                    redirectURL = redirectURL + qsDelimiter + "runningDefault=2";
-                }
-
                 return redirectURL;
             }
         }
