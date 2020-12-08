@@ -341,6 +341,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 // 661 : do not include in path
                 // 742 : was not reading and saving value when 'doNotIncludeInPathRegex' used
+                // FUTURE: DNN 11.x Update to remove the runningDefault value
                 return this._doNotIncludeInPathRegex ??
                        (this._doNotIncludeInPathRegex =
                            this.GetStringSetting(

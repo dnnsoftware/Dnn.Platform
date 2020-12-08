@@ -270,21 +270,6 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            // check if running with known account defaults
-            if (this.Request.IsAuthenticated && string.IsNullOrEmpty(this.Request.QueryString["runningDefault"]) == false)
-            {
-                var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
-                var usernameLower = userInfo?.Username?.ToLowerInvariant();
-
-                // only show message to default users
-                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
-                {
-                    var messageText = this.RenderDefaultsWarning();
-                    var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
-                }
-            }
-
             // add CSS links
             ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/7.0.0/default.css"));
             ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
@@ -736,31 +721,6 @@ namespace DotNetNuke.Framework
             }
 
             return objDict;
-        }
-
-        /// <summary>
-        /// check if a warning about account defaults needs to be rendered.
-        /// </summary>
-        /// <returns>localised error message.</returns>
-        /// <remarks></remarks>
-        private string RenderDefaultsWarning()
-        {
-            var warningLevel = this.Request.QueryString["runningDefault"];
-            var warningMessage = string.Empty;
-            switch (warningLevel)
-            {
-                case "1":
-                    warningMessage = Localization.GetString("InsecureAdmin.Text", Localization.SharedResourceFile);
-                    break;
-                case "2":
-                    warningMessage = Localization.GetString("InsecureHost.Text", Localization.SharedResourceFile);
-                    break;
-                case "3":
-                    warningMessage = Localization.GetString("InsecureDefaults.Text", Localization.SharedResourceFile);
-                    break;
-            }
-
-            return warningMessage;
         }
 
         private IFileInfo GetBackgroundFileInfo()

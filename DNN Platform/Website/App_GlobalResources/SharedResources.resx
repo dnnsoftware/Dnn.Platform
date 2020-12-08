@@ -1026,18 +1026,6 @@
   <data name="PasswordResetFailed_WrongAnswer.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please ensure the correct user name and answer were entered.</value>
   </data>
-  <data name="InsecureAdmin.Text" xml:space="preserve">
-    <value>Your admin account is still using a known default password. Please go to the Manage-&gt;Users menu and update the password. In addition, please ensure a valid email address is entered.</value>
-  </data>
-  <data name="InsecureHost.Text" xml:space="preserve">
-    <value>Your host (Super User) account is still using a known default password. Please go to the Manage-&gt;Users menu and update the password.</value>
-  </data>
-  <data name="InsecureDefaults.Text" xml:space="preserve">
-    <value>Both the default accounts (host and admin) are using known default passwords. Please go to the Manage-&gt;Users menu and update the passwords. In addition, please ensure valid email addresses are entered.</value>
-  </data>
-  <data name="InsecureDefaults.Title" xml:space="preserve">
-    <value>Insecure account details</value>
-  </data>
   <data name="PrivateMembership.Text" xml:space="preserve">
     <value>&lt;strong&gt;*Note:&lt;/strong&gt; Membership to this site is private. Once your account information has been submitted, the Site Administrator will be notified and your application will be subjected to a screening procedure. If your application is authorized, you will receive notification that you can access the site.</value>
   </data>
