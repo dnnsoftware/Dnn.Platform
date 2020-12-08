@@ -1,5 +1,6 @@
 ﻿// The tasks create the various DNN release packages (Install, Upgrade, Deploy and Symbols)
 
+using System;
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
 using Cake.Frosting;
@@ -79,10 +80,14 @@ public sealed class CreateInstall : FrostingTask<Context>
 
 [Dependency(typeof(PreparePackaging))]
 [Dependency(typeof(OtherPackages))]
+[Dependency(typeof(CreateInstall))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
+[Dependency(typeof(CreateSymbols))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
+[Dependency(typeof(CreateDeploy))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
 public sealed class CreateUpgrade : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
+        this.RenameResourcesFor98xUpgrades(context);
         context.CreateDirectory(context.artifactsFolder);
         var excludes = new string[context.packagingPatterns.installExclude.Length + context.packagingPatterns.upgradeExclude.Length];
         context.packagingPatterns.installExclude.CopyTo(excludes, 0);
@@ -92,6 +97,27 @@ public sealed class CreateUpgrade : FrostingTask<Context>
         context.Information("Zipping {0} files for Upgrade zip", files.Count);
         var packageZip = string.Format(context.artifactsFolder + "DNN_Platform_{0}_Upgrade.zip", context.GetBuildNumber());
         context.Zip(context.websiteFolder, packageZip, files);
+    }
+
+    [Obsolete(
+        "Workaround to support upgrades from 9.8.0 which may or may not still have Telerik installed." +
+        "This method is to be removed in v10.0.0 and we should also implement a solution to remove these .resources files" +
+        "from the available extensions to make sure people don't install them by mistake.")]
+    private void RenameResourcesFor98xUpgrades(Context context)
+    {
+        var telerikPackages = new string[]
+        {
+            $"{context.websiteFolder}Install/Module/DNNCE_DigitalAssetsManagement*.zip",
+            $"{context.websiteFolder}Install/Module/Telerik*.zip",
+            $"{context.websiteFolder}Install/Library/DNNCE_Web.Deprecated*.zip",
+            $"{context.websiteFolder}Install/Library/DNNCE_Website.Deprecated*.zip",
+        };
+
+        var filesToRename = context.GetFilesByPatterns(telerikPackages);
+        foreach (var fileToRename in filesToRename)
+        {
+            System.IO.File.Move(fileToRename.ToString(), fileToRename.ChangeExtension("resources").ToString());
+        }
     }
 }
 
