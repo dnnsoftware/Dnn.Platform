@@ -1569,11 +1569,26 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 // save the page culture as a cookie
-                response.Cookies.Remove("language");
-                if (!string.IsNullOrEmpty(value))
+                HttpCookie cookie = response.Cookies.Get("language");
+                if (cookie == null)
                 {
-                    var cookie = new HttpCookie("language", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
-                    response.Cookies.Add(cookie);
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        cookie = new HttpCookie("language", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
+                        response.Cookies.Add(cookie);
+                    }
+                }
+                else
+                {
+                    cookie.Value = value;
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        response.Cookies.Set(cookie);
+                    }
+                    else
+                    {
+                        response.Cookies.Remove("language");
+                    }
                 }
             }
             catch
