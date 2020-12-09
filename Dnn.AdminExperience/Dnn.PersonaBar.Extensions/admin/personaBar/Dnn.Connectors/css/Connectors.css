@@ -38,6 +38,7 @@ table#connectionstbl span.socialnetwork-favicon {
     background-repeat: no-repeat;
     background-position: 0 0;
     position: relative;
+    background-position: 0 -37px;
 }
 
 table#connectionstbl span.socialnetwork-favicon div {
@@ -49,10 +50,6 @@ table#connectionstbl span.socialnetwork-favicon div {
     border-radius: 4px;
     top: -4px;
     right: -4px;
-}
-
-table#connectionstbl span.socialnetwork-favicon.connected {
-    background-position: 0 -37px;
 }
 
 table#connectionstbl span.socialnetwork-name {
