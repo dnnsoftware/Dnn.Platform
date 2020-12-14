@@ -296,7 +296,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             var assemblyName = ReadAssemblyName(assemblyFileFullPath);
-
             var publicKeyToken = ReadPublicKey(assemblyName);
             if (string.IsNullOrEmpty(publicKeyToken))
             {
