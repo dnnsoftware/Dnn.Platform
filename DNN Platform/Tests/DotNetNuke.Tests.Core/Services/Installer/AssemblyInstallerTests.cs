@@ -51,6 +51,8 @@
             sut.ReadManifest(nav);
 
             sut.Install();
+
+            Assert.IsTrue(sut.Log.Valid);
         }
 
         private XPathNavigator GetAssembliesXmlNavigator()
