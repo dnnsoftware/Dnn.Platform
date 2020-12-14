@@ -1,12 +1,13 @@
-﻿namespace DotNetNuke.Tests.Core.Services.Installer
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace DotNetNuke.Tests.Core.Services.Installer
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml.XPath;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -32,8 +33,8 @@
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
-            var dp = MockComponentProvider.CreateDataProvider();
-            dp.Setup(p => p.UnRegisterAssembly(It.IsAny<int>(), It.IsAny<string>())).Returns(true);
+            var dataProvider = MockComponentProvider.CreateDataProvider();
+            dataProvider.Setup(p => p.UnRegisterAssembly(It.IsAny<int>(), It.IsAny<string>())).Returns(true);
 
             LocalizationProvider.SetTestableInstance(new Mock<ILocalizationProvider>().Object);
         }
@@ -41,21 +42,20 @@
         [Test]
         public void Install_UnRegisterAssembly_ShouldSucceed_WhenFileIsMissing()
         {
-            var nav = GetAssembliesXmlNavigator();
-
-            var sut = new AssemblyInstaller()
+            var installer = new AssemblyInstaller
             {
                 DeleteFiles = true,
                 Package = new PackageInfo(new InstallerInfo(Directory.GetCurrentDirectory(), InstallMode.Install)),
             };
-            sut.ReadManifest(nav);
+            var manifestNav = GetUnRegisterAssemblyManifest();
+            installer.ReadManifest(manifestNav);
 
-            sut.Install();
+            installer.Install();
 
-            Assert.IsTrue(sut.Log.Valid);
+            Assert.IsTrue(installer.Log.Valid);
         }
 
-        private XPathNavigator GetAssembliesXmlNavigator()
+        private static XPathNavigator GetUnRegisterAssemblyManifest()
         {
             var doc = new XPathDocument(new StringReader(@"
 <assemblies>
