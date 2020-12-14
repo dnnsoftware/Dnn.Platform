@@ -289,7 +289,14 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
         private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
         {
-            var assemblyName = ReadAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
+            var assemblyFileFullPath = Path.Combine(this.PhysicalBasePath, file.FullName);
+            if (!File.Exists(assemblyFileFullPath))
+            {
+                return false;
+            }
+
+            var assemblyName = ReadAssemblyName(assemblyFileFullPath);
+
             var publicKeyToken = ReadPublicKey(assemblyName);
             if (string.IsNullOrEmpty(publicKeyToken))
             {
