@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
         private InstallFile _upgradeScript;
+        private InstallFile _schemaScript;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -134,6 +135,20 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Schema Script (if present).
+        /// </summary>
+        /// <value>An InstallFile.</value>
+        /// -----------------------------------------------------------------------------
+        protected InstallFile SchemaScript
+        {
+            get
+            {
+                return this._schemaScript;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Files this is not neccessary.</remarks>
@@ -187,6 +202,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     bSuccess = this.InstallScriptFile(this.UpgradeScript);
                     installedVersion = this.UpgradeScript.Version;
+                }
+
+                // Next process SchemaScript - this script always runs if present
+                if (this.SchemaScript != null)
+                {
+                    bSuccess = this.InstallScriptFile(this.SchemaScript);
                 }
 
                 // Then process uninstallScripts - these need to be copied but not executed
@@ -270,6 +291,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this._upgradeScript = file;
+                }
+                else if (file.Name.StartsWith("schema.", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this._schemaScript = file;
                 }
                 else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {
