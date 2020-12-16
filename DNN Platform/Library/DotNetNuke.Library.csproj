@@ -76,33 +76,9 @@
     <Reference Include="ClientDependency.Core, Version=1.9.2.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CountryListBox">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
-    <Reference Include="dotnetnuke.log4net">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Services.Syndication">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Client">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -1905,6 +1881,10 @@
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
+      <Project>{9f2f4076-d434-448f-9cbb-7bf7a9766ab1}</Project>
+      <Name>DotNetNuke.Syndication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
