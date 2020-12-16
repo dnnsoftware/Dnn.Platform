@@ -64,9 +64,6 @@
       <HintPath>..\..\..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
     <Reference Include="FizzWare.NBuilder, Version=5.0.0.138, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\packages\NBuilder.5.0.0\lib\net40\FizzWare.NBuilder.dll</HintPath>
       <Private>True</Private>
