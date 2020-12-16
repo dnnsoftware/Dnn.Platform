@@ -29,11 +29,17 @@ namespace Dnn.ExportImport.Interfaces
 
         IEnumerable<T> GetItems<T>(
             Expression<Func<T, bool>> predicate,
-            Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
+            Func<T, object> orderKeySelector = null,
+            bool asc = true,
+            int? skip = null,
+            int? max = null)
             where T : BasicExportImportDto;
 
         IEnumerable<T> GetAllItems<T>(
-            Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
+            Func<T, object> orderKeySelector = null,
+            bool asc = true,
+            int? skip = null,
+            int? max = null)
             where T : BasicExportImportDto;
 
         int GetCount<T>()
