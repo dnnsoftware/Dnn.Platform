@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
         private InstallFile _upgradeScript;
-        private InstallFile _schemaScript;
+        private readonly List<InstallFile> _schemaScripts = new List<InstallFile>();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -139,11 +139,11 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <value>An InstallFile.</value>
         /// -----------------------------------------------------------------------------
-        protected InstallFile SchemaScript
+        protected List<InstallFile> SchemaScripts
         {
             get
             {
-                return this._schemaScript;
+                return this._schemaScripts;
             }
         }
 
@@ -204,10 +204,17 @@ namespace DotNetNuke.Services.Installer.Installers
                     installedVersion = this.UpgradeScript.Version;
                 }
 
-                // Next process SchemaScript - this script always runs if present
-                if (this.SchemaScript != null)
+                // Next process SchemaScripts - these script always runs if present
+                if (bSuccess)
                 {
-                    bSuccess = this.InstallScriptFile(this.SchemaScript);
+                    foreach (InstallFile file in this.SchemaScripts)
+                    {
+                        bSuccess = this.InstallScriptFile(file);
+                        if (!bSuccess)
+                        {
+                            break;
+                        }
+                    }
                 }
 
                 // Then process uninstallScripts - these need to be copied but not executed
@@ -294,7 +301,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else if (file.Name.StartsWith("schema.", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._schemaScript = file;
+                    this._schemaScripts.Add(file);
                 }
                 else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {
