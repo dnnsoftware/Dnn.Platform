@@ -9,8 +9,10 @@ namespace DotNetNuke.Authentication.LiveConnect
     using DotNetNuke.Services.Authentication.OAuth;
     using DotNetNuke.Services.Exceptions;
 
+    /// <inheritdoc/>
     public partial class Settings : OAuthSettingsBase
     {
+        /// <inheritdoc/>
         protected override string AuthSystemApplicationName
         {
             get { return "Live"; }
