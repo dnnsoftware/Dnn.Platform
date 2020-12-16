@@ -26,7 +26,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private static readonly Regex ExtensionPackageFilesRegex = new Regex(@"^(.+?)_(.+?)_(\d+\.\d+\.\d+).resources$", RegexOptions.Compiled);
 
-        private ExportImportJob _exportImportJob;
+        private ExportImportJob exportImportJob;
 
         public override string Category => Constants.Category_Packages;
 
@@ -126,7 +126,7 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
 
-            this._exportImportJob = importJob;
+            this.exportImportJob = importJob;
 
             this.ProcessImportModulePackages(importDto);
         }
@@ -268,7 +268,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportModulePackages(ImportDto importDto)
         {
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this._exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {

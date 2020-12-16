@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Dto
 {
     using Dnn.ExportImport.Components.Common;
     using Newtonsoft.Json;
 
+    /// <summary>The import DTO.</summary>
     [JsonObject]
     public class ImportDto
     {
@@ -16,7 +16,7 @@ namespace Dnn.ExportImport.Components.Dto
         public string SchemaVersion { get; set; } = Constants.CurrentSchemaVersion;
 
         /// <summary>
-        /// Gets or sets iD of portal to import items to.
+        /// Gets or sets ID of portal to import items to.
         /// </summary>
         public int PortalId { get; set; }
 
@@ -46,6 +46,9 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public ExportFileInfo ExportFileInfo { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to run the import now.
+        /// </summary>
         public bool RunNow { get; set; }
     }
 }
