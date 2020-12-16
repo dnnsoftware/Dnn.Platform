@@ -1,40 +1,42 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
 namespace DNNConnect.CKEditorProvider.Helper
 {
-    internal class TreeViewHelper<K>
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    /// <summary>Tree view helper.</summary>
+    /// <typeparam name="TIdentifier">Type of the ID.</typeparam>
+    internal class TreeViewHelper<TIdentifier>
     {
-        private readonly Dictionary<K, TreeNodeWithParentId<K>> _nodes = new Dictionary<K, TreeNodeWithParentId<K>>();
+        private readonly Dictionary<TIdentifier, TreeNodeWithParentId<TIdentifier>> nodes = new Dictionary<TIdentifier, TreeNodeWithParentId<TIdentifier>>();
 
         /// <summary>
         /// To iterate passed in data collection(treeViewData), with the passed in TreeNodesCollection(treeViewNodes) using Dictionary collection
         /// to get performance for large number of data for treeview control.
         /// </summary>
-        /// <typeparam name="T">Any object type to use for data to be used in TreeView.</typeparam>
+        /// <typeparam name="TData">Any object type to use for data to be used in TreeView.</typeparam>
         /// <param name="treeViewData">Data collection based on T.</param>
         /// <param name="treeViewNodes">Nodes need to refresh using Dictionary data structure.</param>
         /// <param name="getNodeId">Method to return Text used for NodeId from T based Object.</param>
         /// <param name="getParentId">Method to return Text used for ParentId from T based Object.</param>
         /// <param name="getNodeText">Method to return Text used for TreeNode from T based Object.</param>
+        /// <param name="getNodeValue">Method to return test used for node value.</param>
         /// <param name="getNodeImageURL">Method to return Image used for TreeNode from T based Object.</param>
         /// <param name="parentIdCheck">Validate the parentId for T based object if parent should not be -1.</param>
         /// <param name="allLeaves"> if passed would be added as leaves to each node.</param>
-        internal void LoadNodes<T>(IEnumerable<T> treeViewData, TreeNodeCollection treeViewNodes, Func<T, K> getNodeId, Func<T, K> getParentId, Func<T, string> getNodeText, Func<T, string> getNodeValue, Func<T, string> getNodeImageURL, Func<K, bool> parentIdCheck, Dictionary<K, HashSet<TreeNode>> allLeaves = null)
+        internal void LoadNodes<TData>(IEnumerable<TData> treeViewData, TreeNodeCollection treeViewNodes, Func<TData, TIdentifier> getNodeId, Func<TData, TIdentifier> getParentId, Func<TData, string> getNodeText, Func<TData, string> getNodeValue, Func<TData, string> getNodeImageURL, Func<TIdentifier, bool> parentIdCheck, Dictionary<TIdentifier, HashSet<TreeNode>> allLeaves = null)
         {
             this.FillNodes(treeViewData, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL);
             this.RefreshTreeViewNodes(treeViewNodes, parentIdCheck, allLeaves);
         }
 
-        private void RefreshTreeViewNodes(TreeNodeCollection treeViewNodes, Func<K, bool> parentIdCheck, Dictionary<K, HashSet<TreeNode>> allLeaves = null)
+        private void RefreshTreeViewNodes(TreeNodeCollection treeViewNodes, Func<TIdentifier, bool> parentIdCheck, Dictionary<TIdentifier, HashSet<TreeNode>> allLeaves = null)
         {
             treeViewNodes.Clear();
-            foreach (var id in this._nodes.Keys)
+            foreach (var id in this.nodes.Keys)
             {
                 var data = this.GetTreeNodeWithParentId(id);
                 var node = data.NodeData;
@@ -61,13 +63,13 @@ namespace DNNConnect.CKEditorProvider.Helper
 
         private void FillNodes<T>(
             IEnumerable<T> treeViewData,
-            Func<T, K> getNodeId,
-            Func<T, K> getParentId,
+            Func<T, TIdentifier> getNodeId,
+            Func<T, TIdentifier> getParentId,
             Func<T, string> getNodeText,
             Func<T, string> getNodeValue,
             Func<T, string> getNodeImageURL)
         {
-            this._nodes.Clear();
+            this.nodes.Clear();
             foreach (var item in treeViewData)
             {
                 var idTab = getNodeId(item);
@@ -75,30 +77,30 @@ namespace DNNConnect.CKEditorProvider.Helper
                 var imageUrl = getNodeImageURL(item);
                 var nodeValue = getNodeValue(item);
 
-                var nodeData = new TreeNodeWithParentId<K>
+                var nodeData = new TreeNodeWithParentId<TIdentifier>
                 {
                     ParentId = getParentId(item),
                     NodeData = new TreeNode
                     {
                         Text = displayName,
                         Value = nodeValue,
-                        ImageUrl = imageUrl
+                        ImageUrl = imageUrl,
                     },
                 };
-                this._nodes.Add(idTab, nodeData);
+                this.nodes.Add(idTab, nodeData);
             }
         }
 
-        private TreeNodeWithParentId<K> GetTreeNodeWithParentId(K key)
+        private TreeNodeWithParentId<TIdentifier> GetTreeNodeWithParentId(TIdentifier key)
         {
-            return this._nodes[key];
+            return this.nodes[key];
         }
-    }
 
-    internal class TreeNodeWithParentId<K>
-    {
-        public K ParentId { get; set; }
+        private class TreeNodeWithParentId<TParentId>
+        {
+            public TParentId ParentId { get; set; }
 
-        public TreeNode NodeData { get; set; }
+            public TreeNode NodeData { get; set; }
+        }
     }
 }

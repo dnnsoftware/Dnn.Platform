@@ -1,22 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-
 namespace DNNConnect.CKEditorProvider.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
 
     /// <summary>
     /// The html generic self closing.
     /// </summary>
     public class HtmlGenericSelfClosing : HtmlGenericControl
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlGenericSelfClosing"/> class.
         /// </summary>
@@ -34,10 +30,6 @@ namespace DNNConnect.CKEditorProvider.Controls
             : base(sTag)
         {
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets Controls.
@@ -85,10 +77,6 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The render.
         /// </summary>
@@ -114,7 +102,5 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             writer.Write(HtmlTextWriter.SelfClosingTagEnd + Environment.NewLine);
         }
-
-        #endregion
     }
 }

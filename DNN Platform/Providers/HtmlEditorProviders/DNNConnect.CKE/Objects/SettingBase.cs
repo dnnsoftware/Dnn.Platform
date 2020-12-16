@@ -1,15 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DNNConnect.CKEditorProvider.Constants;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DNNConnect.CKEditorProvider.Constants;
 
     /// <summary>
     /// The Settings Base.
@@ -17,8 +15,7 @@ namespace DNNConnect.CKEditorProvider.Objects
     [Obsolete("This class is phasing out please use EditorProviderSettings Class instead")]
     public class SettingBase : object
     {
-        #region Properties
-
+#pragma warning disable SA1300 // Element should begin with upper-case letter
         /// <summary>
         /// Gets or sets How many Items to Show per Page on the File List.
         /// </summary>
@@ -171,7 +168,6 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// Gets or sets a value indicating whether Browser Width.
         /// </summary>
         public string BrowserWidth { get; set; }
-
-        #endregion
+#pragma warning restore SA1300 // Element should begin with upper-case letter
     }
 }

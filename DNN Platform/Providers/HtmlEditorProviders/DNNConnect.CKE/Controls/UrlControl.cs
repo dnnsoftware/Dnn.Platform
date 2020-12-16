@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-
 namespace DNNConnect.CKEditorProvider.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// The url control.
@@ -25,14 +24,12 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <summary>
         /// The _local resource file.
         /// </summary>
-        private string _localResourceFile;
+        private string localResourceFile;
 
         /// <summary>
         /// The with events field folders.
         /// </summary>
         private DropDownList folders;
-
-        #region Constructors and Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UrlControl"/> class.
@@ -41,10 +38,6 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             this.PreRender += this.Page_PreRender;
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets a value indicating whether [reload files].
@@ -90,18 +83,18 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return string.IsNullOrEmpty(this._localResourceFile)
+                return string.IsNullOrEmpty(this.localResourceFile)
                            ? string.Format(
                                "{0}/{1}/URLControl.ascx.resx",
                                this.TemplateSourceDirectory.Replace(
                                    "Providers/HtmlEditorProviders/CKEditor", "controls"),
                                Localization.LocalResourceDirectory)
-                           : this._localResourceFile;
+                           : this.localResourceFile;
             }
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -170,10 +163,6 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        #endregion
-
-        #region Fields
-
         /// <summary>
         /// Gets or sets the files.
         /// </summary>
@@ -197,10 +186,6 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// The folder label.
         /// </value>
         protected Label FolderLabel { get; set; }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the folders.
@@ -227,10 +212,6 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Binds the data.
         /// </summary>
@@ -244,27 +225,26 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             this.ReloadFiles = false;
 
-            var _url = Convert.ToString(this.ViewState["Url"]);
+            var url = Convert.ToString(this.ViewState["Url"]);
 
-            if (string.IsNullOrEmpty(_url))
+            if (string.IsNullOrEmpty(url))
             {
                 return;
             }
 
-            var _urltype = Globals.GetURLType(_url).ToString("g").Substring(0, 1);
-
-            if (_urltype == "F")
+            var urlType = Globals.GetURLType(url).ToString("g").Substring(0, 1);
+            if (urlType == "F")
             {
-                if (_url.ToLower().StartsWith("fileid="))
+                if (url.ToLower().StartsWith("fileid="))
                 {
-                    var objFile = FileManager.Instance.GetFile(int.Parse(_url.Substring(7)));
+                    var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
 
                     if (objFile != null)
                     {
-                        _url = objFile.Folder + objFile.FileName;
+                        url = objFile.Folder + objFile.FileName;
 
-                        var fileName = _url.Substring(_url.LastIndexOf("/", StringComparison.Ordinal) + 1);
-                        var folderPath = _url.Replace(fileName, string.Empty);
+                        var fileName = url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                        var folderPath = url.Replace(fileName, string.Empty);
 
                         if (this.Folders.Items.FindByValue(folderPath) != null)
                         {
@@ -291,7 +271,7 @@ namespace DNNConnect.CKEditorProvider.Controls
                 }
             }
 
-            this.ViewState["Url"] = _url;
+            this.ViewState["Url"] = url;
         }
 
         /// <summary>
@@ -384,7 +364,5 @@ namespace DNNConnect.CKEditorProvider.Controls
                 this.ViewState["LastFileName"] = string.Empty;
             }
         }
-
-        #endregion
     }
 }

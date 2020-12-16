@@ -1,29 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-
 namespace DNNConnect.CKEditorProvider.Browser
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Web;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
 
     /// <summary>
     /// The process image.
     /// </summary>
     public class ProcessImage : IHttpHandler
     {
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether IsReusable.
         /// </summary>
@@ -35,10 +30,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The get thumb abort.
         /// </summary>
@@ -49,12 +40,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             return false;
         }
-
-        #endregion
-
-        #region Implemented Interfaces
-
-        #region IHttpHandler
 
         /// <summary>
         /// The process request.
@@ -102,7 +87,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             if (file == null)
             {
                 return;
-
             }
 
             Bitmap img = (Bitmap)Image.FromStream(FileManager.Instance.GetFileContent(file));
@@ -180,26 +164,14 @@ namespace DNNConnect.CKEditorProvider.Browser
             img.Dispose();
         }
 
-        private bool HasWritePermission(string relativePath)
-        {
-            var portalId = PortalSettings.Current.PortalId;
-            return FolderPermissionController.HasFolderPermission(portalId, relativePath, "WRITE");
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// Generats the New File Path.
+        /// Generates the New File Path.
         /// </summary>
+        /// <param name="file">
+        /// The Original Image.
+        /// </param>
         /// <param name="sNewFileName">
         /// New File Name for the Image.
-        /// </param>
-        /// <param name="sSourceFullPath">
-        /// The Full Path of the Original Image.
         /// </param>
         /// <returns>
         /// The generate name.
@@ -290,9 +262,26 @@ namespace DNNConnect.CKEditorProvider.Browser
             g.RotateTransform((float)rotationAngle);
             g.TranslateTransform(-(float)img.Width / 2, -(float)img.Height / 2);
 
-            g.DrawImage(img, img.Width / 2 - img.Height / 2, img.Height / 2 - img.Width / 2, img.Height, img.Width);
+            g.DrawImage(img, (img.Width / 2) - (img.Height / 2), (img.Height / 2) - (img.Width / 2), img.Height, img.Width);
 
             return returnBitmap;
+        }
+
+        private static string CleanName(string name)
+        {
+            name = name.Replace("\\", "/");
+            if (name.Contains("/"))
+            {
+                name = name.Substring(name.LastIndexOf('/') + 1);
+            }
+
+            return name;
+        }
+
+        private bool HasWritePermission(string relativePath)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+            return FolderPermissionController.HasFolderPermission(portalId, relativePath, "WRITE");
         }
 
         /// <summary>
@@ -315,18 +304,5 @@ namespace DNNConnect.CKEditorProvider.Browser
             Image.GetThumbnailImageAbort callback = this.GetThumbAbort;
             return (Bitmap)img.GetThumbnailImage(width, height, callback, IntPtr.Zero);
         }
-
-        private static string CleanName(string name)
-        {
-            name = name.Replace("\\", "/");
-            if (name.Contains("/"))
-            {
-                name = name.Substring(name.LastIndexOf('/') + 1);
-            }
-
-            return name;
-        }
-
-        #endregion
     }
 }

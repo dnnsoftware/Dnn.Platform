@@ -9,8 +9,6 @@ namespace DNNConnect.CKEditorProvider.Objects
     /// </summary>
     public class UploadSizeRoles
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets a value indicating Role ID.
         /// </summary>
@@ -25,7 +23,5 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// Gets or sets a value indicating max upload file size.
         /// </summary>
         public int UploadFileLimit { get; set; }
-
-        #endregion
     }
 }

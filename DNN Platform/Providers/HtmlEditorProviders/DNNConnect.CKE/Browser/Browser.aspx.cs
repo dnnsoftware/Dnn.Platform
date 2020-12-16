@@ -1,76 +1,66 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Script.Services;
-using System.Web.Services;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DNNConnect.CKEditorProvider.Constants;
-using DNNConnect.CKEditorProvider.Controls;
-using DNNConnect.CKEditorProvider.Objects;
-using DNNConnect.CKEditorProvider.Utilities;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using Microsoft.JScript;
-
-using Convert = System.Convert;
-using Encoder = System.Drawing.Imaging.Encoder;
-using Globals = DotNetNuke.Common.Globals;
-using Image = System.Drawing.Image;
-
-using DNNConnect.CKEditorProvider.Helper;
-
 namespace DNNConnect.CKEditorProvider.Browser
 {
-    /// <summary>
-    /// The browser.
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Script.Services;
+    using System.Web.Services;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DNNConnect.CKEditorProvider.Constants;
+    using DNNConnect.CKEditorProvider.Controls;
+    using DNNConnect.CKEditorProvider.Helper;
+    using DNNConnect.CKEditorProvider.Objects;
+    using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using Microsoft.JScript;
+
+    using Convert = System.Convert;
+    using Encoder = System.Drawing.Imaging.Encoder;
+    using Globals = DotNetNuke.Common.Globals;
+    using Image = System.Drawing.Image;
+
+    /// <summary>The browser.</summary>
     [ScriptService]
     public partial class Browser : Page
     {
-        #region Constants and Fields
-
-        private const string fileItemDisplayFormat =
+        private const string FileItemDisplayFormat =
             "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>";
-        /// <summary>
-        /// The Image or Link that is selected inside the Editor.
-        /// </summary>
-        private static string ckFileUrl;
 
-        /// <summary>
-        ///   The allowed flash extensions.
-        /// </summary>
+        /// <summary>The allowed flash extensions.</summary>
         private static readonly ISet<string> AllowedFlashExtensions = new HashSet<string>(new[] { "swf", "flv", "mp3" }, StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>
-        ///   The allowed image extensions.
-        /// </summary>
+        /// <summary>The allowed image extensions.</summary>
         private static readonly ISet<string> AllowedImageExtensions = new HashSet<string>(new[] { "bmp", "gif", "jpeg", "jpg", "png", "svg" }, StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The Image or Link that is selected inside the Editor.</summary>
+        private static string ckFileUrl;
 
         /// <summary>
         ///   The request.
@@ -83,9 +73,9 @@ namespace DNNConnect.CKEditorProvider.Browser
         private EditorProviderSettings currentSettings = new EditorProviderSettings();
 
         /// <summary>
-        ///   The _portal settings.
+        ///   The portal settings.
         /// </summary>
-        private PortalSettings _portalSettings;
+        private IPortalSettings portalSettings;
 
         /// <summary>
         ///   The extension white list.
@@ -96,10 +86,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// The browser modus.
         /// </summary>
         private string browserModus;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the accept file types.
@@ -172,12 +158,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>
-        /// Gets the get folder information identifier.
-        /// </summary>
-        /// <value>
-        /// The get folder information identifier.
-        /// </value>
+        /// <summary>Gets or sets the current folder ID.</summary>
+
         protected int CurrentFolderId
         {
             get
@@ -295,10 +277,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Set the file url from JavaScript to code.
         /// </summary>
@@ -387,13 +365,13 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
 
-                                dr["Info"] =
-                                    string.Format(fileItemDisplayFormat,
-                                            sizeResx,
-                                            createdResx,
-                                            name,
-                                            fileItem.Size,
-                                            fileItem.LastModificationTime);
+                                dr["Info"] = string.Format(
+                                    FileItemDisplayFormat,
+                                    sizeResx,
+                                    createdResx,
+                                    name,
+                                    fileItem.Size,
+                                    fileItem.LastModificationTime);
 
                                 filesTable.Rows.Add(dr);
                             }
@@ -408,13 +386,13 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                                 dr["PictureURL"] = "images/types/swf.png";
 
-                                dr["Info"] =
-                                    string.Format(fileItemDisplayFormat,
-                                            sizeResx,
-                                            createdResx,
-                                            name,
-                                            fileItem.Size,
-                                            fileItem.LastModificationTime);
+                                dr["Info"] = string.Format(
+                                    FileItemDisplayFormat,
+                                    sizeResx,
+                                    createdResx,
+                                    name,
+                                    fileItem.Size,
+                                    fileItem.LastModificationTime);
 
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
@@ -458,13 +436,13 @@ namespace DNNConnect.CKEditorProvider.Browser
                             dr["FileName"] = name;
                             dr["FileId"] = fileItem.FileId;
 
-                            dr["Info"] =
-                                string.Format(fileItemDisplayFormat,
-                                        sizeResx,
-                                        createdResx,
-                                        name,
-                                        fileItem.Size,
-                                        fileItem.LastModificationTime);
+                            dr["Info"] = string.Format(
+                                FileItemDisplayFormat,
+                                sizeResx,
+                                createdResx,
+                                name,
+                                fileItem.Size,
+                                fileItem.LastModificationTime);
 
                             filesTable.Rows.Add(dr);
                         }
@@ -475,10 +453,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             return filesTable;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Register JavaScripts and CSS.
@@ -569,7 +543,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 var tabController = new TabController();
 
                 var selectTab = tabController.GetTab(
-                    int.Parse(this.dnntreeTabs.SelectedValue), this._portalSettings.PortalId, true);
+                    int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
                 string fileName = null;
                 var domainName = string.Format("http://{0}", Globals.GetDomainName(this.Request, true));
@@ -584,9 +558,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                                               "{0}&language={1}",
                                               Globals.ApplicationURL(selectTab.TabID),
                                               this.LanguageList.SelectedValue),
-                                          this._portalSettings)
+                                          this.portalSettings)
                                       : Globals.FriendlyUrl(
-                                          selectTab, Globals.ApplicationURL(selectTab.TabID), this._portalSettings);
+                                          selectTab, Globals.ApplicationURL(selectTab.TabID), this.portalSettings);
 
                 var locale = localeSelected
                                  ? string.Format("language/{0}/", this.LanguageList.SelectedValue)
@@ -655,8 +629,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                     var filePath = FileManager.Instance.GetUrl(fileInfo);
 
                     if (this.rblLinkType.SelectedValue.Equals("absLnk", StringComparison.InvariantCultureIgnoreCase))
+                    {
                         filePath = this.BuildAbsoluteUrl(filePath);
-
+                    }
 
                     this.Response.Write("<script type=\"text/javascript\">");
                     this.Response.Write(this.GetJavaScriptCode(string.Empty, filePath, false));
@@ -689,7 +664,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </returns>
         protected virtual string GetJavaScriptCode(string fileName, string fileUrl, bool isPageLink)
         {
-
             if (!string.IsNullOrEmpty(fileUrl) && !string.IsNullOrEmpty(fileName))
             {
                 // If we have both, combine them
@@ -872,17 +846,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
-        /// Sets the sort button classes.
-        /// </summary>
-        private void SetSortButtonClasses()
-        {
-            this.SortAscending.CssClass = !this.SortFilesAscending ? "ButtonNormal" : "ButtonSelected";
-            this.SortDescending.CssClass = !this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
-            this.SortByDateAscending.CssClass = !this.SortFilesDateAscending ? "ButtonNormal" : "ButtonSelected";
-            this.SortByDateDescending.CssClass = !this.SortFilesDateDescending ? "ButtonNormal" : "ButtonSelected";
-        }
-
-        /// <summary>
         /// Raises the <see cref="E:System.Web.UI.Control.Init"/> event to initialize the page.
         /// </summary>
         /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
@@ -917,21 +880,21 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
 
-            var portalRoles = RoleController.Instance.GetRoles(this._portalSettings.PortalId);
+            var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
 
             switch (this.currentSettings.SettingMode)
             {
                 case SettingsMode.Default:
                     // Load Default Settings
                     this.currentSettings = SettingsUtil.GetDefaultSettings(
-                        this._portalSettings,
-                        this._portalSettings.HomeDirectoryMapPath,
+                        this.portalSettings,
+                        this.portalSettings.HomeDirectoryMapPath,
                         objProvider.Attributes["ck_configFolder"],
                         portalRoles);
                     break;
                 case SettingsMode.Host:
                     this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        this._portalSettings,
+                        this.portalSettings,
                         this.currentSettings,
                         settingsDictionary,
                         "DNNCKH#",
@@ -939,7 +902,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     break;
                 case SettingsMode.Portal:
                     this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        this._portalSettings,
+                        this.portalSettings,
                         this.currentSettings,
                         settingsDictionary,
                         $"DNNCKP#{this.request.QueryString["PortalID"]}#",
@@ -947,7 +910,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     break;
                 case SettingsMode.Page:
                     this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        this._portalSettings,
+                        this.portalSettings,
                         this.currentSettings,
                         settingsDictionary,
                         $"DNNCKT#{this.request.QueryString["tabid"]}#",
@@ -955,7 +918,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     break;
                 case SettingsMode.ModuleInstance:
                     this.currentSettings = SettingsUtil.LoadModuleSettings(
-                        this._portalSettings,
+                        this.portalSettings,
                         this.currentSettings,
                         $"DNNCKMI#{this.request.QueryString["mid"]}#INS#{this.request.QueryString["ckId"]}#",
                         int.Parse(this.request.QueryString["mid"]),
@@ -966,7 +929,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             // set current Upload file size limit
             this.currentSettings.UploadFileSizeLimit = SettingsUtil.GetCurrentUserUploadSize(
                 this.currentSettings,
-                this._portalSettings,
+                this.portalSettings,
                 HttpContext.Current.Request);
 
             if (this.currentSettings.BrowserMode.Equals(BrowserType.StandardBrowser)
@@ -1168,7 +1131,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             var currentFolderInfo = this.GetCurrentFolder();
 
-            FolderManager.Instance.Synchronize(this._portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
+            FolderManager.Instance.Synchronize(this.portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
 
             // Reload Folder
             this.ShowFilesIn(this.GetCurrentFolder());
@@ -1419,6 +1382,18 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
+        /// Shows the files in directory.
+        /// </summary>
+        /// <param name="directory">The directory.</param>
+        /// <param name="pagerChanged">if set to <c>true</c> [pager changed].</param>
+        protected void ShowFilesIn(string directory, bool pagerChanged = false)
+        {
+            var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(directory, this.portalSettings);
+
+            this.ShowFilesIn(currentFolderInfo, pagerChanged);
+        }
+
+        /// <summary>
         /// Formats a MapPath into relative MapUrl.
         /// </summary>
         /// <param name="sPath">
@@ -1462,6 +1437,17 @@ namespace DNNConnect.CKEditorProvider.Browser
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
 
             return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
+        }
+
+        /// <summary>
+        /// Sets the sort button classes.
+        /// </summary>
+        private void SetSortButtonClasses()
+        {
+            this.SortAscending.CssClass = !this.SortFilesAscending ? "ButtonNormal" : "ButtonSelected";
+            this.SortDescending.CssClass = !this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
+            this.SortByDateAscending.CssClass = !this.SortFilesDateAscending ? "ButtonNormal" : "ButtonSelected";
+            this.SortByDateDescending.CssClass = !this.SortFilesDateDescending ? "ButtonNormal" : "ButtonSelected";
         }
 
         /// <summary>
@@ -1514,7 +1500,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="isFileSelected">if set to <c>true</c> [is file selected].</param>
         private void CheckFolderAccess(int folderId, bool isFileSelected)
         {
-            var hasWriteAccess = Utility.CheckIfUserHasFolderWriteAccess(folderId, this._portalSettings);
+            var hasWriteAccess = Utility.CheckIfUserHasFolderWriteAccess(folderId, this.portalSettings);
 
             this.cmdUpload.Enabled = hasWriteAccess;
             this.cmdCreate.Enabled = hasWriteAccess;
@@ -1609,7 +1595,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 Text = folderName,
                 Value = currentFolderInfo.FolderID.ToString(),
                 ImageUrl = this.GetFolderIcon(currentFolderInfo),
-                // ExpandedImageUrl = "Images/folderOpen.gif"
+                ////ExpandedImageUrl = "Images/folderOpen.gif"
             };
 
             this.FoldersTree.Nodes.Add(folderNode);
@@ -1700,7 +1686,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             if (!this.currentSettings.BrowserRootDirId.Equals(-1))
             {
-                // var rootFolder = new FolderController().GetFolderInfo(this._portalSettings.PortalId, this.currentSettings.BrowserRootDirId);
+                // var rootFolder = new FolderController().GetFolderInfo(this.portalSettings.PortalId, this.currentSettings.BrowserRootDirId);
                 var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirId);
 
                 if (rootFolder != null)
@@ -1710,10 +1696,10 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
             else
             {
-                startingFolderInfo = FolderManager.Instance.GetFolder(this._portalSettings.PortalId, string.Empty);
+                startingFolderInfo = FolderManager.Instance.GetFolder(this.portalSettings.PortalId, string.Empty);
             }
 
-            if (Utility.IsInRoles(this._portalSettings.AdministratorRoleName, this._portalSettings))
+            if (Utility.IsInRoles(this.portalSettings.AdministratorRoleName, this.portalSettings))
             {
                 return startingFolderInfo;
             }
@@ -1735,10 +1721,10 @@ namespace DNNConnect.CKEditorProvider.Browser
             var folderStart = startingFolderInfo.PhysicalPath;
 
             folderStart =
-                folderStart.Substring(this._portalSettings.HomeDirectoryMapPath.Length).Replace(
+                folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(
                     "\\", "/");
 
-            startingFolderInfo = FolderManager.Instance.AddFolder(this._portalSettings.PortalId, folderStart);
+            startingFolderInfo = FolderManager.Instance.AddFolder(this.portalSettings.PortalId, folderStart);
 
             Directory.CreateDirectory(startingFolderInfo.PhysicalPath);
 
@@ -1763,9 +1749,9 @@ namespace DNNConnect.CKEditorProvider.Browser
             {
                 var folderStart = userFolderPath;
 
-                folderStart = folderStart.Substring(this._portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+                folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
 
-                userFolderInfo = FolderManager.Instance.AddFolder(this._portalSettings.PortalId, folderStart);
+                userFolderInfo = FolderManager.Instance.AddFolder(this.portalSettings.PortalId, folderStart);
 
                 Directory.CreateDirectory(userFolderPath);
 
@@ -1781,9 +1767,9 @@ namespace DNNConnect.CKEditorProvider.Browser
             {
                 var folderStart = userFolderPath;
 
-                folderStart = folderStart.Substring(this._portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+                folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
 
-                userFolderInfo = FolderManager.Instance.AddFolder(this._portalSettings.PortalId, folderStart);
+                userFolderInfo = FolderManager.Instance.AddFolder(this.portalSettings.PortalId, folderStart);
 
                 Directory.CreateDirectory(userFolderPath);
 
@@ -1793,7 +1779,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
             else
             {
-                userFolderInfo = Utility.ConvertFilePathToFolderInfo(userFolderPath, this._portalSettings);
+                userFolderInfo = Utility.ConvertFilePathToFolderInfo(userFolderPath, this.portalSettings);
 
                 // make sure the user has the correct permissions set
                 this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
@@ -1808,7 +1794,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private void InitializeComponent()
         {
-            this._portalSettings = this.GetPortalSettings();
+            this.portalSettings = this.GetPortalSettings();
 
             this.cmdCancel.Click += this.Cancel_Click;
             this.cmdUploadNow.Click += this.UploadNow_Click;
@@ -1838,12 +1824,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private void LoadFavIcon()
         {
-            if (!File.Exists(Path.Combine(this._portalSettings.HomeDirectoryMapPath, "favicon.ico")))
+            if (!File.Exists(Path.Combine(this.portalSettings.HomeDirectoryMapPath, "favicon.ico")))
             {
                 return;
             }
 
-            var faviconUrl = Path.Combine(this._portalSettings.HomeDirectory, "favicon.ico");
+            var faviconUrl = Path.Combine(this.portalSettings.HomeDirectory, "favicon.ico");
 
             var objLink = new HtmlGenericSelfClosing("link");
 
@@ -1891,7 +1877,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             foreach (
                 var languageListItem in
-                    new LocaleController().GetLocales(this._portalSettings.PortalId)
+                    new LocaleController().GetLocales(this.portalSettings.PortalId)
                                           .Values.Select(
                                               language => new ListItem { Text = language.Text, Value = language.Code }))
             {
@@ -1905,13 +1891,13 @@ namespace DNNConnect.CKEditorProvider.Browser
             else
             {
                 // Set default locale and remove no locale if Content Localization is Enabled
-                if (!this._portalSettings.ContentLocalizationEnabled)
+                if (!this.portalSettings.ContentLocalizationEnabled)
                 {
                     return;
                 }
 
                 var currentTab = new TabController().GetTab(
-                    int.Parse(this.request.QueryString["tabid"]), this._portalSettings.PortalId, false);
+                    int.Parse(this.request.QueryString["tabid"]), this.portalSettings.PortalId, false);
 
                 if (currentTab == null || string.IsNullOrEmpty(currentTab.CultureCode))
                 {
@@ -1939,7 +1925,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 return;
             }
 
-            var allPortalTabsList = TabController.GetPortalTabs(this._portalSettings.PortalId, -1, false, null, true, false, true, true, false);
+            var allPortalTabsList = TabController.GetPortalTabs(this.portalSettings.PortalId, -1, false, null, true, false, true, true, false);
             var allPortalTabs = new HashSet<TabInfo>(allPortalTabsList);
 
             Func<TabInfo, int> getNodeId = x => x.TabID;
@@ -2298,7 +2284,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 var isAllowedExtension = AllowedImageExtensions.Contains(Path.GetExtension(fileName).TrimStart('.'));
 
-
                 this.cmdResizer.Enabled = this.cmdResizer.Enabled && isAllowedExtension;
                 this.cmdResizer.CssClass = this.cmdResizer.Enabled ? "LinkNormal" : "LinkDisabled";
 
@@ -2321,25 +2306,15 @@ namespace DNNConnect.CKEditorProvider.Browser
         private string BuildAbsoluteUrl(string fileUrl)
         {
             if (fileUrl.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
+            {
                 return fileUrl;
+            }
 
             return string.Format(
                     "{0}://{1}{2}",
                     HttpContext.Current.Request.Url.Scheme,
                     HttpContext.Current.Request.Url.Authority,
                     fileUrl);
-        }
-
-        /// <summary>
-        /// Shows the files in directory.
-        /// </summary>
-        /// <param name="directory">The directory.</param>
-        /// <param name="pagerChanged">if set to <c>true</c> [pager changed].</param>
-        protected void ShowFilesIn(string directory, bool pagerChanged = false)
-        {
-            var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(directory, this._portalSettings);
-
-            this.ShowFilesIn(currentFolderInfo, pagerChanged);
         }
 
         /// <summary>
@@ -2572,7 +2547,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 try
                 {
-                    var portalId = this._portalSettings.PortalId;
+                    var portalId = this.portalSettings.PortalId;
                     var currentFolder = this.GetCurrentFolder();
                     var newFolderPath = string.Format("{0}{1}/", currentFolder.FolderPath, this.tbFolderName.Text);
 
@@ -2655,7 +2630,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             // Add new file to database
             var currentFolderInfo = this.GetCurrentFolder();
 
-            FolderManager.Instance.Synchronize(this._portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
+            FolderManager.Instance.Synchronize(this.portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
 
             this.ShowFilesIn(this.GetCurrentFolder());
 
@@ -2791,7 +2766,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             // Add new file to database
             var currentFolderInfo = this.GetCurrentFolder();
 
-            FolderManager.Instance.Synchronize(this._portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
+            FolderManager.Instance.Synchronize(this.portalSettings.PortalId, currentFolderInfo.FolderPath, false, true);
 
             // Hide Image Editor Panels
             this.panImagePreview.Visible = false;
@@ -2963,7 +2938,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             var tabController = new TabController();
 
             var selectTab = tabController.GetTab(
-                int.Parse(this.dnntreeTabs.SelectedValue), this._portalSettings.PortalId, true);
+                int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
             string sDomainName = string.Format("http://{0}", Globals.GetDomainName(this.Request, true));
 
@@ -2979,9 +2954,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                                                "{0}&language={1}",
                                                Globals.ApplicationURL(selectTab.TabID),
                                                this.LanguageList.SelectedValue),
-                                           this._portalSettings)
+                                           this.portalSettings)
                                        : Globals.FriendlyUrl(
-                                           selectTab, Globals.ApplicationURL(selectTab.TabID), this._portalSettings);
+                                           selectTab, Globals.ApplicationURL(selectTab.TabID), this.portalSettings);
 
                 // Relative Url
                 fileName = Globals.ResolveUrl(Regex.Replace(fileName, sDomainName, "~", RegexOptions.IgnoreCase));
@@ -3144,7 +3119,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.SetDefaultLinkTypeText();
         }
 
-
         /// <summary>
         /// Load Files of Selected Folder.
         /// </summary>
@@ -3178,11 +3152,11 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private void GetDiskSpaceUsed()
         {
-            var spaceAvailable = this._portalSettings.HostSpace.Equals(0)
+            var spaceAvailable = this.portalSettings.HostSpace.Equals(0)
                                      ? Localization.GetString("UnlimitedSpace.Text", this.ResXFile, this.LanguageCode)
-                                     : string.Format("{0}MB", this._portalSettings.HostSpace);
+                                     : string.Format("{0}MB", this.portalSettings.HostSpace);
 
-            var spaceUsed = new PortalController().GetPortalSpaceUsedBytes(this._portalSettings.PortalId);
+            var spaceUsed = new PortalController().GetPortalSpaceUsedBytes(this.portalSettings.PortalId);
 
             string usedSpace;
 
@@ -3259,7 +3233,5 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             return foundNode;
         }
-
-        #endregion
     }
 }

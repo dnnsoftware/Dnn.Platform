@@ -2,36 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
-
-using DNNConnect.CKEditorProvider.Constants;
-using DNNConnect.CKEditorProvider.Objects;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Common.Utilities;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    using DNNConnect.CKEditorProvider.Constants;
+    using DNNConnect.CKEditorProvider.Objects;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
 
     /// <summary>
     /// Settings Base Helper Class.
     /// </summary>
     public class SettingsUtil
     {
-        #region Public Methods
-
         /// <summary>
         /// Checks the exists portal or page settings.
         /// </summary>
@@ -70,6 +68,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 var hshModSet = module.ModuleSettings;
                 return hshModSet != null && hshModSet.Keys.Cast<string>().Any(key => key.StartsWith(moduleKey));
             }
+
             return false;
         }
 
@@ -88,6 +87,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                 return hshModSet != null && !string.IsNullOrEmpty((string)hshModSet[string.Format("{0}skin", moduleKey)]);
             }
+
             return false;
         }
 
@@ -103,7 +103,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Returns the Filled Settings.
         /// </returns>
         internal static EditorProviderSettings LoadEditorSettingsByKey(
-            PortalSettings portalSettings,
+            IPortalSettings portalSettings,
             EditorProviderSettings currentSettings,
             List<EditorHostSetting> editorHostSettings,
             string key,
@@ -788,7 +788,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the filled Module Settings.
         /// </returns>
-        internal static EditorProviderSettings LoadModuleSettings(PortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
+        internal static EditorProviderSettings LoadModuleSettings(IPortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
         {
             Hashtable hshModSet = null;
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
@@ -837,10 +837,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 switch (info.Name)
                 {
                     case "ToolbarLocation":
+                        var toolBarLocation = (ToolBarLocation)Enum.Parse(
+                            typeof(ToolBarLocation),
+                            (string)hshModSet[string.Format("{0}{1}", key, info.Name)]);
                         info.SetValue(
                             currentSettings.Config,
-                            (ToolBarLocation)Enum.Parse(
-                                typeof(ToolBarLocation), (string)hshModSet[string.Format("{0}{1}", key, info.Name)]),
+                            toolBarLocation,
                             null);
                         break;
                     case "DefaultLinkType":
@@ -857,10 +859,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             null);
                         break;
                     case "ContentsLangDirection":
+                        var languageDirection = (LanguageDirection)Enum.Parse(
+                            typeof(LanguageDirection),
+                            (string)hshModSet[string.Format("{0}{1}", key, info.Name)]);
                         info.SetValue(
                             currentSettings.Config,
-                            (LanguageDirection)Enum.Parse(
-                                typeof(LanguageDirection), (string)hshModSet[string.Format("{0}{1}", key, info.Name)]),
+                            languageDirection,
                             null);
                         break;
                     case "CodeMirror":
@@ -1212,7 +1216,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the Default Provider Settings.
         /// </returns>
-        internal static EditorProviderSettings GetDefaultSettings(PortalSettings portalSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
+        internal static EditorProviderSettings GetDefaultSettings(IPortalSettings portalSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
         {
             var roles = new ArrayList();
 
@@ -1479,7 +1483,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     SourceAreaTabSize = 20,
                     TabIndex = 0,
                     TabSpaces = 0,
-                    UndoStackSize = 20
+                    UndoStackSize = 20,
                 },
             };
 
@@ -1512,7 +1516,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="httpRequest">The HTTP request.</param>
         /// <returns>Returns the MAX. upload file size for the current user.</returns>
-        internal static int GetCurrentUserUploadSize(EditorProviderSettings settings, PortalSettings portalSettings, HttpRequest httpRequest)
+        internal static int GetCurrentUserUploadSize(EditorProviderSettings settings, IPortalSettings portalSettings, HttpRequest httpRequest)
         {
             var uploadFileLimitForPortal = Convert.ToInt32(Utility.GetMaxUploadSize());
 
@@ -1563,7 +1567,5 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             return listUserUploadFileSizes.Find(toolbarSel => toolbarSel.Priority.Equals(iHighestPrio)).Priority;
         }
-
-        #endregion
     }
 }

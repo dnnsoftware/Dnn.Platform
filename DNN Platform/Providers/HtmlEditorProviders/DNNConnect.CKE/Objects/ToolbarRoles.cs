@@ -9,8 +9,6 @@ namespace DNNConnect.CKEditorProvider.Objects
     /// </summary>
     public class ToolbarRoles
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets a value indicating whether Role ID.
         /// </summary>
@@ -20,7 +18,5 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// Gets or sets a value indicating whether Toolbar Name.
         /// </summary>
         public string Toolbar { get; set; }
-
-        #endregion
     }
 }

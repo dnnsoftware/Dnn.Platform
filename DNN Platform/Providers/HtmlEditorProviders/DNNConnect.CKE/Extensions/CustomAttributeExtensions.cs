@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Reflection;
-
 namespace DNNConnect.CKEditorProvider.Extensions
 {
+    using System;
+    using System.Reflection;
 
     /// <summary>
     /// Custom Attribute Extensions.
@@ -22,7 +21,8 @@ namespace DNNConnect.CKEditorProvider.Extensions
         /// <returns>
         /// Returns the Custom Attribute.
         /// </returns>
-        public static T GetCustomAttribute<T>(this PropertyInfo propertyInfo, bool inherit) where T : Attribute
+        public static T GetCustomAttribute<T>(this PropertyInfo propertyInfo, bool inherit)
+            where T : Attribute
         {
             object[] attributes = propertyInfo.GetCustomAttributes(typeof(T), inherit);
 
