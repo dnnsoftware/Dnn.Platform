@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Modules.HtmlEditorManager.Views
 {
     using System;
@@ -26,6 +25,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         /// <value>The editor panel.</value>
         PlaceHolder Editor { get; set; }
 
+        /// <summary>Refresh the provider configuration view.</summary>
         void Refresh();
     }
 }
