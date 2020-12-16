@@ -20,7 +20,6 @@ namespace DNN.Connectors.GoogleTagManager
     {
         private const string DefaultDisplayName = "Google Tag Manager";
 
-
         private string displayName;
 
         /// <inheritdoc/>
