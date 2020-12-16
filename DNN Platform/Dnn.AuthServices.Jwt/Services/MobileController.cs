@@ -113,11 +113,13 @@ namespace Dnn.AuthServices.Jwt.Services
         [JsonObject]
         public class TestPostData
         {
+#pragma warning disable SA1401 // Field should be private
             /// <summary>
             /// The text used in the test.
             /// </summary>
             [JsonProperty("text")]
             public string Text;
+#pragma warning restore SA1401 // Field should be private
         }
     }
 }
