@@ -11,8 +11,12 @@ namespace DotNetNuke.Authentication.Google.Components
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
 
+    /// <inheritdoc/>
     public class GoogleClient : OAuthClientBase
     {
+        /// <summary>Initializes a new instance of the <see cref="GoogleClient"/> class.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="mode">The auth mode.</param>
         public GoogleClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Google")
         {
@@ -30,6 +34,7 @@ namespace DotNetNuke.Authentication.Google.Components
             this.LoadTokenCookie(string.Empty);
         }
 
+        /// <inheritdoc/>
         protected override TimeSpan GetExpiry(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();
@@ -38,6 +43,7 @@ namespace DotNetNuke.Authentication.Google.Components
             return new TimeSpan(0, 0, Convert.ToInt32(tokenDictionary["expires_in"]));
         }
 
+        /// <inheritdoc/>
         protected override string GetToken(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();

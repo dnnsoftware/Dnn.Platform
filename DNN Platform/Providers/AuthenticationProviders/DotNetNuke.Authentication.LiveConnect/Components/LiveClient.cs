@@ -11,8 +11,12 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
 
+    /// <inheritdoc/>
     public class LiveClient : OAuthClientBase
     {
+        /// <summary>Initializes a new instance of the <see cref="LiveClient"/> class.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="mode">The auth mode.</param>
         public LiveClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Live")
         {
@@ -32,6 +36,7 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
             this.LoadTokenCookie(string.Empty);
         }
 
+        /// <inheritdoc/>
         protected override TimeSpan GetExpiry(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();
@@ -40,6 +45,7 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
             return new TimeSpan(0, 0, Convert.ToInt32(tokenDictionary["expires_in"]));
         }
 
+        /// <inheritdoc/>
         protected override string GetToken(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();
