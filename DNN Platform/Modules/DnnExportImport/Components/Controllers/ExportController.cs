@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Controllers
 {
     using System.IO;
@@ -15,8 +14,13 @@ namespace Dnn.ExportImport.Components.Controllers
     using DotNetNuke.Entities.Portals;
     using Newtonsoft.Json;
 
+    /// <summary>The export controller.</summary>
     public class ExportController : BaseController
     {
+        /// <summary>Queues an export operation.</summary>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="exportDto">The export DTO.</param>
+        /// <returns>The job ID.</returns>
         public int QueueOperation(int userId, ExportDto exportDto)
         {
             exportDto.ProductSku = DotNetNuke.Application.DotNetNukeContext.Current.Application.SKU;
@@ -31,8 +35,15 @@ namespace Dnn.ExportImport.Components.Controllers
 
             var dataObject = JsonConvert.SerializeObject(exportDto);
             exportDto.IsDirty = false; // This should be set to false for new job.
-            var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
-                JobType.Export, exportDto.ExportName, exportDto.ExportDescription, directory, dataObject);
+            var jobId = DataProvider.Instance()
+                .AddNewJob(
+                    exportDto.PortalId,
+                    userId,
+                    JobType.Export,
+                    exportDto.ExportName,
+                    exportDto.ExportDescription,
+                    directory,
+                    dataObject);
 
             // Run the scheduler if required.
             if (exportDto.RunNow)
@@ -44,8 +55,11 @@ namespace Dnn.ExportImport.Components.Controllers
             return jobId;
         }
 
-        public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo,
-            ImportExportSummary summary)
+        /// <summary>Creates a package manifest.</summary>
+        /// <param name="exportJob">The export job.</param>
+        /// <param name="exportFileInfo">The export file info.</param>
+        /// <param name="summary">The summary.</param>
+        public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo, ImportExportSummary summary)
         {
             var filePath = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);
             var portal = PortalController.Instance.GetPortal(exportJob.PortalId);

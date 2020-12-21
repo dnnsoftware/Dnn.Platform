@@ -92,7 +92,9 @@
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
+    <Compile Include="Components\Dto\PageToExport.cs" />
     <Compile Include="Components\Dto\SummaryItem.cs" />
+    <Compile Include="Components\Dto\TriCheckedState.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Entities\ExportImportChekpoint.cs" />
     <Compile Include="Components\Entities\ExportImportJobLog.cs" />
