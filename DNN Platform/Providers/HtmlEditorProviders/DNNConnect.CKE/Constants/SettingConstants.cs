@@ -1,18 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-
 namespace DNNConnect.CKEditorProvider.Constants
 {
+    using System;
+
     /// <summary>
     /// Provider Constants.
     /// </summary>
     public static class SettingConstants
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The Legacy Toolbar Setting XML File Name.
         /// </summary>
@@ -163,7 +160,5 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// The resize height setting name.
         /// </summary>
         public const string RESIZEHEIGHT = "resizeheight";
-
-        #endregion
     }
 }

@@ -1,25 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System.Collections;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DNNConnect.CKEditorProvider.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Modules.HTMLEditorProvider;
-
 namespace DNNConnect.CKEditorProvider
 {
+    using System.Collections;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DNNConnect.CKEditorProvider.Web;
+    using DotNetNuke.Common;
+    using DotNetNuke.Modules.HTMLEditorProvider;
 
     /// <summary>
     /// The CKEditor Provider.
     /// </summary>
     public class CKHtmlEditorProvider : HtmlEditorProvider
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The _additional toolbars.
         /// </summary>
@@ -34,10 +30,6 @@ namespace DNNConnect.CKEditorProvider
         /// The _root image directory.
         /// </summary>
         private string rootImageDirectory;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets AdditionalToolbars.
@@ -143,10 +135,6 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// The add toolbar.
         /// </summary>
@@ -162,7 +150,5 @@ namespace DNNConnect.CKEditorProvider
         {
             this.htmlEditorControl = new EditorControl { ID = this.ControlID };
         }
-
-        #endregion
     }
 }
