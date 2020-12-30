@@ -43,5 +43,6 @@ namespace DotNetNuke.Entities.Urls
         Module_Provider_Rewrite_Redirect,
         Module_Provider_Redirect,
         Requested_SplashPage,
+        Tab_Temporary_Redirect,
     }
 }
