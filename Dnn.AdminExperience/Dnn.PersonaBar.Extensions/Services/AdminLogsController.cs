@@ -388,13 +388,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             {
                 if (!this.UserInfo.IsSuperUser)
                 {
-                    var isAdmin = this.UserInfo.Roles.Contains(this.PortalSettings.AdministratorRoleName);
-                    if (isAdmin)
-                    {
-                        return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
-                    }
-
-                    request.LogTypePortalID = this.PortalId.ToString();
+                    return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
 
                 var logTypeConfigInfo = JObject.FromObject(request).ToObject<LogTypeConfigInfo>();
