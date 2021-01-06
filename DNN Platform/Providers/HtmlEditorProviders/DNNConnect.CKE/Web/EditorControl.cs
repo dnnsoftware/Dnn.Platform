@@ -397,6 +397,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
                         this.settings["removePlugins"] += "image";
                     }
+
+                    this.settings.Add("cloudServices_uploadUrl",
+                        $"/API/CKEditorProvider/EasyImage/UploadFile?tabid={this.portalSettings.ActiveTab.TabID}&portalid={this.portalSettings.PortalId}&mid={this.parentModulId}&ckid={this.ID}");
                 }
                 else
                 {
@@ -414,7 +417,6 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 // cloudservices variables need to be set regardless
                 this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/EasyImage/GetToken");
-                this.settings.Add("cloudServices_uploadUrl", "/API/CKEditorProvider/EasyImage/UploadFile");
 
                 // Editor Width
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))

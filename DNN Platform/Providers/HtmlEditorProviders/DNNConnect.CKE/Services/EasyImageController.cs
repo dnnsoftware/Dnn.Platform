@@ -31,7 +31,7 @@ namespace DNNConnect.CKEditorProvider.Services
         [DnnAuthorize]
         [HttpPost]
         //[IFrameSupportedValidateAntiForgeryToken]
-        public HttpResponseMessage UploadFile()
+        public HttpResponseMessage UploadFile(int portalId, int tabId, int mid, string ckid)
         {
             //var statuses = new List<FilesStatus>();
             //try
