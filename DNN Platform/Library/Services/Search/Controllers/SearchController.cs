@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Search.Controllers
     /// </summary>
     public class SearchController : ServiceLocator<ISearchController, SearchController>
     {
+        /// <inheritdoc/>
         protected override Func<ISearchController> GetFactory()
         {
             return () => new SearchControllerImpl();

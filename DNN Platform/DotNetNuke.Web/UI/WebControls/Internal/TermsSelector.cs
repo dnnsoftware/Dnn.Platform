@@ -10,8 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using Globals = DotNetNuke.Common.Globals;
 
@@ -62,8 +60,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         public override bool MultipleSelect { get; set; } = true;
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

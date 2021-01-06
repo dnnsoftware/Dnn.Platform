@@ -20,8 +20,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    using Microsoft.Extensions.DependencyInjection;
-
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : PortalModuleBase
@@ -448,6 +446,7 @@ namespace DotNetNuke.Entities.Modules
             ModuleController.SynchronizeModule(this.ModuleId);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)
@@ -462,6 +461,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)

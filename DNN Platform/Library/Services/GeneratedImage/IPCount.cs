@@ -7,12 +7,10 @@ namespace DotNetNuke.Services.GeneratedImage
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Net;
     using System.Threading;
     using System.Web;
     using System.Web.Hosting;
 
-    using DotNetNuke.Common.Utils;
     using DotNetNuke.Services.UserRequest;
 
     public class IPCount

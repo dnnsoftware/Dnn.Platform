@@ -23,8 +23,10 @@ namespace DotNetNuke.Services.Search.Controllers
     {
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
+        /// <inheritdoc/>
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_tab", LocalizedResxFile);
 
+        /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var viewable = true;
@@ -38,6 +40,7 @@ namespace DotNetNuke.Services.Search.Controllers
             return viewable;
         }
 
+        /// <inheritdoc/>
         public override string GetDocUrl(SearchResult searchResult)
         {
             var url = Localization.GetString("SEARCH_NoLink");

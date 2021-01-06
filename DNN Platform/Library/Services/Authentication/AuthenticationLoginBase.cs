@@ -18,6 +18,9 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLoginBase : UserModuleBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationLoginBase"/> class.
+        /// </summary>
         protected AuthenticationLoginBase()
         {
             this.RedirectURL = Null.NullString;

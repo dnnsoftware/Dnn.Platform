@@ -10,7 +10,6 @@ namespace DotNetNuke.ComponentModel
 
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Exceptions;
 
     public class ProviderInstaller : IComponentInstaller
     {
@@ -20,6 +19,11 @@ namespace DotNetNuke.ComponentModel
         private readonly string _ProviderType;
         private Type _defaultProvider;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
+        /// </summary>
+        /// <param name="providerType"></param>
+        /// <param name="providerInterface"></param>
         public ProviderInstaller(string providerType, Type providerInterface)
         {
             this._ComponentLifeStyle = ComponentLifeStyleType.Singleton;
@@ -27,6 +31,12 @@ namespace DotNetNuke.ComponentModel
             this._ProviderInterface = providerInterface;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
+        /// </summary>
+        /// <param name="providerType"></param>
+        /// <param name="providerInterface"></param>
+        /// <param name="defaultProvider"></param>
         public ProviderInstaller(string providerType, Type providerInterface, Type defaultProvider)
         {
             this._ComponentLifeStyle = ComponentLifeStyleType.Singleton;
@@ -35,6 +45,12 @@ namespace DotNetNuke.ComponentModel
             this._defaultProvider = defaultProvider;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
+        /// </summary>
+        /// <param name="providerType"></param>
+        /// <param name="providerInterface"></param>
+        /// <param name="lifeStyle"></param>
         public ProviderInstaller(string providerType, Type providerInterface, ComponentLifeStyleType lifeStyle)
         {
             this._ComponentLifeStyle = lifeStyle;
@@ -42,6 +58,7 @@ namespace DotNetNuke.ComponentModel
             this._ProviderInterface = providerInterface;
         }
 
+        /// <inheritdoc/>
         public void InstallComponents(IContainer container)
         {
             ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this._ProviderType);

@@ -24,6 +24,9 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class ModuleControlInfo : ControlInfo, IXmlSerializable, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleControlInfo"/> class.
+        /// </summary>
         public ModuleControlInfo()
         {
             this.ModuleControlID = Null.NullInteger;

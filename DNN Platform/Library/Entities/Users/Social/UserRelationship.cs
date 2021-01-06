@@ -24,6 +24,9 @@ namespace DotNetNuke.Entities.Users.Social
     [Serializable]
     public class UserRelationship : BaseEntityInfo, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRelationship"/> class.
+        /// </summary>
         public UserRelationship()
         {
             this.UserRelationshipId = -1;

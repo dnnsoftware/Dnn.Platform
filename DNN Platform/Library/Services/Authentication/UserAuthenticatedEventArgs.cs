@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Authentication
     using System;
     using System.Collections.Specialized;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
 

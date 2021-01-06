@@ -12,32 +12,38 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
+    /// <summary>
+    /// Provides Dnn specific details authorization filter.
+    /// </summary>
     public sealed class DnnAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
         private static readonly List<string> DefaultAuthTypes = new List<string>();
 
         private static readonly string[] EmptyArray = new string[0];
 
-        private string _staticRoles;
-        private string[] _staticRolesSplit = new string[0];
+        private string staticRoles;
+        private string[] staticRolesSplit = new string[0];
 
-        private string _denyRoles;
-        private string[] _denyRolesSplit = new string[0];
+        private string denyRoles;
+        private string[] denyRolesSplit = new string[0];
 
-        private string _authTypes;
-        private string[] _authTypesSplit = new string[0];
+        private string authTypes;
+        private string[] authTypesSplit = new string[0];
 
         /// <summary>
         /// Gets or sets the authorized roles (separated by comma).
         /// </summary>
         public string StaticRoles
         {
-            get { return this._staticRoles; }
+            get
+            {
+                return this.staticRoles;
+            }
 
             set
             {
-                this._staticRoles = value;
-                this._staticRolesSplit = SplitString(this._staticRoles);
+                this.staticRoles = value;
+                this.staticRolesSplit = SplitString(this.staticRoles);
             }
         }
 
@@ -46,12 +52,15 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public string DenyRoles
         {
-            get { return this._denyRoles; }
+            get
+            {
+                return this.denyRoles;
+            }
 
             set
             {
-                this._denyRoles = value;
-                this._denyRolesSplit = SplitString(this._denyRoles);
+                this.denyRoles = value;
+                this.denyRolesSplit = SplitString(this.denyRoles);
             }
         }
 
@@ -60,15 +69,19 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public string AuthTypes
         {
-            get { return this._authTypes; }
+            get
+            {
+                return this.authTypes;
+            }
 
             set
             {
-                this._authTypes = value;
-                this._authTypesSplit = SplitString(this._authTypes);
+                this.authTypes = value;
+                this.authTypesSplit = SplitString(this.authTypes);
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);
@@ -79,19 +92,19 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            if (this._denyRolesSplit.Any())
+            if (this.denyRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
-                if (!currentUser.IsSuperUser && this._denyRolesSplit.Any(currentUser.IsInRole))
+                if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }
             }
 
-            if (this._staticRolesSplit.Any())
+            if (this.staticRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
-                if (!this._staticRolesSplit.Any(currentUser.IsInRole))
+                if (!this.staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }
@@ -102,9 +115,9 @@ namespace DotNetNuke.Web.Api
             var currentAuthType = (identity.AuthenticationType ?? string.Empty).Trim();
             if (currentAuthType.Length > 0)
             {
-                if (this._authTypesSplit.Any())
+                if (this.authTypesSplit.Any())
                 {
-                    return this._authTypesSplit.Contains(currentAuthType);
+                    return this.authTypesSplit.Contains(currentAuthType);
                 }
 
                 return DefaultAuthTypes.Contains(currentAuthType);
@@ -113,6 +126,10 @@ namespace DotNetNuke.Web.Api
             return true;
         }
 
+        /// <summary>
+        /// Adds an authentication type to the default authentication types.
+        /// </summary>
+        /// <param name="authType">The name of the authentication type to add.</param>
         internal static void AppendToDefaultAuthTypes(string authType)
         {
             if (!string.IsNullOrEmpty(authType))

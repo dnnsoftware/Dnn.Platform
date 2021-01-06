@@ -270,21 +270,6 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            // check if running with known account defaults
-            if (this.Request.IsAuthenticated && string.IsNullOrEmpty(this.Request.QueryString["runningDefault"]) == false)
-            {
-                var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
-                var usernameLower = userInfo?.Username?.ToLowerInvariant();
-
-                // only show message to default users
-                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
-                {
-                    var messageText = this.RenderDefaultsWarning();
-                    var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
-                }
-            }
-
             // add CSS links
             ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/7.0.0/default.css"));
             ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
@@ -380,7 +365,7 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+            if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
             {
                 var editClass = "dnnEditState";
 
@@ -571,7 +556,7 @@ namespace DotNetNuke.Framework
 
             // META Refresh
             // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
-            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && this.PortalSettings.UserMode == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
+            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && Personalization.GetUserMode() == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
             {
                 this.MetaRefresh.Content = this.PortalSettings.ActiveTab.RefreshInterval.ToString();
                 this.MetaRefresh.Visible = true;
@@ -736,31 +721,6 @@ namespace DotNetNuke.Framework
             }
 
             return objDict;
-        }
-
-        /// <summary>
-        /// check if a warning about account defaults needs to be rendered.
-        /// </summary>
-        /// <returns>localised error message.</returns>
-        /// <remarks></remarks>
-        private string RenderDefaultsWarning()
-        {
-            var warningLevel = this.Request.QueryString["runningDefault"];
-            var warningMessage = string.Empty;
-            switch (warningLevel)
-            {
-                case "1":
-                    warningMessage = Localization.GetString("InsecureAdmin.Text", Localization.SharedResourceFile);
-                    break;
-                case "2":
-                    warningMessage = Localization.GetString("InsecureHost.Text", Localization.SharedResourceFile);
-                    break;
-                case "3":
-                    warningMessage = Localization.GetString("InsecureDefaults.Text", Localization.SharedResourceFile);
-                    break;
-            }
-
-            return warningMessage;
         }
 
         private IFileInfo GetBackgroundFileInfo()

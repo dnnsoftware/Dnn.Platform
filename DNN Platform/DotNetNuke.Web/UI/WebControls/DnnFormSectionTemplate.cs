@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string LocalResourceFile { get; set; }
 
+        /// <inheritdoc/>
         public void InstantiateIn(Control container)
         {
             var webControl = container as WebControl;

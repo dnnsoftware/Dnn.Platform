@@ -22,8 +22,11 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         }
 
         public int ScheduleId { get; set; }
+
         public string FriendlyName { get; set; }
+
         public string NextStart { get; set; }
+
         public bool Enabled { get; set; }
     }
 }

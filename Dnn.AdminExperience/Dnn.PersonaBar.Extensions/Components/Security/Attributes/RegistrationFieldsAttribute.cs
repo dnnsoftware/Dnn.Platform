@@ -24,7 +24,9 @@ namespace Dnn.PersonaBar.Security.Attributes
         }
 
         public string RegistrationFormTypePropertyName { get; private set; }
+
         public string RequireUniqueDisplayNamePropertyName { get; private set; }
+
         public string DisplayNameFormatPropertyName { get; private set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

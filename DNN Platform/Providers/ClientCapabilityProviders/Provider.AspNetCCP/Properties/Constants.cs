@@ -34,7 +34,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties
         /// </summary>
         public const string ConfigIconFileThumbNail = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/Images/mobiledevicedet_16X16.png";
 
-        // imported temporarily from 51D
+        /// <summary>The 51 Degrees value separator.</summary>
+        /// <remarks>imported temporarily from 51D.</remarks>
         public const string ValueSeperator = "|";
     }
 }

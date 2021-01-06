@@ -18,6 +18,9 @@ namespace DotNetNuke.Entities.DataStructures
         [DataMember(Name = "children")]
         public List<NTree<T>> Children;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NTree{T}"/> class.
+        /// </summary>
         public NTree()
         {
             this.Children = new List<NTree<T>>();

@@ -6,21 +6,24 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.UI.Modules;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : IActionControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
-    /// IActionControl provides a common INterface for Action Controls.
+    /// IActionControl provides a common Interface for Action Controls.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public interface IActionControl
     {
+        /// <summary>
+        /// The eventhandler for the action.
+        /// </summary>
         event ActionEventHandler Action;
 
+        /// <summary>
+        /// Gets a reference to the aciton manager.
+        /// </summary>
         ActionManager ActionManager { get; }
 
+        /// <summary>
+        /// Gets or sets the module control.
+        /// </summary>
         IModuleControl ModuleControl { get; set; }
     }
 }

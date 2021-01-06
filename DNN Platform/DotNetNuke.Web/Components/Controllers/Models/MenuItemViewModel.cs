@@ -4,11 +4,6 @@
 
 namespace DotNetNuke.Web.Components.Controllers.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     public class MenuItemViewModel
     {
         public string ID { get; set; }

@@ -432,6 +432,9 @@
   <data name="PageType.Text" xml:space="preserve">
     <value>Page Type</value>
   </data>
+  <data name="PageId.Text" xml:space="preserve">
+    <value>Page ID</value>
+  </data>
   <data name="Standard.Text" xml:space="preserve">
     <value>Standard</value>
   </data>
@@ -1758,5 +1761,8 @@
   </data>
   <data name="LocalizedSharedModule_tooltip.Text" xml:space="preserve">
     <value>This is a localized shared module</value>
+  </data>
+  <data name="NoParentTabName.Text" xml:space="preserve">
+    <value>No parent page supplied</value>
   </data>
 </root>

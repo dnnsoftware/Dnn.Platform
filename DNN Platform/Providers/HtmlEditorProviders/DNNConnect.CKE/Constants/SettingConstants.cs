@@ -1,41 +1,38 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-
 namespace DNNConnect.CKEditorProvider.Constants
 {
+    using System;
+
     /// <summary>
-    /// Provider Constants
+    /// Provider Constants.
     /// </summary>
     public static class SettingConstants
     {
-        #region Constants and Fields
-
         /// <summary>
-        /// The Legacy Toolbar Setting XML File Name
+        /// The Legacy Toolbar Setting XML File Name.
         /// </summary>
         [Obsolete("Legacy XML File")]
         public const string ToolbarXmlFileName = "Dnn.CKToolbar.xml";
 
         /// <summary>
-        /// The Legacy Toolbar Setting XML File Name
+        /// The Legacy Toolbar Setting XML File Name.
         /// </summary>
         public const string ToolbarSetXmlFileName = "Dnn.CKToolbarSets.xml";
 
         /// <summary>
-        /// The Toolbar Buttons XML File Name
+        /// The Toolbar Buttons XML File Name.
         /// </summary>
         public const string ToolbarButtonXmlFileName = "Dnn.CKToolbarButtons.xml";
 
         /// <summary>
-        /// The Default Setting XML File Name
+        /// The Default Setting XML File Name.
         /// </summary>
         public const string XmlDefaultFileName = "Dnn.CKEditorDefaultSettings.xml";
 
         /// <summary>
-        /// The Default Setting XML File Name
+        /// The Default Setting XML File Name.
         /// </summary>
         public const string XmlSettingsFileName = "Dnn.CKEditorSettings.xml";
 
@@ -163,7 +160,5 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// The resize height setting name.
         /// </summary>
         public const string RESIZEHEIGHT = "resizeheight";
-
-        #endregion
     }
 }

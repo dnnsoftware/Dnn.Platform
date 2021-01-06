@@ -30,6 +30,11 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     internal class SearchEngine
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchEngine"/> class.
+        /// </summary>
+        /// <param name="scheduler"></param>
+        /// <param name="startTime"></param>
         internal SearchEngine(ScheduleHistoryItem scheduler, DateTime startTime)
         {
             this.SchedulerItem = scheduler;

@@ -1,23 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-using DNNConnect.CKEditorProvider.Constants;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DNNConnect.CKEditorProvider.Constants;
 
     /// <summary>
-    /// The Settings Base
+    /// The Settings Base.
     /// </summary>
     [Obsolete("This class is phasing out please use EditorProviderSettings Class instead")]
     public class SettingBase : object
     {
-        #region Properties
-
+#pragma warning disable SA1300 // Element should begin with upper-case letter
         /// <summary>
         /// Gets or sets How many Items to Show per Page on the File List.
         /// </summary>
@@ -64,42 +62,42 @@ namespace DNNConnect.CKEditorProvider.Objects
         public bool bSubDirs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Use jQuery Adapter
+        /// Gets or sets a value indicating whether Use jQuery Adapter.
         /// </summary>
         public bool bUseJquery { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Inject the Syntax Jquery Js
+        /// Gets or sets a value indicating whether Inject the Syntax Jquery Js.
         /// </summary>
         public bool injectSyntaxJs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Browser Root Dir Id
+        /// Gets or sets a value indicating whether The Browser Root Dir Id.
         /// </summary>
         public int BrowserRootDirId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Upload Dir Folder Id
+        /// Gets or sets a value indicating whether The Upload Dir Folder Id.
         /// </summary>
         public int UploadDirId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Default Resize Image Height
+        /// Gets or sets a value indicating whether Default Resize Image Height.
         /// </summary>
         public int iResizeHeight { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Default Resize Image Width
+        /// Gets or sets a value indicating whether Default Resize Image Width.
         /// </summary>
         public int iResizeWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Toolbar Roles
+        /// Gets or sets a value indicating whether Toolbar Roles.
         /// </summary>
         public List<ToolbarRoles> listToolbRoles { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Blank Initialtext
+        /// Gets or sets a value indicating whether Blank Initialtext.
         /// </summary>
         public string sBlankText { get; set; }
 
@@ -112,65 +110,64 @@ namespace DNNConnect.CKEditorProvider.Objects
         public BrowserType browser { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Editor File Browser
+        /// Gets or sets a value indicating whether Editor File Browser.
         /// </summary>
         public string sBrowser { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Allowed Browser Roles
+        /// Gets or sets a value indicating whether Allowed Browser Roles.
         /// </summary>
         public string sBrowserRoles { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Custom Config file
+        /// Gets or sets a value indicating whether Custom Config file.
         /// </summary>
         public string sConfig { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Css File
+        /// Gets or sets a value indicating whether Css File.
         /// </summary>
         public string sCss { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Editor Skin
+        /// Gets or sets a value indicating whether Editor Skin.
         /// </summary>
         public string sSkin { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Styles File
+        /// Gets or sets a value indicating whether Styles File.
         /// </summary>
         public string sStyles { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Templates File
+        /// Gets or sets a value indicating whether Templates File.
         /// </summary>
         public string sTemplates { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Current Setting Mode
+        /// Gets or sets a value indicating whether Current Setting Mode.
         /// </summary>
         public SettingsMode settingMode { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Browser Height
+        /// Gets or sets a value indicating whether Browser Height.
         /// </summary>
         public Unit uHeight { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Browser Width
+        /// Gets or sets a value indicating whether Browser Width.
         /// </summary>
         public Unit uWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Browser Height
+        /// Gets or sets a value indicating whether Browser Height.
         /// </summary>
         public string BrowserHeight { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Browser Width
+        /// Gets or sets a value indicating whether Browser Width.
         /// </summary>
         public string BrowserWidth { get; set; }
-
-        #endregion
+#pragma warning restore SA1300 // Element should begin with upper-case letter
     }
 }

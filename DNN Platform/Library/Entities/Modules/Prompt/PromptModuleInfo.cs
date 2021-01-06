@@ -8,15 +8,24 @@ namespace DotNetNuke.Entities.Modules.Prompt
 {
     public class PromptModuleInfo
     {
-        public string __ModuleId { get; set; }   // command link
+        public string __ModuleId { get; set; } // command link
+
         public int ModuleId { get; set; }
+
         public string Title { get; set; }
+
         public string __ModuleName { get; set; } // command link
+
         public string ModuleName { get; set; }
+
         public string FriendlyName { get; set; }
+
         public int ModuleDefId { get; set; }
+
         public int TabModuleId { get; set; }
+
         public string AddedToPages { get; set; }
+
         public static PromptModuleInfo FromDnnModuleInfo(ModuleInfo dnnModule, bool? deleted = null)
         {
             var mim = new PromptModuleInfo
@@ -26,8 +35,9 @@ namespace DotNetNuke.Entities.Modules.Prompt
                 FriendlyName = dnnModule.DesktopModule.FriendlyName,
                 ModuleName = dnnModule.DesktopModule.ModuleName,
                 TabModuleId = dnnModule.TabModuleID,
-                ModuleDefId = dnnModule.ModuleDefID
+                ModuleDefId = dnnModule.ModuleDefID,
             };
+
             // assign command links
             mim.__ModuleId = $"get-module {mim.ModuleId}";
             mim.__ModuleName = $"list-modules --name '{mim.ModuleName}' --all";

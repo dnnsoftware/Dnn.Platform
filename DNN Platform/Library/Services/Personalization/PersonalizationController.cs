@@ -6,13 +6,11 @@ namespace DotNetNuke.Services.Personalization
     using System;
     using System.Collections;
     using System.Data;
-    using System.Text;
     using System.Web;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Security;
 
     public class PersonalizationController
@@ -64,7 +62,7 @@ namespace DotNetNuke.Services.Personalization
             }
 
             personalization.Profile = string.IsNullOrEmpty(profileData)
-                ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
+                ? new Hashtable() : XmlUtils.DeSerializeHashtable(profileData, "profile");
             return personalization;
         }
 
@@ -85,7 +83,7 @@ namespace DotNetNuke.Services.Personalization
         {
             if (personalization != null && personalization.IsModified)
             {
-                var profileData = Globals.SerializeHashTableXml(personalization.Profile);
+                var profileData = XmlUtils.SerializeDictionary(personalization.Profile, "profile");
                 if (userId > Null.NullInteger)
                 {
                     DataProvider.Instance().UpdateProfile(userId, portalId, profileData);

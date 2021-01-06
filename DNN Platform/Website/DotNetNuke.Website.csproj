@@ -69,41 +69,9 @@
     <Reference Include="ClientDependency.Core">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Modules.CoreMessaging">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Modules\CoreMessaging\bin\DotNetNuke.Modules.CoreMessaging.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Client">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.DDRMenu">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -3436,7 +3404,7 @@
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>

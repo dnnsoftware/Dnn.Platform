@@ -6,6 +6,7 @@ namespace DotNetNuke.Security.Permissions
 {
     public class CorePermissionProvider : PermissionProvider
     {
+        /// <inheritdoc/>
         public override bool SupportsFullControl()
         {
             return false;

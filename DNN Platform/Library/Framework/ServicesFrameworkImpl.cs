@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Framework
 {
-    using System;
     using System.Globalization;
     using System.Web.Helpers;
     using System.Web.UI;
@@ -20,22 +19,26 @@ namespace DotNetNuke.Framework
         private const string AntiForgeryKey = "dnnAntiForgeryRequested";
         private const string ScriptKey = "dnnSFAjaxScriptRequested";
 
+        /// <inheritdoc/>
         public bool IsAjaxAntiForgerySupportRequired
         {
             get { return CheckKey(AntiForgeryKey); }
         }
 
+        /// <inheritdoc/>
         public bool IsAjaxScriptSupportRequired
         {
             get { return CheckKey(ScriptKey); }
         }
 
+        /// <inheritdoc/>
         public void RequestAjaxAntiForgerySupport()
         {
             this.RequestAjaxScriptSupport();
             SetKey(AntiForgeryKey);
         }
 
+        /// <inheritdoc/>
         public void RegisterAjaxAntiForgery(Page page)
         {
             var ctl = page.FindControl("ClientResourcesFormBottom");
@@ -45,12 +48,14 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         public void RequestAjaxScriptSupport()
         {
             JavaScript.RequestRegistration(CommonJs.jQuery);
             SetKey(ScriptKey);
         }
 
+        /// <inheritdoc/>
         public void RegisterAjaxScript(Page page)
         {
             var path = ServicesFramework.GetServiceFrameworkRoot();

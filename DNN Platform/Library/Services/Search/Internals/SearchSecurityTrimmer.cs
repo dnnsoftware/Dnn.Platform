@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.Search.Internals
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Services.Search.Entities;
@@ -28,6 +27,10 @@ namespace DotNetNuke.Services.Search.Internals
         private int _totalHits;
         private List<ScoreDoc> _scoreDocs;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchSecurityTrimmer"/> class.
+        /// </summary>
+        /// <param name="searchContext"></param>
         public SearchSecurityTrimmer(SearchSecurityTrimmerContext searchContext)
         {
             this._securityChecker = searchContext.SecurityChecker;
@@ -37,6 +40,7 @@ namespace DotNetNuke.Services.Search.Internals
             this._hitDocs = new List<ScoreDoc>(16);
         }
 
+        /// <inheritdoc/>
         public override bool AcceptsDocsOutOfOrder
         {
             get { return false; }
@@ -68,16 +72,19 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public override void SetNextReader(IndexReader reader, int docBase)
         {
             this._docBase = docBase;
         }
 
+        /// <inheritdoc/>
         public override void SetScorer(Scorer scorer)
         {
             this._scorer = scorer;
         }
 
+        /// <inheritdoc/>
         public override void Collect(int doc)
         {
             this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.Score()));

@@ -6,6 +6,7 @@
 namespace Dnn.PersonaBar.Library.Prompt.Models
 {
     using Newtonsoft.Json;
+
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project. Will be removed in DNN 11.", false)]
     public class PagingInfo
     {

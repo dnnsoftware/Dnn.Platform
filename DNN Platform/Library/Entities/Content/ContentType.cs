@@ -29,11 +29,18 @@ namespace DotNetNuke.Entities.Content
         private static ContentType _module;
         private static ContentType _tab;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentType"/> class.
+        /// </summary>
         public ContentType()
             : this(Null.NullString)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentType"/> class.
+        /// </summary>
+        /// <param name="contentType"></param>
         public ContentType(string contentType)
         {
             this.ContentTypeId = Null.NullInteger;

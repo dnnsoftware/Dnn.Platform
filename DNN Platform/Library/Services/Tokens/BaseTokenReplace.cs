@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Tokens
 {
-    using System;
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -19,7 +18,6 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseTokenReplace
     {
-
         protected const string ObjectLessToken = "no_object";
         private const string ExpressionDefault =
             "(?:(?<text>\\[\\])|\\[(?:(?<object>[^{}\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
@@ -42,7 +40,7 @@ namespace DotNetNuke.Services.Tokens
         /// <value>An CultureInfo.</value>
         protected virtual CultureInfo FormatProvider
         {
-            get { return _formatProvider ?? (_formatProvider = Thread.CurrentThread.CurrentUICulture); }
+            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
@@ -53,12 +51,13 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                return _language;
+                return this._language;
             }
+
             set
             {
-                _language = value;
-                _formatProvider = new CultureInfo(_language);
+                this._language = value;
+                this._formatProvider = new CultureInfo(this._language);
             }
         }
 

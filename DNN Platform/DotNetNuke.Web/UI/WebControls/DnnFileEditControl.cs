@@ -88,6 +88,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();

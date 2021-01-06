@@ -53,6 +53,7 @@ namespace DotNetNuke.Entities.Modules
 
         public event UserUpdateErrorEventHandler UserUpdateError;
 
+        /// <inheritdoc/>
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
         /// -----------------------------------------------------------------------------

@@ -21,16 +21,24 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private const int _CacheTimeOut = 20;
         private readonly IDataService _DataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VocabularyController"/> class.
+        /// </summary>
         public VocabularyController()
             : this(Util.GetDataService())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VocabularyController"/> class.
+        /// </summary>
+        /// <param name="dataService"></param>
         public VocabularyController(IDataService dataService)
         {
             this._DataService = dataService;
         }
 
+        /// <inheritdoc/>
         public int AddVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -46,11 +54,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             return vocabulary.VocabularyId;
         }
 
+        /// <inheritdoc/>
         public void ClearVocabularyCache()
         {
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
+        /// <inheritdoc/>
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract
@@ -63,11 +73,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
+        /// <inheritdoc/>
         public IQueryable<Vocabulary> GetVocabularies()
         {
             return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, _CacheTimeOut), this.GetVocabulariesCallBack).AsQueryable();
         }
 
+        /// <inheritdoc/>
         public void UpdateVocabulary(Vocabulary vocabulary)
         {
             // Argument Contract

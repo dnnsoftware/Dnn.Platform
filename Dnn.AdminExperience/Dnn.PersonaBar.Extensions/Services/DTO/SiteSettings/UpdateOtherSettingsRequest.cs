@@ -12,5 +12,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public string CultureCode { get; set; }
 
         public string AllowedExtensionsWhitelist { get; set; }
+
+        public bool EnablePopups { get; set; }
+
+        public bool InjectModuleHyperLink { get; set; }
+
+        public bool InlineEditorEnabled { get; set; }
     }
 }

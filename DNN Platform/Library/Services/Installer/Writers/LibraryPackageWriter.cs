@@ -14,6 +14,10 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LibraryPackageWriter : PackageWriterBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LibraryPackageWriter"/> class.
+        /// </summary>
+        /// <param name="package"></param>
         public LibraryPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -21,6 +25,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AssemblyPath = "bin";
         }
 
+        /// <inheritdoc/>
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             base.GetFiles(includeSource, false);

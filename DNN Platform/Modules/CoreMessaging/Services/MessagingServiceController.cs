@@ -26,6 +26,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    /// <summary>
+    /// Provides messaging web services.
+    /// </summary>
     [SupportedModules("DotNetNuke.Modules.CoreMessaging")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DnnAuthorize]
@@ -33,6 +36,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
 
+        /// <summary>
+        /// Provides access to the user inbox.
+        /// </summary>
+        /// <param name="afterMessageId">After which message id to start returning new messages.</param>
+        /// <param name="numberOfRecords">How many messges to get.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
         public HttpResponseMessage Inbox(int afterMessageId, int numberOfRecords)
         {
@@ -46,13 +55,20 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while trying to fetch the inbox, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Provides access to the sent box view.
+        /// </summary>
+        /// <param name="afterMessageId">After which message to obtain new messages.</param>
+        /// <param name="numberOfRecords">How many messages to get.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
         public HttpResponseMessage Sentbox(int afterMessageId, int numberOfRecords)
         {
@@ -65,13 +81,20 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to fetch the Sent box, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Provides access to the archived box.
+        /// </summary>
+        /// <param name="afterMessageId">After which message to get new messages.</param>
+        /// <param name="numberOfRecords">How many messages to get.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
         public HttpResponseMessage Archived(int afterMessageId, int numberOfRecords)
         {
@@ -84,13 +107,21 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to fetch the archived box.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Provides access to a message thread.
+        /// </summary>
+        /// <param name="conversationId">The conversation id to get the thread from.</param>
+        /// <param name="afterMessageId">After which message to get new messages.</param>
+        /// <param name="numberOfRecords">How many messages to get.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageThreadsView"/>.</returns>
         [HttpGet]
         public HttpResponseMessage Thread(int conversationId, int afterMessageId, int numberOfRecords)
         {
@@ -105,13 +136,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, messageThreadsView);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to fetch the thread, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Provides access to post a reply to a message.
+        /// </summary>
+        /// <param name="postData">The information about the reply, <see cref="ReplyDTO"/>.</param>
+        /// <returns>Information about the conversation and message thread.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Reply(ReplyDTO postData)
@@ -119,7 +156,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var body = HttpUtility.UrlDecode(postData.Body);
-                body = PortalSecurity.Instance.InputFilter(body, PortalSecurity.FilterFlag.NoMarkup);
+                body = WebUtility.HtmlEncode(body);
                 var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, body, postData.FileIds);
                 var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
@@ -130,13 +167,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Conversation = message, TotalNewThreads = totalNewThreads, TotalThreads = totalThreads, TotalArchivedThreads = totalArchivedThreads });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to reply to a conversation, see the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Marks a conversation as archived.
+        /// </summary>
+        /// <param name="postData">The information about the conversation, <see cref="ConversationDTO"/>.</param>
+        /// <returns>A "success" result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MarkArchived(ConversationDTO postData)
@@ -146,13 +189,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 InternalMessagingController.Instance.MarkArchived(postData.ConversationId, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to fetch the archived box, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Restores a conversation out of the archive.
+        /// </summary>
+        /// <param name="postData">The information about the conversation, <see cref="ConversationDTO"/>.</param>
+        /// <returns>A "success" result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MarkUnArchived(ConversationDTO postData)
@@ -162,13 +211,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 InternalMessagingController.Instance.MarkUnArchived(postData.ConversationId, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to restore an archived conversation, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Marks a conversation as read.
+        /// </summary>
+        /// <param name="postData">The information about the conversation to mark as read, <see cref="ConversationDTO"/>.</param>
+        /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MarkRead(ConversationDTO postData)
@@ -178,13 +233,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 InternalMessagingController.Instance.MarkRead(postData.ConversationId, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting mark a conversation as read, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Marks a conversation as unread.
+        /// </summary>
+        /// <param name="postData">The information about the conversation to mark unread, <see cref="ConversationDTO"/>.</param>
+        /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MarkUnRead(ConversationDTO postData)
@@ -194,13 +255,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 InternalMessagingController.Instance.MarkUnRead(postData.ConversationId, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to restore an archived conversation, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Deletes a user from a conversation.
+        /// </summary>
+        /// <param name="postData">The information about the conversation, <see cref="ConversationDTO"/>.</param>
+        /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteUserFromConversation(ConversationDTO postData)
@@ -210,13 +277,20 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 InternalMessagingController.Instance.DeleteUserFromConversation(postData.ConversationId, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to delete a user from a conversation, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Gets the user notifications.
+        /// </summary>
+        /// <param name="afterNotificationId">After which notification to get new ones.</param>
+        /// <param name="numberOfRecords">How many notifications to get.</param>
+        /// <returns>A see <see cref="NotificationViewModel"/> object.</returns>
         [HttpGet]
         public HttpResponseMessage Notifications(int afterNotificationId, int numberOfRecords)
         {
@@ -281,13 +355,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, notificationsViewModel);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to fetch messaging notifications, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Checks if a reply has recipients.
+        /// </summary>
+        /// <param name="conversationId">The id of conversation to check./>.</param>
+        /// <returns>The recipient count or an InternalServerError.</returns>
         [HttpGet]
         public HttpResponseMessage CheckReplyHasRecipients(int conversationId)
         {
@@ -296,13 +376,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var recipientCount = InternalMessagingController.Instance.CheckReplyHasRecipients(conversationId, UserController.Instance.GetCurrentUserInfo().UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, recipientCount);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to check the recipient count on a reply, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Gets the notifications count.
+        /// </summary>
+        /// <returns>A number representing the notification count.</returns>
         [HttpGet]
         public HttpResponseMessage CountNotifications()
         {
@@ -312,13 +397,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 int notifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, notifications);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to get the notifiation count, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Gets the number of unread messages.
+        /// </summary>
+        /// <returns>The number of unread messages.</returns>
         [HttpGet]
         public HttpResponseMessage CountUnreadMessages()
         {
@@ -328,13 +418,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, unreadMessages);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to , consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Gets both the total number of unread messages and new notifications.
+        /// </summary>
+        /// <returns><see cref="TotalsViewModel"/>.</returns>
         [HttpGet]
         public HttpResponseMessage GetTotals()
         {
@@ -349,13 +444,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, totalsViewModel);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to get the unread messages and new notifications count, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
+        /// <summary>
+        /// Dismisses all new notifications.
+        /// </summary>
+        /// <returns>A "success" Result and a deleteCount representing how many notifications where deleted.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DismissAllNotifications()
@@ -365,10 +465,11 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var deletedCount = NotificationsController.Instance.DeleteUserNotifications(this.UserInfo);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", count = deletedCount });
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                var message = "An unexpected error occurred while attempting to dismiss notifications, consult the server logs for more information.";
+                Logger.Error(message, ex);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
@@ -425,15 +526,30 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             return messageObj;
         }
 
+        /// <summary>
+        /// Represents a conversation.
+        /// </summary>
         public class ConversationDTO
         {
+            /// <summary>
+            /// Gets or sets id of the conversation.
+            /// </summary>
             public int ConversationId { get; set; }
         }
 
+        /// <summary>
+        /// Represents a message reply.
+        /// </summary>
         public class ReplyDTO : ConversationDTO
         {
+            /// <summary>
+            /// Gets or sets the body of the reply.
+            /// </summary>
             public string Body { get; set; }
 
+            /// <summary>
+            /// Gets or sets the ids of the attached files.
+            /// </summary>
             public IList<int> FileIds { get; set; }
         }
     }

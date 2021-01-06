@@ -13,11 +13,10 @@ namespace DotNetNuke.Services.FileSystem
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Web;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
-    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -27,7 +26,6 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -37,7 +35,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Log.EventLog;
     using ICSharpCode.SharpZipLib.Zip;
-    
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>
@@ -48,11 +46,13 @@ namespace DotNetNuke.Services.FileSystem
         private const int BufferSize = 4096;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, string> ContentTypes
         {
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
+        /// <inheritdoc/>
         public FileExtensionWhitelist WhiteList
         {
             get
@@ -526,7 +526,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The Content Type for the specified extension.</returns>
         public virtual string GetContentType(string extension)
         {
-
             return FileContentTypeManager.Instance.GetContentType(extension);
         }
 
@@ -1372,6 +1371,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return exactFilesCount;
         }
+
         private static Stream ToStream(Image image, ImageFormat formaw)
         {
             var stream = new MemoryStream();

@@ -5,7 +5,6 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
-    using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -60,6 +59,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var dataChanged = false;
@@ -74,6 +74,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             if (this.EditMode == PropertyEditorMode.Edit)
@@ -122,6 +123,7 @@ namespace DotNetNuke.UI.WebControls
             base.CreateChildControls();
         }
 
+        /// <inheritdoc/>
         protected override void OnDataChanged(EventArgs e)
         {
             var strValue = this.RemoveBaseTags(Convert.ToString(this.Value));
@@ -130,12 +132,14 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -150,11 +154,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
+        /// <inheritdoc/>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));

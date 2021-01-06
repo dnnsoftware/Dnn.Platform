@@ -11,11 +11,9 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Common;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
@@ -47,6 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -62,6 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Options.ItemList.DisableUnspecifiedOrder = true;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("folder");

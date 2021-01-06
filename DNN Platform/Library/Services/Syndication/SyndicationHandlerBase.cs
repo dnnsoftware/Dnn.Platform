@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
-    using System;
     using System.Web;
 
     using DotNetNuke.Common;

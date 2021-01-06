@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public TableItemStyle EditItemStyle => this.EditRowStyle;
 
         public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
+
         public int ScreenRowNumber { get; set; }
 
         public int RowHeight { get; set; }
@@ -31,9 +32,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 return this.PageIndex;
             }
 
-            set { this.PageIndex = value; }
+            set
+            {
+                this.PageIndex = value;
+            }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -43,6 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -27,6 +27,9 @@ namespace DotNetNuke.Services.Installer.Log
         private string _normalClass;
         private bool _valid;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Logger"/> class.
+        /// </summary>
         public Logger()
         {
             this._logs = new List<LogEntry>();

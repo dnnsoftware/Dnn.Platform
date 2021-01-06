@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Users.Social
 
     public class FollowersController : ServiceLocator<IFollowersController, FollowersController>
     {
+        /// <inheritdoc/>
         protected override Func<IFollowersController> GetFactory()
         {
             return () => new FollowersControllerImpl();

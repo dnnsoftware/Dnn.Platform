@@ -32,6 +32,7 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
+
         protected INavigationManager NavigationManager { get; }
 
         [HttpPost]

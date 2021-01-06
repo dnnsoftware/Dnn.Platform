@@ -17,6 +17,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     internal class CompareFolderPermissions : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             return ((FolderPermissionInfo)x).FolderPermissionID.CompareTo(((FolderPermissionInfo)y).FolderPermissionID);

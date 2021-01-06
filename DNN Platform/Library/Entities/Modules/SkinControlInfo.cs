@@ -23,6 +23,9 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class SkinControlInfo : ControlInfo, IXmlSerializable, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkinControlInfo"/> class.
+        /// </summary>
         public SkinControlInfo()
         {
             this.PackageID = Null.NullInteger;

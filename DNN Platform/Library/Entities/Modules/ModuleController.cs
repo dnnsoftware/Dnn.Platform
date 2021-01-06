@@ -666,6 +666,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name = "module"></param>
         /// <remarks>
         /// </remarks>
+        /// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType = ContentType.Module;
@@ -691,13 +692,13 @@ namespace DotNetNuke.Entities.Modules
         ///     Note - the base module is not removed unless both the flags are set, indicating
         ///     to delete all instances AND to delete the Base Module.
         /// </remarks>
-        ///     <param name="moduleId">The Id of the module to copy.</param>
-        ///     <param name="tabId">The Id of the current tab.</param>
+        /// <param name="moduleId">The Id of the module to copy.</param>
+        /// <param name="tabId">The Id of the current tab.</param>
         /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted.</param>
-        ///     <param name="fromTabs">An ArrayList of TabItem objects.</param>
-        ///     <param name="includeCurrent">A flag to indicate whether to delete from the current tab
+        /// <param name="fromTabs">An ArrayList of TabItem objects.</param>
+        /// <param name="includeCurrent">A flag to indicate whether to delete from the current tab
         ///         as identified ny tabId.</param>
-        ///     <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>
+        /// <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
             var moduleInfo = this.GetModule(moduleId, tabId, false);
@@ -1189,6 +1190,7 @@ namespace DotNetNuke.Entities.Modules
             return CBO.FillCollection<ModuleInfo>(dataProvider.GetModule(moduleID, Null.NullInteger));
         }
 
+        /// <inheritdoc/>
         public void InitialModulePermission(ModuleInfo module, int tabId, int permissionType)
         {
             var tabPermissions = TabPermissionController.GetTabPermissions(tabId, module.PortalID);
@@ -1250,6 +1252,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public void LocalizeModule(ModuleInfo sourceModule, Locale locale)
         {
             try
@@ -1302,10 +1305,10 @@ namespace DotNetNuke.Entities.Modules
         /// MoveModule moes a Module from one Tab to another including all the
         ///     TabModule settings.
         /// </summary>
-        ///     <param name="moduleId">The Id of the module to move.</param>
-        ///     <param name="fromTabId">The Id of the source tab.</param>
-        ///     <param name="toTabId">The Id of the destination tab.</param>
-        ///     <param name="toPaneName">The name of the Pane on the destination tab where the module will end up.</param>
+        /// <param name="moduleId">The Id of the module to move.</param>
+        /// <param name="fromTabId">The Id of the source tab.</param>
+        /// <param name="toTabId">The Id of the destination tab.</param>
+        /// <param name="toPaneName">The name of the Pane on the destination tab where the module will end up.</param>
         public void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName)
         {
             // Move the module to the Tab
@@ -1798,6 +1801,7 @@ namespace DotNetNuke.Entities.Modules
             return tabModuleSettings.ContainsKey(tabmoduleId) ? tabModuleSettings[tabmoduleId] : new Hashtable();
         }
 
+        /// <inheritdoc/>
         protected override Func<IModuleController> GetFactory()
         {
             return () => new ModuleController();

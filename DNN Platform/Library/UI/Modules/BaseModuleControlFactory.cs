@@ -12,10 +12,13 @@ namespace DotNetNuke.UI.Modules
 
     public abstract class BaseModuleControlFactory : IModuleControlFactory
     {
+        /// <inheritdoc/>
         public abstract Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc);
 
+        /// <inheritdoc/>
         public abstract Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration);
 
+        /// <inheritdoc/>
         public virtual ModuleControlBase CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             var moduleControl = new ModuleControlBase();
@@ -28,6 +31,7 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
+        /// <inheritdoc/>
         public abstract Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc);
     }
 }

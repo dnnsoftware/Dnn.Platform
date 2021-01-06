@@ -13,19 +13,25 @@ namespace DotNetNuke.Prompt
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Resource key for the category of the command
+        /// Resource key for the category of the command.
         /// </summary>
         public string CategoryKey { get; set; }
         /// <summary>
-        /// Resource key for the description of the command
+        /// Resource key for the description of the command.
         /// </summary>
         public string DescriptionKey { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommandAttribute"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="categoryKey"></param>
+        /// <param name="descriptionKey"></param>
         public ConsoleCommandAttribute(string name, string categoryKey, string descriptionKey)
         {
-            Name = name;
-            CategoryKey = categoryKey;
-            DescriptionKey = descriptionKey;
+            this.Name = name;
+            this.CategoryKey = categoryKey;
+            this.DescriptionKey = descriptionKey;
         }
     }
 }

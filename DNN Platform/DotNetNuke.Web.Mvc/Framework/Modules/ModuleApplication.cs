@@ -69,6 +69,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
+
         private static bool DisableMvcResponseHeader { get; set; }
 
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)

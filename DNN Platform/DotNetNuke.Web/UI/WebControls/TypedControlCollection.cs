@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
+        /// <inheritdoc/>
         public override void Add(Control child)
         {
             if (!(child is T))
@@ -29,6 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.Add(child);
         }
 
+        /// <inheritdoc/>
         public override void AddAt(int index, Control child)
         {
             if (!(child is T))

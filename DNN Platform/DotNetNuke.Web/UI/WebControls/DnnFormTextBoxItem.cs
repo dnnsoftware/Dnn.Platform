@@ -41,6 +41,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         public bool ClearContentInPasswordMode { get; set; }
 
+        /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
             this._textBox = new TextBox { ID = this.ID + "_TextBox" };
@@ -70,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this._textBox;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -4,15 +4,12 @@
 namespace DotNetNuke.Security.Permissions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
     /// -----------------------------------------------------------------------------

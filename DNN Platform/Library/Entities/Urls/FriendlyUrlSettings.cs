@@ -106,6 +106,10 @@ namespace DotNetNuke.Entities.Urls
         private List<string> _processRequestList;
         private Dictionary<string, string> _replaceCharacterDictionary;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FriendlyUrlSettings"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
         public FriendlyUrlSettings(int portalId)
         {
             this.PortalId = portalId < -1 ? -1 : portalId;
@@ -337,6 +341,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 // 661 : do not include in path
                 // 742 : was not reading and saving value when 'doNotIncludeInPathRegex' used
+                // FUTURE: DNN 11.x Update to remove the runningDefault value
                 return this._doNotIncludeInPathRegex ??
                        (this._doNotIncludeInPathRegex =
                            this.GetStringSetting(

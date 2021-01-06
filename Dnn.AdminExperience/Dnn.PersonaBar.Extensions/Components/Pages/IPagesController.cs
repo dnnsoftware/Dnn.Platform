@@ -63,10 +63,15 @@ namespace Dnn.PersonaBar.Pages.Components
         void CopyPermissionsToDescendantPages(int pageId);
 
         IEnumerable<Url> GetPageUrls(int tabId);
+
         PageSettings GetPageSettings(int pageId, PortalSettings portalSettings = null);
+
         PageUrlResult CreateCustomUrl(SeoUrl dto);
+
         PageUrlResult UpdateCustomUrl(SeoUrl dto);
+
         PageUrlResult DeleteCustomUrl(UrlIdDto dto);
+
         PagePermissions GetPermissionsData(int pageId);
     }
 }

@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
-    using System;
     using System.Collections.Generic;
 
     /// -----------------------------------------------------------------------------
@@ -17,6 +16,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
         private string _details = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseInstallationStep"/> class.
+        /// </summary>
         protected BaseInstallationStep()
         {
             this.Percentage = 0;

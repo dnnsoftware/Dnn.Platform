@@ -7,7 +7,6 @@ namespace DotNetNuke.Framework
     using System.Collections;
     using System.Collections.Specialized;
     using System.Globalization;
-    using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI;
@@ -20,7 +19,6 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -381,6 +379,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnError(EventArgs e)
         {
             base.OnError(e);
@@ -423,6 +422,7 @@ namespace DotNetNuke.Framework
             Exceptions.ProcessPageLoadException(exc, strURL);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
@@ -440,6 +440,7 @@ namespace DotNetNuke.Framework
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -472,6 +473,7 @@ namespace DotNetNuke.Framework
             this.RegisterAjaxScript();
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");

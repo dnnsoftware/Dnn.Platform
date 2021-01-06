@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -99,6 +98,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         return ToJavaScriptArrayString(this);
     }
 
+    /// <inheritdoc/>
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
     {
         var enumerator = this.Dictionary.GetEnumerator();
@@ -108,6 +108,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         }
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return this._dictionary == null ? string.Empty : this._dictionary.ToString();
@@ -146,6 +147,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         return builder.ToString();
     }
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return this.GetEnumeratorPrivate();

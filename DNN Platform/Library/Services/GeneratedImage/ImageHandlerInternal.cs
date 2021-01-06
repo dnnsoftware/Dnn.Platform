@@ -5,7 +5,6 @@
 namespace DotNetNuke.Services.GeneratedImage
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
@@ -33,6 +32,9 @@ namespace DotNetNuke.Services.GeneratedImage
         private IImageStore _imageStore;
         private DateTime? _now;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
+        /// </summary>
         public ImageHandlerInternal()
         {
             this.ContentType = ImageFormat.Jpeg;
@@ -41,6 +43,11 @@ namespace DotNetNuke.Services.GeneratedImage
             this.AllowStandalone = false;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
+        /// </summary>
+        /// <param name="imageStore"></param>
+        /// <param name="now"></param>
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
             : this()
         {
@@ -214,10 +221,10 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
 
+            var userId = -1;
             var cacheCleared = false;
-            var profilepic = context.Request.QueryString["mode"];
-            int userId = -1;
-            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
+            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
+            if (isProfilePic)
             {
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
                 {
@@ -253,7 +260,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Handle Server cache
             if (this.EnableServerCache)
             {
-                if (!this.IsPicVisibleToCurrentUser(userId))
+                if (isProfilePic && !this.IsPicVisibleToCurrentUser(userId))
                 {
                     string message = "Not allowed to see profile picture";
 
@@ -517,7 +524,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return ProfilePropertyAccess.CheckAccessLevel((PortalSettings)settings, photoProperty, currentUser, profileUser);
+            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
         }
     }
 }

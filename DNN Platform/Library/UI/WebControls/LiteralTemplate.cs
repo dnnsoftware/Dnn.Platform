@@ -10,16 +10,25 @@ namespace DotNetNuke.UI.WebControls
         private readonly Control m_objControl;
         private readonly string m_strHTML = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiteralTemplate"/> class.
+        /// </summary>
+        /// <param name="html"></param>
         public LiteralTemplate(string html)
         {
             this.m_strHTML = html;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiteralTemplate"/> class.
+        /// </summary>
+        /// <param name="ctl"></param>
         public LiteralTemplate(Control ctl)
         {
             this.m_objControl = ctl;
         }
 
+        /// <inheritdoc/>
         public void InstantiateIn(Control container)
         {
             if (this.m_objControl == null)

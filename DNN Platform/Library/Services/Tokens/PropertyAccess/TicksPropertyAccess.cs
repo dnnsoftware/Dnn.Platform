@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable CheckNamespace
+
 namespace DotNetNuke.Services.Tokens
 
 // ReSharper restore CheckNamespace
@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Tokens
 
     public class TicksPropertyAccess : IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -21,6 +22,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())

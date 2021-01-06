@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override void Add(Control child)
         {
             if (child is DnnRibbonBarGroup)
@@ -33,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override void AddAt(int index, Control child)
         {
             if (child is DnnRibbonBarGroup)

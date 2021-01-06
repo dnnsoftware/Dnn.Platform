@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     public class ManagedPackageDependency : DependencyBase, IManagedPackageDependency
     {
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
@@ -20,6 +21,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
@@ -40,8 +42,10 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public PackageDependencyInfo PackageDependency { get; set; }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.PackageDependency = new PackageDependencyInfo

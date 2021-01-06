@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Dto
 {
     using System;
@@ -18,6 +17,7 @@ namespace Dnn.ExportImport.Components.Dto
     [JsonObject]
     public class ImportExportSummary : IDateTimeConverter
     {
+        /// <summary>Initializes a new instance of the <see cref="ImportExportSummary"/> class.</summary>
         public ImportExportSummary()
         {
             this.SummaryItems = new SummaryList();
@@ -83,6 +83,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public ExportFileInfo ExportFileInfo { get; set; }
 
+        /// <inheritdoc/>
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null)

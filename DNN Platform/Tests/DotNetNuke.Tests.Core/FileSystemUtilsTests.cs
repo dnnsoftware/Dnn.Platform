@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Core
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;

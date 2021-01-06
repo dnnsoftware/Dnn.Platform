@@ -1,24 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System.Collections;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DNNConnect.CKEditorProvider.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Modules.HTMLEditorProvider;
-
 namespace DNNConnect.CKEditorProvider
 {
+    using System.Collections;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DNNConnect.CKEditorProvider.Web;
+    using DotNetNuke.Common;
+    using DotNetNuke.Modules.HTMLEditorProvider;
 
     /// <summary>
     /// The CKEditor Provider.
     /// </summary>
     public class CKHtmlEditorProvider : HtmlEditorProvider
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The _additional toolbars.
         /// </summary>
@@ -34,10 +31,6 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private string rootImageDirectory;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets AdditionalToolbars.
         /// </summary>
@@ -45,12 +38,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return additionalToolbars;
+                return this.additionalToolbars;
             }
 
             set
             {
-                additionalToolbars = value;
+                this.additionalToolbars = value;
             }
         }
 
@@ -66,12 +59,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return htmlEditorControl.Height;
+                return this.htmlEditorControl.Height;
             }
 
             set
             {
-                htmlEditorControl.Height = value;
+                this.htmlEditorControl.Height = value;
             }
         }
 
@@ -82,7 +75,7 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return htmlEditorControl;
+                return this.htmlEditorControl;
             }
         }
 
@@ -93,20 +86,20 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                if (rootImageDirectory == string.Empty)
+                if (this.rootImageDirectory == string.Empty)
                 {
                     // Remove the Application Path from the Home Directory
                     return Globals.ApplicationPath != string.Empty
-                               ? PortalSettings.HomeDirectory.Replace(Globals.ApplicationPath, string.Empty)
-                               : PortalSettings.HomeDirectory;
+                               ? this.PortalSettings.HomeDirectory.Replace(Globals.ApplicationPath, string.Empty)
+                               : this.PortalSettings.HomeDirectory;
                 }
 
-                return rootImageDirectory;
+                return this.rootImageDirectory;
             }
 
             set
             {
-                rootImageDirectory = value;
+                this.rootImageDirectory = value;
             }
         }
 
@@ -117,12 +110,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return htmlEditorControl.Value;
+                return this.htmlEditorControl.Value;
             }
 
             set
             {
-                htmlEditorControl.Value = value;
+                this.htmlEditorControl.Value = value;
             }
         }
 
@@ -133,18 +126,14 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return htmlEditorControl.Width;
+                return this.htmlEditorControl.Width;
             }
 
             set
             {
-                htmlEditorControl.Width = value;
+                this.htmlEditorControl.Width = value;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// The add toolbar.
@@ -159,9 +148,7 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         public override void Initialize()
         {
-            htmlEditorControl = new EditorControl { ID = ControlID };
+            this.htmlEditorControl = new EditorControl { ID = this.ControlID };
         }
-
-        #endregion
     }
 }

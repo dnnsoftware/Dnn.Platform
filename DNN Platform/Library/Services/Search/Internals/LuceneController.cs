@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class LuceneController : ServiceLocator<ILuceneController, LuceneController>
     {
+        /// <inheritdoc/>
         protected override Func<ILuceneController> GetFactory()
         {
             return () => new LuceneControllerImpl();

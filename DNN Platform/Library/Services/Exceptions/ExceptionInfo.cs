@@ -15,10 +15,17 @@ namespace DotNetNuke.Services.Exceptions
     [Serializable]
     public class ExceptionInfo : IExceptionInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionInfo"/> class.
+        /// </summary>
         public ExceptionInfo()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionInfo"/> class.
+        /// </summary>
+        /// <param name="e"></param>
         public ExceptionInfo(Exception e)
         {
             this.Message = e.Message;
@@ -63,6 +70,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <inheritdoc />
         public string StackTrace { get; set; }
 
+        /// <inheritdoc/>
         public string InnerMessage { get; set; }
 
         /// <inheritdoc />
@@ -175,6 +183,7 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var str = new StringBuilder();

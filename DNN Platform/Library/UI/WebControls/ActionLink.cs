@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
 
     /// -----------------------------------------------------------------------------
@@ -26,6 +27,9 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActionLink"/> class.
+        /// </summary>
         public ActionLink()
         {
             this.RequireEditMode = false;
@@ -94,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
             bool isVisible = false;
             if (ModulePermissionController.HasModuleAccess(security, Null.NullString, this.ModuleControl.ModuleContext.Configuration))
             {
-                if ((this.RequireEditMode != true || this.ModuleControl.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
+                if ((this.RequireEditMode != true || Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
                 {
                     isVisible = true;
                 }

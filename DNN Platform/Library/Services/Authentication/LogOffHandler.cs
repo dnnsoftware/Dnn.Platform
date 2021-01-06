@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Authentication
     /// </summary>
     public class LogOffHandler : IHttpHandler
     {
+        /// <inheritdoc/>
         public bool IsReusable
         {
             get
@@ -21,6 +22,7 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             context.Response.Redirect(TestableGlobals.Instance.NavigateURL("LogOff"));

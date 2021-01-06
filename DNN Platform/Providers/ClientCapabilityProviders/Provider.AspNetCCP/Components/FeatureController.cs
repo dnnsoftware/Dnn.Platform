@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 {
     using System.Collections.Generic;
@@ -18,24 +17,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mobile;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The FeatureController class for the modules.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <history>
-    /// </history>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The FeatureController class for the ASP.NET Client Capability Provider.</summary>
     public class FeatureController : IUpgradeable
     {
         private const string ResourceFileRelativePath = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/App_LocalResources/SharedResources.resx";
 
-        /// <summary>
-        /// Handles upgrading the module and adding the module to the hosts menu.
-        /// </summary>
-        /// <param name="version"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -49,7 +36,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                         return string.Empty;
                     }
 
-                    this.RemoveWurflProvider();
+                    RemoveWurflProvider();
                     break;
             }
 
@@ -58,7 +45,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 
         private static IDictionary<string, string> CreateMappedCapabilities()
         {
-            var mappingCapabilites = new Dictionary<string, string>
+            var mappingCapabilities = new Dictionary<string, string>
             {
                 { "is_wireless_device", "IsMobile" },
                 { "resolution_width", "ScreenPixelsWidth" },
@@ -67,22 +54,22 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 
             if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")
             {
-                mappingCapabilites.Add("is_tablet", "IsTablet");
-                mappingCapabilites.Add("device_os", "PlatformName");
-                mappingCapabilites.Add("mobile_browser", "BrowserName");
-                mappingCapabilites.Add("mobile_browser_version", "BrowserVersion");
-                mappingCapabilites.Add("device_os_version", "PlatformVersion");
-                mappingCapabilites.Add("brand_name", "HardwareVendor");
-                mappingCapabilites.Add("cookie_support", "CookiesCapable");
-                mappingCapabilites.Add("model_name", "HardwareModel");
-                mappingCapabilites.Add("physical_screen_height", "ScreenMMHeight");
-                mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
+                mappingCapabilities.Add("is_tablet", "IsTablet");
+                mappingCapabilities.Add("device_os", "PlatformName");
+                mappingCapabilities.Add("mobile_browser", "BrowserName");
+                mappingCapabilities.Add("mobile_browser_version", "BrowserVersion");
+                mappingCapabilities.Add("device_os_version", "PlatformVersion");
+                mappingCapabilities.Add("brand_name", "HardwareVendor");
+                mappingCapabilities.Add("cookie_support", "CookiesCapable");
+                mappingCapabilities.Add("model_name", "HardwareModel");
+                mappingCapabilities.Add("physical_screen_height", "ScreenMMHeight");
+                mappingCapabilities.Add("physical_screen_width", "ScreenMMWidth");
             }
 
-            return mappingCapabilites;
+            return mappingCapabilities;
         }
 
-        private void RemoveWurflProvider()
+        private static void RemoveWurflProvider()
         {
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.WURFLClientCapabilityProvider");
             if (package != null)
@@ -91,12 +78,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                 installer.UnInstall(true);
             }
 
-            this.UpdateRules();
+            UpdateRules();
         }
 
-        private void UpdateRules()
+        private static void UpdateRules()
         {
-            var mapCapabilites = CreateMappedCapabilities();
+            var mapCapabilities = CreateMappedCapabilities();
             IRedirectionController controller = new RedirectionController();
             var redirections = controller.GetAllRedirections();
             foreach (var redirection in redirections.Where(redirection => redirection.MatchRules.Count > 0))
@@ -123,9 +110,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     }
                     else
                     {
-                        if (mapCapabilites.ContainsKey(rule.Capability))
+                        if (mapCapabilities.ContainsKey(rule.Capability))
                         {
-                            rule.Capability = mapCapabilites[rule.Capability];
+                            rule.Capability = mapCapabilities[rule.Capability];
                             switch (rule.Expression)
                             {
                                 case "true":

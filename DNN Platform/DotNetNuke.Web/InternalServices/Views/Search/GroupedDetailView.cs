@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.InternalServices.Views.Search
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>

@@ -6,7 +6,6 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Xml;

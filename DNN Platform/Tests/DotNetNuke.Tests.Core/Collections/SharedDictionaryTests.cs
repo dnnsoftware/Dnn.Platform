@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Collections
 {
     using System;
@@ -145,20 +144,34 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [ExpectedException(typeof(LockRecursionException))]
         public void TwoDictsShareALockWriteTest()
         {
-            ILockStrategy ls = new ReaderWriterLockStrategy();
-            var d1 = new SharedDictionary<string, string>(ls);
-            var d2 = new SharedDictionary<string, string>(ls);
+            var lockStrategy = LockingStrategyFactory.Create(this.LockingStrategy);
+            var dict1 = new SharedDictionary<string, string>(lockStrategy);
+            var dict2 = new SharedDictionary<string, string>(lockStrategy);
 
-            using (ISharedCollectionLock readLock = d1.GetReadLock())
+            using (dict1.GetReadLock())
             {
-                using (ISharedCollectionLock writeLock = d2.GetWriteLock())
+                ISharedCollectionLock writeLock = null;
+                try
                 {
-                    // do nothing
+                    writeLock = dict2.GetWriteLock();
+                }
+                catch (LockRecursionException)
+                {
+                    Assert.Pass();
+                }
+                catch (Exception exception)
+                {
+                    Assert.Fail("Expected LockRecursionException, got {0}", exception);
+                }
+                finally
+                {
+                    writeLock?.Dispose();
                 }
             }
+
+            Assert.Fail("Expected LockRecursionException, did not throw");
         }
 
         protected IEnumerable<Action<SharedDictionary<string, string>>> GetObjectDisposedExceptionMethods()

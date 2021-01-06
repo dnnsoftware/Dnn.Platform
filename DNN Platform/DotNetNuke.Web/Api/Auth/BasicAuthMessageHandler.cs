@@ -15,24 +15,35 @@ namespace DotNetNuke.Web.Api.Auth
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
-    using DotNetNuke.Web.ConfigSection;
 
+    /// <summary>
+    /// Basic authentication message handler.
+    /// </summary>
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
-        private readonly Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
+        private readonly Encoding encoding = Encoding.GetEncoding("iso-8859-1");
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicAuthMessageHandler"/> class.
+        /// </summary>
+        /// <param name="includeByDefault">Should this handler be included by default on all routes.</param>
+        /// <param name="forceSsl">Should this handler enforce SSL usage.</param>
         public BasicAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
         }
 
+        /// <summary>
+        /// Gets the name of the authentication scheme.
+        /// </summary>
         public override string AuthScheme => "Basic";
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 if (portalSettings != null)
                 {
                     this.TryToAuthenticate(request, portalSettings.PortalId);
@@ -42,6 +53,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnInboundRequest(request, cancellationToken);
         }
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsBasicAuth(response.RequestMessage))
@@ -69,8 +81,15 @@ namespace DotNetNuke.Web.Api.Auth
             var status = UserLoginStatus.LOGIN_FAILURE;
             string ipAddress = request.GetIPAddress();
 
-            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", string.Empty,
-                                                        "a portal", ipAddress ?? string.Empty, ref status);
+            UserInfo user = UserController.ValidateUser(
+                portalId,
+                credentials.UserName,
+                credentials.Password,
+                "DNN",
+                string.Empty,
+                "a portal",
+                ipAddress ?? string.Empty,
+                ref status);
 
             if (user != null)
             {
@@ -96,7 +115,7 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            string decoded = this._encoding.GetString(Convert.FromBase64String(authorization));
+            string decoded = this.encoding.GetString(Convert.FromBase64String(authorization));
 
             string[] parts = decoded.Split(new[] { ':' }, 2);
             if (parts.Length < 2)
@@ -107,16 +126,30 @@ namespace DotNetNuke.Web.Api.Auth
             return new UserCredentials(parts[0], parts[1]);
         }
 
+        /// <summary>
+        /// Represents the user credentials.
+        /// </summary>
         internal class UserCredentials
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserCredentials"/> class.
+            /// </summary>
+            /// <param name="userName">The user username.</param>
+            /// <param name="password">The user password.</param>
             public UserCredentials(string userName, string password)
             {
                 this.UserName = userName;
                 this.Password = password;
             }
 
+            /// <summary>
+            /// Gets or sets the password for the user.
+            /// </summary>
             public string Password { get; set; }
 
+            /// <summary>
+            /// Gets or sets the username for the user.
+            /// </summary>
             public string UserName { get; set; }
         }
     }

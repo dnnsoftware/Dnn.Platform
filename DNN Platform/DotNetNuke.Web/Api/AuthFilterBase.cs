@@ -27,6 +27,7 @@ namespace DotNetNuke.Web.Api
         /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
+        /// <inheritdoc/>
         Task<HttpResponseMessage> IAuthorizationFilter.ExecuteAuthorizationFilterAsync(HttpActionContext actionContext, CancellationToken cancellationToken, Func<Task<HttpResponseMessage>> continuation)
         {
             Requires.NotNull("actionContext", actionContext);

@@ -4,7 +4,6 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
-    using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -15,8 +14,6 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
-    using DotNetNuke.UI;
-    using DotNetNuke.UI.Skins;
     using Microsoft.Extensions.DependencyInjection;
 
     public class UrlUtils

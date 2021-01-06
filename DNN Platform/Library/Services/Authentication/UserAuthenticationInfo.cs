@@ -18,6 +18,9 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public class UserAuthenticationInfo : BaseEntityInfo, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserAuthenticationInfo"/> class.
+        /// </summary>
         public UserAuthenticationInfo()
         {
             this.AuthenticationToken = Null.NullString;

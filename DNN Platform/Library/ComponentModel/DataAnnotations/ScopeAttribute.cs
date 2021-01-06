@@ -8,6 +8,10 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
     public class ScopeAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScopeAttribute"/> class.
+        /// </summary>
+        /// <param name="scope"></param>
         public ScopeAttribute(string scope)
         {
             this.Scope = scope;

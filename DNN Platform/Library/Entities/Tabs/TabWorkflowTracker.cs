@@ -23,6 +23,9 @@ namespace DotNetNuke.Entities.Tabs
         private readonly IWorkflowManager _workflowManager;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabWorkflowTracker"/> class.
+        /// </summary>
         public TabWorkflowTracker()
         {
             this._tabController = TabController.Instance;
@@ -88,6 +91,7 @@ namespace DotNetNuke.Entities.Tabs
             this.TrackModuleDeletion(module, moduleVersion, userId);
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabWorkflowTracker();

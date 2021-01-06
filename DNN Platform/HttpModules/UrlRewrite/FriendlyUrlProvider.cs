@@ -77,21 +77,25 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
             get { return this._urlFormat; }
         }
 
+        /// <inheritdoc/>
         public override string FriendlyUrl(TabInfo tab, string path)
         {
             return this._providerInstance.FriendlyUrl(tab, path);
         }
 
+        /// <inheritdoc/>
         public override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             return this._providerInstance.FriendlyUrl(tab, path, pageName);
         }
 
+        /// <inheritdoc/>
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             return this._providerInstance.FriendlyUrl(tab, path, pageName, settings);
         }
 
+        /// <inheritdoc/>
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return this._providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);

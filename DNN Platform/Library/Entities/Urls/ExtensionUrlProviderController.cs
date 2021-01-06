@@ -9,7 +9,6 @@ namespace DotNetNuke.Entities.Urls
     using System.Data;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Web;
     using System.Web.Caching;
 
     using DotNetNuke.Application;
@@ -20,8 +19,6 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Log.EventLog;
-
-    using Assembly = System.Reflection.Assembly;
 
     public class ExtensionUrlProviderController
     {

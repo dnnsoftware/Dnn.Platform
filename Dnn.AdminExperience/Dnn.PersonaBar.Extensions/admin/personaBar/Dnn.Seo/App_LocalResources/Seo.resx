@@ -523,7 +523,7 @@
     <value>Clear Cache</value>
   </data>
   <data name="lblExcludePriority.Help" xml:space="preserve">
-    <value>This option can be used to remove certain pages from the Sitemap. For example you can setup a priority of -1 for a page and enter -1 here to cause the page to not being included in the generated Sitemap.</value>
+    <value>This option can be used to remove certain pages from the Sitemap. For example you can setup a priority of 0.1 for a page and select 0.1 here to cause the page to not being included in the generated Sitemap.</value>
   </data>
   <data name="lblExcludePriority.Text" xml:space="preserve">
     <value>Exclude URLs With a Priority Lower Than</value>

@@ -145,7 +145,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
 
         private class TabVersionControllerTestable : TabVersionController
-        {}
+        {
+        }
 
         private class DateUtilsTestable : DateUtils
         {

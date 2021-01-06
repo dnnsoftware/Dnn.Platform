@@ -29,8 +29,8 @@ namespace Dnn.PersonaBar.Pages.Tests
         private Mock<IUrlRewriterUtilsWrapper> _urlRewriterUtilsWrapperMock;
         private Mock<IFriendlyUrlWrapper> _friendlyUrlWrapperMock;
         private Mock<IContentVerifier> _contentVerifierMock;
-        PagesControllerImpl _pagesController;
-        Mock<IPortalController> _portalControllerMock;
+        private PagesControllerImpl _pagesController;
+        private Mock<IPortalController> _portalControllerMock;
 
         [SetUp]
         public void RunBeforeEachTest()

@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.FileSystem.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
 

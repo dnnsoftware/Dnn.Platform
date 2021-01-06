@@ -2,28 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Web;
-using System.Web.UI.HtmlControls;
-using DNNConnect.CKEditorProvider.Controls;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
 namespace DNNConnect.CKEditorProvider
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI.HtmlControls;
+
+    using DNNConnect.CKEditorProvider.Controls;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
     /// The options page.
     /// </summary>
     public partial class Options : PageBase
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The request.
         /// </summary>
@@ -35,28 +34,28 @@ namespace DNNConnect.CKEditorProvider
         private PortalSettings curPortalSettings;
 
         /// <summary>
-        ///   Gets Current Language from Url
+        ///   Gets Current Language from Url.
         /// </summary>
         protected string LangCode
         {
             get
             {
-                return request.QueryString["langCode"];
+                return this.request.QueryString["langCode"];
             }
         }
 
         /// <summary>
-        ///   Gets the Name for the Current Resource file name
+        ///   Gets the Name for the Current Resource file name.
         /// </summary>
         protected string ResXFile
         {
             get
             {
-                string[] page = Request.ServerVariables["SCRIPT_NAME"].Split('/');
+                string[] page = this.Request.ServerVariables["SCRIPT_NAME"].Split('/');
 
                 string fileRoot = string.Format(
                     "{0}/{1}/{2}.resx",
-                    TemplateSourceDirectory,
+                    this.TemplateSourceDirectory,
                     Localization.LocalResourceDirectory,
                     page[page.GetUpperBound(0)]);
 
@@ -64,12 +63,8 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// Register the java scripts and CSS
+        /// Register the java scripts and CSS.
         /// </summary>
         /// <param name="e">
         /// The Event Args.
@@ -81,28 +76,28 @@ namespace DNNConnect.CKEditorProvider
             jqueryScriptLink.Attributes["type"] = "text/javascript";
             jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
 
-            favicon.Controls.Add(jqueryScriptLink);
+            this.favicon.Controls.Add(jqueryScriptLink);
 
             var jqueryUiScriptLink = new HtmlGenericControl("script");
 
             jqueryUiScriptLink.Attributes["type"] = "text/javascript";
             jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
 
-            favicon.Controls.Add(jqueryUiScriptLink);
+            this.favicon.Controls.Add(jqueryUiScriptLink);
 
             var notificationScriptLink = new HtmlGenericControl("script");
 
             notificationScriptLink.Attributes["type"] = "text/javascript";
-            notificationScriptLink.Attributes["src"] = ResolveUrl("js/jquery.notification.js");
+            notificationScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.notification.js");
 
-            favicon.Controls.Add(notificationScriptLink);
+            this.favicon.Controls.Add(notificationScriptLink);
 
             var optionsScriptLink = new HtmlGenericControl("script");
 
             optionsScriptLink.Attributes["type"] = "text/javascript";
-            optionsScriptLink.Attributes["src"] = ResolveUrl("js/Options.js");
+            optionsScriptLink.Attributes["src"] = this.ResolveUrl("js/Options.js");
 
-            favicon.Controls.Add(optionsScriptLink);
+            this.favicon.Controls.Add(optionsScriptLink);
 
             var objCssLink = new HtmlGenericSelfClosing("link");
 
@@ -110,23 +105,23 @@ namespace DNNConnect.CKEditorProvider
             objCssLink.Attributes["type"] = "text/css";
             objCssLink.Attributes["href"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css";
 
-            favicon.Controls.Add(objCssLink);
+            this.favicon.Controls.Add(objCssLink);
 
             var notificationCssLink = new HtmlGenericSelfClosing("link");
 
             notificationCssLink.Attributes["rel"] = "stylesheet";
             notificationCssLink.Attributes["type"] = "text/css";
-            notificationCssLink.Attributes["href"] = ResolveUrl("css/jquery.notification.css");
+            notificationCssLink.Attributes["href"] = this.ResolveUrl("css/jquery.notification.css");
 
-            favicon.Controls.Add(notificationCssLink);
+            this.favicon.Controls.Add(notificationCssLink);
 
             var optionsCssLink = new HtmlGenericSelfClosing("link");
 
             optionsCssLink.Attributes["rel"] = "stylesheet";
             optionsCssLink.Attributes["type"] = "text/css";
-            optionsCssLink.Attributes["href"] = ResolveUrl("css/Options.css");
+            optionsCssLink.Attributes["href"] = this.ResolveUrl("css/Options.css");
 
-            favicon.Controls.Add(optionsCssLink);
+            this.favicon.Controls.Add(optionsCssLink);
 
             base.OnPreRender(e);
         }
@@ -138,11 +133,11 @@ namespace DNNConnect.CKEditorProvider
         protected override void OnInit(EventArgs e)
         {
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
 
             // Favicon
-            LoadFavIcon();
+            this.LoadFavIcon();
         }
 
         /// <summary>
@@ -159,14 +154,14 @@ namespace DNNConnect.CKEditorProvider
             {
                 // Get ModuleID from Url
                 int moduleId;
-                if (!int.TryParse(request.QueryString["mid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out moduleId))
+                if (!int.TryParse(this.request.QueryString["mid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out moduleId))
                 {
                     moduleId = -1;
                 }
 
                 // Get TabId from Url
                 int tabId;
-                if (!int.TryParse(request.QueryString["tid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out tabId))
+                if (!int.TryParse(this.request.QueryString["tid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out tabId))
                 {
                     tabId = -1;
                 }
@@ -177,31 +172,31 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    ClosePage();
+                    this.ClosePage();
                 }
             }
             catch (Exception exception)
             {
                 Exceptions.ProcessPageLoadException(exception);
 
-                ClosePage();
+                this.ClosePage();
             }
 
             try
             {
                 // Get ModuleID from Url
-                var oEditorOptions = (CKEditorOptions)Page.LoadControl("CKEditorOptions.ascx");
+                var oEditorOptions = (CKEditorOptions)this.Page.LoadControl("CKEditorOptions.ascx");
 
                 oEditorOptions.ID = "CKEditor_Options";
                 oEditorOptions.ModuleConfiguration = modInfo;
 
-                phControls.Controls.Add(oEditorOptions);
+                this.phControls.Controls.Add(oEditorOptions);
             }
             catch (Exception exception)
             {
                 Exceptions.ProcessPageLoadException(exception);
 
-                ClosePage();
+                this.ClosePage();
             }
         }
 
@@ -210,15 +205,15 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private void ClosePage()
         {
-            Page.ClientScript.RegisterStartupScript(
-                GetType(), "closeScript", "javascript:self.close();", true);
+            this.Page.ClientScript.RegisterStartupScript(
+                this.GetType(), "closeScript", "javascript:self.close();", true);
         }
 
         /// <summary>
         /// Gets the portal settings.
         /// </summary>
         /// <returns>
-        /// The Portal Settings
+        /// The Portal Settings.
         /// </returns>
         private PortalSettings GetPortalSettings()
         {
@@ -228,17 +223,17 @@ namespace DNNConnect.CKEditorProvider
 
             try
             {
-                if (request.QueryString["tabid"] != null)
+                if (this.request.QueryString["tabid"] != null)
                 {
-                    iTabId = int.Parse(request.QueryString["tabid"]);
+                    iTabId = int.Parse(this.request.QueryString["tabid"]);
                 }
 
-                if (request.QueryString["PortalID"] != null)
+                if (this.request.QueryString["PortalID"] != null)
                 {
-                    iPortalId = int.Parse(request.QueryString["PortalID"]);
+                    iPortalId = int.Parse(this.request.QueryString["PortalID"]);
                 }
 
-                string sDomainName = Globals.GetDomainName(Request, true);
+                string sDomainName = Globals.GetDomainName(this.Request, true);
 
                 string sPortalAlias = PortalAliasController.GetPortalAliasByPortal(iPortalId, sDomainName);
 
@@ -260,29 +255,27 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private void InitializeComponent()
         {
-            curPortalSettings = GetPortalSettings();
+            this.curPortalSettings = this.GetPortalSettings();
         }
 
         /// <summary>
-        /// Load Favicon from Current Portal Home Directory
+        /// Load Favicon from Current Portal Home Directory.
         /// </summary>
         private void LoadFavIcon()
         {
-            if (!File.Exists(Path.Combine(curPortalSettings.HomeDirectoryMapPath, "favicon.ico")))
+            if (!File.Exists(Path.Combine(this.curPortalSettings.HomeDirectoryMapPath, "favicon.ico")))
             {
                 return;
             }
 
-            var faviconUrl = Path.Combine(curPortalSettings.HomeDirectory, "favicon.ico");
+            var faviconUrl = Path.Combine(this.curPortalSettings.HomeDirectory, "favicon.ico");
 
             var objLink = new HtmlGenericSelfClosing("link");
 
             objLink.Attributes["rel"] = "shortcut icon";
             objLink.Attributes["href"] = faviconUrl;
 
-            favicon.Controls.Add(objLink);
+            this.favicon.Controls.Add(objLink);
         }
-
-        #endregion
     }
 }

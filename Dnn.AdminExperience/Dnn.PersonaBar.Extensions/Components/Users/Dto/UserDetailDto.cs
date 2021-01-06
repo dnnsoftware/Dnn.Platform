@@ -49,13 +49,15 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             }
 
             this.HasAgreedToTermsOn = user.HasAgreedToTermsOn;
+            this.ProfileUrl = this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
+            this.EditProfileUrl = this.UserId > 0 ? GetSettingUrl(this.PortalId, this.UserId) : null;
         }
 
         [DataMember(Name = "profileUrl")]
-        public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
+        public string ProfileUrl { get; set; }
 
         [DataMember(Name = "editProfileUrl")]
-        public string EditProfileUrl => this.UserId > 0 ? GetSettingUrl(this.PortalId, this.UserId) : null;
+        public string EditProfileUrl { get; set; }
 
         [DataMember(Name = "lastLogin")]
         public DateTime LastLogin { get; set; }

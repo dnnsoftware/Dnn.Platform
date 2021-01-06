@@ -23,6 +23,11 @@ namespace DotNetNuke.UI.WebControls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
         private Type _Type;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingInfo"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         public SettingInfo(object name, object value)
         {
             this.Name = Convert.ToString(name);

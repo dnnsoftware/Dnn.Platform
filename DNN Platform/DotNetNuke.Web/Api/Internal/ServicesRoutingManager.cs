@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         internal ITypeLocator TypeLocator { get; set; }
 
+        /// <inheritdoc/>
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
@@ -87,11 +88,13 @@ namespace DotNetNuke.Web.Api.Internal
             return routes;
         }
 
+        /// <inheritdoc/>
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
             return this.MapHttpRoute(moduleFolderName, routeName, url, defaults, null, namespaces);
         }
 
+        /// <inheritdoc/>
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapHttpRoute(moduleFolderName, routeName, url, null, null, namespaces);

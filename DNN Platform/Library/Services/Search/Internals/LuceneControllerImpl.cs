@@ -18,7 +18,6 @@ namespace DotNetNuke.Services.Search.Internals
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Analysis;
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
@@ -62,6 +61,9 @@ namespace DotNetNuke.Services.Search.Internals
         private DateTime _lastReadTimeUtc;
         private DateTime _lastDirModifyTimeUtc;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LuceneControllerImpl"/> class.
+        /// </summary>
         public LuceneControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -149,6 +151,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public LuceneResults Search(LuceneSearchContext searchContext)
         {
             Requires.NotNull("LuceneQuery", searchContext.LuceneQuery);
@@ -231,6 +234,7 @@ namespace DotNetNuke.Services.Search.Internals
             return luceneResults;
         }
 
+        /// <inheritdoc/>
         public void Add(Document doc)
         {
             Requires.NotNull("searchDocument", doc);
@@ -252,12 +256,14 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public void Delete(Query query)
         {
             Requires.NotNull("luceneQuery", query);
             this.Writer.DeleteDocuments(query);
         }
 
+        /// <inheritdoc/>
         public void Commit()
         {
             if (this._writer != null)
@@ -274,6 +280,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public bool OptimizeSearchIndex(bool doWait)
         {
             var writer = this._writer;
@@ -301,6 +308,7 @@ namespace DotNetNuke.Services.Search.Internals
             return false;
         }
 
+        /// <inheritdoc/>
         public bool HasDeletions()
         {
             this.CheckDisposed();
@@ -308,6 +316,7 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.HasDeletions;
         }
 
+        /// <inheritdoc/>
         public int MaxDocsCount()
         {
             this.CheckDisposed();
@@ -315,6 +324,7 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.MaxDoc;
         }
 
+        /// <inheritdoc/>
         public int SearchbleDocsCount()
         {
             this.CheckDisposed();
@@ -322,7 +332,7 @@ namespace DotNetNuke.Services.Search.Internals
             return searcher.IndexReader.NumDocs();
         }
 
-        // works on the computer (in a web-farm) that runs under the scheduler
+        /// <inheritdoc/>
         public SearchStatistics GetSearchStatistics()
         {
             this.CheckDisposed();
@@ -342,6 +352,7 @@ namespace DotNetNuke.Services.Search.Internals
             };
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             var status = Interlocked.CompareExchange(ref this._isDisposed, DISPOSED, UNDISPOSED);
@@ -352,6 +363,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public Analyzer GetCustomAnalyzer()
         {
             var analyzer = DataCache.GetCache<Analyzer>("Search_CustomAnalyzer");

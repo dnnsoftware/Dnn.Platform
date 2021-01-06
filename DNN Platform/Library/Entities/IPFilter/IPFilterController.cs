@@ -23,6 +23,9 @@ namespace DotNetNuke.Entities.Host
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IPFilterController));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IPFilterController"/> class.
+        /// </summary>
         internal IPFilterController()
         {
         }
@@ -59,6 +62,7 @@ namespace DotNetNuke.Entities.Host
             DataProvider.Instance().UpdateIPFilter(ipFilter.IPFilterID, ipFilter.IPAddress, ipFilter.SubnetMask, ipFilter.RuleType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
+        /// <inheritdoc/>
         public void DeleteIPFilter(IPFilterInfo ipFilter)
         {
             Requires.PropertyNotNegative("ipFilter", "ipFilter.IPFilterID", ipFilter.IPFilterID);
@@ -75,6 +79,7 @@ namespace DotNetNuke.Entities.Host
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
+        /// <inheritdoc/>
         [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
         public void IsIPAddressBanned(string ipAddress)
         {

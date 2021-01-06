@@ -16,6 +16,7 @@ namespace DotNetNuke.Security.Cookies
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
 
+        /// <inheritdoc/>
         public void Update(string cookieValue, DateTime utcExpiry, int userId)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -27,6 +28,7 @@ namespace DotNetNuke.Security.Cookies
             this._dataProvider.UpdateAuthCookie(cookieValue, utcExpiry, userId);
         }
 
+        /// <inheritdoc/>
         public PersistedAuthCookie Find(string cookieValue)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -39,6 +41,7 @@ namespace DotNetNuke.Security.Cookies
                 _ => CBO.Instance.FillObject<PersistedAuthCookie>(this._dataProvider.FindAuthCookie(cookieValue)), false);
         }
 
+        /// <inheritdoc/>
         public void DeleteByValue(string cookieValue)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -51,11 +54,13 @@ namespace DotNetNuke.Security.Cookies
             this._dataProvider.DeleteAuthCookie(cookieValue);
         }
 
+        /// <inheritdoc/>
         public void DeleteExpired(DateTime utcExpiredBefore)
         {
             this._dataProvider.DeleteExpiredAuthCookies(utcExpiredBefore);
         }
 
+        /// <inheritdoc/>
         protected override Func<IAuthCookieController> GetFactory()
         {
             return () => new AuthCookieController();

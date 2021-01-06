@@ -62,12 +62,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int? UserId { get; set; }
+
         private string Email { get; set; }
+
         private string Username { get; set; }
+
         private string DisplayName { get; set; }
+
         private string FirstName { get; set; }
+
         private string LastName { get; set; }
+
         private bool? Approved { get; set; }
+
         private string Password { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -107,9 +114,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     this.UserId,
                     this.PortalSettings,
                     this.User,
-                    out userInfo)
-                ) != null
-               )
+                    out userInfo)) != null)
             {
                 return errorResultModel;
             }
@@ -144,7 +149,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 IsDeleted = userInfo.IsDeleted,
                 Username = userInfo.Username,
                 Firstname = userInfo.FirstName,
-                Lastname = userInfo.LastName
+                Lastname = userInfo.LastName,
             };
             // Update Username
             if (!string.IsNullOrEmpty(this.Username))
@@ -183,7 +188,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Data = lst,
                 Records = lst.Count,
                 FieldOrder = UserModel.FieldOrder,
-                Output = this.LocalizeString("UserUpdated")
+                Output = this.LocalizeString("UserUpdated"),
             };
         }
     }

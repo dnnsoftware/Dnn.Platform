@@ -6,10 +6,8 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Web.UI;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -36,6 +34,9 @@ namespace DotNetNuke.Entities.Modules
         private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
         private PageInfo _pageInfo;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DesktopModuleInfo"/> class.
+        /// </summary>
         public DesktopModuleInfo()
         {
             this.IsPremium = Null.NullBoolean;
@@ -723,11 +724,13 @@ namespace DotNetNuke.Entities.Modules
                 return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
 
+            /// <inheritdoc/>
             public XmlSchema GetSchema()
             {
                 return null;
             }
 
+            /// <inheritdoc/>
             public void ReadXml(XmlReader reader)
             {
                 while (!reader.EOF)
@@ -780,6 +783,7 @@ namespace DotNetNuke.Entities.Modules
                 }
             }
 
+            /// <inheritdoc/>
             public void WriteXml(XmlWriter writer)
             {
                 // Write start of main elemenst

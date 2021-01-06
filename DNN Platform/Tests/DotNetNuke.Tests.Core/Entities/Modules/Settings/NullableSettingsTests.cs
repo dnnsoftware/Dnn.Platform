@@ -286,6 +286,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings>
-        {}
+        {
+        }
     }
 }

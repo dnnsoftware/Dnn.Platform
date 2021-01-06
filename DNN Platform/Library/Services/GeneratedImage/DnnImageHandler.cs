@@ -40,6 +40,9 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private string _defaultImageFile = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnImageHandler"/> class.
+        /// </summary>
         public DnnImageHandler()
         {
             // Set default settings here
@@ -98,6 +101,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         // Add image generation logic here and return an instance of ImageInfo
+        /// <inheritdoc/>
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
             this.SetupCulture();
