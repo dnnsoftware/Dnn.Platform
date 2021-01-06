@@ -370,6 +370,52 @@ namespace DNNConnect.CKEditorProvider.Web
                         "[{0}]", toolbarSetString);
                 }
 
+                // Easy Image Upload
+                if (this.currentSettings.Config.UseSimpleImageUpload)
+                {
+                    // replace 'Image' Plugin with 'EasyImage'
+                    this.settings["toolbar"] = this.settings["toolbar"].Replace("'Image'", "'EasyImageUpload'");
+
+                    // add the plugin in extraPlugins
+                    if (string.IsNullOrEmpty(this.settings["extraPlugins"]) || !this.settings["extraPlugins"].Split(',').Contains("easyimage"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["extraPlugins"]))
+                        {
+                            this.settings["extraPlugins"] += ",";
+                        }
+
+                        this.settings["extraPlugins"] += "easyimage";
+                    }
+
+                    // remove the image plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        {
+                            this.settings["removePlugins"] += ",";
+                        }
+
+                        this.settings["removePlugins"] += "image";
+                    }
+                }
+                else
+                {
+                    // remove the easyimage plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        {
+                            this.settings["removePlugins"] += ",";
+                        }
+
+                        this.settings["removePlugins"] += "easyimage";
+                    }
+                }
+
+                // cloudservices variables need to be set regardless
+                this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/EasyImage/GetToken");
+                this.settings.Add("cloudServices_uploadUrl", "/API/CKEditorProvider/EasyImage/UploadFile");
+
                 // Editor Width
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))
                 {
