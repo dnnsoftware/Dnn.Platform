@@ -1469,6 +1469,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     ToolbarGroupCycling = true,
                     ToolbarStartupExpanded = true,
                     UseComputedState = true,
+                    UseSimpleImageUpload = false,
                     AutoGrow_BottomSpace = 0,
                     AutoGrow_MaxHeight = 0,
                     AutoGrow_MinHeight = 200,
