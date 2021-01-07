@@ -93,6 +93,7 @@
     <Compile Include="Constants\Browser.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />
+    <Compile Include="Constants\LinkProtocol.cs" />
     <Compile Include="Constants\LinkMode.cs" />
     <Compile Include="Constants\LinkType.cs" />
     <Compile Include="Constants\SettingConstants.cs" />
