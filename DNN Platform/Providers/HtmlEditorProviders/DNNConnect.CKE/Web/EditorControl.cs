@@ -398,8 +398,18 @@ namespace DNNConnect.CKEditorProvider.Web
                         this.settings["removePlugins"] += "image";
                     }
 
-                    this.settings.Add("cloudServices_uploadUrl",
-                        $"/API/CKEditorProvider/EasyImage/UploadFile?tabid={this.portalSettings.ActiveTab.TabID}&portalid={this.portalSettings.PortalId}&mid={this.parentModulId}&ckid={this.ID}");
+                    this.settings.Add("cloudServices_uploadUrl", Globals.ResolveUrl(
+                        string.Format(
+                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=EasyImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                            this.portalSettings.ActiveTab.TabID,
+                            this.portalSettings.PortalId,
+                            this.parentModulId,
+                            this.ID,
+                            this.currentSettings.SettingMode,
+                            CultureInfo.CurrentCulture.Name)));
+
+                    //this.settings.Add("cloudServices_uploadUrl",
+                    //    $"/API/CKEditorProvider/EasyImage/UploadFile?tabid={this.portalSettings.ActiveTab.TabID}&portalid={this.portalSettings.PortalId}&mid={this.parentModulId}&ckid={this.ID}");
                 }
                 else
                 {
