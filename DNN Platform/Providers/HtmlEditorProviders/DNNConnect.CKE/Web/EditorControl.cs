@@ -419,6 +419,17 @@ namespace DNNConnect.CKEditorProvider.Web
                     this.settings["menu_groups"] =
                         "clipboard,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div";
                 }
+                
+                // remove the easyimage and cloudservices plugins in removePlugins
+                if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
+                {
+                    if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                    {
+                        this.settings["removePlugins"] += ",";
+                    }
+
+                    this.settings["removePlugins"] += "easyimage,cloudservices";
+                }
 
                 // Inject maxFileSize
                 this.settings["maxFileSize"] = Utility.GetMaxUploadSize().ToString();
