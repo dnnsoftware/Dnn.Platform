@@ -535,36 +535,36 @@ namespace DNNConnect.CKEditorProvider.Web
 
                             if (Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
                             {
-                                this.settings["filebrowserUploadUrl"] =
-                                    Globals.ResolveUrl(
-                                        string.Format(
-                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                            this.portalSettings.ActiveTab.TabID,
-                                            this.portalSettings.PortalId,
-                                            this.parentModulId,
-                                            this.ID,
-                                            this.currentSettings.SettingMode,
-                                            CultureInfo.CurrentCulture.Name));
-                                this.settings["filebrowserFlashUploadUrl"] =
-                                    Globals.ResolveUrl(
-                                        string.Format(
-                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                            this.portalSettings.ActiveTab.TabID,
-                                            this.portalSettings.PortalId,
-                                            this.parentModulId,
-                                            this.ID,
-                                            this.currentSettings.SettingMode,
-                                            CultureInfo.CurrentCulture.Name));
-                                this.settings["filebrowserImageUploadUrl"] =
-                                    Globals.ResolveUrl(
-                                        string.Format(
-                                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                            this.portalSettings.ActiveTab.TabID,
-                                            this.portalSettings.PortalId,
-                                            this.parentModulId,
-                                            this.ID,
-                                            this.currentSettings.SettingMode,
-                                            CultureInfo.CurrentCulture.Name));
+                                //this.settings["filebrowserUploadUrl"] =
+                                //    Globals.ResolveUrl(
+                                //        string.Format(
+                                //            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                //            this.portalSettings.ActiveTab.TabID,
+                                //            this.portalSettings.PortalId,
+                                //            this.parentModulId,
+                                //            this.ID,
+                                //            this.currentSettings.SettingMode,
+                                //            CultureInfo.CurrentCulture.Name));
+                                //this.settings["filebrowserFlashUploadUrl"] =
+                                //    Globals.ResolveUrl(
+                                //        string.Format(
+                                //            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                //            this.portalSettings.ActiveTab.TabID,
+                                //            this.portalSettings.PortalId,
+                                //            this.parentModulId,
+                                //            this.ID,
+                                //            this.currentSettings.SettingMode,
+                                //            CultureInfo.CurrentCulture.Name));
+                                //this.settings["filebrowserImageUploadUrl"] =
+                                //    Globals.ResolveUrl(
+                                //        string.Format(
+                                //            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                //            this.portalSettings.ActiveTab.TabID,
+                                //            this.portalSettings.PortalId,
+                                //            this.parentModulId,
+                                //            this.ID,
+                                //            this.currentSettings.SettingMode,
+                                //            CultureInfo.CurrentCulture.Name));
                             }
 
                             this.settings["filebrowserWindowWidth"] = "870";

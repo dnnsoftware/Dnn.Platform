@@ -2496,9 +2496,12 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
                 else
                 {
-                    this.Response.Write("<script type=\"text/javascript\">");
-                    this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
-                    this.Response.Write("</script>");
+                    this.Response.ClearContent();
+                    this.Response.ContentType = "application/json";
+                    this.Response.Write($"{{\"default\": null}}");
+                    //this.Response.Write("<script type=\"text/javascript\">");
+                    //this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
+                    //this.Response.Write("</script>");
                 }
                 
                 this.Response.End();
