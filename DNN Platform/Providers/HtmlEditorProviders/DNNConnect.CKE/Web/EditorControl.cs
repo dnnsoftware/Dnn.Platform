@@ -315,6 +315,8 @@ namespace DNNConnect.CKEditorProvider.Web
                     }
                 }
 
+                this.settings["linkDefaultProtocol"] = this.currentSettings.DefaultLinkProtocol.ToSettingValue();
+
                 var cssFiles = new List<string>();
                 var skinSrc = this.GetSkinSource();
                 var containerSrc = this.GetContainerSource();

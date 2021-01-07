@@ -1387,7 +1387,9 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("FilebrowserImageBrowseLinkUrl")
                         && !info.Name.Equals("FileBrowserImageBrowseUrl")
                         && !info.Name.Equals("FileBrowserFlashUploadUrl")
-                        && !info.Name.Equals("FileBrowserFlashBrowseUrl") && !info.Name.Equals("FileBrowserBrowseUrl"));
+                        && !info.Name.Equals("FileBrowserFlashBrowseUrl") 
+                        && !info.Name.Equals("FileBrowserBrowseUrl")
+                        && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
         /// <summary>
