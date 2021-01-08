@@ -4,13 +4,12 @@
 namespace DotNetNuke.Tests.Web.DependencyInjection
 {
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using System.Web.Http.Filters;
 
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.DependencyInjection.Extensions;
+    using DotNetNuke.Tests.Utilities.Mocks;
 
     using Moq;
 
@@ -26,12 +25,7 @@ namespace DotNetNuke.Tests.Web.DependencyInjection
         [SetUp]
         public void Setup()
         {
-            var mockCbo = new Mock<ICBO>();
-            mockCbo
-                .Setup(x => x.GetCachedObject<IEnumerable<PropertyInfo>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
-                .Returns<CacheItemArgs, CacheItemExpiredCallback, bool>((args, callback, _) => (IEnumerable<PropertyInfo>)callback(args));
-
-            CBO.SetTestableInstance(mockCbo.Object);
+            CBO.SetTestableInstance(new MockCBO());
 
             this.eventLogger = Mock.Of<IEventLogger>();
 
