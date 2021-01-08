@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DNNConnect.CKEditorProvider.Constants;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
     using System;
@@ -16,6 +14,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using System.Web;
     using System.Web.Configuration;
     using System.Web.UI;
+
+    using DNNConnect.CKEditorProvider.Constants;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
