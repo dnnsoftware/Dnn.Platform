@@ -1491,4 +1491,10 @@
   <data name="plInlineEditorEnabled.Text" xml:space="preserve">
     <value>Inline Editor Enabled</value>
   </data>
+  <data name="plShowQuickModuleAddMenu.Help" xml:space="preserve">
+    <value>If switched on this will show a dropdown on the edit bar from which users can quickly add a module to a specified pane.</value>
+  </data>
+  <data name="plShowQuickModuleAddMenu.Text" xml:space="preserve">
+    <value>Show Quick Module Add Menu</value>
+  </data>
 </root>
