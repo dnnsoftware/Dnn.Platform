@@ -462,6 +462,55 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.ImageButton = settingValue;
+
+                    switch (currentSettings.ImageButton)
+                    {
+                        case "easyimage":
+                            foreach (string sRoleName in roles)
+                            {
+                                if (PortalSecurity.IsInRoles(sRoleName))
+                                {
+                                    currentSettings.ImageButtonMode = ImageButtonType.EasyImage;
+
+                                    break;
+                                }
+
+                                currentSettings.ImageButtonMode = ImageButtonType.None;
+                            }
+
+                            break;
+                        case "standard":
+                            foreach (string sRoleName in roles)
+                            {
+                                if (PortalSecurity.IsInRoles(sRoleName))
+                                {
+                                    currentSettings.ImageButtonMode = ImageButtonType.StandardBrowser;
+
+                                    break;
+                                }
+
+                                currentSettings.ImageButtonMode = ImageButtonType.None;
+                            }
+
+                            break;
+                        case "none":
+                            currentSettings.ImageButtonMode = ImageButtonType.None;
+                            break;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.INJECTJS))))
             {
                 var settingValue =
@@ -1058,6 +1107,46 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON)]))
+            {
+                currentSettings.ImageButton = (string)hshModSet[string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON)];
+
+                switch (currentSettings.ImageButton)
+                {
+                    case "easyimage":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                currentSettings.ImageButtonMode = ImageButtonType.EasyImage;
+
+                                break;
+                            }
+
+                            currentSettings.ImageButtonMode = ImageButtonType.None;
+                        }
+
+                        break;
+                    case "standard":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                currentSettings.ImageButtonMode = ImageButtonType.StandardBrowser;
+
+                                break;
+                            }
+
+                            currentSettings.ImageButtonMode = ImageButtonType.None;
+                        }
+
+                        break;
+                    case "none":
+                        currentSettings.ImageButtonMode = ImageButtonType.None;
+                        break;
+                }
+            }
+
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.INJECTJS)]))
             {
                 bool bResult;
@@ -1338,6 +1427,44 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty(settings.ImageButton))
+            {
+                switch (settings.ImageButton)
+                {
+                    case "easyimage":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                settings.ImageButtonMode = ImageButtonType.EasyImage;
+
+                                break;
+                            }
+
+                            settings.ImageButtonMode = ImageButtonType.None;
+                        }
+
+                        break;
+                    case "standard":
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                settings.ImageButtonMode = ImageButtonType.StandardBrowser;
+
+                                break;
+                            }
+
+                            settings.ImageButtonMode = ImageButtonType.None;
+                        }
+
+                        break;
+                    case "none":
+                        settings.ImageButtonMode = ImageButtonType.None;
+                        break;
+                }
+            }
+
             reader.Close();
 
             return settings;
@@ -1387,7 +1514,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("FilebrowserImageBrowseLinkUrl")
                         && !info.Name.Equals("FileBrowserImageBrowseUrl")
                         && !info.Name.Equals("FileBrowserFlashUploadUrl")
-                        && !info.Name.Equals("FileBrowserFlashBrowseUrl") 
+                        && !info.Name.Equals("FileBrowserFlashBrowseUrl")
                         && !info.Name.Equals("FileBrowserBrowseUrl")
                         && !info.Name.Equals("DefaultLinkProtocol"));
         }
@@ -1469,7 +1596,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     ToolbarGroupCycling = true,
                     ToolbarStartupExpanded = true,
                     UseComputedState = true,
-                    UseSimpleImageUpload = false,
                     AutoGrow_BottomSpace = 0,
                     AutoGrow_MaxHeight = 0,
                     AutoGrow_MinHeight = 200,

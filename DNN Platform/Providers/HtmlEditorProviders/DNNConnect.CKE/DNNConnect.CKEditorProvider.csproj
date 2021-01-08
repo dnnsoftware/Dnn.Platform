@@ -100,6 +100,7 @@
     <Compile Include="Browser\FileUploader.ashx.cs">
       <DependentUpon>FileUploader.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Constants\ImageButton.cs" />
     <Compile Include="Constants\Browser.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />

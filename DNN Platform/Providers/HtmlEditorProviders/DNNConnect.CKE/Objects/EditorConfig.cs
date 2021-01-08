@@ -123,7 +123,6 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.ToolbarStartupExpanded = true;
             this.UndoStackSize = 20;
             this.UseComputedState = true;
-            this.UseSimpleImageUpload = false;
             this.Width = "99%";
             this.WordCount = new WordCountConfig();
         }
@@ -1926,16 +1925,6 @@ namespace DNNConnect.CKEditorProvider.Objects
         [XmlAttribute("useComputedState")]
         [Description("Indicates that some of the editor features, like alignment and text direction, should use the computed value of the feature to indicate its on/off state instead of using the real value If enabled in a Left-To-Right written document, the 'Left Justify' alignment button will be shown as active, even if the alignment style is not explicitly applied to the current paragraph in the editor.")]
         public bool UseComputedState { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [use simple image upload] plugin.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [use simple image upload]; otherwise, <c>false</c>.
-        /// </value>
-        [XmlAttribute("useSimpleImageUpload")]
-        [Description("Indicates that the image button will just allow the user to upload an image file, without the more advanced dialog.")]
-        public bool UseSimpleImageUpload { get; set; }
 
         /// <summary>
         /// Gets or sets the width.

@@ -371,7 +371,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Easy Image Upload
-                if (this.currentSettings.Config.UseSimpleImageUpload)
+                if (this.currentSettings.ImageButtonMode == ImageButtonType.EasyImage)
                 {
                     // replace 'Image' Plugin with 'EasyImage'
                     this.settings["toolbar"] = this.settings["toolbar"].Replace("'Image'", "'EasyImageUpload'");
@@ -407,21 +407,35 @@ namespace DNNConnect.CKEditorProvider.Web
                             this.ID,
                             this.currentSettings.SettingMode,
                             CultureInfo.CurrentCulture.Name)));
-
-                    //this.settings.Add("cloudServices_uploadUrl",
-                    //    $"/API/CKEditorProvider/EasyImage/UploadFile?tabid={this.portalSettings.ActiveTab.TabID}&portalid={this.portalSettings.PortalId}&mid={this.parentModulId}&ckid={this.ID}");
                 }
                 else
                 {
-                    // remove the easyimage plugin in removePlugins
-                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
+                    if (this.currentSettings.ImageButtonMode == ImageButtonType.StandardBrowser)
                     {
-                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        // remove the easyimage plugin in removePlugins
+                        if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
                         {
-                            this.settings["removePlugins"] += ",";
-                        }
+                            if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                            {
+                                this.settings["removePlugins"] += ",";
+                            }
 
-                        this.settings["removePlugins"] += "easyimage";
+                            this.settings["removePlugins"] += "easyimage";
+                        }
+                    }
+
+                    if (this.currentSettings.ImageButtonMode == ImageButtonType.None)
+                    {
+                        // remove the image plugin in removePlugins
+                        if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
+                        {
+                            if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                            {
+                                this.settings["removePlugins"] += ",";
+                            }
+
+                            this.settings["removePlugins"] += "image";
+                        }
                     }
                 }
 
@@ -478,17 +492,6 @@ namespace DNNConnect.CKEditorProvider.Web
                 {
                     this.settings["menu_groups"] =
                         "clipboard,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div";
-                }
-                
-                // remove the easyimage and cloudservices plugins in removePlugins
-                if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
-                {
-                    if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
-                    {
-                        this.settings["removePlugins"] += ",";
-                    }
-
-                    this.settings["removePlugins"] += "easyimage,cloudservices";
                 }
 
                 // Inject maxFileSize
@@ -1035,6 +1038,33 @@ namespace DNNConnect.CKEditorProvider.Web
                     break;
                 case "none":
                     this.currentSettings.BrowserMode = BrowserType.None;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// The check image browser.
+        /// </summary>
+        private void CheckImageButton()
+        {
+            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+            Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
+
+            if (objProvider == null || string.IsNullOrEmpty(objProvider.Attributes["ck_imagebutton"]))
+            {
+                return;
+            }
+
+            switch (objProvider.Attributes["ck_imagebutton"])
+            {
+                case "easyimage":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.EasyImage;
+                    break;
+                case "standard":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.StandardBrowser;
+                    break;
+                case "none":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.None;
                     break;
             }
         }

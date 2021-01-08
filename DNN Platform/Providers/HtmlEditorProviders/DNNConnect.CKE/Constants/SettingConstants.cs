@@ -47,6 +47,11 @@ namespace DNNConnect.CKEditorProvider.Constants
         public const string BROWSER = "browser";
 
         /// <summary>
+        /// The image button setting name.
+        /// </summary>
+        public const string IMAGEBUTTON = "imagebutton";
+
+        /// <summary>
         /// The browser root folder id setting name.
         /// </summary>
         public const string BROWSERROOTDIRID = "browserRootDirId";
