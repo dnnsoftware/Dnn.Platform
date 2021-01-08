@@ -371,7 +371,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Easy Image Upload
-                if (this.currentSettings.ImageButtonMode == ImageButtonType.EasyImage)
+                if (this.currentSettings.ImageButtonMode == ImageButtonType.EasyImageButton)
                 {
                     // replace 'Image' Plugin with 'EasyImage'
                     this.settings["toolbar"] = this.settings["toolbar"].Replace("'Image'", "'EasyImageUpload'");
@@ -386,6 +386,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
                         this.settings["extraPlugins"] += "easyimage";
                     }
+
+                    // change the easyimage toolbar
+                    this.settings["easyimage_toolbar"] = "['EasyImageAlt']";
 
                     // remove the image plugin in removePlugins
                     if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
@@ -410,37 +413,20 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
                 else
                 {
-                    if (this.currentSettings.ImageButtonMode == ImageButtonType.StandardBrowser)
+                    // remove the easyimage plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
                     {
-                        // remove the easyimage plugin in removePlugins
-                        if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
                         {
-                            if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
-                            {
-                                this.settings["removePlugins"] += ",";
-                            }
-
-                            this.settings["removePlugins"] += "easyimage";
+                            this.settings["removePlugins"] += ",";
                         }
-                    }
 
-                    if (this.currentSettings.ImageButtonMode == ImageButtonType.None)
-                    {
-                        // remove the image plugin in removePlugins
-                        if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
-                        {
-                            if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
-                            {
-                                this.settings["removePlugins"] += ",";
-                            }
-
-                            this.settings["removePlugins"] += "image";
-                        }
+                        this.settings["removePlugins"] += "easyimage";
                     }
                 }
 
                 // cloudservices variables need to be set regardless
-                this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/EasyImage/GetToken");
+                this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/CloudServices/GetToken");
 
                 // Editor Width
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))
@@ -1058,13 +1044,10 @@ namespace DNNConnect.CKEditorProvider.Web
             switch (objProvider.Attributes["ck_imagebutton"])
             {
                 case "easyimage":
-                    this.currentSettings.ImageButtonMode = ImageButtonType.EasyImage;
+                    this.currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
                     break;
                 case "standard":
-                    this.currentSettings.ImageButtonMode = ImageButtonType.StandardBrowser;
-                    break;
-                case "none":
-                    this.currentSettings.ImageButtonMode = ImageButtonType.None;
+                    this.currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
                     break;
             }
         }

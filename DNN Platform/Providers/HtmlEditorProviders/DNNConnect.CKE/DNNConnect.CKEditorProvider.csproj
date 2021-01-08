@@ -137,7 +137,7 @@
     <Compile Include="Objects\UploadSizeRoles.cs" />
     <Compile Include="Objects\WordCountConfig.cs" />
     <Compile Include="Services\CKEditorProviderRouteMapper.cs" />
-    <Compile Include="Services\EasyImageController.cs" />
+    <Compile Include="Services\CloudServicesController.cs" />
     <Compile Include="Tabs.ashx.cs">
       <DependentUpon>Tabs.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

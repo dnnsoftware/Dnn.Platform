@@ -124,9 +124,8 @@
 				    <div class="dnnFormItem">
 					    <asp:label id="lblImageButton" runat="server" CssClass="dnnLabel">Image Button:</asp:label>
 	                      <asp:dropdownlist id="ddlImageButton" runat="server" CssClass="DefaultDropDown">
-                            <asp:ListItem Text="None" Value="none" Enabled="true"></asp:ListItem>
 	                        <asp:ListItem Text="Standard" Value="standard" ></asp:ListItem>
-	                        <asp:ListItem Text="Easy Image" Value="easyimage"></asp:ListItem>
+	                        <asp:ListItem Text="Easy Image Upload" Value="easyimage"></asp:ListItem>
 	                      </asp:dropdownlist>
 				    </div>
 				    <div class="dnnFormItem">

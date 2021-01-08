@@ -472,39 +472,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 {
                     currentSettings.ImageButton = settingValue;
 
-                    switch (currentSettings.ImageButton)
+                    if (currentSettings.ImageButton == "easyimage")
                     {
-                        case "easyimage":
-                            foreach (string sRoleName in roles)
+                        currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
                             {
-                                if (PortalSecurity.IsInRoles(sRoleName))
-                                {
-                                    currentSettings.ImageButtonMode = ImageButtonType.EasyImage;
-
-                                    break;
-                                }
-
-                                currentSettings.ImageButtonMode = ImageButtonType.None;
+                                currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
                             }
-
-                            break;
-                        case "standard":
-                            foreach (string sRoleName in roles)
-                            {
-                                if (PortalSecurity.IsInRoles(sRoleName))
-                                {
-                                    currentSettings.ImageButtonMode = ImageButtonType.StandardBrowser;
-
-                                    break;
-                                }
-
-                                currentSettings.ImageButtonMode = ImageButtonType.None;
-                            }
-
-                            break;
-                        case "none":
-                            currentSettings.ImageButtonMode = ImageButtonType.None;
-                            break;
+                        }
+                    }
+                    else
+                    {
+                        currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
                     }
                 }
             }
@@ -1111,39 +1092,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 currentSettings.ImageButton = (string)hshModSet[string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON)];
 
-                switch (currentSettings.ImageButton)
+                if (currentSettings.ImageButton == "easyimage")
                 {
-                    case "easyimage":
-                        foreach (string sRoleName in roles)
+                    currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                    foreach (string sRoleName in roles)
+                    {
+                        if (PortalSecurity.IsInRoles(sRoleName))
                         {
-                            if (PortalSecurity.IsInRoles(sRoleName))
-                            {
-                                currentSettings.ImageButtonMode = ImageButtonType.EasyImage;
-
-                                break;
-                            }
-
-                            currentSettings.ImageButtonMode = ImageButtonType.None;
+                            currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
                         }
-
-                        break;
-                    case "standard":
-                        foreach (string sRoleName in roles)
-                        {
-                            if (PortalSecurity.IsInRoles(sRoleName))
-                            {
-                                currentSettings.ImageButtonMode = ImageButtonType.StandardBrowser;
-
-                                break;
-                            }
-
-                            currentSettings.ImageButtonMode = ImageButtonType.None;
-                        }
-
-                        break;
-                    case "none":
-                        currentSettings.ImageButtonMode = ImageButtonType.None;
-                        break;
+                    }
+                }
+                else
+                {
+                    currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
                 }
             }
 
@@ -1429,39 +1391,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (!string.IsNullOrEmpty(settings.ImageButton))
             {
-                switch (settings.ImageButton)
+                if (settings.ImageButton == "easyimage")
                 {
-                    case "easyimage":
-                        foreach (string sRoleName in roles)
+                    settings.ImageButtonMode = ImageButtonType.StandardButton;
+                    foreach (string sRoleName in roles)
+                    {
+                        if (PortalSecurity.IsInRoles(sRoleName))
                         {
-                            if (PortalSecurity.IsInRoles(sRoleName))
-                            {
-                                settings.ImageButtonMode = ImageButtonType.EasyImage;
-
-                                break;
-                            }
-
-                            settings.ImageButtonMode = ImageButtonType.None;
+                            settings.ImageButtonMode = ImageButtonType.EasyImageButton;
                         }
-
-                        break;
-                    case "standard":
-                        foreach (string sRoleName in roles)
-                        {
-                            if (PortalSecurity.IsInRoles(sRoleName))
-                            {
-                                settings.ImageButtonMode = ImageButtonType.StandardBrowser;
-
-                                break;
-                            }
-
-                            settings.ImageButtonMode = ImageButtonType.None;
-                        }
-
-                        break;
-                    case "none":
-                        settings.ImageButtonMode = ImageButtonType.None;
-                        break;
+                    }
+                }
+                else
+                {
+                    settings.ImageButtonMode = ImageButtonType.StandardButton;
                 }
             }
 

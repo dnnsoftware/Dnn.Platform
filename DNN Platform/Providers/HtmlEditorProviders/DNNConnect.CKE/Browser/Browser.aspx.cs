@@ -938,7 +938,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.portalSettings,
                 HttpContext.Current.Request);
 
-            if ((this.currentSettings.BrowserMode.Equals(BrowserType.StandardBrowser) || !this.currentSettings.ImageButtonMode.Equals(ImageButtonType.None))
+            if ((this.currentSettings.BrowserMode.Equals(BrowserType.StandardBrowser) || this.currentSettings.ImageButtonMode.Equals(ImageButtonType.EasyImageButton))
                 && HttpContext.Current.Request.IsAuthenticated)
             {
                 string command = null;

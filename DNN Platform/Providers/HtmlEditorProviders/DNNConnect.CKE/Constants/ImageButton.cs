@@ -10,18 +10,13 @@ namespace DNNConnect.CKEditorProvider.Constants
     public enum ImageButtonType
     {
         /// <summary>
-        /// The none button.
-        /// </summary>
-        None = 0,
-
-        /// <summary>
         /// The standard button.
         /// </summary>
-        StandardBrowser = 1,
+        StandardButton = 1,
 
         /// <summary>
         /// easy image button
         /// </summary>
-        EasyImage = 2,
+        EasyImageButton = 2,
     }
 }
