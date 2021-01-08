@@ -1,22 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
+namespace DNNConnect.CKEditorProvider.Controls
+{
     using System;
     using System.Collections;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
-
-namespace DNNConnect.CKEditorProvider.Controls
-{
 
     /// <summary>
     /// The html generic self closing.
     /// </summary>
     public class HtmlGenericSelfClosing : HtmlGenericControl
     {
-        #region Constructors and Destructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlGenericSelfClosing"/> class.
         /// </summary>
@@ -35,14 +31,10 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets Controls.
         /// </summary>
-        /// <exception cref="Exception">A self closing tag cannot have child controls and/or content</exception>
+        /// <exception cref="Exception">A self closing tag cannot have child controls and/or content.</exception>
         public override ControlCollection Controls
         {
             get
@@ -54,7 +46,7 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <summary>
         /// Gets or sets InnerHtml.
         /// </summary>
-        /// <exception cref="Exception">A self closing tag cannot have child controls and/or content</exception>
+        /// <exception cref="Exception">A self closing tag cannot have child controls and/or content.</exception>
         public override string InnerHtml
         {
             get
@@ -71,7 +63,7 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <summary>
         /// Gets or sets InnerText.
         /// </summary>
-        /// <exception cref="Exception">A self closing tag cannot have child controls and/or content</exception>
+        /// <exception cref="Exception">A self closing tag cannot have child controls and/or content.</exception>
         public override string InnerText
         {
             get
@@ -85,10 +77,6 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// The render.
         /// </summary>
@@ -97,11 +85,11 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// </param>
         protected override void Render(HtmlTextWriter writer)
         {
-            ICollection keys = Attributes.Keys;
+            ICollection keys = this.Attributes.Keys;
 
-            writer.WriteBeginTag(TagName);
+            writer.WriteBeginTag(this.TagName);
 
-            if (ID != string.Empty)
+            if (this.ID != string.Empty)
             {
                 // writer.WriteAttribute("id", base.UniqueID);
                 // writer.WriteAttribute("name", base.UniqueID);
@@ -109,12 +97,10 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             foreach (string key in keys)
             {
-                writer.WriteAttribute(key, Attributes[key]);
+                writer.WriteAttribute(key, this.Attributes[key]);
             }
 
             writer.Write(HtmlTextWriter.SelfClosingTagEnd + Environment.NewLine);
         }
-
-        #endregion
     }
 }

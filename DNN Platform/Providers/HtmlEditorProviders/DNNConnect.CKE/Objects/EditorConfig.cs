@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel;
-using System.Xml.Serialization;
-
-using DNNConnect.CKEditorProvider.Constants;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System.ComponentModel;
+    using System.Xml.Serialization;
+
+    using DNNConnect.CKEditorProvider.Constants;
 
     /// <summary>
-    /// Editor Configuration Settings
+    /// Editor Configuration Settings.
     /// </summary>
     public class EditorConfig
     {
@@ -457,10 +456,10 @@ namespace DNNConnect.CKEditorProvider.Objects
         public string DefaultLanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets the default link type
+        /// Gets or sets the default link type.
         /// </summary>
         /// <value>
-        /// The enter default link type
+        /// The enter default link type.
         /// </value>
         [XmlAttribute("defaultLinkType")]
         [Description("Sets the Default Link Type for the Link Dialog ")]

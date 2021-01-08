@@ -62,8 +62,7 @@ namespace Dnn.PersonaBar.Pages.Components
                   new UrlRewriterUtilsWrapper(),
                   new FriendlyUrlWrapper(),
                   new ContentVerifier(),
-                  PortalController.Instance
-                  )
+                  PortalController.Instance)
         {
         }
 
@@ -100,14 +99,14 @@ namespace Dnn.PersonaBar.Pages.Components
             var valid = true;
             errorMessage = string.Empty;
 
-            //get default culture if the tab's culture is null
+            // get default culture if the tab's culture is null
             var cultureCode = tab != null ? tab.CultureCode : string.Empty;
             if (string.IsNullOrEmpty(cultureCode))
             {
                 cultureCode = portalSettings.DefaultLanguage;
             }
 
-            //Validate Tab Path
+            // Validate Tab Path
             var tabId = TabController.GetTabByTabPath(portalSettings.PortalId, newTabPath, cultureCode);
             if (tabId != Null.NullInteger && (tab == null || tabId != tab.TabID))
             {
@@ -124,7 +123,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 valid = false;
             }
 
-            //check whether have conflict between tab path and portal alias.
+            // check whether have conflict between tab path and portal alias.
             if (valid && TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
             {
                 errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), newTabName, newTabPath);
@@ -210,7 +209,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     TabController.Instance.MoveTabAfter(tab, request.RelatedPageId);
                     break;
                 case "parent":
-                    //avoid move tab into its child page
+                    // avoid move tab into its child page
                     if (this.IsChild(portalSettings.PortalId, tab.TabID, request.ParentId))
                     {
                         throw new PageException("DragInvalid");
@@ -220,7 +219,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     break;
             }
 
-            //as tab's parent may changed, url need refresh.
+            // as tab's parent may changed, url need refresh.
             return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
         }
 
@@ -274,7 +273,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var newCookie = new HttpCookie("LastPageId", $"{portalSettings.PortalId}:{pageId}")
             {
-                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"),
             };
             HttpContext.Current.Response.Cookies.Add(newCookie);
 
@@ -352,14 +351,23 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     var bIsMatch = true;
                     if (!string.IsNullOrEmpty(tabTitle))
+                    {
                         bIsMatch = bIsMatch &
                                    Regex.IsMatch(tab.Title, tabTitle.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    }
+
                     if (!string.IsNullOrEmpty(tabName))
+                    {
                         bIsMatch = bIsMatch &
                                    Regex.IsMatch(tab.TabName, tabName.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    }
+
                     if (!string.IsNullOrEmpty(tabPath))
+                    {
                         bIsMatch = bIsMatch &
                                    Regex.IsMatch(tab.TabPath, tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                    }
+
                     if (!string.IsNullOrEmpty(tabSkin))
                     {
                         var escapedString = Regex.Replace(tabSkin, "([^\\w^\\*\\s]+)+", @"\$1", RegexOptions.Compiled | RegexOptions.ECMAScript | RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -456,7 +464,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             bool modified;
-            //Clean Url            
+            // Clean Url
             var options = this._urlRewriterUtilsWrapper.GetExtendOptionsForURLs(portalSettings.PortalId);
             urlPath = this.GetLocalPath(urlPath);
             urlPath = this._friendlyUrlWrapper.CleanNameForUrl(urlPath, options, out modified);
@@ -467,7 +475,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 return false;
             }
 
-            //Validate for uniqueness
+            // Validate for uniqueness
             this._friendlyUrlWrapper.ValidateUrl(urlPath, tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
             if (modified)
             {
@@ -569,7 +577,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 if (tabUrl == null)
                 {
-                    //Add new custom url
+                    // Add new custom url
                     tabUrl = new TabUrlInfo
                     {
                         TabId = tab.TabID,
@@ -580,26 +588,26 @@ namespace Dnn.PersonaBar.Pages.Components
                         Url = url,
                         HttpStatus = "200",
                         CultureCode = String.Empty,
-                        IsSystem = true
+                        IsSystem = true,
                     };
-                    //Save url
+                    // Save url
                     this._tabController.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
                 }
                 else
                 {
-                    //Change the original 200 url to a redirect
+                    // Change the original 200 url to a redirect
                     tabUrl.HttpStatus = "301";
                     tabUrl.SeqNum = tab.TabUrls.Max(t => t.SeqNum) + 1;
                     this._tabController.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
 
-                    //Add new custom url
+                    // Add new custom url
                     tabUrl.Url = url;
                     tabUrl.HttpStatus = "200";
                     tabUrl.SeqNum = 0;
                     this._tabController.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
                 }
 
-                //Delete any redirects to the same url
+                // Delete any redirects to the same url
                 foreach (var redirecturl in this._tabController.GetTabUrls(tab.TabID, tab.PortalID))
                 {
                     if (redirecturl.Url == url && redirecturl.HttpStatus != "200")
@@ -631,7 +639,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var friendlyUrlSettings = new FriendlyUrlSettings(portalSettings.PortalId);
             urlPath = UrlRewriterUtils.CleanExtension(urlPath, friendlyUrlSettings, string.Empty);
 
-            //Clean Url
+            // Clean Url
             var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(friendlyUrlSettings));
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
 
@@ -706,7 +714,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     fileId = iconFile.FileId,
                     fileName = iconFile.FileName,
                     folderId = iconFile.FolderId,
-                    folderPath = iconFile.Folder
+                    folderPath = iconFile.Folder,
                 };
             }
             var iconFileLarge = string.IsNullOrEmpty(tab.IconFileLarge) ? null : FileManager.Instance.GetFile(tab.PortalID, tab.IconFileLargeRaw);
@@ -717,7 +725,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     fileId = iconFileLarge.FileId,
                     fileName = iconFileLarge.FileName,
                     folderId = iconFileLarge.FolderId,
-                    folderPath = iconFileLarge.Folder
+                    folderPath = iconFileLarge.Folder,
                 };
             }
 
@@ -757,8 +765,8 @@ namespace Dnn.PersonaBar.Pages.Components
             var typeController = new ContentTypeController();
             var contentType =
                 (from t in typeController.GetContentTypes()
-                    where t.ContentType == "Tab"
-                    select t).SingleOrDefault();
+                 where t.ContentType == "Tab"
+                 select t).SingleOrDefault();
 
             if (contentType != null)
             {
@@ -789,10 +797,10 @@ namespace Dnn.PersonaBar.Pages.Components
 
             tab.TabPermissions.Clear();
 
-            //add default permissions for administrators if needed
+            // add default permissions for administrators if needed
             if (!HasAdminPermissions(permissions))
             {
-                //add default permissions
+                // add default permissions
                 var permissionsList = PermissionController.GetPermissionsByTab();
                 foreach (var permissionInfo in permissionsList)
                 {
@@ -801,13 +809,13 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         RoleID = portalSettings.AdministratorRoleId,
                         AllowAccess = true,
-                        RoleName = portalSettings.AdministratorRoleName
+                        RoleName = portalSettings.AdministratorRoleName,
                     };
                     tab.TabPermissions.Add(permission);
                 }
             }
 
-            //add role permissions
+            // add role permissions
             if (permissions.RolePermissions != null)
             {
                 foreach (var rolePermission in permissions.RolePermissions.Where(NoLocked()))
@@ -823,14 +831,14 @@ namespace Dnn.PersonaBar.Pages.Components
                                 PermissionID = permission.PermissionId,
                                 RoleID = rolePermission.RoleId,
                                 UserID = Null.NullInteger,
-                                AllowAccess = permission.AllowAccess
+                                AllowAccess = permission.AllowAccess,
                             });
                         }
                     }
                 }
             }
 
-            //add user permissions
+            // add user permissions
             if (permissions.UserPermissions != null)
             {
                 foreach (var userPermission in permissions.UserPermissions)
@@ -847,7 +855,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                 PermissionID = permission.PermissionId,
                                 RoleID = roleId,
                                 UserID = userPermission.UserId,
-                                AllowAccess = permission.AllowAccess
+                                AllowAccess = permission.AllowAccess,
                             });
                         }
                     }
@@ -860,7 +868,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var pageSettings = new PageSettings
             {
                 Templates = this._templateController.GetTemplates(),
-                Permissions = this.GetPermissionsData(pageId)
+                Permissions = this.GetPermissionsData(pageId),
             };
 
             pageSettings.TemplateId = this._templateController.GetDefaultTemplateId(pageSettings.Templates);
@@ -939,10 +947,10 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 return;
             }
-            //Copy Properties
+            // Copy Properties
             this.CopySourceTabProperties(tab, sourceTab);
 
-            //Copy Modules
+            // Copy Modules
             this.CopyModulesFromSourceTab(tab, sourceTab, includedModules);
         }
 
@@ -1128,7 +1136,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         new Vocabulary(PageTagsVocabulary, string.Empty, VocabularyType.Simple)
                         {
                             ScopeTypeId = scopeType.ScopeTypeId,
-                            ScopeId = tab.PortalID
+                            ScopeId = tab.PortalID,
                         });
                 }
                 else
@@ -1136,11 +1144,11 @@ namespace Dnn.PersonaBar.Pages.Components
                     vocabularyId = vocabulary.VocabularyId;
                 }
 
-                //get all terms info
+                // get all terms info
                 var allTerms = new List<Term>();
                 var vocabularies = from v in vocabularyController.GetVocabularies()
-                    where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tab.PortalID && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase))
-                    select v;
+                                   where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tab.PortalID && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase))
+                                   select v;
                 foreach (var v in vocabularies)
                 {
                     allTerms.AddRange(termController.GetTermsByVocabulary(v.VocabularyId));
@@ -1279,7 +1287,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     Action = "parent",
                     PageId = tab.TabID,
-                    ParentId = pageSettings.ParentId.Value
+                    ParentId = pageSettings.ParentId.Value,
                 };
 
                 this.MovePage(request);
@@ -1370,7 +1378,7 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.RefreshInterval = sourceTab.RefreshInterval;
             this._tabController.UpdateTab(tab);
 
-            //update need tab settings.
+            // update need tab settings.
             foreach (var key in TabSettingKeys)
             {
                 if (sourceTab.TabSettings.ContainsKey(key))
@@ -1396,7 +1404,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ModuleInfo newModule = null;
                 if (objModule != null)
                 {
-                    //Clone module as it exists in the cache and changes we make will update the cached object
+                    // Clone module as it exists in the cache and changes we make will update the cached object
                     newModule = objModule.Clone();
                     newModule.TabID = tab.TabID;
                     newModule.DefaultLanguageGuid = Null.NullGuid;
@@ -1412,7 +1420,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                     newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
-                    //copy permissions from source module
+                    // copy permissions from source module
                     foreach (ModulePermissionInfo permission in objModule.ModulePermissions)
                     {
                         newModule.ModulePermissions.Add(new ModulePermissionInfo
@@ -1422,7 +1430,7 @@ namespace Dnn.PersonaBar.Pages.Components
                             RoleID = permission.RoleID,
                             UserID = permission.UserID,
                             PermissionKey = permission.PermissionKey,
-                            AllowAccess = permission.AllowAccess
+                            AllowAccess = permission.AllowAccess,
                         }, true);
                     }
 
@@ -1456,7 +1464,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 if (copyType != ModuleCopyType.Reference && objModule != null)
                 {
-                    //Make reference copies on secondary language
+                    // Make reference copies on secondary language
                     foreach (var m in objModule.LocalizedModules.Values)
                     {
                         if (tab.LocalizedTabs.ContainsKey(m.CultureCode))

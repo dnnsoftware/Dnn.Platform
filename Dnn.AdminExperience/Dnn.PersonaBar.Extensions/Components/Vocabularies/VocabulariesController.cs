@@ -144,7 +144,7 @@ namespace Dnn.PersonaBar.Vocabularies.Components
                             Name = term.Name,
                             ParentTermId = term.ParentTermId ?? Null.NullInteger,
                             VocabularyId = term.VocabularyId,
-                            ChildTerms = new List<TermDto>()
+                            ChildTerms = new List<TermDto>(),
                         };
                         this.AddChildNodes(termList, node);
                         parentNode.ChildTerms.Add(node);

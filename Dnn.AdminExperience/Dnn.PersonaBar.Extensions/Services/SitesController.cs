@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.Sites.Services
                 var response = new
                 {
                     Results = portals.Select(this.GetPortalDto).ToList(),
-                    TotalResults = totalRecords
+                    TotalResults = totalRecords,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Sites.Services
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Portal = this.GetPortalDto(portal),
-                    ErrorMessage = errors
+                    ErrorMessage = errors,
                 });
             }
             catch (Exception exc)
@@ -183,7 +183,7 @@ namespace Dnn.PersonaBar.Sites.Services
                     {
                         Name = templateItem.Text,
                         templateItem.Value
-                    }
+                    },
                 });
             }
             catch (Exception exc)
@@ -212,9 +212,9 @@ namespace Dnn.PersonaBar.Sites.Services
                     {
                         l.Code,
                         l.EnglishName,
-                        l.LanguageId
+                        l.LanguageId,
                     }),
-                    TotalResults = locales.Count
+                    TotalResults = locales.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -278,11 +278,11 @@ namespace Dnn.PersonaBar.Sites.Services
                         Templates = temps.Select(t => new
                         {
                             Name = t.Item1,
-                            Value = t.Item2
+                            Value = t.Item2,
                         }),
-                        DefaultTemplate = defaultTemplate
+                        DefaultTemplate = defaultTemplate,
                     },
-                    TotalResults = temps.Count
+                    TotalResults = temps.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -307,7 +307,7 @@ namespace Dnn.PersonaBar.Sites.Services
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    MembershipProviderConfig.RequiresQuestionAndAnswer
+                    MembershipProviderConfig.RequiresQuestionAndAnswer,
                 });
             }
             catch (Exception exc)
@@ -357,7 +357,7 @@ namespace Dnn.PersonaBar.Sites.Services
                     Convert.ToBoolean(contentLocalizable),
                 allowDelete =
                     (portal.PortalID != this.PortalSettings.PortalId &&
-                     !PortalController.IsMemberOfPortalGroup(portal.PortalID))
+                     !PortalController.IsMemberOfPortalGroup(portal.PortalID)),
             };
             return portalDto;
         }

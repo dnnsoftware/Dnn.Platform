@@ -58,14 +58,14 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         {
             var permissions = new JObject
             {
-                {"addContentToPage", TabPermissionController.CanAddContentToPage()},
-                {"addPage", TabPermissionController.CanAddPage()},
-                {"adminPage", TabPermissionController.CanAdminPage()},
-                {"copyPage", TabPermissionController.CanCopyPage()},
-                {"deletePage", TabPermissionController.CanDeletePage()},
-                {"exportPage", TabPermissionController.CanExportPage()},
-                {"importPage", TabPermissionController.CanImportPage()},
-                {"managePage", TabPermissionController.CanManagePage()}
+                { "addContentToPage", TabPermissionController.CanAddContentToPage() },
+                { "addPage", TabPermissionController.CanAddPage() },
+                { "adminPage", TabPermissionController.CanAdminPage() },
+                { "copyPage", TabPermissionController.CanCopyPage() },
+                { "deletePage", TabPermissionController.CanDeletePage() },
+                { "exportPage", TabPermissionController.CanExportPage() },
+                { "importPage", TabPermissionController.CanImportPage() },
+                { "managePage", TabPermissionController.CanManagePage() },
             };
 
             return permissions;
@@ -75,14 +75,14 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         {
             var permissions = new JObject
             {
-                {"addContentToPage", TabPermissionController.CanAddContentToPage(tab)},
-                {"addPage", TabPermissionController.CanAddPage(tab)},
-                {"adminPage", TabPermissionController.CanAdminPage(tab)},
-                {"copyPage", TabPermissionController.CanCopyPage(tab)},
-                {"deletePage", TabPermissionController.CanDeletePage(tab)},
-                {"exportPage", TabPermissionController.CanExportPage(tab)},
-                {"importPage", TabPermissionController.CanImportPage(tab)},
-                {"managePage", TabPermissionController.CanManagePage(tab)}
+                { "addContentToPage", TabPermissionController.CanAddContentToPage(tab) },
+                { "addPage", TabPermissionController.CanAddPage(tab) },
+                { "adminPage", TabPermissionController.CanAdminPage(tab) },
+                { "copyPage", TabPermissionController.CanCopyPage(tab) },
+                { "deletePage", TabPermissionController.CanDeletePage(tab) },
+                { "exportPage", TabPermissionController.CanExportPage(tab) },
+                { "importPage", TabPermissionController.CanImportPage(tab) },
+                { "managePage", TabPermissionController.CanManagePage(tab) },
             };
 
             return permissions;
@@ -149,8 +149,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
                 creatingTemplate && this.CanExportPage(pageSettings.TemplateTabId) ||
                 updatingPage && this.CanManagePage(tabId) && !updatingParentPage ||
                 updatingParentPage && this.CanManagePage(tabId) && this.CanAddPage(parentId) ||
-                duplicatingPage && this.CanCopyPage(pageSettings.TemplateTabId) && this.CanAddPage(parentId)
-            );
+                duplicatingPage && this.CanCopyPage(pageSettings.TemplateTabId) && this.CanAddPage(parentId));
         }
 
         public virtual bool IsAdminHostSystemPage()
@@ -161,7 +160,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         private bool IsPageAdmin()
         {
-            return //TabPermissionController.CanAddContentToPage() ||
+            return // TabPermissionController.CanAddContentToPage() ||
                 TabPermissionController.CanAddPage()
                 || TabPermissionController.CanAdminPage()
                 || TabPermissionController.CanCopyPage()

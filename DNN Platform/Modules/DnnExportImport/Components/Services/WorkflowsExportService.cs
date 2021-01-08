@@ -195,7 +195,8 @@ namespace Dnn.ExportImport.Components.Services
                                     {
                                         this.Result.AddLogEntry(
                                             "Couldn't add tab permission; User is undefined!",
-                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
+                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}",
+                                            ReportLevel.Warn);
                                         continue;
                                     }
 
@@ -208,7 +209,8 @@ namespace Dnn.ExportImport.Components.Services
                                     {
                                         this.Result.AddLogEntry(
                                             "Couldn't add tab permission; Role is undefined!",
-                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
+                                            $"{importPermission.PermissionKey} - {importPermission.PermissionID}",
+                                            ReportLevel.Warn);
                                         continue;
                                     }
 

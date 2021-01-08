@@ -2,86 +2,90 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.UI;
+
+    using DNNConnect.CKEditorProvider.Constants;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+
     /// <summary>
-    /// Utility Class for various helper Functions
+    /// Utility Class for various helper Functions.
     /// </summary>
     public static class Utility
     {
         /// <summary>
-        /// Path Validator Expression
+        /// Path Validator Expression.
         /// </summary>
         private static readonly string PathValidatorExpression = string.Format(
             "^[^{0}]+$",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidPathChars(), x => Regex.Escape(x.ToString()))));
 
         /// <summary>
-        /// Path Validator Regex
+        /// Path Validator Regex.
         /// </summary>
         private static readonly Regex PathValidator = new Regex(PathValidatorExpression, RegexOptions.Compiled);
 
         /// <summary>
-        /// FileName Validator Expression
+        /// FileName Validator Expression.
         /// </summary>
         private static readonly string FileNameValidatorExpression = string.Format(
             "^[^{0}]+$",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidFileNameChars(), x => Regex.Escape(x.ToString()))));
 
         /// <summary>
-        /// FileName Validator Regex
+        /// FileName Validator Regex.
         /// </summary>
         private static readonly Regex FileNameValidator = new Regex(FileNameValidatorExpression, RegexOptions.Compiled);
 
         /// <summary>
-        /// Path Cleaner Expression
+        /// Path Cleaner Expression.
         /// </summary>
         private static readonly string PathCleanerExpression = string.Format(
             "[{0}]",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidPathChars(), x => Regex.Escape(x.ToString()))));
 
         /// <summary>
-        /// Path Cleaner Regex
+        /// Path Cleaner Regex.
         /// </summary>
         private static readonly Regex PathCleaner = new Regex(PathCleanerExpression, RegexOptions.Compiled);
 
         /// <summary>
-        /// FileName Cleaner Expression
+        /// FileName Cleaner Expression.
         /// </summary>
         private static readonly string FileNameCleanerExpression = string.Format(
             "[{0}]",
             string.Join(string.Empty, Array.ConvertAll(Path.GetInvalidFileNameChars(), x => Regex.Escape(x.ToString()))));
 
         /// <summary>
-        /// FileName Cleaner Regex
+        /// FileName Cleaner Regex.
         /// </summary>
         private static readonly Regex FileNameCleaner = new Regex(FileNameCleanerExpression, RegexOptions.Compiled);
 
         /// <summary>
-        /// Check if Object is a Unit
+        /// Check if Object is a Unit.
         /// </summary>
         /// <param name="valueToCheck">
-        /// Object to Check
+        /// Object to Check.
         /// </param>
         /// <returns>
-        /// Returns if Object is a Unit
+        /// Returns if Object is a Unit.
         /// </returns>
         public static bool IsUnit(object valueToCheck)
         {
@@ -119,13 +123,13 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Check if Object is a Number
+        /// Check if Object is a Number.
         /// </summary>
         /// <param name="valueToCheck">
-        /// Object to Check
+        /// Object to Check.
         /// </param>
         /// <returns>
-        /// Returns boolean Value
+        /// Returns boolean Value.
         /// </returns>
         public static bool IsNumeric(object valueToCheck)
         {
@@ -197,7 +201,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Converts the Unicode chars to its to its ASCII equivalent.
         /// </summary>
         /// <param name="input">The <paramref name="input"/>.</param>
-        /// <returns>The ASCII equivalent output</returns>
+        /// <returns>The ASCII equivalent output.</returns>
         public static string ConvertUnicodeChars(string input)
         {
             Regex regA = new Regex("[ã|à|â|ä|á|å]");
@@ -251,7 +255,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             input = Encoding.ASCII.GetString(Encoding.GetEncoding(1251).GetBytes(input));
 
-            input = input.Replace("?", string.Empty); //replace the unknown char which created in above.
+            input = input.Replace("?", string.Empty); // replace the unknown char which created in above.
             input = input.Replace("�", string.Empty);
             input = input.Replace("\t", string.Empty);
             input = input.Replace("@", "at");
@@ -270,7 +274,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns if the user has write access to the folder.
         /// </returns>
-        public static bool CheckIfUserHasFolderWriteAccess(int folderId, PortalSettings portalSettings)
+        public static bool CheckIfUserHasFolderWriteAccess(int folderId, IPortalSettings portalSettings)
         {
             try
             {
@@ -287,14 +291,14 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Converts a File Path to a Folder Info
+        /// Converts a File Path to a Folder Info.
         /// </summary>
         /// <param name="folderPath">The folder path.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <returns>
-        /// Returns the Folder Info
+        /// Returns the Folder Info.
         /// </returns>
-        public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, PortalSettings portalSettings)
+        public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettings portalSettings)
         {
             try
             {
@@ -309,12 +313,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Converts a File Path to a file Info
+        /// Converts a File Path to a file Info.
         /// </summary>
         /// <param name="filePath">The file path.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <returns>
-        /// Returns the file Info
+        /// Returns the file Info.
         /// </returns>
         public static int ConvertFilePathToFileId(string filePath, int portalID)
         {
@@ -334,19 +338,19 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Sort a List Ascending
+        /// Sort a List Ascending.
         /// </summary>
         /// <param name="source">
-        /// The <paramref name="source"/> List
+        /// The <paramref name="source"/> List.
         /// </param>
         /// <param name="selector">
         /// The selector.
         /// </param>
         /// <typeparam name="TSource">
-        /// The TSource List Item
+        /// The TSource List Item.
         /// </typeparam>
         /// <typeparam name="TValue">
-        /// The TValue List item
+        /// The TValue List item.
         /// </typeparam>
         public static void SortAscending<TSource, TValue>(List<TSource> source, Func<TSource, TValue> selector)
         {
@@ -355,19 +359,19 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Sort a List Descending
+        /// Sort a List Descending.
         /// </summary>
         /// <param name="source">
-        /// The <paramref name="source"/> List
+        /// The <paramref name="source"/> List.
         /// </param>
         /// <param name="selector">
         /// The selector.
         /// </param>
         /// <typeparam name="TSource">
-        /// The TSource List Item
+        /// The TSource List Item.
         /// </typeparam>
         /// <typeparam name="TValue">
-        /// The TValue List item
+        /// The TValue List item.
         /// </typeparam>
         public static void SortDescending<TSource, TValue>(List<TSource> source, Func<TSource, TValue> selector)
         {
@@ -383,7 +387,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         ///   <c>true</c> if [is in roles] [the specified roles]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsInRoles(string roles, PortalSettings settings)
+        public static bool IsInRoles(string roles, IPortalSettings settings)
         {
             var objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
@@ -435,11 +439,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <summary>
         /// Finds the control.
         /// </summary>
-        /// <typeparam name="T">The Control Type</typeparam>
+        /// <typeparam name="T">The Control Type.</typeparam>
         /// <param name="startingControl">The starting control.</param>
         /// <param name="id">The <paramref name="id"/>.</param>
-        /// <returns>Returns the Control</returns>
-        public static T FindControl<T>(Control startingControl, string id) where T : Control
+        /// <returns>Returns the Control.</returns>
+        public static T FindControl<T>(Control startingControl, string id)
+            where T : Control
         {
             // this is null by default
             T found = default(T);
@@ -483,7 +488,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </summary>
         /// <param name="inkilobytes">if set to <c>true</c> Returns Value as kilo byte otherwise as byte.</param>
         /// <returns>
-        /// Returns the Max. Upload Size
+        /// Returns the Max. Upload Size.
         /// </returns>
         public static long GetMaxUploadSize(bool inkilobytes = false)
         {
@@ -502,6 +507,29 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             return inkilobytes ? result : (result * 1024);
+        }
+
+        /// <summary>
+        /// Converts the enum value for Link Protocol to the string value used for CKE config.
+        /// </summary>
+        /// <param name="protocol">The protocol enum value.</param>
+        /// <returns>The protocol string value.</returns>
+        public static string ToSettingValue(this LinkProtocol protocol)
+        {
+            switch (protocol)
+            {
+                case LinkProtocol.Http:
+                    return "http://";
+                case LinkProtocol.Ftp:
+                    return "ftp://";
+                case LinkProtocol.News:
+                    return "news://";
+                case LinkProtocol.Other:
+                    return string.Empty;
+                case LinkProtocol.Https:
+                default:
+                    return "https://";
+            }
         }
     }
 }

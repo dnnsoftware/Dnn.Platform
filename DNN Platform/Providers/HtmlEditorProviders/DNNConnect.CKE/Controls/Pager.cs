@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+namespace DNNConnect.CKEditorProvider.Controls
+{
     using System;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
-    using DotNetNuke.Services.Localization;
 
-namespace DNNConnect.CKEditorProvider.Controls
-{
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// The html generic self closing.
@@ -17,46 +17,40 @@ namespace DNNConnect.CKEditorProvider.Controls
     [ToolboxData("<{0}:Pager runat=server></{0}:Pager>")]
     public class Pager : WebControl, IPostBackEventHandler
     {
-        #region Events
-
         /// <summary>
         /// Occurs when [page changed].
         /// </summary>
         public event EventHandler PageChanged;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        ///   Gets or sets Language Code
+        ///   Gets or sets Language Code.
         /// </summary>
         public string LanguageCode
         {
             get
             {
-                return ViewState["LanguageCode"] != null ? (string)ViewState["LanguageCode"] : "en";
+                return this.ViewState["LanguageCode"] != null ? (string)this.ViewState["LanguageCode"] : "en";
             }
 
             set
             {
-                ViewState["LanguageCode"] = value;
+                this.ViewState["LanguageCode"] = value;
             }
         }
 
         /// <summary>
-        ///   Gets or sets Ressource File
+        ///   Gets or sets Ressource File.
         /// </summary>
         public string RessourceFile
         {
             get
             {
-                return (string)ViewState["RessourceFile"];
+                return (string)this.ViewState["RessourceFile"];
             }
 
             set
             {
-                ViewState["RessourceFile"] = value;
+                this.ViewState["RessourceFile"] = value;
             }
         }
 
@@ -67,12 +61,12 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return ViewState["PageCount"] != null ? (int)ViewState["PageCount"] : 0;
+                return this.ViewState["PageCount"] != null ? (int)this.ViewState["PageCount"] : 0;
             }
 
             set
             {
-                ViewState["PageCount"] = value;
+                this.ViewState["PageCount"] = value;
             }
         }
 
@@ -83,18 +77,14 @@ namespace DNNConnect.CKEditorProvider.Controls
         {
             get
             {
-                return (int)(ViewState["CurrentPageIndex"] ?? 0);
+                return (int)(this.ViewState["CurrentPageIndex"] ?? 0);
             }
 
             set
             {
-                ViewState["CurrentPageIndex"] = value;
+                this.ViewState["CurrentPageIndex"] = value;
             }
         }
-
-        #endregion
-
-        #region IPostBackEventHandler Members
 
         /// <summary>
         /// Enables a server control to process an event raised when a form is posted to the server.
@@ -102,11 +92,9 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <param name="eventArgument">A <see cref="T:System.String"/> that represents an optional event argument to be passed to the event handler.</param>
         public void RaisePostBackEvent(string eventArgument)
         {
-            CurrentPageIndex = int.Parse(eventArgument.Replace("Page_", string.Empty));
-            OnPageChanged(new EventArgs());
+            this.CurrentPageIndex = int.Parse(eventArgument.Replace("Page_", string.Empty));
+            this.OnPageChanged(new EventArgs());
         }
-
-        #endregion
 
         /// <summary>
         /// Raises the <see cref="PageChanged"/> event.
@@ -114,9 +102,9 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void OnPageChanged(EventArgs e)
         {
-            if (PageChanged != null)
+            if (this.PageChanged != null)
             {
-                PageChanged(this, e);
+                this.PageChanged(this, e);
             }
         }
 
@@ -126,7 +114,7 @@ namespace DNNConnect.CKEditorProvider.Controls
         /// <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"/> object that receives the control content.</param>
         protected override void Render(HtmlTextWriter writer)
         {
-            GeneratePagerLinks(writer);
+            this.GeneratePagerLinks(writer);
         }
 
         /// <summary>
@@ -143,17 +131,17 @@ namespace DNNConnect.CKEditorProvider.Controls
 
             var previousColumn = new TableCell { CssClass = "PagerFirstColumn" };
 
-            int iStart = CurrentPageIndex - 2;
-            int iEnd = CurrentPageIndex + 3;
+            int iStart = this.CurrentPageIndex - 2;
+            int iEnd = this.CurrentPageIndex + 3;
 
             if (iStart < 0)
             {
                 iStart = 0;
             }
 
-            if (iEnd > PageCount)
+            if (iEnd > this.PageCount)
             {
-                iEnd = PageCount;
+                iEnd = this.PageCount;
             }
 
             var ulFirstElement = new HtmlGenericControl("ul");
@@ -170,10 +158,10 @@ namespace DNNConnect.CKEditorProvider.Controls
                 var firstPageLink = new HyperLink
                 {
                     ID = "FirstPageLink",
-                    ToolTip = string.Format("{0}{1}", Localization.GetString("GoTo.Text", RessourceFile, LanguageCode), Localization.GetString("FirstPage.Text", RessourceFile, LanguageCode)),
-                    Text = string.Format("&laquo; {0}", Localization.GetString("FirstPage.Text", RessourceFile, LanguageCode)),
+                    ToolTip = string.Format("{0}{1}", Localization.GetString("GoTo.Text", this.RessourceFile, this.LanguageCode), Localization.GetString("FirstPage.Text", this.RessourceFile, this.LanguageCode)),
+                    Text = string.Format("&laquo; {0}", Localization.GetString("FirstPage.Text", this.RessourceFile, this.LanguageCode)),
                     NavigateUrl =
-                        Page.ClientScript.GetPostBackClientHyperlink(this, string.Format("Page_{0}", 0), false)
+                        this.Page.ClientScript.GetPostBackClientHyperlink(this, string.Format("Page_{0}", 0), false),
                 };
 
                 liFirstElement.Controls.Add(firstPageLink);
@@ -182,7 +170,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
 
             // Previous Page
-            if (CurrentPageIndex > iStart)
+            if (this.CurrentPageIndex > iStart)
             {
                 var liPrevElement = new HtmlGenericControl("li");
 
@@ -191,11 +179,11 @@ namespace DNNConnect.CKEditorProvider.Controls
                 var lastPrevLink = new HyperLink
                 {
                     ID = "PreviousPageLink",
-                    ToolTip = string.Format("{0}{1}", Localization.GetString("GoTo.Text", RessourceFile, LanguageCode), Localization.GetString("PreviousPage.Text", RessourceFile, LanguageCode)),
-                    Text = string.Format("&lt; {0}", Localization.GetString("PreviousPage.Text", RessourceFile, LanguageCode)),
+                    ToolTip = string.Format("{0}{1}", Localization.GetString("GoTo.Text", this.RessourceFile, this.LanguageCode), Localization.GetString("PreviousPage.Text", this.RessourceFile, this.LanguageCode)),
+                    Text = string.Format("&lt; {0}", Localization.GetString("PreviousPage.Text", this.RessourceFile, this.LanguageCode)),
                     NavigateUrl =
-                        Page.ClientScript.GetPostBackClientHyperlink(
-                            this, string.Format("Page_{0}", CurrentPageIndex - 1), false)
+                        this.Page.ClientScript.GetPostBackClientHyperlink(
+                            this, string.Format("Page_{0}", this.CurrentPageIndex - 1), false),
                 };
 
                 liPrevElement.Controls.Add(lastPrevLink);
@@ -218,17 +206,17 @@ namespace DNNConnect.CKEditorProvider.Controls
             {
                 var liElement = new HtmlGenericControl("li");
 
-                liElement.Attributes.Add("class", i.Equals(CurrentPageIndex) ? "ActivePage" : "NormalPage");
+                liElement.Attributes.Add("class", i.Equals(this.CurrentPageIndex) ? "ActivePage" : "NormalPage");
 
                 var page = (i + 1).ToString();
 
                 var pageLink = new HyperLink
                 {
                     ID = string.Format("NextPageLink{0}", page),
-                    ToolTip = string.Format("{0}: {1}", Localization.GetString("GoTo.Text", RessourceFile, LanguageCode), page),
+                    ToolTip = string.Format("{0}: {1}", Localization.GetString("GoTo.Text", this.RessourceFile, this.LanguageCode), page),
                     Text = page,
                     NavigateUrl =
-                        Page.ClientScript.GetPostBackClientHyperlink(this, string.Format("Page_{0}", i), false)
+                        this.Page.ClientScript.GetPostBackClientHyperlink(this, string.Format("Page_{0}", i), false),
                 };
 
                 liElement.Controls.Add(pageLink);
@@ -248,7 +236,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             var lastColumn = new TableCell { CssClass = "PagerLastColumn" };
 
             // Next Page
-            if (CurrentPageIndex < (PageCount - 1))
+            if (this.CurrentPageIndex < (this.PageCount - 1))
             {
                 var liNextElement = new HtmlGenericControl("li");
 
@@ -257,11 +245,11 @@ namespace DNNConnect.CKEditorProvider.Controls
                 var lastNextLink = new HyperLink
                 {
                     ID = "NextPageLink",
-                    ToolTip = string.Format("{0}{1}", Localization.GetString("GoTo.Text", RessourceFile, LanguageCode), Localization.GetString("NextPage.Text", RessourceFile, LanguageCode)),
-                    Text = string.Format("{0} &gt;", Localization.GetString("NextPage.Text", RessourceFile, LanguageCode)),
+                    ToolTip = string.Format("{0}{1}", Localization.GetString("GoTo.Text", this.RessourceFile, this.LanguageCode), Localization.GetString("NextPage.Text", this.RessourceFile, this.LanguageCode)),
+                    Text = string.Format("{0} &gt;", Localization.GetString("NextPage.Text", this.RessourceFile, this.LanguageCode)),
                     NavigateUrl =
-                        Page.ClientScript.GetPostBackClientHyperlink(
-                            this, string.Format("Page_{0}", (CurrentPageIndex + 2 - 1)), false)
+                        this.Page.ClientScript.GetPostBackClientHyperlink(
+                            this, string.Format("Page_{0}", this.CurrentPageIndex + 2 - 1), false),
                 };
 
                 liNextElement.Controls.Add(lastNextLink);
@@ -269,7 +257,7 @@ namespace DNNConnect.CKEditorProvider.Controls
                 ulThirdElement.Controls.Add(liNextElement);
             }
 
-            if (iEnd < PageCount)
+            if (iEnd < this.PageCount)
             {
                 var liLastElement = new HtmlGenericControl("li");
 
@@ -281,15 +269,15 @@ namespace DNNConnect.CKEditorProvider.Controls
                     ToolTip =
                         string.Format(
                             "{0}{1}",
-                            Localization.GetString("GoTo.Text", RessourceFile, LanguageCode),
-                            Localization.GetString("LastPage.Text", RessourceFile, LanguageCode)),
+                            Localization.GetString("GoTo.Text", this.RessourceFile, this.LanguageCode),
+                            Localization.GetString("LastPage.Text", this.RessourceFile, this.LanguageCode)),
                     Text =
                         string.Format(
                             "{0} &raquo;",
-                            Localization.GetString("LastPage.Text", RessourceFile, LanguageCode)),
+                            Localization.GetString("LastPage.Text", this.RessourceFile, this.LanguageCode)),
                     NavigateUrl =
-                        Page.ClientScript.GetPostBackClientHyperlink(
-                            this, string.Format("Page_{0}", (PageCount - 1)), false)
+                        this.Page.ClientScript.GetPostBackClientHyperlink(
+                            this, string.Format("Page_{0}", this.PageCount - 1), false),
                 };
 
                 liLastElement.Controls.Add(lastPageLink);

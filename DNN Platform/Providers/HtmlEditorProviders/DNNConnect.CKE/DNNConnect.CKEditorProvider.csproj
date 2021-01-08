@@ -93,6 +93,7 @@
     <Compile Include="Constants\Browser.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />
+    <Compile Include="Constants\LinkProtocol.cs" />
     <Compile Include="Constants\LinkMode.cs" />
     <Compile Include="Constants\LinkType.cs" />
     <Compile Include="Constants\SettingConstants.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="Objects\EditorConfig.cs" />
     <Compile Include="Objects\EditorHostSetting.cs" />
     <Compile Include="Objects\EditorProviderSettings.cs" />
-    <Compile Include="Objects\FileUploadStatus.cs" />
+    <Compile Include="Objects\FilesUploadStatus.cs" />
     <Compile Include="Objects\SettingBase.cs" />
     <Compile Include="Objects\ToolbarButton.cs" />
     <Compile Include="Objects\ToolbarGroup.cs" />

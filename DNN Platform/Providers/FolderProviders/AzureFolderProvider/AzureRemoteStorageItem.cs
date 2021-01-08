@@ -26,6 +26,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         public long Size => this.Blob.Length;
 
         public string HashCode => this.Blob.ETag;
+
         public AzureBlob Blob { get; set; }
     }
 }

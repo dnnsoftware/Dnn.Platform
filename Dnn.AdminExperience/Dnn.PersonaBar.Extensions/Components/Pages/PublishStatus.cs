@@ -8,6 +8,6 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         All,
         Published,
-        Draft
+        Draft,
     }
 }

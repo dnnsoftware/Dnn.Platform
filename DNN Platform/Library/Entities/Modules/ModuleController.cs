@@ -666,7 +666,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name = "module"></param>
         /// <remarks>
         /// </remarks>
-/// <inheritdoc/>
+        /// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType = ContentType.Module;

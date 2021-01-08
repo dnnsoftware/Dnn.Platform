@@ -3,11 +3,12 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
 
     [DataContract]
     public class DnnFileUploadOptions
@@ -55,6 +56,7 @@ using DotNetNuke.Entities.Portals;
                 return this._parameters ?? (this._parameters = new Dictionary<string, string>());
             }
         }
+
         private const int DefaultWidth = 780;
         private const int DefaultHeight = 630;
 
@@ -110,8 +112,8 @@ using DotNetNuke.Entities.Portals;
                     parameters.Add(portalSettings.UserInfo.UserID);
                     if (!portalSettings.UserInfo.IsSuperUser)
                     {
-                    parameters.Add(portalSettings.PortalId);
-                }
+                        parameters.Add(portalSettings.PortalId);
+                    }
                 }
 
                 return ValidationUtils.ComputeValidationCode(parameters);

@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
             {
 #pragma warning disable 612, 618 // GetCurrentPortalSettings is obsolete
                 return PortalController.Instance.GetCurrentPortalSettings();
-#pragma warning restore 612, 618 
+#pragma warning restore 612, 618
             }
         }
 

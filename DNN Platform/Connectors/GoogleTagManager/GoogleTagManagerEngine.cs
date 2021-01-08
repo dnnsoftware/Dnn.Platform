@@ -9,8 +9,10 @@ namespace DotNetNuke.Services.Analytics
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Analytics.Config;
 
+    /// <inheritdoc/>
     public class GoogleTagManagerEngine : AnalyticsEngineBase
     {
+        /// <inheritdoc/>
         public override string EngineName
         {
             get
@@ -19,6 +21,7 @@ namespace DotNetNuke.Services.Analytics
             }
         }
 
+        /// <inheritdoc/>
         public override string RenderScript(string scriptTemplate)
         {
             AnalyticsConfiguration config = this.GetConfig();

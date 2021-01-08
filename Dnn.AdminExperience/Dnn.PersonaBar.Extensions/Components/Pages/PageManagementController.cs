@@ -75,7 +75,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                                                             baseUrl,
                                                                             Globals.glbDefaultPage,
                                                                             PortalSettings.Current.PortalAlias.HTTPAlias,
-                                                                            false, //dnndev-27493 :we want any custom Urls that apply
+                                                                            false, // dnndev-27493 :we want any custom Urls that apply
                                                                             friendlyUrlSettings,
                                                                             Guid.Empty);
 

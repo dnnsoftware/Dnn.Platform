@@ -228,7 +228,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 // ASP.NET 2 version connection string (in <connectionstrings>)
                 // This will be for new v4.x installs or upgrades from v4.x
-                connectionString = WebConfigurationManager.ConnectionStrings[name].ConnectionString;
+                connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[name].ConnectionString;
             }
 
             if (string.IsNullOrEmpty(connectionString))
@@ -527,7 +527,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A string representing the application setting.</returns>
         public static string GetSetting(string setting)
         {
-            return WebConfigurationManager.AppSettings[setting];
+            return System.Configuration.ConfigurationManager.AppSettings[setting];
         }
 
         /// <summary>

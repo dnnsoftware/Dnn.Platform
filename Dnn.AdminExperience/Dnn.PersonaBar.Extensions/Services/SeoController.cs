@@ -81,11 +81,11 @@ namespace Dnn.PersonaBar.Seo.Services
                         urlSettings.ForcePortalDefaultLanguage,
                         DeletedTabHandlingType = urlSettings.DeletedTabHandlingType.ToString(),
                         urlSettings.RedirectUnfriendly,
-                        urlSettings.RedirectWrongCase
+                        urlSettings.RedirectWrongCase,
                     },
                     ReplacementCharacterList = replacementCharacterList,
                     DeletedPageHandlingTypes = deletedPageHandlingTypes,
-                    AdminRoleId = PortalSettings.AdministratorRoleId
+                    AdminRoleId = this.PortalSettings.AdministratorRoleId,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -162,7 +162,7 @@ namespace Dnn.PersonaBar.Seo.Services
                         urlSettings.DoNotIncludeInPathRegex,
                         urlSettings.ValidExtensionlessUrlsRegex,
                         urlSettings.RegexMatch
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -286,21 +286,21 @@ namespace Dnn.PersonaBar.Seo.Services
                     SitemapMinPriority = sitemapMinPriority,
                     SitemapIncludeHidden = PortalController.GetPortalSettingAsBoolean("SitemapIncludeHidden", this.PortalId, false),
                     SitemapExcludePriority = sitemapExcludePriority,
-                    SitemapCacheDays = PortalController.GetPortalSettingAsInteger("SitemapCacheDays", this.PortalId, 1)
+                    SitemapCacheDays = PortalController.GetPortalSettingAsInteger("SitemapCacheDays", this.PortalId, 1),
                 };
 
                 var searchEngineUrls = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("Google", this._controller.GetSearchEngineSubmissionUrl("google")),
                     new KeyValuePair<string, string>("Bing", this._controller.GetSearchEngineSubmissionUrl("bing")),
-                    new KeyValuePair<string, string>("Yahoo!", this._controller.GetSearchEngineSubmissionUrl("yahoo!"))
+                    new KeyValuePair<string, string>("Yahoo!", this._controller.GetSearchEngineSubmissionUrl("yahoo!")),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = true,
                     Settings = settings,
-                    SearchEngineUrls = searchEngineUrls
+                    SearchEngineUrls = searchEngineUrls,
                 });
             }
             catch (Exception exc)
@@ -413,13 +413,13 @@ namespace Dnn.PersonaBar.Seo.Services
                     p.Name,
                     p.Enabled,
                     Priority = p.Priority / 100f,
-                    p.OverridePriority
+                    p.OverridePriority,
                 }).ToList();
 
                 var response = new
                 {
                     Success = true,
-                    Providers = providers
+                    Providers = providers,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -481,13 +481,13 @@ namespace Dnn.PersonaBar.Seo.Services
                     p.ExtensionUrlProviderId,
                     p.ProviderName,
                     p.IsActive,
-                    SettingUrl = this.NavigationManager.NavigateURL(this.PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId)
+                    SettingUrl = this.NavigationManager.NavigateURL(this.PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId),
                 }).ToList();
 
                 var response = new
                 {
                     Success = true,
-                    Providers = providers
+                    Providers = providers,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -542,7 +542,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 var response = new
                 {
                     Success = true,
-                    Urls = this.TestUrlInternal(pageId, queryString, customPageName)
+                    Urls = this.TestUrlInternal(pageId, queryString, customPageName),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -569,7 +569,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 var response = new
                 {
                     Success = true,
-                    RewritingResult = this.TestUrlRewritingInternal(uri)
+                    RewritingResult = this.TestUrlRewritingInternal(uri),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -592,7 +592,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch
             {
-                //ignore
+                // ignore
             }
             return false;
         }
@@ -610,7 +610,7 @@ namespace Dnn.PersonaBar.Seo.Services
                         { FriendlyUrlSettings.DoNotUseFriendlyUrlRegexSetting, request.NoFriendlyUrlRegex },
                         { FriendlyUrlSettings.KeepInQueryStringRegexSetting, request.DoNotIncludeInPathRegex },
                         { FriendlyUrlSettings.UrlsWithNoExtensionRegexSetting, request.ValidExtensionlessUrlsRegex },
-                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch }
+                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch },
             };
 
             settings.ToList().ForEach((value) =>
@@ -660,7 +660,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 var provider = new AdvancedUrlRewriter();
                 var result = new UrlAction(uri.Scheme, uriString, Globals.ApplicationMapPath)
                 {
-                    RawUrl = uriString
+                    RawUrl = uriString,
                 };
                 var httpContext = new HttpContext(HttpContext.Current.Request, new HttpResponse(new StringWriter()));
                 provider.ProcessTestRequestWithContext(httpContext, uri, true, result, new FriendlyUrlSettings(this.PortalId));

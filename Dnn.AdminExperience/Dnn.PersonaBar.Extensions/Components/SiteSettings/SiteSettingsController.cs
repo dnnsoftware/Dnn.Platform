@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyName + ".Validation", propertyValidationString);
             this.UpdateResourceFileNode(portalResources, "ProfileProperties_" + propertyCategory + ".Header", categoryNameString);
 
-            //remove unmodified keys
+            // remove unmodified keys
             foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
             {
                 XmlNode defaultNode = defaultResources.SelectSingleNode("//root/data[@name='" + node.Attributes["name"].Value + "']");
@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 }
             }
 
-            //remove duplicate keys
+            // remove duplicate keys
             foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
             {
                 if (portalResources.SelectNodes("//root/data[@name='" + node.Attributes["name"].Value + "']").Count > 1)
@@ -83,12 +83,12 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
             if (portalResources.SelectNodes("//root/data").Count > 0)
             {
-                //there's something to save
+                // there's something to save
                 portalResources.Save(filename);
             }
             else
             {
-                //nothing to be saved, if file exists delete
+                // nothing to be saved, if file exists delete
                 if (File.Exists(filename))
                 {
                     File.Delete(filename);
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 }
                 catch (Exception)
                 {
-                    //do nothing but just ignore the error.
+                    // do nothing but just ignore the error.
                 }
             }
             return analyzers;
@@ -120,7 +120,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 Name = authPackage.Name,
                 FriendlyName = authPackage.FriendlyName,
                 Version = authPackage.Version,
-                License = Util.PACKAGE_NoLicense
+                License = Util.PACKAGE_NoLicense,
             };
             var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(authPackage.PackageID);
@@ -148,7 +148,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 Name = Globals.CleanFileName(fileName),
                 Version = DotNetNukeContext.Current.Application.Version,
                 License = Util.PACKAGE_NoLicense,
-                PackageType = "CoreLanguagePack"
+                PackageType = "CoreLanguagePack",
             };
 
             this._Files = new Dictionary<string, InstallFile>();
@@ -167,7 +167,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
             foreach (var library in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Library" || p.PackageType == "EvoqConnector"))
             {
-                //only generate if a folder name is known for the library
+                // only generate if a folder name is known for the library
                 if (library.FolderName != null)
                 {
                     this.CreateLibraryPackage(cultureCode, library, false);
@@ -194,7 +194,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 Name = library.Name,
                 FriendlyName = library.FriendlyName,
                 Version = library.Version,
-                License = Util.PACKAGE_NoLicense
+                License = Util.PACKAGE_NoLicense,
             };
 
             var fileName = Path.Combine(this.BasePath, "ResourcePack" + package.Name);
@@ -210,7 +210,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 Name = modulePackage.Name,
                 FriendlyName = modulePackage.FriendlyName,
                 Version = modulePackage.Version,
-                License = Util.PACKAGE_NoLicense
+                License = Util.PACKAGE_NoLicense,
             };
 
             var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
@@ -224,12 +224,12 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 Name = providerPackage.Name,
                 FriendlyName = providerPackage.FriendlyName,
                 Version = providerPackage.Version,
-                License = Util.PACKAGE_NoLicense
+                License = Util.PACKAGE_NoLicense,
             };
 
             var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
 
-            //Get the provider "path"
+            // Get the provider "path"
             XmlDocument configDoc = Config.Load();
             string providerName = package.Name;
             if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
@@ -287,7 +287,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var languagePack = new LanguagePackInfo
             {
                 LanguageID = language.LanguageId,
-                DependentPackageID = dependentPackageId
+                DependentPackageID = dependentPackageId,
             };
 
             if (dependentPackageId == -2)
@@ -350,7 +350,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
             if (node == null)
             {
-                //missing entry
+                // missing entry
                 nodeData = xmlDoc.CreateElement("data");
                 attr = xmlDoc.CreateAttribute("name");
                 attr.Value = key;

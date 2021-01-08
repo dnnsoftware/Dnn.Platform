@@ -221,10 +221,10 @@ namespace DotNetNuke.Services.GeneratedImage
 
             string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
 
+            var userId = -1;
             var cacheCleared = false;
-            var profilepic = context.Request.QueryString["mode"];
-            int userId = -1;
-            if ("profilepic".Equals(profilepic, StringComparison.InvariantCultureIgnoreCase))
+            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
+            if (isProfilePic)
             {
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
                 {
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Handle Server cache
             if (this.EnableServerCache)
             {
-                if (!this.IsPicVisibleToCurrentUser(userId))
+                if (isProfilePic && !this.IsPicVisibleToCurrentUser(userId))
                 {
                     string message = "Not allowed to see profile picture";
 

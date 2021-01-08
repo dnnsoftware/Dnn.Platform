@@ -2,27 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using DNNConnect.CKEditorProvider.Objects;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
+    using DNNConnect.CKEditorProvider.Objects;
+
     /// <summary>
-    /// Finds, and extract all Anchors from a Page
+    /// Finds, and extract all Anchors from a Page.
     /// </summary>
     public static class AnchorFinder
     {
-        #region Public Methods
-
         /// <summary>
-        /// Extract the Anchors
+        /// Extract the Anchors.
         /// </summary>
         /// <param name="file">
         /// The file.
         /// </param>
         /// <returns>
-        /// All Anchors on the Page
+        /// All Anchors on the Page.
         /// </returns>
         public static List<LinkItem> ListAll(string file)
         {
@@ -56,7 +55,5 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             return anchorList;
         }
-
-        #endregion
     }
 }

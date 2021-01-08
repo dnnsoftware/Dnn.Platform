@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel;
-using System.Xml.Serialization;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System.ComponentModel;
+    using System.Xml.Serialization;
 
     /// <summary>
-    /// WordCount Plugin Config
+    /// WordCount Plugin Config.
     /// </summary>
     public class WordCountConfig
     {
@@ -18,8 +17,8 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// </summary>
         public WordCountConfig()
         {
-            ShowWordCount = true;
-            ShowCharCount = false;
+            this.ShowWordCount = true;
+            this.ShowCharCount = false;
         }
 
         /// <summary>

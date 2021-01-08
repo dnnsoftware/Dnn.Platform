@@ -10,6 +10,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Data;
     using System.Globalization;
     using System.Text;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;

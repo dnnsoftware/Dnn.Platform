@@ -19,6 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
+
     [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency. Will be removed in DNN 11.", false)]
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
@@ -72,8 +73,8 @@ namespace Dnn.PersonaBar.Prompt.Components
                 if (portalSettings.ContentLocalizationEnabled)
                 {
                     var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId);
-                    //check whether original tab is exists, if true then set culture code to default language,
-                    //otherwise set culture code to current.
+                    // check whether original tab is exists, if true then set culture code to default language,
+                    // otherwise set culture code to current.
                     objModule.CultureCode =
                         TabController.Instance.GetTabByCulture(objModule.TabID, portalSettings.PortalId, defaultLocale) !=
                         null
@@ -118,8 +119,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             if (
                 currentPortalSetting == portalSettings ||
                 targetPage.PortalID == portalSettings.PortalId ||
-                PortalHelper.IsRequestForSiteGroup(targetPage.PortalID, portalSettings.PortalId)
-                )
+                PortalHelper.IsRequestForSiteGroup(targetPage.PortalID, portalSettings.PortalId))
             {
                 try
                 {
@@ -177,8 +177,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                     if (
                         portalSettings == currentPortal ||
                         portalSettings.PortalId == module.PortalID ||
-                        PortalHelper.IsRequestForSiteGroup(module.PortalID, portalSettings.PortalId)
-                        )
+                        PortalHelper.IsRequestForSiteGroup(module.PortalID, portalSettings.PortalId))
                     {
                         return module;
                     }
@@ -216,7 +215,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             if (!string.IsNullOrEmpty(moduleTitle))
                 modules = modules.Where(module => module.ModuleTitle.IndexOf(moduleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            //Return only deleted modules with matching criteria.
+            // Return only deleted modules with matching criteria.
             if (pageId.HasValue && pageId.Value > 0)
             {
                 modules = modules.Where(x => x.TabID == pageId.Value);
@@ -226,7 +225,7 @@ namespace Dnn.PersonaBar.Prompt.Components
                 modules = modules.Where(module => module.IsDeleted == deleted);
             }
 
-            //Get distincts.
+            // Get distincts.
             modules = modules.GroupBy(x => x.ModuleID).Select(group => group.First()).OrderBy(x => x.ModuleID);
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;

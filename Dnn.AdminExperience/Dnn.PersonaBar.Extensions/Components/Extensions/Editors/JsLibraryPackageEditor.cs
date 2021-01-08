@@ -42,9 +42,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 {
                     Id = d.PackageId,
                     Name = d.PackageName,
-                    Version = d.Version.ToString()
+                    Version = d.Version.ToString(),
                 }),
-                UsedBy = usedByPackages
+                UsedBy = usedByPackages,
             };
 
             return detail;

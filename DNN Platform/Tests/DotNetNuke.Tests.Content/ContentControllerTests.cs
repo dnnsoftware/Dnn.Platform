@@ -8,7 +8,7 @@ namespace DotNetNuke.Tests.Content
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Linq;
-
+    using System.Web;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -18,6 +18,7 @@ namespace DotNetNuke.Tests.Content
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Tests.Content.Mocks;
@@ -141,6 +142,64 @@ namespace DotNetNuke.Tests.Content
 
             // Assert
             Assert.AreEqual(Constants.CONTENT_AddContentItemId, content.ContentItemId);
+        }
+
+        [Test]
+        public void ContentController_AddContentItem_Sets_CreatedByUserId_And_LastModifiedUserId()
+        {
+            // Arrange
+            Mock<IDataService> mockDataService = new Mock<IDataService>();
+            mockDataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>())).Returns(Constants.CONTENT_AddContentItemId);
+            ContentController controller = new ContentController(mockDataService.Object);
+
+            ComponentFactory.RegisterComponentInstance<IContentController>(controller);
+
+            ContentItem content = ContentTestHelper.CreateValidContentItem();
+            content.ContentItemId = Constants.CONTENT_ValidContentItemId;
+            content.CreatedByUserID = 1;
+
+            // Act
+            int contentId = controller.AddContentItem(content);
+
+            // Assert
+            mockDataService.Verify(
+                service =>
+                    service.AddContentItem(It.IsAny<ContentItem>(), content.CreatedByUserID), Times.Once);
+        }
+
+        [Test]
+        public void ContentController_AddContentItem_Sets_Override_CreatedByUserId_And_LastModifiedUserId()
+        {
+            // Arrange
+            int expectedUserId = 5;
+            Mock<IUserController> mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(user => user.GetCurrentUserInfo()).Returns(new UserInfo { UserID = expectedUserId });
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            Mock<ICBO> mockCBO = new Mock<ICBO>();
+            CBO.SetTestableInstance(mockCBO.Object);
+
+            Mock<IDataService> mockDataService = new Mock<IDataService>();
+            mockDataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>())).Returns(Constants.CONTENT_AddContentItemId);
+
+            ContentController controller = new ContentController(mockDataService.Object);
+
+            ComponentFactory.RegisterComponentInstance<IContentController>(controller);
+
+            ContentItem content = ContentTestHelper.CreateValidContentItem();
+            content.ContentItemId = Constants.CONTENT_ValidContentItemId;
+
+            // Act
+            int contentId = controller.AddContentItem(content);
+
+            // Assert
+            mockDataService.Verify(
+                service =>
+                    service.AddContentItem(It.IsAny<ContentItem>(), expectedUserId), Times.Once);
+
+            // Cleanup
+            UserController.ClearInstance();
+            CBO.ClearInstance();
         }
 
         [Test]

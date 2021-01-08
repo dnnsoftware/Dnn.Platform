@@ -197,8 +197,12 @@ namespace Dnn.ExportImport.Components.Services
             var provider = DataProvider.Instance();
             foreach (var roleGroupItem in roleGroupItems)
             {
-                provider.UpdateRecordChangers("RoleGroups", "RoleGroupID",
-                    roleGroupItem.RoleGroupId, roleGroupItem.CreatedBy, roleGroupItem.ModifiedBy);
+                provider.UpdateRecordChangers(
+                    "RoleGroups",
+                    "RoleGroupID",
+                    roleGroupItem.RoleGroupId,
+                    roleGroupItem.CreatedBy,
+                    roleGroupItem.ModifiedBy);
             }
         }
 
@@ -207,8 +211,12 @@ namespace Dnn.ExportImport.Components.Services
             var provider = DataProvider.Instance();
             foreach (var roleItem in roleItems)
             {
-                provider.UpdateRecordChangers("Roles", "RoleID",
-                    roleItem.RoleId, roleItem.CreatedBy, roleItem.ModifiedBy);
+                provider.UpdateRecordChangers(
+                    "Roles",
+                    "RoleID",
+                    roleItem.RoleId,
+                    roleItem.CreatedBy,
+                    roleItem.ModifiedBy);
             }
         }
 
@@ -217,13 +225,17 @@ namespace Dnn.ExportImport.Components.Services
             var provider = DataProvider.Instance();
             foreach (var item in settingItems)
             {
-                provider.UpdateSettingRecordChangers("RoleSettings", "RoleID",
-                    item.RoleId, item.Name, item.CreatedBy, item.ModifiedBy);
+                provider.UpdateSettingRecordChangers(
+                    "RoleSettings",
+                    "RoleID",
+                    item.RoleId,
+                    item.Name,
+                    item.CreatedBy,
+                    item.ModifiedBy);
             }
         }
 
-        private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto,
-            IEnumerable<ExportRoleGroup> otherRoleGroups)
+        private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto, IEnumerable<ExportRoleGroup> otherRoleGroups)
         {
             var changedGroups = new List<RoleGroupItem>();
             var portalId = importJob.PortalId;
@@ -282,8 +294,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessRoles(ExportImportJob importJob, ImportDto importDto,
-            List<ExportRoleGroup> otherRoleGroups, IEnumerable<ExportRole> otherRoles)
+        private void ProcessRoles(ExportImportJob importJob, ImportDto importDto, List<ExportRoleGroup> otherRoleGroups, IEnumerable<ExportRole> otherRoles)
         {
             var roleItems = new List<RoleItem>();
             var portalId = importJob.PortalId;
@@ -385,8 +396,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessRoleSettings(ExportImportJob importJob, ImportDto importDto,
-            IList<ExportRole> otherRoles, IEnumerable<ExportRoleSetting> otherRoleSettings)
+        private void ProcessRoleSettings(ExportImportJob importJob, ImportDto importDto, IList<ExportRole> otherRoles, IEnumerable<ExportRoleSetting> otherRoleSettings)
         {
             var changedSettings = new List<SettingItem>();
             var portalId = importJob.PortalId;

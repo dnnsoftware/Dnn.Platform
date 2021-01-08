@@ -33,6 +33,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private bool Notify { get; set; }
+
         private int? UserId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -52,14 +53,12 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     this.UserId,
                     this.PortalSettings,
                     this.User,
-                    out userInfo)
-                ) != null
-               )
+                    out userInfo)) != null)
             {
                 return errorResultModel;
             }
 
-            //Don't allow self password change.
+            // Don't allow self password change.
             if (userInfo.UserID == this.User.UserID)
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("InSufficientPermissions"));

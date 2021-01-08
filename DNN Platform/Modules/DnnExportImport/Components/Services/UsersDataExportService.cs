@@ -184,7 +184,8 @@ namespace Dnn.ExportImport.Components.Services
                                         {
                                             var profileDefinitionId = Util.GetProfilePropertyId(
                                                 importJob.PortalId,
-                                                userProfile.PropertyDefinitionId, userProfile.PropertyName);
+                                                userProfile.PropertyDefinitionId,
+                                                userProfile.PropertyName);
                                             if (profileDefinitionId == null || profileDefinitionId == -1)
                                             {
                                                 continue;
@@ -222,8 +223,11 @@ namespace Dnn.ExportImport.Components.Services
                             if (includeProfile)
                             {
                                 DotNetNuke.Data.DataProvider.Instance()
-                                    .BulkInsert("ExportImport_AddUpdateUsersProfilesBulk", "@DataTable",
-                                        tableUserProfile, new Dictionary<string, object> { { "Overwrite", overwrite } });
+                                    .BulkInsert(
+                                        "ExportImport_AddUpdateUsersProfilesBulk",
+                                        "@DataTable",
+                                        tableUserProfile,
+                                        new Dictionary<string, object> { { "Overwrite", overwrite } });
                                 totalProfilesImported += tempUserProfileCount;
                             }
 

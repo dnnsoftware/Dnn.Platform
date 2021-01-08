@@ -104,7 +104,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return this.Request.CreateResponse(HttpStatusCode.OK,
                     new
                     {
-                        Folders = folders.MapEntries()
+                        Folders = folders.MapEntries(),
                     });
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         "Controls",
                         "DesktopModules",
                         "Install",
-                        "Providers"
+                        "Providers",
                     }.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + "_/" + s))));
 
                     const string skins = "Skins";
@@ -179,7 +179,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     new
                     {
                         Folders = folders.MapEntries(),
-                        Files = files.MapEntries()
+                        Files = files.MapEntries(),
                     });
             }
             catch (Exception ex)
@@ -247,7 +247,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
                 else
                 {
-                    //remove obsolete keys
+                    // remove obsolete keys
                     var toBeDeleted = new ArrayList();
                     foreach (string key in editTable.Keys)
                     {
@@ -265,7 +265,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         }
                     }
 
-                    //add missing keys
+                    // add missing keys
                     foreach (string key in defaultTable.Keys)
                     {
                         if (!editTable.Contains(key))
@@ -804,7 +804,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
                 else if (mode == LanguageResourceMode.Portal)
                 {
-                    //Load host override for default locale
+                    // Load host override for default locale
                     file = this.ResourceFile(portalId, Localization.SystemLocale, LanguageResourceMode.Host);
                     LoadResource(ht, file);
 
@@ -814,7 +814,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         file = this.ResourceFile(portalId, locale, LanguageResourceMode.System);
                         LoadResource(ht, file);
 
-                        //Load host override for selected locale
+                        // Load host override for selected locale
                         file = this.ResourceFile(portalId, locale, LanguageResourceMode.Host);
                         LoadResource(ht, file);
                     }
@@ -855,7 +855,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
             defDoc.Load(this.ResourceFile(portalId, Localization.SystemLocale, LanguageResourceMode.System));
 
-            //store all changed resources
+            // store all changed resources
             var changedResources = new Dictionary<string, string>();
 
             // only items different from default will be saved
@@ -999,7 +999,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return list.Select(kpv => new LocalizationEntry
             {
                 Name = kpv.Key,
-                NewValue = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/")
+                NewValue = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/"),
             });
         }
     }

@@ -1,59 +1,56 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Xml.Serialization;
-using DNNConnect.CKEditorProvider.Constants;
-using DNNConnect.CKEditorProvider.Controls;
-using DNNConnect.CKEditorProvider.Extensions;
-using DNNConnect.CKEditorProvider.Objects;
-using DNNConnect.CKEditorProvider.Utilities;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DNNConnect.CKEditorProvider
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+    using System.Xml.Serialization;
+
+    using DNNConnect.CKEditorProvider.Constants;
+    using DNNConnect.CKEditorProvider.Controls;
+    using DNNConnect.CKEditorProvider.Extensions;
+    using DNNConnect.CKEditorProvider.Objects;
+    using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>
     /// The CKEditor options page.
     /// </summary>
     public partial class CKEditorOptions : PortalModuleBase
     {
-        #region Constants and Fields
-
-        /// <summary>
-        ///   The provider type.
-        /// </summary>
+        /// <summary>The provider type.</summary>
         private const string ProviderType = "htmlEditor";
-        private const string UNAUTHENTICATED_USERS = "Unauthenticated Users";
+        private const string UnauthenticatedUsersRoleName = "Unauthenticated Users";
         private const int NoPortal = -1;
         private const string KeyCurrentTabId = "CurrentTabId";
         private const string KeyCurrentPortalId = "CurrentPortalId";
@@ -75,10 +72,10 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>
         ///   The _portal settings.
         /// </summary>
-        private PortalSettings _portalSettings;
+        private IPortalSettings portalSettings;
 
         /// <summary>
-        /// Override Default Config Folder from Web.config
+        /// Override Default Config Folder from Web.config.
         /// </summary>
         private string configFolder = string.Empty;
 
@@ -100,18 +97,17 @@ namespace DNNConnect.CKEditorProvider
         private EditorProviderSettings currentSettings;
 
         /// <summary>
-        ///   The module instance name
+        ///   The module instance name.
         /// </summary>
         private string moduleInstanceName;
 
         /// <summary>
-        ///   Gets or sets The Full Toolbar Set
+        ///   Gets or sets The Full Toolbar Set.
         /// </summary>
         private ToolbarSet toolbarSets;
 
-        #endregion
-
-        #region Properties
+        /// <summary>The _current module.</summary>
+        private ModuleInfo currentModule;
 
         /// <summary>Gets or sets a value indicating whether this instance is host mode.</summary>
         /// <value><c>true</c> if this instance is host mode; otherwise, <c>false</c>.</value>
@@ -119,12 +115,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return ViewState[KeyIsHostMode] != null && (bool)ViewState[KeyIsHostMode];
+                return this.ViewState[KeyIsHostMode] != null && (bool)this.ViewState[KeyIsHostMode];
             }
 
             set
             {
-                ViewState[KeyIsHostMode] = value;
+                this.ViewState[KeyIsHostMode] = value;
             }
         }
 
@@ -134,12 +130,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return ViewState[KeyCurrentPortalOnly] != null && (bool)ViewState[KeyCurrentPortalOnly];
+                return this.ViewState[KeyCurrentPortalOnly] != null && (bool)this.ViewState[KeyCurrentPortalOnly];
             }
 
             set
             {
-                ViewState[KeyCurrentPortalOnly] = value;
+                this.ViewState[KeyCurrentPortalOnly] = value;
             }
         }
 
@@ -148,7 +144,7 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                var currentTabId = ViewState[KeyCurrentTabId];
+                var currentTabId = this.ViewState[KeyCurrentTabId];
                 if (currentTabId != null)
                 {
                     return (int)currentTabId;
@@ -159,7 +155,7 @@ namespace DNNConnect.CKEditorProvider
 
             set
             {
-                ViewState[KeyCurrentTabId] = value;
+                this.ViewState[KeyCurrentTabId] = value;
             }
         }
 
@@ -168,12 +164,12 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return (int?)ViewState[KeyCurrentPortalId] ?? 0;
+                return (int?)this.ViewState[KeyCurrentPortalId] ?? 0;
             }
 
             set
             {
-                ViewState[KeyCurrentPortalId] = value;
+                this.ViewState[KeyCurrentPortalId] = value;
             }
         }
 
@@ -183,54 +179,51 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                return (int?)ViewState[KeyDefaultHostLoadMode] ?? 0;
+                return (int?)this.ViewState[KeyDefaultHostLoadMode] ?? 0;
             }
 
             set
             {
-                ViewState[KeyDefaultHostLoadMode] = value;
+                this.ViewState[KeyDefaultHostLoadMode] = value;
             }
         }
 
-        /// <summary>Gets Current Language from Url</summary>
-        protected string LangCode => !string.IsNullOrEmpty(request.QueryString["langCode"])
-                                         ? request.QueryString["langCode"]
+        /// <summary>Gets Current Language from Url.</summary>
+        protected string LangCode => !string.IsNullOrEmpty(this.request.QueryString["langCode"])
+                                         ? this.request.QueryString["langCode"]
                                          : CultureInfo.CurrentCulture.Name;
 
-        /// <summary>Gets the Name for the Current Resource file name</summary>
-        protected string ResXFile => ResolveUrl($"~/Providers/HtmlEditorProviders/DNNConnect.CKE/{Localization.LocalResourceDirectory}/Options.aspx.resx");
+        /// <summary>Gets the Name for the Current Resource file name.</summary>
+        protected string ResXFile => this.ResolveUrl($"~/Providers/HtmlEditorProviders/DNNConnect.CKE/{Localization.LocalResourceDirectory}/Options.aspx.resx");
 
-        /// <summary>Gets or sets the current settings mode</summary>
+        /// <summary>Gets or sets the current settings mode.</summary>
         private SettingsMode CurrentSettingsMode
         {
             get
             {
-                return (SettingsMode)ViewState[KeyCurrentSettingsMode];
+                return (SettingsMode)this.ViewState[KeyCurrentSettingsMode];
             }
 
             set
             {
-                ViewState[KeyCurrentSettingsMode] = value;
+                this.ViewState[KeyCurrentSettingsMode] = value;
             }
         }
 
         /// <summary>Gets the Config Url Control.</summary>
-        private UrlControl ConfigUrl => ctlConfigUrl;
+        private UrlControl ConfigUrl => this.ctlConfigUrl;
 
         /// <summary>Gets the CSS Url Control.</summary>
-        private UrlControl CssUrl => ctlCssurl;
+        private UrlControl CssUrl => this.ctlCssurl;
 
         /// <summary>Gets the Import File Url Control.</summary>
-        private UrlControl ImportFile => ctlImportFile;
+        private UrlControl ImportFile => this.ctlImportFile;
 
         /// <summary>Gets the Template Url Control.</summary>
-        private UrlControl TemplUrl => ctlTemplUrl;
+        private UrlControl TemplUrl => this.ctlTemplUrl;
 
         /// <summary>Gets the Custom JS File Url Control.</summary>
-        private UrlControl CustomJsFile => ctlCustomJsFile;
-
-        /// <summary>The _current module</summary>
-        private ModuleInfo _currentModule;
+        private UrlControl CustomJsFile => this.ctlCustomJsFile;
 
         /// <summary>Gets the current module.</summary>
         /// <value>The current module.</value>
@@ -238,37 +231,33 @@ namespace DNNConnect.CKEditorProvider
         {
             get
             {
-                if (_currentModule != null)
+                if (this.currentModule != null)
                 {
-                    return _currentModule;
+                    return this.currentModule;
                 }
 
-                if (ModuleConfiguration != null && !Null.IsNull(ModuleConfiguration.ModuleID))
+                if (this.ModuleConfiguration != null && !Null.IsNull(this.ModuleConfiguration.ModuleID))
                 {
-                    _currentModule = ModuleConfiguration;
-                    return _currentModule;
+                    this.currentModule = this.ModuleConfiguration;
+                    return this.currentModule;
                 }
 
-                _currentModule = new ModuleController().GetModule(
-                    Request.QueryString.GetValueOrDefault("ModuleId", -1),
-                    TabId,
+                this.currentModule = new ModuleController().GetModule(
+                    this.Request.QueryString.GetValueOrDefault("ModuleId", -1),
+                    this.TabId,
                     false);
 
-                return _currentModule;
+                return this.currentModule;
             }
         }
 
         /// <summary>Gets a value indicating whether this instance is all instances.</summary>
         /// <value><c>true</c> if this instance is all instances; otherwise, <c>false</c>.</value>
-        private bool IsAllInstances => IsHostMode && !CurrentPortalOnly;
+        private bool IsAllInstances => this.IsHostMode && !this.CurrentPortalOnly;
 
         /// <summary>Gets the home directory.</summary>
         /// <value>The home directory.</value>
-        private string HomeDirectory => _portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
-
-        #endregion
-
-        #region Methods
+        private string HomeDirectory => this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
 
         /// <summary>
         /// Binds the options data.
@@ -277,71 +266,72 @@ namespace DNNConnect.CKEditorProvider
         internal void BindOptionsData(bool reloadOptionsfromModule = false)
         {
             // Check if Options Window is in Host Page
-            if (IsHostMode)
+            if (this.IsHostMode)
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    LastTabId.Value = "0";
+                    this.LastTabId.Value = "0";
                 }
 
-                _portalSettings = GetPortalSettings();
+                this.portalSettings = this.GetPortalSettings();
 
-                listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
+                this.listToolbars = ToolbarUtil.GetToolbars(this.HomeDirectory, this.configFolder);
 
-                RenderUrlControls(true);
+                this.RenderUrlControls(true);
 
-                FillRoles();
+                this.FillRoles();
 
-                BindUserGroupsGridView();
+                this.BindUserGroupsGridView();
 
-                lblSetFor.Visible = false;
-                rBlSetMode.Visible = false;
-                lnkRemoveAll.Visible = false;
-                InfoTabLi.Visible = false;
-                InfoTabHolder.Visible = false;
+                this.lblSetFor.Visible = false;
+                this.rBlSetMode.Visible = false;
+                this.lnkRemoveAll.Visible = false;
+                this.InfoTabLi.Visible = false;
+                this.InfoTabHolder.Visible = false;
 
-                if (DefaultHostLoadMode.Equals(0))
+                if (this.DefaultHostLoadMode.Equals(0))
                 {
                     var currentPortalLabel = string.Empty;
-                    if(CurrentOrSelectedPortalId > NoPortal)
+                    if (this.CurrentOrSelectedPortalId > NoPortal)
                     {
-                        currentPortalLabel = string.Format("- <em>{0} {1} : - Portal ID: {2}</em>", 
-                            Localization.GetString("lblPortal.Text", ResXFile, LangCode), 
-                            _portalSettings?.PortalName ?? "Host", 
-                            CurrentOrSelectedPortalId);
+                        currentPortalLabel = string.Format(
+                            "- <em>{0} {1} : - Portal ID: {2}</em>",
+                            Localization.GetString("lblPortal.Text", this.ResXFile, this.LangCode),
+                            this.portalSettings?.PortalName ?? "Host",
+                            this.CurrentOrSelectedPortalId);
                     }
 
-                    lblSettings.Text = $"{Localization.GetString("lblSettings.Text", ResXFile, LangCode)} {currentPortalLabel}";
+                    this.lblSettings.Text = $"{Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode)} {currentPortalLabel}";
                 }
-                else if (DefaultHostLoadMode.Equals(1))
+                else if (this.DefaultHostLoadMode.Equals(1))
                 {
-                    var currentTabName = new TabController().GetTab(CurrentOrSelectedTabId, _portalSettings?.PortalId ?? Host.HostPortalID, false).TabName;
-                    var pageLabel = Localization.GetString("lblPage.Text", ResXFile, LangCode);
-                    var settingsLabel = Localization.GetString("lblSettings.Text", ResXFile, LangCode);
+                    var currentTabName = new TabController().GetTab(this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? Host.HostPortalID, false).TabName;
+                    var pageLabel = Localization.GetString("lblPage.Text", this.ResXFile, this.LangCode);
+                    var settingsLabel = Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode);
 
-                    lblSettings.Text = $"{settingsLabel} - <em>{pageLabel} {currentTabName} - TabID: {CurrentOrSelectedTabId}</em>";
+                    this.lblSettings.Text = $"{settingsLabel} - <em>{pageLabel} {currentTabName} - TabID: {this.CurrentOrSelectedTabId}</em>";
                 }
                 else
                 {
-                    lblSettings.Text = Localization.GetString("lblSettings.Text", ResXFile, LangCode);
+                    this.lblSettings.Text = Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode);
                 }
 
-                LoadSettings(DefaultHostLoadMode);
+                this.LoadSettings(this.DefaultHostLoadMode);
             }
             else
             {
-                var pageKey = $"DNNCKT#{CurrentOrSelectedTabId}#";
-                var moduleKey = $"DNNCKMI#{ModuleId}#INS#{moduleInstanceName}#";
+                var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
+                var moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
-                if (SettingsUtil.CheckExistsModuleInstanceSettings(moduleKey, ModuleId))
+                if (SettingsUtil.CheckExistsModuleInstanceSettings(moduleKey, this.ModuleId))
                 {
-                    LoadSettings(2);
+                    this.LoadSettings(2);
                 }
                 else
                 {
                     var settingsDictionary = EditorController.GetEditorHostSettings();
 
-                    LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
+                    this.LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
                 }
             }
         }
@@ -353,16 +343,16 @@ namespace DNNConnect.CKEditorProvider
         protected override void OnInit(EventArgs e)
         {
             // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
 
-            var moduleId = Request.QueryString.GetValueOrDefault("ModuleId", Null.NullInteger);
-            if (moduleId != Null.NullInteger && ModuleId == Null.NullInteger)
+            var moduleId = this.Request.QueryString.GetValueOrDefault("ModuleId", Null.NullInteger);
+            if (moduleId != Null.NullInteger && this.ModuleId == Null.NullInteger)
             {
-                var module = ModuleController.Instance.GetModule(moduleId, TabId, false);
+                var module = ModuleController.Instance.GetModule(moduleId, this.TabId, false);
                 if (module != null)
                 {
-                    ModuleConfiguration = module;
+                    this.ModuleConfiguration = module;
                 }
             }
         }
@@ -374,53 +364,138 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            AddJavaScripts();
-            LocalResourceFile = ResXFile;
-            _portalSettings = GetPortalSettings();
+            this.AddJavaScripts();
+            this.LocalResourceFile = this.ResXFile;
+            this.portalSettings = this.GetPortalSettings();
 
-            if (IsAllInstances ? UserController.Instance.GetCurrentUserInfo().IsSuperUser : Utility.IsInRoles(_portalSettings.AdministratorRoleName, _portalSettings))
+            if (this.IsAllInstances ? UserController.Instance.GetCurrentUserInfo().IsSuperUser : Utility.IsInRoles(this.portalSettings.AdministratorRoleName, this.portalSettings))
             {
-                listToolbars = ToolbarUtil.GetToolbars(HomeDirectory, configFolder);
+                this.listToolbars = ToolbarUtil.GetToolbars(this.HomeDirectory, this.configFolder);
 
-                if (Page.IsPostBack)
+                if (this.Page.IsPostBack)
                 {
                     return;
                 }
 
-                BindUserGroupsGridView();
+                this.BindUserGroupsGridView();
 
-                FillFolders();
+                this.FillFolders();
 
-                SetLanguage();
+                this.SetLanguage();
 
-                BindOptionsData();                
+                this.BindOptionsData();
 
-                FillInformations();
+                this.FillInformations();
 
                 // Load Skin List
-                FillSkinList();
+                this.FillSkinList();
 
-                RenderUrlControls();
+                this.RenderUrlControls();
 
-                FillRoles();
+                this.FillRoles();
 
                 // Remove CKFinder from the Browser list if not installed
                 if (
                     !File.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"))
                 {
-                    ddlBrowser.Items.RemoveAt(2);
+                    this.ddlBrowser.Items.RemoveAt(2);
                 }
             }
             else
             {
-                Visible = false;
+                this.Visible = false;
 
-                Page.ClientScript.RegisterStartupScript(
-                    GetType(),
+                this.Page.ClientScript.RegisterStartupScript(
+                    this.GetType(),
                     "errorcloseScript",
-                    $"javascript:alert('{Localization.GetString("Error1.Text", ResXFile, LangCode)}');self.close();",
+                    $"javascript:alert('{Localization.GetString("Error1.Text", this.ResXFile, this.LangCode)}');self.close();",
                     true);
             }
+        }
+
+        /// <summary>
+        /// Import Current Settings.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void Import_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.ImportFile.Url))
+            {
+                return;
+            }
+
+            var sXmlImport = this.ImportFile.Url;
+
+            this.upOptions.Update();
+
+            // RESET Dialog
+            this.ImportFile.Url = null;
+
+            int imageFileId = int.Parse(sXmlImport.Substring(7));
+
+            // FileInfo objFileInfo = objFileController.GetFileById(imageFileId, this.portalSettings.PortalId);
+            var objFileInfo = FileManager.Instance.GetFile(imageFileId);
+
+            var homeDirectory = this.HomeDirectory;
+            sXmlImport = homeDirectory + objFileInfo.Folder + objFileInfo.FileName;
+
+            try
+            {
+                this.ImportXmlFile(sXmlImport);
+
+                this.ShowNotification(Localization.GetString("Imported.Text", this.ResXFile, this.LangCode), "success");
+            }
+            catch (Exception)
+            {
+                this.ShowNotification(
+                    Localization.GetString("BadImportXml.Text", this.ResXFile, this.LangCode), "error");
+            }
+        }
+
+        /// <summary>
+        /// Export Current Settings.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        protected void Export_Click(object sender, EventArgs e)
+        {
+            var exportSettings = this.ExportSettings();
+
+            // Save XML file
+            try
+            {
+                var serializer = new XmlSerializer(typeof(EditorProviderSettings));
+
+                var xmlFileName = !string.IsNullOrEmpty(this.ExportFileName.Text.Trim())
+                                      ? this.ExportFileName.Text
+                                      : $"CKEditorSettings-{exportSettings.SettingMode}.xml";
+
+                if (!xmlFileName.EndsWith(".xml"))
+                {
+                    xmlFileName += ".xml";
+                }
+
+                var exportFolderInfo = FolderManager.Instance.GetFolder(Convert.ToInt32(this.ExportDir.SelectedValue));
+
+                var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
+                var textWriter = this.ExportDir.SelectedValue.Equals("-1")
+                                     ? new StreamWriter(
+                                           Path.Combine(homeDirectory, xmlFileName))
+                                     : new StreamWriter(Path.Combine(exportFolderInfo.PhysicalPath, xmlFileName));
+
+                serializer.Serialize(textWriter, exportSettings);
+
+                textWriter.Close();
+
+                this.ShowNotification(Localization.GetString("Export.Text", this.ResXFile, this.LangCode), "success");
+            }
+            catch (Exception exception)
+            {
+                this.ShowNotification(exception.Message, "error");
+            }
+
+            this.upOptions.Update();
         }
 
         /// <summary>
@@ -429,14 +504,14 @@ namespace DNNConnect.CKEditorProvider
         private void AddJavaScripts()
         {
             ClientResourceManager.RegisterStyleSheet(
-                Page,
-                ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/jquery.notification.css"));
+                this.Page,
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/jquery.notification.css"));
 
             ClientResourceManager.RegisterStyleSheet(
-                Page,
-                ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/Options.css"));
+                this.Page,
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/Options.css"));
 
-            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+            JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
             JavaScript.RequestRegistration(CommonJs.jQueryUI);
@@ -446,100 +521,13 @@ namespace DNNConnect.CKEditorProvider
                 this,
                 typeof(Page),
                 "jquery.notification",
-                ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.notification.js"));
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.notification.js"));
 
             ScriptManager.RegisterClientScriptInclude(
                 this,
                 typeof(Page),
                 "OptionsJs",
-                ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/Options.js"));
-        }
-
-
-
-        /// <summary>
-        /// Import Current Settings
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Import_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(ImportFile.Url))
-            {
-                return;
-            }
-
-            var sXmlImport = ImportFile.Url;
-
-            upOptions.Update();
-
-            // RESET Dialog 
-            ImportFile.Url = null;
-
-            int imageFileId = int.Parse(sXmlImport.Substring(7));
-
-            // FileInfo objFileInfo = objFileController.GetFileById(imageFileId, this._portalSettings.PortalId);
-            var objFileInfo = FileManager.Instance.GetFile(imageFileId);
-
-            var homeDirectory = HomeDirectory;
-            sXmlImport = homeDirectory + objFileInfo.Folder + objFileInfo.FileName;
-
-            try
-            {
-                ImportXmlFile(sXmlImport);
-
-                ShowNotification(Localization.GetString("Imported.Text", ResXFile, LangCode), "success");
-            }
-            catch (Exception)
-            {
-                ShowNotification(
-                    Localization.GetString("BadImportXml.Text", ResXFile, LangCode), "error");
-            }
-        }
-
-        /// <summary>
-        /// Export Current Settings
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        protected void Export_Click(object sender, EventArgs e)
-        {
-            var exportSettings = ExportSettings();
-
-            // Save XML file
-            try
-            {
-                var serializer = new XmlSerializer(typeof(EditorProviderSettings));
-
-                var xmlFileName = !string.IsNullOrEmpty(ExportFileName.Text.Trim())
-                                      ? ExportFileName.Text
-                                      : $"CKEditorSettings-{exportSettings.SettingMode}.xml";
-
-                if (!xmlFileName.EndsWith(".xml"))
-                {
-                    xmlFileName += ".xml";
-                }
-
-                var exportFolderInfo = FolderManager.Instance.GetFolder(Convert.ToInt32(ExportDir.SelectedValue));
-
-                var homeDirectory = _portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
-                var textWriter = ExportDir.SelectedValue.Equals("-1")
-                                     ? new StreamWriter(
-                                           Path.Combine(homeDirectory, xmlFileName))
-                                     : new StreamWriter(Path.Combine(exportFolderInfo.PhysicalPath, xmlFileName));
-
-                serializer.Serialize(textWriter, exportSettings);
-
-                textWriter.Close();
-
-                ShowNotification(Localization.GetString("Export.Text", ResXFile, LangCode), "success");
-            }
-            catch (Exception exception)
-            {
-                ShowNotification(exception.Message, "error");
-            }
-
-            upOptions.Update();
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/Options.js"));
         }
 
         /// <summary>
@@ -567,49 +555,48 @@ namespace DNNConnect.CKEditorProvider
 
             textReader.Close();
 
-            FillSettings(importedSettings, changeMode);
+            this.FillSettings(importedSettings, changeMode);
         }
-        /// <summary>
-        /// Fill file upload size limit controls
-        /// </summary>
-        /// <param name="imporUploadSizeRoles"></param>
+
+        /// <summary>Fill file upload size limit controls.</summary>
+        /// <param name="imporUploadSizeRoles">A list of <see cref="UploadSizeRoles"/>.</param>
         private void FillFileUploadSettings(List<UploadSizeRoles> imporUploadSizeRoles)
         {
-            UploadFileLimits.DataSource = imporUploadSizeRoles;
-            UploadFileLimits.DataBind();
+            this.UploadFileLimits.DataSource = imporUploadSizeRoles;
+            this.UploadFileLimits.DataBind();
 
             // Load Upload Size Setting for Each Portal Role
             foreach (var uploadSizeRole in imporUploadSizeRoles)
             {
                 if (uploadSizeRole.RoleId.Equals(-1))
                 {
-                    for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+                    for (var i = 0; i < this.UploadFileLimits.Rows.Count; i++)
                     {
-                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+                        Label label = (Label)this.UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                        if (label == null || !label.Text.Equals(UNAUTHENTICATED_USERS))
+                        if (label == null || !label.Text.Equals(UnauthenticatedUsersRoleName))
                         {
                             continue;
                         }
 
                         var sizeLimit =
-                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+                            (TextBox)this.UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
 
                         sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
                     }
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleById(_portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(this.portalSettings?.PortalId ?? Host.HostPortalID, uploadSizeRole.RoleId);
 
                     if (objRole == null)
                     {
                         continue;
                     }
 
-                    for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+                    for (var i = 0; i < this.UploadFileLimits.Rows.Count; i++)
                     {
-                        Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+                        Label label = (Label)this.UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
                         if (label == null || !label.Text.Equals(objRole.RoleName))
                         {
@@ -617,7 +604,7 @@ namespace DNNConnect.CKEditorProvider
                         }
 
                         var sizeLimit =
-                            (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+                            (TextBox)this.UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
 
                         sizeLimit.Text = uploadSizeRole.UploadFileLimit.ToString();
                     }
@@ -655,7 +642,7 @@ namespace DNNConnect.CKEditorProvider
                     case "Int32":
                     case "String":
                         {
-                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, info.Name);
+                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, info.Name);
 
                             if (textBox != null)
                             {
@@ -666,7 +653,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "Boolean":
                         {
-                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, info.Name);
+                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, info.Name);
 
                             if (checkBox != null)
                             {
@@ -685,7 +672,7 @@ namespace DNNConnect.CKEditorProvider
                     case "ToolbarLocation":
                     case "DefaultLinkType":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList != null)
                             {
@@ -716,7 +703,7 @@ namespace DNNConnect.CKEditorProvider
                                 {
                                     case "String":
                                         {
-                                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, codeMirrorInfo.Name);
+                                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, codeMirrorInfo.Name);
 
                                             if (textBox != null)
                                             {
@@ -728,7 +715,7 @@ namespace DNNConnect.CKEditorProvider
 
                                     case "Boolean":
                                         {
-                                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, codeMirrorInfo.Name);
+                                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, codeMirrorInfo.Name);
 
                                             if (checkBox != null)
                                             {
@@ -757,7 +744,7 @@ namespace DNNConnect.CKEditorProvider
                                 {
                                     case "String":
                                         {
-                                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, wordCountInfo.Name);
+                                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, wordCountInfo.Name);
 
                                             if (textBox != null)
                                             {
@@ -769,7 +756,7 @@ namespace DNNConnect.CKEditorProvider
 
                                     case "Boolean":
                                         {
-                                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, wordCountInfo.Name);
+                                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, wordCountInfo.Name);
 
                                             if (checkBox != null)
                                             {
@@ -788,118 +775,118 @@ namespace DNNConnect.CKEditorProvider
             ///////////////////
 
             if (!string.IsNullOrEmpty(importedSettings.Config.Skin)
-                && ddlSkin.Items.FindByValue(importedSettings.Config.Skin) != null)
+                && this.ddlSkin.Items.FindByValue(importedSettings.Config.Skin) != null)
             {
-                ddlSkin.ClearSelection();
-                ddlSkin.SelectedValue = importedSettings.Config.Skin;
+                this.ddlSkin.ClearSelection();
+                this.ddlSkin.SelectedValue = importedSettings.Config.Skin;
             }
 
             if (!string.IsNullOrEmpty(importedSettings.Config.CodeMirror.Theme)
-                && CodeMirrorTheme.Items.FindByValue(importedSettings.Config.CodeMirror.Theme) != null)
+                && this.CodeMirrorTheme.Items.FindByValue(importedSettings.Config.CodeMirror.Theme) != null)
             {
-                CodeMirrorTheme.ClearSelection();
-                CodeMirrorTheme.SelectedValue = importedSettings.Config.CodeMirror.Theme;
+                this.CodeMirrorTheme.ClearSelection();
+                this.CodeMirrorTheme.SelectedValue = importedSettings.Config.CodeMirror.Theme;
             }
 
             if (!string.IsNullOrEmpty(importedSettings.Browser)
-                && ddlBrowser.Items.FindByValue(importedSettings.Browser) != null)
+                && this.ddlBrowser.Items.FindByValue(importedSettings.Browser) != null)
             {
-                ddlBrowser.ClearSelection();
-                ddlBrowser.SelectedValue = importedSettings.Browser;
+                this.ddlBrowser.ClearSelection();
+                this.ddlBrowser.SelectedValue = importedSettings.Browser;
             }
 
-            FileListPageSize.Text = importedSettings.FileListPageSize.ToString();
+            this.FileListPageSize.Text = importedSettings.FileListPageSize.ToString();
 
-            FileListViewMode.SelectedValue = importedSettings.FileListViewMode.ToString();
-            DefaultLinkMode.SelectedValue = importedSettings.DefaultLinkMode.ToString();
-            UseAnchorSelector.Checked = importedSettings.UseAnchorSelector;
-            ShowPageLinksTabFirst.Checked = importedSettings.ShowPageLinksTabFirst;
+            this.FileListViewMode.SelectedValue = importedSettings.FileListViewMode.ToString();
+            this.DefaultLinkMode.SelectedValue = importedSettings.DefaultLinkMode.ToString();
+            this.UseAnchorSelector.Checked = importedSettings.UseAnchorSelector;
+            this.ShowPageLinksTabFirst.Checked = importedSettings.ShowPageLinksTabFirst;
 
-            cbBrowserDirs.Checked = importedSettings.SubDirs;
+            this.cbBrowserDirs.Checked = importedSettings.SubDirs;
 
-            OverrideFileOnUpload.Checked = importedSettings.OverrideFileOnUpload;
+            this.OverrideFileOnUpload.Checked = importedSettings.OverrideFileOnUpload;
 
-            BrowserRootDir.SelectedValue =
-                 BrowserRootDir.Items.FindByValue(importedSettings.BrowserRootDirId.ToString()) != null
+            this.BrowserRootDir.SelectedValue =
+                 this.BrowserRootDir.Items.FindByValue(importedSettings.BrowserRootDirId.ToString()) != null
                      ? importedSettings.BrowserRootDirId.ToString()
                      : "-1";
 
-            UploadDir.SelectedValue = UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
+            this.UploadDir.SelectedValue = this.UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
                                            != null
                                                ? importedSettings.UploadDirId.ToString()
                                                : "-1";
 
-            var homeDirectory = _portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
+            var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
             var configFolderInfo =
                 Utility.ConvertFilePathToFolderInfo(
-                    !string.IsNullOrEmpty(configFolder)
-                        ? Path.Combine(homeDirectory, configFolder)
+                    !string.IsNullOrEmpty(this.configFolder)
+                        ? Path.Combine(homeDirectory, this.configFolder)
                         : homeDirectory,
-                    _portalSettings);
+                    this.portalSettings);
 
-            ExportDir.SelectedValue = configFolderInfo != null
+            this.ExportDir.SelectedValue = configFolderInfo != null
                                            &&
-                                           ExportDir.Items.FindByValue(configFolderInfo.FolderID.ToString())
+                                           this.ExportDir.Items.FindByValue(configFolderInfo.FolderID.ToString())
                                            != null
                                                ? configFolderInfo.FolderID.ToString()
                                                : "-1";
 
-            ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}.xml";
+            this.ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}.xml";
 
             switch (importedSettings.SettingMode)
             {
                 case SettingsMode.Host:
-                    ExportFileName.Text = "CKEditorSettings-Host.xml";
+                    this.ExportFileName.Text = "CKEditorSettings-Host.xml";
                     break;
                 case SettingsMode.Portal:
-                    ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}-{_portalSettings?.PortalId ?? Null.NullInteger}.xml";
+                    this.ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}-{this.portalSettings?.PortalId ?? Null.NullInteger}.xml";
                     break;
                 case SettingsMode.Page:
-                    ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}-{CurrentOrSelectedTabId}.xml";
+                    this.ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}-{this.CurrentOrSelectedTabId}.xml";
                     break;
                 case SettingsMode.ModuleInstance:
-                    ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}-{ModuleId}.xml";
+                    this.ExportFileName.Text = $"CKEditorSettings-{importedSettings.SettingMode}-{this.ModuleId}.xml";
                     break;
             }
 
-            txtResizeHeight.Text = importedSettings.ResizeWidth.ToString();
+            this.txtResizeHeight.Text = importedSettings.ResizeWidth.ToString();
 
-            txtResizeHeight.Text = importedSettings.ResizeHeight.ToString();
+            this.txtResizeHeight.Text = importedSettings.ResizeHeight.ToString();
 
-            InjectSyntaxJs.Checked = importedSettings.InjectSyntaxJs;
+            this.InjectSyntaxJs.Checked = importedSettings.InjectSyntaxJs;
 
             if (Utility.IsUnit(importedSettings.Config.Width))
             {
-                txtWidth.Text = importedSettings.Config.Width;
+                this.txtWidth.Text = importedSettings.Config.Width;
             }
 
             if (Utility.IsUnit(importedSettings.Config.Height))
             {
-                txtHeight.Text = importedSettings.Config.Height;
+                this.txtHeight.Text = importedSettings.Config.Height;
             }
 
-            txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
+            this.txtBlanktext.Text = Convert.ToString(importedSettings.BlankText);
 
-            FillFileUploadSettings(importedSettings.UploadSizeRoles);
+            this.FillFileUploadSettings(importedSettings.UploadSizeRoles);
 
             if (!string.IsNullOrEmpty(importedSettings.Config.ContentsCss))
             {
-                CssUrl.Url = ReFormatURL(importedSettings.Config.ContentsCss);
+                this.CssUrl.Url = this.ReFormatURL(importedSettings.Config.ContentsCss);
             }
 
             if (!string.IsNullOrEmpty(importedSettings.Config.Templates_Files))
             {
-                TemplUrl.Url = ReFormatURL(importedSettings.Config.Templates_Files);
+                this.TemplUrl.Url = this.ReFormatURL(importedSettings.Config.Templates_Files);
             }
 
             if (!string.IsNullOrEmpty(importedSettings.CustomJsFile))
             {
-                CustomJsFile.Url = ReFormatURL(importedSettings.CustomJsFile);
+                this.CustomJsFile.Url = this.ReFormatURL(importedSettings.CustomJsFile);
             }
 
             if (!string.IsNullOrEmpty(importedSettings.Config.CustomConfig))
             {
-                ConfigUrl.Url = ReFormatURL(importedSettings.Config.CustomConfig);
+                this.ConfigUrl.Url = this.ReFormatURL(importedSettings.Config.CustomConfig);
             }
 
             if (!string.IsNullOrEmpty(importedSettings.BrowserRoles))
@@ -914,16 +901,16 @@ namespace DNNConnect.CKEditorProvider
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            if (chblBrowsGr.Items.FindByValue(sRoleName) != null)
+                            if (this.chblBrowsGr.Items.FindByValue(sRoleName) != null)
                             {
-                                chblBrowsGr.Items.FindByValue(sRoleName).Selected = true;
+                                this.chblBrowsGr.Items.FindByValue(sRoleName).Selected = true;
                             }
                         }
                         else
                         {
-                            if (chblBrowsGr.Items.FindByText(sRoleName) != null)
+                            if (this.chblBrowsGr.Items.FindByText(sRoleName) != null)
                             {
-                                chblBrowsGr.Items.FindByText(sRoleName).Selected = true;
+                                this.chblBrowsGr.Items.FindByText(sRoleName).Selected = true;
                             }
                         }
                     }
@@ -938,25 +925,25 @@ namespace DNNConnect.CKEditorProvider
             switch (importedSettings.SettingMode)
             {
                 case SettingsMode.Portal:
-                    rBlSetMode.SelectedIndex = 0;
+                    this.rBlSetMode.SelectedIndex = 0;
                     break;
                 case SettingsMode.Page:
-                    rBlSetMode.SelectedIndex = 1;
+                    this.rBlSetMode.SelectedIndex = 1;
                     break;
                 case SettingsMode.ModuleInstance:
-                    rBlSetMode.SelectedIndex = 2;
+                    this.rBlSetMode.SelectedIndex = 2;
                     break;
             }
         }
 
         /// <summary>
-        /// Bind User Groups to GridView
+        /// Bind User Groups to GridView.
         /// </summary>
         private void BindUserGroupsGridView()
         {
             var lic = new ListItemCollection();
 
-            var portalId = _portalSettings?.PortalId != Null.NullInteger ? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
             foreach (var roleItem in
                 from RoleInfo objRole in RoleController.Instance.GetRoles(portalId)
                 select new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() })
@@ -964,73 +951,73 @@ namespace DNNConnect.CKEditorProvider
                 lic.Add(roleItem);
             }
 
-            lic.Add(new ListItem { Text = UNAUTHENTICATED_USERS, Value = "-1" });
+            lic.Add(new ListItem { Text = UnauthenticatedUsersRoleName, Value = "-1" });
 
-            gvToolbars.DataSource = lic;
-            gvToolbars.DataBind();
+            this.gvToolbars.DataSource = lic;
+            this.gvToolbars.DataBind();
 
-            InsertToolbars();
+            this.InsertToolbars();
 
-            var lblRole = (Label)gvToolbars.HeaderRow.FindControl("lblRole");
-            var lblSelToolb = (Label)gvToolbars.HeaderRow.FindControl("lblSelToolb");
+            var lblRole = (Label)this.gvToolbars.HeaderRow.FindControl("lblRole");
+            var lblSelToolb = (Label)this.gvToolbars.HeaderRow.FindControl("lblSelToolb");
 
-            lblRole.Text = Localization.GetString("lblRole.Text", ResXFile, LangCode);
-            lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", ResXFile, LangCode);
+            lblRole.Text = Localization.GetString("lblRole.Text", this.ResXFile, this.LangCode);
+            lblSelToolb.Text = Localization.GetString("lblSelToolb.Text", this.ResXFile, this.LangCode);
         }
 
         /// <summary>
-        /// Delete Settings only for this Module Instance
+        /// Delete Settings only for this Module Instance.
         /// </summary>
         private void DelModuleSettings()
         {
-            moduleInstanceName = request.QueryString["minc"];
-            string moduleKey = $"DNNCKMI#{ModuleId}#INS#{moduleInstanceName}#";
+            this.moduleInstanceName = this.request.QueryString["minc"];
+            string moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
             var moduleController = new ModuleController();
 
             foreach (PropertyInfo info in
                 SettingsUtil.GetEditorConfigProperties())
             {
-                moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{info.Name}");
+                moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{info.Name}");
             }
 
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.SKIN}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.CODEMIRRORTHEME}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.BROWSER}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.FILELISTPAGESIZE}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.FILELISTVIEWMODE}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.DEFAULTLINKMODE}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.USEANCHORSELECTOR}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.SHOWPAGELINKSTABFIRST}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.BLANKTEXT}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.CSS}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.TEMPLATEFILES}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SKIN}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CODEMIRRORTHEME}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSER}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTPAGESIZE}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.FILELISTVIEWMODE}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.DEFAULTLINKMODE}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.USEANCHORSELECTOR}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SHOWPAGELINKSTABFIRST}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BLANKTEXT}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CSS}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.TEMPLATEFILES}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
 
-            foreach (var objRole in RoleController.Instance.GetRoles(_portalSettings?.PortalId ?? Host.HostPortalID))
+            foreach (var objRole in RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID))
             {
-                moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}{objRole.RoleID}#{SettingConstants.TOOLB}");
+                moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{objRole.RoleID}#{SettingConstants.TOOLB}");
             }
 
-            moduleController.DeleteModuleSetting(ModuleId, $"{moduleKey}-1#{SettingConstants.TOOLB}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}-1#{SettingConstants.TOOLB}");
 
             // Finally Clear Cache
             EditorController.ClearEditorCache();
         }
 
         /// <summary>
-        /// Write Information
+        /// Write Information.
         /// </summary>
         private void FillInformations()
         {
@@ -1038,20 +1025,20 @@ namespace DNNConnect.CKEditorProvider
 
             if (ckEditorPackage != null)
             {
-                ProviderVersion.Text += ckEditorPackage.Version;
+                this.ProviderVersion.Text += ckEditorPackage.Version;
             }
 
-            lblPortal.Text += !IsAllInstances ? _portalSettings.PortalName : "Host";
+            this.lblPortal.Text += !this.IsAllInstances ? this.portalSettings.PortalName : "Host";
 
             ModuleDefinitionInfo moduleDefinitionInfo;
-            var portalId = _portalSettings?.PortalId ?? Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId ?? Host.HostPortalID;
             var moduleInfo = new ModuleController().GetModuleByDefinition(
                 portalId, "User Accounts");
 
             try
             {
                 moduleDefinitionInfo =
-                    ModuleDefinitionController.GetModuleDefinitionByID(CurrentModule.ModuleDefID);
+                    ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
             catch (Exception)
             {
@@ -1061,92 +1048,91 @@ namespace DNNConnect.CKEditorProvider
 
             try
             {
-                lblPage.Text += string.Format(
+                this.lblPage.Text += string.Format(
                     "{0} - TabID {1}",
-                    new TabController().GetTab(CurrentOrSelectedTabId, portalId, false).TabName,
-                    CurrentOrSelectedTabId);
+                    new TabController().GetTab(this.CurrentOrSelectedTabId, portalId, false).TabName,
+                    this.CurrentOrSelectedTabId);
             }
             catch (Exception)
             {
-                lblPage.Text = string.Empty;
+                this.lblPage.Text = string.Empty;
             }
 
             if (moduleDefinitionInfo != null)
             {
-                lblModType.Text += moduleDefinitionInfo.FriendlyName;
-                if (!IsHostMode && moduleDefinitionInfo.FriendlyName.Equals("User Accounts"))
+                this.lblModType.Text += moduleDefinitionInfo.FriendlyName;
+                if (!this.IsHostMode && moduleDefinitionInfo.FriendlyName.Equals("User Accounts"))
                 {
-                    rBlSetMode.Items.RemoveAt(2);
+                    this.rBlSetMode.Items.RemoveAt(2);
                 }
             }
             else
             {
-                lblModType.Text = string.Empty;
+                this.lblModType.Text = string.Empty;
             }
 
             try
             {
-                lblModName.Text += CurrentModule.ModuleTitle;
+                this.lblModName.Text += this.CurrentModule.ModuleTitle;
             }
             catch (Exception)
             {
-                lblModName.Text += moduleInfo.ModuleTitle;
+                this.lblModName.Text += moduleInfo.ModuleTitle;
             }
 
-            if (request.QueryString["minc"] != null)
+            if (this.request.QueryString["minc"] != null)
             {
-                lblModInst.Text += request.QueryString["minc"];
-                moduleInstanceName = request.QueryString["minc"];
+                this.lblModInst.Text += this.request.QueryString["minc"];
+                this.moduleInstanceName = this.request.QueryString["minc"];
             }
 
-            if (UserInfo != null)
+            if (this.UserInfo != null)
             {
-                lblUName.Text += UserInfo.Username;
+                this.lblUName.Text += this.UserInfo.Username;
             }
             else
             {
-                lblUName.Text = string.Empty;
+                this.lblUName.Text = string.Empty;
             }
         }
 
         /// <summary>
-        /// Loads all DNN Roles
+        /// Loads all DNN Roles.
         /// </summary>
         private void FillRoles()
         {
-            chblBrowsGr.Items.Clear();
+            this.chblBrowsGr.Items.Clear();
 
-            var portalId = _portalSettings?.PortalId ?? Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId ?? Host.HostPortalID;
 
-            foreach (var objRole in GetRoles(portalId))
+            foreach (var objRole in this.GetRoles(portalId))
             {
-                var isAdmin = objRole.RoleName.Equals(PortalSettings.AdministratorRoleName);
+                var isAdmin = objRole.RoleName.Equals(this.PortalSettings.AdministratorRoleName);
                 var roleItem = new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() };
-                roleItem.Selected = isAdmin || GetActiveRolesIds().Contains(objRole.RoleID);
+                roleItem.Selected = isAdmin || this.GetActiveRolesIds().Contains(objRole.RoleID);
                 roleItem.Enabled = !isAdmin;
 
-                chblBrowsGr.Items.Add(roleItem);
+                this.chblBrowsGr.Items.Add(roleItem);
             }
         }
 
-        /// <summary>
-        /// Gets list of currently active file browser roles
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets a sequence of currently active file browser roles.</summary>
+        /// <returns>A sequence of role IDs.</returns>
         private IEnumerable<int> GetActiveRolesIds()
         {
-            if (currentSettings?.BrowserRoles != null)
+            if (this.currentSettings?.BrowserRoles != null)
             {
-                var rolesIds = currentSettings.BrowserRoles.Split(';');
+                var rolesIds = this.currentSettings.BrowserRoles.Split(';');
                 foreach (string roleId in rolesIds)
                 {
                     int actualRoleId;
 
                     if (!int.TryParse(roleId, out actualRoleId))
                     {
-                        var role = RoleController.Instance.GetRoleByName(PortalId, roleId);
+                        var role = RoleController.Instance.GetRoleByName(this.PortalId, roleId);
                         actualRoleId = role != null ? role.RoleID : -1;
                     }
+
                     yield return actualRoleId;
                 }
             }
@@ -1156,17 +1142,15 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Gets the roles.
-        /// </summary>
-        /// <param name="portalId">The portal identifier.</param>
-        /// <returns></returns>
+        /// <summary>Gets the roles.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A sequence of <see cref="RoleInfo"/> instances.</returns>
         private IEnumerable<RoleInfo> GetRoles(int portalId)
         {
             portalId = portalId == Null.NullInteger ? Host.HostPortalID : portalId;
             var roles = RoleController.Instance.GetRoles(portalId);
 
-            if (!IsAllInstances)
+            if (!this.IsAllInstances)
             {
                 return roles;
             }
@@ -1184,28 +1168,28 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private void FillSkinList()
         {
-            ddlSkin.Items.Clear();
+            this.ddlSkin.Items.Clear();
 
-            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/skins");
+            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/skins");
 
             foreach (ListItem skinItem in
                 objDir.GetDirectories().Select(
                     objSubFolder => new ListItem { Text = objSubFolder.Name, Value = objSubFolder.Name }))
             {
-                ddlSkin.Items.Add(skinItem);
+                this.ddlSkin.Items.Add(skinItem);
             }
 
-            ddlSkin.SelectedValue = currentSettings?.Config?.Skin?? "";
+            this.ddlSkin.SelectedValue = this.currentSettings?.Config?.Skin ?? string.Empty;
 
             // CodeMirror Themes
-            CodeMirrorTheme.Items.Clear();
+            this.CodeMirrorTheme.Items.Clear();
 
-            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/plugins/codemirror/theme"))
+            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/plugins/codemirror/theme"))
             {
-                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/plugins/codemirror/theme");
+                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/plugins/codemirror/theme");
 
                 // add default theme
-                CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
+                this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
 
                 foreach (
                     var skinItem in
@@ -1214,7 +1198,7 @@ namespace DNNConnect.CKEditorProvider
                             themeCssFile.Name.Replace(themeCssFile.Extension, string.Empty)).Select(
                                 themeName => new ListItem { Text = themeName, Value = themeName }))
                 {
-                    CodeMirrorTheme.Items.Add(skinItem);
+                    this.CodeMirrorTheme.Items.Add(skinItem);
                 }
             }
         }
@@ -1224,11 +1208,11 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private void FillFolders()
         {
-            UploadDir.Items.Clear();
-            BrowserRootDir.Items.Clear();
-            ExportDir.Items.Clear();
+            this.UploadDir.Items.Clear();
+            this.BrowserRootDir.Items.Clear();
+            this.ExportDir.Items.Clear();
 
-            var portalId = _portalSettings?.PortalId ?? Null.NullInteger;
+            var portalId = this.portalSettings?.PortalId ?? Null.NullInteger;
             foreach (var folder in FolderManager.Instance.GetFolders(portalId))
             {
                 string text, value;
@@ -1249,14 +1233,14 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                UploadDir.Items.Add(new ListItem(text, value));
-                BrowserRootDir.Items.Add(new ListItem(text, value));
-                ExportDir.Items.Add(new ListItem(text, value));
+                this.UploadDir.Items.Add(new ListItem(text, value));
+                this.BrowserRootDir.Items.Add(new ListItem(text, value));
+                this.ExportDir.Items.Add(new ListItem(text, value));
             }
 
-            UploadDir.SelectedValue = "-1";
-            BrowserRootDir.SelectedValue = "-1";
-            ExportDir.SelectedValue = "-1";
+            this.UploadDir.SelectedValue = "-1";
+            this.BrowserRootDir.SelectedValue = "-1";
+            this.ExportDir.SelectedValue = "-1";
         }
 
         /// <summary>
@@ -1271,33 +1255,32 @@ namespace DNNConnect.CKEditorProvider
 
             try
             {
-                if (IsHostMode && CurrentPortalOnly)
+                if (this.IsHostMode && this.CurrentPortalOnly)
                 {
-                    return PortalSettings;
+                    return this.PortalSettings;
                 }
 
-                if (IsHostMode)
+                if (this.IsHostMode)
                 {
-                    return new PortalSettings(CurrentOrSelectedPortalId);
+                    return new PortalSettings(this.CurrentOrSelectedPortalId);
                 }
 
-
-                if (!IsHostMode)
+                if (!this.IsHostMode)
                 {
-                    var tabIdString = request.QueryString["tid"];
-                    CurrentOrSelectedTabId = !string.IsNullOrWhiteSpace(tabIdString) ? int.Parse(tabIdString) : PortalSettings.ActiveTab.TabID;
+                    var tabIdString = this.request.QueryString["tid"];
+                    this.CurrentOrSelectedTabId = !string.IsNullOrWhiteSpace(tabIdString) ? int.Parse(tabIdString) : this.PortalSettings.ActiveTab.TabID;
                 }
 
-                if (!IsHostMode && request.QueryString["PortalID"] != null)
+                if (!this.IsHostMode && this.request.QueryString["PortalID"] != null)
                 {
-                    CurrentOrSelectedPortalId = int.Parse(request.QueryString["PortalID"]);
+                    this.CurrentOrSelectedPortalId = int.Parse(this.request.QueryString["PortalID"]);
                 }
 
-                var domainName = Globals.GetDomainName(Request, true);
+                var domainName = Globals.GetDomainName(this.Request, true);
 
-                var portalAlias = PortalAliasController.GetPortalAliasByPortal(CurrentOrSelectedPortalId, domainName);
+                var portalAlias = PortalAliasController.GetPortalAliasByPortal(this.CurrentOrSelectedPortalId, domainName);
 
-                portalSettings = new PortalSettings(CurrentOrSelectedTabId, PortalAliasController.Instance.GetPortalAlias(portalAlias));
+                portalSettings = new PortalSettings(this.CurrentOrSelectedTabId, PortalAliasController.Instance.GetPortalAlias(portalAlias));
             }
             catch (Exception)
             {
@@ -1308,87 +1291,85 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>
-        /// Hide Add Toolbar Button if all Priorities are used
+        /// Hide Add Toolbar Button if all Priorities are used.
         /// </summary>
         private void HideAddToolbar()
         {
-            var bHideAll = !dDlToolbarPrio.Items.Cast<ListItem>().Any(item => item.Enabled);
+            var bHideAll = !this.dDlToolbarPrio.Items.Cast<ListItem>().Any(item => item.Enabled);
 
             if (bHideAll)
             {
-                iBAdd.Visible = false;
+                this.iBAdd.Visible = false;
             }
         }
 
         /// <summary>
-        /// Add new/Save Toolbar Set
+        /// Add new/Save Toolbar Set.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbAddClick(object sender, ImageClickEventArgs e)
         {
-            if (string.IsNullOrEmpty(dnnTxtToolBName.Text))
+            if (string.IsNullOrEmpty(this.dnnTxtToolBName.Text))
             {
-                ShowNotification(Localization.GetString("ToolbarNameMissing.Text", ResXFile, LangCode), "error");
+                this.ShowNotification(Localization.GetString("ToolbarNameMissing.Text", this.ResXFile, this.LangCode), "error");
 
                 return;
             }
 
-            if (string.IsNullOrEmpty(ToolbarSet.Value))
+            if (string.IsNullOrEmpty(this.ToolbarSet.Value))
             {
                 return;
             }
 
-            var modifiedSet = ToolbarUtil.ConvertStringToToolbarSet(ToolbarSet.Value);
+            var modifiedSet = ToolbarUtil.ConvertStringToToolbarSet(this.ToolbarSet.Value);
 
             // Save modified Toolbar Set
-            if (iBAdd.ImageUrl.Contains("save.gif"))
+            if (this.iBAdd.ImageUrl.Contains("save.gif"))
             {
-                var toolbarEdit = listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(dnnTxtToolBName.Text));
+                var toolbarEdit = this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dnnTxtToolBName.Text));
 
                 toolbarEdit.ToolbarGroups = modifiedSet.ToolbarGroups;
-                toolbarEdit.Priority = int.Parse(dDlToolbarPrio.SelectedValue);
+                toolbarEdit.Priority = int.Parse(this.dDlToolbarPrio.SelectedValue);
 
-                var homeDirectory = _portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
-                ToolbarUtil.SaveToolbarSets(
-                    listToolbars,
-                    !string.IsNullOrEmpty(configFolder)
-                        ? Path.Combine(homeDirectory, configFolder)
-                        : homeDirectory);
+                var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
+                var homeDirPath = !string.IsNullOrEmpty(this.configFolder)
+                                      ? Path.Combine(homeDirectory, this.configFolder)
+                                      : homeDirectory;
+                ToolbarUtil.SaveToolbarSets(this.listToolbars, homeDirPath);
 
-                ShowNotification(
-                    Localization.GetString("ToolbarSetSaved.Text", ResXFile, LangCode),
+                this.ShowNotification(
+                    Localization.GetString("ToolbarSetSaved.Text", this.ResXFile, this.LangCode),
                     "success");
             }
             else
             {
                 // Add New Toolbar Set
-                var newToolbar = new ToolbarSet(dnnTxtToolBName.Text, int.Parse(dDlToolbarPrio.SelectedValue))
+                var newToolbar = new ToolbarSet(this.dnnTxtToolBName.Text, int.Parse(this.dDlToolbarPrio.SelectedValue))
                 {
-                    ToolbarGroups = modifiedSet.ToolbarGroups
+                    ToolbarGroups = modifiedSet.ToolbarGroups,
                 };
 
-                listToolbars.Add(newToolbar);
-                ToolbarUtil.SaveToolbarSets(
-                    listToolbars,
-                    !string.IsNullOrEmpty(configFolder)
-                        ? Path.Combine(HomeDirectory, configFolder)
-                        : HomeDirectory);
+                this.listToolbars.Add(newToolbar);
+                var homeDirPath = !string.IsNullOrEmpty(this.configFolder)
+                                      ? Path.Combine(this.HomeDirectory, this.configFolder)
+                                      : this.HomeDirectory;
+                ToolbarUtil.SaveToolbarSets(this.listToolbars, homeDirPath);
 
-                ShowNotification(
+                this.ShowNotification(
                     string.Format(
-                        Localization.GetString("ToolbarSetCreated.Text", ResXFile, LangCode),
-                        dnnTxtToolBName.Text),
+                        Localization.GetString("ToolbarSetCreated.Text", this.ResXFile, this.LangCode),
+                        this.dnnTxtToolBName.Text),
                     "success");
             }
 
             // Hide Priority
-            dDlToolbarPrio.SelectedItem.Enabled = false;
+            this.dDlToolbarPrio.SelectedItem.Enabled = false;
 
-            BindUserGroupsGridView();
+            this.BindUserGroupsGridView();
 
-            dnnTxtToolBName.Text = string.Empty;
-            ToolbarSet.Value = string.Empty;
+            this.dnnTxtToolBName.Text = string.Empty;
+            this.ToolbarSet.Value = string.Empty;
 
             List<string> excludeButtons;
 
@@ -1396,33 +1377,33 @@ namespace DNNConnect.CKEditorProvider
 
             // Empty Toolbar
             toolbarSet.ToolbarGroups.Add(
-                new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", ResXFile, LangCode) });
+                new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", this.ResXFile, this.LangCode) });
 
-            FillToolbarGroupsRepeater(toolbarSet, out excludeButtons);
+            this.FillToolbarGroupsRepeater(toolbarSet, out excludeButtons);
 
-            FillAvailableToolbarButtons(null);
+            this.FillAvailableToolbarButtons(null);
 
-            dnnTxtToolBName.Enabled = true;
+            this.dnnTxtToolBName.Enabled = true;
 
-            iBAdd.ImageUrl = ResolveUrl("~/images/add.gif");
+            this.iBAdd.ImageUrl = this.ResolveUrl("~/images/add.gif");
 
-            iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
-            iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
+            this.iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
 
-            iBCancel.Visible = false;
+            this.iBCancel.Visible = false;
 
-            HideAddToolbar();
+            this.HideAddToolbar();
         }
 
         /// <summary>
-        /// Cancel Edit Toolbar
+        /// Cancel Edit Toolbar.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbCancelClick(object sender, ImageClickEventArgs e)
         {
-            dnnTxtToolBName.Text = string.Empty;
-            ToolbarSet.Value = string.Empty;
+            this.dnnTxtToolBName.Text = string.Empty;
+            this.ToolbarSet.Value = string.Empty;
 
             List<string> excludeButtons;
 
@@ -1430,41 +1411,41 @@ namespace DNNConnect.CKEditorProvider
 
             // Empty Toolbar
             toolbarSet.ToolbarGroups.Add(
-                new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", ResXFile, LangCode) });
+                new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", this.ResXFile, this.LangCode) });
 
-            FillToolbarGroupsRepeater(toolbarSet, out excludeButtons);
+            this.FillToolbarGroupsRepeater(toolbarSet, out excludeButtons);
 
-            FillAvailableToolbarButtons(null);
+            this.FillAvailableToolbarButtons(null);
 
-            dnnTxtToolBName.Enabled = true;
+            this.dnnTxtToolBName.Enabled = true;
 
-            dDlToolbarPrio.Items.FindByText(
-                listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(dDlCustomToolbars.SelectedValue)).Priority.ToString()).Enabled = false;
+            this.dDlToolbarPrio.Items.FindByText(
+                this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dDlCustomToolbars.SelectedValue)).Priority.ToString()).Enabled = false;
 
-            iBAdd.ImageUrl = ResolveUrl("~/images/add.gif");
+            this.iBAdd.ImageUrl = this.ResolveUrl("~/images/add.gif");
 
-            iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
-            iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
+            this.iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
 
-            iBCancel.Visible = false;
+            this.iBCancel.Visible = false;
 
-            HideAddToolbar();
+            this.HideAddToolbar();
         }
 
         /// <summary>
-        /// Delete Selected Toolbar Set
+        /// Delete Selected Toolbar Set.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbDeleteClick(object sender, ImageClickEventArgs e)
         {
-            if (dDlCustomToolbars.SelectedValue == null)
+            if (this.dDlCustomToolbars.SelectedValue == null)
             {
                 return;
             }
 
             var toolbarDelete =
-                 listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(dDlCustomToolbars.SelectedValue));
+                 this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dDlCustomToolbars.SelectedValue));
 
             var priority = toolbarDelete.Priority.ToString();
 
@@ -1473,56 +1454,55 @@ namespace DNNConnect.CKEditorProvider
                 priority = string.Format("0{0}", priority);
             }
 
-            dDlToolbarPrio.Items.FindByText(priority).Enabled = true;
+            this.dDlToolbarPrio.Items.FindByText(priority).Enabled = true;
 
-            listToolbars.RemoveAll(toolbarSel => toolbarSel.Name.Equals(dDlCustomToolbars.SelectedValue));
+            this.listToolbars.RemoveAll(toolbarSel => toolbarSel.Name.Equals(this.dDlCustomToolbars.SelectedValue));
 
-            ToolbarUtil.SaveToolbarSets(
-                listToolbars,
-                !string.IsNullOrEmpty(configFolder)
-                    ? Path.Combine(HomeDirectory, configFolder)
-                    : HomeDirectory);
+            var homeDirPath = !string.IsNullOrEmpty(this.configFolder)
+                                  ? Path.Combine(this.HomeDirectory, this.configFolder)
+                                  : this.HomeDirectory;
+            ToolbarUtil.SaveToolbarSets(this.listToolbars, homeDirPath);
 
-            BindUserGroupsGridView();
+            this.BindUserGroupsGridView();
 
-            dnnTxtToolBName.Enabled = true;
+            this.dnnTxtToolBName.Enabled = true;
 
-            iBAdd.ImageUrl = ResolveUrl("~/images/add.gif");
+            this.iBAdd.ImageUrl = this.ResolveUrl("~/images/add.gif");
 
-            iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
-            iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
+            this.iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
 
-            ShowNotification(
-                Localization.GetString("ToolbarSetDeleted.Text", ResXFile, LangCode),
+            this.ShowNotification(
+                Localization.GetString("ToolbarSetDeleted.Text", this.ResXFile, this.LangCode),
                 "success");
         }
 
         /// <summary>
-        /// Edit Selected Toolbar
+        /// Edit Selected Toolbar.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ImageClickEventArgs" /> instance containing the event data.</param>
         private void IbEditClick(object sender, ImageClickEventArgs e)
         {
-            if (dDlCustomToolbars.SelectedValue == null)
+            if (this.dDlCustomToolbars.SelectedValue == null)
             {
                 return;
             }
 
-            iBAdd.Visible = true;
+            this.iBAdd.Visible = true;
 
-            var toolbarEdit = listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(dDlCustomToolbars.SelectedValue));
+            var toolbarEdit = this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dDlCustomToolbars.SelectedValue));
 
             if (toolbarEdit != null)
             {
-                dnnTxtToolBName.Text = toolbarEdit.Name;
-                ToolbarSet.Value = ToolbarUtil.ConvertToolbarSetToString(toolbarEdit);
+                this.dnnTxtToolBName.Text = toolbarEdit.Name;
+                this.ToolbarSet.Value = ToolbarUtil.ConvertToolbarSetToString(toolbarEdit);
 
                 List<string> excludeButtons;
 
-                FillToolbarGroupsRepeater(toolbarEdit, out excludeButtons);
+                this.FillToolbarGroupsRepeater(toolbarEdit, out excludeButtons);
 
-                FillAvailableToolbarButtons(excludeButtons);
+                this.FillAvailableToolbarButtons(excludeButtons);
 
                 var priority = toolbarEdit.Priority.ToString();
 
@@ -1531,20 +1511,20 @@ namespace DNNConnect.CKEditorProvider
                     priority = $"0{priority}";
                 }
 
-                dDlToolbarPrio.Items.FindByText(priority).Enabled = true;
-                dDlToolbarPrio.SelectedValue = priority;
+                this.dDlToolbarPrio.Items.FindByText(priority).Enabled = true;
+                this.dDlToolbarPrio.SelectedValue = priority;
 
-                dnnTxtToolBName.Enabled = false;
+                this.dnnTxtToolBName.Enabled = false;
 
-                iBAdd.ImageUrl = ResolveUrl("~/images/save.gif");
+                this.iBAdd.ImageUrl = this.ResolveUrl("~/images/save.gif");
 
-                iBAdd.AlternateText = Localization.GetString("SaveToolbar.Text", ResXFile, LangCode);
-                iBAdd.ToolTip = Localization.GetString("SaveToolbar.Text", ResXFile, LangCode);
+                this.iBAdd.AlternateText = Localization.GetString("SaveToolbar.Text", this.ResXFile, this.LangCode);
+                this.iBAdd.ToolTip = Localization.GetString("SaveToolbar.Text", this.ResXFile, this.LangCode);
 
-                iBCancel.Visible = true;
+                this.iBCancel.Visible = true;
             }
 
-            HideAddToolbar();
+            this.HideAddToolbar();
         }
 
         /// <summary>
@@ -1555,51 +1535,50 @@ namespace DNNConnect.CKEditorProvider
         {
             try
             {
-                btnOk.Click += OK_Click;
+                this.btnOk.Click += this.OK_Click;
 
-                lnkRemove.Click += Remove_Click;
-                lnkRemoveAll.Click += RemoveAll_Click;
-                lnkRemoveChild.Click += RemoveChild_Click;
-                CopyToAllChild.Click += CopyToAllChild_Click;
+                this.lnkRemove.Click += this.Remove_Click;
+                this.lnkRemoveAll.Click += this.RemoveAll_Click;
+                this.lnkRemoveChild.Click += this.RemoveChild_Click;
+                this.CopyToAllChild.Click += this.CopyToAllChild_Click;
 
-                iBAdd.Click += IbAddClick;
-                iBCancel.Click += IbCancelClick;
-                iBEdit.Click += IbEditClick;
-                iBDelete.Click += IbDeleteClick;
+                this.iBAdd.Click += this.IbAddClick;
+                this.iBCancel.Click += this.IbCancelClick;
+                this.iBEdit.Click += this.IbEditClick;
+                this.iBDelete.Click += this.IbDeleteClick;
 
                 var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
                 var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
                 if (!string.IsNullOrEmpty(objProvider?.Attributes["ck_configFolder"]))
                 {
-                    configFolder = objProvider.Attributes["ck_configFolder"];
+                    this.configFolder = objProvider.Attributes["ck_configFolder"];
                 }
 
-                listToolbars = ToolbarUtil.GetToolbars(
-                    HomeDirectory, configFolder);
+                this.listToolbars = ToolbarUtil.GetToolbars(
+                    this.HomeDirectory, this.configFolder);
 
-                rBlSetMode.SelectedIndexChanged += SetMode_SelectedIndexChanged;
+                this.rBlSetMode.SelectedIndexChanged += this.SetMode_SelectedIndexChanged;
 
-                ToolbarGroupsRepeater.ItemDataBound += ToolbarGroupsRepeater_ItemDataBound;
-                gvToolbars.RowDataBound += gvToolbars_RowDataBound;
+                this.ToolbarGroupsRepeater.ItemDataBound += this.ToolbarGroupsRepeater_ItemDataBound;
+                this.gvToolbars.RowDataBound += this.On_gvToolbars_RowDataBound;
 
-                RenderEditorConfigSettings();
+                this.RenderEditorConfigSettings();
             }
             catch (Exception ex)
             {
-                ShowNotification(ex.Message, "error");
+                this.ShowNotification(ex.Message, "error");
             }
         }
 
-        void gvToolbars_RowDataBound(object sender, GridViewRowEventArgs e)
+        private void On_gvToolbars_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             var licToolbars = new ListItemCollection();
 
-            foreach (var toolbarItem in listToolbars.Select(toolbarSet => new ListItem { Text = toolbarSet.Name, Value = toolbarSet.Name }))
+            foreach (var toolbarItem in this.listToolbars.Select(toolbarSet => new ListItem { Text = toolbarSet.Name, Value = toolbarSet.Name }))
             {
                 licToolbars.Add(toolbarItem);
             }
-
 
             var ddLToolB = (DropDownList)e.Row.FindControl("ddlToolbars");
 
@@ -1618,23 +1597,23 @@ namespace DNNConnect.CKEditorProvider
                 return;
             }
 
-            var portalId = _portalSettings?.PortalId != Null.NullInteger ? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
+            var portalId = this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID;
             var objRole = RoleController.Instance.GetRoleByName(portalId, label.Text);
 
-            if (objRole == null && label.Text != UNAUTHENTICATED_USERS)
+            if (objRole == null && label.Text != UnauthenticatedUsersRoleName)
             {
                 return;
             }
 
-            if (currentSettings == null)
+            if (this.currentSettings == null)
             {
                 var settingsDictionary = EditorController.GetEditorHostSettings();
-                var pageKey = $"DNNCKT#{CurrentOrSelectedTabId}#";
-                LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
+                var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
+                this.LoadSettings(SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey) ? 1 : 0);
             }
 
-            var objRoleId = label.Text != UNAUTHENTICATED_USERS ? objRole.RoleID : -1;
-            var currentToolbarSettings = currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRoleId);
+            var objRoleId = label.Text != UnauthenticatedUsersRoleName ? objRole.RoleID : -1;
+            var currentToolbarSettings = this.currentSettings.ToolBarRoles.FirstOrDefault(o => o.RoleId == objRoleId);
 
             if (currentToolbarSettings != null)
             {
@@ -1669,19 +1648,18 @@ namespace DNNConnect.CKEditorProvider
             toolbarButtonsTable.Columns.Add(new DataColumn("Icon", typeof(string)));
             toolbarButtonsTable.Columns.Add(new DataColumn("Button", typeof(string)));
 
-            if (allListButtons == null)
+            if (this.allListButtons == null)
             {
-                allListButtons =
+                this.allListButtons =
                     ToolbarUtil.LoadToolBarButtons(
-                        !string.IsNullOrEmpty(configFolder)
-                            ? Path.Combine(HomeDirectory, configFolder)
-                            : HomeDirectory);
+                        !string.IsNullOrEmpty(this.configFolder)
+                            ? Path.Combine(this.HomeDirectory, this.configFolder)
+                            : this.HomeDirectory);
             }
 
-            foreach (var button in toolbarSets.ToolbarGroups.Where(@group => @group.name.Equals(groupName)).SelectMany(@group => @group.items))
+            foreach (var button in this.toolbarSets.ToolbarGroups.Where(@group => @group.name.Equals(groupName)).SelectMany(@group => @group.items))
             {
-
-                if (allListButtons.Find(availButton => availButton.ToolbarName.Equals(button)) == null
+                if (this.allListButtons.Find(availButton => availButton.ToolbarName.Equals(button)) == null
                     && !button.Equals("/"))
                 {
                     continue;
@@ -1691,7 +1669,7 @@ namespace DNNConnect.CKEditorProvider
 
                 groupRow["Button"] = button;
 
-                var buttonItem = allListButtons.Find(b => b.ToolbarName.Equals(button));
+                var buttonItem = this.allListButtons.Find(b => b.ToolbarName.Equals(button));
 
                 groupRow["Icon"] = buttonItem != null ? buttonItem.ToolbarIcon : button;
 
@@ -1703,41 +1681,41 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>
-        /// Insert Toolbar Names from Serialized Xml File
+        /// Insert Toolbar Names from Serialized Xml File.
         /// </summary>
         private void InsertToolbars()
         {
             ListItemCollection licToolbars = new ListItemCollection();
 
-            foreach (var toolbarSet in listToolbars)
+            foreach (var toolbarSet in this.listToolbars)
             {
                 var toolbarItem = new ListItem { Text = toolbarSet.Name, Value = toolbarSet.Name };
 
                 licToolbars.Add(toolbarItem);
 
                 // Exclude used Prioritys from the DropDown
-                if (dDlToolbarPrio.Items.FindByText(toolbarSet.Priority.ToString()) != null)
+                if (this.dDlToolbarPrio.Items.FindByText(toolbarSet.Priority.ToString()) != null)
                 {
-                    dDlToolbarPrio.Items.FindByText(toolbarSet.Priority.ToString()).Enabled = false;
+                    this.dDlToolbarPrio.Items.FindByText(toolbarSet.Priority.ToString()).Enabled = false;
                 }
             }
 
-            HideAddToolbar();
+            this.HideAddToolbar();
 
-            dDlCustomToolbars.DataSource = licToolbars;
-            dDlCustomToolbars.DataBind();
+            this.dDlCustomToolbars.DataSource = licToolbars;
+            this.dDlCustomToolbars.DataBind();
 
             List<string> excludeButtons;
 
             var emptyToolbarSet = new ToolbarSet();
 
             // Empty Toolbar
-            emptyToolbarSet.ToolbarGroups.Add(new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", ResXFile, LangCode) });
+            emptyToolbarSet.ToolbarGroups.Add(new ToolbarGroup { name = Localization.GetString("NewGroupName.Text", this.ResXFile, this.LangCode) });
 
-            FillToolbarGroupsRepeater(emptyToolbarSet, out excludeButtons);
+            this.FillToolbarGroupsRepeater(emptyToolbarSet, out excludeButtons);
 
             // Load Toolbar Buttons
-            FillAvailableToolbarButtons(null);
+            this.FillAvailableToolbarButtons(null);
         }
 
         /// <summary>
@@ -1753,9 +1731,9 @@ namespace DNNConnect.CKEditorProvider
 
             toolbarGroupsTable.Columns.Add(new DataColumn("GroupName", typeof(string)));
 
-            toolbarSets = toolbarSet;
+            this.toolbarSets = toolbarSet;
 
-            foreach (var group in toolbarSets.ToolbarGroups)
+            foreach (var group in this.toolbarSets.ToolbarGroups)
             {
                 var groupRow = toolbarGroupsTable.NewRow();
 
@@ -1767,8 +1745,8 @@ namespace DNNConnect.CKEditorProvider
                 excludeButtons.AddRange(@group.items);
             }
 
-            ToolbarGroupsRepeater.DataSource = toolbarGroupsTable;
-            ToolbarGroupsRepeater.DataBind();
+            this.ToolbarGroupsRepeater.DataSource = toolbarGroupsTable;
+            this.ToolbarGroupsRepeater.DataBind();
         }
 
         /// <summary>
@@ -1782,16 +1760,16 @@ namespace DNNConnect.CKEditorProvider
             toolbarButtonsTable.Columns.Add(new DataColumn("Button", typeof(string)));
             toolbarButtonsTable.Columns.Add(new DataColumn("Icon", typeof(string)));
 
-            if (listButtons == null)
+            if (this.listButtons == null)
             {
-                listButtons =
+                this.listButtons =
                     ToolbarUtil.LoadToolBarButtons(
-                        !string.IsNullOrEmpty(configFolder)
-                            ? Path.Combine(HomeDirectory, configFolder)
-                            : HomeDirectory);
+                        !string.IsNullOrEmpty(this.configFolder)
+                            ? Path.Combine(this.HomeDirectory, this.configFolder)
+                            : this.HomeDirectory);
             }
 
-            var buttons = listButtons;
+            var buttons = this.listButtons;
 
             if (excludeItems != null && excludeItems.Count > 0)
             {
@@ -1811,16 +1789,16 @@ namespace DNNConnect.CKEditorProvider
                 toolbarButtonsTable.Rows.Add(buttonRow);
             }
 
-            AvailableToolbarButtons.DataSource = toolbarButtonsTable;
-            AvailableToolbarButtons.DataBind();
+            this.AvailableToolbarButtons.DataSource = toolbarButtonsTable;
+            this.AvailableToolbarButtons.DataBind();
         }
 
         /// <summary>
-        /// Load Default Host Settings from 'web.config'
+        /// Load Default Host Settings from 'web.config'.
         /// </summary>
         private void LoadDefaultSettings()
         {
-            var ckeditorProvider = (Provider)provConfig.Providers[provConfig.DefaultProvider];
+            var ckeditorProvider = (Provider)this.provConfig.Providers[this.provConfig.DefaultProvider];
 
             if (ckeditorProvider == null)
             {
@@ -1829,112 +1807,112 @@ namespace DNNConnect.CKEditorProvider
 
             // Skin
             if (ckeditorProvider.Attributes["ck_skin"] != string.Empty
-                && ddlSkin.Items.FindByValue(ckeditorProvider.Attributes["ck_skin"]) != null)
+                && this.ddlSkin.Items.FindByValue(ckeditorProvider.Attributes["ck_skin"]) != null)
             {
-                ddlSkin.ClearSelection();
+                this.ddlSkin.ClearSelection();
 
-                ddlSkin.SelectedValue = ckeditorProvider.Attributes["ck_skin"];
+                this.ddlSkin.SelectedValue = ckeditorProvider.Attributes["ck_skin"];
             }
 
             // FileBrowser
             if (ckeditorProvider.Attributes["ck_Browser"] != string.Empty)
             {
-                ddlBrowser.SelectedValue = ckeditorProvider.Attributes["ck_Browser"];
+                this.ddlBrowser.SelectedValue = ckeditorProvider.Attributes["ck_Browser"];
             }
 
             if (ckeditorProvider.Attributes["ck_contentsCss"] != string.Empty)
             {
-                CssUrl.Url = ckeditorProvider.Attributes["ck_contentsCss"];
+                this.CssUrl.Url = ckeditorProvider.Attributes["ck_contentsCss"];
             }
 
             if (ckeditorProvider.Attributes["ck_templates_files"] != string.Empty)
             {
-                TemplUrl.Url = ckeditorProvider.Attributes["ck_templates_files"];
+                this.TemplUrl.Url = ckeditorProvider.Attributes["ck_templates_files"];
             }
 
             if (ckeditorProvider.Attributes["ck_customConfig"] != string.Empty)
             {
-                ConfigUrl.Url = ckeditorProvider.Attributes["ck_customConfig"];
+                this.ConfigUrl.Url = ckeditorProvider.Attributes["ck_customConfig"];
             }
         }
 
         /// <summary>
-        /// Load All Editor Settings
+        /// Load All Editor Settings.
         /// </summary>
         /// <param name="currentMode">The current mode.</param>
         /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
         private void LoadSettings(int currentMode, bool changeMode = true)
         {
-            moduleInstanceName = request.QueryString["minc"];
-            CurrentSettingsMode = (SettingsMode)Enum.Parse(typeof(SettingsMode), currentMode.ToString());
+            this.moduleInstanceName = this.request.QueryString["minc"];
+            this.CurrentSettingsMode = (SettingsMode)Enum.Parse(typeof(SettingsMode), currentMode.ToString());
 
-            lnkRemoveAll.Visible = !currentMode.Equals(0);
-            lnkRemoveChild.Visible = !currentMode.Equals(0);
-            CopyToAllChild.Visible = !currentMode.Equals(0);
+            this.lnkRemoveAll.Visible = !currentMode.Equals(0);
+            this.lnkRemoveChild.Visible = !currentMode.Equals(0);
+            this.CopyToAllChild.Visible = !currentMode.Equals(0);
 
-            var modeText = currentMode != Null.NullInteger ? rBlSetMode.Items[currentMode].Text : "Host";
-            lnkRemove.Text = string.Format(
-                Localization.GetString("Remove.Text", ResXFile, LangCode),
+            var modeText = currentMode != Null.NullInteger ? this.rBlSetMode.Items[currentMode].Text : "Host";
+            this.lnkRemove.Text = string.Format(
+                Localization.GetString("Remove.Text", this.ResXFile, this.LangCode),
                 modeText);
-            lnkRemoveAll.Text =
+            this.lnkRemoveAll.Text =
                 string.Format(
-                    Localization.GetString("RemoveAll.Text", ResXFile, LangCode),
+                    Localization.GetString("RemoveAll.Text", this.ResXFile, this.LangCode),
                     modeText);
 
-            lnkRemove.ToolTip = string.Format(
-                Localization.GetString("Remove.Help", ResXFile, LangCode),
+            this.lnkRemove.ToolTip = string.Format(
+                Localization.GetString("Remove.Help", this.ResXFile, this.LangCode),
                 modeText);
-            lnkRemoveAll.ToolTip =
+            this.lnkRemoveAll.ToolTip =
                 string.Format(
-                    Localization.GetString("RemoveAll.Help", ResXFile, LangCode),
+                    Localization.GetString("RemoveAll.Help", this.ResXFile, this.LangCode),
                     modeText);
 
-            LoadDefaultSettings();
+            this.LoadDefaultSettings();
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = RoleController.Instance.GetRoles(_portalSettings?.PortalId ?? Host.HostPortalID);
+            var portalRoles = RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID);
 
             var hostKey = "DNNCKH#";
-            var portalKey = string.Format("DNNCKP#{0}#", _portalSettings?.PortalId ?? Host.HostPortalID);
-            var pageKey = string.Format("DNNCKT#{0}#", CurrentOrSelectedTabId);
-            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", ModuleId, moduleInstanceName);
+            var portalKey = string.Format("DNNCKP#{0}#", this.portalSettings?.PortalId ?? Host.HostPortalID);
+            var pageKey = string.Format("DNNCKT#{0}#", this.CurrentOrSelectedTabId);
+            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", this.ModuleId, this.moduleInstanceName);
 
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
             var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
-            var homeDirectory = _portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
+            var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
 
-            currentSettings = SettingsUtil.GetDefaultSettings(
-                _portalSettings,
+            this.currentSettings = SettingsUtil.GetDefaultSettings(
+                this.portalSettings,
                 homeDirectory,
                 objProvider.Attributes["ck_configFolder"],
                 portalRoles);
 
-            currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
+            this.currentSettings.UploadSizeRoles = this.GetDefaultUploadFileSettings(portalRoles);
 
-            switch (CurrentSettingsMode)
+            switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Host:
                     {
                         // Load Host Settings ?!
                         if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))
                         {
-                            currentSettings = new EditorProviderSettings();
+                            this.currentSettings = new EditorProviderSettings();
 
-                            currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                                _portalSettings,
-                                currentSettings,
+                            this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                                this.portalSettings,
+                                this.currentSettings,
                                 settingsDictionary,
                                 hostKey,
                                 portalRoles);
 
-                            currentSettings.SettingMode = SettingsMode.Host;
+                            this.currentSettings.SettingMode = SettingsMode.Host;
 
-                            lnkRemove.Enabled = true;
+                            this.lnkRemove.Enabled = true;
                         }
                         else
                         {
-                            lnkRemove.Enabled = false;
+                            this.lnkRemove.Enabled = false;
                         }
                     }
 
@@ -1944,25 +1922,25 @@ namespace DNNConnect.CKEditorProvider
                         // Load Portal Settings ?!
                         if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, portalKey))
                         {
-                            currentSettings = new EditorProviderSettings();
+                            this.currentSettings = new EditorProviderSettings();
 
-                            currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                                _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
+                            this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                                this.portalSettings, this.currentSettings, settingsDictionary, portalKey, portalRoles);
 
                             // check if UploadSizeLimits have been set
-                            if (currentSettings.UploadSizeRoles == null || currentSettings.UploadSizeRoles.Count == 0)
+                            if (this.currentSettings.UploadSizeRoles == null || this.currentSettings.UploadSizeRoles.Count == 0)
                             {
-                                currentSettings.UploadSizeRoles = GetDefaultUploadFileSettings(portalRoles);
+                                this.currentSettings.UploadSizeRoles = this.GetDefaultUploadFileSettings(portalRoles);
                             }
 
                             // Set Current Mode to Portal
-                            currentSettings.SettingMode = SettingsMode.Portal;
+                            this.currentSettings.SettingMode = SettingsMode.Portal;
 
-                            lnkRemove.Enabled = true;
+                            this.lnkRemove.Enabled = true;
                         }
                         else
                         {
-                            lnkRemove.Enabled = false;
+                            this.lnkRemove.Enabled = false;
                         }
                     }
 
@@ -1972,78 +1950,78 @@ namespace DNNConnect.CKEditorProvider
                         // Load Page Settings ?!
                         if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey))
                         {
-                            currentSettings = new EditorProviderSettings();
+                            this.currentSettings = new EditorProviderSettings();
 
-                            currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                                _portalSettings, currentSettings, settingsDictionary, pageKey, portalRoles);
+                            this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                                this.portalSettings, this.currentSettings, settingsDictionary, pageKey, portalRoles);
 
                             // Set Current Mode to Page
-                            currentSettings.SettingMode = SettingsMode.Page;
+                            this.currentSettings.SettingMode = SettingsMode.Page;
 
-                            lnkRemove.Enabled = true;
+                            this.lnkRemove.Enabled = true;
                         }
                         else
                         {
-                            lnkRemove.Enabled = false;
+                            this.lnkRemove.Enabled = false;
                         }
 
                         var currentTab = new TabController().GetTab(
-                            CurrentOrSelectedTabId, _portalSettings?.PortalId ?? Host.HostPortalID, false);
+                            this.CurrentOrSelectedTabId, this.portalSettings?.PortalId ?? Host.HostPortalID, false);
 
-                        lnkRemoveChild.Enabled = currentTab.HasChildren;
+                        this.lnkRemoveChild.Enabled = currentTab.HasChildren;
 
-                        lnkRemoveChild.Text = Localization.GetString(
-                                "RemovePageChild.Text", ResXFile, LangCode);
-                        lnkRemoveChild.ToolTip = Localization.GetString(
-                            "RemovePageChild.Help", ResXFile, LangCode);
+                        this.lnkRemoveChild.Text = Localization.GetString(
+                                "RemovePageChild.Text", this.ResXFile, this.LangCode);
+                        this.lnkRemoveChild.ToolTip = Localization.GetString(
+                            "RemovePageChild.Help", this.ResXFile, this.LangCode);
 
-                        CopyToAllChild.Enabled = currentTab.HasChildren;
+                        this.CopyToAllChild.Enabled = currentTab.HasChildren;
 
-                        CopyToAllChild.Text = Localization.GetString(
-                                "CopyPageChild.Text", ResXFile, LangCode);
-                        CopyToAllChild.ToolTip = Localization.GetString(
-                            "CopyPageChild.Help", ResXFile, LangCode);
+                        this.CopyToAllChild.Text = Localization.GetString(
+                                "CopyPageChild.Text", this.ResXFile, this.LangCode);
+                        this.CopyToAllChild.ToolTip = Localization.GetString(
+                            "CopyPageChild.Help", this.ResXFile, this.LangCode);
                     }
 
                     break;
                 case SettingsMode.ModuleInstance:
                     {
                         // Load Module Settings ?!
-                        if (SettingsUtil.CheckExistsModuleInstanceSettings(moduleKey, ModuleId))
+                        if (SettingsUtil.CheckExistsModuleInstanceSettings(moduleKey, this.ModuleId))
                         {
-                            currentSettings = new EditorProviderSettings();
+                            this.currentSettings = new EditorProviderSettings();
 
-                            currentSettings = SettingsUtil.LoadModuleSettings(
-                                _portalSettings, currentSettings, moduleKey, ModuleId, portalRoles);
+                            this.currentSettings = SettingsUtil.LoadModuleSettings(
+                                this.portalSettings, this.currentSettings, moduleKey, this.ModuleId, portalRoles);
 
-                            currentSettings.SettingMode = SettingsMode.ModuleInstance;
+                            this.currentSettings.SettingMode = SettingsMode.ModuleInstance;
 
-                            lnkRemove.Enabled = true;
+                            this.lnkRemove.Enabled = true;
                         }
                         else
                         {
-                            lnkRemove.Enabled = false;
+                            this.lnkRemove.Enabled = false;
                         }
 
-                        lnkRemoveChild.Enabled = true;
+                        this.lnkRemoveChild.Enabled = true;
 
-                        lnkRemoveChild.Text = Localization.GetString(
-                            "RemoveModuleChild.Text", ResXFile, LangCode);
-                        lnkRemoveChild.ToolTip = Localization.GetString(
-                            "RemoveModuleChild.Help", ResXFile, LangCode);
+                        this.lnkRemoveChild.Text = Localization.GetString(
+                            "RemoveModuleChild.Text", this.ResXFile, this.LangCode);
+                        this.lnkRemoveChild.ToolTip = Localization.GetString(
+                            "RemoveModuleChild.Help", this.ResXFile, this.LangCode);
                     }
 
                     break;
             }
 
-            if (currentSettings != null)
+            if (this.currentSettings != null)
             {
-                FillSettings(currentSettings, changeMode);
+                this.FillSettings(this.currentSettings, changeMode);
             }
         }
 
         /// <summary>
-        /// Re-Formats Url from the Url Control
+        /// Re-Formats Url from the Url Control.
         /// </summary>
         /// <param name="inputUrl">The input Url.</param>
         /// <returns>
@@ -2056,7 +2034,7 @@ namespace DNNConnect.CKEditorProvider
                 return inputUrl;
             }
 
-            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, _portalSettings?.PortalId ?? Host.HostPortalID));
+            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this.portalSettings?.PortalId ?? Host.HostPortalID));
         }
 
         /// <summary>
@@ -2247,7 +2225,7 @@ namespace DNNConnect.CKEditorProvider
                                         break;
                                 }
 
-                                EditorConfigHolder.Controls.Add(settingValueContainer2);
+                                this.EditorConfigHolder.Controls.Add(settingValueContainer2);
                             }
                         }
 
@@ -2296,7 +2274,7 @@ namespace DNNConnect.CKEditorProvider
                                         break;
                                 }
 
-                                EditorConfigHolder.Controls.Add(settingValueContainer2);
+                                this.EditorConfigHolder.Controls.Add(settingValueContainer2);
                             }
                         }
 
@@ -2308,17 +2286,17 @@ namespace DNNConnect.CKEditorProvider
                     continue;
                 }
 
-                EditorConfigHolder.Controls.Add(settingValueContainer);
+                this.EditorConfigHolder.Controls.Add(settingValueContainer);
             }
         }
 
         /// <summary>
-        /// Save Settings only for this Module Instance
+        /// Save Settings only for this Module Instance.
         /// </summary>
         private void SaveModuleSettings()
         {
-            moduleInstanceName = request.QueryString["minc"];
-            string key = $"DNNCKMI#{ModuleId}#INS#{moduleInstanceName}#";
+            this.moduleInstanceName = this.request.QueryString["minc"];
+            string key = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
             var moduleController = new ModuleController();
 
@@ -2332,22 +2310,22 @@ namespace DNNConnect.CKEditorProvider
                     case "Int32":
                     case "String":
                         {
-                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, info.Name);
+                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, info.Name);
 
                             if (textBox != null)
                             {
-                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{info.Name}", textBox.Text);
+                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", textBox.Text);
                             }
                         }
 
                         break;
                     case "Boolean":
                         {
-                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, info.Name);
+                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, info.Name);
 
                             if (checkBox != null)
                             {
-                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{info.Name}", checkBox.Checked.ToString());
+                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", checkBox.Checked.ToString());
                             }
                         }
 
@@ -2362,11 +2340,11 @@ namespace DNNConnect.CKEditorProvider
                     case "ToolbarLocation":
                     case "DefaultLinkType":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList?.SelectedItem != null)
                             {
-                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{info.Name}", dropDownList.SelectedValue);
+                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{info.Name}", dropDownList.SelectedValue);
                             }
                         }
 
@@ -2382,11 +2360,11 @@ namespace DNNConnect.CKEditorProvider
                                 {
                                     case "String":
                                         {
-                                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, codeMirrorInfo.Name);
+                                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, codeMirrorInfo.Name);
 
                                             if (textBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{codeMirrorInfo.Name}", textBox.Text);
+                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", textBox.Text);
                                             }
                                         }
 
@@ -2394,11 +2372,11 @@ namespace DNNConnect.CKEditorProvider
 
                                     case "Boolean":
                                         {
-                                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, codeMirrorInfo.Name);
+                                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, codeMirrorInfo.Name);
 
                                             if (checkBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{codeMirrorInfo.Name}", checkBox.Checked.ToString());
+                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{codeMirrorInfo.Name}", checkBox.Checked.ToString());
                                             }
                                         }
 
@@ -2416,11 +2394,11 @@ namespace DNNConnect.CKEditorProvider
                                 {
                                     case "String":
                                         {
-                                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, wordCountInfo.Name);
+                                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, wordCountInfo.Name);
 
                                             if (textBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{wordCountInfo.Name}", textBox.Text);
+                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", textBox.Text);
                                             }
                                         }
 
@@ -2428,11 +2406,11 @@ namespace DNNConnect.CKEditorProvider
 
                                     case "Boolean":
                                         {
-                                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, wordCountInfo.Name);
+                                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, wordCountInfo.Name);
 
                                             if (checkBox != null)
                                             {
-                                                moduleController.UpdateModuleSetting(ModuleId, $"{key}{wordCountInfo.Name}", checkBox.Checked.ToString());
+                                                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{wordCountInfo.Name}", checkBox.Checked.ToString());
                                             }
                                         }
 
@@ -2446,114 +2424,114 @@ namespace DNNConnect.CKEditorProvider
             }
             ///////////////////
 
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.SKIN}", ddlSkin.SelectedValue);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", CodeMirrorTheme.SelectedValue);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.BROWSER}", ddlBrowser.SelectedValue);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", FileListViewMode.SelectedValue);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", DefaultLinkMode.SelectedValue);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", UseAnchorSelector.Checked.ToString());
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", ShowPageLinksTabFirst.Checked.ToString());
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", OverrideFileOnUpload.Checked.ToString());
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.SUBDIRS}", cbBrowserDirs.Checked.ToString());
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", BrowserRootDir.SelectedValue);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", UploadDir.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
 
-            if (Utility.IsNumeric(FileListPageSize.Text))
+            if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
-                moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", FileListPageSize.Text);
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
             }
 
-            if (Utility.IsNumeric(txtResizeWidth.Text))
+            if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
-                moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", txtResizeWidth.Text);
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
             }
 
-            if (Utility.IsNumeric(txtResizeHeight.Text))
+            if (Utility.IsNumeric(this.txtResizeHeight.Text))
             {
-                moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.RESIZEHEIGHT}", txtResizeHeight.Text);
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
             }
 
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.INJECTJS}", InjectSyntaxJs.Checked.ToString());
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.INJECTJS}", this.InjectSyntaxJs.Checked.ToString());
 
-            if (Utility.IsUnit(txtWidth.Text))
+            if (Utility.IsUnit(this.txtWidth.Text))
             {
-                moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.WIDTH}", txtWidth.Text);
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.WIDTH}", this.txtWidth.Text);
             }
 
-            if (Utility.IsUnit(txtHeight.Text))
+            if (Utility.IsUnit(this.txtHeight.Text))
             {
-                moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.HEIGHT}", txtWidth.Text);
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.HEIGHT}", this.txtWidth.Text);
             }
 
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.BLANKTEXT}", txtBlanktext.Text);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.CSS}", CssUrl.Url);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", TemplUrl.Url);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.CUSTOMJSFILE}", CustomJsFile.Url);
-            moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.CONFIG}", ConfigUrl.Url);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CSS}", this.CssUrl.Url);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
 
-            string sRoles = chblBrowsGr.Items.Cast<ListItem>().Where(item => item.Selected).Aggregate(
+            string sRoles = this.chblBrowsGr.Items.Cast<ListItem>().Where(item => item.Selected).Aggregate(
                 string.Empty, (current, item) => current + (item.Value + ";"));
 
             if (sRoles != string.Empty)
             {
-                moduleController.UpdateModuleSetting(ModuleId, $"{key}{SettingConstants.ROLES}", sRoles);
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.ROLES}", sRoles);
             }
 
             // Save Toolbar Setting for every Role
-            for (var i = 0; i < gvToolbars.Rows.Count; i++)
+            for (var i = 0; i < this.gvToolbars.Rows.Count; i++)
             {
-                var label = (Label)gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
+                var label = (Label)this.gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                var ddLToolB = (DropDownList)gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
+                var ddLToolB = (DropDownList)this.gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
 
                 if (label == null || ddLToolB == null)
                 {
                     continue;
                 }
 
-                if (label.Text.Equals(UNAUTHENTICATED_USERS))
+                if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
                     moduleController.UpdateModuleSetting(
-                        ModuleId,
+                        this.ModuleId,
                         string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB),
                         ddLToolB.SelectedValue);
                 }
                 else
                 {
-                    var objRole = RoleController.Instance.GetRoleByName(_portalSettings?.PortalId ?? Host.HostPortalID, label.Text);
+                    var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? Host.HostPortalID, label.Text);
 
                     moduleController.UpdateModuleSetting(
-                        ModuleId,
+                        this.ModuleId,
                         string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.TOOLB),
                         ddLToolB.SelectedValue);
                 }
             }
 
             // Save Upload File Limit Setting for every Role
-            for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+            for (var i = 0; i < this.UploadFileLimits.Rows.Count; i++)
             {
-                Label label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+                Label label = (Label)this.UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                var sizeLimit = (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+                var sizeLimit = (TextBox)this.UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
 
                 if (label == null || string.IsNullOrEmpty(sizeLimit.Text))
                 {
                     continue;
                 }
 
-                if (label.Text.Equals(UNAUTHENTICATED_USERS))
+                if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
                     moduleController.UpdateModuleSetting(
-                        ModuleId,
+                        this.ModuleId,
                         $"{key}-1{SettingConstants.UPLOADFILELIMITS}",
                         sizeLimit.Text);
                 }
                 else
                 {
-                    var objRole = RoleController.Instance.GetRoleByName(_portalSettings?.PortalId ?? Host.HostPortalID, label.Text);
+                    var objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId ?? Host.HostPortalID, label.Text);
 
                     moduleController.UpdateModuleSetting(
-                        ModuleId,
+                        this.ModuleId,
                         string.Format("{0}{1}#{2}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
                 }
@@ -2561,7 +2539,7 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>
-        /// Save Settings for this Page Or Portal
+        /// Save Settings for this Page Or Portal.
         /// </summary>
         /// <param name="key">
         /// The key.
@@ -2578,7 +2556,7 @@ namespace DNNConnect.CKEditorProvider
                     case "Int32":
                     case "String":
                         {
-                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, info.Name);
+                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, info.Name);
 
                             if (textBox != null)
                             {
@@ -2589,7 +2567,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "Boolean":
                         {
-                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, info.Name);
+                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, info.Name);
 
                             if (checkBox != null)
                             {
@@ -2608,7 +2586,7 @@ namespace DNNConnect.CKEditorProvider
                     case "ToolbarLocation":
                     case "DefaultLinkType":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList?.SelectedItem != null)
                             {
@@ -2628,7 +2606,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "String":
                                         {
                                             var textBox = Utility.FindControl<TextBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 codeMirrorInfo.Name);
 
                                             if (textBox != null)
@@ -2642,7 +2620,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "Boolean":
                                         {
                                             var checkBox = Utility.FindControl<CheckBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 codeMirrorInfo.Name);
 
                                             if (checkBox != null)
@@ -2666,7 +2644,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "String":
                                         {
                                             var textBox = Utility.FindControl<TextBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 wordCountInfo.Name);
 
                                             if (textBox != null)
@@ -2680,7 +2658,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "Boolean":
                                         {
                                             var checkBox = Utility.FindControl<CheckBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 wordCountInfo.Name);
 
                                             if (checkBox != null)
@@ -2699,52 +2677,52 @@ namespace DNNConnect.CKEditorProvider
             }
             ///////////////////
 
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SKIN}", ddlSkin.SelectedValue);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CODEMIRRORTHEME}", CodeMirrorTheme.SelectedValue);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSER}", ddlBrowser.SelectedValue);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTVIEWMODE}", FileListViewMode.SelectedValue);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.DEFAULTLINKMODE}", DefaultLinkMode.SelectedValue);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.USEANCHORSELECTOR}", UseAnchorSelector.Checked.ToString());
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", ShowPageLinksTabFirst.Checked.ToString());
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", OverrideFileOnUpload.Checked.ToString());
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SUBDIRS}", cbBrowserDirs.Checked.ToString());
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRID}", BrowserRootDir.SelectedValue);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRID}", UploadDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
 
-            if (Utility.IsNumeric(FileListPageSize.Text))
+            if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
-                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTPAGESIZE}", FileListPageSize.Text);
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
             }
 
-            if (Utility.IsNumeric(txtResizeWidth.Text))
+            if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
-                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEWIDTH}", txtResizeWidth.Text);
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
             }
 
-            if (Utility.IsNumeric(txtResizeHeight.Text))
+            if (Utility.IsNumeric(this.txtResizeHeight.Text))
             {
-                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEHEIGHT}", txtResizeHeight.Text);
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEHEIGHT}", this.txtResizeHeight.Text);
             }
 
-            EditorController.AddOrUpdateEditorHostSetting($"{key}injectjs", InjectSyntaxJs.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}injectjs", this.InjectSyntaxJs.Checked.ToString());
 
-            if (Utility.IsUnit(txtWidth.Text))
+            if (Utility.IsUnit(this.txtWidth.Text))
             {
-                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.WIDTH}", txtWidth.Text);
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.WIDTH}", this.txtWidth.Text);
             }
 
-            if (Utility.IsUnit(txtHeight.Text))
+            if (Utility.IsUnit(this.txtHeight.Text))
             {
-                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HEIGHT}", txtHeight.Text);
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HEIGHT}", this.txtHeight.Text);
             }
 
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BLANKTEXT}", txtBlanktext.Text);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CSS}", CssUrl.Url);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.TEMPLATEFILES}", TemplUrl.Url);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CUSTOMJSFILE}", CustomJsFile.Url);
-            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CONFIG}", ConfigUrl.Url);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BLANKTEXT}", this.txtBlanktext.Text);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CSS}", this.CssUrl.Url);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.TEMPLATEFILES}", this.TemplUrl.Url);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CUSTOMJSFILE}", this.CustomJsFile.Url);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CONFIG}", this.ConfigUrl.Url);
 
-            var sRoles = chblBrowsGr.Items.Cast<ListItem>()
+            var sRoles = this.chblBrowsGr.Items.Cast<ListItem>()
                 .Where(item => item.Selected)
                 .Aggregate(string.Empty, (current, item) => current + (item.Value + ";"));
 
@@ -2754,48 +2732,48 @@ namespace DNNConnect.CKEditorProvider
             }
 
             // Save Toolbar Setting for every Role
-            for (var i = 0; i < gvToolbars.Rows.Count; i++)
+            for (var i = 0; i < this.gvToolbars.Rows.Count; i++)
             {
-                Label label = (Label)gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
+                Label label = (Label)this.gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                DropDownList ddLToolB = (DropDownList)gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
+                DropDownList ddLToolB = (DropDownList)this.gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
 
                 if (label == null || ddLToolB == null)
                 {
                     continue;
                 }
 
-                if (label.Text.Equals(UNAUTHENTICATED_USERS))
+                if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
                     EditorController.AddOrUpdateEditorHostSetting($"{key}toolb#{"-1"}", ddLToolB.SelectedValue);
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleByName(_portalSettings?.PortalId != Null.NullInteger ? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID, label.Text);
 
                     EditorController.AddOrUpdateEditorHostSetting($"{key}toolb#{objRole.RoleID}", ddLToolB.SelectedValue);
                 }
             }
 
             // Save Upload File Limit Setting for every Role
-            for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+            for (var i = 0; i < this.UploadFileLimits.Rows.Count; i++)
             {
-                var label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+                var label = (Label)this.UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                var sizeLimit = (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+                var sizeLimit = (TextBox)this.UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
 
                 if (label == null || string.IsNullOrEmpty(sizeLimit.Text))
                 {
                     continue;
                 }
 
-                if (label.Text.Equals(UNAUTHENTICATED_USERS))
+                if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
                     EditorController.AddOrUpdateEditorHostSetting($"{key}-1{SettingConstants.UPLOADFILELIMITS}", sizeLimit.Text);
                 }
                 else
                 {
-                    RoleInfo objRole = RoleController.Instance.GetRoleByName(_portalSettings?.PortalId != Null.NullInteger ? _portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this.portalSettings?.PortalId != Null.NullInteger ? this.portalSettings?.PortalId ?? Host.HostPortalID : Host.HostPortalID, label.Text);
 
                     EditorController.AddOrUpdateEditorHostSetting($"{key}{objRole.RoleID}#{SettingConstants.UPLOADFILELIMITS}", sizeLimit.Text);
                 }
@@ -2803,17 +2781,17 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>
-        /// Save all Settings for the Current Selected Mode
+        /// Save all Settings for the Current Selected Mode.
         /// </summary>
         private void SaveSettings()
         {
             ModuleDefinitionInfo objm;
             var db = new ModuleController();
-            var moduleInfo = db.GetModuleByDefinition(_portalSettings?.PortalId ?? Host.HostPortalID, "User Accounts");
+            var moduleInfo = db.GetModuleByDefinition(this.portalSettings?.PortalId ?? Host.HostPortalID, "User Accounts");
 
             try
             {
-                objm = ModuleDefinitionController.GetModuleDefinitionByID(CurrentModule.ModuleDefID);
+                objm = ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
             catch (Exception)
             {
@@ -2821,21 +2799,21 @@ namespace DNNConnect.CKEditorProvider
                     "User Accounts", moduleInfo.DesktopModuleID);
             }
 
-            switch (CurrentSettingsMode)
+            switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Host:
-                    SaveSettingsByKey("DNNCKH#");
+                    this.SaveSettingsByKey("DNNCKH#");
                     break;
                 case SettingsMode.Portal:
-                    SaveSettingsByKey($"DNNCKP#{_portalSettings?.PortalId ?? Host.HostPortalID}#");
+                    this.SaveSettingsByKey($"DNNCKP#{this.portalSettings?.PortalId ?? Host.HostPortalID}#");
                     break;
                 case SettingsMode.Page:
-                    SaveSettingsByKey($"DNNCKT#{CurrentOrSelectedTabId}#");
+                    this.SaveSettingsByKey($"DNNCKT#{this.CurrentOrSelectedTabId}#");
                     break;
                 default:
-                    if (CurrentSettingsMode.Equals(SettingsMode.ModuleInstance) && !objm.FriendlyName.Equals("User Accounts"))
+                    if (this.CurrentSettingsMode.Equals(SettingsMode.ModuleInstance) && !objm.FriendlyName.Equals("User Accounts"))
                     {
-                        SaveModuleSettings();
+                        this.SaveModuleSettings();
                     }
 
                     break;
@@ -2846,185 +2824,184 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>
-        /// Set Current Language
+        /// Set Current Language.
         /// </summary>
         private void SetLanguage()
         {
-            lblHeader.Text = Localization.GetString("lblHeader.Text", ResXFile, LangCode);
+            this.lblHeader.Text = Localization.GetString("lblHeader.Text", this.ResXFile, this.LangCode);
 
-            ProviderVersion.Text = "<strong>DNN Connect CKEditor™ Provider</strong> ";
+            this.ProviderVersion.Text = "<strong>DNN Connect CKEditor™ Provider</strong> ";
 
-            lblPortal.Text = $"<strong>{Localization.GetString("lblPortal.Text", ResXFile, LangCode)}</strong> ";
-            lblPage.Text = $"<strong>{Localization.GetString("lblPage.Text", ResXFile, LangCode)}</strong> ";
-            lblModType.Text = $"<strong>{Localization.GetString("lblModType.Text", ResXFile, LangCode)}</strong> ";
-            lblModName.Text = $"<strong>{Localization.GetString("lblModName.Text", ResXFile, LangCode)}</strong> ";
-            lblModInst.Text = $"<strong>{Localization.GetString("lblModInst.Text", ResXFile, LangCode)}</strong> ";
-            lblUName.Text = $"<strong>{Localization.GetString("lblUName.Text", ResXFile, LangCode)}</strong> ";
-            lblMainSet.Text = Localization.GetString("lblMainSet.Text", ResXFile, LangCode);
-            lblSettings.Text = Localization.GetString("lblSettings.Text", ResXFile, LangCode);
-            lblSetFor.Text = Localization.GetString("lblSetFor.Text", ResXFile, LangCode);
-            lblBrowser.Text = Localization.GetString("lblBrowser.Text", ResXFile, LangCode);
+            this.lblPortal.Text = $"<strong>{Localization.GetString("lblPortal.Text", this.ResXFile, this.LangCode)}</strong> ";
+            this.lblPage.Text = $"<strong>{Localization.GetString("lblPage.Text", this.ResXFile, this.LangCode)}</strong> ";
+            this.lblModType.Text = $"<strong>{Localization.GetString("lblModType.Text", this.ResXFile, this.LangCode)}</strong> ";
+            this.lblModName.Text = $"<strong>{Localization.GetString("lblModName.Text", this.ResXFile, this.LangCode)}</strong> ";
+            this.lblModInst.Text = $"<strong>{Localization.GetString("lblModInst.Text", this.ResXFile, this.LangCode)}</strong> ";
+            this.lblUName.Text = $"<strong>{Localization.GetString("lblUName.Text", this.ResXFile, this.LangCode)}</strong> ";
+            this.lblMainSet.Text = Localization.GetString("lblMainSet.Text", this.ResXFile, this.LangCode);
+            this.lblSettings.Text = Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode);
+            this.lblSetFor.Text = Localization.GetString("lblSetFor.Text", this.ResXFile, this.LangCode);
+            this.lblBrowser.Text = Localization.GetString("lblBrowser.Text", this.ResXFile, this.LangCode);
 
-            lblBlanktext.Text = Localization.GetString("lblBlanktext.Text", ResXFile, LangCode);
-            txtBlanktext.ToolTip = Localization.GetString("BlanktextTT.Text", ResXFile, LangCode);
+            this.lblBlanktext.Text = Localization.GetString("lblBlanktext.Text", this.ResXFile, this.LangCode);
+            this.txtBlanktext.ToolTip = Localization.GetString("BlanktextTT.Text", this.ResXFile, this.LangCode);
 
-            lblBrowsSec.Text = Localization.GetString("lblBrowsSec.Text", ResXFile, LangCode);
-            lblBrowAllow.Text = Localization.GetString("lblBrowAllow.Text", ResXFile, LangCode);
-            BrowserRootFolder.Text = Localization.GetString("BrowserRootFolder.Text", ResXFile, LangCode);
-            OverrideFileOnUploadLabel.Text = Localization.GetString("OverrideFileOnUploadLabel.Text", ResXFile, LangCode);
-            lblBrowserDirs.Text = Localization.GetString("lblBrowserDirs.Text", ResXFile, LangCode);
-            UploadFolderLabel.Text = Localization.GetString("UploadFolderLabel.Text", ResXFile, LangCode);
-            lblCustomConfig.Text = Localization.GetString("lblCustomConfig.Text", ResXFile, LangCode);
-            lblInjectSyntaxJs.Text = Localization.GetString("lblInjectSyntaxJs.Text", ResXFile, LangCode);
-            lblWidth.Text = Localization.GetString("lblWidth.Text", ResXFile, LangCode);
-            lblHeight.Text = Localization.GetString("lblHeight.Text", ResXFile, LangCode);
-            lblEditorConfig.Text = Localization.GetString("lblEditorConfig.Text", ResXFile, LangCode);
-            lblCssurl.Text = Localization.GetString("lblCSSURL.Text", ResXFile, LangCode);
-            lblToolbars.Text = Localization.GetString("lblToolbars.Text", ResXFile, LangCode);
-            UploadFileLimitLabel.Text = Localization.GetString("UploadFileLimitLabel.Text", ResXFile, LangCode);
-            lblTemplFiles.Text = Localization.GetString("lblTemplFiles.Text", ResXFile, LangCode);
-            CustomJsFileLabel.Text = Localization.GetString("CustomJsFileLabel.Text", ResXFile, LangCode);
-            lblCustomToolbars.Text = Localization.GetString("lblCustomToolbars.Text", ResXFile, LangCode);
-            lblToolbarList.Text = Localization.GetString("lblToolbarList.Text", ResXFile, LangCode);
-            lblToolbName.Text = Localization.GetString("lblToolbName.Text", ResXFile, LangCode);
-            lblToolbSet.Text = Localization.GetString("lblToolbSet.Text", ResXFile, LangCode);
-            lblResizeWidth.Text = Localization.GetString("lblResizeWidth.Text", ResXFile, LangCode);
-            lblResizeHeight.Text = Localization.GetString("lblResizeHeight.Text", ResXFile, LangCode);
-            lblImport.Text = Localization.GetString("lnkImport.Text", ResXFile, LangCode);
-            CreateGroupLabel.Text = Localization.GetString("CreateGroupLabel.Text", ResXFile, LangCode);
-            AddRowBreakLabel.Text = Localization.GetString("AddRowBreakLabel.Text", ResXFile, LangCode);
-            lblToolbarPriority.Text = Localization.GetString("lblToolbarPriority.Text", ResXFile, LangCode);
-            ToolbarGroupsLabel.Text = Localization.GetString("ToolbarGroupsLabel.Text", ResXFile, LangCode);
-            lblSkin.Text = Localization.GetString("lblSkin.Text", ResXFile, LangCode);
-            CodeMirrorLabel.Text = Localization.GetString("CodeMirrorLabel.Text", ResXFile, LangCode);
-            Wait.Text = Localization.GetString("Wait.Text", ResXFile, LangCode);
-            WaitMessage.Text = Localization.GetString("WaitMessage.Text", ResXFile, LangCode);
-            EditorConfigWarning.Text = Localization.GetString("EditorConfigWarning.Text", ResXFile, LangCode);
+            this.lblBrowsSec.Text = Localization.GetString("lblBrowsSec.Text", this.ResXFile, this.LangCode);
+            this.lblBrowAllow.Text = Localization.GetString("lblBrowAllow.Text", this.ResXFile, this.LangCode);
+            this.BrowserRootFolder.Text = Localization.GetString("BrowserRootFolder.Text", this.ResXFile, this.LangCode);
+            this.OverrideFileOnUploadLabel.Text = Localization.GetString("OverrideFileOnUploadLabel.Text", this.ResXFile, this.LangCode);
+            this.lblBrowserDirs.Text = Localization.GetString("lblBrowserDirs.Text", this.ResXFile, this.LangCode);
+            this.UploadFolderLabel.Text = Localization.GetString("UploadFolderLabel.Text", this.ResXFile, this.LangCode);
+            this.lblCustomConfig.Text = Localization.GetString("lblCustomConfig.Text", this.ResXFile, this.LangCode);
+            this.lblInjectSyntaxJs.Text = Localization.GetString("lblInjectSyntaxJs.Text", this.ResXFile, this.LangCode);
+            this.lblWidth.Text = Localization.GetString("lblWidth.Text", this.ResXFile, this.LangCode);
+            this.lblHeight.Text = Localization.GetString("lblHeight.Text", this.ResXFile, this.LangCode);
+            this.lblEditorConfig.Text = Localization.GetString("lblEditorConfig.Text", this.ResXFile, this.LangCode);
+            this.lblCssurl.Text = Localization.GetString("lblCSSURL.Text", this.ResXFile, this.LangCode);
+            this.lblToolbars.Text = Localization.GetString("lblToolbars.Text", this.ResXFile, this.LangCode);
+            this.UploadFileLimitLabel.Text = Localization.GetString("UploadFileLimitLabel.Text", this.ResXFile, this.LangCode);
+            this.lblTemplFiles.Text = Localization.GetString("lblTemplFiles.Text", this.ResXFile, this.LangCode);
+            this.CustomJsFileLabel.Text = Localization.GetString("CustomJsFileLabel.Text", this.ResXFile, this.LangCode);
+            this.lblCustomToolbars.Text = Localization.GetString("lblCustomToolbars.Text", this.ResXFile, this.LangCode);
+            this.lblToolbarList.Text = Localization.GetString("lblToolbarList.Text", this.ResXFile, this.LangCode);
+            this.lblToolbName.Text = Localization.GetString("lblToolbName.Text", this.ResXFile, this.LangCode);
+            this.lblToolbSet.Text = Localization.GetString("lblToolbSet.Text", this.ResXFile, this.LangCode);
+            this.lblResizeWidth.Text = Localization.GetString("lblResizeWidth.Text", this.ResXFile, this.LangCode);
+            this.lblResizeHeight.Text = Localization.GetString("lblResizeHeight.Text", this.ResXFile, this.LangCode);
+            this.lblImport.Text = Localization.GetString("lnkImport.Text", this.ResXFile, this.LangCode);
+            this.CreateGroupLabel.Text = Localization.GetString("CreateGroupLabel.Text", this.ResXFile, this.LangCode);
+            this.AddRowBreakLabel.Text = Localization.GetString("AddRowBreakLabel.Text", this.ResXFile, this.LangCode);
+            this.lblToolbarPriority.Text = Localization.GetString("lblToolbarPriority.Text", this.ResXFile, this.LangCode);
+            this.ToolbarGroupsLabel.Text = Localization.GetString("ToolbarGroupsLabel.Text", this.ResXFile, this.LangCode);
+            this.lblSkin.Text = Localization.GetString("lblSkin.Text", this.ResXFile, this.LangCode);
+            this.CodeMirrorLabel.Text = Localization.GetString("CodeMirrorLabel.Text", this.ResXFile, this.LangCode);
+            this.Wait.Text = Localization.GetString("Wait.Text", this.ResXFile, this.LangCode);
+            this.WaitMessage.Text = Localization.GetString("WaitMessage.Text", this.ResXFile, this.LangCode);
+            this.EditorConfigWarning.Text = Localization.GetString("EditorConfigWarning.Text", this.ResXFile, this.LangCode);
 
-            FileListPageSizeLabel.Text = Localization.GetString("FileListPageSizeLabel.Text", ResXFile, LangCode);
-            FileListViewModeLabel.Text = Localization.GetString("FileListViewModeLabel.Text", ResXFile, LangCode);
-            lblUseAnchorSelector.Text = Localization.GetString("lblUseAnchorSelector.Text", ResXFile, LangCode);
-            lblShowPageLinksTabFirst.Text = Localization.GetString("lblShowPageLinksTabFirst.Text", ResXFile, LangCode);
+            this.FileListPageSizeLabel.Text = Localization.GetString("FileListPageSizeLabel.Text", this.ResXFile, this.LangCode);
+            this.FileListViewModeLabel.Text = Localization.GetString("FileListViewModeLabel.Text", this.ResXFile, this.LangCode);
+            this.lblUseAnchorSelector.Text = Localization.GetString("lblUseAnchorSelector.Text", this.ResXFile, this.LangCode);
+            this.lblShowPageLinksTabFirst.Text = Localization.GetString("lblShowPageLinksTabFirst.Text", this.ResXFile, this.LangCode);
 
-            iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
-            iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", ResXFile, LangCode);
+            this.iBAdd.AlternateText = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBAdd.ToolTip = Localization.GetString("AddToolbar.Text", this.ResXFile, this.LangCode);
 
-            iBCancel.AlternateText = Localization.GetString("CancelToolbar.Text", ResXFile, LangCode);
-            iBCancel.ToolTip = Localization.GetString("CancelToolbar.Text", ResXFile, LangCode);
+            this.iBCancel.AlternateText = Localization.GetString("CancelToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBCancel.ToolTip = Localization.GetString("CancelToolbar.Text", this.ResXFile, this.LangCode);
 
-            iBEdit.AlternateText = Localization.GetString("EditToolbar.Text", ResXFile, LangCode);
-            iBEdit.ToolTip = Localization.GetString("EditToolbar.Text", ResXFile, LangCode);
+            this.iBEdit.AlternateText = Localization.GetString("EditToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBEdit.ToolTip = Localization.GetString("EditToolbar.Text", this.ResXFile, this.LangCode);
 
-            iBDelete.AlternateText = Localization.GetString("DeleteToolbar.Text", ResXFile, LangCode);
-            iBDelete.ToolTip = Localization.GetString("DeleteToolbar.Text", ResXFile, LangCode);
+            this.iBDelete.AlternateText = Localization.GetString("DeleteToolbar.Text", this.ResXFile, this.LangCode);
+            this.iBDelete.ToolTip = Localization.GetString("DeleteToolbar.Text", this.ResXFile, this.LangCode);
 
-            lblExport.Text = Localization.GetString("lnkExport.Text", ResXFile, LangCode);
+            this.lblExport.Text = Localization.GetString("lnkExport.Text", this.ResXFile, this.LangCode);
 
-            ExportNow.Text = Localization.GetString("ExportNow.Text", ResXFile, LangCode);
-            lnkImportNow.Text = Localization.GetString("ImportNow.Text", ResXFile, LangCode);
+            this.ExportNow.Text = Localization.GetString("ExportNow.Text", this.ResXFile, this.LangCode);
+            this.lnkImportNow.Text = Localization.GetString("ImportNow.Text", this.ResXFile, this.LangCode);
 
-            btnOk.Text = Localization.GetString("btnOK.Text", ResXFile, LangCode);
+            this.btnOk.Text = Localization.GetString("btnOK.Text", this.ResXFile, this.LangCode);
 
-            rBlSetMode.Items[0].Text = Localization.GetString("Portal.Text", ResXFile, LangCode);
-            rBlSetMode.Items[1].Text = Localization.GetString("Page.Text", ResXFile, LangCode);
+            this.rBlSetMode.Items[0].Text = Localization.GetString("Portal.Text", this.ResXFile, this.LangCode);
+            this.rBlSetMode.Items[1].Text = Localization.GetString("Page.Text", this.ResXFile, this.LangCode);
 
-            if (rBlSetMode.Items.Count.Equals(3))
+            if (this.rBlSetMode.Items.Count.Equals(3))
             {
-                rBlSetMode.Items[2].Text = Localization.GetString("ModuleInstance.Text", ResXFile, LangCode);
+                this.rBlSetMode.Items[2].Text = Localization.GetString("ModuleInstance.Text", this.ResXFile, this.LangCode);
             }
 
-            FileListViewMode.Items[0].Text = Localization.GetString("DetailView.Text", ResXFile, LangCode);
-            FileListViewMode.Items[1].Text = Localization.GetString("ListView.Text", ResXFile, LangCode);
-            FileListViewMode.Items[2].Text = Localization.GetString("IconsView.Text", ResXFile, LangCode);
+            this.FileListViewMode.Items[0].Text = Localization.GetString("DetailView.Text", this.ResXFile, this.LangCode);
+            this.FileListViewMode.Items[1].Text = Localization.GetString("ListView.Text", this.ResXFile, this.LangCode);
+            this.FileListViewMode.Items[2].Text = Localization.GetString("IconsView.Text", this.ResXFile, this.LangCode);
 
-            DefaultLinkModeLabel.Text = Localization.GetString("DefaultLinkModeLabel.Text", ResXFile, LangCode);
+            this.DefaultLinkModeLabel.Text = Localization.GetString("DefaultLinkModeLabel.Text", this.ResXFile, this.LangCode);
 
-            DefaultLinkMode.Items[0].Text = Localization.GetString("DefaultLinkMode0.Text", ResXFile, LangCode);
-            DefaultLinkMode.Items[1].Text = Localization.GetString("DefaultLinkMode1.Text", ResXFile, LangCode);
-            DefaultLinkMode.Items[2].Text = Localization.GetString("DefaultLinkMode2.Text", ResXFile, LangCode);
-            DefaultLinkMode.Items[3].Text = Localization.GetString("DefaultLinkMode3.Text", ResXFile, LangCode);
+            this.DefaultLinkMode.Items[0].Text = Localization.GetString("DefaultLinkMode0.Text", this.ResXFile, this.LangCode);
+            this.DefaultLinkMode.Items[1].Text = Localization.GetString("DefaultLinkMode1.Text", this.ResXFile, this.LangCode);
+            this.DefaultLinkMode.Items[2].Text = Localization.GetString("DefaultLinkMode2.Text", this.ResXFile, this.LangCode);
+            this.DefaultLinkMode.Items[3].Text = Localization.GetString("DefaultLinkMode3.Text", this.ResXFile, this.LangCode);
         }
 
         /// <summary>
-        /// Saves all Settings and Close Options
+        /// Saves all Settings and Close Options.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void OK_Click(object sender, EventArgs e)
         {
-            SaveSettings();
+            this.SaveSettings();
 
             // check if toolbar set editor is not correctly saved
-            if (iBAdd.ImageUrl.Contains("save.gif") && !string.IsNullOrEmpty(ToolbarSet.Value))
+            if (this.iBAdd.ImageUrl.Contains("save.gif") && !string.IsNullOrEmpty(this.ToolbarSet.Value))
             {
-                var modifiedSet = ToolbarUtil.ConvertStringToToolbarSet(ToolbarSet.Value);
-                var toolbarEdit = listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(dnnTxtToolBName.Text));
+                var modifiedSet = ToolbarUtil.ConvertStringToToolbarSet(this.ToolbarSet.Value);
+                var toolbarEdit = this.listToolbars.Find(toolbarSel => toolbarSel.Name.Equals(this.dnnTxtToolBName.Text));
 
                 toolbarEdit.ToolbarGroups = modifiedSet.ToolbarGroups;
-                toolbarEdit.Priority = int.Parse(dDlToolbarPrio.SelectedValue);
-                var homeDirectory = _portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
-                ToolbarUtil.SaveToolbarSets(
-                    listToolbars,
-                    !string.IsNullOrEmpty(configFolder)
-                        ? Path.Combine(homeDirectory, configFolder)
-                        : homeDirectory);
+                toolbarEdit.Priority = int.Parse(this.dDlToolbarPrio.SelectedValue);
+                var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
+                var homeDirPath = !string.IsNullOrEmpty(this.configFolder)
+                                      ? Path.Combine(homeDirectory, this.configFolder)
+                                      : homeDirectory;
+                ToolbarUtil.SaveToolbarSets(this.listToolbars, homeDirPath);
             }
 
-            ShowNotification(Localization.GetString("lblInfo.Text", ResXFile, LangCode), "success");
+            this.ShowNotification(Localization.GetString("lblInfo.Text", this.ResXFile, this.LangCode), "success");
 
-            BindOptionsData(true);
+            this.BindOptionsData(true);
         }
 
         /// <summary>
-        /// Remove Current selected Settings
+        /// Remove Current selected Settings.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void Remove_Click(object sender, EventArgs e)
         {
-            switch (CurrentSettingsMode)
+            switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Host:
                     EditorController.DeleteAllHostSettings();
                     break;
                 case SettingsMode.Portal:
-                    EditorController.DeleteAllPortalSettings(_portalSettings?.PortalId ?? Null.NullInteger);
+                    EditorController.DeleteAllPortalSettings(this.portalSettings?.PortalId ?? Null.NullInteger);
                     break;
                 case SettingsMode.Page:
-                    EditorController.DeleteCurrentPageSettings(CurrentOrSelectedTabId);
+                    EditorController.DeleteCurrentPageSettings(this.CurrentOrSelectedTabId);
                     break;
                 case SettingsMode.ModuleInstance:
-                    DelModuleSettings();
+                    this.DelModuleSettings();
                     break;
             }
 
-            ShowNotification(Localization.GetString("lblInfoDel.Text", ResXFile, LangCode), "success");
+            this.ShowNotification(Localization.GetString("lblInfoDel.Text", this.ResXFile, this.LangCode), "success");
         }
 
         /// <summary>
-        /// Remove selected all Settings
+        /// Remove selected all Settings.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void RemoveAll_Click(object sender, EventArgs e)
         {
-            switch (CurrentSettingsMode)
+            switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Host:
                     EditorController.DeleteAllHostSettings();
                     break;
                 case SettingsMode.Portal:
-                    EditorController.DeleteAllPortalSettings(_portalSettings?.PortalId ?? Null.NullInteger);
+                    EditorController.DeleteAllPortalSettings(this.portalSettings?.PortalId ?? Null.NullInteger);
                     break;
                 case SettingsMode.Page:
-                    EditorController.DeleteAllPageSettings(_portalSettings?.PortalId ?? Null.NullInteger);
+                    EditorController.DeleteAllPageSettings(this.portalSettings?.PortalId ?? Null.NullInteger);
                     break;
                 case SettingsMode.ModuleInstance:
-                    EditorController.DeleteAllModuleSettings(_portalSettings?.PortalId ?? Null.NullInteger);
+                    EditorController.DeleteAllModuleSettings(this.portalSettings?.PortalId ?? Null.NullInteger);
                     break;
             }
 
-            ShowNotification(Localization.GetString("lblInfoDel.Text", ResXFile, LangCode), "success");
+            this.ShowNotification(Localization.GetString("lblInfoDel.Text", this.ResXFile, this.LangCode), "success");
         }
 
         /// <summary>
@@ -3034,19 +3011,19 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void RemoveChild_Click(object sender, EventArgs e)
         {
-            switch (CurrentSettingsMode)
+            switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Page:
                     {
                         // Delete all Page Setting for all Child Tabs
-                        EditorController.DeleteAllChildPageSettings(CurrentOrSelectedTabId);
+                        EditorController.DeleteAllChildPageSettings(this.CurrentOrSelectedTabId);
                     }
 
                     break;
                 case SettingsMode.ModuleInstance:
                     {
                         // Delete all Module Instance Settings for the Current Tab
-                        EditorController.DeleteAllModuleSettingsById(CurrentOrSelectedTabId);
+                        EditorController.DeleteAllModuleSettingsById(this.CurrentOrSelectedTabId);
                     }
 
                     break;
@@ -3054,39 +3031,39 @@ namespace DNNConnect.CKEditorProvider
                     return;
             }
 
-            ShowNotification(Localization.GetString("lblInfoDel.Text", ResXFile, LangCode), "success");
+            this.ShowNotification(Localization.GetString("lblInfoDel.Text", this.ResXFile, this.LangCode), "success");
         }
 
         /// <summary>
-        /// Copies the current Page Settings to all Child Pages
+        /// Copies the current Page Settings to all Child Pages.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void CopyToAllChild_Click(object sender, EventArgs e)
         {
-            var childTabs = TabController.GetTabsByParent(CurrentOrSelectedTabId, CurrentOrSelectedPortalId);
+            var childTabs = TabController.GetTabsByParent(this.CurrentOrSelectedTabId, this.CurrentOrSelectedPortalId);
 
             foreach (var tab in childTabs)
             {
                 // Sa Settings to tab
-                SaveSettingsByKey($"DNNCKT#{tab.TabID}#");
+                this.SaveSettingsByKey($"DNNCKT#{tab.TabID}#");
             }
 
             // Finally Clear Cache
             EditorController.ClearEditorCache();
 
-            ShowNotification(Localization.GetString("lblInfoCopyAll.Text", ResXFile, LangCode), "success");
+            this.ShowNotification(Localization.GetString("lblInfoCopyAll.Text", this.ResXFile, this.LangCode), "success");
         }
 
         /// <summary>
-        /// Reloaded the Settings of the Selected Mode
+        /// Reloaded the Settings of the Selected Mode.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         private void SetMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadSettings(rBlSetMode.SelectedIndex, false);
-            BindUserGroupsGridView();
+            this.LoadSettings(this.rBlSetMode.SelectedIndex, false);
+            this.BindUserGroupsGridView();
         }
 
         /// <summary>
@@ -3097,10 +3074,10 @@ namespace DNNConnect.CKEditorProvider
         private void ShowNotification(string message, string type)
         {
             ScriptManager.RegisterStartupScript(
-                Page,
-                GetType(),
+                this.Page,
+                this.GetType(),
                 $"notification_{Guid.NewGuid()}",
-                $"ShowNotificationBar('{message}','{type}','{ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/")}');",
+                $"ShowNotificationBar('{message}','{type}','{this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/")}');",
                 true);
         }
 
@@ -3111,33 +3088,33 @@ namespace DNNConnect.CKEditorProvider
         private void RenderUrlControls(bool reloadControls = false)
         {
             // Assign Url Controls on the Page the Correct Portal Id
-            ConfigUrl.PortalId = _portalSettings?.PortalId ?? Null.NullInteger;
-            TemplUrl.PortalId = _portalSettings?.PortalId ?? Null.NullInteger;
-            CustomJsFile.PortalId = _portalSettings?.PortalId ?? Null.NullInteger;
-            CssUrl.PortalId = _portalSettings?.PortalId ?? Null.NullInteger;
-            ImportFile.PortalId = _portalSettings?.PortalId ?? Null.NullInteger;
+            this.ConfigUrl.PortalId = this.portalSettings?.PortalId ?? Null.NullInteger;
+            this.TemplUrl.PortalId = this.portalSettings?.PortalId ?? Null.NullInteger;
+            this.CustomJsFile.PortalId = this.portalSettings?.PortalId ?? Null.NullInteger;
+            this.CssUrl.PortalId = this.portalSettings?.PortalId ?? Null.NullInteger;
+            this.ImportFile.PortalId = this.portalSettings?.PortalId ?? Null.NullInteger;
 
             if (!reloadControls)
             {
                 return;
             }
 
-            TemplUrl.ReloadFiles = true;
-            ConfigUrl.ReloadFiles = true;
-            CustomJsFile.ReloadFiles = true;
-            CssUrl.ReloadFiles = true;
-            ImportFile.ReloadFiles = true;
+            this.TemplUrl.ReloadFiles = true;
+            this.ConfigUrl.ReloadFiles = true;
+            this.CustomJsFile.ReloadFiles = true;
+            this.CssUrl.ReloadFiles = true;
+            this.ImportFile.ReloadFiles = true;
         }
 
         /// <summary>
         /// Exports the settings.
         /// </summary>
-        /// <returns>Returns the exported EditorProviderSettings</returns>
+        /// <returns>Returns the exported EditorProviderSettings.</returns>
         private EditorProviderSettings ExportSettings()
         {
             var exportSettings = new EditorProviderSettings { SettingMode = SettingsMode.Default };
 
-            exportSettings.SettingMode = CurrentSettingsMode;
+            exportSettings.SettingMode = this.CurrentSettingsMode;
 
             // Export all Editor config settings
             foreach (var info in SettingsUtil.GetEditorConfigProperties())
@@ -3146,7 +3123,7 @@ namespace DNNConnect.CKEditorProvider
                 {
                     case "String":
                         {
-                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, info.Name);
+                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, info.Name);
 
                             if (!string.IsNullOrEmpty(textBox.Text))
                             {
@@ -3157,7 +3134,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "Int32":
                         {
-                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, info.Name);
+                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, info.Name);
 
                             if (!string.IsNullOrEmpty(textBox.Text))
                             {
@@ -3168,7 +3145,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "Decimal":
                         {
-                            var textBox = Utility.FindControl<TextBox>(EditorConfigHolder, info.Name);
+                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, info.Name);
 
                             if (!string.IsNullOrEmpty(textBox.Text))
                             {
@@ -3179,7 +3156,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "Boolean":
                         {
-                            var checkBox = Utility.FindControl<CheckBox>(EditorConfigHolder, info.Name);
+                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, info.Name);
 
                             info.SetValue(exportSettings.Config, checkBox.Checked, null);
                         }
@@ -3191,7 +3168,7 @@ namespace DNNConnect.CKEditorProvider
                 {
                     case "ToolbarLocation":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList.SelectedItem != null)
                             {
@@ -3205,7 +3182,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "DefaultLinkType":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList.SelectedItem != null)
                             {
@@ -3220,7 +3197,7 @@ namespace DNNConnect.CKEditorProvider
                     case "EnterMode":
                     case "ShiftEnterMode":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList.SelectedItem != null)
                             {
@@ -3234,7 +3211,7 @@ namespace DNNConnect.CKEditorProvider
                         break;
                     case "ContentsLangDirection":
                         {
-                            var dropDownList = Utility.FindControl<DropDownList>(EditorConfigHolder, info.Name);
+                            var dropDownList = Utility.FindControl<DropDownList>(this.EditorConfigHolder, info.Name);
 
                             if (dropDownList.SelectedItem != null)
                             {
@@ -3257,7 +3234,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "String":
                                         {
                                             var textBox = Utility.FindControl<TextBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 codeMirrorInfo.Name);
 
                                             if (!string.IsNullOrEmpty(textBox.Text))
@@ -3274,7 +3251,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "Boolean":
                                         {
                                             var checkBox = Utility.FindControl<CheckBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 codeMirrorInfo.Name);
 
                                             codeMirrorInfo.SetValue(
@@ -3298,7 +3275,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "String":
                                         {
                                             var textBox = Utility.FindControl<TextBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 wordCountInfo.Name);
 
                                             if (!string.IsNullOrEmpty(textBox.Text))
@@ -3315,7 +3292,7 @@ namespace DNNConnect.CKEditorProvider
                                     case "Boolean":
                                         {
                                             var checkBox = Utility.FindControl<CheckBox>(
-                                                EditorConfigHolder,
+                                                this.EditorConfigHolder,
                                                 wordCountInfo.Name);
 
                                             wordCountInfo.SetValue(
@@ -3334,55 +3311,55 @@ namespace DNNConnect.CKEditorProvider
             }
             ///////////////////
 
-            exportSettings.Config.Skin = ddlSkin.SelectedValue;
-            exportSettings.Config.CodeMirror.Theme = CodeMirrorTheme.SelectedValue;
-            exportSettings.Browser = ddlBrowser.SelectedValue;
+            exportSettings.Config.Skin = this.ddlSkin.SelectedValue;
+            exportSettings.Config.CodeMirror.Theme = this.CodeMirrorTheme.SelectedValue;
+            exportSettings.Browser = this.ddlBrowser.SelectedValue;
             exportSettings.FileListViewMode =
-                (FileListView)Enum.Parse(typeof(FileListView), FileListViewMode.SelectedValue);
-            exportSettings.DefaultLinkMode = (LinkMode)Enum.Parse(typeof(LinkMode), DefaultLinkMode.SelectedValue);
-            exportSettings.UseAnchorSelector = UseAnchorSelector.Checked;
-            exportSettings.ShowPageLinksTabFirst = ShowPageLinksTabFirst.Checked;
-            exportSettings.OverrideFileOnUpload = OverrideFileOnUpload.Checked;
-            exportSettings.SubDirs = cbBrowserDirs.Checked;
-            exportSettings.BrowserRootDirId = int.Parse(BrowserRootDir.SelectedValue);
-            exportSettings.UploadDirId = int.Parse(UploadDir.SelectedValue);
+                (FileListView)Enum.Parse(typeof(FileListView), this.FileListViewMode.SelectedValue);
+            exportSettings.DefaultLinkMode = (LinkMode)Enum.Parse(typeof(LinkMode), this.DefaultLinkMode.SelectedValue);
+            exportSettings.UseAnchorSelector = this.UseAnchorSelector.Checked;
+            exportSettings.ShowPageLinksTabFirst = this.ShowPageLinksTabFirst.Checked;
+            exportSettings.OverrideFileOnUpload = this.OverrideFileOnUpload.Checked;
+            exportSettings.SubDirs = this.cbBrowserDirs.Checked;
+            exportSettings.BrowserRootDirId = int.Parse(this.BrowserRootDir.SelectedValue);
+            exportSettings.UploadDirId = int.Parse(this.UploadDir.SelectedValue);
 
-            if (Utility.IsNumeric(FileListPageSize.Text))
+            if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
-                exportSettings.FileListPageSize = int.Parse(FileListPageSize.Text);
+                exportSettings.FileListPageSize = int.Parse(this.FileListPageSize.Text);
             }
 
-            if (Utility.IsNumeric(txtResizeWidth.Text))
+            if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
-                exportSettings.ResizeWidth = int.Parse(txtResizeWidth.Text);
+                exportSettings.ResizeWidth = int.Parse(this.txtResizeWidth.Text);
             }
 
-            if (Utility.IsNumeric(txtResizeHeight.Text))
+            if (Utility.IsNumeric(this.txtResizeHeight.Text))
             {
-                exportSettings.ResizeHeight = int.Parse(txtResizeHeight.Text);
+                exportSettings.ResizeHeight = int.Parse(this.txtResizeHeight.Text);
             }
 
-            exportSettings.InjectSyntaxJs = InjectSyntaxJs.Checked;
+            exportSettings.InjectSyntaxJs = this.InjectSyntaxJs.Checked;
 
-            if (Utility.IsUnit(txtWidth.Text))
+            if (Utility.IsUnit(this.txtWidth.Text))
             {
-                exportSettings.EditorWidth = txtWidth.Text;
+                exportSettings.EditorWidth = this.txtWidth.Text;
             }
 
-            if (Utility.IsUnit(txtHeight.Text))
+            if (Utility.IsUnit(this.txtHeight.Text))
             {
-                exportSettings.EditorHeight = txtHeight.Text;
+                exportSettings.EditorHeight = this.txtHeight.Text;
             }
 
-            exportSettings.BlankText = txtBlanktext.Text;
-            exportSettings.Config.ContentsCss = CssUrl.Url;
-            exportSettings.Config.Templates_Files = TemplUrl.Url;
-            exportSettings.CustomJsFile = CustomJsFile.Url;
-            exportSettings.Config.CustomConfig = ConfigUrl.Url;
+            exportSettings.BlankText = this.txtBlanktext.Text;
+            exportSettings.Config.ContentsCss = this.CssUrl.Url;
+            exportSettings.Config.Templates_Files = this.TemplUrl.Url;
+            exportSettings.CustomJsFile = this.CustomJsFile.Url;
+            exportSettings.Config.CustomConfig = this.ConfigUrl.Url;
 
-            SetBrowserRoles(exportSettings);
-            SetToolbarRoles(exportSettings);
-            SetUploadSizeRoles(exportSettings);
+            this.SetBrowserRoles(exportSettings);
+            this.SetToolbarRoles(exportSettings);
+            this.SetUploadSizeRoles(exportSettings);
 
             return exportSettings;
         }
@@ -3391,7 +3368,7 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="exportSettings">The export settings.</param>
         private void SetBrowserRoles(EditorProviderSettings exportSettings)
         {
-            var sRoles = chblBrowsGr.Items.Cast<ListItem>()
+            var sRoles = this.chblBrowsGr.Items.Cast<ListItem>()
                                     .Where(item => item.Selected)
                                     .Aggregate(string.Empty, (current, item) => current + (item.Value + ";"));
 
@@ -3408,24 +3385,24 @@ namespace DNNConnect.CKEditorProvider
             var listToolbarRoles = new List<ToolbarRoles>();
 
             // Save Toolbar Setting for every Role
-            for (var i = 0; i < gvToolbars.Rows.Count; i++)
+            for (var i = 0; i < this.gvToolbars.Rows.Count; i++)
             {
-                var label = (Label)gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
+                var label = (Label)this.gvToolbars.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                var ddLToolB = (DropDownList)gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
+                var ddLToolB = (DropDownList)this.gvToolbars.Rows[i].Cells[1].FindControl("ddlToolbars");
 
                 if (label == null || ddLToolB == null)
                 {
                     continue;
                 }
 
-                if (label.Text.Equals(UNAUTHENTICATED_USERS))
+                if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
                     listToolbarRoles.Add(new ToolbarRoles { RoleId = -1, Toolbar = ddLToolB.SelectedValue });
                 }
                 else
                 {
-                    AddOtherToolbarRoles(listToolbarRoles, label.Text, ddLToolB.SelectedValue);
+                    this.AddOtherToolbarRoles(listToolbarRoles, label.Text, ddLToolB.SelectedValue);
                 }
             }
 
@@ -3437,27 +3414,27 @@ namespace DNNConnect.CKEditorProvider
         private void SetUploadSizeRoles(EditorProviderSettings exportSettings)
         {
             var listUploadSizeRoles = new List<UploadSizeRoles>();
-            UploadFileLimits.DataSource = exportSettings.UploadSizeRoles;
+            this.UploadFileLimits.DataSource = exportSettings.UploadSizeRoles;
 
             // Save Upload File Limit Setting for every Role
-            for (var i = 0; i < UploadFileLimits.Rows.Count; i++)
+            for (var i = 0; i < this.UploadFileLimits.Rows.Count; i++)
             {
-                var label = (Label)UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
+                var label = (Label)this.UploadFileLimits.Rows[i].Cells[0].FindControl("lblRoleName");
 
-                var sizeLimit = (TextBox)UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
+                var sizeLimit = (TextBox)this.UploadFileLimits.Rows[i].Cells[1].FindControl("SizeLimit");
 
                 if (label == null || string.IsNullOrEmpty(sizeLimit.Text))
                 {
                     continue;
                 }
 
-                if (label.Text.Equals(UNAUTHENTICATED_USERS))
+                if (label.Text.Equals(UnauthenticatedUsersRoleName))
                 {
                     listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = -1, UploadFileLimit = Convert.ToInt32(sizeLimit.Text) });
                 }
                 else
                 {
-                    AddOtherUploadRoles(label.Text, listUploadSizeRoles, sizeLimit.Text);
+                    this.AddOtherUploadRoles(label.Text, listUploadSizeRoles, sizeLimit.Text);
                 }
             }
 
@@ -3472,17 +3449,17 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="sizeLimit">The size limit.</param>
         private void AddOtherUploadRoles(string roleName, List<UploadSizeRoles> listUploadSizeRoles, string sizeLimit)
         {
-            if (IsAllInstances)
+            if (this.IsAllInstances)
             {
                 listUploadSizeRoles.AddRange(
-                    from PortalInfo portal in PortalController.Instance.GetPortals()
-                    select RoleController.Instance.GetRoleByName(portal.PortalID, roleName)
+                    from IPortalInfo portal in PortalController.Instance.GetPortals()
+                    select RoleController.Instance.GetRoleByName(portal.PortalId, roleName)
                     into objRole
                     select new UploadSizeRoles() { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(sizeLimit) });
             }
             else
             {
-                var objRole = RoleController.Instance.GetRoleByName(_portalSettings.PortalId, roleName);
+                var objRole = RoleController.Instance.GetRoleByName(this.portalSettings.PortalId, roleName);
                 listUploadSizeRoles.Add(new UploadSizeRoles { RoleId = objRole.RoleID, UploadFileLimit = Convert.ToInt32(sizeLimit) });
             }
         }
@@ -3495,35 +3472,34 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="value">The value.</param>
         private void AddOtherToolbarRoles(List<ToolbarRoles> listToolbarRoles, string roleName, string value)
         {
-            if (IsAllInstances)
+            if (this.IsAllInstances)
             {
                 listToolbarRoles.AddRange(
-                    from PortalInfo portal in PortalController.Instance.GetPortals()
-                    select RoleController.Instance.GetRoleByName(portal.PortalID, roleName)
+                    from IPortalInfo portal in PortalController.Instance.GetPortals()
+                    select RoleController.Instance.GetRoleByName(portal.PortalId, roleName)
                     into objRole
                     select new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = value });
             }
             else
             {
-                var objRole = RoleController.Instance.GetRoleByName(_portalSettings.PortalId, roleName);
+                var objRole = RoleController.Instance.GetRoleByName(this.portalSettings.PortalId, roleName);
                 listToolbarRoles.Add(new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = value });
             }
         }
 
         /// <summary>
-        /// Gets default upload size limits for each existent role
+        /// Gets default upload size limits for each existent role.
         /// </summary>
-        /// <param name="portalRoles"></param>
-        /// <returns></returns>
+        /// <param name="portalRoles">A list of roles.</param>
+        /// <returns>A list of <see cref="UploadSizeRoles"/> instances.</returns>
         private List<UploadSizeRoles> GetDefaultUploadFileSettings(IList<RoleInfo> portalRoles)
         {
             return portalRoles.Select(role => new UploadSizeRoles()
             {
                 RoleId = role.RoleID,
                 RoleName = role.RoleName,
-                UploadFileLimit = -1
+                UploadFileLimit = -1,
             }).ToList();
         }
-        #endregion
     }
 }

@@ -45,11 +45,11 @@ namespace DotNetNuke.Web.Prompt
 
             var services = DependencyInjectionInitialize.ServiceCollection.Select(
                     descriptor => new
-                                  {
-                                      LifeTime = descriptor.Lifetime.ToString("G"),
-                                      Service = this.GetTypeName(descriptor.ServiceType),
-                                      Implementation = this.GetImplementationText(descriptor),
-                                  })
+                    {
+                        LifeTime = descriptor.Lifetime.ToString("G"),
+                        Service = this.GetTypeName(descriptor.ServiceType),
+                        Implementation = this.GetImplementationText(descriptor),
+                    })
                 .OrderBy(desc => desc.Service)
                 .ThenBy(desc => desc.Implementation)
                 .ToList();

@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentItem", contentItem);
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var createdByUserId = currentUser.UserID;
-            if (contentItem.CreatedByUserID != currentUser.UserID)
+            if (contentItem.CreatedByUserID >= 0 && contentItem.CreatedByUserID != currentUser.UserID)
             {
                 createdByUserId = contentItem.CreatedByUserID;
             }
@@ -272,10 +272,11 @@ namespace DotNetNuke.Entities.Content
             DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
             if (readdItem)
             {
-                CBO.GetCachedObject<ContentItem>(
+                CBO.Instance.GetCachedObject<ContentItem>(
                     new CacheItemArgs(
                     GetContentItemCacheKey(contentItem.ContentItemId),
-                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem,
+                    false);
             }
         }
 

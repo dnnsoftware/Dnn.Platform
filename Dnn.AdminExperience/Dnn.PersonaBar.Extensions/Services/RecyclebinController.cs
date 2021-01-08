@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 Success = true,
                 Results = deletedtabs,
-                TotalResults = totalRecords
+                TotalResults = totalRecords,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 Success = true,
                 Results = deletedmodules,
-                TotalResults = totalRecords
+                TotalResults = totalRecords,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 Success = true,
                 Results = deletedusers,
-                TotalResults = totalRecords
+                TotalResults = totalRecords,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Message =
                         string.Format(
                             Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabError"),
-                            errors)
+                            errors),
                 });
             }
 
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Message =
                         string.Format(
                             Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabModuleError"),
-                            errors)
+                            errors),
                 });
             }
 
@@ -140,7 +140,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Status = 1,
                     Message =
                         string.Format(
-                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors)
+                            Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors),
                 });
             }
 
@@ -175,7 +175,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         Message =
                             string.Format(
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
-                                errors)
+                                errors),
                     })
                 : this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit)]
         public HttpResponseMessage RestoreModule(List<ModuleItem> modules)
         {
-            //modules dic stores module.Key=moduleId, module.Value=pageId;
+            // modules dic stores module.Key=moduleId, module.Value=pageId;
             var result = true;
             var errors = new StringBuilder();
             if (modules != null && modules.Any())
@@ -239,7 +239,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         Message =
                             string.Format(
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
-                                errors)
+                                errors),
                     })
                 : this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
@@ -272,7 +272,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     Message =
                         string.Format(
                             Components.RecyclebinController.Instance.LocalizeString("Service_EmptyRecycleBinError"),
-                            errors)
+                            errors),
                 });
             }
 
@@ -299,7 +299,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 FriendlyLastModifiedOnDate =
                     tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
-                UseDefaultSkin = this.UseDefaultSkin(tab)
+                UseDefaultSkin = this.UseDefaultSkin(tab),
             };
         }
 
@@ -326,7 +326,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate =
                     mod.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
-                        CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US"))
+                        CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US")),
             };
         }
 
@@ -344,7 +344,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
                 FriendlyLastModifiedOnDate =
                     user.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
-                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US"))
+                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
             };
         }
     }

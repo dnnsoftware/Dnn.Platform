@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
             catch (System.Security.SecurityException)
             {
-                //Some security exception
+                // Some security exception
             }
 
             if (accessErrors.Count == 0)
@@ -146,28 +146,36 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                     if (poolIdentity.User.Value == rule.IdentityReference.Value || poolIdentity.Groups.Contains(rule.IdentityReference))
                     {
                         if ((rule.FileSystemRights & (FileSystemRights.CreateDirectories | FileSystemRights.CreateFiles)) != 0)
+                        {
                             if (rule.AccessControlType == AccessControlType.Allow)
                                 permissions.Create = Yes;
                             else
                                 permissions.SetThenLockCreate(No);
+                        }
 
                         if ((rule.FileSystemRights & FileSystemRights.Write) != 0)
+                        {
                             if (rule.AccessControlType == AccessControlType.Allow)
                                 permissions.Write = Yes;
                             else
                                 permissions.SetThenLockWrite(No);
+                        }
 
                         if ((rule.FileSystemRights & (FileSystemRights.Read | FileSystemRights.ReadData)) != 0)
+                        {
                             if (rule.AccessControlType == AccessControlType.Allow)
                                 permissions.Read = Yes;
                             else
                                 permissions.SetThenLockRead(No);
+                        }
 
                         if ((rule.FileSystemRights & (FileSystemRights.Delete | FileSystemRights.DeleteSubdirectoriesAndFiles)) != 0)
+                        {
                             if (rule.AccessControlType == AccessControlType.Allow)
                                 permissions.Delete = Yes;
                             else
                                 permissions.SetThenLockDelete(No);
+                        }
                     }
                 }
             }

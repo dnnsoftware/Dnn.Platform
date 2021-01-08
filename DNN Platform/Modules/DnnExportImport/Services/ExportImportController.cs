@@ -56,17 +56,14 @@ namespace Dnn.ExportImport.Services
                 : this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
-        /// <summary>
-        /// Get list of packages to import.
-        /// </summary>
+        /// <summary>Get list of packages to import.</summary>
         /// <param name="keyword">Keyword to search the import package. This will look into the package name and description.</param>
         /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name.</param>
         /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
-        /// <returns></returns>
+        /// <returns>An <see cref="HttpResponseMessage"/>.</returns>
         [HttpGet]
-        public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0,
-            int pageSize = 10)
+        public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0, int pageSize = 10)
         {
             var controller = new ImportController();
             int total;
@@ -121,8 +118,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage AllJobs(int portal, int? pageSize = 10, int? pageIndex = 0, int? jobType = null,
-            string keywords = null)
+        public HttpResponseMessage AllJobs(int portal, int? pageSize = 10, int? pageIndex = 0, int? jobType = null, string keywords = null)
         {
             if (!this.UserInfo.IsSuperUser && portal != this.PortalSettings.PortalId)
             {
