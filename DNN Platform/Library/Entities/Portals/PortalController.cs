@@ -3078,6 +3078,11 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "SitemapMinPriority", XmlUtils.GetNodeValue(nodeSettings, "sitemapminpriority", string.Empty), true);
             }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showquickmoduleaddmenu", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "ShowQuickModuleAddMenu", XmlUtils.GetNodeValue(nodeSettings, "showquickmoduleaddmenu", string.Empty));
+            }
         }
 
         private void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)

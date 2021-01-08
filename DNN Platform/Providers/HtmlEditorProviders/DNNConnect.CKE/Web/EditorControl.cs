@@ -315,6 +315,8 @@ namespace DNNConnect.CKEditorProvider.Web
                     }
                 }
 
+                this.settings["linkDefaultProtocol"] = this.currentSettings.DefaultLinkProtocol.ToSettingValue();
+
                 var cssFiles = new List<string>();
                 var skinSrc = this.GetSkinSource();
                 var containerSrc = this.GetContainerSource();
@@ -418,6 +420,17 @@ namespace DNNConnect.CKEditorProvider.Web
                 {
                     this.settings["menu_groups"] =
                         "clipboard,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div";
+                }
+                
+                // remove the easyimage and cloudservices plugins in removePlugins
+                if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
+                {
+                    if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                    {
+                        this.settings["removePlugins"] += ",";
+                    }
+
+                    this.settings["removePlugins"] += "easyimage,cloudservices";
                 }
 
                 // Inject maxFileSize
@@ -1260,7 +1273,7 @@ namespace DNNConnect.CKEditorProvider.Web
         {
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/editor.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/editor.css"));
 
             ClientScriptManager cs = this.Page.ClientScript;
 
@@ -1279,11 +1292,11 @@ namespace DNNConnect.CKEditorProvider.Web
                     this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
             }
 
-            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/ckeditor.js"))
+            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {
                 cs.RegisterClientScriptInclude(
-                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/ckeditor.js"));
+                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"));
             }
 
             if (

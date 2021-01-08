@@ -15,6 +15,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using System.Web.Configuration;
     using System.Web.UI;
 
+    using DNNConnect.CKEditorProvider.Constants;
+
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -505,6 +507,29 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             return inkilobytes ? result : (result * 1024);
+        }
+
+        /// <summary>
+        /// Converts the enum value for Link Protocol to the string value used for CKE config.
+        /// </summary>
+        /// <param name="protocol">The protocol enum value.</param>
+        /// <returns>The protocol string value.</returns>
+        public static string ToSettingValue(this LinkProtocol protocol)
+        {
+            switch (protocol)
+            {
+                case LinkProtocol.Http:
+                    return "http://";
+                case LinkProtocol.Ftp:
+                    return "ftp://";
+                case LinkProtocol.News:
+                    return "news://";
+                case LinkProtocol.Other:
+                    return string.Empty;
+                case LinkProtocol.Https:
+                default:
+                    return "https://";
+            }
         }
     }
 }

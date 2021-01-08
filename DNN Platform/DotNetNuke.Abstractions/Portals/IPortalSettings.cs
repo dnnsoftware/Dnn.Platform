@@ -537,5 +537,10 @@ namespace DotNetNuke.Abstractions.Portals
         /// Gets or sets the user tab id for the portal.
         /// </summary>
         int UserTabId { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to display the dropdowns to quickly add a moduel to the page in the edit bar.
+        /// </summary>
+        bool ShowQuickModuleAddMenu { get; }
     }
 }

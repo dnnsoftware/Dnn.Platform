@@ -24,6 +24,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.FileListViewMode = FileListView.DetailView;
             this.SettingMode = SettingsMode.Portal;
             this.DefaultLinkMode = LinkMode.RelativeURL;
+            this.DefaultLinkProtocol = LinkProtocol.Https;
             this.InjectSyntaxJs = true;
             this.BrowserRootDirId = -1;
             this.UploadDirId = -1;
@@ -71,6 +72,14 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// The default link mode.
         /// </value>
         public LinkMode DefaultLinkMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default link protocol.
+        /// </summary>
+        /// <value>
+        /// The default link protocol.
+        /// </value>
+        public LinkProtocol DefaultLinkProtocol { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [use anchor selector].
