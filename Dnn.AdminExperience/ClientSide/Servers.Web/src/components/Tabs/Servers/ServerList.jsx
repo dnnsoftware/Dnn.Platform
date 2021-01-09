@@ -10,12 +10,45 @@ import ServerRow from "./ServerRow";
 export default class ServerList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      openId: -1,
+    };
+  }
+
+  uncollapse(id) {
+    setTimeout(() => {
+      this.setState({
+        openId: id,
+      });
+    }, this.timeout);
+  }
+  collapse() {
+    if (this.state.openId !== -1) {
+      this.setState({
+        openId: -1,
+      });
+    }
+  }
+  toggle(openId) {
+    if (openId !== -1) {
+      this.uncollapse(openId);
+    } else {
+      this.collapse();
+    }
   }
 
   getServerGridRows() {
     if (this.props.servers && this.props.servers.length > 0) {
       const rows = this.props.servers.map((field, i) => {
-        return <ServerRow server={field} key={field.serverId} />;
+        return (
+          <ServerRow
+            server={field}
+            key={field.serverId}
+            inEdit={this.state.openId === field.serverId}
+            openCollapse={this.toggle.bind(this, field.serverId)}
+            collapse={this.collapse.bind(this, field.serverId)}
+          />
+        );
       });
       return rows;
     }
