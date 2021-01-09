@@ -658,7 +658,7 @@ Are you sure you want to increment the version number for your site?</value>
     <value>This DNN installation is running an alternative mail provider. The configuration is done in the provider's interface.</value>
   </data>
   <data name="tabServersTitle.Text" xml:space="preserve">
-    <value>Servers</value>
+    <value>Web Servers</value>
   </data>
   <data name="Actions.Text" xml:space="preserve">
     <value>Actions</value>
@@ -707,5 +707,14 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="Url.Help" xml:space="preserve">
     <value>The url for this web server</value>
+  </data>
+  <data name="DeleteNonActiveServers.Confirm" xml:space="preserve">
+    <value>Do you wish to delete all inactive servers?</value>
+  </data>
+  <data name="DeleteNonActiveServers.Text" xml:space="preserve">
+    <value>Delete Non Active Servers</value>
+  </data>
+  <data name="DeleteNonActiveServers.Warning" xml:space="preserve">
+    <value>You can delete all servers that have not been active for a whole day below</value>
   </data>
 </root>

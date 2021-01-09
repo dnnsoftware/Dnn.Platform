@@ -1,15 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { GridSystem, Label, GridCell } from "@dnnsoftware/dnn-react-common";
-import InfoBlock from "../../common/InfoBlock";
-import Localization from "../../../localization";
+import {
+  Button,
+  GridSystem,
+  Label,
+  GridCell,
+} from "@dnnsoftware/dnn-react-common";
+import InfoBlock from "../../../common/InfoBlock";
+import Localization from "../../../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ServersTabActions from "../../../actions/serversTab";
-import utils from "../../../utils";
+import ServersTabActions from "../../../../actions/serversTab";
+import utils from "../../../../utils";
 
-import "../tabs.less";
-import ServerList from "./ServerList";
+import "../../tabs.less";
+import "./style.less";
+import ServerList from "../ServerList";
 
 const defaultPlaceHolder = "...";
 
@@ -32,7 +38,14 @@ class Servers extends Component {
   }
 
   deleteNonActiveServers() {
-    this.props.deleteNonActiveServers();
+    utils.confirm(
+      Localization.get("DeleteNonActiveServers.Confirm"),
+      Localization.get("Confirm"),
+      Localization.get("Cancel"),
+      function () {
+        this.props.deleteNonActiveServers();
+      }.bind(this)
+    );
   }
 
   render() {
@@ -55,7 +68,21 @@ class Servers extends Component {
                 text={serverName}
               />
             </GridCell>
-            <GridCell></GridCell>
+            <GridCell>
+              <div className="warningBox">
+                <div className="warningText">
+                  {Localization.get("DeleteNonActiveServers.Warning")}
+                </div>
+                <div className="warningButton">
+                  <Button
+                    type="secondary"
+                    onClick={this.deleteNonActiveServers.bind(this)}
+                  >
+                    {Localization.get("DeleteNonActiveServers")}
+                  </Button>
+                </div>
+              </div>
+            </GridCell>
           </GridSystem>
         </GridCell>
         <GridCell className="dnn-servers-grid-panel">
