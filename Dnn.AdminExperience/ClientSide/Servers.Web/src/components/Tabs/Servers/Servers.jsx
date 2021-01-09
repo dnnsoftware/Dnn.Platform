@@ -27,6 +27,14 @@ class Servers extends Component {
     }
   }
 
+  deleteServer(serverId) {
+    this.props.deleteServer(serverId);
+  }
+
+  deleteNonActiveServers() {
+    this.props.deleteNonActiveServers();
+  }
+
   render() {
     const { props } = this;
     let serverName = "";
@@ -55,7 +63,10 @@ class Servers extends Component {
             className="header-title"
             label={Localization.get("plWebServers")}
           />
-          <ServerList servers={props.servers} />
+          <ServerList
+            servers={props.servers}
+            deleteServer={this.deleteServer.bind(this)}
+          />
         </GridCell>
       </GridCell>
     );
@@ -65,6 +76,8 @@ class Servers extends Component {
 Servers.propTypes = {
   errorMessage: PropTypes.string,
   onRetrieveServers: PropTypes.func.isRequired,
+  deleteServer: PropTypes.func.isRequired,
+  deleteNonActiveServers: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -79,6 +92,8 @@ function mapDispatchToProps(dispatch) {
     ...bindActionCreators(
       {
         onRetrieveServers: ServersTabActions.loadServers,
+        deleteServer: ServersTabActions.deleteServer,
+        deleteNonActiveServers: ServersTabActions.deleteNonActiveServers,
       },
       dispatch
     ),

@@ -47,6 +47,7 @@ export default class ServerList extends Component {
             inEdit={this.state.openId === field.serverId}
             openCollapse={this.toggle.bind(this, field.serverId)}
             collapse={this.collapse.bind(this, field.serverId)}
+            deleteServer={this.props.deleteServer.bind(this)}
           />
         );
       });
@@ -63,10 +64,12 @@ export default class ServerList extends Component {
         <div className="row header">
           <GridCell columnSize={30}>{Localization.get("Name")}</GridCell>
           <GridCell columnSize={40}>{Localization.get("Url")}</GridCell>
-          <GridCell columnSize={15}>
+          <GridCell columnSize={20}>
             {Localization.get("LastActivityDate")}
           </GridCell>
-          <GridCell columnSize={15}>{Localization.get("Actions")}</GridCell>
+          <GridCell columnSize={10} className="right">
+            {Localization.get("Actions")}
+          </GridCell>
         </div>
         {rows}
       </div>
@@ -76,4 +79,5 @@ export default class ServerList extends Component {
 
 ServerList.propTypes = {
   servers: PropTypes.array,
+  deleteServer: PropTypes.func,
 };

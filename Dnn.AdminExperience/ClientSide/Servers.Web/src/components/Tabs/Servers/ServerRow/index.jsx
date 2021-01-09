@@ -50,9 +50,20 @@ export default class ServerRow extends Component {
         }
       })
       .catch(() => {
-        //
+        util.notifyError(Localization.get("ServerUpdateUrlError"));
       });
     this.props.collapse();
+  }
+
+  deleteServer() {
+    util.confirm(
+      Localization.get("DeleteServerConfirm"),
+      Localization.get("Confirm"),
+      Localization.get("Cancel"),
+      function () {
+        this.props.deleteServer(this.props.server.serverId);
+      }.bind(this)
+    );
   }
 
   render() {
@@ -70,6 +81,12 @@ export default class ServerRow extends Component {
             {util.formatDateNoTime(server.lastActivityDate)}
           </GridCell>
           <GridCell columnSize={15}>
+            <IconButton
+              type="trash"
+              className={"edit-icon"}
+              onClick={this.deleteServer.bind(this)}
+              title={Localization.get("Delete")}
+            />
             <IconButton
               type="edit"
               className={"edit-icon " + !this.props.inEdit}
@@ -115,4 +132,5 @@ ServerRow.propTypes = {
   inEdit: PropTypes.bool,
   openCollapse: PropTypes.func,
   collapse: PropTypes.func,
+  deleteServer: PropTypes.func,
 };

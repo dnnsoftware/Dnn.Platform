@@ -36,13 +36,13 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
-        public HttpResponseMessage DeleteServer(int serverId)
+        public HttpResponseMessage DeleteServer(DeleteServerDTO data)
         {
             try
             {
-                DotNetNuke.Entities.Host.ServerController.DeleteServer(serverId);
+                DotNetNuke.Entities.Host.ServerController.DeleteServer(data.ServerId);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK);
+                return this.Request.CreateResponse(HttpStatusCode.OK, true);
             }
             catch (Exception exc)
             {
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetServerList());
+                return this.Request.CreateResponse(HttpStatusCode.OK, true);
             }
             catch (Exception exc)
             {

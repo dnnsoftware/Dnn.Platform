@@ -681,4 +681,31 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="Url.Text" xml:space="preserve">
     <value>Url</value>
   </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteServerConfirm.Text" xml:space="preserve">
+    <value>Do you wish to delete this web server?</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="errorMessageDeleteServers.Text" xml:space="preserve">
+    <value>There was an error deleting this server</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ServerUpdateUrlError.Text" xml:space="preserve">
+    <value>Couldn't update web server url</value>
+  </data>
+  <data name="Url.Help" xml:space="preserve">
+    <value>The url for this web server</value>
+  </data>
 </root>
