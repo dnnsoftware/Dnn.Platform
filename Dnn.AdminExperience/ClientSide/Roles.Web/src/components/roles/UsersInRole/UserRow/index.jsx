@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
 import { GridCell, DatePicker }  from "@dnnsoftware/dnn-react-common";
-import IconButton from "../../../common/IconButton";
+import CustomIconButton from "../../../common/CustomIconButton";
 import util from "../../../../utils";
 import resx from "../../../../resources";
 import {
@@ -110,7 +110,7 @@ class UserRow extends Component {
                 showIcon={true} showInput={false}
                 onIconClick={this.onExpiresTimeClick.bind(this, props.userDetails, props.index) }             />
         </span> : null;
-        let deleteAction = props.userDetails.allowDelete ? <IconButton type="x" width={17} onClick={this.onDeleteClick.bind(this, props.userDetails, props.index) } /> : null;
+        let deleteAction = props.userDetails.allowDelete ? <CustomIconButton type="x" width={17} onClick={this.onDeleteClick.bind(this, props.userDetails, props.index) } /> : null;
         return <div className={state.editIndex === props.index ? "edit-row" : null}>
             {deleteAction}
             {expiresTimeAction}

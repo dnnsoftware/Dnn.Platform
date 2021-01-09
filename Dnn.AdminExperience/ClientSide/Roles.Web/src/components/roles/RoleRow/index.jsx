@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.less";
-import { Collapsible, GridCell }  from "@dnnsoftware/dnn-react-common";
-import IconButton from "../../common/IconButton";
+import { Collapsible, GridCell, IconButton }  from "@dnnsoftware/dnn-react-common";
+import CustomIconButton from "../../common/CustomIconButton";
 import resx from "resources";
 import util from "utils";
 
@@ -81,7 +81,7 @@ class RoleRow extends Component {
                         <GridCell columnSize={15} >
                             {props.userCount}</GridCell>
                         <GridCell columnSize={15} >
-                            {props.auto ? <IconButton className="icon-flat" type="checkmark" /> : <div>&nbsp; </div>} </GridCell>
+                            {props.auto ? <CustomIconButton className="icon-flat" type="checkmark" /> : <div>&nbsp; </div>} </GridCell>
                         {canEdit &&
                             <GridCell columnSize={10} >
                                 {props.id !== "add" && props.roleIsApproved &&
@@ -90,7 +90,7 @@ class RoleRow extends Component {
                                         onClick={this.toggleUsers.bind(this) }
                                         title={resx.get("UsersInRole") }/>
                                 }
-                                <IconButton type="Edit"
+                                <IconButton type="edit"
                                     className={"edit-icon " + !(opened && props.currentIndex === 1) }
                                     onClick={this.toggleEditRole.bind(this) }
                                     title={resx.get("EditRole") }/>
