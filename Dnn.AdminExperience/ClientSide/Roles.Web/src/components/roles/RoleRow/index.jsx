@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./style.less";
 import { Collapsible, GridCell, IconButton }  from "@dnnsoftware/dnn-react-common";
-import CustomIconButton from "../../common/CustomIconButton";
 import resx from "resources";
 import util from "utils";
 
@@ -81,7 +80,7 @@ class RoleRow extends Component {
                         <GridCell columnSize={15} >
                             {props.userCount}</GridCell>
                         <GridCell columnSize={15} >
-                            {props.auto ? <CustomIconButton className="icon-flat" type="checkmark" /> : <div>&nbsp; </div>} </GridCell>
+                            {props.auto ? <IconButton className="icon-flat" customIcon={require("!raw-loader!../../../img/common/checkmark.svg").default} /> : <div>&nbsp; </div>} </GridCell>
                         {canEdit &&
                             <GridCell columnSize={10} >
                                 {props.id !== "add" && props.roleIsApproved &&
