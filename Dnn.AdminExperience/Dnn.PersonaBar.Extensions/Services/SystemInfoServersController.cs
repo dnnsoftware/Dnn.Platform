@@ -52,12 +52,12 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
-        public HttpResponseMessage EditServerUrl(int serverId, string newUrl)
+        public HttpResponseMessage EditServerUrl(EditServerUrlDTO data)
         {
             try
             {
-                var server = DotNetNuke.Entities.Host.ServerController.GetServers().FirstOrDefault(s => s.ServerID == serverId);
-                server.Url = newUrl;
+                var server = DotNetNuke.Entities.Host.ServerController.GetServers().FirstOrDefault(s => s.ServerID == data.ServerId);
+                server.Url = data.NewUrl;
                 DotNetNuke.Entities.Host.ServerController.UpdateServer(server);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, true);
