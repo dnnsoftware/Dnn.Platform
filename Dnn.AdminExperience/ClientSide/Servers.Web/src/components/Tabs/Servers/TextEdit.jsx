@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
-import IconButton from "../../common/IconButton";
+import { SingleLineInputWithError, IconButton } from "@dnnsoftware/dnn-react-common";
 
 function TextEdit(props) {
   if (props.inEdit) {

@@ -56,7 +56,7 @@ class Servers extends Component {
             label={Localization.get("plWebServers")}
           />
           <ServerList servers={props.servers} />
-        </GridCell>{" "}
+        </GridCell>
       </GridCell>
     );
   }
