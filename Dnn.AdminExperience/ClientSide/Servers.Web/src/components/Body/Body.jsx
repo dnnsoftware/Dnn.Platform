@@ -10,6 +10,7 @@ import Localization from "../../localization";
 import ApplicationTab from "../Tabs/Application";
 import WebTab from "../Tabs/Web";
 import DatabaseTab from "../Tabs/Database/Database";
+import ServersTab from "../Tabs/Servers/Servers";
 import SmtpServerTab from "../Tabs/SmtpServer";
 import PerformanceTab from "../Tabs/Performance";
 import LogsTab from "../Tabs/Logs";
@@ -58,9 +59,9 @@ class Body extends Component {
             });
         }        
 
-        const systemInfoTabHeaders = isHost ? [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle")] 
+        const systemInfoTabHeaders = isHost ? [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle"), Localization.get("tabServersTitle")] 
             : [Localization.get("tabApplicationTitle")];
-        const systemInfoTabBody = isHost ? [<ApplicationTab key="first" />, <WebTab key="second" />, <DatabaseTab key="third" />]
+        const systemInfoTabBody = isHost ? [<ApplicationTab key="first" />, <WebTab key="second" />, <DatabaseTab key="third" />, <ServersTab key="fourth" />]
             :  [<ApplicationTab key="first" />]; 
         const serverSettingsTabHeaders = isHost ? [Localization.get("tabSmtpServerTitle"), Localization.get("tabPerformanceTitle"), Localization.get("tabLogsTitle")]
             : [Localization.get("tabSmtpServerTitle")];
