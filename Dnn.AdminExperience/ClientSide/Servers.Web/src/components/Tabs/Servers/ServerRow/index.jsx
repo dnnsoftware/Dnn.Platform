@@ -7,6 +7,7 @@ import {
   IconButton,
   Collapsible,
   SingleLineInputWithError,
+  SvgIcons,
 } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../../localization";
 import util from "../../../../utils";
@@ -71,16 +72,22 @@ export default class ServerRow extends Component {
     return (
       <div className={"collapsible-component1 " + this.props.inEdit}>
         <div className={"collapsible-header1 " + !this.props.inEdit}>
-          <GridCell columnSize={30}>
+          <GridCell columnSize={5}>
+            <span
+              dangerouslySetInnerHTML={{ __html: SvgIcons.ListViewIcon }}
+              className={server.isActive ? "icon-flat active" : "icon-flat"}
+            ></span>
+          </GridCell>
+          <GridCell columnSize={25}>
             <TextOverflowWrapper text={server.serverName} />
           </GridCell>
           <GridCell columnSize={40}>
             <TextOverflowWrapper text={server.url} />
           </GridCell>
-          <GridCell columnSize={15}>
-            {util.formatDateNoTime(server.lastActivityDate)}
+          <GridCell columnSize={20}>
+            {util.formatDateAndTime(server.lastActivityDate)}
           </GridCell>
-          <GridCell columnSize={15}>
+          <GridCell columnSize={10}>
             <IconButton
               type="trash"
               className={"edit-icon"}

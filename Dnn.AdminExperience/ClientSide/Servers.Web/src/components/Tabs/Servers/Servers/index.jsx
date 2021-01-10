@@ -48,6 +48,14 @@ class Servers extends Component {
     );
   }
 
+  hasInactiveServers() {
+    let res = false;
+    this.props.servers.forEach((s) => {
+      res = res || !s.isActive;
+    });
+    return res;
+  }
+
   render() {
     const { props } = this;
     let serverName = "";
@@ -69,19 +77,21 @@ class Servers extends Component {
               />
             </GridCell>
             <GridCell>
-              <div className="warningBox">
-                <div className="warningText">
-                  {Localization.get("DeleteNonActiveServers.Warning")}
+              {this.hasInactiveServers() ? (
+                <div className="warningBox">
+                  <div className="warningText">
+                    {Localization.get("DeleteNonActiveServers.Warning")}
+                  </div>
+                  <div className="warningButton">
+                    <Button
+                      type="secondary"
+                      onClick={this.deleteNonActiveServers.bind(this)}
+                    >
+                      {Localization.get("DeleteNonActiveServers")}
+                    </Button>
+                  </div>
                 </div>
-                <div className="warningButton">
-                  <Button
-                    type="secondary"
-                    onClick={this.deleteNonActiveServers.bind(this)}
-                  >
-                    {Localization.get("DeleteNonActiveServers")}
-                  </Button>
-                </div>
-              </div>
+              ) : null}
             </GridCell>
           </GridSystem>
         </GridCell>
@@ -105,6 +115,7 @@ Servers.propTypes = {
   onRetrieveServers: PropTypes.func.isRequired,
   deleteServer: PropTypes.func.isRequired,
   deleteNonActiveServers: PropTypes.func.isRequired,
+  servers: PropTypes.array,
 };
 
 function mapStateToProps(state) {
