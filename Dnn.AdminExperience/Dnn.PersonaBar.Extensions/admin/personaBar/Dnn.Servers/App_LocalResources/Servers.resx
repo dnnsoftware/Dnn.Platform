@@ -706,7 +706,7 @@ Are you sure you want to increment the version number for your site?</value>
     <value>Couldn't update web server url</value>
   </data>
   <data name="Url.Help" xml:space="preserve">
-    <value>The url for this web server</value>
+    <value>The URL for direct connection to this web server.  In multi-server environments, this is typically an IP address or unique DNS entry that points directly to an individual server.</value>
   </data>
   <data name="DeleteNonActiveServers.Confirm" xml:space="preserve">
     <value>Do you wish to delete all inactive servers?</value>
