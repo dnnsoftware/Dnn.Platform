@@ -715,6 +715,6 @@ Are you sure you want to increment the version number for your site?</value>
     <value>Delete Non Active Servers</value>
   </data>
   <data name="DeleteNonActiveServers.Warning" xml:space="preserve">
-    <value>You can delete all servers that have not been active for a whole day below</value>
+    <value>You can delete all servers that have not been active for 24 hours below</value>
   </data>
 </root>
