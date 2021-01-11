@@ -724,13 +724,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             var httpRequest = HttpContext.Current.Request;
 
             // var _CKEditorName = request.QueryString["CKEditor"];
-            var funcNum = httpRequest.QueryString["CKEditorFuncNum"];
-
             // funcNum is null when EasyImageUpload is being used
-            if (string.IsNullOrEmpty(funcNum))
-            {
-                return $"console.log('GetJsUploadCode called: {fileName}, {fileUrl}');";
-            }
+            var funcNum = httpRequest.QueryString["CKEditorFuncNum"];
 
             var errorMsg = string.Empty;
 
@@ -2496,14 +2491,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
                 else
                 {
-                    this.Response.ClearContent();
-                    this.Response.ContentType = "application/json";
-                    this.Response.Write($"{{\"default\": null}}");
-                    //this.Response.Write("<script type=\"text/javascript\">");
-                    //this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
-                    //this.Response.Write("</script>");
+                    this.Response.Write("<script type=\"text/javascript\">");
+                    this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
+                    this.Response.Write("</script>");
                 }
-                
+
                 this.Response.End();
             }
             else
