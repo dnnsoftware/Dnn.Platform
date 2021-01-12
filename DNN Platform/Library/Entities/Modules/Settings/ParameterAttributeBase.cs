@@ -40,5 +40,10 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// The serializer must implement the <see cref="ISettingsSerializer{T}" /> interface.
         /// </remarks>
         public string Serializer { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the settings should be stored securely. This encrypts the value of the parameter.
+        /// </summary>
+        public bool IsSecure { get; set; } = false;
     }
 }
