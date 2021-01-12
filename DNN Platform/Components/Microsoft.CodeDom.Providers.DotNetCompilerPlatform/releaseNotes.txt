@@ -1,11 +1,5 @@
 ﻿<h3>Microsoft CodeDom .NET Compiler</h3>
-<strong>2.0.1</strong>
-<p class="Contributor">
-	DotNetNuke Corporation <br />
-	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />
-	<a href=https://www.dnnsoftware.com>www.dnnsoftware.com</a><br />
-</p>
-<hr/>
+<strong>3.6.0</strong>
 <div class="License">
 	<h3>About the Microsoft CodeDom .NET Compiler</h3>
 	<h2>
