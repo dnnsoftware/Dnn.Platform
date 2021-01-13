@@ -317,15 +317,18 @@ namespace DotNetNuke.Services.Installer.Installers
                     // This is the initial script when installing
                     this._installScript = file;
                 }
-                else if (file.Name.StartsWith("preupgrade.", StringComparison.InvariantCultureIgnoreCase))
+                else if (file.Name.StartsWith("preupgrade.", StringComparison.InvariantCultureIgnoreCase)
+                    || type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this._preUpgradeScript = file;
                 }
-                else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase))
+                else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase)
+                    || type.Equals("postupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this._upgradeScript = file;
                 }
-                else if (file.Name.StartsWith("schema.", StringComparison.InvariantCultureIgnoreCase))
+                else if (file.Name.StartsWith("schema.", StringComparison.InvariantCultureIgnoreCase)
+                    || type.Equals("schema", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this._schemaScripts.Add(file);
                 }
@@ -334,9 +337,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     // These are the Install/Upgrade scripts
                     this.InstallScripts[file.Version] = file;
                 }
-                else
+                else if (type.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // These are the Uninstall scripts
+                    // This is the Uninstall script
                     this.UnInstallScripts[file.Version] = file;
                 }
             }
