@@ -337,7 +337,8 @@ namespace DotNetNuke.Services.Installer.Installers
                     // These are the Install/Upgrade scripts
                     this.InstallScripts[file.Version] = file;
                 }
-                else if (type.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
+                else if (file.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase)
+                    || type.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // This is the Uninstall script
                     this.UnInstallScripts[file.Version] = file;
