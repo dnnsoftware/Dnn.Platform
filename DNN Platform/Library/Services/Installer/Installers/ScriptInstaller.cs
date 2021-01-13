@@ -16,14 +16,13 @@ namespace DotNetNuke.Services.Installer.Installers
     /// <summary>
     /// The ScriptInstaller installs Script Components to a DotNetNuke site.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     /// -----------------------------------------------------------------------------
     public class ScriptInstaller : FileInstaller
     {
         private readonly SortedList<Version, InstallFile> _installScripts = new SortedList<Version, InstallFile>();
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
+        private InstallFile _preUpgradeScript;
         private InstallFile _upgradeScript;
         private readonly List<InstallFile> _schemaScripts = new List<InstallFile>();
 
@@ -57,7 +56,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of Install Scripts.
+        /// Gets the collection of versioned Install Scripts.
         /// </summary>
         /// <value>A List(Of InstallFile).</value>
         /// -----------------------------------------------------------------------------
@@ -121,6 +120,21 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Pre-Upgrade Script (if present) - this script will always run before
+        /// any upgrade scripts but not upon initial installation.
+        /// </summary>
+        /// <value>An InstallFile.</value>
+        /// -----------------------------------------------------------------------------
+        protected InstallFile PreUpgradeScript
+        {
+            get
+            {
+                return this._preUpgradeScript;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the Upgrade Script (if present).
         /// </summary>
         /// <value>An InstallFile.</value>
@@ -178,6 +192,14 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         bSuccess = this.InstallScriptFile(this.InstallScript);
                         installedVersion = this.InstallScript.Version;
+                    }
+                }
+                else
+                {
+                    // Pre upgrade script
+                    if (this.PreUpgradeScript != null)
+                    {
+                        bSuccess = this.InstallScriptFile(this.PreUpgradeScript);
                     }
                 }
 
@@ -294,6 +316,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     // This is the initial script when installing
                     this._installScript = file;
+                }
+                else if (file.Name.StartsWith("preupgrade.", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this._preUpgradeScript = file;
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase))
                 {
