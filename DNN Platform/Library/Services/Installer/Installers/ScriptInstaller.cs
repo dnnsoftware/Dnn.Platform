@@ -22,9 +22,8 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly SortedList<Version, InstallFile> _installScripts = new SortedList<Version, InstallFile>();
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
-        private InstallFile _preUpgradeScript;
-        private InstallFile _upgradeScript;
-        private readonly List<InstallFile> _schemaScripts = new List<InstallFile>();
+        private readonly List<InstallFile> _preUpgradeScripts = new List<InstallFile>();
+        private readonly List<InstallFile> _postUpgradeScripts = new List<InstallFile>();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -120,44 +119,31 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Pre-Upgrade Script (if present) - this script will always run before
+        /// Gets a list of Pre-Upgrade Scripts (if present) - these scripts will always run before
         /// any upgrade scripts but not upon initial installation.
         /// </summary>
-        /// <value>An InstallFile.</value>
+        /// <value>A list of <see cref="InstallFile"/> instances.</value>
         /// -----------------------------------------------------------------------------
-        protected InstallFile PreUpgradeScript
+        protected List<InstallFile> PreUpgradeScripts
         {
             get
             {
-                return this._preUpgradeScript;
+                return this._preUpgradeScripts;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Upgrade Script (if present).
+        /// Gets a list of Post-Upgrade Scripts (if present) - these scripts will always run after
+        /// and versioned upgrade scripts and also after initial install.
         /// </summary>
-        /// <value>An InstallFile.</value>
+        /// <value>A list of <see cref="InstallFile"/> instances.</value>
         /// -----------------------------------------------------------------------------
-        protected InstallFile UpgradeScript
+        protected List<InstallFile> PostUpgradeScripts
         {
             get
             {
-                return this._upgradeScript;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Schema Script (if present).
-        /// </summary>
-        /// <value>An InstallFile.</value>
-        /// -----------------------------------------------------------------------------
-        protected List<InstallFile> SchemaScripts
-        {
-            get
-            {
-                return this._schemaScripts;
+                return this._postUpgradeScripts;
             }
         }
 
@@ -197,9 +183,13 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     // Pre upgrade script
-                    if (this.PreUpgradeScript != null)
+                    foreach (InstallFile file in this.PreUpgradeScripts)
                     {
-                        bSuccess = this.InstallScriptFile(this.PreUpgradeScript);
+                        bSuccess = this.InstallScriptFile(file);
+                        if (!bSuccess)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -219,23 +209,18 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
 
-                // Next process UpgradeScript - this script always runs if present
-                if (this.UpgradeScript != null)
+                // Next process Post-UpgradeScripts - this script always runs if present
+                foreach (InstallFile file in this.PostUpgradeScripts)
                 {
-                    bSuccess = this.InstallScriptFile(this.UpgradeScript);
-                    installedVersion = this.UpgradeScript.Version;
-                }
-
-                // Next process SchemaScripts - these script always runs if present
-                if (bSuccess)
-                {
-                    foreach (InstallFile file in this.SchemaScripts)
+                    bSuccess = this.InstallScriptFile(file);
+                    if (file.Version != new Version(0, 0, 0))
                     {
-                        bSuccess = this.InstallScriptFile(file);
-                        if (!bSuccess)
-                        {
-                            break;
-                        }
+                        installedVersion = file.Version;
+                    }
+
+                    if (!bSuccess)
+                    {
+                        break;
                     }
                 }
 
@@ -320,17 +305,13 @@ namespace DotNetNuke.Services.Installer.Installers
                 else if (file.Name.StartsWith("preupgrade.", StringComparison.InvariantCultureIgnoreCase)
                     || type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._preUpgradeScript = file;
+                    this._preUpgradeScripts.Add(file);
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase)
+                    || file.Name.StartsWith("postupgrade.", StringComparison.InvariantCultureIgnoreCase)
                     || type.Equals("postupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._upgradeScript = file;
-                }
-                else if (file.Name.StartsWith("schema.", StringComparison.InvariantCultureIgnoreCase)
-                    || type.Equals("schema", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    this._schemaScripts.Add(file);
+                    this._postUpgradeScripts.Add(file);
                 }
                 else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {
