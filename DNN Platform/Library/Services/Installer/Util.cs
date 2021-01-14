@@ -700,6 +700,8 @@ namespace DotNetNuke.Services.Installer
         public static string SQL_EndUnInstall = GetLocalizedString("SQL_EndUnInstall");
         public static string SQL_Exceptions = GetLocalizedString("SQL_Exceptions");
         public static string SQL_Executing = GetLocalizedString("SQL_Executing");
+        public static string SQL_Manifest_BadFile = GetLocalizedString("SQL_Manifest_BadFile");
+        public static string SQL_Manifest_Error = GetLocalizedString("SQL_Manifest_Error");
         public static string SQL_RolledBack = GetLocalizedString("SQL_RolledBack");
         public static string UNINSTALL_Start = GetLocalizedString("UNINSTALL_Start");
         public static string UNINSTALL_StartComp = GetLocalizedString("UNINSTALL_StartComp");

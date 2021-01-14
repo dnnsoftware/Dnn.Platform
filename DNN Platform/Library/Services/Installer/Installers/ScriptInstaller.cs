@@ -295,7 +295,7 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
             string type = nav.GetAttribute("type", string.Empty);
-            if (file != null && this.IsCorrectType(file.Type))
+            if (file != null && this.IsCorrectType(file.Type) && this.IsValidScript(file.Name))
             {
                 if (file.Name.StartsWith("install.", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -324,6 +324,18 @@ namespace DotNetNuke.Services.Installer.Installers
                     // These are the Uninstall scripts
                     this.UnInstallScripts[file.Version] = file;
                 }
+                else
+                {
+                    // we couldn't determine the file type
+                    this.Log.AddFailure(string.Format(Util.SQL_Manifest_BadFile, file.Name));
+                    return;
+                }
+            }
+            else
+            {
+                // bad file
+                this.Log.AddFailure(Util.SQL_Manifest_Error);
+                return;
             }
 
             // Call base method to set up for file processing
@@ -334,11 +346,9 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override void UnInstallFile(InstallFile scriptFile)
         {
             // Process the file if it is an UnInstall Script
-            var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
-            if (extension != null && this.UnInstallScripts.ContainsValue(scriptFile))
+            if (this.UnInstallScripts.ContainsValue(scriptFile))
             {
-                string fileExtension = extension.Substring(1);
-                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && this.IsValidScript(fileExtension))
+                if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Install Script
                     this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
@@ -384,26 +394,28 @@ namespace DotNetNuke.Services.Installer.Installers
             return bSuccess;
         }
 
-        private bool IsValidScript(string fileExtension)
+        private bool IsValidScript(string fileName)
         {
-            return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
+            var fileExtension = Path.GetExtension(fileName.ToLowerInvariant());
+            if (fileExtension != null)
+            {
+                fileExtension = fileExtension.Substring(1);
+                return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool InstallScriptFile(InstallFile scriptFile)
         {
             // Call base InstallFile method to copy file
             bool bSuccess = this.InstallFile(scriptFile);
-
-            // Process the file if it is an Install Script
-            var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
-            if (extension != null)
+            if (bSuccess)
             {
-                string fileExtension = extension.Substring(1);
-                if (bSuccess && this.IsValidScript(fileExtension))
-                {
-                    this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
-                    bSuccess = this.ExecuteSql(scriptFile);
-                }
+                this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
+                bSuccess = this.ExecuteSql(scriptFile);
             }
 
             return bSuccess;
