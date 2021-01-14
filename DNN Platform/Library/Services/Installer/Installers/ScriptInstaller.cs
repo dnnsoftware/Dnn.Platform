@@ -340,7 +340,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 else if (file.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase)
                     || type.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // This is the Uninstall script
+                    // These are the Uninstall scripts
                     this.UnInstallScripts[file.Version] = file;
                 }
             }
