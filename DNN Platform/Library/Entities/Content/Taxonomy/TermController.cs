@@ -96,6 +96,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("contentItem", contentItem);
 
             this._DataService.AddTermToContent(term, contentItem);
+
+            // We have adjusted a content item, remove it from cache
+            DataCache.RemoveCache(string.Format(DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
         }
 
         /// <summary>
@@ -212,6 +215,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("contentItem", contentItem);
 
             this._DataService.RemoveTermsFromContent(contentItem);
+
+            // We have adjusted a content item, remove it from cache
+            DataCache.RemoveCache(string.Format(DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
         }
 
         /// <summary>
