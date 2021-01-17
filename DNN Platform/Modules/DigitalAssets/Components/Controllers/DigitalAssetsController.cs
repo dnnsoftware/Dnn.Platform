@@ -748,7 +748,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.ModifiedBy + ".DisplayName"),
                         Type = typeof(int),
                         Value = item.LastModifiedByUserID,
-                        StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : string.Empty
+                        StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : string.Empty,
                     },
                 };
         }

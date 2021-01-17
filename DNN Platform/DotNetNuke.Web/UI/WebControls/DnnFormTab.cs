@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public List<DnnFormSection> Sections { get; private set; }
 
         public string ResourceKey { get; set; }
+
         internal string ExpandAllScript { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Tokens
         public Scope CurrentAccessLevel { get; set; }
 
         /// <summary>
-        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages. 
+        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
         /// </summary>
         public bool DebugMessages { get; set; }
 

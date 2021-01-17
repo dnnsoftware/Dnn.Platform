@@ -5,13 +5,12 @@ namespace DotNetNuke.Authentication.Google
 {
     using System;
 
-    using DotNetNuke.Authentication.Google.Components;
-    using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
-    using DotNetNuke.Services.Exceptions;
 
+    /// <inheritdoc/>
     public partial class Settings : OAuthSettingsBase
     {
+        /// <inheritdoc/>
         protected override string AuthSystemApplicationName
         {
             get { return "Google"; }

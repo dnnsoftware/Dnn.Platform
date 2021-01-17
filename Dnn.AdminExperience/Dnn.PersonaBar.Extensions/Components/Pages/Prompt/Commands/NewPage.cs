@@ -43,11 +43,17 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private string Title { get; set; }
+
         private string Name { get; set; }
+
         private string Url { get; set; }
+
         private int? ParentId { get; set; }
+
         private string Description { get; set; }
+
         private string Keywords { get; set; }
+
         private bool? Visible { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

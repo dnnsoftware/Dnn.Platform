@@ -300,6 +300,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class MyPortalSettingsRepository : SettingsRepository<MyPortalSettings>
-        {}
+        {
+        }
     }
 }

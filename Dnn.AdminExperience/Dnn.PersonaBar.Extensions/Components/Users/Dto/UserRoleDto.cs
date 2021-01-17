@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 ExpiresTime = userRole.ExpiryDate,
                 AllowExpired = AllowExpiredRole(portalSettings, userRole.UserID, userRole.RoleID),
                 AllowDelete = RoleController.CanRemoveUserFromRole(portalSettings, userRole.UserID, userRole.RoleID),
-                AllowOwner = (userRole.SecurityMode == SecurityMode.SocialGroup) || (userRole.SecurityMode == SecurityMode.Both)
+                AllowOwner = (userRole.SecurityMode == SecurityMode.SocialGroup) || (userRole.SecurityMode == SecurityMode.Both),
             };
         }
 

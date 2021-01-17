@@ -1009,7 +1009,7 @@ namespace DotNetNuke.Services.Install
                     FirstName = "SuperUser",
                     LastName = "Account",
                 },
-                InstallCulture = installInfo["language"]
+                InstallCulture = installInfo["language"],
             };
 
             // Website Portal Config

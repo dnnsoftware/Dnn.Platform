@@ -38,11 +38,17 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         private const string FlagStatus = "status";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
+
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public string RoleName { get; set; }
+
         public string Description { get; set; }
+
         public bool IsPublic { get; set; }
+
         public bool AutoAssign { get; set; }
+
         public RoleStatus Status { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -85,7 +91,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     IsPublic = this.IsPublic,
                     GroupId = -1,
                     IsSystem = false,
-                    SecurityMode = SecurityMode.SecurityRole
+                    SecurityMode = SecurityMode.SecurityRole,
                 };
                 KeyValuePair<HttpStatusCode, string> message;
                 var success = RolesController.Instance.SaveRole(this.PortalSettings, roleDto, false, out message);

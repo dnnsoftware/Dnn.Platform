@@ -45,10 +45,15 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int RoleId { get; set; }
+
         public string RoleName { get; set; }
+
         public string Description { get; set; }
+
         public bool? IsPublic { get; set; }
+
         public bool? AutoAssign { get; set; }
+
         public RoleStatus? Status { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -102,7 +107,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     GroupId = existingRole?.RoleGroupID ?? -1,
                     IsSystem = existingRole?.IsSystemRole ?? false,
                     SecurityMode = existingRole?.SecurityMode ?? SecurityMode.SecurityRole,
-                    Status = this.Status ?? (existingRole?.Status ?? RoleStatus.Approved)
+                    Status = this.Status ?? (existingRole?.Status ?? RoleStatus.Approved),
                 };
                 KeyValuePair<HttpStatusCode, string> message;
                 var success = RolesController.Instance.SaveRole(this.PortalSettings, roleDto, false, out message);
@@ -110,7 +115,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
                 var lstResults = new List<RoleModel>
                 {
-                    new RoleModel(RoleController.Instance.GetRoleById(this.PortalId, roleDto.Id))
+                    new RoleModel(RoleController.Instance.GetRoleById(this.PortalId, roleDto.Id)),
                 };
                 return new ConsoleResultModel(this.LocalizeString("RoleUpdated.Message")) { Data = lstResults, Records = lstResults.Count };
             }

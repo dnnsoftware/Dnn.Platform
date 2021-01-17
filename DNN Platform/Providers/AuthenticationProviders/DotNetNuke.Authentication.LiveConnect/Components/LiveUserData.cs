@@ -4,32 +4,37 @@
 namespace DotNetNuke.Authentication.LiveConnect.Components
 {
     using System;
-    using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Services.Authentication.OAuth;
 
+    /// <inheritdoc/>
     [DataContract]
     public class LiveUserData : UserData
     {
+        /// <inheritdoc/>
         public override string FirstName
         {
             get { return this.LiveFirstName; }
             set { }
         }
 
+        /// <inheritdoc/>
         public override string LastName
         {
             get { return this.LiveLastName; }
             set { }
         }
 
+        /// <summary>Gets or sets the link URL.</summary>
         [DataMember(Name = "link")]
         public Uri Link { get; set; }
 
+        /// <summary>Gets or sets the first name.</summary>
         [DataMember(Name = "first_name")]
         public string LiveFirstName { get; set; }
 
+        /// <summary>Gets or sets the last name.</summary>
         [DataMember(Name = "last_name")]
         public string LiveLastName { get; set; }
     }

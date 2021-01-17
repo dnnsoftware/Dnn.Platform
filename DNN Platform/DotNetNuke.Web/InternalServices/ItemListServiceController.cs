@@ -314,11 +314,11 @@ namespace DotNetNuke.Web.InternalServices
 
             var terms = new ArrayList();
             var vocabularies = from v in vocabRep.GetVocabularies()
-                where (v.ScopeType.ScopeType == "Application"
-                       || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
-                      && (!v.IsSystem || includeSystem)
-                      && (v.Name != "Tags" || includeTags)
-                select v;
+                               where (v.ScopeType.ScopeType == "Application"
+                                      || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
+                                     && (!v.IsSystem || includeSystem)
+                                     && (v.Name != "Tags" || includeTags)
+                               select v;
 
             foreach (var v in vocabularies)
             {
@@ -413,10 +413,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
             var mygroup = (from @group in groups
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
                 into portals
-                where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                select portals.ToArray()).FirstOrDefault();
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
             return mygroup;
         }
 
@@ -877,7 +877,7 @@ namespace DotNetNuke.Web.InternalServices
                     Key = page.TabID.ToString(CultureInfo.InvariantCulture),
                     Value = page.LocalizedTabName,
                     HasChildren = page.HasChildren,
-                    Selectable = true
+                    Selectable = true,
                 },
             };
 
@@ -945,7 +945,7 @@ namespace DotNetNuke.Web.InternalServices
                             Key = PortalPrefix + portal.PortalID.ToString(CultureInfo.InvariantCulture),
                             Value = portal.PortalName,
                             HasChildren = true,
-                            Selectable = false
+                            Selectable = false,
                         },
                     }).ToList();
 
@@ -1085,7 +1085,7 @@ namespace DotNetNuke.Web.InternalServices
                         Key = parentFolder.FolderID.ToString(CultureInfo.InvariantCulture),
                         Value = portalId == -1 ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder,
                         HasChildren = this.HasChildren(parentFolder, permission),
-                        Selectable = true
+                        Selectable = true,
                     },
                 };
             }
@@ -1167,7 +1167,7 @@ namespace DotNetNuke.Web.InternalServices
                     Key = folder.FolderID.ToString(CultureInfo.InvariantCulture),
                     Value = folder.FolderName,
                     HasChildren = this.HasChildren(folder, permission),
-                    Selectable = true
+                    Selectable = true,
                 },
             };
             var parentId = folder.ParentID;

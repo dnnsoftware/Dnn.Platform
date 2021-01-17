@@ -104,10 +104,10 @@ namespace DotNetNuke.Entities.Modules.Prompt
                     PageNo = pageNo,
                     TotalPages = totalPages,
                     TotalRecords = total,
-                    PageSize = max
+                    PageSize = max,
                 },
                 Records = results.Count(),
-                Output = results.Count() == 0 ? this.LocalizeString("Prompt_NoModules") : ""
+                Output = results.Count() == 0 ? this.LocalizeString("Prompt_NoModules") : "",
             };
         }
     }

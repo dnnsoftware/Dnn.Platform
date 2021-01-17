@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
     public class ListCommands : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
+
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public override ConsoleResultModel Run()
@@ -30,17 +31,17 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
                     Category = c.Category,
                     Description = c.Description,
                     Key = c.Key,
-                    Version = c.Version
+                    Version = c.Version,
                 });
                 var lstOut = CommandRepository.Instance.GetCommands().Values.Concat(lstNewCommands).OrderBy(c => c.Name + '.' + c.Name).ToList();
-                return new ConsoleResultModel(string.Format(LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
+                return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
                 {
                     Records = lstOut.Count,
                     Data = lstOut,
                     FieldOrder = new[]
                     {
                     "Name", "Description", "Version", "Category"
-                    }
+                    },
                 };
             }
             catch (Exception ex)

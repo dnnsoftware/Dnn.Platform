@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Services
 {
     using System;
@@ -23,7 +22,7 @@ namespace Dnn.ExportImport.Components.Services
 
     public class PageTemplatesExportService : AssetsExportService
     {
-        private readonly string _templatesFolder =
+        private readonly string templatesFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
 
         public override string Category => Constants.Category_Templates;
@@ -52,7 +51,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var templatesFile = string.Format(this._templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var templatesFile = string.Format(this.templatesFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -84,7 +83,8 @@ namespace Dnn.ExportImport.Components.Services
 
                         var folder = FolderManager.Instance.GetFolder(template.FolderId);
                         CompressionUtil.AddFileToArchive(
-                            portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(template), templatesFile,
+                            portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(template),
+                            templatesFile,
                             folderOffset);
 
                         this.CheckPoint.ProcessedItems++;
@@ -126,7 +126,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var portalId = importJob.PortalId;
-            var templatesFile = string.Format(this._templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
+            var templatesFile = string.Format(this.templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
             var totalTemplates = this.GetImportTotal();
 
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
@@ -139,7 +139,9 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (!File.Exists(templatesFile))
                 {
-                    this.Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
+                    this.Result.AddLogEntry(
+                        "TemplatesFileNotFound",
+                        "Templates file not found. Skipping templates import",
                         ReportLevel.Warn);
                     this.CheckPoint.Completed = true;
                     this.CheckPointStageCallback(this);
@@ -148,7 +150,9 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     var portal = PortalController.Instance.GetPortal(portalId);
 
-                    CompressionUtil.UnZipArchive(templatesFile, portal.HomeDirectoryMapPath,
+                    CompressionUtil.UnZipArchive(
+                        templatesFile,
+                        portal.HomeDirectoryMapPath,
                         importDto.CollisionResolution == CollisionResolution.Overwrite);
 
                     this.Result.AddSummary("Imported templates", totalTemplates.ToString());

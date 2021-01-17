@@ -37,5 +37,6 @@ namespace DotNetNuke.Modules.Admin.Users
     /// <remarks>
     /// </remarks>
     public partial class Users : UserUserControlBase
-    {}
+    {
+    }
 }

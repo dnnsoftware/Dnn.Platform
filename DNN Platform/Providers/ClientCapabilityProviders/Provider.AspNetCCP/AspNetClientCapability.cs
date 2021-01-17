@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 {
     using System;
@@ -15,9 +14,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
 
-    /// <summary>
-    /// AspNet Browser Implementation of IClientCapability.
-    /// </summary>
+    /// <summary>AspNet Browser Implementation of <see cref="DotNetNuke.Services.ClientCapability.IClientCapability"/>.</summary>
     public class AspNetClientCapability : Services.ClientCapability.ClientCapability
     {
         // set all agent identifiers are in lowercase for faster comparison
@@ -35,20 +32,22 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetClientCapability));
 
-        private static readonly Regex MobileCheck =
-            new Regex(
-                @"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino",
-                RegexOptions.Compiled, TimeSpan.FromSeconds(2));
+        private static readonly Regex MobileCheck = new Regex(
+            @"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino",
+            RegexOptions.Compiled,
+            TimeSpan.FromSeconds(2));
 
         private static readonly Regex TabletRegex = new Regex("ipad|xoom|sch-i800|playbook|tablet|kindle|nexus", RegexOptions.Compiled, TimeSpan.FromSeconds(2));
         private static readonly char[] Separators = { ';', ')' };
 
-        private readonly IDictionary<string, string> _properties;
+        private readonly IDictionary<string, string> properties;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
+        /// <param name="userAgent">The user agent.</param>
+        /// <param name="browserCaps">The browser capabilities.</param>
         public AspNetClientCapability(string userAgent, HttpCapabilitiesBase browserCaps)
         {
             this.UserAgent = userAgent;
@@ -97,6 +96,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
+        /// <param name="request">The HTTP request.</param>
         public AspNetClientCapability(HttpRequest request)
             : this(request.UserAgent ?? string.Empty, request.Browser)
         {
@@ -106,23 +106,24 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
+        /// <param name="properties">The properties.</param>
         public AspNetClientCapability(IDictionary<string, string> properties)
         {
-            this._properties = properties;
+            this.properties = properties;
 
-            if (this._properties != null)
+            if (this.properties != null)
             {
                 // Set Lite properties
-                this.ID = GetStringValue(this._properties, "Id");
-                this.IsMobile = GetBoolValue(this._properties, "IsMobile");
-                this.ScreenResolutionWidthInPixels = GetIntValue(this._properties, "ScreenPixelsWidth");
-                this.ScreenResolutionHeightInPixels = GetIntValue(this._properties, "ScreenPixelsHeight");
+                this.ID = GetStringValue(this.properties, "Id");
+                this.IsMobile = GetBoolValue(this.properties, "IsMobile");
+                this.ScreenResolutionWidthInPixels = GetIntValue(this.properties, "ScreenPixelsWidth");
+                this.ScreenResolutionHeightInPixels = GetIntValue(this.properties, "ScreenPixelsHeight");
 
                 // Set Premium properties
-                this.IsTablet = GetBoolValue(this._properties, "IsTablet");
-                this.IsTouchScreen = GetBoolValue(this._properties, "HasTouchScreen");
-                this.BrowserName = GetStringValue(this._properties, "BrowserName");
-                this.Capabilities = GetCapabilities(this._properties);
+                this.IsTablet = GetBoolValue(this.properties, "IsTablet");
+                this.IsTouchScreen = GetBoolValue(this.properties, "HasTouchScreen");
+                this.BrowserName = GetStringValue(this.properties, "BrowserName");
+                this.Capabilities = GetCapabilities(this.properties);
 
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
@@ -135,13 +136,14 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
+        /// <inheritdoc/>
         public override string this[string name]
         {
             get
             {
-                if (this._properties != null && this._properties.ContainsKey(name))
+                if (this.properties != null && this.properties.ContainsKey(name))
                 {
-                    return this._properties[name];
+                    return this.properties[name];
                 }
 
                 return (this.Capabilities != null && this.Capabilities.ContainsKey(name)) ? this.Capabilities[name] : string.Empty;
@@ -151,7 +153,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <summary>
         /// Returns a dictionary of capability names and values as strings based on the object
         /// keys and values held in the browser capabilities provided. The value string may
-        /// contains pipe (|) seperated lists of values.
+        /// contains pipe (|) separated lists of values.
         /// </summary>
         /// <param name="properties">A collection of device related capabilities.</param>
         /// <returns>Device related capabilities with property names and values converted to strings.</returns>

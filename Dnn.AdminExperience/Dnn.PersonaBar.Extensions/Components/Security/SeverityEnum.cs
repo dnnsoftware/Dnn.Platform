@@ -9,6 +9,6 @@ namespace Dnn.PersonaBar.Security.Components
         Pass,
         Warning,
         Failure,
-        Unverified
+        Unverified,
     }
 }

@@ -37,12 +37,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
-                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, "", "Locale={0}")
+                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, "", "Locale={0}"),
             };
 
             if (languagePack.PackageType == LanguagePackType.Extension)
             {
-                //Get all the packages but only bind to combo if not a language package
+                // Get all the packages but only bind to combo if not a language package
                 detail.Packages = Utility.GetAllPackagesListExceptLangPacks();
             }
 

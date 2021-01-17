@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         public IEnumerable<string> GetConfigFilesList()
         {
             var files = Directory
-                .EnumerateFiles(Globals.ApplicationMapPath) 
+                .EnumerateFiles(Globals.ApplicationMapPath)
                 .Where(file => file.ToLower().EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTS_EXT, StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
             IEnumerable<string> fileList = (from file in files select Path.GetFileName(file));
@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
             if (fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
             {
-                var configDoc = new XmlDocument {XmlResolver = null};
+                var configDoc = new XmlDocument { XmlResolver = null };
                 configDoc.LoadXml(fileContent);
                 Config.Save(configDoc, fileName);
             }
@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             {
                 return false;
             }
-            //TODO: Add more checks here
+            // TODO: Add more checks here
             return true;
         }
 

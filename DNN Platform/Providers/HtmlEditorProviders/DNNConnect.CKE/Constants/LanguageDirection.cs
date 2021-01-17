@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// The Language Direction
+    /// The Language Direction.
     /// </summary>
     public enum LanguageDirection
     {
@@ -22,6 +22,6 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// Language Direction Right to Left
         /// </summary>
-        RightToLeft
+        RightToLeft,
     }
 }

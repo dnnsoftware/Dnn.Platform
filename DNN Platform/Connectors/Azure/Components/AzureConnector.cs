@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.AzureConnector.Components
 {
     using System;
@@ -20,28 +19,33 @@ namespace Dnn.AzureConnector.Components
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.RetryPolicies;
 
+    /// <inheritdoc/>
     public class AzureConnector : IConnector
     {
         private const string DefaultDisplayName = "Azure Storage";
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
+        private static readonly DataProvider DataProvider = DataProvider.Instance();
 
-        private string _displayName;
+        private string displayName;
 
+        /// <inheritdoc/>
         public string Name
         {
             get { return "Azure"; }
         }
 
+        /// <inheritdoc/>
         public string IconUrl
         {
             get { return "~/DesktopModules/Connectors/Azure/Images/Azure.png"; }
         }
 
+        /// <inheritdoc/>
         public string PluginFolder
         {
             get { return "~/DesktopModules/Connectors/Azure/"; }
         }
 
+        /// <inheritdoc/>
         public bool IsEngageConnector
         {
             get
@@ -50,23 +54,31 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
+        /// <inheritdoc/>
         public ConnectorCategories Type => ConnectorCategories.FileSystem;
 
+        /// <inheritdoc/>
         public bool SupportsMultiple => true;
 
+        /// <inheritdoc/>
         public string DisplayName
         {
             get
             {
                 return
-                    string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
+                    string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
             }
 
-            set { this._displayName = value; }
+            set
+            {
+                this.displayName = value;
+            }
         }
 
+        /// <inheritdoc/>
         public string Id { get; set; }
 
+        /// <inheritdoc/>
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
@@ -85,6 +97,7 @@ namespace Dnn.AzureConnector.Components
             return new List<IConnector> { this };
         }
 
+        /// <inheritdoc/>
         public void DeleteConnector(int portalId)
         {
             if (!string.IsNullOrEmpty(this.Id))
@@ -98,6 +111,7 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
+        /// <inheritdoc/>
         public bool HasConfig(int portalId)
         {
             var folderMapping = this.FindAzureFolderMapping(portalId, false, true);
@@ -105,6 +119,7 @@ namespace Dnn.AzureConnector.Components
             return this.GetConfig(portalId)["Connected"] == "true";
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var configs = new Dictionary<string, string>();
@@ -124,6 +139,7 @@ namespace Dnn.AzureConnector.Components
             return configs;
         }
 
+        /// <inheritdoc/>
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             customErrorMessage = string.Empty;
@@ -151,8 +167,7 @@ namespace Dnn.AzureConnector.Components
                 return true;
             }
 
-            if (this.FolderMappingNameExists(portalId, this.DisplayName,
-                Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
+            if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
             {
                 throw new Exception(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
             }
@@ -235,8 +250,12 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
-        internal static FolderMappingInfo FindAzureFolderMappingStatic(int portalId, int? folderMappingId = null,
-            bool autoCreate = true)
+        /// <summary>Find the folder mapping.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="folderMappingId">The folder mapping ID.</param>
+        /// <param name="autoCreate">Whether to auto-create the folder mapping.</param>
+        /// <returns>A <see cref="FolderMappingInfo"/> instance.</returns>
+        internal static FolderMappingInfo FindAzureFolderMappingStatic(int portalId, int? folderMappingId = null, bool autoCreate = true)
         {
             var folderMappings = FolderMappingController.Instance.GetFolderMappings(portalId)
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType);
@@ -300,7 +319,7 @@ namespace Dnn.AzureConnector.Components
                     folderMappingFolders.Select<IFolderInfo, IEnumerable<IFileInfo>>(folderManager.GetFiles)
                         .SelectMany(files => files))
                 {
-                    dataProvider.DeleteFile(portalId, file.FileName, file.FolderId);
+                    DataProvider.DeleteFile(portalId, file.FileName, file.FolderId);
                 }
 
                 // Remove the folders with the provided mapping that doesn't have child folders with other mapping (only in the database and filesystem)
@@ -318,7 +337,7 @@ namespace Dnn.AzureConnector.Components
                     foreach (var removableFolder in removableFolders.OrderByDescending(rf => rf.FolderPath))
                     {
                         DirectoryWrapper.Instance.Delete(removableFolder.PhysicalPath, false);
-                        dataProvider.DeleteFolder(portalId, removableFolder.FolderPath);
+                        DataProvider.DeleteFolder(portalId, removableFolder.FolderPath);
                     }
                 }
 

@@ -5,6 +5,7 @@
 namespace DotNetNuke.Tests.Web.Api.Internals
 {
     using System.Web;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -24,7 +25,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
 
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            
+
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

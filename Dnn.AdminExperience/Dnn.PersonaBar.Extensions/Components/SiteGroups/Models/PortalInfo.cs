@@ -7,6 +7,7 @@ namespace Dnn.PersonaBar.SiteGroups.Models
     public class PortalInfo
     {
         public int PortalId { get; set; }
+
         public string PortalName { get; set; }
     }
 }

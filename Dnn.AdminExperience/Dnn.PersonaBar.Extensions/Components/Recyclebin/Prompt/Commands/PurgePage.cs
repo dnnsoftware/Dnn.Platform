@@ -31,8 +31,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public PurgePage() : this(
             TabController.Instance,
             RecyclebinController.Instance,
-            new ContentVerifier()
-            )
+            new ContentVerifier())
         {
         }
 
@@ -46,6 +45,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int PageId { get; set; }
+
         private bool DeleteChildren { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

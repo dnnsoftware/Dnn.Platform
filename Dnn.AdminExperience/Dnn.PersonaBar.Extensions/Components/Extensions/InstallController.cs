@@ -109,16 +109,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                     {
                         if (installer.IsValid)
                         {
-                            //Reset Log
+                            // Reset Log
                             installer.InstallerInfo.Log.Logs.Clear();
 
-                            //Set the IgnnoreWhiteList flag
+                            // Set the IgnnoreWhiteList flag
                             installer.InstallerInfo.IgnoreWhiteList = true;
 
-                            //Set the Repair flag
+                            // Set the Repair flag
                             installer.InstallerInfo.RepairInstall = true;
 
-                            //Install
+                            // Install
                             installer.Install();
 
                             installResult.AddLogs(installer.InstallerInfo.Log.Logs);
@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
             {
                 var manifestFile = CreateManifest(installer, fileName, legacySkin);
-                //Re-evaluate the package after creating a temporary manifest
+                // Re-evaluate the package after creating a temporary manifest
                 installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
             }
 
@@ -173,7 +173,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             // This will not work when we try to install a skin/container under a specific portal.
             installer.InstallerInfo.PortalID = isPortalPackage ? portalId : Null.NullInteger;
 
-            //Read the manifest
+            // Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)
             {
                 installer.ReadManifest(true);

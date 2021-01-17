@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     physicalPath = serverInfo.PhysicalPath,
                     url = serverInfo.Url,
                     relativePath = serverInfo.RelativePath,
-                    serverTime = serverInfo.ServerTime
+                    serverTime = serverInfo.ServerTime,
                 });
             }
             catch (Exception exc)

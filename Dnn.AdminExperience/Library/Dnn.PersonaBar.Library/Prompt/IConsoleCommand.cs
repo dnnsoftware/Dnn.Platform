@@ -7,6 +7,7 @@ namespace Dnn.PersonaBar.Library.Prompt
 {
     using Dnn.PersonaBar.Library.Prompt.Models;
     using DotNetNuke.Entities.Users;
+
     [Obsolete("Moved to DotNetNuke.Abstractions.Prompt in the core abstractions project. Will be removed in DNN 11.", false)]
     public interface IConsoleCommand
     {

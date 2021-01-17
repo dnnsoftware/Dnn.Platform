@@ -36,17 +36,29 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         }
 
         public int TabId { get; set; }
+
         public string TabName { get; set; }
+
         public string Title { get; set; }
+
         public string Description { get; set; }
+
         public string CultureCode { get; set; }
+
         public Guid DefaultLanguageGuid { get; set; }
+
         public bool IsTranslated { get; set; }
+
         public bool IsPublished { get; set; }
+
         public string Position { get; set; }
+
         public string Path { get; set; }
+
         public bool HasChildren { get; set; }
+
         public string PageUrl { get; set; }
+
         public bool IsSpecial { get; set; }
 
         [JsonIgnore]

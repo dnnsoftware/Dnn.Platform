@@ -151,7 +151,7 @@ csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
 
 # SA1600: Elements should be documented
-dotnet_diagnostic.SA1600.severity = suggestion
+dotnet_diagnostic.SA1600.severity = none
 
 # SA1309: Field names should not begin with underscore
 dotnet_diagnostic.SA1309.severity = suggestion

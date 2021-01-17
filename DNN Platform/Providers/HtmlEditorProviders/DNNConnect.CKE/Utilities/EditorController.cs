@@ -1,16 +1,17 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using DNNConnect.CKEditorProvider.Objects;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DNNConnect.CKEditorProvider.Objects;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+
+    /// <summary>Editor controller.</summary>
     public static class EditorController
     {
         /// <summary>
@@ -95,7 +96,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <summary>
         /// Gets the editor host settings.
         /// </summary>
-        /// <returns>Returns the list of all Editor Host Settings</returns>
+        /// <returns>Returns the list of all Editor Host Settings.</returns>
         public static List<EditorHostSetting> GetEditorHostSettings()
         {
             var editorHostSettings = new List<EditorHostSetting>();
@@ -129,7 +130,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>
-        /// Adds or update's the editor host setting.
+        /// Adds or updates the editor host setting.
         /// </summary>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
@@ -138,6 +139,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             DataProvider.Instance().ExecuteNonQuery("CKE_AddOrUpdateEditorHostSetting", settingName, settingValue);
         }
 
+        /// <summary>Clear editor cache.</summary>
         public static void ClearEditorCache()
         {
             DataCache.RemoveCache("CKE_Host");

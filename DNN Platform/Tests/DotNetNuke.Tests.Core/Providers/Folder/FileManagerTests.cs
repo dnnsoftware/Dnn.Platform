@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using NUnit.Framework;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-    
+
     [TestFixture]
     public class FileManagerTests
     {

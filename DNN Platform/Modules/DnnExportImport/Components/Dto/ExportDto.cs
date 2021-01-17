@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Dto
 {
     using System;
@@ -9,30 +8,19 @@ namespace Dnn.ExportImport.Components.Dto
     using Dnn.ExportImport.Components.Common;
     using Newtonsoft.Json;
 
-    public enum TriCheckedState
-    {
-#if false
-        // for schema 1.0.0
-        Checked = 0,
-        UnChecked = 1,
-        Partial = 2,
-#else
-        UnChecked = 0,
-        Checked = 1,
-        CheckedWithAllChildren = 2,
-#endif
-
-    }
-
+    /// <summary>The export DTO.</summary>
     [JsonObject]
     public class ExportDto
     {
+        /// <summary>Gets the from date (in UTC).</summary>
         [JsonIgnore]
         public DateTime? FromDate => this.FromDateUtc;
 
+        /// <summary>Gets the to date (in UTC).</summary>
         [JsonIgnore]
         public DateTime ToDate => this.ToDateUtc;
 
+        /// <summary>Gets or sets the ID.</summary>
         public int Id { get; set; }
 
         /// <summary>
@@ -165,18 +153,5 @@ namespace Dnn.ExportImport.Components.Dto
         /// Gets or sets a value indicating whether used to determine if the DB file needs cleanup before starting import or not.
         /// </summary>
         public bool IsDirty { get; set; }
-    }
-
-    /// <summary>
-    ///  Spercifies page to be exported.
-    /// </summary>
-    [JsonObject]
-    public class PageToExport
-    {
-        public int TabId { get; set; }
-
-        public int ParentTabId { get; set; }
-
-        public TriCheckedState CheckedState { get; set; }
     }
 }

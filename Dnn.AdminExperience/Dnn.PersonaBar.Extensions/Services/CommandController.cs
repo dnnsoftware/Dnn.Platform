@@ -10,10 +10,11 @@ namespace Dnn.PersonaBar.Prompt.Services
     using System.Net.Http;
     using System.Text;
     using System.Web.Http;
-    // 
+
+    //
     // Copyright (c) .NET Foundation. All rights reserved.
     // Licensed under the MIT License. See LICENSE file in the project root for full license information.
-    // 
+    //
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Library.Prompt;
     using Dnn.PersonaBar.Prompt.Common;
@@ -47,6 +48,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
                 return this._portalId;
             }
+
             set
             {
                 this._portalId = value;
@@ -63,6 +65,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
                 return this._portalSettings;
             }
+
             set
             {
                 this._portalSettings = value;
@@ -102,22 +105,24 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
                 if (isHelpSyntax)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
                     {
-                        ResultHtml = Localization.GetString("Prompt_CommandHelpSyntax", Constants.LocalResourcesFile)
+                        ResultHtml = Localization.GetString("Prompt_CommandHelpSyntax", Constants.LocalResourcesFile),
                     });
                 }
                 else if (isHelpLearn)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
                     {
-                        ResultHtml = Localization.GetString("Prompt_CommandHelpLearn", Constants.LocalResourcesFile)
+                        ResultHtml = Localization.GetString("Prompt_CommandHelpLearn", Constants.LocalResourcesFile),
                     });
                 }
                 else if (isHelpCmd && args.Length == 1)
-                    return AddLogAndReturnResponse(null, null, command, startTime,
+                {
+                    return this.AddLogAndReturnResponse(null, null, command, startTime,
                         string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
+                }
 
                 // first look in new commands, then in the old commands
                 var newCommand = DotNetNuke.Prompt.CommandRepository.Instance.GetCommand(cmdName);
@@ -134,13 +139,13 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
                         }
-                        return AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
+                        return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                     }
-                    return TryRunOldCommand(command, allCommands[cmdName].CommandType, args, isHelpCmd, startTime);
+                    return this.TryRunOldCommand(command, allCommands[cmdName].CommandType, args, isHelpCmd, startTime);
                 }
                 else
                 {
-                    return TryRunNewCommand(command, newCommand, args, isHelpCmd, startTime);
+                    return this.TryRunNewCommand(command, newCommand, args, isHelpCmd, startTime);
                 }
             }
             catch (Exception ex)
@@ -187,32 +192,33 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
-                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command.Args, cmdObj));
+                if (isHelpCmd) return this.Request.CreateResponse(HttpStatusCode.OK, Components.Repositories.CommandRepository.Instance.GetCommandHelp(command.Args, cmdObj));
                 // set env. data for command use
-                cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
-                return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
+                cmdObj.Initialize(args, this.PortalSettings, this.UserInfo, command.CurrentPage);
+                return this.AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+                return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }
+
         private HttpResponseMessage TryRunNewCommand(CommandInputModel command, DotNetNuke.Abstractions.Prompt.IConsoleCommand cmdTypeToRun, string[] args, bool isHelpCmd, DateTime startTime)
         {
             // Instantiate and run the command that uses the new interfaces and base class
             try
             {
                 var cmdObj = (DotNetNuke.Abstractions.Prompt.IConsoleCommand)Activator.CreateInstance(cmdTypeToRun.GetType());
-                if (isHelpCmd) return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
+                if (isHelpCmd) return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Prompt.CommandRepository.Instance.GetCommandHelp(cmdObj));
                 // set env. data for command use
-                cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
-                return AddLogAndReturnResponseNewCommands(cmdObj, command, startTime);
+                cmdObj.Initialize(args, this.PortalSettings, this.UserInfo, command.CurrentPage);
+                return this.AddLogAndReturnResponseNewCommands(cmdObj, command, startTime);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+                return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }
 
@@ -223,7 +229,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             var isValid = consoleCommand?.IsValid() ?? false;
             var logInfo = new LogInfo
             {
-                LogTypeKey = "PROMPT_ALERT"
+                LogTypeKey = "PROMPT_ALERT",
             };
             logInfo.LogProperties.Add(new LogDetailInfo("Command", FilterCommand(command.CmdLine)));
             logInfo.LogProperties.Add(new LogDetailInfo("IsValid", isValid.ToString()));
@@ -262,20 +268,20 @@ namespace Dnn.PersonaBar.Prompt.Services
                                     result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
                         }
                     }
-                    message = Request.CreateResponse(HttpStatusCode.OK, result);
+                    message = this.Request.CreateResponse(HttpStatusCode.OK, result);
                     logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
                 {
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", consoleCommand?.ValidationMessage ?? error));
-                    message = BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
+                    message = this.BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
                 }
             }
             catch (Exception ex)
             {
                 logInfo.Exception = new ExceptionInfo(ex);
-                message = BadRequestResponse(ex.Message);
+                message = this.BadRequestResponse(ex.Message);
             }
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
@@ -298,7 +304,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             var isValid = consoleCommand?.IsValid() ?? false;
             var logInfo = new LogInfo
             {
-                LogTypeKey = "PROMPT_ALERT"
+                LogTypeKey = "PROMPT_ALERT",
             };
             logInfo.LogProperties.Add(new LogDetailInfo("Command", FilterCommand(command.CmdLine)));
             logInfo.LogProperties.Add(new LogDetailInfo("IsValid", isValid.ToString()));

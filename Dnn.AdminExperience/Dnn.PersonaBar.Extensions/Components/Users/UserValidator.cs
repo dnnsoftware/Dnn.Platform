@@ -60,9 +60,7 @@ namespace Dnn.PersonaBar.Users.Components
                     !this._contentVerifier.IsContentExistsForRequestedPortal(
                         userInfo.PortalID,
                         portalSettings,
-                        true
-                        )
-                   )
+                        true))
                 {
                     userInfo = null;
                 }

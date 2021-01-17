@@ -44,7 +44,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int? UserId { get; set; }
+
         private string Email { get; set; }
+
         private string Username { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -106,7 +108,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
                     {
-                        //userId = (UserController.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? UserIdZero;
+                        // userId = (UserController.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? UserIdZero;
                         userId = this._userControllerWrapper.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
                     }
                 }
@@ -156,7 +158,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     "IsAuthorized",
                     "IsLockedOut",
                     "Created"
-                }
+                },
             };
         }
     }

@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         private const string FlagId = "id";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GetTask));
+
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int TaskId { get; set; }

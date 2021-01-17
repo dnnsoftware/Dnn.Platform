@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var body = HttpUtility.UrlDecode(postData.Body);
-                body = PortalSecurity.Instance.InputFilter(body, PortalSecurity.FilterFlag.NoMarkup);
+                body = WebUtility.HtmlEncode(body);
                 var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, body, postData.FileIds);
                 var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);

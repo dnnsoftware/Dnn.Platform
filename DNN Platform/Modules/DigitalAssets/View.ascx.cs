@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 new RadComboBoxItem
                     {
                         Text = Localization.GetString("All", this.LocalResourceFile),
-                        Value = int.MaxValue.ToString(CultureInfo.InvariantCulture)
+                        Value = int.MaxValue.ToString(CultureInfo.InvariantCulture),
                     },
             };
 
@@ -613,7 +613,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Text = Localization.GetString("GetUrl", this.LocalResourceFile),
                         Value = "GetUrl",
                         CssClass = "permission_READ singleItem onlyFiles",
-                        ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileLink", "16x16", "Black"),
                     },
                 });
 

@@ -5,7 +5,7 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// Browser Mode
+    /// Browser Mode.
     /// </summary>
     public enum BrowserType
     {

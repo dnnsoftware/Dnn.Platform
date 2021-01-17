@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public TableItemStyle EditItemStyle => this.EditRowStyle;
 
         public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
+
         public int ScreenRowNumber { get; set; }
 
         public int RowHeight { get; set; }

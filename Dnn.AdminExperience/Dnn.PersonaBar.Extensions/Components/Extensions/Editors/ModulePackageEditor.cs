@@ -228,10 +228,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId);
 
             var desktopModulePermissions = new DesktopModulePermissionCollection();
-            //add default permissions for administrators
+            // add default permissions for administrators
             if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
             {
-                //add default permissions
+                // add default permissions
                 var permissionController = new PermissionController();
                 var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
                 foreach (PermissionInfo permissionInfo in permissionsList)
@@ -242,14 +242,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         UserID = Null.NullInteger,
                         PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
                         AllowAccess = true,
-                        RoleName = portalSettings.AdministratorRoleName
+                        RoleName = portalSettings.AdministratorRoleName,
                     };
                     desktopModulePermissions.Add(permission);
 
                 }
             }
 
-            //add role permissions
+            // add role permissions
             if (permissions.RolePermissions != null)
             {
                 foreach (var rolePermission in permissions.RolePermissions)
@@ -262,13 +262,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             RoleID = rolePermission.RoleId,
                             UserID = Null.NullInteger,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
-                            AllowAccess = permission.AllowAccess
+                            AllowAccess = permission.AllowAccess,
                         });
                     }
                 }
             }
 
-            //add user permissions
+            // add user permissions
             if (permissions.UserPermissions != null)
             {
                 foreach (var userPermission in permissions.UserPermissions)
@@ -283,13 +283,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             RoleID = roleId,
                             UserID = userPermission.UserId,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
-                            AllowAccess = permission.AllowAccess
+                            AllowAccess = permission.AllowAccess,
                         });
                     }
                 }
             }
 
-            //Update DesktopModule Permissions
+            // Update DesktopModule Permissions
             var currentPermissions = DesktopModulePermissionController.GetDesktopModulePermissions(portalModule.PortalDesktopModuleID);
             if (!currentPermissions.CompareTo(desktopModulePermissions))
             {
