@@ -465,7 +465,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // File outside the white list cannot be served
-            return WhiteListFolderPaths.Any(normalizeFilePath.StartsWith);
+            return WhiteListFolderPaths.Any(s => normalizeFilePath.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static string NormalizeFilePath(string filePath)
