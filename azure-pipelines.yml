@@ -80,11 +80,7 @@ steps:
     failTaskOnFailedTests: true
   condition: eq(variables['RunTests'], 'True')
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    PathtoPublish: Artifacts
-    ArtifactName: Artifacts
+- publish: 'Artifacts'
   continueOnError: true
 
 - task: NuGetCommand@2
