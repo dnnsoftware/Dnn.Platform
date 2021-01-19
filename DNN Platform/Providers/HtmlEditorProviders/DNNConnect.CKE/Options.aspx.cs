@@ -2,29 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Web;
-using System.Web.UI.HtmlControls;
-
-using DNNConnect.CKEditorProvider.Controls;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
 namespace DNNConnect.CKEditorProvider
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI.HtmlControls;
+
+    using DNNConnect.CKEditorProvider.Controls;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
     /// The options page.
     /// </summary>
     public partial class Options : PageBase
     {
-        #region Constants and Fields
-
         /// <summary>
         /// The request.
         /// </summary>
@@ -64,10 +62,6 @@ namespace DNNConnect.CKEditorProvider
                 return fileRoot;
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Register the java scripts and CSS.
@@ -283,7 +277,5 @@ namespace DNNConnect.CKEditorProvider
 
             this.favicon.Controls.Add(objLink);
         }
-
-        #endregion
     }
 }

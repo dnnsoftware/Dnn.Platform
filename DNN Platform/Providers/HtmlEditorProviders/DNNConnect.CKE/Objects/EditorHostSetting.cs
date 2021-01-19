@@ -2,18 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System;
+
     /// <summary>
     /// A Editor Host Setting Item.
     /// </summary>
     [Serializable]
     public class EditorHostSetting
     {
-        #region Properties
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorHostSetting"/> class.
         /// </summary>
@@ -40,7 +38,5 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// The setting value.
         /// </value>
         public string Value { get; set; }
-
-        #endregion
     }
 }

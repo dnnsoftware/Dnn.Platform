@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DNNConnect.CKEditorProvider {
-    
-    
-    public partial class CKEditorOptions {
-        
+namespace DNNConnect.CKEditorProvider
+{
+
+
+    public partial class CKEditorOptions
+    {
+
         /// <summary>
         /// lblSettings control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSettings;
-        
+
         /// <summary>
         /// upOptions control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upOptions;
-        
+
         /// <summary>
         /// LastTabId control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField LastTabId;
-        
+
         /// <summary>
         /// pnlEditor control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlEditor;
-        
+
         /// <summary>
         /// lblSetFor control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSetFor;
-        
+
         /// <summary>
         /// rBlSetMode control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rBlSetMode;
-        
+
         /// <summary>
         /// lblMainSet control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMainSet;
-        
+
         /// <summary>
         /// lblBrowsSec control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblBrowsSec;
-        
+
         /// <summary>
         /// lblCustomToolbars control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCustomToolbars;
-        
+
         /// <summary>
         /// lblEditorConfig control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblEditorConfig;
-        
+
         /// <summary>
         /// InfoTabLi control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl InfoTabLi;
-        
+
         /// <summary>
         /// lblHeader control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHeader;
-        
+
         /// <summary>
         /// lblBlanktext control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblBlanktext;
-        
+
         /// <summary>
         /// txtBlanktext control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBlanktext;
-        
+
         /// <summary>
         /// lblSkin control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSkin;
-        
+
         /// <summary>
         /// ddlSkin control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSkin;
-        
+
         /// <summary>
         /// lblWidth control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblWidth;
-        
+
         /// <summary>
         /// txtWidth control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWidth;
-        
+
         /// <summary>
         /// lblHeight control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHeight;
-        
+
         /// <summary>
         /// txtHeight control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHeight;
-        
+
         /// <summary>
         /// lblToolbars control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblToolbars;
-        
+
         /// <summary>
         /// gvToolbars control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvToolbars;
-        
+
         /// <summary>
         /// lblCustomConfig control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCustomConfig;
-        
+
         /// <summary>
         /// ctlConfigUrl control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlConfigUrl;
-        
+
         /// <summary>
         /// CodeMirrorLabel control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label CodeMirrorLabel;
-        
+
         /// <summary>
         /// CodeMirrorTheme control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList CodeMirrorTheme;
-        
+
         /// <summary>
         /// lblInjectSyntaxJs control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblInjectSyntaxJs;
-        
+
         /// <summary>
         /// InjectSyntaxJs control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox InjectSyntaxJs;
-        
+
         /// <summary>
         /// lblCssurl control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCssurl;
-        
+
         /// <summary>
         /// ctlCssurl control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlCssurl;
-        
+
         /// <summary>
         /// lblTemplFiles control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTemplFiles;
-        
+
         /// <summary>
         /// ctlTemplUrl control.
         /// </summary>
@@ -299,7 +301,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlTemplUrl;
-        
+
         /// <summary>
         /// CustomJsFileLabel control.
         /// </summary>
@@ -308,7 +310,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label CustomJsFileLabel;
-        
+
         /// <summary>
         /// ctlCustomJsFile control.
         /// </summary>
@@ -317,7 +319,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlCustomJsFile;
-        
+
         /// <summary>
         /// lblBrowser control.
         /// </summary>
@@ -326,7 +328,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblBrowser;
-        
+
         /// <summary>
         /// ddlBrowser control.
         /// </summary>
@@ -335,7 +337,25 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlBrowser;
-        
+
+        /// <summary>
+        /// lblImageButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblImageButton;
+
+        /// <summary>
+        /// ddlImageButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlImageButton;
+
         /// <summary>
         /// lblBrowAllow control.
         /// </summary>
@@ -344,7 +364,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblBrowAllow;
-        
+
         /// <summary>
         /// chblBrowsGr control.
         /// </summary>
@@ -353,7 +373,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList chblBrowsGr;
-        
+
         /// <summary>
         /// BrowserRootFolder control.
         /// </summary>
@@ -362,7 +382,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label BrowserRootFolder;
-        
+
         /// <summary>
         /// BrowserRootDir control.
         /// </summary>
@@ -371,7 +391,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList BrowserRootDir;
-        
+
         /// <summary>
         /// lblBrowserDirs control.
         /// </summary>
@@ -380,7 +400,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblBrowserDirs;
-        
+
         /// <summary>
         /// cbBrowserDirs control.
         /// </summary>
@@ -389,7 +409,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbBrowserDirs;
-        
+
         /// <summary>
         /// UploadFolderLabel control.
         /// </summary>
@@ -398,7 +418,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label UploadFolderLabel;
-        
+
         /// <summary>
         /// UploadDir control.
         /// </summary>
@@ -407,7 +427,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList UploadDir;
-        
+
         /// <summary>
         /// OverrideFileOnUploadLabel control.
         /// </summary>
@@ -416,7 +436,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label OverrideFileOnUploadLabel;
-        
+
         /// <summary>
         /// OverrideFileOnUpload control.
         /// </summary>
@@ -425,7 +445,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox OverrideFileOnUpload;
-        
+
         /// <summary>
         /// UploadFileLimitLabel control.
         /// </summary>
@@ -434,7 +454,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label UploadFileLimitLabel;
-        
+
         /// <summary>
         /// UploadFileLimits control.
         /// </summary>
@@ -443,7 +463,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView UploadFileLimits;
-        
+
         /// <summary>
         /// lblResizeWidth control.
         /// </summary>
@@ -452,7 +472,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblResizeWidth;
-        
+
         /// <summary>
         /// txtResizeWidth control.
         /// </summary>
@@ -461,7 +481,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtResizeWidth;
-        
+
         /// <summary>
         /// lblResizeHeight control.
         /// </summary>
@@ -470,7 +490,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblResizeHeight;
-        
+
         /// <summary>
         /// txtResizeHeight control.
         /// </summary>
@@ -479,7 +499,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtResizeHeight;
-        
+
         /// <summary>
         /// lblUseAnchorSelector control.
         /// </summary>
@@ -488,7 +508,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUseAnchorSelector;
-        
+
         /// <summary>
         /// UseAnchorSelector control.
         /// </summary>
@@ -497,7 +517,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox UseAnchorSelector;
-        
+
         /// <summary>
         /// lblShowPageLinksTabFirst control.
         /// </summary>
@@ -506,7 +526,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblShowPageLinksTabFirst;
-        
+
         /// <summary>
         /// ShowPageLinksTabFirst control.
         /// </summary>
@@ -515,7 +535,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ShowPageLinksTabFirst;
-        
+
         /// <summary>
         /// FileListViewModeLabel control.
         /// </summary>
@@ -524,7 +544,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label FileListViewModeLabel;
-        
+
         /// <summary>
         /// FileListViewMode control.
         /// </summary>
@@ -533,7 +553,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList FileListViewMode;
-        
+
         /// <summary>
         /// FileListPageSizeLabel control.
         /// </summary>
@@ -542,7 +562,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label FileListPageSizeLabel;
-        
+
         /// <summary>
         /// FileListPageSize control.
         /// </summary>
@@ -551,7 +571,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox FileListPageSize;
-        
+
         /// <summary>
         /// DefaultLinkModeLabel control.
         /// </summary>
@@ -560,7 +580,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DefaultLinkModeLabel;
-        
+
         /// <summary>
         /// DefaultLinkMode control.
         /// </summary>
@@ -569,7 +589,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DefaultLinkMode;
-        
+
         /// <summary>
         /// lblToolbarList control.
         /// </summary>
@@ -578,7 +598,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblToolbarList;
-        
+
         /// <summary>
         /// dDlCustomToolbars control.
         /// </summary>
@@ -587,7 +607,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dDlCustomToolbars;
-        
+
         /// <summary>
         /// iBEdit control.
         /// </summary>
@@ -596,7 +616,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton iBEdit;
-        
+
         /// <summary>
         /// iBDelete control.
         /// </summary>
@@ -605,7 +625,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton iBDelete;
-        
+
         /// <summary>
         /// lblToolbName control.
         /// </summary>
@@ -614,7 +634,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblToolbName;
-        
+
         /// <summary>
         /// dnnTxtToolBName control.
         /// </summary>
@@ -623,7 +643,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox dnnTxtToolBName;
-        
+
         /// <summary>
         /// iBAdd control.
         /// </summary>
@@ -632,7 +652,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton iBAdd;
-        
+
         /// <summary>
         /// iBCancel control.
         /// </summary>
@@ -641,7 +661,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton iBCancel;
-        
+
         /// <summary>
         /// lblToolbSet control.
         /// </summary>
@@ -650,7 +670,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblToolbSet;
-        
+
         /// <summary>
         /// AvailableToolbarButtons control.
         /// </summary>
@@ -659,7 +679,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater AvailableToolbarButtons;
-        
+
         /// <summary>
         /// ToolbarGroupsLabel control.
         /// </summary>
@@ -668,7 +688,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ToolbarGroupsLabel;
-        
+
         /// <summary>
         /// ToolbarSet control.
         /// </summary>
@@ -677,7 +697,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField ToolbarSet;
-        
+
         /// <summary>
         /// ToolbarGroupsRepeater control.
         /// </summary>
@@ -686,7 +706,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater ToolbarGroupsRepeater;
-        
+
         /// <summary>
         /// CreateGroupLabel control.
         /// </summary>
@@ -695,7 +715,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label CreateGroupLabel;
-        
+
         /// <summary>
         /// AddRowBreakLabel control.
         /// </summary>
@@ -704,7 +724,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label AddRowBreakLabel;
-        
+
         /// <summary>
         /// lblToolbarPriority control.
         /// </summary>
@@ -713,7 +733,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblToolbarPriority;
-        
+
         /// <summary>
         /// dDlToolbarPrio control.
         /// </summary>
@@ -722,7 +742,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dDlToolbarPrio;
-        
+
         /// <summary>
         /// EditorConfigWarning control.
         /// </summary>
@@ -731,7 +751,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label EditorConfigWarning;
-        
+
         /// <summary>
         /// EditorConfigHolder control.
         /// </summary>
@@ -740,7 +760,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel EditorConfigHolder;
-        
+
         /// <summary>
         /// InfoTabHolder control.
         /// </summary>
@@ -749,7 +769,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder InfoTabHolder;
-        
+
         /// <summary>
         /// ProviderVersion control.
         /// </summary>
@@ -758,7 +778,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label ProviderVersion;
-        
+
         /// <summary>
         /// lblPortal control.
         /// </summary>
@@ -767,7 +787,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPortal;
-        
+
         /// <summary>
         /// lblPage control.
         /// </summary>
@@ -776,7 +796,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPage;
-        
+
         /// <summary>
         /// lblModType control.
         /// </summary>
@@ -785,7 +805,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblModType;
-        
+
         /// <summary>
         /// lblModName control.
         /// </summary>
@@ -794,7 +814,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblModName;
-        
+
         /// <summary>
         /// lblModInst control.
         /// </summary>
@@ -803,7 +823,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblModInst;
-        
+
         /// <summary>
         /// lblUName control.
         /// </summary>
@@ -812,7 +832,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUName;
-        
+
         /// <summary>
         /// btnOk control.
         /// </summary>
@@ -821,7 +841,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnOk;
-        
+
         /// <summary>
         /// CopyToAllChild control.
         /// </summary>
@@ -830,7 +850,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton CopyToAllChild;
-        
+
         /// <summary>
         /// lnkRemoveAll control.
         /// </summary>
@@ -839,7 +859,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkRemoveAll;
-        
+
         /// <summary>
         /// lnkRemoveChild control.
         /// </summary>
@@ -848,7 +868,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkRemoveChild;
-        
+
         /// <summary>
         /// lnkRemove control.
         /// </summary>
@@ -857,7 +877,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkRemove;
-        
+
         /// <summary>
         /// lblImport control.
         /// </summary>
@@ -866,7 +886,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblImport;
-        
+
         /// <summary>
         /// lblExport control.
         /// </summary>
@@ -875,7 +895,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblExport;
-        
+
         /// <summary>
         /// ExportDialogUpdatePanel control.
         /// </summary>
@@ -884,7 +904,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel ExportDialogUpdatePanel;
-        
+
         /// <summary>
         /// ExportDir control.
         /// </summary>
@@ -893,7 +913,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ExportDir;
-        
+
         /// <summary>
         /// ExportFileName control.
         /// </summary>
@@ -902,7 +922,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ExportFileName;
-        
+
         /// <summary>
         /// ExportNow control.
         /// </summary>
@@ -911,7 +931,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton ExportNow;
-        
+
         /// <summary>
         /// HiddenMessage control.
         /// </summary>
@@ -920,7 +940,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField HiddenMessage;
-        
+
         /// <summary>
         /// upNewUpdatePanel control.
         /// </summary>
@@ -929,7 +949,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel upNewUpdatePanel;
-        
+
         /// <summary>
         /// ctlImportFile control.
         /// </summary>
@@ -938,7 +958,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlImportFile;
-        
+
         /// <summary>
         /// lnkImportNow control.
         /// </summary>
@@ -947,7 +967,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkImportNow;
-        
+
         /// <summary>
         /// panelLoading control.
         /// </summary>
@@ -956,7 +976,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panelLoading;
-        
+
         /// <summary>
         /// Wait control.
         /// </summary>
@@ -965,7 +985,7 @@ namespace DNNConnect.CKEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Wait;
-        
+
         /// <summary>
         /// WaitMessage control.
         /// </summary>

@@ -2,26 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.UI;
+
+    using DNNConnect.CKEditorProvider.Constants;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+
     /// <summary>
     /// Utility Class for various helper Functions.
     /// </summary>
@@ -271,7 +274,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns if the user has write access to the folder.
         /// </returns>
-        public static bool CheckIfUserHasFolderWriteAccess(int folderId, PortalSettings portalSettings)
+        public static bool CheckIfUserHasFolderWriteAccess(int folderId, IPortalSettings portalSettings)
         {
             try
             {
@@ -295,7 +298,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the Folder Info.
         /// </returns>
-        public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, PortalSettings portalSettings)
+        public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettings portalSettings)
         {
             try
             {
@@ -384,7 +387,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         ///   <c>true</c> if [is in roles] [the specified roles]; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsInRoles(string roles, PortalSettings settings)
+        public static bool IsInRoles(string roles, IPortalSettings settings)
         {
             var objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
@@ -440,7 +443,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="startingControl">The starting control.</param>
         /// <param name="id">The <paramref name="id"/>.</param>
         /// <returns>Returns the Control.</returns>
-        public static T FindControl<T>(Control startingControl, string id) where T : Control
+        public static T FindControl<T>(Control startingControl, string id)
+            where T : Control
         {
             // this is null by default
             T found = default(T);
@@ -503,6 +507,29 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             return inkilobytes ? result : (result * 1024);
+        }
+
+        /// <summary>
+        /// Converts the enum value for Link Protocol to the string value used for CKE config.
+        /// </summary>
+        /// <param name="protocol">The protocol enum value.</param>
+        /// <returns>The protocol string value.</returns>
+        public static string ToSettingValue(this LinkProtocol protocol)
+        {
+            switch (protocol)
+            {
+                case LinkProtocol.Http:
+                    return "http://";
+                case LinkProtocol.Ftp:
+                    return "ftp://";
+                case LinkProtocol.News:
+                    return "news://";
+                case LinkProtocol.Other:
+                    return string.Empty;
+                case LinkProtocol.Https:
+                default:
+                    return "https://";
+            }
         }
     }
 }

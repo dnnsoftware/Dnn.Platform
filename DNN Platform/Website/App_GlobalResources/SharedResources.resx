@@ -1968,4 +1968,7 @@ If you expect this addition, then just ignore this email; otherwise, an immediat
   <data name="SQL_Manifest_Error.Text" xml:space="preserve">
     <value>There is an error in the manifest with the scripts</value>
   </data>
+  <data name="ErrorDecryptingSetting.Text" xml:space="preserve">
+    <value>Could not decrypt parameter {0}</value>
+  </data>
 </root>

@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System;
+
     /// <summary>
     /// Toolbar Class.
     /// </summary>
     [Obsolete("This class is phasing out please use ToolbarSet Class instead")]
     public class Toolbar
     {
+#pragma warning disable SA1300 // Element should begin with upper-case letter
         /// <summary>
         /// Gets or sets The Name of the Toolbar Set.
         /// </summary>
@@ -23,8 +24,9 @@ namespace DNNConnect.CKEditorProvider.Objects
         public string sToolbarSet { get; set; }
 
         /// <summary>
-        /// Gets or sets Toolbar Prioritity from 1-20.
+        /// Gets or sets Toolbar Priority from 1-20.
         /// </summary>
         public int iPriority { get; set; }
+#pragma warning restore SA1300 // Element should begin with upper-case letter
     }
 }

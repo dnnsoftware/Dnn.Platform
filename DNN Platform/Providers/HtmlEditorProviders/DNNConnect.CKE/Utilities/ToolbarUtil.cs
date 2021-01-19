@@ -2,28 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-
-using DNNConnect.CKEditorProvider.Constants;
-using DNNConnect.CKEditorProvider.Objects;
-using DotNetNuke.Common;
-
 namespace DNNConnect.CKEditorProvider.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Xml.Serialization;
+
+    using DNNConnect.CKEditorProvider.Constants;
+    using DNNConnect.CKEditorProvider.Objects;
+    using DotNetNuke.Common;
 
     /// <summary>
     /// Toolbar Helper Class.
     /// </summary>
     public class ToolbarUtil
     {
-        #region Public Methods
-
         /// <summary>
         /// Loads the tool bar buttons.
         /// </summary>
@@ -560,8 +557,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                          new ToolbarButton
                                                              {
                                                                  ToolbarName = "-",
-                                                                 ToolbarIcon =
-                                                                     "separator.png"
+                                                                 ToolbarIcon = "separator.png",
                                                              },
                                                      };
 
@@ -616,6 +612,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                         return toolbarSetBasic;
                     }
+
                 case "Standard":
                     {
                         var toolbarSetStandard = new ToolbarSet("Standard", 15);
@@ -693,6 +690,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
                         return toolbarSetStandard;
                     }
+
                 case "Full":
                     {
                         var toolbarSetFull = new ToolbarSet("Full", 20);
@@ -835,7 +833,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         toolbarSetFull.ToolbarGroups.Add(
                             new ToolbarGroup { items = new List<string> { "TextColor", "BGColor" }, name = "colors" });
 
-
                         return toolbarSetFull;
                     }
             }
@@ -867,10 +864,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 textWriter.Close();
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Find the Toolbar Set with the x Value.
@@ -1111,7 +1104,5 @@ namespace DNNConnect.CKEditorProvider.Utilities
             // Delete old xml file
             File.Delete(Path.Combine(homeDirPath, SettingConstants.ToolbarXmlFileName));
         }
-
-        #endregion
     }
 }

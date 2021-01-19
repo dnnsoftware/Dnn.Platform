@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-
-using DNNConnect.CKEditorProvider.Constants;
-
 namespace DNNConnect.CKEditorProvider.Objects
 {
+    using System.Collections.Generic;
+
+    using DNNConnect.CKEditorProvider.Constants;
 
     /// <summary>
     /// The Editor Provider Settings.
@@ -25,6 +24,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.FileListViewMode = FileListView.DetailView;
             this.SettingMode = SettingsMode.Portal;
             this.DefaultLinkMode = LinkMode.RelativeURL;
+            this.DefaultLinkProtocol = LinkProtocol.Https;
             this.InjectSyntaxJs = true;
             this.BrowserRootDirId = -1;
             this.UploadDirId = -1;
@@ -32,6 +32,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.ResizeWidth = -1;
             this.BrowserRoles = "0;Administrators;";
             this.Browser = "standard";
+            this.ImageButton = "standard";
             this.ToolBarRoles = new List<ToolbarRoles> { new ToolbarRoles { RoleId = 0, Toolbar = "Full" } };
             this.UploadSizeRoles = new List<UploadSizeRoles>
                                        {
@@ -40,7 +41,6 @@ namespace DNNConnect.CKEditorProvider.Objects
 
             this.Config = new EditorConfig();
         }
-        #region Properties
 
         /// <summary>
         /// Gets or sets a value indicating whether [override file on upload].
@@ -73,6 +73,14 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// The default link mode.
         /// </value>
         public LinkMode DefaultLinkMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default link protocol.
+        /// </summary>
+        /// <value>
+        /// The default link protocol.
+        /// </value>
+        public LinkProtocol DefaultLinkProtocol { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [use anchor selector].
@@ -166,6 +174,19 @@ namespace DNNConnect.CKEditorProvider.Objects
         public string Browser { get; set; }
 
         /// <summary>
+        /// Gets or sets the image button.
+        /// </summary>
+        /// <value>
+        /// The image browser.
+        /// </value>
+        public ImageButtonType ImageButtonMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether which Image Button to use.
+        /// </summary>
+        public string ImageButton { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether Allowed Browser Roles.
         /// </summary>
         public string BrowserRoles { get; set; }
@@ -198,7 +219,5 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// The configuration.
         /// </value>
         public EditorConfig Config { get; set; }
-
-        #endregion
     }
 }

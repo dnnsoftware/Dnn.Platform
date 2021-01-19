@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.WebControls
     using System.IO;
     using System.Net;
 
+    /// <summary>Provides the ability to lookup a country from an IP address.</summary>
     public class CountryLookup
     {
         private static readonly string[] CountryName = new[]
@@ -57,49 +58,59 @@ namespace DotNetNuke.UI.WebControls
                                                                "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "YU", "ZA", "ZM", "ZR", "ZW", "A1", "A2",
                                                            };
 
-        private static long CountryBegin = 16776960;
+        private static long countryBegin = 16776960;
 
+        /// <summary>Initializes a new instance of the <see cref="CountryLookup"/> class.</summary>
+        /// <param name="ms">A memory stream with the GeoIP data file.</param>
         public CountryLookup(MemoryStream ms)
         {
             this.m_MemoryStream = ms;
         }
 
-        public CountryLookup(string FileLocation)
+        /// <summary>Initializes a new instance of the <see cref="CountryLookup"/> class.</summary>
+        /// <param name="fileLocation">The file path to the GeoIP data file.</param>
+        public CountryLookup(string fileLocation)
         {
             //------------------------------------------------------------------------------------------------
             // Load the passed in GeoIP Data file to the memorystream
             //------------------------------------------------------------------------------------------------
-            using (var _FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
+            using (var fileStream = new FileStream(fileLocation, FileMode.Open, FileAccess.Read))
             {
                 this.m_MemoryStream = new MemoryStream();
-                var _Byte = new byte[256];
-                while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
+                var bytes = new byte[256];
+                while (fileStream.Read(bytes, 0, bytes.Length) != 0)
                 {
-                    this.m_MemoryStream.Write(_Byte, 0, _Byte.Length);
+                    this.m_MemoryStream.Write(bytes, 0, bytes.Length);
                 }
 
-                _FileStream.Close();
+                fileStream.Close();
             }
         }
 
+        /// <summary>Gets the GeoIP data file stream.</summary>
+#pragma warning disable SA1300 // Element should begin with upper-case letter
         public MemoryStream m_MemoryStream { get; }
+#pragma warning restore SA1300 // Element should begin with upper-case letter
 
-        public static MemoryStream FileToMemory(string FileLocation)
+        /// <summary>Reads the file into memory.</summary>
+        /// <param name="fileLocation">The path to the file.</param>
+        /// <returns>A <see cref="MemoryStream"/> instance.</returns>
+        public static MemoryStream FileToMemory(string fileLocation)
         {
             // Read a given file into a Memory Stream to return as the result
-            var _MemStream = new MemoryStream();
-            var _Byte = new byte[256];
+            var memStream = new MemoryStream();
+            var bytes = new byte[256];
             try
             {
-                FileStream _FileStream;
-                using (_FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
+                FileStream fileStream;
+                using (fileStream = new FileStream(fileLocation, FileMode.Open, FileAccess.Read))
                 {
-                    while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
+                    while (fileStream.Read(bytes, 0, bytes.Length) != 0)
                     {
-                        _MemStream.Write(_Byte, 0, _Byte.Length);
+                        memStream.Write(bytes, 0, bytes.Length);
                     }
 
-                    _FileStream.Close();
+                    fileStream.Close();
                 }
             }
             catch (FileNotFoundException exc)
@@ -108,111 +119,128 @@ namespace DotNetNuke.UI.WebControls
                                     "  Please set the \"GeoIPFile\" Property to specify the location of this file.  The property value must be set to the virtual path to GeoIP.dat (i.e. \"/controls/CountryListBox/Data/GeoIP.dat\")");
             }
 
-            return _MemStream;
+            return memStream;
         }
 
-        public string LookupCountryCode(IPAddress _IPAddress)
+        /// <summary>Looks up the country code from an IP address.</summary>
+        /// <param name="ipAddress">The IP address.</param>
+        /// <returns>The country code, e.g. <c>"US"</c>.</returns>
+        public string LookupCountryCode(IPAddress ipAddress)
         {
             // Look up the country code, e.g. US, for the passed in IP Address
-            return CountryCode[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(_IPAddress), 31))];
+            return CountryCode[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(ipAddress), 31))];
         }
 
-        public string LookupCountryCode(string _IPAddress)
+        /// <summary>Looks up the country code from an IP address.</summary>
+        /// <param name="ipAddress">The IP address.</param>
+        /// <returns>The country code, e.g. <c>"US"</c>, or <c>"--"</c>.</returns>
+        public string LookupCountryCode(string ipAddress)
         {
             // Look up the country code, e.g. US, for the passed in IP Address
-            IPAddress _Address;
+            IPAddress address;
             try
             {
-                _Address = IPAddress.Parse(_IPAddress);
+                address = IPAddress.Parse(ipAddress);
             }
             catch (FormatException)
             {
                 return "--";
             }
 
-            return this.LookupCountryCode(_Address);
+            return this.LookupCountryCode(address);
         }
 
+        /// <summary>Looks up the country name from an IP address.</summary>
+        /// <param name="addr">The IP address.</param>
+        /// <returns>The country name.</returns>
         public string LookupCountryName(IPAddress addr)
         {
             // Look up the country name, e.g. United States, for the IP Address
             return CountryName[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(addr), 31))];
         }
 
-        public string LookupCountryName(string _IPAddress)
+        /// <summary>Looks up the country name from an IP address.</summary>
+        /// <param name="ipAddress">The IP address.</param>
+        /// <returns>The country name, or <c>"N/A"</c>.</returns>
+        public string LookupCountryName(string ipAddress)
         {
             // Look up the country name, e.g. United States, for the IP Address
-            IPAddress _Address;
+            IPAddress address;
             try
             {
-                _Address = IPAddress.Parse(_IPAddress);
+                address = IPAddress.Parse(ipAddress);
             }
             catch (FormatException)
             {
                 return "N/A";
             }
 
-            return this.LookupCountryName(_Address);
+            return this.LookupCountryName(address);
         }
 
-        public int SeekCountry(int Offset, long Ipnum, short Depth)
+        /// <summary>Gets the country lookup index.</summary>
+        /// <param name="offset">The offset.</param>
+        /// <param name="ipNum">The IP address as a number.</param>
+        /// <param name="depth">The depth.</param>
+        /// <returns>The index.</returns>
+        public int SeekCountry(int offset, long ipNum, short depth)
         {
             try
             {
-                var Buffer = new byte[6];
-                var X = new int[2];
-                short I;
-                short J;
-                byte Y;
-                if (Depth == 0)
+                var buffer = new byte[6];
+                var x = new int[2];
+                short i;
+                short j;
+                byte y;
+                if (depth == 0)
                 {
                     throw new Exception();
                 }
 
-                this.m_MemoryStream.Seek(6 * Offset, 0);
-                var len = this.m_MemoryStream.Read(Buffer, 0, 6);
+                this.m_MemoryStream.Seek(6 * offset, 0);
+                var len = this.m_MemoryStream.Read(buffer, 0, 6);
                 if (len == 6)
                 {
-                    for (I = 0; I <= 1; I++)
+                    for (i = 0; i <= 1; i++)
                     {
-                        X[I] = 0;
-                        for (J = 0; J <= 2; J++)
+                        x[i] = 0;
+                        for (j = 0; j <= 2; j++)
                         {
-                            Y = Buffer[(I * 3) + J];
-                            if (Y < 0)
+                            y = buffer[(i * 3) + j];
+                            if (y < 0)
                             {
-                                Y = Convert.ToByte(Y + 256);
+                                y = Convert.ToByte(y + 256);
                             }
 
-                            X[I] = Convert.ToInt32(X[I] + (Y << (J * 8)));
+                            x[i] = Convert.ToInt32(x[i] + (y << (j * 8)));
                         }
                     }
                 }
                 else
                 {
-                    for (I = 0; I < 6; I++)
+                    for (i = 0; i < 6; i++)
                     {
-                        X[I] = 0;
+                        x[i] = 0;
                     }
                 }
 
-                if ((Ipnum & (1 << Depth)) > 0)
+                if ((ipNum & (1 << depth)) > 0)
                 {
-                    if (X[1] >= CountryBegin)
+                    if (x[1] >= countryBegin)
                     {
-                        return Convert.ToInt32(X[1] - CountryBegin);
+                        return Convert.ToInt32(x[1] - countryBegin);
                     }
 
-                    return this.SeekCountry(X[1], Ipnum, Convert.ToInt16(Depth - 1));
+                    return this.SeekCountry(x[1], ipNum, Convert.ToInt16(depth - 1));
                 }
                 else
                 {
-                    if (X[0] >= CountryBegin)
+                    if (x[0] >= countryBegin)
                     {
-                        return Convert.ToInt32(X[0] - CountryBegin);
+                        return Convert.ToInt32(x[0] - countryBegin);
                     }
 
-                    return this.SeekCountry(X[0], Ipnum, Convert.ToInt16(Depth - 1));
+                    return this.SeekCountry(x[0], ipNum, Convert.ToInt16(depth - 1));
                 }
             }
             catch (Exception exc)
@@ -221,13 +249,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private long ConvertIPAddressToNumber(IPAddress _IPAddress)
+        private long ConvertIPAddressToNumber(IPAddress ipAddress)
         {
             // Convert an IP Address, (e.g. 127.0.0.1), to the numeric equivalent
-            string[] _Address = _IPAddress.ToString().Split('.');
-            if (_Address.Length == 4)
+            string[] address = ipAddress.ToString().Split('.');
+            if (address.Length == 4)
             {
-                return Convert.ToInt64((16777216 * Convert.ToDouble(_Address[0])) + (65536 * Convert.ToDouble(_Address[1])) + (256 * Convert.ToDouble(_Address[2])) + Convert.ToDouble(_Address[3]));
+                return Convert.ToInt64((16777216 * Convert.ToDouble(address[0])) + (65536 * Convert.ToDouble(address[1])) + (256 * Convert.ToDouble(address[2])) + Convert.ToDouble(address[3]));
             }
             else
             {
@@ -235,14 +263,14 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private string ConvertIPNumberToAddress(long _IPNumber)
+        private string ConvertIPNumberToAddress(long ipNumber)
         {
             // Convert an IP Number to the IP Address equivalent
-            string _IPNumberPart1 = Convert.ToString(((int)(_IPNumber / 16777216)) % 256);
-            string _IPNumberPart2 = Convert.ToString(((int)(_IPNumber / 65536)) % 256);
-            string _IPNumberPart3 = Convert.ToString(((int)(_IPNumber / 256)) % 256);
-            string _IPNumberPart4 = Convert.ToString(((int)_IPNumber) % 256);
-            return _IPNumberPart1 + "." + _IPNumberPart2 + "." + _IPNumberPart3 + "." + _IPNumberPart4;
+            string ipNumberPart1 = Convert.ToString(((int)(ipNumber / 16777216)) % 256);
+            string ipNumberPart2 = Convert.ToString(((int)(ipNumber / 65536)) % 256);
+            string ipNumberPart3 = Convert.ToString(((int)(ipNumber / 256)) % 256);
+            string ipNumberPart4 = Convert.ToString(((int)ipNumber) % 256);
+            return ipNumberPart1 + "." + ipNumberPart2 + "." + ipNumberPart3 + "." + ipNumberPart4;
         }
     }
 }

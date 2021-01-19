@@ -1,16 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.EditBar.Library.Items
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading.Tasks;
 
+    /// <summary>Represents an Edit Bar menu item.</summary>
     [Serializable]
     [DataContract]
     public abstract class BaseMenuItem
@@ -77,10 +75,8 @@ namespace Dnn.EditBar.Library.Items
         [DataMember(Name = "settings")]
         public virtual IDictionary<string, object> Settings { get; } = new Dictionary<string, object>();
 
-        /// <summary>
-        /// whether the menu is visible in current context.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>whether the menu is visible in current context.</summary>
+        /// <returns><c>true</c> if this menu item is visible, otherwise <c>false</c>.</returns>
         public virtual bool Visible()
         {
             return true;

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Engines
 {
     using System;
@@ -36,6 +35,7 @@ namespace Dnn.ExportImport.Components.Engines
 
     using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
+    /// <summary>The import/export engine.</summary>
     public class ExportImportEngine
     {
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
@@ -53,8 +53,8 @@ namespace Dnn.ExportImport.Components.Engines
             new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
         };
 
-        private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
-        private int _timeoutSeconds;
+        private readonly Stopwatch stopWatch = Stopwatch.StartNew();
+        private int timeoutSeconds;
 
         static ExportImportEngine()
         {
@@ -101,8 +101,12 @@ namespace Dnn.ExportImport.Components.Engines
             typeof(ExportUserRole).Name,
         };
 
-        private bool TimeIsUp => this._stopWatch.Elapsed.TotalSeconds > this._timeoutSeconds;
+        private bool TimeIsUp => this.stopWatch.Elapsed.TotalSeconds > this.timeoutSeconds;
 
+        /// <summary>Runs the export job.</summary>
+        /// <param name="exportJob">The export job.</param>
+        /// <param name="result">The result.</param>
+        /// <param name="scheduleHistoryItem">The schedule history item.</param>
         public void Export(ExportImportJob exportJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
@@ -113,7 +117,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             }
 
-            this._timeoutSeconds = GetTimeoutPerSlot();
+            this.timeoutSeconds = GetTimeoutPerSlot();
             var dbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
@@ -257,7 +261,7 @@ namespace Dnn.ExportImport.Components.Engines
             if (this.TimeIsUp)
             {
                 result.AddSummary(
-                    $"Job time slot ({this._timeoutSeconds} sec) expired",
+                    $"Job time slot ({this.timeoutSeconds} sec) expired",
                     "Job will resume in the next scheduler iteration");
             }
             else if (exportJob.JobStatus == JobStatus.InProgress)
@@ -287,10 +291,14 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
+        /// <summary>Runs the import job.</summary>
+        /// <param name="importJob">The import job.</param>
+        /// <param name="result">The result.</param>
+        /// <param name="scheduleHistoryItem">The schedule history item.</param>
         public void Import(ExportImportJob importJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB #{importJob.JobId}</b>");
-            this._timeoutSeconds = GetTimeoutPerSlot();
+            this.timeoutSeconds = GetTimeoutPerSlot();
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
@@ -438,7 +446,7 @@ namespace Dnn.ExportImport.Components.Engines
                 if (this.TimeIsUp)
                 {
                     result.AddSummary(
-                        $"Job time slot ({this._timeoutSeconds} sec) expired",
+                        $"Job time slot ({this.timeoutSeconds} sec) expired",
                         "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress)
@@ -452,6 +460,9 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
+        /// <summary>Adds the logs to the database.</summary>
+        /// <param name="jobId">The ID of the job to log.</param>
+        /// <param name="completeLog">A collection of log items.</param>
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
             if (completeLog == null || completeLog.Count == 0)
@@ -627,9 +638,12 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static void SetLastJobStartTime(int scheduleId, DateTimeOffset time)
         {
-            SchedulingProvider.Instance().AddScheduleItemSetting(
-                scheduleId, Constants.LastJobStartTimeKey,
-                time.ToUniversalTime().DateTime.ToString(Constants.JobRunDateTimeFormat));
+            SchedulingProvider.Instance()
+                .AddScheduleItemSetting(
+                    scheduleId,
+                    Constants.LastJobStartTimeKey,
+                    time.ToUniversalTime()
+                        .DateTime.ToString(Constants.JobRunDateTimeFormat));
         }
 
         private static void DoPacking(ExportImportJob exportJob, string dbName)
@@ -695,8 +709,12 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
-        private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,
-            HashSet<string> includedItems, IList<ExportImportChekpoint> checkpoints)
+        private void PrepareCheckPoints(
+            int jobId,
+            List<BasePortableService> parentServices,
+            List<BasePortableService> implementors,
+            HashSet<string> includedItems,
+            IList<ExportImportChekpoint> checkpoints)
         {
             // there must be one parent implementor at least for this to work
             var nextLevelServices = new List<BasePortableService>();

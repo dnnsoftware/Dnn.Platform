@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using Microsoft.JScript;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DNNConnect.CKEditorProvider
 {
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Microsoft.JScript;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// <summary>
     /// Renders the Tab Java Script.
     /// </summary>
@@ -56,7 +56,6 @@ namespace DNNConnect.CKEditorProvider
                                         tab,
                                         string.Format("{0}&language={1}", Globals.ApplicationURL(tab.TabID), tab.CultureCode))
                                     : Globals.FriendlyUrl(tab, Globals.ApplicationURL(tab.TabID));
-
 
                 tabUrl = Globals.ResolveUrl(Regex.Replace(tabUrl, domainName, "~", RegexOptions.IgnoreCase));
 

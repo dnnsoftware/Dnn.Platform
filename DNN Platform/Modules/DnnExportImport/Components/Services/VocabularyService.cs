@@ -172,8 +172,7 @@ namespace Dnn.ExportImport.Components.Services
             return CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(portalId, toDate, fromDate));
         }
 
-        private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto,
-            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
+        private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto, IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
             var changed = false;
             var dataService = Util.GetDataService();
@@ -240,8 +239,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto,
-            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
+        private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto, IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
 

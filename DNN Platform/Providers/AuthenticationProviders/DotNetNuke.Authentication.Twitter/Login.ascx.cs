@@ -11,23 +11,28 @@ namespace DotNetNuke.Authentication.Twitter
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
 
+    /// <inheritdoc/>
     public partial class Login : OAuthLoginBase
     {
+        /// <inheritdoc/>
         public override bool SupportsRegistration
         {
             get { return true; }
         }
 
+        /// <inheritdoc/>
         protected override string AuthSystemApplicationName
         {
             get { return "Twitter"; }
         }
 
+        /// <inheritdoc/>
         protected override UserData GetCurrentUser()
         {
             return this.OAuthClient.GetCurrentUser<TwitterUserData>();
         }
 
+        /// <inheritdoc/>
         protected override void AddCustomProperties(System.Collections.Specialized.NameValueCollection properties)
         {
             base.AddCustomProperties(properties);
@@ -35,12 +40,13 @@ namespace DotNetNuke.Authentication.Twitter
             properties.Add("Twitter", string.Format("http://twitter.com/{0}", this.OAuthClient.GetCurrentUser<TwitterUserData>().ScreenName));
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            this.loginButton.Click += this.loginButton_Click;
-            this.registerButton.Click += this.loginButton_Click;
+            this.loginButton.Click += this.LoginButton_Click;
+            this.registerButton.Click += this.LoginButton_Click;
 
             this.OAuthClient = new TwitterClient(this.PortalId, this.Mode);
 
@@ -48,7 +54,7 @@ namespace DotNetNuke.Authentication.Twitter
             this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        private void LoginButton_Click(object sender, EventArgs e)
         {
             this.OAuthClient.CallbackUri = new Uri(this.OAuthClient.CallbackUri + "?state=Twitter");
             AuthorisationResult result = this.OAuthClient.Authorize();

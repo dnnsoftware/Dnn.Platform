@@ -334,7 +334,7 @@ img {border:0}
 
 .ModalFooter {float:right}
 
-.LoadingContent h3 {background: url(../js/ckeditor/4.5.3/images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingContent h3 {background: url(../images/loading.gif) no-repeat 102px 5px;height:20px}
 .LoadingMessage {text-align:center}
 
 #cmdCreate img,
@@ -491,7 +491,7 @@ img {border:0}
   display: block;
   width: 32px;
   height: 32px;
-  background: url("../js/ckeditor/4.5.3/images/loading.gif") center no-repeat;
+  background: url("../images/loading.gif") center no-repeat;
   background-size: contain;
 }
 .files audio,

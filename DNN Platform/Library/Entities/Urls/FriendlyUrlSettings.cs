@@ -405,7 +405,7 @@ namespace DotNetNuke.Entities.Urls
 
         public string ForceLowerCaseRegex
         {
-            get { return this._forceLowerCaseRegex ?? (this._forceLowerCaseRegex = this.GetStringSetting(PreventLowerCaseUrlRegexSetting, string.Empty)); }
+            get { return this._forceLowerCaseRegex ?? (this._forceLowerCaseRegex = this.GetStringSetting(PreventLowerCaseUrlRegexSetting, @"\bverificationcode\b")); }
             internal set { this._forceLowerCaseRegex = value; }
         }
 

@@ -711,6 +711,15 @@ namespace DotNetNuke.Entities.Portals
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 
         /// <inheritdoc/>
+        public bool ShowQuickModuleAddMenu
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
+            }
+        }
+
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             var outputFormat = string.Empty;

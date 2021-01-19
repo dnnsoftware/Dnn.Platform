@@ -37,11 +37,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         /// </summary>
         public const string AuthScheme = "Bearer";
 
-        /// <summary>
-        /// A reference to the Dnn data provider.
-        /// </summary>
-        public readonly IDataService DataProvider = DataService.Instance;
-
         private const int ClockSkew = 5; // in minutes; default for clock skew
         private const int SessionTokenTtl = 60; // in minutes = 1 hour
 
@@ -54,6 +49,9 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         /// <inheritdoc/>
         public string SchemeType => "JWT";
+
+        /// <summary>Gets or sets a reference to the DNN data provider.</summary>
+        public IDataService DataProvider { get; set; } = DataService.Instance;
 
         private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
@@ -110,13 +108,18 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("disabled");
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning disable 618 // Obsolete
+            var obsoletePortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore 618 // Obsolete
+
+            IPortalSettings portalSettings = obsoletePortalSettings;
             if (portalSettings == null)
             {
                 Logger.Trace("portalSettings = null");
                 return EmptyWithError("no-portal");
             }
 
+            IPortalAliasInfo portalAlias = obsoletePortalSettings.PortalAlias;
             var status = UserLoginStatus.LOGIN_FAILURE;
             var ipAddress = request.GetIPAddress() ?? string.Empty;
             var userInfo = UserController.ValidateUser(
@@ -138,8 +141,10 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var valid =
                 status == UserLoginStatus.LOGIN_SUCCESS ||
                 status == UserLoginStatus.LOGIN_SUPERUSER ||
+#pragma warning disable 618 // Obsolete
                 status == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD ||
                 status == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
+#pragma warning restore 618 // Obsolete
 
             if (!valid)
             {
@@ -163,7 +168,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
             var jwt = CreateJwtToken(
                 secret,
-                portalSettings.PortalAlias.HTTPAlias,
+                portalAlias.HttpAlias,
                 ptoken,
                 userInfo.Roles);
             var accessToken = jwt.RawData;
@@ -394,9 +399,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             ptoken.TokenExpiry = expiry;
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning disable 618 // Obsolete
+            var obsoletePortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore 618 // Obsolete
+            IPortalSettings portalSettings = obsoletePortalSettings;
+            IPortalAliasInfo portalAlias = obsoletePortalSettings.PortalAlias;
             var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var jwt = CreateJwtToken(secret, portalAlias.HttpAlias, ptoken, userInfo.Roles);
             var accessToken = jwt.RawData;
 
             // save hash values in DB so no one with access can create JWT header from existing data

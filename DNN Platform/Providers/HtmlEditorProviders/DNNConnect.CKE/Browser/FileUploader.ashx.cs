@@ -1,21 +1,19 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Script.Serialization;
-
-using DNNConnect.CKEditorProvider.Objects;
-using DNNConnect.CKEditorProvider.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-
 namespace DNNConnect.CKEditorProvider.Browser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Script.Serialization;
+
+    using DNNConnect.CKEditorProvider.Objects;
+    using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
 
     /// <summary>
     /// The File Upload Handler.
@@ -211,10 +209,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                     }
                 }
 
-                var fileManager = FileManager.Instance;
-                var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
+                var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                fileManager.AddFile(this.StorageFolder, fileName, file.InputStream, this.OverrideFiles, true, contentType, userId);
+                FileManager.Instance.AddFile(this.StorageFolder, fileName, file.InputStream, this.OverrideFiles, true, contentType, userId);
 
                 var fullName = Path.GetFileName(fileName);
                 statuses.Add(new FilesUploadStatus(fullName, file.ContentLength));

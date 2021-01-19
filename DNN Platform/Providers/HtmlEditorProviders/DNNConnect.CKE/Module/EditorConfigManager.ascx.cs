@@ -2,24 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI.WebControls;
-
-using DNNConnect.CKEditorProvider.Objects;
-using DNNConnect.CKEditorProvider.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
 namespace DNNConnect.CKEditorProvider.Module
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
     using DNNConnect.CKEditorProvider.Helper;
+    using DNNConnect.CKEditorProvider.Objects;
+    using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// The Editor Config Manger Module.
@@ -103,6 +102,59 @@ namespace DNNConnect.CKEditorProvider.Module
             {
                 Exceptions.ProcessPageLoadException(exception);
             }
+        }
+
+        private static Dictionary<int, HashSet<TreeNode>> GetModuleNodes(int portalId, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
+        {
+            var portalModules = moduleController.GetModules(portalId).Cast<ModuleInfo>();
+            Dictionary<int, HashSet<TreeNode>> modulesNodes = new Dictionary<int, HashSet<TreeNode>>();
+
+            foreach (var m in portalModules)
+            {
+                var moduleNode = new TreeNode
+                                 {
+                                     Value = $"m{m.ModuleID}",
+                                     Text = m.ModuleTitle,
+                                     ImageUrl =
+                                         SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKMI#{m.ModuleID}#INS#")
+                                             ? "../images/ModuleHasSetting.png"
+                                             : "../images/ModuleNoSetting.png",
+                                 };
+
+                if (modulesNodes.ContainsKey(m.TabID))
+                {
+                    var nodes = modulesNodes[m.TabID];
+                    nodes.Add(moduleNode);
+                }
+                else
+                {
+                    var nodes = new HashSet<TreeNode>();
+                    nodes.Add(moduleNode);
+                    modulesNodes.Add(m.TabID, nodes);
+                }
+            }
+
+            return modulesNodes;
+        }
+
+        private static void LoadNodesByTreeViewHelper(
+            List<EditorHostSetting> editorHostSettings,
+            TreeNode portalNode,
+            Dictionary<int, HashSet<TreeNode>> modulesNodes,
+            List<TabInfo> tabs)
+        {
+            Func<TabInfo, int> getNodeId = x => x.TabID;
+            Func<TabInfo, int> getParentId = x => x.ParentId;
+            Func<TabInfo, string> getNodeText = x => x.TabName;
+            Func<TabInfo, string> getNodeValue = x => $"t{x.TabID}";
+            Func<int, bool> getParentIdCheck = x => x != -1;
+            Func<TabInfo, string> getNodeImageURL =
+                x => SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKT#{x.TabID}#")
+                         ? "../images/PageHasSetting.png"
+                         : "../images/PageNoSetting.png";
+
+            TreeViewHelper<int> tvh = new TreeViewHelper<int>();
+            tvh.LoadNodes(tabs, portalNode.ChildNodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck, modulesNodes);
         }
 
         /// <summary>
@@ -202,6 +254,7 @@ namespace DNNConnect.CKEditorProvider.Module
                 // Load Settings
                 this.EditorOptions.BindOptionsData(true);
             }
+
             if (this.PortalTabsAndModulesTree.SelectedValue.StartsWith("p"))
             {
                 this.EditorOptions.Visible = true;
@@ -308,8 +361,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 Value = "h",
                 ImageUrl =
                                hostSettingsExist
-                                    ? "../js/ckeditor/4.5.3/images/HostHasSetting.png"
-                                    : "../js/ckeditor/4.5.3/images/HostNoSetting.png",
+                                    ? "../images/HostHasSetting.png"
+                                    : "../images/HostNoSetting.png",
                 Expanded = true,
             };
 
@@ -341,8 +394,8 @@ namespace DNNConnect.CKEditorProvider.Module
                 Value = $"p{portal.PortalID}",
                 ImageUrl =
                     portalSettingsExists
-                        ? "../js/ckeditor/4.5.3/images/PortalHasSetting.png"
-                        : "../js/ckeditor/4.5.3/images/PortalNoSetting.png",
+                        ? "../images/PortalHasSetting.png"
+                        : "../images/PortalNoSetting.png",
                 Expanded = this.PortalOnly.Checked,
             };
 
@@ -359,59 +412,6 @@ namespace DNNConnect.CKEditorProvider.Module
             {
                 parentNode.ChildNodes.Add(portalNode);
             }
-        }
-
-        private static void LoadNodesByTreeViewHelper(
-            List<EditorHostSetting> editorHostSettings,
-            TreeNode portalNode,
-            Dictionary<int, HashSet<TreeNode>> modulesNodes,
-            List<TabInfo> tabs)
-        {
-            Func<TabInfo, int> getNodeId = x => x.TabID;
-            Func<TabInfo, int> getParentId = x => x.ParentId;
-            Func<TabInfo, string> getNodeText = x => x.TabName;
-            Func<TabInfo, string> getNodeValue = x => $"t{x.TabID}";
-            Func<int, bool> getParentIdCheck = x => x != -1;
-            Func<TabInfo, string> getNodeImageURL =
-                x => SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKT#{x.TabID}#")
-                    ? "../js/ckeditor/4.5.3/images/PageHasSetting.png"
-                    : "../js/ckeditor/4.5.3/images/PageNoSetting.png";
-
-            TreeViewHelper<int> tvh = new TreeViewHelper<int>();
-            tvh.LoadNodes(tabs, portalNode.ChildNodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck, modulesNodes);
-        }
-
-        private static Dictionary<int, HashSet<TreeNode>> GetModuleNodes(int portalId, ModuleController moduleController, List<EditorHostSetting> editorHostSettings)
-        {
-            var portalModules = moduleController.GetModules(portalId).Cast<ModuleInfo>();
-            Dictionary<int, HashSet<TreeNode>> modulesNodes = new Dictionary<int, HashSet<TreeNode>>();
-
-            foreach (var m in portalModules)
-            {
-                var moduleNode = new TreeNode
-                {
-                    Value = $"m{m.ModuleID}",
-                    Text = m.ModuleTitle,
-                    ImageUrl =
-                        SettingsUtil.CheckSettingsExistByKey(editorHostSettings, $"DNNCKMI#{m.ModuleID}#INS#")
-                            ? "../js/ckeditor/4.5.3/images/ModuleHasSetting.png"
-                            : "../js/ckeditor/4.5.3/images/ModuleNoSetting.png",
-                };
-
-                if (modulesNodes.ContainsKey(m.TabID))
-                {
-                    var nodes = modulesNodes[m.TabID];
-                    nodes.Add(moduleNode);
-                }
-                else
-                {
-                    var nodes = new HashSet<TreeNode>();
-                    nodes.Add(moduleNode);
-                    modulesNodes.Add(m.TabID, nodes);
-                }
-            }
-
-            return modulesNodes;
         }
     }
 }
