@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <value>A list of <see cref="InstallFile"/> instances.</value>
         /// -----------------------------------------------------------------------------
-        protected List<InstallFile> PreUpgradeScripts
+        protected IList<InstallFile> PreUpgradeScripts
         {
             get
             {
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <value>A list of <see cref="InstallFile"/> instances.</value>
         /// -----------------------------------------------------------------------------
-        protected List<InstallFile> PostUpgradeScripts
+        protected IList<InstallFile> PostUpgradeScripts
         {
             get
             {
@@ -302,13 +302,11 @@ namespace DotNetNuke.Services.Installer.Installers
                     // This is the initial script when installing
                     this._installScript = file;
                 }
-                else if (file.Name.StartsWith("preupgrade.", StringComparison.InvariantCultureIgnoreCase)
-                    || type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
+                else if (type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this._preUpgradeScripts.Add(file);
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase)
-                    || file.Name.StartsWith("postupgrade.", StringComparison.InvariantCultureIgnoreCase)
                     || type.Equals("postupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this._postUpgradeScripts.Add(file);
