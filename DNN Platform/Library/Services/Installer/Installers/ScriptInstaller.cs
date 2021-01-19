@@ -132,6 +132,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        [Obsolete("This is now the first of the PostUpgrade scripts. Will be removed in DNN 11.0.")]
+        protected InstallFile UpgradeScript => this.PostUpgradeScripts[0];
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of Post-Upgrade Scripts (if present) - these scripts will always run after
