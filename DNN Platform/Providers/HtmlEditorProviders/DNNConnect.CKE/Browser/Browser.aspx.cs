@@ -724,6 +724,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             var httpRequest = HttpContext.Current.Request;
 
             // var _CKEditorName = request.QueryString["CKEditor"];
+            // funcNum is null when EasyImageUpload is being used
             var funcNum = httpRequest.QueryString["CKEditorFuncNum"];
 
             var errorMsg = string.Empty;
@@ -932,7 +933,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.portalSettings,
                 HttpContext.Current.Request);
 
-            if (this.currentSettings.BrowserMode.Equals(BrowserType.StandardBrowser)
+            if ((this.currentSettings.BrowserMode.Equals(BrowserType.StandardBrowser) || this.currentSettings.ImageButtonMode.Equals(ImageButtonType.EasyImageButton))
                 && HttpContext.Current.Request.IsAuthenticated)
             {
                 string command = null;
@@ -1032,7 +1033,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 if (command != null)
                 {
                     if (!command.Equals("FileUpload") && !command.Equals("FlashUpload")
-                        && !command.Equals("ImageUpload"))
+                        && !command.Equals("ImageUpload") && !command.Equals("EasyImageUpload"))
                     {
                         return;
                     }
@@ -2428,6 +2429,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     }
 
                     break;
+                case "EasyImageUpload":
                 case "ImageUpload":
                     if (AllowedImageExtensions.Contains(sExtension))
                     {
@@ -2480,9 +2482,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                     FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
                 }
 
-                this.Response.Write("<script type=\"text/javascript\">");
-                this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
-                this.Response.Write("</script>");
+                if (command == "EasyImageUpload")
+                {
+                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                    this.Response.ClearContent();
+                    this.Response.ContentType = "application/json";
+                    this.Response.Write($"{{\"default\": \"{fileUrl}\"}}");
+                }
+                else
+                {
+                    this.Response.Write("<script type=\"text/javascript\">");
+                    this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
+                    this.Response.Write("</script>");
+                }
+
                 this.Response.End();
             }
             else

@@ -32,6 +32,7 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.ResizeWidth = -1;
             this.BrowserRoles = "0;Administrators;";
             this.Browser = "standard";
+            this.ImageButton = "standard";
             this.ToolBarRoles = new List<ToolbarRoles> { new ToolbarRoles { RoleId = 0, Toolbar = "Full" } };
             this.UploadSizeRoles = new List<UploadSizeRoles>
                                        {
@@ -171,6 +172,19 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// Gets or sets a value indicating whether Editor File Browser.
         /// </summary>
         public string Browser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the image button.
+        /// </summary>
+        /// <value>
+        /// The image browser.
+        /// </value>
+        public ImageButtonType ImageButtonMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether which Image Button to use.
+        /// </summary>
+        public string ImageButton { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Allowed Browser Roles.

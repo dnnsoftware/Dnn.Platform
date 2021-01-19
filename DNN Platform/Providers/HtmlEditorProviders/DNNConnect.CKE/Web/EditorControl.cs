@@ -370,6 +370,64 @@ namespace DNNConnect.CKEditorProvider.Web
                         "[{0}]", toolbarSetString);
                 }
 
+                // Easy Image Upload
+                if (this.currentSettings.ImageButtonMode == ImageButtonType.EasyImageButton)
+                {
+                    // replace 'Image' Plugin with 'EasyImage'
+                    this.settings["toolbar"] = this.settings["toolbar"].Replace("'Image'", "'EasyImageUpload'");
+
+                    // add the plugin in extraPlugins
+                    if (string.IsNullOrEmpty(this.settings["extraPlugins"]) || !this.settings["extraPlugins"].Split(',').Contains("easyimage"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["extraPlugins"]))
+                        {
+                            this.settings["extraPlugins"] += ",";
+                        }
+
+                        this.settings["extraPlugins"] += "easyimage";
+                    }
+
+                    // change the easyimage toolbar
+                    this.settings["easyimage_toolbar"] = "['EasyImageAlt']";
+
+                    // remove the image plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        {
+                            this.settings["removePlugins"] += ",";
+                        }
+
+                        this.settings["removePlugins"] += "image";
+                    }
+
+                    this.settings.Add("cloudServices_uploadUrl", Globals.ResolveUrl(
+                        string.Format(
+                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=EasyImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                            this.portalSettings.ActiveTab.TabID,
+                            this.portalSettings.PortalId,
+                            this.parentModulId,
+                            this.ID,
+                            this.currentSettings.SettingMode,
+                            CultureInfo.CurrentCulture.Name)));
+                }
+                else
+                {
+                    // remove the easyimage plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        {
+                            this.settings["removePlugins"] += ",";
+                        }
+
+                        this.settings["removePlugins"] += "easyimage";
+                    }
+                }
+
+                // cloudservices variables need to be set regardless
+                this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/CloudServices/GetToken");
+
                 // Editor Width
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))
                 {
@@ -421,17 +479,6 @@ namespace DNNConnect.CKEditorProvider.Web
                     this.settings["menu_groups"] =
                         "clipboard,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div";
                 }
-                
-                // remove the easyimage and cloudservices plugins in removePlugins
-                if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
-                {
-                    if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
-                    {
-                        this.settings["removePlugins"] += ",";
-                    }
-
-                    this.settings["removePlugins"] += "easyimage,cloudservices";
-                }
 
                 // Inject maxFileSize
                 this.settings["maxFileSize"] = Utility.GetMaxUploadSize().ToString();
@@ -475,7 +522,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         this.currentSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
 
-                            if (Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
+                            if (this.currentSettings.ImageButtonMode == ImageButtonType.StandardButton && Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
                             {
                                 this.settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
@@ -977,6 +1024,30 @@ namespace DNNConnect.CKEditorProvider.Web
                     break;
                 case "none":
                     this.currentSettings.BrowserMode = BrowserType.None;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// The check image browser.
+        /// </summary>
+        private void CheckImageButton()
+        {
+            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+            Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
+
+            if (objProvider == null || string.IsNullOrEmpty(objProvider.Attributes["ck_imagebutton"]))
+            {
+                return;
+            }
+
+            switch (objProvider.Attributes["ck_imagebutton"])
+            {
+                case "easyimage":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
+                    break;
+                case "standard":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
                     break;
             }
         }

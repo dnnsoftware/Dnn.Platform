@@ -795,6 +795,13 @@ namespace DNNConnect.CKEditorProvider
                 this.ddlBrowser.SelectedValue = importedSettings.Browser;
             }
 
+            if (!string.IsNullOrEmpty(importedSettings.ImageButton)
+                && this.ddlImageButton.Items.FindByValue(importedSettings.ImageButton) != null)
+            {
+                this.ddlImageButton.ClearSelection();
+                this.ddlImageButton.SelectedValue = importedSettings.ImageButton;
+            }
+
             this.FileListPageSize.Text = importedSettings.FileListPageSize.ToString();
 
             this.FileListViewMode.SelectedValue = importedSettings.FileListViewMode.ToString();
@@ -1820,6 +1827,12 @@ namespace DNNConnect.CKEditorProvider
                 this.ddlBrowser.SelectedValue = ckeditorProvider.Attributes["ck_Browser"];
             }
 
+            // ImageButton
+            if (ckeditorProvider.Attributes["ck_ImageButton"] != string.Empty)
+            {
+                this.ddlImageButton.SelectedValue = ckeditorProvider.Attributes["ck_ImageButton"];
+            }
+
             if (ckeditorProvider.Attributes["ck_contentsCss"] != string.Empty)
             {
                 this.CssUrl.Url = ckeditorProvider.Attributes["ck_contentsCss"];
@@ -2427,6 +2440,7 @@ namespace DNNConnect.CKEditorProvider
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.IMAGEBUTTON}", this.ddlImageButton.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
@@ -2680,6 +2694,7 @@ namespace DNNConnect.CKEditorProvider
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SKIN}", this.ddlSkin.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.CODEMIRRORTHEME}", this.CodeMirrorTheme.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSER}", this.ddlBrowser.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.IMAGEBUTTON}", this.ddlImageButton.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTVIEWMODE}", this.FileListViewMode.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.DEFAULTLINKMODE}", this.DefaultLinkMode.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.USEANCHORSELECTOR}", this.UseAnchorSelector.Checked.ToString());
@@ -3314,6 +3329,7 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.Config.Skin = this.ddlSkin.SelectedValue;
             exportSettings.Config.CodeMirror.Theme = this.CodeMirrorTheme.SelectedValue;
             exportSettings.Browser = this.ddlBrowser.SelectedValue;
+            exportSettings.ImageButton = this.ddlImageButton.SelectedValue;
             exportSettings.FileListViewMode =
                 (FileListView)Enum.Parse(typeof(FileListView), this.FileListViewMode.SelectedValue);
             exportSettings.DefaultLinkMode = (LinkMode)Enum.Parse(typeof(LinkMode), this.DefaultLinkMode.SelectedValue);
