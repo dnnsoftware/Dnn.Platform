@@ -366,12 +366,14 @@
     <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
+    <Compile Include="Services\Dto\DeleteServerDTO.cs" />
     <Compile Include="Services\Dto\DnnModuleDto.cs" />
     <Compile Include="Services\Dto\DnnModulesRequest.cs" />
     <Compile Include="Services\Dto\DnnModulesDto.cs" />
     <Compile Include="Services\Dto\DnnPageDto.cs" />
     <Compile Include="Services\Dto\DnnPagesRequest.cs" />
     <Compile Include="Services\Dto\DnnPagesDto.cs" />
+    <Compile Include="Services\Dto\EditServerUrlDTO.cs" />
     <Compile Include="Services\Dto\EmailLogItemsRequest.cs" />
     <Compile Include="Services\Dto\ExportTemplateRequest.cs" />
     <Compile Include="Services\Dto\FileDto.cs" />
@@ -441,6 +443,7 @@
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />
+    <Compile Include="Services\Dto\WebServer.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\LanguagesController.cs" />
     <Compile Include="Services\LicensingController.cs" />
@@ -462,6 +465,7 @@
     <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
     <Compile Include="Services\SystemInfoApplicationHostController.cs" />
     <Compile Include="Services\SystemInfoDatabaseController.cs" />
+    <Compile Include="Services\SystemInfoServersController.cs" />
     <Compile Include="Services\SystemInfoWebController.cs" />
     <Compile Include="Services\TaskSchedulerController.cs" />
     <Compile Include="Services\ThemesController.cs" />

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {debounce} from "throttle-debounce";
 import Combobox from "react-widgets/lib/Combobox";
 import Service from "./Service";
-import IconButton from "../IconButton";
+import IconButton from "../../IconButton";
 
 import "./style.less";
 

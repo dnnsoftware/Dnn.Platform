@@ -19,17 +19,21 @@ import { AddIcon,
     CrossOutIcon,
     CheckboxUncheckedIcon,
     CheckboxIcon
-} from "../../SvgIcons";
+} from "../SvgIcons";
 
 import "./style.less";
 
-class IconButton extends Component {
+export default class IconButton extends Component {
     constructor(props) {
         super(props);
     }
 
     getIcon() {
         const {props} = this;
+
+        if (props.customIcon) {
+            return props.customIcon;
+        }
 
         switch (props.type.toLowerCase()) {
             case "add":
@@ -123,7 +127,6 @@ IconButton.propTypes = {
     type: PropTypes.string,
     onClick: PropTypes.func,
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
+    customIcon: PropTypes.string
 };
-
-export default IconButton;
