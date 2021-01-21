@@ -1372,18 +1372,6 @@ namespace DNNConnect.CKEditorProvider.Web
 
             if (
                 File.Exists(
-                    this.Context.Server.MapPath(
-                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"))
-                && !cs.IsClientScriptIncludeRegistered(csType, CsAdaptName))
-            {
-                cs.RegisterClientScriptInclude(
-                    csType,
-                    CsAdaptName,
-                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"));
-            }
-
-            if (
-                File.Exists(
                     this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js")) &&
                 !cs.IsClientScriptIncludeRegistered(csType, CsFindName) && this.currentSettings.BrowserMode.Equals(BrowserType.CKFinder))
             {

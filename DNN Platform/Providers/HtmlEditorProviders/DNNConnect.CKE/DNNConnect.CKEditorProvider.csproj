@@ -242,7 +242,6 @@
     <Content Include="css\Options.css" />
     <Content Include="Install\DNNCkeditor.license.txt" />
     <Content Include="js\editorOverride.js" />
-    <Content Include="js\jquery.ckeditor.adapter.js" />
     <Content Include="js\jquery.notification.js" />
     <Content Include="js\jquery.ui.controls.js" />
     <Content Include="js\Options.js" />
