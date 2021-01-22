@@ -19,18 +19,17 @@ public sealed class UnitTests : FrostingTask<Context>
         testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
         testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
 
-        foreach (var file in testAssemblies)
-        {
-            context.VSTest(file.FullPath,
-                FixToolPath(context, new VSTestSettings()
+        context.VSTest(
+            testAssemblies,
+            FixToolPath(
+                context, 
+                new VSTestSettings
                 {
-                    Logger = $"trx;LogFileName={file.GetFilename()}.xml",
+                    Logger = "trx",
                     Parallel = true,
                     EnableCodeCoverage = true,
-                    FrameworkVersion = VSTestFrameworkVersion.NET45,
                     TestAdapterPath = @"tools\NUnitTestAdapter.2.3.0\build"
                 }));
-        }
     }
 
 // https://github.com/cake-build/cake/issues/1522

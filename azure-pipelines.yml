@@ -75,7 +75,7 @@ steps:
   displayName: 'Publish Test Results **/TestResults/*.xml'
   inputs:
     testResultsFormat: VSTest
-    testResultsFiles: '**/TestResults/*.xml'
+    testResultsFiles: '**/TestResults/*.trx'
     mergeTestResults: true
     failTaskOnFailedTests: true
   condition: eq(variables['RunTests'], 'True')
