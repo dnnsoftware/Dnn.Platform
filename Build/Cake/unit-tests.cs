@@ -14,8 +14,11 @@ public sealed class UnitTests : FrostingTask<Context>
     public override void Run(Context context)
     {
         var testAssemblies = context.GetFiles($@"**\bin\{context.configuration}\DotNetNuke.Tests.*.dll");
-        testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
+        testAssemblies += context.GetFiles($@"**\bin\{context.configuration}\Dnn.PersonaBar.*.Tests.dll");
         testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Utilities.dll");
+        
+        // TODO: address issues to allow these tests to run
+        testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
         testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
 
         foreach (var file in testAssemblies)
