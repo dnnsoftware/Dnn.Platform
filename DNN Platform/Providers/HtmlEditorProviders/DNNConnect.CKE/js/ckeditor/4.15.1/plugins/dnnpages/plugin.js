@@ -9,7 +9,7 @@
 	CKEDITOR.plugins.add( 'dnnpages', {
 		requires: 'dialog,fakeobjects',
 		// jscs:disable maximumLineLength
-		lang: 'de,en,pl', // %REMOVE_LINE_CORE%
+		lang: 'de,en,fr,pl', // %REMOVE_LINE_CORE%
 		// jscs:enable maximumLineLength
 		icons: 'anchor,anchor-rtl,link,unlink', // %REMOVE_LINE_CORE%
 		hidpi: true, // %REMOVE_LINE_CORE%
