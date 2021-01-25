@@ -66,5 +66,20 @@ namespace DotNetNuke.Common.Utilities
 
             return Regex.Replace(source, Regex.Escape(oldValue), newValue, RegexOptions.IgnoreCase);
         }
+
+        /// <summary>
+        /// Replaces new line separators.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static string RemoveNewLineSeparators(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return source;
+            }
+
+            return Regex.Replace(source, @"\t|\n|\r", string.Empty);
+        }
     }
 }

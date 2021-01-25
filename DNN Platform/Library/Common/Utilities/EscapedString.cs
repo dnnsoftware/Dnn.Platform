@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
                 return result;
             }
 
-            var segments = combinedString.Split(new[] { seperator });
+            var segments = combinedString.RemoveNewLineSeparators().Split(new[] { seperator });
 
             for (int i = 0; i < segments.Length; i++)
             {
