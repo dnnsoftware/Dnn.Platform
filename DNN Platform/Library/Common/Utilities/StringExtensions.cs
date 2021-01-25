@@ -68,10 +68,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Replaces new line separators.
+        /// Removes new line separators.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <returns></returns>
+        /// <returns>The string without new line separators.</returns>
         public static string RemoveNewLineSeparators(this string source)
         {
             if (string.IsNullOrWhiteSpace(source))
