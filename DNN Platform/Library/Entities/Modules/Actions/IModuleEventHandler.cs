@@ -13,5 +13,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         void ModuleRemoved(object sender, ModuleEventArgs args);
 
         void ModuleDeleted(object sender, ModuleEventArgs args);
+
+        void ModuleGenericEvent(object sender, ModuleGenericEventArgs args);
     }
 }

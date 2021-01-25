@@ -126,6 +126,12 @@ namespace DotNetNuke.Entities
         void OnModuleDeleted(ModuleEventArgs args);
 
         /// <summary>
+        /// Generic event that module vendors can use within their modules.
+        /// </summary>
+        /// <param name="args">The event arguments.</param>
+        void OnModuleGenericEvent(ModuleGenericEventArgs args);
+
+        /// <summary>
         /// Fires up when a module was removed.
         /// </summary>
         /// <param name="args">The event arguments.</param>

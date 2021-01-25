@@ -74,6 +74,7 @@ namespace DotNetNuke.Entities
                 this.ModuleUpdated += handlers.Value.ModuleUpdated;
                 this.ModuleRemoved += handlers.Value.ModuleRemoved;
                 this.ModuleDeleted += handlers.Value.ModuleDeleted;
+                this.ModuleGenericEvent += handlers.Value.ModuleGenericEvent;
             }
 
             foreach (var handler in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
@@ -172,6 +173,8 @@ namespace DotNetNuke.Entities
         private event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
 
         private event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
+
+        private event EventHandler<ModuleGenericEventArgs> ModuleGenericEvent;
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
 
@@ -392,6 +395,15 @@ namespace DotNetNuke.Entities
             if (this.ModuleDeleted != null)
             {
                 this.ModuleDeleted(this, args);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnModuleGenericEvent(ModuleGenericEventArgs args)
+        {
+            if (this.ModuleGenericEvent != null)
+            {
+                this.ModuleGenericEvent(this, args);
             }
         }
 

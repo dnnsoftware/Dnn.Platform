@@ -270,6 +270,7 @@ namespace DotNetNuke.Modules.Html
                         }
 
                         this._htmlTextController.UpdateHtmlText(htmlContent, this._htmlTextController.GetMaximumVersionHistory(this.PortalId));
+                        Entities.EventManager.Instance.OnModuleUpdated(new Entities.Modules.Actions.ModuleGenericEventArgs { Module = this.ModuleConfiguration, EventName = "Update", Payload = htmlContent });
                         break;
                 }
             }
