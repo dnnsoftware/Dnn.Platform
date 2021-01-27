@@ -826,7 +826,7 @@
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
-    <Compile Include="Services\Mail\CoreMailProvider.cs" />
+    <Compile Include="Services\Mail\MailKitMailProvider.cs" />
     <Compile Include="Services\Mail\MailInfo.cs" />
     <Compile Include="Services\Mail\MailAttachment.cs" />
     <Compile Include="Services\Mail\MailProvider.cs" />

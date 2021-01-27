@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using Localize = DotNetNuke.Services.Localization.Localization;
 namespace DotNetNuke.Services.Mail
 {
-    public class CoreMailProvider : MailProvider
+    public class MailKitMailProvider : MailProvider
     {
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
         private static string ConvertToText(string sHTML)
