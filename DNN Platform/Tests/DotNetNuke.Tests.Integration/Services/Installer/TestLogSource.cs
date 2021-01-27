@@ -4,6 +4,7 @@
 namespace DotNetNuke.Tests.Integration.Services.Installer
 {
     using System;
+
     using DotNetNuke.Instrumentation;
 
     internal class TestLogSource : ILoggerSource

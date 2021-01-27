@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
             }
         }
 
+        /// <inheritdoc/>
         public void Refresh()
         {
             this.Response.Redirect(this.Request.RawUrl, true);
@@ -60,6 +61,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
             this.EditorChanged(this, new EditorEventArgs(this.ProvidersDropDownList.SelectedValue));
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             var currentUser = UserController.Instance.GetCurrentUserInfo();

@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Mvp
     {
         private TModel _model;
 
+        /// <inheritdoc/>
         public TModel Model
         {
             get
@@ -22,13 +23,16 @@ namespace DotNetNuke.Web.Mvp
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
                 }
-
                 return this._model;
             }
 
-            set { this._model = value; }
+            set
+            {
+                this._model = value;
+            }
         }
 
+        /// <inheritdoc/>
         protected override void LoadViewState(object savedState)
         {
             // Call the base class to load any View State
@@ -36,6 +40,7 @@ namespace DotNetNuke.Web.Mvp
             AttributeBasedViewStateSerializer.DeSerialize(this.Model, this.ViewState);
         }
 
+        /// <inheritdoc/>
         protected override object SaveViewState()
         {
             AttributeBasedViewStateSerializer.Serialize(this.Model, this.ViewState);

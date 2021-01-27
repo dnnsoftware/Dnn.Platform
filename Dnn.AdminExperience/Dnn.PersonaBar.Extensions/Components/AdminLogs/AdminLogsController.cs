@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 int i;
                 for (i = 0; i <= objLogProperties.Count - 1; i++)
                 {
-                    //display the values in the Panel child controls.
+                    // display the values in the Panel child controls.
                     var ldi = (LogDetailInfo)objLogProperties[i];
                     if (ldi.PropertyName == "Message")
                     {
@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             LogController.Instance.ClearLog();
 
-            //add entry to log recording it was cleared
+            // add entry to log recording it was cleared
             EventLogController.Instance.AddLog(Localization.GetString("LogCleared", Constants.LocalResourcesFile),
                                Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
                                this.PortalSettings,
@@ -259,13 +259,21 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             objXml.LoadXml("<LogEntries></LogEntries>");
             foreach (var logId in logIds)
             {
-                var objLogInfo = new LogInfo { LogGUID = logId };
-                var objNode = objXml.ImportNode((XmlNode)LogController.Instance.GetSingleLog(objLogInfo, LoggingProvider.ReturnType.XML), true);
+                var log = LogController.Instance.GetLog(logId);
+                var xmlDoc = new XmlDocument { XmlResolver = null };
+
+                if (log != null && log is LogInfo logInfo)
+                {
+                    xmlDoc.LoadXml(logInfo.Serialize());
+                }
+
+                var objNode = objXml.ImportNode(xmlDoc, true);
                 if (objXml.DocumentElement != null)
                 {
                     objXml.DocumentElement.AppendChild(objNode);
                 }
             }
+
             return objXml;
         }
     }

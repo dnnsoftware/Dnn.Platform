@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 "ExecuteCommand",
                 "GetFolderTree",
                 "CheckFileExists",
-                "RegRead"
+                "RegRead",
             };
 
             result.Severity = SeverityEnum.Pass;
@@ -75,7 +75,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 {
                     if (name == "ExecuteCommand")
                     {
-                        //since sql error is expected here, do not go through DataProvider so that no error will be logged
+                        // since sql error is expected here, do not go through DataProvider so that no error will be logged
                         using (var connection = new SqlConnection(DataProvider.Instance().ConnectionString))
                         {
                             try
@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                             }
                             catch (Exception)
                             {
-                                //ignore;
+                                // ignore;
                             }
                         }
                     }
@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
             catch (SqlException)
             {
-                //ignore; return no failure
+                // ignore; return no failure
             }
             return true;
         }

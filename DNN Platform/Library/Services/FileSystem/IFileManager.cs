@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="extension">The file extension.</param>
         /// <returns>The Content Type for the specified extension.</returns>
-		[Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension). Scheduled removal in v10.0.0.")]
+        [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension). Scheduled removal in v10.0.0.")]
         string GetContentType(string extension);
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.FileSystem
         void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition);
 
         /// <summary>
-        /// Current user's file upload extension whitelist
+        /// Current user's file upload extension whitelist.
         /// </summary>
         FileExtensionWhitelist WhiteList { get; }
     }

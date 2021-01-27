@@ -146,5 +146,6 @@ namespace Dnn.EditBar.UI.Services
 
     [Serializable]
     public class CacheDto
-    {}
+    {
+    }
 }

@@ -40,11 +40,5 @@
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform/",
     "destination": "Install/Library",
     "extension": "resources"
-  },
-  {
-    "name": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform_net46",
-    "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform-net46/",
-    "destination": "Install/Library",
-    "extension": "resources"
   }
 ]

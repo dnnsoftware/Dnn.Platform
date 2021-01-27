@@ -84,7 +84,7 @@ namespace Dnn.PersonaBar.Seo.Components
                                         ? this._portalSettings.DefaultPortalAlias
                                         : this._portalSettings.PortalAlias.HTTPAlias;
 
-                    //write SiteMap verification file
+                    // write SiteMap verification file
                     var objStream = File.CreateText(Globals.ApplicationMapPath + "\\" + verification);
                     objStream.WriteLine("Google SiteMap Verification File");
                     objStream.WriteLine(" - " + Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx");

@@ -70,7 +70,12 @@ export default class FileUpload extends Component {
     handleError(error) {
         if (error && error.logs && !error.noManifest) {
             const errorCount = this.getErrorCount(error.logs);
-            const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors");
+            const errorText =
+                typeof error === "string"
+                    ? error
+                    : errorCount > 0
+                        ? (Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors"))
+                        : Localization.get("InstallExtension_UploadFailedUnknown");
 
             this.setState({ uploading: true, errorText, errorInPackage: true, noManifest: false }, () => {
             });

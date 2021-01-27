@@ -17,6 +17,8 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using Dnn.AuthServices.Jwt.Auth;
     using Dnn.AuthServices.Jwt.Components.Entity;
     using Dnn.AuthServices.Jwt.Data;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -25,10 +27,15 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using DotNetNuke.Web.Api;
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Controls JWT features.
+    /// </summary>
     internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
     {
+        /// <summary>
+        /// The name of the authentication scheme header.
+        /// </summary>
         public const string AuthScheme = "Bearer";
-        public readonly IDataService DataProvider = DataService.Instance;
 
         private const int ClockSkew = 5; // in minutes; default for clock skew
         private const int SessionTokenTtl = 60; // in minutes = 1 hour
@@ -40,14 +47,15 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
+        /// <inheritdoc/>
         public string SchemeType => "JWT";
+
+        /// <summary>Gets or sets a reference to the DNN data provider.</summary>
+        public IDataService DataProvider { get; set; } = DataService.Instance;
 
         private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
-        /// <summary>
-        /// Validates the received JWT against the databas eand returns username when successful.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public string ValidateToken(HttpRequestMessage request)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -60,6 +68,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return string.IsNullOrEmpty(authorization) ? null : this.ValidateAuthorizationValue(authorization);
         }
 
+        /// <inheritdoc/>
         public bool LogoutUser(HttpRequestMessage request)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -90,10 +99,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return true;
         }
 
-        /// <summary>
-        /// Validates user login credentials and returns result when successful.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -102,18 +108,29 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("disabled");
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning disable 618 // Obsolete
+            var obsoletePortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore 618 // Obsolete
+
+            IPortalSettings portalSettings = obsoletePortalSettings;
             if (portalSettings == null)
             {
                 Logger.Trace("portalSettings = null");
                 return EmptyWithError("no-portal");
             }
 
+            IPortalAliasInfo portalAlias = obsoletePortalSettings.PortalAlias;
             var status = UserLoginStatus.LOGIN_FAILURE;
             var ipAddress = request.GetIPAddress() ?? string.Empty;
             var userInfo = UserController.ValidateUser(
                 portalSettings.PortalId,
-                loginData.Username, loginData.Password, "DNN", string.Empty, AuthScheme, ipAddress, ref status);
+                loginData.Username,
+                loginData.Password,
+                "DNN",
+                string.Empty,
+                AuthScheme,
+                ipAddress,
+                ref status);
 
             if (userInfo == null)
             {
@@ -124,8 +141,10 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var valid =
                 status == UserLoginStatus.LOGIN_SUCCESS ||
                 status == UserLoginStatus.LOGIN_SUPERUSER ||
+#pragma warning disable 618 // Obsolete
                 status == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD ||
                 status == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
+#pragma warning restore 618 // Obsolete
 
             if (!valid)
             {
@@ -147,7 +166,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             };
 
             var secret = ObtainSecret(sessionId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var jwt = CreateJwtToken(
+                secret,
+                portalAlias.HttpAlias,
+                ptoken,
+                userInfo.Roles);
             var accessToken = jwt.RawData;
 
             ptoken.TokenHash = GetHashedStr(accessToken);
@@ -162,6 +185,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             };
         }
 
+        /// <inheritdoc/>
         public LoginResultData RenewToken(HttpRequestMessage request, string renewalToken)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -258,6 +282,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return this.UpdateToken(renewalToken, ptoken, userInfo);
         }
 
+        /// <inheritdoc/>
         protected override Func<IJwtController> GetFactory()
         {
             return () => new JwtController();
@@ -374,9 +399,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             ptoken.TokenExpiry = expiry;
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning disable 618 // Obsolete
+            var obsoletePortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore 618 // Obsolete
+            IPortalSettings portalSettings = obsoletePortalSettings;
+            IPortalAliasInfo portalAlias = obsoletePortalSettings.PortalAlias;
             var secret = ObtainSecret(ptoken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
-            var jwt = CreateJwtToken(secret, portalSettings.PortalAlias.HTTPAlias, ptoken, userInfo.Roles);
+            var jwt = CreateJwtToken(secret, portalAlias.HttpAlias, ptoken, userInfo.Roles);
             var accessToken = jwt.RawData;
 
             // save hash values in DB so no one with access can create JWT header from existing data
@@ -523,7 +552,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             if (portalSettings == null)
             {
                 Logger.Trace("Unable to retrieve portal settings");
@@ -547,9 +576,33 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 status == UserValidStatus.UPDATEPROFILE ||
                 status == UserValidStatus.UPDATEPASSWORD;
 
-            if (!valid && Logger.IsTraceEnabled)
+            if (!valid)
             {
-                Logger.Trace("Inactive user status: " + status);
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Inactive user status: " + status);
+                }
+
+                return null;
+            }
+
+            if (!userInfo.Membership.Approved)
+            {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Non Approved user id: " + userInfo.UserID + " UserName: " + userInfo.Username);
+                }
+
+                return null;
+            }
+
+            if (userInfo.IsDeleted)
+            {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Deleted user id: " + userInfo.UserID + " UserName: " + userInfo.Username);
+                }
+
                 return null;
             }
 

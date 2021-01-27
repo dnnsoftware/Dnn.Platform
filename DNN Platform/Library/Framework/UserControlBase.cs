@@ -7,9 +7,7 @@ namespace DotNetNuke.Framework
     using System.Web.UI;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

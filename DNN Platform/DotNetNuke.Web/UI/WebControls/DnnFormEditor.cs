@@ -11,9 +11,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.WebControls;
 
     using ClientDependency.Core;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Localization;
 
@@ -99,6 +97,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -107,6 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override void DataBind()
         {
             this.OnDataBinding(EventArgs.Empty);
@@ -136,6 +136,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -164,6 +165,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.DataBindItems(useDataSource);
         }
 
+        /// <inheritdoc/>
         protected override void LoadControlState(object state)
         {
             if (state != null)
@@ -172,6 +174,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
@@ -179,6 +182,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -221,6 +225,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override object SaveControlState()
         {
             return this._itemCount > 0 ? (object)this._itemCount : null;

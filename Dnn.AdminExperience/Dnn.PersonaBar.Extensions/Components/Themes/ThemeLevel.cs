@@ -30,6 +30,6 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <summary>
         /// All Themes.
         /// </summary>
-        All = 7
+        All = 7,
     }
 }

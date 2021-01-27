@@ -33,12 +33,14 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
+        /// <inheritdoc/>
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
             var results = this.GetResults(searchQuery);
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
 
+        /// <inheritdoc/>
         public SearchResults ModuleSearch(SearchQuery searchQuery)
         {
             searchQuery.SearchTypeIds = new List<int> { this._moduleSearchTypeId };
@@ -137,7 +139,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         break;
                     case Constants.ModifiedTimeTag:
                         DateTime modifiedTimeUtc;
-                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, null, DateTimeStyles.None, out modifiedTimeUtc);
+                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out modifiedTimeUtc);
                         result.ModifiedTimeUtc = modifiedTimeUtc;
                         break;
                     default:

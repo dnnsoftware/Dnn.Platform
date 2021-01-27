@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
                                             ErrorMessage = Constants.TermValidationError,
                                             PropertyName = Constants.TermValidationPropertyName,
                                             Validator = this
-                                        }
+                                        },
                                     });
                             }
                         }

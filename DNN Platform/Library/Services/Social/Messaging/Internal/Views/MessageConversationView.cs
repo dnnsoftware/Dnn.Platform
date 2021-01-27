@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             this.To = Null.SetNullString(dr["To"]);
             this.From = Null.SetNullString(dr["From"]);
             this.Subject = Null.SetNullString(dr["Subject"]);
-            this.Body = Null.SetNullString(dr["Body"]);
+            this.Body = HtmlUtils.ConvertToHtml(Null.SetNullString(dr["Body"]));
             this.ConversationId = Null.SetNullInteger(dr["ConversationID"]);
             this.ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
             this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);

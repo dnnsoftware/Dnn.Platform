@@ -28,7 +28,9 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public int Page { get; set; }
+
         public int Max { get; set; } = 10;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -58,10 +60,10 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     {
                         PageNo = pageNo,
                         TotalPages = totalPages,
-                        PageSize = max
+                        PageSize = max,
                     },
                     Records = roles.Count,
-                    Output = roles.Count == 0 ? this.LocalizeString("Prompt_NoRoles") : ""
+                    Output = roles.Count == 0 ? this.LocalizeString("Prompt_NoRoles") : "",
                 };
 
             }

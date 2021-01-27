@@ -93,6 +93,9 @@ namespace DotNetNuke.UI.UserControls
         private string _telephone;
         private string _unit;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Address"/> class.
+        /// </summary>
         protected Address()
         {
             this.StartTabIndex = 1;

@@ -25,6 +25,9 @@ namespace DotNetNuke.UI.WebControls
         private List<string> _AddValues;
         private List<string> _RemoveValues;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DualListBox"/> class.
+        /// </summary>
         public DualListBox()
         {
             this.ShowAddButton = true;
@@ -187,6 +190,7 @@ namespace DotNetNuke.UI.WebControls
 
         public string ValidationGroup { get; set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -195,6 +199,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool retValue = Null.NullBoolean;
@@ -225,10 +230,12 @@ namespace DotNetNuke.UI.WebControls
             return retValue;
         }
 
+        /// <inheritdoc/>
         public void RaisePostDataChangedEvent()
         {
         }
 
+        /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
             switch (eventArgument)
@@ -293,6 +300,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -302,6 +310,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter writer)
         {
             // render table

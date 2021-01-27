@@ -24,16 +24,19 @@ namespace DotNetNuke.Web.Api
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
 
+        /// <inheritdoc/>
         public bool TryFindTabId(HttpRequestMessage request, out int tabId)
         {
             return TryFindTabId(request, out tabId, true);
         }
 
+        /// <inheritdoc/>
         public bool TryFindModuleId(HttpRequestMessage request, out int moduleId)
         {
             return TryFindModuleId(request, out moduleId, true);
         }
 
+        /// <inheritdoc/>
         public bool TryFindModuleInfo(HttpRequestMessage request, out ModuleInfo moduleInfo)
         {
             int tabId, moduleId;

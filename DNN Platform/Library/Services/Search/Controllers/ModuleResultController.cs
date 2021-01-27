@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private static Hashtable _moduleSearchControllers = new Hashtable();
         private static object _threadLock = new object();
 
+        /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var viewable = false;
@@ -89,6 +90,7 @@ namespace DotNetNuke.Services.Search.Controllers
         }
 
         // Returns the URL to the first instance of the module the user has access to view
+        /// <inheritdoc/>
         public override string GetDocUrl(SearchResult searchResult)
         {
             if (!string.IsNullOrEmpty(searchResult.Url))

@@ -9,14 +9,10 @@ namespace DotNetNuke.Web.UI
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI;
-    using DotNetNuke.UI.ControlPanels;
-    using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 

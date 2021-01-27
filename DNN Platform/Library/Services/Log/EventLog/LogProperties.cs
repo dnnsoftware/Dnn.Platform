@@ -3,16 +3,20 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
-    using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
 
-    public class LogProperties : ArrayList
+    /// <inheritdoc />
+    public class LogProperties : ArrayList, ILogProperties
     {
+        /// <inheritdoc />
         public string Summary
         {
             get
@@ -25,6 +29,35 @@ namespace DotNetNuke.Services.Log.EventLog
 
                 return summary;
             }
+        }
+
+        /// <inheritdoc />
+        public void Add(ILogDetailInfo item) =>
+            base.Add(item);
+
+        /// <inheritdoc />
+        public bool Contains(ILogDetailInfo item) =>
+            base.Contains(item);
+
+        /// <inheritdoc />
+        public void CopyTo(ILogDetailInfo[] array, int arrayIndex) =>
+            base.CopyTo(array, arrayIndex);
+
+        /// <inheritdoc />
+        IEnumerator<ILogDetailInfo> IEnumerable<ILogDetailInfo>.GetEnumerator() =>
+            this.ToArray().Cast<ILogDetailInfo>().GetEnumerator();
+
+        /// <inheritdoc />
+        public bool Remove(ILogDetailInfo item)
+        {
+            var index = this.IndexOf(item);
+            if (index >= 0)
+            {
+                this.RemoveAt(index);
+                return true;
+            }
+
+            return false;
         }
 
         public void Deserialize(string content)
@@ -73,6 +106,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();

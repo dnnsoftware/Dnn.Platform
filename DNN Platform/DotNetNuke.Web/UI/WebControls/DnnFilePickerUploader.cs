@@ -4,11 +4,8 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -37,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool UsePersonalFolder { get; set; }
 
+        /// <inheritdoc/>
         public string FilePath
         {
             get
@@ -74,6 +72,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public int FileID
         {
             get
@@ -113,6 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public string FileFilter
         {
             get
@@ -189,6 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -214,6 +215,7 @@ namespace DotNetNuke.Web.UI.WebControls
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             if (this.FoldersComboBox.SelectedFolder != null && this.FoldersComboBox.SelectedFolder.FolderPath.StartsWith("Users/", StringComparison.InvariantCultureIgnoreCase))

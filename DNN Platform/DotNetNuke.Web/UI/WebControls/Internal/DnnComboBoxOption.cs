@@ -3,16 +3,10 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
     /// <remarks>

@@ -26,11 +26,18 @@ namespace DotNetNuke.UI.WebControls
         private bool mShowImage = true;
         private bool mVisible = true;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.
+        /// </summary>
         public ImageCommandColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.
+        /// </summary>
+        /// <param name="itemType"></param>
         public ImageCommandColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;
@@ -193,7 +200,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="container">The parent container (DataGridItem).</param>
+        /// <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -283,7 +290,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets whether theButton is visible.
         /// </summary>
-        ///     <param name="container">The parent container (DataGridItem).</param>
+        /// <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         private bool GetIsVisible(DataGridItem container)
         {
@@ -304,7 +311,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the value of the key.
         /// </summary>
-        ///     <param name="container">The parent container (DataGridItem).</param>
+        /// <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         private int GetValue(DataGridItem container)
         {

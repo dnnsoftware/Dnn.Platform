@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                     PermissionId = permission.PermissionID,
                     PermissionName = permission.PermissionName,
                     FullControl = PermissionHelper.IsFullControl(permission),
-                    View = PermissionHelper.IsViewPermisison(permission)
+                    View = PermissionHelper.IsViewPermisison(permission),
                 });
             }
         }

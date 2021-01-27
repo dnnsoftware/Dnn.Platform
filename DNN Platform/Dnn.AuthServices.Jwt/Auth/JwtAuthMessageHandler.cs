@@ -24,8 +24,13 @@ namespace Dnn.AuthServices.Jwt.Auth
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
-        private readonly IJwtController _jwtController = JwtController.Instance;
+        private readonly IJwtController jwtController = JwtController.Instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JwtAuthMessageHandler"/> class.
+        /// </summary>
+        /// <param name="includeByDefault">A value indicating whether this handler should be inlcuded by default on all API endpoints.</param>
+        /// <param name="forceSsl">A value indicating whether this handler should enforce SSL usage.</param>
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
@@ -35,12 +40,18 @@ namespace Dnn.AuthServices.Jwt.Auth
             IsEnabled = true;
         }
 
-        public override string AuthScheme => this._jwtController.SchemeType;
+        /// <inheritdoc/>
+        public override string AuthScheme => this.jwtController.SchemeType;
 
+        /// <inheritdoc/>
         public override bool BypassAntiForgeryToken => true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this handler is enabled.
+        /// </summary>
         internal static bool IsEnabled { get; set; }
 
+        /// <inheritdoc/>
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (this.NeedsAuthentication(request))
@@ -55,7 +66,7 @@ namespace Dnn.AuthServices.Jwt.Auth
         {
             try
             {
-                var username = this._jwtController.ValidateToken(request);
+                var username = this.jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
                     if (Logger.IsTraceEnabled)

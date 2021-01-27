@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.InternalServices
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -517,9 +516,9 @@ namespace DotNetNuke.Web.InternalServices
 
             string imageUrl =
                 (from pkgs in packages
-                    join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                    where portMods.Value.DesktopModuleID == moduleId
-                    select pkgs.IconFile).FirstOrDefault();
+                 join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                 where portMods.Value.DesktopModuleID == moduleId
+                 select pkgs.IconFile).FirstOrDefault();
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
@@ -533,11 +532,11 @@ namespace DotNetNuke.Web.InternalServices
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from pkgs in packages
-                join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-                join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-                where tabMods.Value.ModuleID == moduleId
-                select pkgs.IconFile).FirstOrDefault();
+                               join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                               join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+                               join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+                               where tabMods.Value.ModuleID == moduleId
+                               select pkgs.IconFile).FirstOrDefault();
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
@@ -567,7 +566,7 @@ namespace DotNetNuke.Web.InternalServices
                 userID = user.UserID;
             }
 
-            if (moduleInfo != null)
+            if (moduleInfo != null && !moduleInfo.IsDeleted)
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -585,6 +584,11 @@ namespace DotNetNuke.Web.InternalServices
                         case ModuleSharing.Unknown:
                             break;
                     }
+                }
+
+                if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", moduleInfo))
+                {
+                    throw new SecurityException($"Module '{moduleInfo.ModuleID}' is not available in current context.");
                 }
 
                 // clone the module object ( to avoid creating an object reference to the data cache )

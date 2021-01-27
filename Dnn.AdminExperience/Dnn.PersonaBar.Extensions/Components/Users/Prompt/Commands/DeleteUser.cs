@@ -38,6 +38,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
+
         private bool Notify { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -70,11 +71,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserDeletionFailed"))
                 {
-                    Data = userModels
+                    Data = userModels,
                 };
             }
 
-            // attempt to retrieve the user from the dB 
+            // attempt to retrieve the user from the dB
             userInfo = this._userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
             return new ConsoleResultModel(this.LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };

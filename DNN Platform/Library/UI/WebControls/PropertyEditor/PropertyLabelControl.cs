@@ -10,9 +10,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -33,6 +31,9 @@ namespace DotNetNuke.UI.WebControls
         protected Panel pnlHelp;
         private string _ResourceKey;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyLabelControl"/> class.
+        /// </summary>
         public PropertyLabelControl()
         {
         }
@@ -215,6 +216,7 @@ namespace DotNetNuke.UI.WebControls
 
         public bool Required { get; set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -290,6 +292,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

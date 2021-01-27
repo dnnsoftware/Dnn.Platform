@@ -14,16 +14,22 @@ namespace DotNetNuke.UI.Modules.Html5
     {
         private readonly HttpRequest _request;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="request"></param>
         public RequestPropertyAccess(HttpRequest request)
         {
             this._request = request;
         }
 
+        /// <inheritdoc/>
         public virtual CacheLevel Cacheability
         {
             get { return CacheLevel.notCacheable; }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())

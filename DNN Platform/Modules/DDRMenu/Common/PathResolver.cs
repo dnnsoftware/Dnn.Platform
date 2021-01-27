@@ -9,25 +9,64 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     using System.IO;
     using System.Web;
 
+    /// <summary>
+    /// Used to resolved paths.
+    /// </summary>
     public class PathResolver
     {
         private readonly string manifestFolder;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathResolver"/> class.
+        /// </summary>
+        /// <param name="manifestFolder">The folder where the manifest is located.</param>
         public PathResolver(string manifestFolder)
         {
             this.manifestFolder = manifestFolder;
         }
 
+        /// <summary>
+        /// To which folder is the path relative to.
+        /// </summary>
         public enum RelativeTo
         {
+            /// <summary>
+            /// Relative to the container.
+            /// </summary>
             Container,
+
+            /// <summary>
+            /// Relative to the Dnn application.
+            /// </summary>
             Dnn,
+
+            /// <summary>
+            /// Relative to the manifest.
+            /// </summary>
             Manifest,
+
+            /// <summary>
+            /// Relative to the module.
+            /// </summary>
             Module,
+
+            /// <summary>
+            /// Relative to the portal (site).
+            /// </summary>
             Portal,
+
+            /// <summary>
+            /// Relative to the skin (theme).
+            /// </summary>
             Skin,
         }
 
+        /// <summary>
+        /// Resolves a relative path.
+        /// </summary>
+        /// <param name="path">The path to resolve.</param>
+        /// <param name="roots">To which folder this path is relative to.</param>
+        /// <returns>A resolved path.</returns>
         public string Resolve(string path, params RelativeTo[] roots)
         {
             var context = DNNContext.Current;
@@ -73,12 +112,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
                             var containerRoot = (container == null)
                                                     ? context.SkinPath
-
-                                                    // ReSharper disable PossibleNullReferenceException
-                                                    : Path.GetDirectoryName(((UI.Containers.Container)container).AppRelativeVirtualPath).Replace(
-
-                                                        // ReSharper restore PossibleNullReferenceException
-                                                        '\\', '/') + "/";
+                                                    : Path.GetDirectoryName(((UI.Containers.Container)container).AppRelativeVirtualPath).Replace('\\', '/') + "/";
                             resolvedPath = Path.Combine(containerRoot, path);
                             break;
                         case RelativeTo.Dnn:

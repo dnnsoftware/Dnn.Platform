@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Services.Localization.Internal
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
 

@@ -51,6 +51,12 @@
               <xs:element name="dataconsentuserdeleteaction" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="dataconsentdelay" type="xs:integer" minOccurs="0" maxOccurs="1" />
               <xs:element name="dataconsentdelaymeasurement" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="showquickmoduleaddmenu" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="sitemapcachedays" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="sitemapexcludepriority" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+              <xs:element name="sitemapincludehidden" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="sitemaplevelmode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="sitemapminpriority" type="xs:decimal" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>

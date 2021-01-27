@@ -47,13 +47,21 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int? ParentId { get; set; } = -1;
+
         private bool? Deleted { get; set; }
+
         private string PageName { get; set; }
+
         private string PageTitle { get; set; }
+
         private string PagePath { get; set; }
+
         private string PageSkin { get; set; }
+
         private bool? PageVisible { get; set; }
+
         private int Page { get; set; }
+
         private int Max { get; set; } = 10;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -91,14 +99,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 {
                     PageNo = pageNo,
                     TotalPages = totalPages,
-                    PageSize = max
+                    PageSize = max,
                 },
                 Records = lstOut.Count,
                 Output = lstOut.Count == 0 ? this.LocalizeString("Prompt_NoPages") : "",
                 FieldOrder = new[]
                 {
                     "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted"
-                }
+                },
             };
         }
     }

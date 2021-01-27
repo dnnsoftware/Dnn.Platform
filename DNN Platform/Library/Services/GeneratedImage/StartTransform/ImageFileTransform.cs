@@ -15,6 +15,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class ImageFileTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageFileTransform"/> class.
+        /// </summary>
         public ImageFileTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

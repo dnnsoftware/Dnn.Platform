@@ -17,6 +17,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:MultiLineTextEditControl runat=server></{0}:MultiLineTextEditControl>")]
     public class MultiLineTextEditControl : TextEditControl
     {
+        /// <inheritdoc/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             string propValue = Convert.ToString(this.Value);

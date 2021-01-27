@@ -7,7 +7,6 @@ namespace Dnn.ExportImport.Components.Dto
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Interfaces;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
     using Newtonsoft.Json;
 
     /// <summary>

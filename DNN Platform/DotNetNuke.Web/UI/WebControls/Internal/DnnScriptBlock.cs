@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.IO;
     using System.Text;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
 
@@ -16,6 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnScriptBlock : Control
     {
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (!this.DesignMode)

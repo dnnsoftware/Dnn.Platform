@@ -302,6 +302,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public UserInfo User { get; set; }
 
+        /// <inheritdoc/>
         public bool Localize
         {
             get
@@ -315,6 +316,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
         /// <summary>
@@ -405,10 +407,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public virtual void LocalizeStrings()
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

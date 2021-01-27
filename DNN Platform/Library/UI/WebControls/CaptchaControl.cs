@@ -8,7 +8,6 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Drawing;
     using System.Drawing.Drawing2D;
-    using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -60,6 +59,9 @@ namespace DotNetNuke.UI.WebControls
         private string _UserText = string.Empty;
         private Image _image;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CaptchaControl"/> class.
+        /// </summary>
         public CaptchaControl()
         {
             this.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);

@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return Null.NullInteger;
             }
 
-            //remove spaces so file is created correctly
+            // remove spaces so file is created correctly
             var controlSrc = createModuleDto.FileName.Replace(" ", "");
             if (InvalidFilename(controlSrc))
             {
@@ -127,12 +127,12 @@ namespace Dnn.PersonaBar.Extensions.Components
                 errorMessage = "NonuniqueName";
                 return Null.NullInteger;
             }
-            //First create the control
+            // First create the control
             createModuleDto.FileName = controlSrc;
             var message = this.CreateControl(createModuleDto);
             if (string.IsNullOrEmpty(message))
             {
-                //Next import the control
+                // Next import the control
                 return this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
             }
 
@@ -172,10 +172,10 @@ namespace Dnn.PersonaBar.Extensions.Components
                     Description = createModuleDto.Description,
                     Version = new Version(1, 0, 0),
                     PackageType = "Module",
-                    License = Util.PACKAGE_NoLicense
+                    License = Util.PACKAGE_NoLicense,
                 };
 
-                //Save Package
+                // Save Package
                 PackageController.Instance.SaveExtensionPackage(package);
 
                 var objDesktopModule = new DesktopModuleInfo
@@ -192,15 +192,15 @@ namespace Dnn.PersonaBar.Extensions.Components
                     CompatibleVersions = "",
                     Dependencies = "",
                     Permissions = "",
-                    PackageID = package.PackageID
+                    PackageID = package.PackageID,
                 };
 
                 objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
 
-                //Add module to all portals
+                // Add module to all portals
                 DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
 
-                //Save module definition
+                // Save module definition
                 var moduleDefinition = new ModuleDefinitionInfo();
 
                 moduleDefinition.ModuleDefID = Null.NullInteger;
@@ -210,7 +210,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 moduleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
 
-                //Save module control
+                // Save module control
                 var objModuleControl = new ModuleControlInfo();
 
                 objModuleControl.ModuleControlID = Null.NullInteger;
@@ -315,7 +315,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
             if (tabId == Null.NullInteger)
             {
-                //Create a new page
+                // Create a new page
                 var newTab = new TabInfo();
                 newTab.TabName = tabName;
                 newTab.ParentId = Null.NullInteger;
@@ -349,7 +349,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             var source = string.Format(this.LoadControlTemplate(), createModuleDto.Language, className);
 
-            //reset attributes
+            // reset attributes
             if (File.Exists(moduleControlPath))
             {
                 message = "FileExists";
@@ -396,7 +396,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 className += createModuleDto.ModuleFolder;
             }
-            //return class and remove any spaces that might appear in folder structure
+            // return class and remove any spaces that might appear in folder structure
             return className.Replace(" ", "");
         }
     }

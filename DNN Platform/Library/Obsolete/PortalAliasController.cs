@@ -136,14 +136,17 @@ namespace DotNetNuke.Entities.Portals
         public static bool ValidateAlias(string portalAlias, bool ischild) =>
             ((IPortalAliasService)Instance).ValidateAlias(portalAlias, ischild);
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public int AddPortalAlias(PortalAliasInfo portalAlias) =>
             ((IPortalAliasService)this).AddPortalAlias(portalAlias);
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public void DeletePortalAlias(PortalAliasInfo portalAlias) =>
             ((IPortalAliasService)this).DeletePortalAlias(portalAlias);
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public PortalAliasInfo GetPortalAlias(string alias) =>
             (PortalAliasInfo)((IPortalAliasService)this).GetPortalAlias(alias);
@@ -167,6 +170,7 @@ namespace DotNetNuke.Entities.Portals
         public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId) =>
             (PortalAliasInfo)((IPortalAliasService)this).GetPortalAliasByPortalAliasId(portalAliasId);
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public PortalAliasCollection GetPortalAliases()
         {
@@ -179,6 +183,7 @@ namespace DotNetNuke.Entities.Portals
             return aliasCollection;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId) =>
             ((IPortalAliasService)this).GetPortalAliasesByPortalId(portalId)
@@ -193,6 +198,7 @@ namespace DotNetNuke.Entities.Portals
         public PortalInfo GetPortalByPortalAliasID(int PortalAliasId) =>
             (PortalInfo)((IPortalAliasService)this).GetPortalByPortalAliasId(PortalAliasId);
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
         public void UpdatePortalAlias(PortalAliasInfo portalAlias) =>
             ((IPortalAliasService)this).UpdatePortalAlias(portalAlias);

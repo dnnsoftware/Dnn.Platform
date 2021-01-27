@@ -110,6 +110,7 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             var extensionPointManager = new ExtensionPointManager();
@@ -142,16 +143,19 @@ namespace DotNetNuke.ExtensionPoints
     {
         public string PanelId { get; set; }
 
+        /// <inheritdoc/>
         public override void RenderBeginTag(HtmlTextWriter writer)
         {
             writer.Write(string.Empty);
         }
 
+        /// <inheritdoc/>
         public override void RenderEndTag(HtmlTextWriter writer)
         {
             writer.Write(string.Empty);
         }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter op)
         {
             op.Write("<div class=\"ehccContent dnnClear\" id=\"" + this.PanelId + "\">");

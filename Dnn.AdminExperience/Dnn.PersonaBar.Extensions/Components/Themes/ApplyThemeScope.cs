@@ -13,6 +13,6 @@ namespace Dnn.PersonaBar.Themes.Components
     public enum ApplyThemeScope
     {
         Site = 1,
-        Edit = 2
+        Edit = 2,
     }
 }

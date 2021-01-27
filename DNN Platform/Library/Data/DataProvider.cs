@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable InconsistentNaming
+
 namespace DotNetNuke.Data
 {
     using System;
@@ -4123,7 +4123,6 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
         }
 
-        [Obsolete("Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet. Scheduled removal in v10.0.0.")]
         public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
         {
             return Globals.ConvertDataReaderToDataSet(this.ExecuteReader(procedureName, commandParameters));
@@ -4135,7 +4134,6 @@ namespace DotNetNuke.Data
             return this.ExecuteScalar<object>(procedureName, commandParameters);
         }
 
-        [Obsolete("Temporarily Added in DNN 5.4.2. This will be removed and replaced with named instance support.. Scheduled removal in v10.0.0.")]
         public virtual IDataReader ExecuteSQL(string sql, params IDataParameter[] commandParameters)
         {
             SqlParameter[] sqlCommandParameters = null;

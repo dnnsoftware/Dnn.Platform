@@ -13,11 +13,19 @@ namespace DotNetNuke.Entities.Host
     [Serializable]
     public class ServerInfo : IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerInfo"/> class.
+        /// </summary>
         public ServerInfo()
             : this(DateTime.Now, DateTime.Now)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerInfo"/> class.
+        /// </summary>
+        /// <param name="created"></param>
+        /// <param name="lastactivity"></param>
         public ServerInfo(DateTime created, DateTime lastactivity)
         {
             this.IISAppName = Globals.IISAppName;

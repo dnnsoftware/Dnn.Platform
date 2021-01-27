@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public string CookieMoreLink { get; set; }
 
         public bool CheckUpgrade { get; set; }
-        
+
         public bool DataConsentActive { get; set; }
 
         public int DataConsentConsentRedirect { get; set; }

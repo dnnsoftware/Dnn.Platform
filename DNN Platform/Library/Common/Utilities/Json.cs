@@ -3,11 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
-    using System.IO;
-    using System.Runtime.Serialization.Json;
-    using System.Text;
-
     using Newtonsoft.Json;
 
     /// <summary>

@@ -1,11 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
@@ -24,6 +22,7 @@ namespace Dnn.ExportImport.Components.Controllers
     using DotNetNuke.Services.Log.EventLog;
     using Newtonsoft.Json;
 
+    /// <summary>The import/export controller.</summary>
     public class BaseController
     {
         public static readonly string ExportFolder;
@@ -39,6 +38,10 @@ namespace Dnn.ExportImport.Components.Controllers
             }
         }
 
+        /// <summary>Cancels the job.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="jobId">The job ID.</param>
+        /// <returns>A value indicating whether the job was found.</returns>
         public bool CancelJob(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -53,6 +56,10 @@ namespace Dnn.ExportImport.Components.Controllers
             return true;
         }
 
+        /// <summary>Removes the job.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="jobId">The job ID.</param>
+        /// <returns>A value indicating whether the job was found.</returns>
         public bool RemoveJob(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -70,10 +77,14 @@ namespace Dnn.ExportImport.Components.Controllers
             return true;
         }
 
-        /// <summary>
-        /// Retrieves one page of paginated proceessed jobs.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieves one page of paginated processed jobs.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="currentPortalId">The current portal ID.</param>
+        /// <param name="pageSize">The page size (between <c>1</c> and <c>100</c>).</param>
+        /// <param name="pageIndex">The page index (zero-based).</param>
+        /// <param name="jobType">The job type.</param>
+        /// <param name="keywords">Keywords.</param>
+        /// <returns>An <see cref="AllJobsResult"/> instance.</returns>
         public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
             if (pageIndex < 0)
@@ -107,6 +118,10 @@ namespace Dnn.ExportImport.Components.Controllers
             };
         }
 
+        /// <summary>Gets details about a job.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="jobId">The job ID.</param>
+        /// <returns>A <see cref="JobItem"/> instance.</returns>
         public JobItem GetJobDetails(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -124,14 +139,21 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <summary>
         /// Get the last time a successful export job has started.
         /// This date/time is in uts and can be used to set the next
-        /// differntial date/time to start the job from.
+        /// differential date/time to start the job from.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="jobType">The job type.</param>
+
+        /// <returns>The last job time.</returns>
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
             return EntitiesController.Instance.GetLastJobTime(portalId, jobType);
         }
 
+        /// <summary>Builds a job summary.</summary>
+        /// <param name="packageId">The package ID.</param>
+        /// <param name="repository">The repository.</param>
+        /// <param name="summary">The summary to build.</param>
         protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
         {
             var summaryItems = new SummaryList();
@@ -161,6 +183,9 @@ namespace Dnn.ExportImport.Components.Controllers
             summary.ExportMode = exportDto.ExportMode;
         }
 
+        /// <summary>Builds a job summary.</summary>
+        /// <param name="jobId">The job ID.</param>
+        /// <returns>An <see cref="ImportExportSummary"/> instance.</returns>
         protected static ImportExportSummary BuildJobSummary(int jobId)
         {
             var summaryItems = new SummaryList();
@@ -206,6 +231,9 @@ namespace Dnn.ExportImport.Components.Controllers
             return importExportSummary;
         }
 
+        /// <summary>Gets the export file info.</summary>
+        /// <param name="manifestPath">The manifest path.</param>
+        /// <returns>An <see cref="ExportFileInfo"/> instance.</returns>
         protected static ExportFileInfo GetExportFileInfo(string manifestPath)
         {
             ImportPackageInfo packageInfo = null;
@@ -213,6 +241,9 @@ namespace Dnn.ExportImport.Components.Controllers
             return packageInfo?.Summary.ExportFileInfo;
         }
 
+        /// <summary>Gets the package info.</summary>
+        /// <param name="manifestPath">The manifest path.</param>
+        /// <returns>An <see cref="ImportPackageInfo"/> instance.</returns>
         protected static ImportPackageInfo GetPackageInfo(string manifestPath)
         {
             ImportPackageInfo packageInfo = null;
@@ -220,6 +251,11 @@ namespace Dnn.ExportImport.Components.Controllers
             return packageInfo;
         }
 
+        /// <summary>Adds an event log.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="jobId">The job ID.</param>
+        /// <param name="logTypeKey">The log type key.</param>
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
             var objSecurity = PortalSecurity.Instance;

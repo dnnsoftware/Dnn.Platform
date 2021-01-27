@@ -12,29 +12,34 @@ namespace DotNetNuke.Authentication.Facebook
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
 
+    /// <inheritdoc/>
     public partial class Login : OAuthLoginBase
     {
+        /// <inheritdoc/>
         public override bool SupportsRegistration
         {
             get { return true; }
         }
 
+        /// <inheritdoc/>
         protected override string AuthSystemApplicationName
         {
             get { return "Facebook"; }
         }
 
+        /// <inheritdoc/>
         protected override UserData GetCurrentUser()
         {
             return this.OAuthClient.GetCurrentUser<FacebookUserData>();
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            this.loginButton.Click += this.loginButton_Click;
-            this.registerButton.Click += this.loginButton_Click;
+            this.loginButton.Click += this.LoginButton_Click;
+            this.registerButton.Click += this.LoginButton_Click;
 
             this.OAuthClient = new FacebookClient(this.PortalId, this.Mode);
 
@@ -42,6 +47,7 @@ namespace DotNetNuke.Authentication.Facebook
             this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
+        /// <inheritdoc/>
         protected override void AddCustomProperties(NameValueCollection properties)
         {
             base.AddCustomProperties(properties);
@@ -53,7 +59,7 @@ namespace DotNetNuke.Authentication.Facebook
             }
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        private void LoginButton_Click(object sender, EventArgs e)
         {
             AuthorisationResult result = this.OAuthClient.Authorize();
             if (result == AuthorisationResult.Denied)

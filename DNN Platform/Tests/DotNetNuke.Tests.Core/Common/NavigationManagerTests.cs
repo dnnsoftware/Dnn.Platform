@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Common
                         PortalId = PortalID,
                         ActiveTab = new TabInfo
                         {
-                            TabID = TabID
+                            TabID = TabID,
                         },
                     };
 

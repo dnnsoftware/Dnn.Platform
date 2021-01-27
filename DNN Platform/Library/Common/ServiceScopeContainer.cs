@@ -6,15 +6,21 @@ namespace DotNetNuke.Common
 {
     using System;
     using System.Web;
+
     using DotNetNuke.Common.Extensions;
     using Microsoft.Extensions.DependencyInjection;
 
     internal struct ServiceScopeContainer : IDisposable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceScopeContainer"/> struct.
+        /// </summary>
+        /// <param name="serviceScope">The <see cref="IServiceScope"/> instance to use.</param>
+        /// <param name="shouldDispose">A value indicating whether to dispose the <see cref="ServiceScope"/> when this instance is disposed.</param>
         public ServiceScopeContainer(IServiceScope serviceScope, bool shouldDispose)
         {
-            ServiceScope = serviceScope;
-            ShouldDispose = shouldDispose;
+            this.ServiceScope = serviceScope;
+            this.ShouldDispose = shouldDispose;
         }
 
         /// <summary>
@@ -45,9 +51,9 @@ namespace DotNetNuke.Common
         /// <inheritdoc />
         public void Dispose()
         {
-            if (ShouldDispose)
+            if (this.ShouldDispose)
             {
-                ServiceScope.Dispose();
+                this.ServiceScope.Dispose();
             }
         }
     }

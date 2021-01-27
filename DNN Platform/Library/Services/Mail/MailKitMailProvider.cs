@@ -1,25 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using MailKit.Net.Smtp;
-using MimeKit;
-using System;
-using System.Text.RegularExpressions;
-using Localize = DotNetNuke.Services.Localization.Localization;
 namespace DotNetNuke.Services.Mail
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Mail;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+
+    using MailKit.Net.Smtp;
+
+    using MimeKit;
+
+    using Localize = DotNetNuke.Services.Localization.Localization;
+
+    /// <summary>A <see cref="MailProvider"/> implementation using <see cref="SmtpClient"/>).</summary>
     public class MailKitMailProvider : MailProvider
     {
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
-        private static string ConvertToText(string sHTML)
-        {
-            var formattedHtml = HtmlUtils.FormatText(sHTML, true);
-            var styleLessHtml = HtmlUtils.RemoveInlineStyle(formattedHtml);
-            return HtmlUtils.StripTags(styleLessHtml, true);
-        }
+
+        /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
             // validate smtp server
@@ -56,7 +62,7 @@ namespace DotNetNuke.Services.Mail
                 mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
             }
 
-            string retValue = string.Empty;
+            var retValue = string.Empty;
 
             var mailMessage = new MimeMessage();
             mailMessage.From.Add(new MailboxAddress(mailInfo.FromName, mailInfo.From)); //Test w/empty or null fromname
@@ -69,7 +75,7 @@ namespace DotNetNuke.Services.Mail
 
             mailMessage.Priority = (MimeKit.MessagePriority)mailInfo.Priority;
 
-            // Only modify senderAdress if smtpAuthentication is enabled
+            // Only modify senderAddress if smtpAuthentication is enabled
             // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.
             if (smtpInfo.Authentication == "1" || smtpInfo.Authentication == "2")
             {
@@ -114,10 +120,10 @@ namespace DotNetNuke.Services.Mail
                 builder.HtmlBody = mailInfo.Body;
             }
 
-            //attachments
+            // attachments
             if (mailInfo.Attachments != null)
             {
-                foreach (var attachment in mailInfo.Attachments)
+                foreach (var attachment in mailInfo.Attachments.Where(attachment => attachment.Content != null))
                 {
                     builder.Attachments.Add(attachment.Filename, attachment.Content, ContentType.Parse(attachment.ContentType));
                 }
@@ -134,19 +140,19 @@ namespace DotNetNuke.Services.Mail
 
                 try
                 {
-                    var smtpHostParts = smtpInfo.Server.Split(':');
+                        var smtpHostParts = smtpInfo.Server.Split(':');
                     var host = smtpHostParts[0];
                     var port = 25;
 
-                    if (smtpHostParts.Length > 1)
-                    {
-                        // port is guaranteed to be of max 5 digits numeric by the RegEx check
-                        port = int.Parse(smtpHostParts[1]);
-                        if (port < 1 || port > 65535)
+                        if (smtpHostParts.Length > 1)
                         {
-                            return Localize.GetString("SmtpInvalidPort");
+                            // port is guaranteed to be of max 5 digits numeric by the RegEx check
+                        port = int.Parse(smtpHostParts[1]);
+                            if (port < 1 || port > 65535)
+                            {
+                                return Localize.GetString("SmtpInvalidPort");
+                            }
                         }
-                    }
 
                     // to workaround problem in 4.0 need to specify host name
                     using (var smtpClient = new SmtpClient())
@@ -159,7 +165,8 @@ namespace DotNetNuke.Services.Mail
                             case "0": // anonymous
                                 break;
                             case "1": // basic
-                                if (!string.IsNullOrEmpty(smtpInfo.Username) && !string.IsNullOrEmpty(smtpInfo.Password))
+                                if (!string.IsNullOrEmpty(smtpInfo.Username)
+                                    && !string.IsNullOrEmpty(smtpInfo.Password))
                                 {
                                     smtpClient.Authenticate(smtpInfo.Username, smtpInfo.Password);
                                 }
@@ -175,7 +182,7 @@ namespace DotNetNuke.Services.Mail
                 }
                 catch (Exception exc)
                 {
-                    retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
+                        retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
 
                     // mail configuration problem
                     if (exc.InnerException != null)
@@ -189,7 +196,7 @@ namespace DotNetNuke.Services.Mail
                         Exceptions.Exceptions.LogException(exc);
                     }
                 }
-            }
+                }
             else
             {
                 retValue = Localize.GetString("SMTPConfigurationProblem");

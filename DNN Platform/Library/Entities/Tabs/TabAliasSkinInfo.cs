@@ -25,12 +25,14 @@ namespace DotNetNuke.Entities.Tabs
 
         public int TabId { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get { return this.TabAliasSkinId; }
             set { this.TabAliasSkinId = value; }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);

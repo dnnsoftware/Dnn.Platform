@@ -52,7 +52,6 @@
     margin-left: 4px;
 }
 .sqlconsolePanel .form-item input:not([type="file"]),
-.sqlconsolePanel .form-item textarea,
 .sqlconsolePanel .form-item select {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -162,7 +161,7 @@
 .sqlconsolePanel .form-item.item-query div select {
     width: 100%;
 }
-.sqlconsolePanel .form-item textarea{ height: 220px;}
+.sqlconsolePanel .form-item #monaco-editor{ height: 220px;}
 
 .sqlconsolePanel .actions {
     text-align: center;

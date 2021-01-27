@@ -203,7 +203,7 @@ namespace Dnn.PersonaBar.Roles.Services
                     .Select(u => new UserRoleDto()
                     {
                         UserId = u.UserID,
-                        DisplayName = $"{u.DisplayName} ({u.Username})"
+                        DisplayName = $"{u.DisplayName} ({u.Username})",
                     });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK,
@@ -253,7 +253,7 @@ namespace Dnn.PersonaBar.Roles.Services
                     StartTime = u.EffectiveDate,
                     ExpiresTime = u.ExpiryDate,
                     AllowExpired = this.AllowExpired(u.UserID, u.RoleID),
-                    AllowDelete = RoleController.CanRemoveUserFromRole(portal, u.UserID, u.RoleID)
+                    AllowDelete = RoleController.CanRemoveUserFromRole(portal, u.UserID, u.RoleID),
                 });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { users = pagedData, totalRecords });
@@ -308,7 +308,7 @@ namespace Dnn.PersonaBar.Roles.Services
                         StartTime = addedUser.EffectiveDate,
                         ExpiresTime = addedUser.ExpiryDate,
                         AllowExpired = this.AllowExpired(addedUser.UserID, addedUser.RoleID),
-                        AllowDelete = RoleController.CanRemoveUserFromRole(portal, addedUser.UserID, addedUser.RoleID)
+                        AllowDelete = RoleController.CanRemoveUserFromRole(portal, addedUser.UserID, addedUser.RoleID),
                     });
             }
             catch (ArgumentException ex)

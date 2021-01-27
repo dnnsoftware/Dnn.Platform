@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Personalization;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -60,7 +61,7 @@ namespace DotNetNuke.UI.Containers
             {
                 if (action.Visible)
                 {
-                    if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+                    if ((Personalization.GetUserMode() == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
                     {
                         if (this.ModuleContext.Configuration.DisplayPrint)
                         {

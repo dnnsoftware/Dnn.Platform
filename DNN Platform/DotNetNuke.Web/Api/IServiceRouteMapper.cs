@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Web.Api
 {
-    using System;
-
     public interface IServiceRouteMapper
     {
         void RegisterRoutes(IMapRoute mapRouteManager);

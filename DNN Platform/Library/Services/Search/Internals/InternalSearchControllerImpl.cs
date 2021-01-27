@@ -62,6 +62,9 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly int _authorBoost;
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.
+        /// </summary>
         public InternalSearchControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -72,6 +75,7 @@ namespace DotNetNuke.Services.Search.Internals
             this._authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
@@ -84,6 +88,7 @@ namespace DotNetNuke.Services.Search.Internals
             return list;
         }
 
+        /// <inheritdoc/>
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
@@ -94,11 +99,13 @@ namespace DotNetNuke.Services.Search.Internals
             return keys.ContainsKey(key) ? keys[key] : string.Empty;
         }
 
+        /// <inheritdoc/>
         public void AddSearchDocument(SearchDocument searchDocument)
         {
             this.AddSearchDocumentInternal(searchDocument, false);
         }
 
+        /// <inheritdoc/>
         public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
         {
             var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
@@ -131,11 +138,13 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteSearchDocument(SearchDocument searchDocument)
         {
             this.DeleteSearchDocumentInternal(searchDocument, false);
         }
 
+        /// <inheritdoc/>
         public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
         {
             Requires.NotNegative("PortalId", portalId);
@@ -149,6 +158,7 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
+        /// <inheritdoc/>
         public void DeleteAllDocuments(int portalId, int searchTypeId)
         {
             Requires.NotNegative("SearchTypeId", searchTypeId);
@@ -160,17 +170,20 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
+        /// <inheritdoc/>
         public void Commit()
         {
             LuceneController.Instance.Commit();
         }
 
+        /// <inheritdoc/>
         public bool OptimizeSearchIndex()
         {
             // run optimization in background
             return LuceneController.Instance.OptimizeSearchIndex(true);
         }
 
+        /// <inheritdoc/>
         public SearchStatistics GetSearchStatistics()
         {
             return LuceneController.Instance.GetSearchStatistics();
@@ -609,7 +622,14 @@ namespace DotNetNuke.Services.Search.Internals
                 doc.Add(new Field(Constants.PermissionsTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.Permissions, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
 
-            doc.Add(new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true).SetLongValue(long.Parse(searchDocument.ModifiedTimeUtc.ToString(Constants.DateTimeFormat))));
+            doc.Add(
+                new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true)
+                .SetLongValue(
+                    long.Parse(
+                        searchDocument.ModifiedTimeUtc.ToString(
+                            Constants.DateTimeFormat,
+                            CultureInfo.InvariantCulture),
+                        CultureInfo.InvariantCulture)));
 
             if (sb.Length > 0)
             {

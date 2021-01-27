@@ -56,18 +56,18 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                         {
                             languageCounter++;
 
-                            //add translator role
+                            // add translator role
                             Localization.AddTranslatorRole(portalId, locale);
 
-                            //populate pages
+                            // populate pages
                             ProcessLanguage(pageList, locale, defaultLanguage, languageCounter, languageCount, progress);
 
-                            //Map special pages
+                            // Map special pages
                             PortalController.Instance.MapLocalizedSpecialPages(portalId, locale.Code);
                         }
                     }
 
-                    //clear portal cache
+                    // clear portal cache
                     DataCache.ClearPortalCache(portalId, true);
                     progress.Reset();
                     SaveProgressToFile(progress);
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     }
                     catch (Exception)
                     {
-                        //ignore
+                        // ignore
                     }
                 }
             });
@@ -97,16 +97,16 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     var pageList = GetTabsToLocalize(portalId, cultureCode, defaultLocale);
                     var locale = LocaleController.Instance.GetLocale(cultureCode);
 
-                    //add translator role
+                    // add translator role
                     Localization.AddTranslatorRole(portalId, locale);
 
-                    //populate pages
+                    // populate pages
                     ProcessLanguage(pageList, locale, defaultLocale, 0, 1, progress);
 
-                    //Map special pages
+                    // Map special pages
                     PortalController.Instance.MapLocalizedSpecialPages(portalId, locale.Code);
 
-                    //clear portal cache
+                    // clear portal cache
                     DataCache.ClearPortalCache(portalId, true);
                     progress.Reset();
                     SaveProgressToFile(progress);
@@ -121,7 +121,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     }
                     catch (Exception)
                     {
-                        //ignore
+                        // ignore
                     }
                 }
             });
@@ -241,8 +241,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 where !kvp.Value.TabPath.StartsWith("//Admin")
                       && !kvp.Value.IsDeleted
                       && !kvp.Value.IsSystem
-                select kvp.Value
-                ).ToList();
+                select kvp.Value)
+                .ToList();
         }
 
         private static void PublishLanguage(string cultureCode, int portalId, bool publish)

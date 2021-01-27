@@ -4,19 +4,19 @@
 
 namespace DotNetNuke.UI.Modules
 {
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Modules
-    /// Class    : ISettingsControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ISettingsControl provides a common Interface for Module Settings Controls.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public interface ISettingsControl : IModuleControl
     {
+        /// <summary>
+        /// Loads the module settings.
+        /// </summary>
         void LoadSettings();
 
+        /// <summary>
+        /// Updates the module settings.
+        /// </summary>
         void UpdateSettings();
     }
 }

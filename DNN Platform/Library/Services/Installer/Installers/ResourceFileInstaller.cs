@@ -261,6 +261,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        /// <inheritdoc/>
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
             this._Manifest = unInstallFile.Name + ".manifest";

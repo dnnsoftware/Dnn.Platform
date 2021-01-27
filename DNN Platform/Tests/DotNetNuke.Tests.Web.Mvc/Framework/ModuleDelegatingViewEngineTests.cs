@@ -6,6 +6,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 {
     using System.Linq;
     using System.Web.Mvc;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;

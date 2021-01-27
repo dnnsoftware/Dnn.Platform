@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>618</NoWarn>
+    <NoWarn>618,SA0001</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>618</NoWarn>
+    <NoWarn>618,SA0001</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -101,6 +102,8 @@
     <Compile Include="Api\HttpRequestMessageExtensionsTests.cs" />
     <Compile Include="Api\StandardTabAndModuleInfoProviderTests.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttributeTests.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensionsTests.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensions_SampleFilters.cs" />
     <Compile Include="InternalServices\FakeModuleCrawlerController.cs" />
     <Compile Include="InternalServices\SearchServiceControllerTests.cs">
       <SubType>Code</SubType>

@@ -25,6 +25,7 @@ namespace DotNetNuke.UI.Containers
         private string _commandName = string.Empty;
         private bool _displayLink = true;
 
+        /// <inheritdoc/>
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------

@@ -17,6 +17,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -184,7 +185,7 @@ namespace DotNetNuke.Modules.Html
                 var objHTML = new HtmlTextController();
 
                 // edit in place
-                if (this.EditorEnabled && this.IsEditable && this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                if (this.EditorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
                     this.EditorEnabled = true;
                 }
@@ -207,7 +208,7 @@ namespace DotNetNuke.Modules.Html
                 else
                 {
                     // get default content from resource file
-                    if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                    if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                     {
                         if (this.EditorEnabled)
                         {
@@ -286,7 +287,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 {
                     throw new SecurityException();
                 }
-                else if (this.EditorEnabled && this.IsEditable && this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                else if (this.EditorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
                     // get content
                     var objHTML = new HtmlTextController();
@@ -332,7 +333,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 if (e.Action.CommandArgument == "publish")
                 {
                     // verify security
-                    if (this.IsEditable && this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                    if (this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                     {
                         // get content
                         var objHTML = new HtmlTextController();

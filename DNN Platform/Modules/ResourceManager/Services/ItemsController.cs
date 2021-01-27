@@ -484,7 +484,7 @@ namespace Dnn.Modules.ResourceManager.Services
             var moduleId = this.Request.FindModuleId();
             var moduleMode = new SettingsManager(moduleId, groupId).Mode;
 
-            ItemsManager.Instance.MoveFile(moveFileRequest.SourceFileId, moveFileRequest.DestinationFolderId,  moduleMode, groupId);
+            ItemsManager.Instance.MoveFile(moveFileRequest.SourceFileId, moveFileRequest.DestinationFolderId, moduleMode, groupId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 

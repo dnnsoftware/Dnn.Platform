@@ -7,12 +7,12 @@
     <asp:PlaceHolder runat="server" ID="metaPanel"></asp:PlaceHolder>
     <title />
     <meta id="MetaRefresh" runat="Server" http-equiv="Refresh" name="Refresh" Visible="False" />
-    <meta id="MetaDescription" runat="Server" name="DESCRIPTION" Visible="False"/>
-    <meta id="MetaKeywords" runat="Server" name="KEYWORDS" Visible="False"/>
-    <meta id="MetaCopyright" runat="Server" name="COPYRIGHT" Visible="False"/>
-    <meta id="MetaGenerator" runat="Server" name="GENERATOR" Visible="False"/>
-    <meta id="MetaAuthor" runat="Server" name="AUTHOR" Visible="False"/>
-    <meta id="MetaRobots" runat="server" name="ROBOTS" Visible="False" />
+    <meta id="MetaDescription" runat="Server" name="description" Visible="False"/>
+    <meta id="MetaKeywords" runat="Server" name="keywords" Visible="False"/>
+    <meta id="MetaCopyright" runat="Server" name="copyright" Visible="False"/>
+    <meta id="MetaGenerator" runat="Server" name="generator" Visible="False"/>
+    <meta id="MetaAuthor" runat="Server" name="author" Visible="False"/>
+    <meta id="MetaRobots" runat="server" name="robots" Visible="False" />
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
     <asp:placeholder id="CSS" runat="server" />

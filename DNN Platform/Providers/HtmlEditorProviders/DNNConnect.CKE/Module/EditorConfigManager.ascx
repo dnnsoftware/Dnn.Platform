@@ -35,35 +35,35 @@
         <div class="iconLegend">
             <ul>
                 <li>
-                    <asp:Image ID="HostHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/HostHasSetting.png" />&nbsp;
+                    <asp:Image ID="HostHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/HostHasSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="HostHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="HostNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/HostNoSetting.png"/>&nbsp;
+                    <asp:Image ID="HostNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/HostNoSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="HostNoSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PortalHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/PortalHasSetting.png" />&nbsp;
+                    <asp:Image ID="PortalHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/PortalHasSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="PortalHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PortalNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/PortalNoSetting.png"/>&nbsp;
+                    <asp:Image ID="PortalNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/PortalNoSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="PortalNoSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PageHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/PageHasSetting.png"/>&nbsp;
+                    <asp:Image ID="PageHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/PageHasSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="PageHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PageNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/PageNoSetting.png" />&nbsp;
+                    <asp:Image ID="PageNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/PageNoSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="PageNoSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="ModuleHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/ModuleHasSetting.png" />&nbsp;
+                    <asp:Image ID="ModuleHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/ModuleHasSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="ModuleHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="ModuleNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/images/ModuleNoSetting.png"/>&nbsp;
+                    <asp:Image ID="ModuleNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/ModuleNoSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="ModuleNoSettingLabel"></asp:Label>
                 </li>
             </ul>

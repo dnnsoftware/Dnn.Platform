@@ -25,7 +25,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
-    using Microsoft.VisualBasic.Logging;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke

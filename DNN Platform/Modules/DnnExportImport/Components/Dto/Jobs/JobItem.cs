@@ -17,6 +17,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string CreatedOnString => Util.GetDateTimeString(this.CreatedOn);
 
         public string CompletedOnString => Util.GetDateTimeString(this.CompletedOn);
+
         public int JobId { get; set; }
 
         public int PortalId { get; set; }

@@ -15,6 +15,10 @@ namespace DotNetNuke.ExtensionPoints
     {
         private readonly AggregateCatalog _catalog;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.
+        /// </summary>
+        /// <param name="directory"></param>
         public SafeDirectoryCatalog(string directory)
         {
             var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
@@ -46,6 +50,7 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        /// <inheritdoc/>
         public override IQueryable<ComposablePartDefinition> Parts
         {
             get

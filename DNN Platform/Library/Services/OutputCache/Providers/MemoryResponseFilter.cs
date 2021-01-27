@@ -17,6 +17,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
         // Private _content As StringBuilder
         private static System.Web.Caching.Cache runtimeCache;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemoryResponseFilter"/> class.
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="maxVaryByCount"></param>
+        /// <param name="filterChain"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="cacheDuration"></param>
         internal MemoryResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
             : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
@@ -43,11 +51,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         protected override void AddItemToCache(int itemId, string output)
         {
             Cache.Insert(this.CacheKey, output, null, DateTime.UtcNow.Add(this.CacheDuration), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
+        /// <inheritdoc/>
         protected override void RemoveItemFromCache(int itemId)
         {
             Cache.Remove(this.CacheKey);

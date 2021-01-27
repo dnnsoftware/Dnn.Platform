@@ -22,6 +22,9 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public abstract class ComponentInstallerBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComponentInstallerBase"/> class.
+        /// </summary>
         protected ComponentInstallerBase()
         {
             this.Completed = Null.NullBoolean;

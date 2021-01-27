@@ -3,17 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Linq;
-    using System.Text;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Services.FileSystem;
 
     /// <summary>
     /// Persistent data of content with DataProvider instance.
@@ -177,6 +171,7 @@ namespace DotNetNuke.Entities.Content.Data
             this._provider.ExecuteNonQuery("AddMetaData", contentItem.ContentItemId, name, value);
         }
 
+        /// <inheritdoc/>
         public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string, string>> added, IEnumerable<KeyValuePair<string, string>> deleted)
         {
 #if false
@@ -251,6 +246,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this._provider.ExecuteScalar<int>("AddContentType", contentType.ContentType);
         }
 
+        /// <inheritdoc/>
         public void DeleteContentType(ContentType contentType)
         {
             this._provider.ExecuteNonQuery("DeleteContentType", contentType.ContentTypeId);
@@ -333,6 +329,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this._provider.ExecuteScalar<int>("AddSimpleTerm", term.VocabularyId, term.Name, term.Description, term.Weight, createdByUserId);
         }
 
+        /// <inheritdoc/>
         public void AddTermToContent(Term term, ContentItem contentItem)
         {
             this._provider.ExecuteNonQuery("AddTermToContent", term.TermId, contentItem.ContentItemId);

@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
     using System.Web.Mvc;
     using System.Web.Routing;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;

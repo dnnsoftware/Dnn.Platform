@@ -11,7 +11,6 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Common;
@@ -60,6 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool IncludeNoneSpecificItem { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -74,6 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.FolderId = Null.NullInteger;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("file");

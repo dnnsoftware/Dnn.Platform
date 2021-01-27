@@ -16,26 +16,33 @@ namespace DotNetNuke.Entities.Content.Workflow
     {
         private readonly IWorkflowLogRepository _workflowLogRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowLogger"/> class.
+        /// </summary>
         public WorkflowLogger()
         {
             this._workflowLogRepository = WorkflowLogRepository.Instance;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
             return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);
         }
 
+        /// <inheritdoc/>
         public void AddWorkflowLog(int contentItemId, int workflowId, string action, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, WorkflowLogType.CommentProvided, action, comment, userId);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowLogger> GetFactory()
         {
             return () => new WorkflowLogger();

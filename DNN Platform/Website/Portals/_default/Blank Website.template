@@ -27,6 +27,11 @@
     <pageheadtext>&lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;</pageheadtext>
     <injectmodulehyperlink>True</injectmodulehyperlink>
     <addcompatiblehttpheader>IE=edge</addcompatiblehttpheader>
+    <sitemapcachedays>1</sitemapcachedays>
+    <sitemapexcludepriority>0.1</sitemapexcludepriority>
+    <sitemapincludehidden>False</sitemapincludehidden>
+    <sitemaplevelmode>False</sitemaplevelmode>
+    <sitemapminpriority>0.2</sitemapminpriority>
   </settings>
   <profiledefinitions>
     <profiledefinition>

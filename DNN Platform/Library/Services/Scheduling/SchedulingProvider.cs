@@ -66,6 +66,9 @@ namespace DotNetNuke.Services.Scheduling
     {
         public EventName EventName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchedulingProvider"/> class.
+        /// </summary>
         protected SchedulingProvider()
         {
             var settings = this.Settings;

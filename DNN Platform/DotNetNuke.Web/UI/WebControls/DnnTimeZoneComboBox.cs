@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTimeZoneComboBox : DropDownList
     {
+        /// <inheritdoc/>
         protected override void OnInit(System.EventArgs e)
         {
             // Utilities.ApplySkin(this);

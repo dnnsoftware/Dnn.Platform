@@ -42,7 +42,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int PageId { get; set; }
+
         private string PageName { get; set; }
+
         private int ParentId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -98,8 +100,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
                 var successMessage = string.Format(
                     this.LocalizeString("Prompt_PageRestoredSuccessfully"),
                     tab.TabID,
-                    tab.TabName
-                    );
+                    tab.TabName);
                 return new ConsoleResultModel(successMessage) { Records = 1 };
             }
             else

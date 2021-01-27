@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Tokens
 
     public class CulturePropertyAccess : IPropertyAccess
     {
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -19,6 +20,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             CultureInfo ci = formatProvider;

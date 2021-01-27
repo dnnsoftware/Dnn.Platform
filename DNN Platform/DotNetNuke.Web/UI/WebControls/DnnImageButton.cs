@@ -4,7 +4,6 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     public class DnnImageButton : ImageButton
@@ -15,6 +14,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string IconStyle { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

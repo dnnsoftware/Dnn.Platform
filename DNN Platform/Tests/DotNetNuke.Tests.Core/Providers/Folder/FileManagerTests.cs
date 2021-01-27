@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     using System;
@@ -12,6 +11,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -36,6 +36,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using NUnit.Framework;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     [TestFixture]
     public class FileManagerTests
     {
@@ -107,6 +108,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.hostController.Object);
+            serviceCollection.AddTransient<IEventLogger>(container => Mock.Of<IEventLogger>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 

@@ -5,12 +5,12 @@ namespace DotNetNuke.Authentication.Twitter
 {
     using System;
 
-    using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Authentication.OAuth;
-    using DotNetNuke.Services.Exceptions;
 
+    /// <inheritdoc/>
     public partial class Settings : OAuthSettingsBase
     {
+        /// <inheritdoc/>
         protected override string AuthSystemApplicationName
         {
             get { return "Twitter"; }

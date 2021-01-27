@@ -52,8 +52,11 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
+
         private string Roles { get; set; }
+
         private DateTime? StartDate { get; set; }
+
         private DateTime? EndDate { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

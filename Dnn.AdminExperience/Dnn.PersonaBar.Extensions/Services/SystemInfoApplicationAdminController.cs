@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
                     schedulerMode = DotNetNuke.Entities.Host.Host.SchedulerMode.ToString(),
                     webFarmEnabled = DotNetNuke.Services.Cache.CachingProvider.Instance().IsWebFarm().ToString(),
-                    casPermissions = SecurityPolicy.Permissions
+                    casPermissions = SecurityPolicy.Permissions,
                 });
             }
             catch (Exception exc)

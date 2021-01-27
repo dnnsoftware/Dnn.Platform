@@ -3,11 +3,11 @@ import React from "react";
 import Resx from "../localization";
 import {
   GridCell,
-  Collapsible as Collapse
+  Collapsible as Collapse,
+  IconButton
 } from "@dnnsoftware/dnn-react-common";
 import SiteGroupEditor from "./Editor";
 import "./Row.less";
-import IconButton from "./common/IconButton";
 
 export default class SiteGroupRow extends React.Component {
   constructor(props) {

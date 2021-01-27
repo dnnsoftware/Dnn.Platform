@@ -26,11 +26,13 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
+        /// <inheritdoc/>
         protected override ConfigurationElement CreateNewElement()
         {
             return new MessageHandlerEntry();
         }
 
+        /// <inheritdoc/>
         protected override object GetElementKey(ConfigurationElement element)
         {
             return (element as MessageHandlerEntry ?? new MessageHandlerEntry()).Name;

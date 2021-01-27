@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.Users.Services
                     Notify = contract.Notify,
                     Authorize = contract.Authorize,
                     RandomPassword = contract.RandomPassword,
-                    IgnoreRegistrationMode = true
+                    IgnoreRegistrationMode = true,
                 };
                 var userInfo = RegisterController.Instance.Register(settings);
                 return this.Request.CreateResponse(HttpStatusCode.OK, userInfo != null
@@ -100,7 +100,7 @@ namespace Dnn.PersonaBar.Users.Services
                     SortColumn = sortColumn,
                     SortAscending = sortAscending,
                     PortalId = PortalController.GetEffectivePortalId(this.PortalId),
-                    Filter = filter
+                    Filter = filter,
                 };
 
                 var results = Components.UsersController.Instance.GetUsers(getUsersContract, this.UserInfo.IsSuperUser,
@@ -108,7 +108,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var response = new
                 {
                     Results = results,
-                    TotalResults = totalRecords
+                    TotalResults = totalRecords,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -244,7 +244,7 @@ namespace Dnn.PersonaBar.Users.Services
                 {
                     try
                     {
-                        //create resettoken
+                        // create resettoken
                         UserController.ResetPasswordToken(user, Host.AdminMembershipResetLinkValidity);
 
                         var canSend = Mail.SendMail(user, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
@@ -292,7 +292,7 @@ namespace Dnn.PersonaBar.Users.Services
                 HttpResponseMessage httpResponseMessage;
                 if (this.IsCurrentUser(userId, out httpResponseMessage))
                     return httpResponseMessage;
-                if (user.Membership.Approved == authorized)//Do nothing if the new status is same as current status.
+                if (user.Membership.Approved == authorized) // Do nothing if the new status is same as current status.
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
                 Components.UsersController.Instance.UpdateAuthorizeStatus(user, this.PortalId, authorized);
@@ -412,7 +412,7 @@ namespace Dnn.PersonaBar.Users.Services
 
                 user.IsSuperUser = setSuperUser;
 
-                //Update User
+                // Update User
                 UserController.UpdateUser(this.PortalId, user);
                 DataCache.ClearCache();
 
@@ -506,7 +506,7 @@ namespace Dnn.PersonaBar.Users.Services
                     {
                         RoleID = u.RoleID,
                         RoleName = $"{u.RoleName}",
-                        SecurityMode = u.SecurityMode
+                        SecurityMode = u.SecurityMode,
                     });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK,
@@ -593,7 +593,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        //        User profile is not implemented currently
+        // User profile is not implemented currently
         //        [HttpGet]
         //        public HttpResponseMessage GetProfileDefinitions()
         //        {
@@ -610,7 +610,7 @@ namespace Dnn.PersonaBar.Users.Services
         //        }
 
         /// <summary>
-        /// Return Password security options from server. 
+        /// Return Password security options from server.
         /// </summary>
         /// <returns>MembershipPasswordSettings.</returns>
         [HttpGet]
@@ -624,7 +624,7 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 MinLength = settings.MinPasswordLength,
                 MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters,
-                ValidationExpression = settings.ValidationExpression
+                ValidationExpression = settings.ValidationExpression,
             };
 
             return this.Request.CreateResponse(HttpStatusCode.OK, passwordSettings);

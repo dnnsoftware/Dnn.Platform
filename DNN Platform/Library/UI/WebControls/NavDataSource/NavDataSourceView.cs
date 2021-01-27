@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
-    using System;
     using System.Web.UI;
 
     /// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
@@ -12,6 +11,10 @@ namespace DotNetNuke.UI.WebControls
         private readonly string m_sKey;
         private string m_sNamespace = "MyNS";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavDataSourceView"/> class.
+        /// </summary>
+        /// <param name="viewPath"></param>
         public NavDataSourceView(string viewPath)
         {
             if (string.IsNullOrEmpty(viewPath))

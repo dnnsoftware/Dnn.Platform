@@ -5,7 +5,6 @@
 namespace DotNetNuke.Security.Roles
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Users;

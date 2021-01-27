@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.InternalServices.Views.Search
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -26,7 +25,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
                     Snippet = basic.Snippet,
                     Description = basic.Description,
                     DocumentUrl = basic.DocumentUrl,
-                    Attributes = basic.Attributes
+                    Attributes = basic.Attributes,
                 },
             };
         }

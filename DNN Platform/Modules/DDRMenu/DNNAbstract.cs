@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.DDRMenu
 {
-    using System;
     using System.Collections.Generic;
     using System.Web;
 
@@ -19,8 +18,15 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Dnn abstractions.
+    /// </summary>
     internal static class DNNAbstract
     {
+        /// <summary>
+        /// Gets the Dnn login url.
+        /// </summary>
+        /// <returns>The url to login.</returns>
         public static string GetLoginUrl()
         {
             var request = HttpContext.Current.Request;
@@ -41,6 +47,10 @@ namespace DotNetNuke.Web.DDRMenu
             return Globals.LoginURL(returnUrl, !string.IsNullOrEmpty(request.QueryString["override"]));
         }
 
+        /// <summary>
+        /// Gets a url to the user profile or or the registration page.
+        /// </summary>
+        /// <returns>If the user is logged in, returns the url to the user profile page, if not returns the url to the registration page.</returns>
         public static string GetUserUrl()
         {
             var request = HttpContext.Current.Request;
@@ -64,27 +74,49 @@ namespace DotNetNuke.Web.DDRMenu
             return string.Empty;
         }
 
+        /// <summary>
+        /// Gets the current culture.
+        /// </summary>
+        /// <returns>The current culture code.</returns>
         public static string GetCurrentCulture()
         {
             return DNNContext.Current.PortalSettings.CultureCode;
         }
 
+        /// <summary>
+        /// Gets all the supported templating engines processors.
+        /// </summary>
+        /// <returns>An enumeration of all the available processors.</returns>
         public static IEnumerable<ITemplateProcessor> SupportedTemplateProcessors()
         {
             return new ITemplateProcessor[] { new TokenTemplateProcessor(), new RazorTemplateProcessor(), new XsltTemplateProcessor() };
         }
 
+        /// <summary>
+        /// Gets the navigation nodes options.
+        /// </summary>
+        /// <param name="includeHidden">A value indicating whether to include the hidden nodes.</param>
+        /// <returns>An integer totalling the options values, <see cref="Navigation.NavNodeOptions"/> for the values.</returns>
         public static int GetNavNodeOptions(bool includeHidden)
         {
             return (int)Navigation.NavNodeOptions.IncludeSiblings + (int)Navigation.NavNodeOptions.IncludeSelf +
                    (includeHidden ? (int)Navigation.NavNodeOptions.IncludeHiddenNodes : 0);
         }
 
+        /// <summary>
+        /// Gets a value indicating whether it is supported to include hidden nodes.
+        /// </summary>
+        /// <returns>Always true.</returns>
         public static bool IncludeHiddenSupported()
         {
             return true;
         }
 
+        /// <summary>
+        /// Converts a <see cref="DNNNode"/> into a <see cref="MenuNode"/>.
+        /// </summary>
+        /// <param name="dnnNode">The DnnNode to convert.</param>
+        /// <param name="menuNode">The MenuNode to return.</param>
         public static void DNNNodeToMenuNode(DNNNode dnnNode, MenuNode menuNode)
         {
             menuNode.LargeImage = dnnNode.LargeImage;

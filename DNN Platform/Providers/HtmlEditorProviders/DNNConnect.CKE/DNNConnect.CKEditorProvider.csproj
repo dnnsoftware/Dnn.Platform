@@ -77,11 +77,21 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -90,9 +100,11 @@
     <Compile Include="Browser\FileUploader.ashx.cs">
       <DependentUpon>FileUploader.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Constants\Browser.cs" />
+    <Compile Include="Constants\ImageButtonType.cs" />
+    <Compile Include="Constants\BrowserType.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />
+    <Compile Include="Constants\LinkProtocol.cs" />
     <Compile Include="Constants\LinkMode.cs" />
     <Compile Include="Constants\LinkType.cs" />
     <Compile Include="Constants\SettingConstants.cs" />
@@ -117,13 +129,15 @@
     <Compile Include="Objects\EditorConfig.cs" />
     <Compile Include="Objects\EditorHostSetting.cs" />
     <Compile Include="Objects\EditorProviderSettings.cs" />
-    <Compile Include="Objects\FileUploadStatus.cs" />
+    <Compile Include="Objects\FilesUploadStatus.cs" />
     <Compile Include="Objects\SettingBase.cs" />
     <Compile Include="Objects\ToolbarButton.cs" />
     <Compile Include="Objects\ToolbarGroup.cs" />
     <Compile Include="Objects\ToolbarSet.cs" />
     <Compile Include="Objects\UploadSizeRoles.cs" />
     <Compile Include="Objects\WordCountConfig.cs" />
+    <Compile Include="Services\CKEditorProviderRouteMapper.cs" />
+    <Compile Include="Services\CloudServicesController.cs" />
     <Compile Include="Tabs.ashx.cs">
       <DependentUpon>Tabs.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -228,7 +242,6 @@
     <Content Include="css\Options.css" />
     <Content Include="Install\DNNCkeditor.license.txt" />
     <Content Include="js\editorOverride.js" />
-    <Content Include="js\jquery.ckeditor.adapter.js" />
     <Content Include="js\jquery.notification.js" />
     <Content Include="js\jquery.ui.controls.js" />
     <Content Include="js\Options.js" />
@@ -325,6 +338,7 @@
     <Analyzer Include="..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

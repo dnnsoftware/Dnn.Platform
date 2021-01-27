@@ -21,15 +21,26 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPortalAliasInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
+        /// </summary>
         public PortalAliasInfo()
         {
         }
 
-        public PortalAliasInfo(PortalAliasInfo alias) 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
+        /// </summary>
+        /// <param name="alias"></param>
+        public PortalAliasInfo(PortalAliasInfo alias)
             : this((IPortalAliasInfo)alias)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalAliasInfo"/> class.
+        /// </summary>
+        /// <param name="alias"></param>
         public PortalAliasInfo(IPortalAliasInfo alias)
         {
             this.ThisAsInterface.HttpAlias = alias.HttpAlias;
@@ -106,6 +117,7 @@ namespace DotNetNuke.Entities.Portals
 
         private IPortalAliasInfo ThisAsInterface => this;
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
@@ -122,11 +134,13 @@ namespace DotNetNuke.Entities.Portals
             this.Skin = Null.SetNullString(dr["Skin"]);
         }
 
+        /// <inheritdoc/>
         public XmlSchema GetSchema()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -178,6 +192,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elemenst

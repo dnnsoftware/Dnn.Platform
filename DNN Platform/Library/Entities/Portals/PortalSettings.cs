@@ -27,16 +27,28 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
+        /// </summary>
         public PortalSettings()
         {
             this.Registration = new RegistrationSettings();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
         public PortalSettings(int portalId)
             : this(Null.NullInteger, portalId)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="portalId"></param>
         public PortalSettings(int tabId, int portalId)
         {
             this.PortalId = portalId;
@@ -53,8 +65,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="tabId">The current tab.</param>
-        ///     <param name="portalAliasInfo">The current portal.</param>
+        /// <param name="tabId">The current tab.</param>
+        /// <param name="portalAliasInfo">The current portal.</param>
         /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
@@ -67,11 +79,20 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
+        /// </summary>
+        /// <param name="portal"></param>
         public PortalSettings(PortalInfo portal)
             : this(Null.NullInteger, portal)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="portal"></param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
             this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
@@ -84,10 +105,24 @@ namespace DotNetNuke.Entities.Portals
             ModuleEditor,
         }
 
+        /// <summary>
+        /// Enumerates the possible view modes of a page.
+        /// </summary>
         public enum Mode
         {
+            /// <summary>
+            /// The user is viewing the page in normal mode like a visitor.
+            /// </summary>
             View,
+
+            /// <summary>
+            /// The user is editing the page.
+            /// </summary>
             Edit,
+
+            /// <summary>
+            /// The user is viewing the page in layout mode.
+            /// </summary>
             Layout,
         }
 
@@ -114,6 +149,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -122,6 +158,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         public bool ControlPanelVisible
         {
             get
@@ -131,6 +168,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         public string DefaultPortalAlias
         {
             get
@@ -177,35 +215,13 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <summary>
+        /// Gets the mode the user is viewing the page in.
+        /// </summary>
+        [Obsolete("Deprecated in v9.8.1, use Personalization.GetUserMode() instead, Scheduled for removal in v11.")]
         public Mode UserMode
         {
-            get
-            {
-                Mode mode;
-                if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-                {
-                    mode = this.DefaultControlPanelMode;
-                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + this.PortalId));
-                    switch (setting.ToUpper())
-                    {
-                        case "VIEW":
-                            mode = Mode.View;
-                            break;
-                        case "EDIT":
-                            mode = Mode.Edit;
-                            break;
-                        case "LAYOUT":
-                            mode = Mode.Layout;
-                            break;
-                    }
-                }
-                else
-                {
-                    mode = Mode.View;
-                }
-
-                return mode;
-            }
+            get => Personalization.GetUserMode();
         }
 
         /// <summary>
@@ -224,6 +240,7 @@ namespace DotNetNuke.Entities.Portals
             get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
         }
 
+        /// <inheritdoc/>
         public string PageHeadText
         {
             get
@@ -248,6 +265,7 @@ namespace DotNetNuke.Entities.Portals
          * (and make the output smaller)
          *
          */
+        /// <inheritdoc/>
         public bool InjectModuleHyperLink
         {
             get
@@ -261,6 +279,7 @@ namespace DotNetNuke.Entities.Portals
          *
 
          */
+        /// <inheritdoc/>
         public string AddCompatibleHttpHeader
         {
             get
@@ -301,89 +320,127 @@ namespace DotNetNuke.Entities.Portals
 
         public TabInfo ActiveTab { get; set; }
 
+        /// <inheritdoc/>
         public int AdministratorId { get; set; }
 
+        /// <inheritdoc/>
         public int AdministratorRoleId { get; set; }
 
+        /// <inheritdoc/>
         public string AdministratorRoleName { get; set; }
 
+        /// <inheritdoc/>
         public int AdminTabId { get; set; }
 
+        /// <inheritdoc/>
         public string BackgroundFile { get; set; }
 
+        /// <inheritdoc/>
         public int BannerAdvertising { get; set; }
 
+        /// <inheritdoc/>
         public string CultureCode { get; set; }
 
+        /// <inheritdoc/>
         public string Currency { get; set; }
 
+        /// <inheritdoc/>
         public string DefaultLanguage { get; set; }
 
+        /// <inheritdoc/>
         public string Description { get; set; }
 
+        /// <inheritdoc/>
         public string Email { get; set; }
 
+        /// <inheritdoc/>
         public DateTime ExpiryDate { get; set; }
 
+        /// <inheritdoc/>
         public string FooterText { get; set; }
 
+        /// <inheritdoc/>
         public Guid GUID { get; set; }
 
+        /// <inheritdoc/>
         public string HomeDirectory { get; set; }
 
+        /// <inheritdoc/>
         public string HomeSystemDirectory { get; set; }
 
+        /// <inheritdoc/>
         public int HomeTabId { get; set; }
 
+        /// <inheritdoc/>
         public float HostFee { get; set; }
 
+        /// <inheritdoc/>
         public int HostSpace { get; set; }
 
+        /// <inheritdoc/>
         public string KeyWords { get; set; }
 
+        /// <inheritdoc/>
         public int LoginTabId { get; set; }
 
+        /// <inheritdoc/>
         public string LogoFile { get; set; }
 
+        /// <inheritdoc/>
         public int PageQuota { get; set; }
 
+        /// <inheritdoc/>
         public int Pages { get; set; }
 
+        /// <inheritdoc/>
         public int PortalId { get; set; }
 
         public PortalAliasInfo PortalAlias { get; set; }
 
         public PortalAliasInfo PrimaryAlias { get; set; }
 
+        /// <inheritdoc/>
         public string PortalName { get; set; }
 
+        /// <inheritdoc/>
         public int RegisteredRoleId { get; set; }
 
+        /// <inheritdoc/>
         public string RegisteredRoleName { get; set; }
 
+        /// <inheritdoc/>
         public int RegisterTabId { get; set; }
 
         public RegistrationSettings Registration { get; set; }
 
+        /// <inheritdoc/>
         public int SearchTabId { get; set; }
 
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v10.0.0.")]
         public int SiteLogHistory { get; set; }
 
+        /// <inheritdoc/>
         public int SplashTabId { get; set; }
 
+        /// <inheritdoc/>
         public int SuperTabId { get; set; }
 
+        /// <inheritdoc/>
         public int UserQuota { get; set; }
 
+        /// <inheritdoc/>
         public int UserRegistration { get; set; }
 
+        /// <inheritdoc/>
         public int Users { get; set; }
 
+        /// <inheritdoc/>
         public int UserTabId { get; set; }
 
+        /// <inheritdoc/>
         public int TermsTabId { get; set; }
 
+        /// <inheritdoc/>
         public int PrivacyTabId { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -396,22 +453,29 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public bool AllowUserUICulture { get; internal set; }
 
+        /// <inheritdoc/>
         public int CdfVersion { get; internal set; }
 
+        /// <inheritdoc/>
         public bool ContentLocalizationEnabled { get; internal set; }
 
         public ControlPanelPermission ControlPanelSecurity { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultAdminContainer { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultAdminSkin { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultAuthProvider { get; internal set; }
 
         public Mode DefaultControlPanelMode { get; internal set; }
 
+        /// <inheritdoc/>
         public bool DefaultControlPanelVisibility { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultIconLocation { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -422,10 +486,13 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public int DefaultModuleId { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultModuleActionMenu { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultPortalContainer { get; internal set; }
 
+        /// <inheritdoc/>
         public string DefaultPortalSkin { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -444,6 +511,7 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public bool EnableBrowserLanguage { get; internal set; }
 
+        /// <inheritdoc/>
         public bool EnableCompositeFiles { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -474,6 +542,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
+        [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0.")]
+
         public bool EnableSkinWidgets { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -498,8 +568,10 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
+        /// <inheritdoc/>
         public int ErrorPage404 { get; internal set; }
 
+        /// <inheritdoc/>
         public int ErrorPage500 { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -521,8 +593,10 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public bool HideLoginControl { get; internal set; }
 
+        /// <inheritdoc/>
         public string HomeDirectoryMapPath { get; internal set; }
 
+        /// <inheritdoc/>
         public string HomeSystemDirectoryMapPath { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -575,18 +649,25 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength { get; internal set; }
 
+        /// <inheritdoc/>
         public bool SSLEnabled { get; internal set; }
 
+        /// <inheritdoc/>
         public bool SSLEnforced { get; internal set; }
 
+        /// <inheritdoc/>
         public string SSLURL { get; internal set; }
 
+        /// <inheritdoc/>
         public string STDURL { get; internal set; }
 
+        /// <inheritdoc/>
         public int SMTPConnectionLimit { get; internal set; }
 
+        /// <inheritdoc/>
         public int SMTPMaxIdleTime { get; internal set; }
 
+        /// <inheritdoc/>
         public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
 
         /// <summary>
@@ -629,6 +710,16 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 
+        /// <inheritdoc/>
+        public bool ShowQuickModuleAddMenu
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
+            }
+        }
+
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             var outputFormat = string.Empty;
@@ -651,7 +742,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 case "scheme":
                     propertyNotFound = false;
-                    result = SSLEnabled ? "https" : "http";
+                    result = this.SSLEnabled ? "https" : "http";
                     break;
                 case "url":
                     propertyNotFound = false;

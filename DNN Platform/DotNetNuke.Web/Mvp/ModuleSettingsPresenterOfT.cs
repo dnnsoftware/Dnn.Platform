@@ -23,6 +23,7 @@ namespace DotNetNuke.Web.Mvp
             view.OnSaveSettings += this.OnSaveSettingsInternal;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad()
         {
             base.OnLoad();

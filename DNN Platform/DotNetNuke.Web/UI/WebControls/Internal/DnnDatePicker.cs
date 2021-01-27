@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         protected virtual string ClientFormat => "YYYY-MM-DD";
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

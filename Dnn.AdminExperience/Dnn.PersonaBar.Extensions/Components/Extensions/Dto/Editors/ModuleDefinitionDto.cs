@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 DesktopModuleID = this.DesktopModuleId,
                 DefinitionName = this.Name,
                 FriendlyName = this.FriendlyName,
-                DefaultCacheTime = this.CacheTime
+                DefaultCacheTime = this.CacheTime,
             };
         }
     }

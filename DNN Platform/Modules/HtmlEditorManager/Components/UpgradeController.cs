@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Modules.HtmlEditorManager.Components
 {
     using System;
     using System.IO;
     using System.Text;
+    using System.Web.Hosting;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -15,15 +15,12 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>
-    /// Class that contains upgrade procedures.
-    /// </summary>
+    /// <summary>Class that contains upgrade procedures.</summary>
     public class UpgradeController : IUpgradeable
     {
         /// <summary>The module folder location.</summary>
@@ -106,7 +103,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
         private static void UpdateRadCfgFiles()
         {
-            var folder = Path.Combine(Globals.ApplicationMapPath, @"DesktopModules\Admin\RadEditorProvider\ConfigFile");
+            var folder = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, @"DesktopModules\Admin\RadEditorProvider\ConfigFile");
             UpdateRadCfgFiles(folder, "*ConfigFile*.xml");
         }
 
@@ -235,7 +232,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
 
         private bool TelerikAssemblyExists()
         {
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
+            return File.Exists(Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "bin\\Telerik.Web.UI.dll"));
         }
     }
 }

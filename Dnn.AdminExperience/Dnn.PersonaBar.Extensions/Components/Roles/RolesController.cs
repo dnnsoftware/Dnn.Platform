@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Roles.Components
 
                 if (existingRole.IsSystemRole)
                 {
-                    if (role.Description != existingRole.Description)//In System roles only description can be updated.
+                    if (role.Description != existingRole.Description) // In System roles only description can be updated.
                     {
                         existingRole.Description = role.Description;
                         RoleController.Instance.UpdateRole(existingRole, assignExistUsers);

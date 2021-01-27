@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Services
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
+        /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute(

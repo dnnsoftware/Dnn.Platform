@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             "LastLogin",
             "IsDeleted",
             "IsAuthorized",
-            "IsLockedOut"
+            "IsLockedOut",
         };
 
         public UserModelBase()
@@ -37,14 +37,23 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         }
 
         public string __Email => $"get-user '{this.Email}'";
+
         public string __UserId => $"get-user {this.UserId}";
+
         public string __Username => $"get-user '{this.Username}'";
+
         public int UserId { get; set; }
+
         public string Username { get; set; }
+
         public string Email { get; set; }
+
         public string LastLogin { get; set; }
+
         public bool IsDeleted { get; set; }
+
         public bool IsAuthorized { get; set; }
+
         public bool IsLockedOut { get; set; }
     }
 }

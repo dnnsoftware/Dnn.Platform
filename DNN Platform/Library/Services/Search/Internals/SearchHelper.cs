@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     public class SearchHelper : ServiceLocator<ISearchHelper, SearchHelper>
     {
+        /// <inheritdoc/>
         protected override Func<ISearchHelper> GetFactory()
         {
             return () => new SearchHelperImpl();

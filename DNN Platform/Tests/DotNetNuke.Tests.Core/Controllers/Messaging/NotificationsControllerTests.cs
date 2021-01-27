@@ -707,7 +707,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                 new UserInfo
                                     {
                                         UserID = Constants.UserID_User12,
-                                        DisplayName = Constants.UserDisplayName_User12
+                                        DisplayName = Constants.UserDisplayName_User12,
                                     },
                             };
 
@@ -756,7 +756,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                 new UserInfo
                                     {
                                         UserID = Constants.UserID_User12,
-                                        DisplayName = Constants.UserDisplayName_User12
+                                        DisplayName = Constants.UserDisplayName_User12,
                                     },
                             };
 
@@ -800,7 +800,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                 new RoleInfo
                                     {
                                         RoleID = Constants.RoleID_RegisteredUsers,
-                                        RoleName = Constants.RoleName_RegisteredUsers
+                                        RoleName = Constants.RoleName_RegisteredUsers,
                                     },
                             };
             var users = new List<UserInfo>();
@@ -853,7 +853,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                 new UserInfo
                                     {
                                         UserID = Constants.UserID_User12,
-                                        DisplayName = Constants.UserDisplayName_User12
+                                        DisplayName = Constants.UserDisplayName_User12,
                                     },
                             };
 
@@ -917,7 +917,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                 new UserInfo
                                     {
                                         UserID = Constants.UserID_User12,
-                                        DisplayName = Constants.UserDisplayName_User12
+                                        DisplayName = Constants.UserDisplayName_User12,
                                     },
                             };
 
