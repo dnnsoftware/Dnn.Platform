@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Mail
 
                                 break;
                             case "2": // NTLM (Not Supported by MailKit)
-                                break;
+                                throw new NotSupportedException("NTLM authentication is not supported by MailKit provider");
                         }
 
                         smtpClient.Send(mailMessage);
