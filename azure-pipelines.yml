@@ -5,8 +5,6 @@ variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
   # The following variables are defined as settable at queue time, so they cannot be included here
-  # Branch.CdfProvider: dnn
-  # Branch.CkEditor: development
   # CakeTarget: BuildAll
   # CakeVerbosity: Normal # valid values include Quiet, Minimal, Normal, Verbose, Diagnostic
   # ReleaseMode: Beta
@@ -60,7 +58,7 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=$(CakeTarget) --verbosity=$(CakeVerbosity) --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
+    arguments: '--target=$(CakeTarget) --verbosity=$(CakeVerbosity)'
 
 - task: PowerShell@2
   displayName: 'Run Unit Tests via Cake'
