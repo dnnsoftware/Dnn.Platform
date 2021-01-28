@@ -51,9 +51,9 @@ steps:
     filePath: ./build.ps1
     arguments: '--target=BuildServerSetVersion --verbosity=${{ parameters.CakeVerbosity }}'
 
-- script: 'sqllocaldb start mssqllocaldb'
-  displayName: 'Start Sql LocalDb Service'
-  condition: and(succeeded(), eq(parameters.RunTests, true))
+- ${{ if eq(parameters.RunTests, true) }}:
+  - script: 'sqllocaldb start mssqllocaldb'
+    displayName: 'Start Sql LocalDb Service'
 
 - powershell: 'npm config set registry https://www.myget.org/F/dnn-software-public/npm/'
   displayName: 'npm config set registry'
@@ -80,23 +80,24 @@ steps:
     filePath: ./build.ps1
     arguments: '--target=${{ parameters.CakeTarget }} --verbosity=${{ parameters.CakeVerbosity }}'
 
-- task: PowerShell@2
-  displayName: 'Run Unit Tests via Cake'
-  inputs:
-    targetType: filePath
-    filePath: ./build.ps1
-    arguments: '--target=UnitTests --verbosity=${{ parameters.CakeVerbosity }}'
-  continueOnError: true
-  condition: and(succeeded(), eq(parameters.RunTests, true))
+- ${{ if eq(parameters.RunTests, true) }}:
+  - task: PowerShell@2
+    displayName: 'Run Unit Tests via Cake'
+    inputs:
+      targetType: filePath
+      filePath: ./build.ps1
+      arguments: '--target=UnitTests --verbosity=${{ parameters.CakeVerbosity }}'
+    continueOnError: true
 
-- task: PublishTestResults@2
-  displayName: 'Publish Test Results **/TestResults/*.xml'
-  inputs:
-    testResultsFormat: VSTest
-    testResultsFiles: '**/TestResults/*.trx'
-    mergeTestResults: true
-    failTaskOnFailedTests: true
-  condition: eq(parameters.RunTests, true)
+- ${{ if eq(parameters.RunTests, true) }}:
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/TestResults/*.xml'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/TestResults/*.trx'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+    condition: always()
 
 - publish: 'Artifacts'
   continueOnError: true
