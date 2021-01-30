@@ -1,9 +1,7 @@
-﻿using Cake.Common.IO;
-using Cake.Common.Tools.MSBuild;
+﻿using System.Linq;
+
+using Cake.Common.IO;
 using Cake.Common.Tools.VSTest;
-using Cake.Common.Tools.VSWhere;
-using Cake.Common.Tools.VSWhere.Latest;
-using Cake.Core.Diagnostics;
 using Cake.Frosting;
 
 /// <summary>
@@ -21,27 +19,17 @@ public sealed class UnitTests : FrostingTask<Context>
         testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
         testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
 
+        var vsTestPath = context.GetFiles("tools/Microsoft.TestPlatform.16.8.0/tools/**/vstest.console.exe").First();
         context.VSTest(
             testAssemblies,
-            FixToolPath(
-                context, 
-                new VSTestSettings
-                {
-                    Logger = "trx",
-                    Parallel = true,
-                    EnableCodeCoverage = true,
-                    TestAdapterPath = @"tools\NUnitTestAdapter.2.3.0\build"
-                }));
-    }
-
-// https://github.com/cake-build/cake/issues/1522
-    VSTestSettings FixToolPath(Context context, VSTestSettings settings)
-    {
-// #tool vswhere
-        settings.ToolPath =
-            context.VSWhereLatest(new VSWhereLatestSettings {Requires = "Microsoft.VisualStudio.PackageGroup.TestTools.Core"})
-                .CombineWithFilePath(context.File(@"Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"));
-        return settings;
+            new VSTestSettings
+            {
+                ToolPath = vsTestPath,
+                Logger = "trx",
+                Parallel = true,
+                EnableCodeCoverage = true,
+                TestAdapterPath = @"tools\NUnitTestAdapter.2.3.0\build"
+            });
     }
 }
 
