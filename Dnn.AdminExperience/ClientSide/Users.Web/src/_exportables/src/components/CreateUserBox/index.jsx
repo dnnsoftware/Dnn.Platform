@@ -112,6 +112,7 @@ class CreateUserBox extends Component {
 
         let valid = true;
         let requiresQuestionAndAnswer = props.appSettings.applicationSettings.settings.requiresQuestionAndAnswer;
+        let userNameMinLength = this.props.appSettings.applicationSettings.settings.userNameMinLength;
         if (this.submitted) {
             let {UserDetails} = this.state;
             let {errors} = this.state;
@@ -132,7 +133,7 @@ class CreateUserBox extends Component {
                 errors.lastName = true;
                 valid = false;
             }
-            if (UserDetails.userName === "") {
+            if (UserDetails.userName === "" || UserDetails.userName.length < userNameMinLength) {
                 errors.userName = true;
                 valid = false;
             }
