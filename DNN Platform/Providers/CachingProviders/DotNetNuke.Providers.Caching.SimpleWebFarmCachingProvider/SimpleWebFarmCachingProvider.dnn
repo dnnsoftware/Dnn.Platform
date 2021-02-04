@@ -40,11 +40,6 @@
                          type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmSynchronizationHandler, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider"
                          preCondition="integratedMode" />
                   </node>
-                  <node path="/configuration/system.web/httpHandlers" action="update" key="path" collision="overwrite">
-                    <add verb="*"
-                         path="SimpleWebFarmSync.aspx"
-                         type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmSynchronizationHandler, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider" />
-                  </node>
                 </nodes>
               </configuration>
             </install>
@@ -53,7 +48,6 @@
                 <nodes>
                   <node path="/configuration/dotnetnuke/caching/providers/add[@name='SimpleWebFarmCachingProvider']" action="remove" />
 				          <node path="/configuration/system.webServer/handlers/add[@name='SimpleWebFarmSynchronizationHandler']" action="remove" />
-				          <node path="/configuration/system.web/httpHandlers/add[@path='SimpleWebFarmSync.aspx']" action="remove" />
                   <!-- Clear any default to prevent issues loading the site -->
                   <node path="/configuration/dotnetnuke/caching" action="updateattribute"  name="defaultProvider" value="" />
                 </nodes>
