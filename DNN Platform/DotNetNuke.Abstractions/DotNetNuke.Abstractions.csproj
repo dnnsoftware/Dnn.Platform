@@ -7,7 +7,10 @@
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
-
+<PropertyGroup>
+	<Deterministic>true</Deterministic>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
