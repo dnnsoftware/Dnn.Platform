@@ -7,6 +7,7 @@
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Cake.BuildSystems.Module" Version="1.0.0" />
     <PackageReference Include="Cake.FileHelpers" Version="3.3.0" />
     <PackageReference Include="Cake.Frosting" Version="1.0.0" />
     <PackageReference Include="Cake.Git" Version="0.22.0" />
