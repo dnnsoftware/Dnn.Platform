@@ -29,9 +29,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// <returns>
         /// An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.
         /// </returns>
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public static Type[] SafeGetTypes(this Assembly assembly, ILog logger = null)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Type[] types = null;
             try
