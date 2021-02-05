@@ -85,32 +85,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                     }
                 }
 
-                // HttpModules Config
-                var systemWebServerHttpModulesConfig = xmlDoc.DocumentElement.SelectSingleNode("system.web/httpModules");
-                if (systemWebServerHttpModulesConfig != null)
-                {
-                    var httpModuleConfig = systemWebServerHttpModulesConfig.SelectSingleNode("add[@name=\"ClientDependencyModule\"]");
-                    if (httpModuleConfig == null)
-                    {
-                        xmlFrag = xmlDoc.CreateDocumentFragment();
-                        xmlFrag.InnerXml = "<add name=\"ClientDependencyModule\" type=\"ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core\" />";
-                        xmlDoc.DocumentElement.SelectSingleNode("system.web/httpModules").AppendChild(xmlFrag);
-                    }
-                }
-
-                // HttpHandler Config
-                var systemWebServerHttpHandlersConfig = xmlDoc.DocumentElement.SelectSingleNode("system.web/httpHandlers");
-                if (systemWebServerHttpHandlersConfig != null)
-                {
-                    var httpHandlerConfig = systemWebServerHttpHandlersConfig.SelectSingleNode("add[@type=\"ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core\"]");
-                    if (httpHandlerConfig == null)
-                    {
-                        xmlFrag = xmlDoc.CreateDocumentFragment();
-                        xmlFrag.InnerXml = "<add verb=\"*\" path=\"DependencyHandler.axd\" type=\"ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core\" />";
-                        xmlDoc.DocumentElement.SelectSingleNode("system.web/httpHandlers").AppendChild(xmlFrag);
-                    }
-                }
-
                 // ClientDependency Config
                 var clientDependencyConfig = xmlDoc.DocumentElement.SelectSingleNode("clientDependency");
                 if (clientDependencyConfig == null)
