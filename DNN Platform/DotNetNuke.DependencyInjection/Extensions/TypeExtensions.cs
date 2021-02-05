@@ -15,11 +15,6 @@ namespace DotNetNuke.DependencyInjection.Extensions
     /// </summary>
     public static class TypeExtensions
     {
-        // There is no logging in this file by design as
-        // it would create a dependency on the Logging library
-        // and this library can't have any dependencies on other
-        // DNN Libraries.
-
         /// <summary>
         /// Safely Get all Types from the assembly. If there
         /// is an error while retrieving the types it will
