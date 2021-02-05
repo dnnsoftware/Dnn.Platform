@@ -47,12 +47,12 @@ namespace DotNetNuke.DependencyInjection.Extensions
             {
                 if (logger != null)
                 {
-                    logger.Error($"Unable to configure services for {assembly.FullName}, see exception for details", ex);
+                    // The loaderexceptions will repeat. Need to get distinct messages here.
+                    string distinctLoaderExceptions = string.Join(
+                        Environment.NewLine,
+                        ex.LoaderExceptions.Select(i => i.Message).Distinct().Select(i => $"- LoaderException: {i}"));
 
-                    foreach (var loaderEx in ex.LoaderExceptions)
-                    {
-                        logger.Error($"LoaderException for {assembly.FullName}, details", loaderEx);
-                    }
+                    logger.Error($"Unable to configure services for {assembly.FullName}, see exception for details {Environment.NewLine}{distinctLoaderExceptions}", ex);
                 }
 
                 // Ensure that Dnn obtains all types that were loaded, ignoring the failure(s)
