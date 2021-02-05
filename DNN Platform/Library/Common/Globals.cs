@@ -197,6 +197,12 @@ namespace DotNetNuke.Common
         public const string glbUserNameRegEx = @"";
 
         /// <summary>
+        /// User Name default minimum length.
+        /// </summary>
+        /// <value></value>
+        public const int glbUserNameMinLength = 5;
+
+        /// <summary>
         /// Format of a script tag.
         /// </summary>
         /// <value><![CDATA[<script type=\"text/javascript\" src=\"{0}\" ></script>]]></value>

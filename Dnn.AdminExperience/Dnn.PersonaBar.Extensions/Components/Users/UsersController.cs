@@ -196,9 +196,10 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 user.UpdateDisplayName(requestPortalSettings.Registration.DisplayNameFormat);
             }
-            // either update the username or update the user details
 
-            if (this.CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
+            // either update the username or update the user details
+            // only call ChangeUsername when the username has actually changed
+            if (userBasicDto.Username != user.Username && this.CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
             {
                 UserController.ChangeUsername(user.UserID, userBasicDto.Username);
                 user.Username = userBasicDto.Username;
