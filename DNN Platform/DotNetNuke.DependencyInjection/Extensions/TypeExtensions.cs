@@ -7,6 +7,8 @@ namespace DotNetNuke.DependencyInjection.Extensions
     using System.Linq;
     using System.Reflection;
 
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
     /// <see cref="Type"/> specific extensions to be used
     /// in Dependency Injection invocations.
@@ -26,10 +28,15 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// <param name="assembly">
         /// The assembly to retrieve all types from.
         /// </param>
+        /// <param name="logger">
+        /// A optional <see cref="ILog"/> object. This will log any messages from the exception catching to the logs as an Error.
+        /// </param>
         /// <returns>
         /// An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.
         /// </returns>
-        public static Type[] SafeGetTypes(this Assembly assembly)
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
+        public static Type[] SafeGetTypes(this Assembly assembly, ILog logger = null)
+#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Type[] types = null;
             try
@@ -38,13 +45,26 @@ namespace DotNetNuke.DependencyInjection.Extensions
             }
             catch (ReflectionTypeLoadException ex)
             {
-                // TODO: We should log the reason of the exception after the API cleanup
+                if (logger != null)
+                {
+                    logger.Error($"Unable to configure services for {assembly.FullName}, see exception for details", ex);
+
+                    foreach (var loaderEx in ex.LoaderExceptions)
+                    {
+                        logger.Error($"LoaderException for {assembly.FullName}, details", loaderEx);
+                    }
+                }
+
                 // Ensure that Dnn obtains all types that were loaded, ignoring the failure(s)
                 types = ex.Types.Where(x => x != null).ToArray<Type>();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: We should log the reason of the exception after the API cleanup
+                if (logger != null)
+                {
+                    logger.Error($"Unable to configure services for {assembly.FullName}, see exception for details", ex);
+                }
+
                 types = new Type[0];
             }
 
