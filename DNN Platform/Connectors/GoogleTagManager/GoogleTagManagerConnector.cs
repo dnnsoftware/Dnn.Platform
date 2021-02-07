@@ -6,7 +6,10 @@ namespace DNN.Connectors.GoogleTagManager
 {
     using System;
     using System.Collections.Generic;
+    using System.Web;
+    using System.Xml;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Analytics.Config;
     using DotNetNuke.Services.Connections;
@@ -179,6 +182,11 @@ namespace DNN.Connectors.GoogleTagManager
                     });
 
                     AnalyticsConfiguration.SaveConfig("GoogleTagManager", config);
+
+                    if (!isDeactivating)
+                    {
+                        this.EnsureScriptInConfig();
+                    }
                 }
 
                 return isValid;
@@ -187,6 +195,43 @@ namespace DNN.Connectors.GoogleTagManager
             {
                 Exceptions.LogException(ex);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.
+        /// </summary>
+        private void EnsureScriptInConfig()
+        {
+            var applicationMappath = HttpContext.Current.Server.MapPath("\\");
+            var file = applicationMappath + "\\SiteAnalytics.config";
+            var xdoc = new XmlDocument();
+            xdoc.Load(file);
+            var found = false;
+            foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
+            {
+                if (engineTypeNode.InnerText.Contains("DotNetNuke.Services.Analytics.GoogleTagManagerEngine"))
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                var fileGtm = applicationMappath + "\\DesktopModules\\Connectors\\GoogleTagManager\\GoogleTagManager.config";
+                var xdocGtm = new XmlDocument();
+                xdocGtm.Load(fileGtm);
+
+                var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
+                foreach (XmlNode engineNode in xdocGtm.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))
+                {
+                    var engineFrag = xdoc.CreateDocumentFragment();
+                    engineFrag.InnerXml = engineNode.OuterXml;
+                    enginesElement.AppendChild(engineFrag);
+                }
+
+                xdoc.Save(file);
             }
         }
 
