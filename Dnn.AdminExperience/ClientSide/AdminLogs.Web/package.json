@@ -33,7 +33,6 @@
     "jwt-decode": "2.2.0",
     "less": "3.9.0",
     "less-loader": "5.0.0",
-    "moment": "^2.15.0",
     "prop-types": "15.6.2",
     "raw-loader": "2.0.0",
     "react": "^16.6.3",
