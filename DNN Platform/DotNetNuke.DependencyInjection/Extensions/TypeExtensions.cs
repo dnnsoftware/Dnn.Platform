@@ -23,7 +23,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// <param name="assembly">The assembly to retrieve all types from.</param>
         /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
         /// <remarks>This is obsolete because logging is not added. Please use the SafeGetTypes with the ILog parameter.</remarks>
-        [Obsolete("Please use the SafeGetTypes with the ILog parameter.")]
+        [Obsolete("Deprecated in DotNetNuke 9.9.0. Please use the SafeGetTypes overload with the ILog parameter. Scheduled removal in v11.0.0.")]
         public static Type[] SafeGetTypes(this Assembly assembly)
         {
             return assembly.SafeGetTypes(null);
