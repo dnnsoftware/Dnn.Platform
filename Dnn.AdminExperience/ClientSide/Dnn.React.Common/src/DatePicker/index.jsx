@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
-import moment from "moment";
+import * as dayjs from "dayjs";
 import TimePicker from "./TimePicker";
 import TimezonePicker from "./TimezonePicker";
 import timeZones from "./timeZones";
@@ -250,7 +250,7 @@ class DatePicker extends Component {
 
     formatDate(date, format = "dddd, MMMM, Do, YYYY") {
         if (date) {
-            return moment(date).format(format);
+            return dayjs(date).format(format);
         }
         return date;
     }
