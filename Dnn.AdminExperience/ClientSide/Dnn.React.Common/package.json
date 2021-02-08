@@ -24,8 +24,8 @@
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
+    "dayjs": "^1.10.4",
     "interact.js": "^1.2.8",
-    "moment": "^2.22.2",
     "raw-loader": "2.0.0",
     "react-accessible-tooltip": "^2.0.3",
     "react-collapse": "^4.0.3",

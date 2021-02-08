@@ -17,6 +17,7 @@ module.exports = {
     "react-tooltip": "window.dnn.nodeModules.ReactTooltip",
     "react-widgets": "window.dnn.nodeModules.ReactWidgets",
     "throttle-debounce": "window.dnn.nodeModules.ThrottleDebounce",
+    /** @deprecated for v.10 - moment JS will no longer be delivered - recommended to manage own packages moving forward */
     "moment": "window.dnn.nodeModules.Moment",
     "es6-promise": "window.dnn.nodeModules.Es6Promise",
     "@dnnsoftware/dnn-react-common": "window.dnn.nodeModules.CommonComponents"
