@@ -69,7 +69,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
                     // Set the isDeactivating flag to true to override the default save behaviour
                     // Temporary workaround until delete functionality on connectors is improved
-                    conn.configurations[6].value("true");
+                    conn.configurations[2].value("true");
                     wasDeactivated = true;
                     conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
                 }
@@ -100,7 +100,7 @@ define(["jquery", "knockout", "templatePath/scripts/config", "templatePath/scrip
 
                         // Set the isDeactivating flag to true to override the default save behaviour
                         // Temporary workaround until delete functionality on connectors is improved
-                        conn.configurations[6].value("true");
+                        conn.configurations[2].value("true");
                         wasDeactivated = true;
                         conn.save(conn, e, onSaveComplete.bind(this, conn, conn.id));
                     }
