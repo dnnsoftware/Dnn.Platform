@@ -20,6 +20,20 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// is an error while retrieving the types it will
         /// return an empty array of <see cref="Type"/>.
         /// </summary>
+        /// <param name="assembly">The assembly to retrieve all types from.</param>
+        /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
+        /// <remarks>This is obsolete because logging is not added. Please use the SafeGetTypes with the ILog parameter</remarks>
+        [Obsolete("Please use the SafeGetTypes with the ILog parameter.")]
+        public static Type[] SafeGetTypes(this Assembly assembly)
+        {
+            return assembly.SafeGetTypes(null);
+        }
+
+        /// <summary>
+        /// Safely Get all Types from the assembly. If there
+        /// is an error while retrieving the types it will
+        /// return an empty array of <see cref="Type"/>.
+        /// </summary>
         /// <param name="assembly">
         /// The assembly to retrieve all types from.
         /// </param>
