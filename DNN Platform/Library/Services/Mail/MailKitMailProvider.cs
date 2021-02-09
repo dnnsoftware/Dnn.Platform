@@ -43,29 +43,30 @@ namespace DotNetNuke.Services.Mail
                 };
             }
 
+            var mailMessage = new MimeMessage();
+            mailMessage.From.Add(new MailboxAddress(mailInfo.FromName, mailInfo.From));
+            if (!string.IsNullOrEmpty(mailInfo.Sender))
+            {
+                mailMessage.Sender = MailboxAddress.Parse(mailInfo.Sender);
+            }
+
             // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
             if (!string.IsNullOrEmpty(mailInfo.To))
             {
                 mailInfo.To = mailInfo.To.Replace(";", ",");
+                mailMessage.To.AddRange(InternetAddressList.Parse(mailInfo.To));
             }
 
             if (!string.IsNullOrEmpty(mailInfo.CC))
             {
                 mailInfo.CC = mailInfo.CC.Replace(";", ",");
+                mailMessage.Cc.AddRange(InternetAddressList.Parse(mailInfo.CC));
             }
 
             if (!string.IsNullOrEmpty(mailInfo.BCC))
             {
                 mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
-            }
-
-            var mailMessage = new MimeMessage();
-            mailMessage.From.Add(new MailboxAddress(mailInfo.FromName, mailInfo.From));
-            mailMessage.To.Add(MailboxAddress.Parse(mailInfo.To));
-
-            if (!string.IsNullOrEmpty(mailInfo.Sender))
-            {
-                mailMessage.Sender = MailboxAddress.Parse(mailInfo.Sender);
+                mailMessage.Bcc.AddRange(InternetAddressList.Parse(mailInfo.BCC));
             }
 
             mailMessage.Priority = (MessagePriority)mailInfo.Priority;

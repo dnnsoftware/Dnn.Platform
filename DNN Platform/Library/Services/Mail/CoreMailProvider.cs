@@ -48,21 +48,23 @@ namespace DotNetNuke.Services.Mail
                 mailInfo.To = mailInfo.To.Replace(";", ",");
             }
 
-            if (!string.IsNullOrEmpty(mailInfo.CC))
-            {
-                mailInfo.CC = mailInfo.CC.Replace(";", ",");
-            }
-
-            if (!string.IsNullOrEmpty(mailInfo.BCC))
-            {
-                mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
-            }
-
             var mailMessage = new MailMessage(mailInfo.From, mailInfo.To);
 
             if (!string.IsNullOrEmpty(mailInfo.Sender))
             {
                 mailMessage.Sender = new MailAddress(mailInfo.Sender);
+            }
+
+            if (!string.IsNullOrEmpty(mailInfo.CC))
+            {
+                mailInfo.CC = mailInfo.CC.Replace(";", ",");
+                mailMessage.CC.Add(mailInfo.CC);
+            }
+
+            if (!string.IsNullOrEmpty(mailInfo.BCC))
+            {
+                mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
+                mailMessage.Bcc.Add(mailInfo.BCC);
             }
 
             mailMessage.Priority = (System.Net.Mail.MailPriority)mailInfo.Priority;
