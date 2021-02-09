@@ -17,8 +17,8 @@ namespace DotNetNuke.UI.Skins
 
     public enum SkinParser
     {
-        Localized,
-        Portable,
+        Localized = 0,
+        Portable = 1,
     }
 
     /// -----------------------------------------------------------------------------

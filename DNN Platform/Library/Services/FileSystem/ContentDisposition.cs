@@ -12,11 +12,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// The browser will display a dialog to allow the user to save or view the document.
         /// </summary>
-        Attachment,
+        Attachment = 0,
 
         /// <summary>
         /// The document will be displayed automatically.
         /// </summary>
-        Inline,
+        Inline = 1,
     }
 }

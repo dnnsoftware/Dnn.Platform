@@ -1,4 +1,4 @@
-' Copyright (c) .NET Foundation. All rights reserved.
+﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System.Web
@@ -68,12 +68,12 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Enum ClientNamespaceReferences As Integer
-            dnn
-            dnn_dom
-            dnn_dom_positioning
-            dnn_xml
-            dnn_xmlhttp
-            dnn_motion
+            dnn = 0
+            dnn_dom = 1
+            dnn_dom_positioning = 2
+            dnn_xml = 3
+            dnn_xmlhttp = 4
+            dnn_motion = 5
         End Enum
 
 #End Region
@@ -1089,28 +1089,28 @@ Namespace DotNetNuke.UI.Utilities
 
     Namespace Animation
         Public Enum AnimationType
-            None
-            Slide
-            Expand
-            Diagonal
-            ReverseDiagonal
+            None = 0
+            Slide = 1
+            Expand = 2
+            Diagonal = 3
+            ReverseDiagonal = 4
         End Enum
 
         Public Enum EasingDirection
-            [In]
-            Out
-            InOut
+            [In] = 0
+            Out = 1
+            InOut = 2
         End Enum
 
         Public Enum EasingType
-            Bounce
-            Circ
-            Cubic
-            Expo
-            Quad
-            Quint
-            Quart
-            Sine
+            Bounce = 0
+            Circ = 1
+            Cubic = 2
+            Expo = 3
+            Quad = 4
+            Quint = 5
+            Quart = 6
+            Sine = 7
         End Enum
     End Namespace
 

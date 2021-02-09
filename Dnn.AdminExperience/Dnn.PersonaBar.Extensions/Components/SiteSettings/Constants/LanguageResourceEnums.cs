@@ -7,26 +7,26 @@ namespace Dnn.PersonaBar.SiteSettings.Components.Constants
     public enum LanguageResourceMode
     {
         // for any unspecified item; these are usually the second level and lower folders/files
-        Any,
+        Any = 0,
 
-        System, // aka. Global
+        System = 1, // aka. Global
         Global = System,
 
-        Host,   // not supported in PersonaBar; kept here because the base code uses it
+        Host = 2,   // not supported in PersonaBar; kept here because the base code uses it
 
-        Portal, // aka. Site
+        Portal = 3, // aka. Site
         Site = Portal,
     }
 
     public enum LanguageResourceType
     {
         // Localization files under "~/Portals/_default"
-        SiteTemplates,
+        SiteTemplates = 0,
 
         // Localization files under "~/App_GlobalResources"
-        GlobalResources,
+        GlobalResources = 1,
 
-        // All other ocalization files under "~/xxxx"; e.g., "~/Admin", "~/DesktopModules", etc.
-        LocalResources,
+        // All other localization files under "~/xxxx"; e.g., "~/Admin", "~/DesktopModules", etc.
+        LocalResources = 2,
     }
 }

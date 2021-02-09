@@ -6,10 +6,10 @@ namespace DotNetNuke.Security.Roles
 {
     public enum RoleType
     {
-        Administrator,
-        Subscriber,
-        RegisteredUser,
-        None,
-        UnverifiedUser,
+        Administrator = 0,
+        Subscriber = 1,
+        RegisteredUser = 2,
+        None = 3,
+        UnverifiedUser = 4,
     }
 }

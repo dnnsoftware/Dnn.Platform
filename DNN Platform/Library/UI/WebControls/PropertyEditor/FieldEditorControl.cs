@@ -15,15 +15,15 @@ namespace DotNetNuke.UI.WebControls
 
     public enum EditorDisplayMode
     {
-        Div,
-        Table,
+        Div = 0,
+        Table = 1,
     }
 
     public enum HelpDisplayMode
     {
-        Never,
-        EditOnly,
-        Always,
+        Never = 0,
+        EditOnly = 1,
+        Always = 2,
     }
 
     /// -----------------------------------------------------------------------------

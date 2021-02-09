@@ -6,9 +6,9 @@ namespace Dnn.PersonaBar.Security.Components
 {
     public enum SeverityEnum
     {
-        Pass,
-        Warning,
-        Failure,
-        Unverified,
+        Pass = 0,
+        Warning = 1,
+        Failure = 2,
+        Unverified = 3,
     }
 }

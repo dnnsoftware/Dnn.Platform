@@ -9,9 +9,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     /// </summary>
     public enum TabVersionDetailAction
     {
-        Added,
-        Modified,
-        Deleted,
-        Reset,
+        Added = 0,
+        Modified = 1,
+        Deleted = 2,
+        Reset = 3,
     }
 }

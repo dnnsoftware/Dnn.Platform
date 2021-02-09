@@ -10,12 +10,12 @@ namespace DotNetNuke.Common.Utils
     using System.Web;
 
     /// <summary>
-    /// Enumration of IP AddressTyes.
+    /// Enumeration of IP address types.
     /// </summary>
     public enum AddressType
     {
-        IPv4,
-        IPv6,
+        IPv4 = 0,
+        IPv6 = 1,
     }
 
     /// <summary>

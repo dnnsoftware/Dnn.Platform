@@ -12,9 +12,9 @@ namespace DotNetNuke.UI.Containers.EventListeners
     /// -----------------------------------------------------------------------------
     public enum ContainerEventType
     {
-        OnContainerInit,
-        OnContainerLoad,
-        OnContainerPreRender,
-        OnContainerUnLoad,
+        OnContainerInit = 0,
+        OnContainerLoad = 1,
+        OnContainerPreRender = 2,
+        OnContainerUnLoad = 3,
     }
 }

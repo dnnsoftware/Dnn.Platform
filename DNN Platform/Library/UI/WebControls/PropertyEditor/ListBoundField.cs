@@ -15,8 +15,8 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public enum ListBoundField
     {
-        Id,
-        Value,
-        Text,
+        Id = 0,
+        Value = 1,
+        Text = 2,
     }
 }

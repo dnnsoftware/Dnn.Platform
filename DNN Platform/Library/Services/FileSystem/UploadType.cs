@@ -6,10 +6,10 @@ namespace DotNetNuke.Services.FileSystem
 {
     public enum UploadType
     {
-        File,
-        Container,
-        Skin,
-        Module,
-        LanguagePack,
+        File = 0,
+        Container = 1,
+        Skin = 2,
+        Module = 3,
+        LanguagePack = 4,
     }
 }

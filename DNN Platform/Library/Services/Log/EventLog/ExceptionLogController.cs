@@ -16,13 +16,13 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public enum ExceptionLogType
         {
-            GENERAL_EXCEPTION,
-            MODULE_LOAD_EXCEPTION,
-            PAGE_LOAD_EXCEPTION,
-            SCHEDULER_EXCEPTION,
-            SECURITY_EXCEPTION,
-            SEARCH_INDEXER_EXCEPTION,
-            DATA_EXCEPTION,
+            GENERAL_EXCEPTION = 0,
+            MODULE_LOAD_EXCEPTION = 1,
+            PAGE_LOAD_EXCEPTION = 2,
+            SCHEDULER_EXCEPTION = 3,
+            SECURITY_EXCEPTION = 4,
+            SEARCH_INDEXER_EXCEPTION = 5,
+            DATA_EXCEPTION = 6,
         }
 
         public void AddLog(Exception objException)
