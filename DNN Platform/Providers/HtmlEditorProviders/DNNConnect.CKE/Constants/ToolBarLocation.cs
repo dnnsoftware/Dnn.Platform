@@ -11,11 +11,11 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// Toolbar Location at the Top
         /// </summary>
-        Top,
+        Top = 0,
 
         /// <summary>
         /// Toolbar Location at the Bottom
         /// </summary>
-        Bottom,
+        Bottom = 1,
     }
 }

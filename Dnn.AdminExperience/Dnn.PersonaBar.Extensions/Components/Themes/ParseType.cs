@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Themes.Components
 
     public enum ParseType
     {
-        Localized,
-        Portable,
+        Localized = 0,
+        Portable = 1,
     }
 }

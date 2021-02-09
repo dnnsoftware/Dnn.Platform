@@ -101,8 +101,8 @@ namespace DotNetNuke.Entities.Portals
 
         public enum ControlPanelPermission
         {
-            TabEditor,
-            ModuleEditor,
+            TabEditor = 0,
+            ModuleEditor = 1,
         }
 
         /// <summary>
@@ -113,24 +113,24 @@ namespace DotNetNuke.Entities.Portals
             /// <summary>
             /// The user is viewing the page in normal mode like a visitor.
             /// </summary>
-            View,
+            View = 0,
 
             /// <summary>
             /// The user is editing the page.
             /// </summary>
-            Edit,
+            Edit = 1,
 
             /// <summary>
             /// The user is viewing the page in layout mode.
             /// </summary>
-            Layout,
+            Layout = 2,
         }
 
         public enum PortalAliasMapping
         {
-            None,
-            CanonicalUrl,
-            Redirect,
+            None = 0,
+            CanonicalUrl = 1,
+            Redirect = 2,
         }
 
         public enum UserDeleteAction

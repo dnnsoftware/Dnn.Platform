@@ -30,8 +30,8 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         private enum IncludeExcludeType
         {
-            IncludeByDefault,
-            ExcludeByDefault,
+            IncludeByDefault = 0,
+            ExcludeByDefault = 1,
         }
 
         /// <inheritdoc/>

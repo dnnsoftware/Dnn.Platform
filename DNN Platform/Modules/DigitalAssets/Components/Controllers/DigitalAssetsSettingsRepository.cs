@@ -13,15 +13,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
     public enum DigitalAssestsMode
     {
-        Normal,
-        Group,
-        User,
+        Normal = 0,
+        Group = 1,
+        User = 2,
     }
 
     public enum FilterCondition
     {
-        NotSet,
-        FilterByFolder,
+        NotSet = 0,
+        FilterByFolder = 1,
     }
 
     public class DigitalAssetsSettingsRepository

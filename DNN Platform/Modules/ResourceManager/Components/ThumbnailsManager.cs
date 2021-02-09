@@ -40,22 +40,22 @@ namespace Dnn.Modules.ResourceManager.Components
             /// <summary>
             /// A JPEG thumbnail.
             /// </summary>
-            JPEG,
+            JPEG = 0,
 
             /// <summary>
             /// A JPG thumbnail.
             /// </summary>
-            JPG,
+            JPG = 1,
 
             /// <summary>
             /// A PNG thumbnail.
             /// </summary>
-            PNG,
+            PNG = 2,
 
             /// <summary>
             /// A GIF thumbnail.
             /// </summary>
-            GIF,
+            GIF = 3,
         }
 
         /// <summary>

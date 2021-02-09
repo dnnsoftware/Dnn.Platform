@@ -25,9 +25,9 @@ namespace Dnn.PersonaBar.Pages.Components
         private enum SortingFields
         {
             None = 0,
-            Url,
-            Locale,
-            Status,
+            Url = 1,
+            Locale = 2,
+            Status = 3,
         }
 
         protected IEnumerable<KeyValuePair<int, string>> StatusCodes

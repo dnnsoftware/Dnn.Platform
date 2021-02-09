@@ -12,16 +12,16 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// EnterMode p
         /// </summary>
-        P,
+        P = 0,
 
         /// <summary>
         /// EnterMode br
         /// </summary>
-        BR,
+        BR = 1,
 
         /// <summary>
         /// EnterMode div
         /// </summary>
-        DIV,
+        DIV = 2,
     }
 }

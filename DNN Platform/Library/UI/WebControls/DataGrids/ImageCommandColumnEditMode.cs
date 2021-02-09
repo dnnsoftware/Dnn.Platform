@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public enum ImageCommandColumnEditMode
     {
-        Command,
-        URL,
+        Command = 0,
+        URL = 1,
     }
 }

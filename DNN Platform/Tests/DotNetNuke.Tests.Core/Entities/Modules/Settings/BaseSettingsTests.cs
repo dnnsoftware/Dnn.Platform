@@ -41,8 +41,8 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         public enum TestingEnum
         {
-            Value1,
-            Value2,
+            Value1 = 0,
+            Value2 = 1,
         }
 
         protected static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId, PortalID = PortalId, };
