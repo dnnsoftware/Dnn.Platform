@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Mail
     using DotNetNuke.Entities.Portals;
 
     using MailKit.Net.Smtp;
+    using MailKit.Security;
 
     using MimeKit;
 
@@ -155,7 +156,7 @@ namespace DotNetNuke.Services.Mail
                 // to workaround problem in 4.0 need to specify host name
                 using (var smtpClient = new SmtpClient())
                 {
-                    smtpClient.Connect(host, port, smtpInfo.EnableSSL);
+                    smtpClient.Connect(host, port, SecureSocketOptions.Auto);
 
                     switch (smtpInfo.Authentication)
                     {
