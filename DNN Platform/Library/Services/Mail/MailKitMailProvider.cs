@@ -45,7 +45,8 @@ namespace DotNetNuke.Services.Mail
             }
 
             var mailMessage = new MimeMessage();
-            mailMessage.From.Add(new MailboxAddress(mailInfo.FromName, mailInfo.From));
+
+            mailMessage.From.Add(ParseAddressWithDisplayName(displayName: mailInfo.FromName, address: mailInfo.From));
             if (!string.IsNullOrEmpty(mailInfo.Sender))
             {
                 mailMessage.Sender = MailboxAddress.Parse(mailInfo.Sender);
@@ -98,12 +99,14 @@ namespace DotNetNuke.Services.Mail
 
                     if (needUpdateSender)
                     {
-                        mailMessage.Sender = new MailboxAddress(senderDisplayName, senderAddress);
+                        mailMessage.Sender = ParseAddressWithDisplayName(displayName: senderDisplayName, address: senderAddress);
                     }
                 }
                 else if (smtpInfo.Username.Contains("@"))
                 {
-                    mailMessage.Sender = new MailboxAddress(Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle, smtpInfo.Username);
+                    mailMessage.Sender = ParseAddressWithDisplayName(
+                        displayName: Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle,
+                        address: smtpInfo.Username);
                 }
             }
 
@@ -199,6 +202,17 @@ namespace DotNetNuke.Services.Mail
 
                 return retValue;
             }
+        }
+
+        private static MailboxAddress ParseAddressWithDisplayName(string displayName, string address)
+        {
+            var mailboxAddress = MailboxAddress.Parse(address);
+            if (!string.IsNullOrWhiteSpace(displayName))
+            {
+                mailboxAddress.Name = displayName;
+            }
+
+            return mailboxAddress;
         }
     }
 }
