@@ -335,20 +335,16 @@ namespace DotNetNuke.Web.DDRMenu
         /// </returns>
         public IEnumerable<MenuNode> FindAllByNameOrId(string tabNameOrId)
         {
-            var found = new List<MenuNode>();
-
-            foreach (var child in this.Children)
+            foreach (var found in this.Children.SelectMany(child => child.FindAllByNameOrId(tabNameOrId)))
             {
-                found.AddRange(child.FindAllByNameOrId(tabNameOrId));
+                yield return found;
             }
 
             if (tabNameOrId.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase)
                 || tabNameOrId == this.TabId.ToString())
             {
-                found.Add(this);
+                yield return this;
             }
-
-            return found;
         }
 
         /// <summary>
