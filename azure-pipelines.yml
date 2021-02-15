@@ -4,6 +4,8 @@ pool:
 variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
+  - name: "YARN_CACHE_FOLDER"
+    value: "$(Pipeline.Workspace)/.yarn"
 
 parameters:
   - name: "CakeTarget"
@@ -43,6 +45,13 @@ pr:
       - '*'
 
 steps:
+
+- task: Cache@2
+  displayName: Cache Yarn packages
+  inputs:
+    key: 'yarn | "$(Agent.OS)" | yarn.lock'
+    restoreKeys: 'yarn | "$(Agent.OS)"'
+    path: $(YARN_CACHE_FOLDER)
 
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
