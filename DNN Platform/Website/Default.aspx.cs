@@ -632,8 +632,29 @@ namespace DotNetNuke.Framework
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
-                var customStylesheet = Path.Combine(this.PortalSettings.HomeDirectory, this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
-                ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
+                var customStylesheet = this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
+                var cssIncluded = false;
+                
+                // Try and go through the FolderProvider first, if it gives back an external url, include it
+                // as a <link> in the Page Header
+                IFileInfo fi = GetPageStylesheetFileInfo();
+                if (fi != null)
+                {
+                    string url = FileManager.Instance.GetUrl(fi);
+                    if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase) || url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        string cssLink = string.Format("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />", url);
+                        this.Page.Header.Controls.Add(new LiteralControl(cssLink));
+                        cssIncluded = true;
+                    }
+                }
+
+                // Include it as DNN always has, as a relative path through ClientResourceManager
+                if (!cssIncluded)
+                {
+                    var customStylesheetPath = Path.Combine(this.PortalSettings.HomeDirectory, customStylesheet);
+                    ClientResourceManager.RegisterStyleSheet(this, customStylesheetPath);
+                }
             }
 
             // Cookie Consent
@@ -736,6 +757,22 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfoCallBack(CacheItemArgs itemArgs)
         {
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
+        }
+
+        private IFileInfo GetPageStylesheetFileInfo()
+        {
+            string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + this.PortalSettings.ActiveTab.TabID);
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
+                this.GetPageStylesheetInfoCallBack);
+
+            return file;
+        }
+
+        private IFileInfo GetPageStylesheetInfoCallBack(CacheItemArgs itemArgs)
+        {
+            var customStylesheet = this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
+            return FileManager.Instance.GetFile(this.PortalSettings.PortalId, customStylesheet);
         }
     }
 }
