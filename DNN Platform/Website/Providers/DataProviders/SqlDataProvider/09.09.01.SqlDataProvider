@@ -9,4 +9,7 @@
 /************************************************************/
 
 -- Add CSS contnet type, this will help when a Page Style Sheet is uploaded to a folder provider such as AzureFolderProvider.
-INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'css', N'text/css', 0, 0, 0, -1, N'', -1, 1, -1, '2020-02-17 09:13:51.647', -1, '2020-02-17 09:13:51.647')
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ContentTypes' AND Value = 'css')
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'css', N'text/css', 0, 0, 0, -1, N'', -1, 1, -1, '2020-02-17 09:13:51.647', -1, '2020-02-17 09:13:51.647')
+END
