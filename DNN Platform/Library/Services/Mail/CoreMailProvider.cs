@@ -67,6 +67,12 @@ namespace DotNetNuke.Services.Mail
                 mailMessage.Bcc.Add(mailInfo.BCC);
             }
 
+            if (!string.IsNullOrEmpty(mailInfo.ReplyTo))
+            {
+                mailInfo.ReplyTo = mailInfo.ReplyTo.Replace(";", ",");
+                mailMessage.ReplyToList.Add(mailInfo.ReplyTo);
+            }
+
             mailMessage.Priority = (System.Net.Mail.MailPriority)mailInfo.Priority;
             mailMessage.IsBodyHtml = mailInfo.BodyFormat == MailFormat.Html;
 
@@ -119,7 +125,9 @@ namespace DotNetNuke.Services.Mail
             }
 
             // message
+            mailMessage.SubjectEncoding = mailInfo.BodyEncoding;
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(mailInfo.Subject, true);
+            mailMessage.BodyEncoding = mailInfo.BodyEncoding;
             mailMessage.Body = mailInfo.Body;
             smtpInfo.Server = smtpInfo.Server.Trim();
             if (!SmtpServerRegex.IsMatch(smtpInfo.Server))
