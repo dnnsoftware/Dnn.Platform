@@ -140,6 +140,9 @@ class ListView extends Component {
     getPortalMapping(portal) {
         const localizedFormat = require('dayjs/plugin/localizedFormat');
         dayjs.extend(localizedFormat);
+        const relativeTime = require('dayjs/plugin/relativeTime');
+        dayjs.extend(relativeTime);
+        require('dayjs/locale/' + this.props.culture.substring(0,2));
 
         return [
             {
@@ -152,7 +155,7 @@ class ListView extends Component {
             },
             {
                 label: Localization.get("SiteDetails_Updated"),
-                value: dayjs(portal.LastModifiedOnDate).locale(this.props.culture).fromNow()
+                value: dayjs(portal.LastModifiedOnDate).locale(this.props.culture.substring(0,2)).fromNow()
             },
             {
                 label: Localization.get("SiteDetails_Pages"),
