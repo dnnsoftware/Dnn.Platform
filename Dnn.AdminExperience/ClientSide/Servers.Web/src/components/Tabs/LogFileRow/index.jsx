@@ -19,6 +19,7 @@ class LogFileRow extends Component {
 
         const localizedFormat = require('dayjs/plugin/localizedFormat');
         dayjs.extend(localizedFormat);
+        require('dayjs/locale/' + window.dnn.utility.getCulture().substring(0,2));
     }
 
     componentWillReceiveProps() {
@@ -102,7 +103,7 @@ class LogFileRow extends Component {
                         </div>
                         <div className="term-label-modifieddate">
                             <div className="term-label-wrapper">
-                                <span>{dayjs(this.props.lastWriteTimeUtc).format("LLL")}</span>
+                                <span>{dayjs(this.props.lastWriteTimeUtc).locale(window.dnn.utility.getCulture().substring(0,2)).format("LLL")}</span>
                             </div>
                         </div>
                         <div className="term-label-size">
