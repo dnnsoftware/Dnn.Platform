@@ -15,7 +15,6 @@ export function formatDate(dateValue, longformat) {
     const localizedFormat = require('dayjs/plugin/localizedFormat');
     dayjs.extend(localizedFormat);
     require('dayjs/locale/' + utilities.getCulture().substring(0,2));
-    alert(utilities.getCulture().substring(0,2));
 
     return dayjs(dateValue).locale(utilities.getCulture().substring(0,2)).format(longformat === true ? "LLL" : "L");
 }
