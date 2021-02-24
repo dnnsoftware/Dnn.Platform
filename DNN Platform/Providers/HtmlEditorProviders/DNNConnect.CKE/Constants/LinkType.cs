@@ -12,22 +12,22 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>
         /// Link Type URL
         /// </summary>
-        url,
+        url = 0,
 
         /// <summary>
         /// Link Type local Page
         /// </summary>
-        localPage,
+        localPage = 1,
 
         /// <summary>
         /// Link Type anchor
         /// </summary>
-        anchor,
+        anchor = 2,
 
         /// <summary>
         /// Link Type email
         /// </summary>
-        email,
+        email = 3,
 #pragma warning restore SA1300 // Element should begin with upper-case letter
     }
 }

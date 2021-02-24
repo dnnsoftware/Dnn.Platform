@@ -315,6 +315,8 @@ namespace DNNConnect.CKEditorProvider.Web
                     }
                 }
 
+                this.settings["linkDefaultProtocol"] = this.currentSettings.DefaultLinkProtocol.ToSettingValue();
+
                 var cssFiles = new List<string>();
                 var skinSrc = this.GetSkinSource();
                 var containerSrc = this.GetContainerSource();
@@ -367,6 +369,64 @@ namespace DNNConnect.CKEditorProvider.Web
                     this.settings["toolbar"] = string.Format(
                         "[{0}]", toolbarSetString);
                 }
+
+                // Easy Image Upload
+                if (this.currentSettings.ImageButtonMode == ImageButtonType.EasyImageButton)
+                {
+                    // replace 'Image' Plugin with 'EasyImage'
+                    this.settings["toolbar"] = this.settings["toolbar"].Replace("'Image'", "'EasyImageUpload'");
+
+                    // add the plugin in extraPlugins
+                    if (string.IsNullOrEmpty(this.settings["extraPlugins"]) || !this.settings["extraPlugins"].Split(',').Contains("easyimage"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["extraPlugins"]))
+                        {
+                            this.settings["extraPlugins"] += ",";
+                        }
+
+                        this.settings["extraPlugins"] += "easyimage";
+                    }
+
+                    // change the easyimage toolbar
+                    this.settings["easyimage_toolbar"] = "['EasyImageAlt']";
+
+                    // remove the image plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("image"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        {
+                            this.settings["removePlugins"] += ",";
+                        }
+
+                        this.settings["removePlugins"] += "image";
+                    }
+
+                    this.settings.Add("cloudServices_uploadUrl", Globals.ResolveUrl(
+                        string.Format(
+                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=EasyImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                            this.portalSettings.ActiveTab.TabID,
+                            this.portalSettings.PortalId,
+                            this.parentModulId,
+                            this.ID,
+                            this.currentSettings.SettingMode,
+                            CultureInfo.CurrentCulture.Name)));
+                }
+                else
+                {
+                    // remove the easyimage plugin in removePlugins
+                    if (string.IsNullOrEmpty(this.settings["removePlugins"]) || !this.settings["removePlugins"].Split(',').Contains("easyimage"))
+                    {
+                        if (!string.IsNullOrEmpty(this.settings["removePlugins"]))
+                        {
+                            this.settings["removePlugins"] += ",";
+                        }
+
+                        this.settings["removePlugins"] += "easyimage";
+                    }
+                }
+
+                // cloudservices variables need to be set regardless
+                this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/CloudServices/GetToken");
 
                 // Editor Width
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))
@@ -462,7 +522,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         this.currentSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
 
-                            if (Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
+                            if (this.currentSettings.ImageButtonMode == ImageButtonType.StandardButton && Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
                             {
                                 this.settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
@@ -969,6 +1029,30 @@ namespace DNNConnect.CKEditorProvider.Web
         }
 
         /// <summary>
+        /// The check image browser.
+        /// </summary>
+        private void CheckImageButton()
+        {
+            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+            Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
+
+            if (objProvider == null || string.IsNullOrEmpty(objProvider.Attributes["ck_imagebutton"]))
+            {
+                return;
+            }
+
+            switch (objProvider.Attributes["ck_imagebutton"])
+            {
+                case "easyimage":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
+                    break;
+                case "standard":
+                    this.currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Load Portal/Page/Module Settings.
         /// </summary>
         private void LoadAllSettings()
@@ -1260,7 +1344,7 @@ namespace DNNConnect.CKEditorProvider.Web
         {
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/editor.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/editor.css"));
 
             ClientScriptManager cs = this.Page.ClientScript;
 
@@ -1279,23 +1363,11 @@ namespace DNNConnect.CKEditorProvider.Web
                     this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
             }
 
-            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/ckeditor.js"))
+            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {
                 cs.RegisterClientScriptInclude(
-                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.5.3/ckeditor.js"));
-            }
-
-            if (
-                File.Exists(
-                    this.Context.Server.MapPath(
-                        "~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"))
-                && !cs.IsClientScriptIncludeRegistered(csType, CsAdaptName))
-            {
-                cs.RegisterClientScriptInclude(
-                    csType,
-                    CsAdaptName,
-                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"));
+                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"));
             }
 
             if (

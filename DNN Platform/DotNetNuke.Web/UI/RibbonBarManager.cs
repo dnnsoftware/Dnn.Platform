@@ -25,24 +25,24 @@ namespace DotNetNuke.Web.UI
 
     public enum DotNetNukeErrorCode
     {
-        NotSet,
-        PageExists,
-        PageNameRequired,
-        PageNameInvalid,
-        DeserializePanesFailed,
-        PageCircularReference,
-        ParentTabInvalid,
-        PageEditorPermissionError,
-        HostBeforeAfterError,
-        DuplicateWithAlias,
+        NotSet = 0,
+        PageExists = 1,
+        PageNameRequired = 2,
+        PageNameInvalid = 3,
+        DeserializePanesFailed = 4,
+        PageCircularReference = 5,
+        ParentTabInvalid = 6,
+        PageEditorPermissionError = 7,
+        HostBeforeAfterError = 8,
+        DuplicateWithAlias = 9,
     }
 
     public enum TabRelativeLocation
     {
-        NOTSET,
-        BEFORE,
-        AFTER,
-        CHILD,
+        NOTSET = 0,
+        BEFORE = 1,
+        AFTER = 2,
+        CHILD = 3,
     }
 
     public class RibbonBarManager

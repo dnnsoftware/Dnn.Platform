@@ -24,6 +24,13 @@ namespace DotNetNuke.Services.Mail
 
     public class Mail
     {
+        public static string ConvertToText(string sHTML)
+        {
+            var formattedHtml = HtmlUtils.FormatText(sHTML, true);
+            var styleLessHtml = HtmlUtils.RemoveInlineStyle(formattedHtml);
+            return HtmlUtils.StripTags(styleLessHtml, true);
+        }
+
         public static bool IsValidEmailAddress(string Email, int portalid)
         {
             string pattern = Null.NullString;

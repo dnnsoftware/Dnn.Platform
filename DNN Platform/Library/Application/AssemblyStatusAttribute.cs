@@ -24,7 +24,7 @@ namespace DotNetNuke.Application
     public enum ReleaseMode
     {
         /// <summary>
-        /// Not asssigned
+        /// Not assigned
         /// </summary>
         None = 0,
 

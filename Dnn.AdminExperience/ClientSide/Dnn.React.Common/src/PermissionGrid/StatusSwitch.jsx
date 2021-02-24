@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import IconButton from "./IconButton";
+import IconButton from "../IconButton";
 
 class StatusSwitch extends Component {
     constructor(props) {

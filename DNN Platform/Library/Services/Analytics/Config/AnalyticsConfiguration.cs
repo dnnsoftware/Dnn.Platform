@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Analytics.Config
                     {
                         var setting = new AnalyticsSetting();
                         setting.SettingName = nav.SelectSingleNode("SettingName").Value;
-                        setting.SettingValue = nav.SelectSingleNode("SettingValue").Value;
+                        setting.SettingValue = nav.SelectSingleNode("SettingValue")?.Value;
                         Config.Settings.Add(setting);
                     }
 

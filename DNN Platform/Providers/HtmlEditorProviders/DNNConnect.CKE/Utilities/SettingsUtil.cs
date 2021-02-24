@@ -462,6 +462,36 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.ImageButton = settingValue;
+
+                    if (currentSettings.ImageButton == "easyimage")
+                    {
+                        currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                        foreach (string sRoleName in roles)
+                        {
+                            if (PortalSecurity.IsInRoles(sRoleName))
+                            {
+                                currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.INJECTJS))))
             {
                 var settingValue =
@@ -1058,6 +1088,27 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON)]))
+            {
+                currentSettings.ImageButton = (string)hshModSet[string.Format("{0}{1}", key, SettingConstants.IMAGEBUTTON)];
+
+                if (currentSettings.ImageButton == "easyimage")
+                {
+                    currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                    foreach (string sRoleName in roles)
+                    {
+                        if (PortalSecurity.IsInRoles(sRoleName))
+                        {
+                            currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
+                        }
+                    }
+                }
+                else
+                {
+                    currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                }
+            }
+
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.INJECTJS)]))
             {
                 bool bResult;
@@ -1338,6 +1389,25 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty(settings.ImageButton))
+            {
+                if (settings.ImageButton == "easyimage")
+                {
+                    settings.ImageButtonMode = ImageButtonType.StandardButton;
+                    foreach (string sRoleName in roles)
+                    {
+                        if (PortalSecurity.IsInRoles(sRoleName))
+                        {
+                            settings.ImageButtonMode = ImageButtonType.EasyImageButton;
+                        }
+                    }
+                }
+                else
+                {
+                    settings.ImageButtonMode = ImageButtonType.StandardButton;
+                }
+            }
+
             reader.Close();
 
             return settings;
@@ -1387,7 +1457,9 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("FilebrowserImageBrowseLinkUrl")
                         && !info.Name.Equals("FileBrowserImageBrowseUrl")
                         && !info.Name.Equals("FileBrowserFlashUploadUrl")
-                        && !info.Name.Equals("FileBrowserFlashBrowseUrl") && !info.Name.Equals("FileBrowserBrowseUrl"));
+                        && !info.Name.Equals("FileBrowserFlashBrowseUrl")
+                        && !info.Name.Equals("FileBrowserBrowseUrl")
+                        && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
         /// <summary>

@@ -115,8 +115,8 @@ namespace DotNetNuke.Security
         /// </summary>
         public enum ConfigType
         {
-            ListController,
-            ExternalFile,
+            ListController = 0,
+            ExternalFile = 1,
         }
 
         /// <summary>
@@ -125,17 +125,17 @@ namespace DotNetNuke.Security
         /// </summary>
         public enum FilterScope
         {
-            SystemList,
-            PortalList,
-            SystemAndPortalList,
+            SystemList = 0,
+            PortalList = 1,
+            SystemAndPortalList = 2,
         }
 
         private enum RoleType
         {
-            Security,
-            Friend,
-            Follower,
-            Owner,
+            Security = 0,
+            Friend = 1,
+            Follower = 2,
+            Owner = 3,
         }
 
         public static void ForceSecureConnection()

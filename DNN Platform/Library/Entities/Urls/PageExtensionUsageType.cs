@@ -6,8 +6,8 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum PageExtensionUsageType
     {
-        AlwaysUse,
-        PageOnly,
-        Never,
+        AlwaysUse = 0,
+        PageOnly = 1,
+        Never = 2,
     }
 }

@@ -5,8 +5,7 @@ import "./style.less";
 import "react-widgets/lib/less/react-widgets.less";
 import "./style.less";
 import resx from "../../../resources";
-import IconButton from "../../common/IconButton";
-import { GridCell, SearchBox, Dropdown }  from "@dnnsoftware/dnn-react-common";
+import { GridCell, SearchBox, Dropdown, IconButton }  from "@dnnsoftware/dnn-react-common";
 import RoleGroupEditor from "../RoleEditor/RoleGroupEditor";
 import {
     roles as RolesActions
@@ -102,8 +101,8 @@ class FiltersBar extends Component {
             if (canEdit) {
                 label = <div className="group-actions">{label}
                     <div className="role-group-actions">
-                        <IconButton type="Edit" onClick={this.toggleEditGroup.bind(this) } />
-                        {this.props.DeleteAllowed && <IconButton type="Trash" onClick={this.onDeleteGroup.bind(this) } />}
+                        <IconButton type="edit" onClick={this.toggleEditGroup.bind(this) } />
+                        {this.props.DeleteAllowed && <IconButton type="trash" onClick={this.onDeleteGroup.bind(this) } />}
                     </div>
                 </div>;
             }

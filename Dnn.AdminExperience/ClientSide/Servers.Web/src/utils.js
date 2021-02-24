@@ -29,6 +29,14 @@ function formatDateNoTime(date) {
     return new Date(date).toLocaleDateString(config.culture, dateOptions);
 }
 
+function formatDateAndTime(date) {
+    if (!initialized) {
+        throw new Error("Utils have not been initialized");
+    }
+    const dateOptions = { dateStyle: "short", timeStyle: "short" };
+    return new Date(date).toLocaleString(config.culture, dateOptions);
+}
+
 function formatNumeric(value) {
     if (!initialized) {
         throw new Error("Utils have not been initialized");
@@ -85,6 +93,7 @@ function getServiceFramework() {
 const utils = {
     init,
     formatDateNoTime,
+    formatDateAndTime,
     formatNumeric,
     formatNumeric2Decimals,
     notify,

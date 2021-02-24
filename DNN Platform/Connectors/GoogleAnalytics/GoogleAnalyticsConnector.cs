@@ -246,7 +246,7 @@ namespace DNN.Connectors.GoogleAnalytics
         /// <returns>The string representing a boolean after the correction.</returns>
         private string HandleCustomBoolean(string value)
         {
-            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {
                 return "true";
             }

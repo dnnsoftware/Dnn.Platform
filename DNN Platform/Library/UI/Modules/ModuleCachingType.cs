@@ -15,8 +15,8 @@ namespace DotNetNuke.UI.Modules
     /// -----------------------------------------------------------------------------
     public enum ModuleCachingType
     {
-        Memory,
-        Disk,
-        Database,
+        Memory = 0,
+        Disk = 1,
+        Database = 2,
     }
 }

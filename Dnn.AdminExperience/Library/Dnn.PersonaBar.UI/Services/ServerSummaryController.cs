@@ -34,9 +34,9 @@ namespace Dnn.PersonaBar.UI.Services
 
         private enum UpdateType
         {
-            None,
-            Normal,
-            Critical,
+            None = 0,
+            Normal = 1,
+            Critical = 2,
         }
 
         /// <summary>

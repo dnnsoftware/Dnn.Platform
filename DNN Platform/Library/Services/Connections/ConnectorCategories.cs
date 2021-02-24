@@ -6,10 +6,10 @@ namespace DotNetNuke.Services.Connections
 {
     public enum ConnectorCategories
     {
-        Social,
-        FileSystem,
-        Analytics,
-        Marketting,
-        Other,
+        Social = 0,
+        FileSystem = 1,
+        Analytics = 2,
+        Marketting = 3,
+        Other = 4,
     }
 }

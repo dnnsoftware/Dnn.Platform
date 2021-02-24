@@ -8,8 +8,8 @@ namespace DotNetNuke.Services.Installer
     [TypeConverter(typeof(EnumConverter))]
     public enum InstallMode
     {
-        Install,
-        ManifestOnly,
-        UnInstall,
+        Install = 0,
+        ManifestOnly = 1,
+        UnInstall = 2,
     }
 }

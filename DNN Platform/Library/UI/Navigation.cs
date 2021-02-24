@@ -32,10 +32,10 @@ namespace DotNetNuke.UI
 
         public enum ToolTipSource
         {
-            TabName,
-            Title,
-            Description,
-            None,
+            TabName = 0,
+            Title = 1,
+            Description = 2,
+            None = 3,
         }
 
         public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled)

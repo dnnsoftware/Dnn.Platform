@@ -1,6 +1,6 @@
 {
   "name": "@dnnsoftware/dnn-react-common",
-  "version": "9.8.1",
+  "version": "9.9.0",
   "private": false,
   "description": "DNN React Component Library",
   "main": "dist/dnn-react-common.min.js",
@@ -24,8 +24,8 @@
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
+    "dayjs": "^1.10.4",
     "interact.js": "^1.2.8",
-    "moment": "^2.22.2",
     "raw-loader": "2.0.0",
     "react-accessible-tooltip": "^2.0.3",
     "react-collapse": "^4.0.3",

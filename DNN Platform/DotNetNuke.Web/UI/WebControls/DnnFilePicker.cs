@@ -59,17 +59,17 @@ namespace DotNetNuke.Web.UI.WebControls
             /// <summary>
             ///   The File Control is in its Normal mode
             /// </summary>
-            Normal,
+            Normal = 0,
 
             /// <summary>
             ///   The File Control is in the Upload File mode
             /// </summary>
-            UpLoadFile,
+            UpLoadFile = 1,
 
             /// <summary>
             ///   The File Control is in the Preview mode
             /// </summary>
-            Preview,
+            Preview = 2,
         }
 
         public int MaxHeight

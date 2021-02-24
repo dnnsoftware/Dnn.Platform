@@ -33,32 +33,32 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             /// <summary>
             /// Relative to the container.
             /// </summary>
-            Container,
+            Container = 0,
 
             /// <summary>
             /// Relative to the Dnn application.
             /// </summary>
-            Dnn,
+            Dnn = 1,
 
             /// <summary>
             /// Relative to the manifest.
             /// </summary>
-            Manifest,
+            Manifest = 2,
 
             /// <summary>
             /// Relative to the module.
             /// </summary>
-            Module,
+            Module = 3,
 
             /// <summary>
             /// Relative to the portal (site).
             /// </summary>
-            Portal,
+            Portal = 4,
 
             /// <summary>
             /// Relative to the skin (theme).
             /// </summary>
-            Skin,
+            Skin = 5,
         }
 
         /// <summary>

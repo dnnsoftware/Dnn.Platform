@@ -17,6 +17,7 @@ import Flag from "./Flag";
 import FolderPicker from "./FolderPicker";
 import GridCell from "./GridCell";
 import GridSystem from "./GridSystem";
+import IconButton from "./IconButton";
 import InputGroup from "./InputGroup";
 import Label from "./Label";
 import Modal from "./Modal";
@@ -67,6 +68,7 @@ export {
     FolderPicker,
     GridCell,
     GridSystem,
+    IconButton,
     InputGroup,
     Label,
     Modal,

@@ -8,12 +8,15 @@ namespace DotNetNuke.Tests.Web.Api
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Web.Http.Filters;
     using System.Web.Routing;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Internal.Reflection;
     using DotNetNuke.Framework.Reflections;
@@ -57,6 +60,7 @@ namespace DotNetNuke.Tests.Web.Api
             services.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
             services.AddScoped(typeof(INavigationManager), (x) => navigationManagerMock.Object);
             services.AddScoped<IPortalAliasService>(_ => this.mockPortalAliasService.Object);
+            services.AddScoped(_ => Mock.Of<IFilterProvider>());
 
             Globals.DependencyProvider = services.BuildServiceProvider();
         }

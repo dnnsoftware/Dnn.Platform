@@ -18,5 +18,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public bool InjectModuleHyperLink { get; set; }
 
         public bool InlineEditorEnabled { get; set; }
+
+        public bool ShowQuickModuleAddMenu { get; set; }
     }
 }

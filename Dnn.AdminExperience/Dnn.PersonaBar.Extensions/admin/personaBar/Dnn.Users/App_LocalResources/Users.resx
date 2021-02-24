@@ -397,7 +397,7 @@
     <value>User Folder:</value>
   </data>
   <data name="Username.Help" xml:space="preserve">
-    <value>Enter a user name.  It must be at least five characters long and is must be an alphanumeric value.</value>
+    <value>Enter a user name. It must be of at least the minimum configured length and it must be an alphanumeric value.</value>
   </data>
   <data name="Username.Text" xml:space="preserve">
     <value>User Name:</value>
