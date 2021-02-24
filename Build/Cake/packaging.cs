@@ -1,6 +1,9 @@
 ﻿// The tasks create the various DNN release packages (Install, Upgrade, Deploy and Symbols)
 
 using System;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
 using Cake.Frosting;
@@ -187,5 +190,47 @@ public sealed class GenerateSqlDataProvider : FrostingTask<Context>
             file.WriteLine("/*****                                                  *****/");
             file.WriteLine("/************************************************************/");
         }
+    }
+}
+
+[Dependency(typeof(CleanArtifacts))]
+[Dependency(typeof(UpdateDnnManifests))]
+[Dependency(typeof(CreateInstall))]
+[Dependency(typeof(CreateUpgrade))]
+[Dependency(typeof(CreateDeploy))]
+[Dependency(typeof(CreateSymbols))]
+public sealed class GeneratePackagesChecksums : FrostingTask<Context>
+{
+    public override void Run(Context context)
+    {
+        context.Information("Computing packages checksums...");
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"## MD5 Checksums")
+        .AppendLine($"| File       | Checksum |")
+        .AppendLine($"|------------|----------|");
+
+        var files = context.GetFilesByPatterns(context.artifactsFolder, new string[] { "*.zip" });
+        foreach (var file in files)
+        {
+            string hash;
+            var fileName = file.GetFilename();
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(file.FullPath))
+                {
+                    var hashBytes = md5.ComputeHash(stream);
+                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+                }
+            }
+
+            sb.AppendLine($"| {fileName} | {hash}   |");
+        }
+
+        sb.AppendLine();
+        var filePath = Path.Combine(context.artifactsFolder, "checksums.md");
+        File.WriteAllText(filePath, sb.ToString());
+
+        context.Information($"Saved checksums to {filePath}");
     }
 }

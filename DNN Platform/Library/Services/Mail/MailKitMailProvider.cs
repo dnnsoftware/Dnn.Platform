@@ -71,6 +71,12 @@ namespace DotNetNuke.Services.Mail
                 mailMessage.Bcc.AddRange(InternetAddressList.Parse(mailInfo.BCC));
             }
 
+            if (!string.IsNullOrEmpty(mailInfo.ReplyTo))
+            {
+                mailInfo.ReplyTo = mailInfo.ReplyTo.Replace(";", ",");
+                mailMessage.ReplyTo.AddRange(InternetAddressList.Parse(mailInfo.ReplyTo));
+            }
+
             mailMessage.Priority = (MessagePriority)mailInfo.Priority;
 
             // Only modify senderAddress if smtpAuthentication is enabled

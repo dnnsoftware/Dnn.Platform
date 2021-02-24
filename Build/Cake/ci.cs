@@ -4,7 +4,7 @@ using Cake.Frosting;
 
 [Dependency(typeof(CleanArtifacts))]
 [Dependency(typeof(UpdateDnnManifests))]
-[Dependency(typeof(GenerateChecksum))]
+[Dependency(typeof(GenerateSecurityAnalyzerChecksums))]
 [Dependency(typeof(SetPackageVersions))]
 [Dependency(typeof(CreateInstall))]
 [Dependency(typeof(CreateUpgrade))]

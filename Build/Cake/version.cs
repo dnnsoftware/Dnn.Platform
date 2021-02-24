@@ -135,7 +135,7 @@ public sealed class SetPackageVersions : FrostingTask<Context>
 }
 
 [Dependency(typeof(SetVersion))]
-public sealed class GenerateChecksum : FrostingTask<Context>
+public sealed class GenerateSecurityAnalyzerChecksums : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
