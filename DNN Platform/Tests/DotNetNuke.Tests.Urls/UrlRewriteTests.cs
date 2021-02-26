@@ -10,6 +10,7 @@ namespace DotNetNuke.Tests.Urls
     using System.Globalization;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -18,6 +19,9 @@ namespace DotNetNuke.Tests.Urls
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -86,7 +90,7 @@ namespace DotNetNuke.Tests.Urls
 
             if (this.primaryAlias != null)
             {
-                PortalAliasController.Instance.DeletePortalAlias(this.primaryAlias);
+                Globals.DependencyProvider.GetRequiredService<IPortalAliasService>().DeletePortalAlias(this.primaryAlias);
             }
 
             this.SetDefaultAlias(this.DefaultAlias);
@@ -115,19 +119,17 @@ namespace DotNetNuke.Tests.Urls
             this.tabId = tab.TabID;
 
             // Add Portal Aliases
-            var aliasController = PortalAliasController.Instance;
+            var aliasController = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
             TestUtil.ReadStream("Aliases", (line, header) =>
                             {
                                 var fields = line.Split(',');
                                 var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
                                 if (alias == null)
                                 {
-                                    alias = new PortalAliasInfo
-                                    {
-                                        HTTPAlias = fields[0],
-                                        PortalID = this.PortalId,
-                                    };
-                                    PortalAliasController.Instance.AddPortalAlias(alias);
+                                    alias = new PortalAliasInfo();
+                                    alias.HttpAlias = fields[0];
+                                    alias.PortalId = this.PortalId;
+                                    aliasController.AddPortalAlias(alias);
                                 }
                             });
             TestUtil.ReadStream("Users", (line, header) =>
@@ -143,12 +145,12 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureTearDown();
 
-            var aliasController = PortalAliasController.Instance;
+            var aliasController = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
             TestUtil.ReadStream("Aliases", (line, header) =>
                             {
                                 var fields = line.Split(',');
                                 var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
-                                PortalAliasController.Instance.DeletePortalAlias(alias);
+                                aliasController.DeletePortalAlias(alias);
                             });
             TestUtil.ReadStream("Users", (line, header) =>
                             {
@@ -396,31 +398,31 @@ namespace DotNetNuke.Tests.Urls
             }
 
             PortalController.UpdatePortalSetting(this.PortalId, "PortalAliasMapping", "REDIRECT", true, "en-us");
-            var alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, this.PortalId);
+
+            var portalAliasService = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
+            var alias = portalAliasService.GetPortalAlias(defaultAlias, this.PortalId);
             if (alias == null)
             {
-                alias = new PortalAliasInfo
-                {
-                    HTTPAlias = defaultAlias,
-                    PortalID = this.PortalId,
-                    IsPrimary = true,
-                };
+                alias = new PortalAliasInfo();
+                alias.HttpAlias = defaultAlias;
+                alias.PortalId = this.PortalId;
+                alias.IsPrimary = true;
                 if (!(string.IsNullOrEmpty(language) && string.IsNullOrEmpty(skin)))
                 {
                     alias.CultureCode = language;
                     alias.Skin = skin;
                 }
 
-                PortalAliasController.Instance.AddPortalAlias(alias);
+                portalAliasService.AddPortalAlias(alias);
             }
 
             this.SetDefaultAlias(defaultAlias);
             this.ExecuteTest(settings, testFields, false);
 
-            alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, this.PortalId);
+            alias = portalAliasService.GetPortalAlias(defaultAlias, this.PortalId);
             if (alias != null)
             {
-                PortalAliasController.Instance.DeletePortalAlias(alias);
+                portalAliasService.DeletePortalAlias(alias);
             }
         }
 
