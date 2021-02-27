@@ -109,8 +109,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web", "DNN
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
+		azure-pipelines.yml = azure-pipelines.yml
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		CONTRIBUTING.md = CONTRIBUTING.md
@@ -141,7 +143,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
 	ProjectSection(SolutionItems) = preProject
 		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
-		build.cake = build.cake
 		Build_Install_Package.bat = Build_Install_Package.bat
 		Build_Upgrade_Package.bat = Build_Upgrade_Package.bat
 		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
