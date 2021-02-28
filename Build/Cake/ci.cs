@@ -11,6 +11,7 @@ using Cake.Frosting;
 [Dependency(typeof(CreateDeploy))]
 [Dependency(typeof(CreateSymbols))]
 [Dependency(typeof(CreateNugetPackages))]
+[Dependency(typeof(GeneratePackagesChecksums))]
 public sealed class BuildAll : FrostingTask<Context>
 {
     public override void Run(Context context)

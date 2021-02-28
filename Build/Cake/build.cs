@@ -222,7 +222,6 @@ public sealed class CleanArtifacts : FrostingTask<Context>
 [Dependency(typeof(CreateUpgrade))]
 [Dependency(typeof(CreateDeploy))]
 [Dependency(typeof(CreateSymbols))]
-[Dependency(typeof(GeneratePackagesChecksums))]
 public sealed class Default : FrostingTask<Context>
 {
 }
