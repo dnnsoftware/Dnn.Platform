@@ -282,7 +282,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         {
             IFileInfo originalFile = FileManager.Instance.GetFile(folder, fileName);
 
-
             base.UpdateFile(folder, fileName, content);
 
             if (originalFile != null && originalFile.FileName != fileName)
