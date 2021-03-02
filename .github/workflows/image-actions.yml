@@ -1,7 +1,23 @@
 name: Compress images
-on: pull_request
+on:
+  pull_request: # PRs with image (but we can't push changes back to other forks)
+    paths:
+      - "**.jpg"
+      - "**.jpeg"
+      - "**.png"
+      - "**.webp"
+  push:
+    branches:
+      - development # merging PRs from other forks (will open a new PR)
+  worflow_dispatch: # on demand
+  schedule:
+    - cron: "0 0 * * 0" # every Sunday at midnight
 jobs:
   build:
+    if: | # Only run on main repo on and PRs that match the main repo.
+      github.repository == 'dnnsoftware/Dnn.Platform' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
     name: calibreapp/image-actions
     runs-on: ubuntu-latest
     steps:
@@ -9,6 +25,18 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Compress Images
+        id: compress_images
         uses: calibreapp/image-actions@1.1.0
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: ${{ github.event_name != 'pull_request' }} # For non-Pull Requests, run in compressOnly mode and we'll PR after.
+
+      - name: Create Pull Request
+        if: | # If it's not a Pull Request then commit any changes as a new PR.
+          github.event_name != 'pull_request' && steps.compress_images.outputs.markdown != ''
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: Auto Compress Images
+          branch-suffix: timestamp
+          commit-message: Compress Images
+          body: ${{ steps.compress_images.outputs.markdown }}
