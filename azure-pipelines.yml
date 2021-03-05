@@ -97,8 +97,6 @@ steps:
       filePath: ./build.ps1
       arguments: '--target=UnitTests --verbosity=${{ parameters.CakeVerbosity }}'
     continueOnError: true
-
-- ${{ if eq(parameters.RunTests, true) }}:
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/TestResults/*.xml'
     inputs:
@@ -110,13 +108,3 @@ steps:
 
 - publish: 'Artifacts'
   continueOnError: true
-
-- task: NuGetCommand@2
-  displayName: 'Publish to MyGet'
-  inputs:
-    command: push
-    packagesToPush: 'Artifacts/**/*.nupkg;!Artifacts/**/*.symbols.nupkg'
-    nuGetFeedType: external
-    publishFeedCredentials: 'DNN-NuGet-MyGet'
-  enabled: false
-
