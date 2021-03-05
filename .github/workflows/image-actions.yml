@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - development # merging PRs from other forks (will open a new PR)
-  worflow_dispatch: # on demand
+  workflow_dispatch: # on demand
   schedule:
     - cron: "0 0 * * 0" # every Sunday at midnight
 jobs:
