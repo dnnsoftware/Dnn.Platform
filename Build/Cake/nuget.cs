@@ -21,6 +21,7 @@ public sealed class CreateNugetPackages : FrostingTask<Context>
             Version = context.GetBuildNumber(),
             OutputDirectory = @"./Artifacts/",
             IncludeReferencedProjects = true,
+            Symbols = true,
             Properties = new Dictionary<string, string> {{"Configuration", "Release"}}
         };
 
