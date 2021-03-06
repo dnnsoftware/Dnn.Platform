@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-	<Deterministic>true</Deterministic>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -227,10 +227,12 @@
     <Content Include="Browser\jquery.fileupload-ui.css" />
     <Content Include="Browser\jquery.fileupload.css" />
     <Content Include="Browser\js\Browser.js" />
+    <Content Include="Browser\js\jquery-ui.min.js" />
     <Content Include="Browser\js\jquery.cropzoom.js" />
     <Content Include="Browser\js\jquery.fileupload.comb.min.js" />
     <Content Include="Browser\js\jquery.ImageResizer.js" />
     <Content Include="Browser\js\jquery.ImageSlider.js" />
+    <Content Include="Browser\js\jquery.min.js" />
     <Content Include="Browser\js\jquery.pagemethod.js" />
     <Content Include="CKEditorConfig.png" />
     <Content Include="css\CKEditorOverride.css" />

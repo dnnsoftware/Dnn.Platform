@@ -467,14 +467,22 @@ namespace DNNConnect.CKEditorProvider.Browser
             var jqueryScriptLink = new HtmlGenericControl("script");
 
             jqueryScriptLink.Attributes["type"] = "text/javascript";
-            jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
+
+            //START persian-dnnsoftware
+            //jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
+            jqueryScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.min.js");
+            //END persian-dnnsoftware
 
             this.favicon.Controls.Add(jqueryScriptLink);
 
             var jqueryUiScriptLink = new HtmlGenericControl("script");
 
             jqueryUiScriptLink.Attributes["type"] = "text/javascript";
-            jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
+
+            //START persian-dnnsoftware
+            //jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
+            jqueryUiScriptLink.Attributes["src"] = this.ResolveUrl("js /jquery-ui.min.js");
+            //END persian-dnnsoftware
 
             this.favicon.Controls.Add(jqueryUiScriptLink);
 
