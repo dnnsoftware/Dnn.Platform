@@ -33,7 +33,17 @@ namespace Dnn.Modules.ResourceManager
         /// </summary>
         public View()
         {
-            this.bundleJsPath = Constants.ModulePath + "Scripts/resourceManager-bundle.js";
+            // START Persian-DnnSoftware
+            if (System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+            {
+                this.bundleJsPath = Constants.ModulePath + "Scripts/resourceManager-bundle.rtl.js";
+            }
+            else
+            {
+                this.bundleJsPath = Constants.ModulePath + "Scripts/resourceManager-bundle.js";
+            }
+
+            // END Persian-DnnSoftware
         }
 
         /// <summary>

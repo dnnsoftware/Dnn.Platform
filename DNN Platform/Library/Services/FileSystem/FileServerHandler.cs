@@ -76,7 +76,10 @@ namespace DotNetNuke.Services.FileSystem
 
             if (LocaleController.Instance.IsEnabled(ref Language, _portalSettings.PortalId))
             {
-                Localization.SetThreadCultures(new CultureInfo(Language), _portalSettings);
+                //START Persian-DnnSoftware
+                //Localization.SetThreadCultures(new CultureInfo(Language), _portalSettings);
+                Localization.SetThreadCultures(DotNetNuke.Services.Localization.Persian.PersianController.NewCultureInfo(Language), _portalSettings);
+                //END Persian-DnnSoftware
                 Localization.SetLanguage(Language);
             }
 

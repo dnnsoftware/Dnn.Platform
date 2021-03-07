@@ -34,7 +34,12 @@ namespace DotNetNuke.UI.Skins.Controls
             }
 
             var user = UserController.Instance.GetCurrentUserInfo();
-            this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
+            //START Persian-DnnSoftware
+            if (System.Globalization.CultureInfo.CurrentCulture.ToString() == "fa-IR")
+                this.lblDate.Text = !String.IsNullOrEmpty(this.DateFormat) ? DateTime.Now.ToString(this.DateFormat) : DateTime.Now.ToLongDateString();
+            else
+                this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
+            //END Persian-DnnSoftware
         }
 
         private void InitializeComponent()

@@ -125,6 +125,7 @@
     </None>
     <Content Include="Images\HtmlEditorManager_Standard_32x32.png" />
     <Content Include="Images\HtmlEditorManager_Standard_16x16.png" />
+    <Content Include="module.rtl.css" />
     <Content Include="packages.config" />
     <Content Include="Module.build" />
     <Content Include="web.config" />
