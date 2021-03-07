@@ -27,9 +27,25 @@
     }])
 });
 
+function toEnglishDigits(str) {
+
+    // convert persian digits [۰۱۲۳۴۵۶۷۸۹]
+    var e = '۰'.charCodeAt(0);
+    str = str.replace(/[۰-۹]/g, function(t) {
+        return t.charCodeAt(0) - e;
+    });
+
+    // convert arabic indic digits [٠١٢٣٤٥٦٧٨٩]
+    e = '٠'.charCodeAt(0);
+    str = str.replace(/[٠-٩]/g, function(t) {
+        return t.charCodeAt(0) - e;
+    });
+    return str;
+}
 
 (function (root, factory) {
     root.Pikaday = factory();
+    
 }(this, function () {
 
     var  Pikaday = function (options) {
@@ -39,26 +55,36 @@
         var HasInitialValue = false;
         
         if(options.field.value.length > 0){
-            HasInitialValue = true;
-            fieldelement.after('<input type="text" id="new' + options.field.id + '" value = "' + options.field.value.substring(0, 10) + '"  />');
+            //HasInitialValue = true;
+            fieldelement.after('<input type="text" id="new' + options.field.id + '"   />');
         } else {
             fieldelement.after('<input type="text" id="new' + options.field.id + '"  />');
         }
 
-        $("#new" + options.field.id).persianDatepicker({
+        var pdate= $("#new" + options.field.id).persianDatepicker({
             initialValue: HasInitialValue,
             initialValueType: 'persian',
-            format: 'YYYY/MM/DD HH:mm',
+            format: 'YYYY-MM-DD HH:mm:ss',
             persianDigit:false,
             timePicker: {
                 enabled: true
             },
             observer:true,
             onSelect: function (unix) {
-                fieldelement.val(new persianDate(unix).toLocale('en').format('YYYY/MM/DD HH:mm'));
+                //fieldelement.val(new persianDate(unix).toLocale('en').format('YYYY-MM-DD HH:mm:ss'));
+                var fieldelementNew = $("#new" + options.field.id);
+                fieldelement.val(toEnglishDigits(fieldelementNew[0].value))
             }
         });
-        
+
+        pdate.setDate(new persianDate([
+                parseInt(options.field.value.substring(0,4)),
+                parseInt( options.field.value.substring(5,7)), 
+                parseInt( options.field.value.substring(8,10)),
+                parseInt( options.field.value.substring(11,13)),
+                parseInt(options.field.value.substring(14,16))
+            ]));
+
     };
 
     return Pikaday;
