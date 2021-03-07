@@ -76,7 +76,7 @@ function toEnglishDigits(str) {
                 fieldelement.val(toEnglishDigits(fieldelementNew[0].value))
             }
         });
-
+        if(options.field.value.length > 0){
         pdate.setDate(new persianDate([
                 parseInt(options.field.value.substring(0,4)),
                 parseInt( options.field.value.substring(5,7)), 
@@ -84,7 +84,7 @@ function toEnglishDigits(str) {
                 parseInt( options.field.value.substring(11,13)),
                 parseInt(options.field.value.substring(14,16))
             ]));
-
+        }
     };
 
     return Pikaday;
