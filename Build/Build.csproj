@@ -5,7 +5,14 @@
     <PackAsTool>true</PackAsTool>
     <!-- Make sure start same folder .NET Core CLI and Visual Studio -->
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+    <RootNamespace>DotNetNuke.Build</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cake.BuildSystems.Module" Version="3.0.1" />
     <PackageReference Include="Cake.FileHelpers" Version="4.0.0" />
@@ -14,6 +21,10 @@
     <PackageReference Include="Cake.XdtTransform" Version="1.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="1.1.11" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 </Project>
