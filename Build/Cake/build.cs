@@ -51,7 +51,7 @@ public class Context : FrostingContext
             
             this.sqlDataProviderExists = false;
 
-            var settingsFile = "../settings.local.json";
+            var settingsFile = "./settings.local.json";
             this.Settings = this.LoadSettings(settingsFile);
             WriteSettings(settingsFile);
 
