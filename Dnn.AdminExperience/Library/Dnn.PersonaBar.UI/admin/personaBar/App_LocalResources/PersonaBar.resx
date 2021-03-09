@@ -321,4 +321,10 @@
   <data name="UnlockEditMode.Text" xml:space="preserve">
     <value>Click to unlock Edit Mode.</value>
   </data>
+  <data name="Update.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="NewVersion.Text" xml:space="preserve">
+    <value>Get New Version</value>
+  </data>
 </root>

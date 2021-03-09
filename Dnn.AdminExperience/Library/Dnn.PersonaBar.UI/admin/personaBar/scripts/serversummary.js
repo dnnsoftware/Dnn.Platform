@@ -12,6 +12,7 @@ define(['jquery', 'knockout', 'jquery.hoverIntent.min'], function ($, ko) {
                     '<ul>' +
                         '<li class="title" data-bind="html: ProductName"></li>' +
                         '<li class="version-info" data-bind="html: ProductVersion"></li>' +
+                        '<li class="new-version-info" data-bind="visible: UpdateUrl.length > 0"><a data-bind="attr: { \'href\': UpdateUrl }, html: resx.NewVersion"></a></li>' +
                         '<li class="framework" data-bind="visible: FrameworkVersion.length > 0"><span data-bind="html: FrameworkVersion"></span><label data-bind="html: resx.Framework"></label></li>' +
                         '<li class="server-name" data-bind="visible: ServerName.length > 0"><span data-bind="html: ServerName"></span><label data-bind="html: resx.ServerName"></label></li>' +
                         '<li class="separator"></li>' +
