@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.UI.Services
     using System.Net.Http;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Caching;
     using System.Web.Http;
@@ -71,9 +72,8 @@ namespace Dnn.PersonaBar.UI.Services
         [HttpGet]
         public HttpResponseMessage GetUpdateLink()
         {
-            UpdateType updateType;
-            var url = this.NeedUpdate(out updateType) ? Upgrade.UpgradeRedirect() : string.Empty;
-
+            var url = this.UpdateUrl();
+            var updateType = url == string.Empty ? UpdateType.None : UpdateType.Normal;
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Url = url, Type = updateType });
         }
 
@@ -85,70 +85,35 @@ namespace Dnn.PersonaBar.UI.Services
                    || portalSettings[settingName] == "true";
         }
 
-        private bool NeedUpdate(out UpdateType updateType)
+        private string UpdateUrl()
         {
-            updateType = UpdateType.None;
+            return CBO.GetCachedObject<string>(null, this.RetrieveUpdateUrl);
+        }
 
-            if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
-            {
-                return false;
-            }
-
-            var version = DotNetNukeContext.Current.Application.Version;
-            var request = HttpContext.Current.Request;
-
-            var imageUrl = Upgrade.UpgradeIndicator(version, request.IsLocal, request.IsSecureConnection);
-            imageUrl = Globals.AddHTTP(imageUrl.TrimStart('/'));
-
+        private string RetrieveUpdateUrl(CacheItemArgs args)
+        {
             try
             {
-                string hash;
-                const string cacheKey = "UpdateServiceUrlCacheKey";
-                var cachedData = DataCache.GetCache(cacheKey) as string;
-                if (cachedData != null)
+                var latestRelease = Globals.GetJsonObject<DTO.GithubLatestReleaseDTO>("https://api.github.com/repos/dnnsoftware/dnn.platform/releases/latest");
+                if (latestRelease != null)
                 {
-                    hash = cachedData;
-                }
-                else
-                {
-                    var webRequest = WebRequest.CreateHttp(imageUrl);
-                    webRequest.Timeout = Host.WebRequestTimeout;
-                    webRequest.UserAgent = request.UserAgent;
-                    webRequest.Referer = request.RawUrl;
-
-                    using (var stream = ((HttpWebResponse)webRequest.GetResponse()).GetResponseStream())
+                    var m = Regex.Match(latestRelease.TagName, @"(\d+\.\d+\.\d+)$");
+                    if (m.Success)
                     {
-                        if (stream == null)
+                        var latestVersion = new Version(m.Groups[1].Value);
+                        if (latestVersion.CompareTo(DotNetNukeContext.Current.Application.Version) < 0)
                         {
-                            return false;
-                        }
-
-                        using (var sha256 = SHA256.Create())
-                        {
-                            hash =
-                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", string.Empty).ToLowerInvariant();
-                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency)null,
-                                Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
+                            return latestRelease.Url;
                         }
                     }
                 }
-
-                switch (hash)
-                {
-                    case NormalUpdateHash:
-                        updateType = UpdateType.Normal;
-                        return true;
-                    case CriticalUpdateHash:
-                        updateType = UpdateType.Critical;
-                        return true;
-                    default:
-                        return false;
-                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
+            return string.Empty;
         }
     }
 }

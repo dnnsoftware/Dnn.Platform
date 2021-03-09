@@ -2061,6 +2061,29 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
+        /// Gets JSON string from url and deserializes this to type T.
+        /// </summary>
+        /// <typeparam name="T">Object type to return.</typeparam>
+        /// <param name="url">Complete url to fetch JSON data from.</param>
+        /// <returns>Object of type T</returns>
+        public static T GetJsonObject<T>(string url)
+        {
+            var request = GetExternalRequest(url);
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var dataStream = response.GetResponseStream();
+                    var reader = new StreamReader(dataStream);
+                    var responseFromServer = reader.ReadToEnd();
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseFromServer);
+                }
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
         /// Gets the external request.
         /// </summary>
         /// <param name="address">The address.</param>
