@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -94,23 +95,34 @@ namespace Dnn.PersonaBar.UI.Services
         {
             try
             {
-                var latestRelease = Globals.GetJsonObject<DTO.GithubLatestReleaseDTO>("https://api.github.com/repos/dnnsoftware/dnn.platform/releases/latest");
-                if (latestRelease != null)
+                if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
                 {
-                    var m = Regex.Match(latestRelease.TagName, @"(\d+\.\d+\.\d+)$");
-                    if (m.Success)
+                    return string.Empty;
+                }
+
+                var latestReleases = Globals.GetJsonObject<List<DTO.GithubLatestReleaseDTO>>("https://api.github.com/repos/dnnsoftware/dnn.platform/releases?per_page=5");
+                if (latestReleases != null)
+                {
+                    foreach (var release in latestReleases)
                     {
-                        var latestVersion = new Version(m.Groups[1].Value);
-                        if (latestVersion.CompareTo(DotNetNukeContext.Current.Application.Version) > 0)
+                        if (!release.Draft && !release.PreRelease)
                         {
-                            return latestRelease.Url;
+                            var m = Regex.Match(release.TagName, @"(\d+\.\d+\.\d+)$");
+                            if (m.Success)
+                            {
+                                var latestVersion = new Version(m.Groups[1].Value);
+                                if (latestVersion.CompareTo(DotNetNukeContext.Current.Application.Version) > 0)
+                                {
+                                    return release.Url;
+                                }
+                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                Exceptions.LogException(ex);
             }
 
             return string.Empty;
