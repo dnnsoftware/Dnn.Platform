@@ -724,26 +724,36 @@ transform: rotate(180deg);
     z-index: 1000;display: none;
 }
 .personabar .personabarLogo {
-    width: 80px;
-    height: 103px;
-    background: #515050 url('../images/Logo.svg') no-repeat center center;
-    -ms-background-size: 32px auto;
-    background-size: 32px auto;
-    position: relative;
+  width: 80px;
+  height: 103px;
+  background: #515050 url("../images/Logo.svg") no-repeat center center;
+  -ms-background-size: 32px auto;
+  background-size: 32px auto;
+  position: relative;
+  text-align: center;
+}
+.personabar .personabarLogo.updateLogo {
+  background-position: center 14px;
 }
 .personabar .personabarLogo:hover {
     background-color: #2f2f2f;
 }
 .personabar .personabarLogo a.update {
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 7px;
-    font-family: pb_semibold;
-    display: none;
-    position: absolute;
-    bottom: 8px;
-    width: 100%;
-    text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-family: pb_semibold;
+  display: none;
+  position: absolute;
+  bottom: 8px;
+  width: 64px;
+  text-align: center;
+  background-color: #21a3da;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  padding: 2px;
+  margin-left: 5px;
 }
 .personabar .personabarLogo a.update.normal-update {
     color: #21A3DA;
@@ -1977,6 +1987,12 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 }
 .server-summary li.version-info {
     margin-top: 11px;
+}
+.server-summary li.new-version-info {
+  margin-top: 2px;
+}
+.server-summary li.new-version-info a {
+  text-decoration: underline;
 }
 .server-summary li.framework {
     margin-top: 36px;

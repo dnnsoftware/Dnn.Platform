@@ -770,7 +770,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         };
 
                         viewModel.updateText = ko.computed(function() {
-                            return viewModel.updateType() === 2 ? util.resx.PersonaBar.CriticalUpdate : util.resx.PersonaBar.NormalUpdate;
+                            return util.resx.PersonaBar.Update;
                         });
 
                         ko.applyBindings(viewModel, document.getElementById('personabar'));

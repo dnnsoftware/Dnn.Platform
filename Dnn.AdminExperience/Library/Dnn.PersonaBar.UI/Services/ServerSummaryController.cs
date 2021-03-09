@@ -59,6 +59,7 @@ namespace Dnn.PersonaBar.UI.Services
                     ServerName = isHost ? Globals.ServerName : string.Empty,
                     LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
                     DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),
+                    UpdateUrl = this.UpdateUrl(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -88,6 +89,11 @@ namespace Dnn.PersonaBar.UI.Services
 
         private string UpdateUrl()
         {
+            if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
+            {
+                return string.Empty;
+            }
+
             return CBO.GetCachedObject<string>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
         }
 
@@ -95,11 +101,6 @@ namespace Dnn.PersonaBar.UI.Services
         {
             try
             {
-                if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
-                {
-                    return string.Empty;
-                }
-
                 var latestReleases = Globals.GetJsonObject<List<DTO.GithubLatestReleaseDTO>>("https://api.github.com/repos/dnnsoftware/dnn.platform/releases?per_page=5");
                 if (latestReleases != null)
                 {
