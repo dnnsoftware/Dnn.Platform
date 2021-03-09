@@ -4,7 +4,6 @@
 
 namespace Dnn.PersonaBar.UI.Services.DTO
 {
-    using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     [DataContract]
@@ -18,5 +17,11 @@ namespace Dnn.PersonaBar.UI.Services.DTO
 
         [DataMember(Name = "html_url")]
         public string Url { get; set; }
+
+        [DataMember(Name = "draft")]
+        public bool Draft { get; set; }
+
+        [DataMember(Name = "prerelease")]
+        public bool PreRelease { get; set; }
     }
 }
