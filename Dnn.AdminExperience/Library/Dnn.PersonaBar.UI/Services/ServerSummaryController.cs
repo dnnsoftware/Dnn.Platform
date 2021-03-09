@@ -87,7 +87,7 @@ namespace Dnn.PersonaBar.UI.Services
 
         private string UpdateUrl()
         {
-            return CBO.GetCachedObject<string>(null, this.RetrieveUpdateUrl);
+            return CBO.GetCachedObject<string>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
         }
 
         private string RetrieveUpdateUrl(CacheItemArgs args)
@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.UI.Services
                     if (m.Success)
                     {
                         var latestVersion = new Version(m.Groups[1].Value);
-                        if (latestVersion.CompareTo(DotNetNukeContext.Current.Application.Version) < 0)
+                        if (latestVersion.CompareTo(DotNetNukeContext.Current.Application.Version) > 0)
                         {
                             return latestRelease.Url;
                         }
