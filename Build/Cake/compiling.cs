@@ -10,12 +10,14 @@ public sealed class Build : FrostingTask<Context>
 {
     public override void Run(Context context)
     {
+        context.MSBuild(context.dnnSolutionPath, settings => settings.WithTarget("Clean"));
+
         var buildSettings = new MSBuildSettings()
             .SetConfiguration(context.configuration)
             .SetPlatformTarget(PlatformTarget.MSIL)
             .WithTarget("Rebuild")
-            .SetMaxCpuCount(4);
-        context.MSBuild(context.dnnSolutionPath, settings => settings.WithTarget("Clean"));
+            .SetMaxCpuCount(4)
+            .WithProperty("SourceLinkCreate","true");
         context.MSBuild(context.dnnSolutionPath, buildSettings);
     }
 }

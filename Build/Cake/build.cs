@@ -5,6 +5,7 @@ using Cake.Common.IO;
 using Cake.Common.IO.Paths;
 using Cake.Common.Tools.GitVersion;
 using Cake.Core;
+using Cake.Core.Diagnostics;
 using Cake.Core.IO;
 using Cake.FileHelpers;
 using Cake.Frosting;
@@ -51,9 +52,9 @@ public class Context : FrostingContext
             
             this.sqlDataProviderExists = false;
 
-            var settingsFile = "../settings.local.json";
-            this.Settings = this.LoadSettings(settingsFile);
-            WriteSettings(settingsFile);
+            var settingsFile = "./settings.local.json";
+            this.Settings = this.LoadSettings(context, settingsFile);
+            this.WriteSettings(context, settingsFile);
 
             this.buildId = context.EnvironmentVariable("BUILD_BUILDID") ?? "0";
             context.Information($"BuildId: {buildId}");
@@ -124,18 +125,23 @@ public class Context : FrostingContext
         return productVersion;
     }
 
-    private void WriteSettings(string settingsFile)
+    private void WriteSettings(ICakeContext context, string settingsFile)
     {
         using (var sw = new System.IO.StreamWriter(settingsFile))
         {
-            sw.WriteLine(JsonConvert.SerializeObject(Settings, Formatting.Indented));
+            sw.WriteLine(JsonConvert.SerializeObject(this.Settings, Formatting.Indented));
         }
+
+        context.Information(log => log($"Saved settings to {System.IO.Path.GetFullPath(settingsFile)}"));
+        context.Debug(log => log($"Settings: {JsonConvert.SerializeObject(this.Settings, Formatting.Indented).Replace("{", "{{")}"));
     }
 
-    private LocalSettings LoadSettings(string settingsFile) {
+    private LocalSettings LoadSettings(ICakeContext context, string settingsFile) {
         if (System.IO.File.Exists(settingsFile)) {
+            context.Information(log => log($"Loading settings from {System.IO.Path.GetFullPath(settingsFile)}"));
             return JsonConvert.DeserializeObject<LocalSettings>(Utilities.ReadFile(settingsFile));
         } else {
+            context.Information(log => log($"Did not find settings file {System.IO.Path.GetFullPath(settingsFile)}"));
             return new LocalSettings();
         }
     }

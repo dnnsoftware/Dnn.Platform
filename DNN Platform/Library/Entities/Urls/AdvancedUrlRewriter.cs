@@ -255,7 +255,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
-                if (queryStringCol != null && queryStringCol["forceAlias"] != null && queryStringCol["forceAlias"] != "true")
+                // if we're not on the primary alias, and portalaliasmapping is set to redirect, we might need to be redirected
+                var redirectToPrimary = !result.PortalAlias.IsPrimary && result.PortalAliasMapping == PortalSettings.PortalAliasMapping.Redirect;
+
+                // forceAlias used in querystring?
+                var forceAliasInQueryString = queryStringCol != null && queryStringCol["forceAlias"] != null && queryStringCol["forceAlias"] != "true";
+                if (redirectToPrimary || forceAliasInQueryString)
                 {
                     if (portalAliases.Count > 0)
                     {
