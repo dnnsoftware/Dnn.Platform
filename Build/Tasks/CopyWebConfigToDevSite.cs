@@ -10,7 +10,6 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Xml;
     using Cake.FileHelpers;
     using Cake.Frosting;
-    using Dnn.CakeUtils;
 
     /// <summary>A cake task to copy the <c>web.config</c> file to the local dev site with appropriate transformations.</summary>
     public sealed class CopyWebConfigToDevSite : FrostingTask<Context>
@@ -18,14 +17,14 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var conf = Utilities.ReadFile("./Website/web.config");
+            var conf = context.FileReadText("./Website/web.config");
             var transFile = "./Build/Tasks/webconfig-transform.local.xsl";
             if (!context.FileExists(transFile))
             {
                 transFile = "./Build/Tasks/webconfig-transform.xsl";
             }
 
-            var trans = Utilities.ReadFile(transFile);
+            var trans = context.FileReadText(transFile);
             trans = trans.Replace("{ConnectionString}", context.Settings.DnnConnectionString)
                 .Replace("{DbOwner}", context.Settings.DbOwner)
                 .Replace("{ObjectQualifier}", context.Settings.ObjectQualifier);

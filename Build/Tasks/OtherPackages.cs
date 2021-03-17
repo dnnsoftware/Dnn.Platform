@@ -11,8 +11,9 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.IO;
     using Cake.Common.Xml;
     using Cake.Frosting;
+    using Cake.Json;
+
     using Dnn.CakeUtils;
-    using Newtonsoft.Json;
 
     /// <summary>A cake task to include other 3rd party packages.</summary>
     [Dependency(typeof(PackageNewtonsoft))]
@@ -21,7 +22,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var otherPackages = JsonConvert.DeserializeObject<IEnumerable<OtherPackage>>(Utilities.ReadFile("./Build/Tasks/thirdparty.json"));
+            var otherPackages = context.DeserializeJsonFromFile<IEnumerable<OtherPackage>>("./Build/Tasks/thirdparty.json");
             foreach (var op in otherPackages)
             {
                 PackageOtherPackage(context, op);

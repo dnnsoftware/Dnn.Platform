@@ -13,10 +13,7 @@ namespace DotNetNuke.Build
     using Cake.Common.Tools.GitVersion;
     using Cake.Core;
     using Cake.Frosting;
-
-    using Dnn.CakeUtils;
-
-    using Newtonsoft.Json;
+    using Cake.Json;
 
     /// <inheritdoc/>
     public class Context : FrostingContext
@@ -164,7 +161,7 @@ namespace DotNetNuke.Build
             if (File.Exists(settingsFile))
             {
                 context.Information(log => log($"Loading settings from {Path.GetFullPath(settingsFile)}"));
-                return JsonConvert.DeserializeObject<LocalSettings>(Utilities.ReadFile(settingsFile));
+                return context.DeserializeJsonFromFile<LocalSettings>(settingsFile);
             }
 
             context.Information(log => log($"Did not find settings file {Path.GetFullPath(settingsFile)}"));
@@ -173,13 +170,9 @@ namespace DotNetNuke.Build
 
         private void WriteSettings(ICakeContext context, string settingsFile)
         {
-            using (var sw = new StreamWriter(settingsFile))
-            {
-                sw.WriteLine(JsonConvert.SerializeObject(this.Settings, Formatting.Indented));
-            }
-
+            context.SerializeJsonToPrettyFile(settingsFile, this.Settings);
             context.Information(log => log($"Saved settings to {Path.GetFullPath(settingsFile)}"));
-            context.Debug(log => log($"Settings: {JsonConvert.SerializeObject(this.Settings, Formatting.Indented).Replace("{", "{{")}"));
+            context.Debug(log => log($"Settings: {context.SerializeJson(this.Settings).Replace("{", "{{")}"));
         }
     }
 }

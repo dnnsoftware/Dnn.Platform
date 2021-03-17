@@ -8,10 +8,7 @@ namespace DotNetNuke.Build.Tasks
 
     using Cake.Common.IO;
     using Cake.Frosting;
-
-    using Dnn.CakeUtils;
-
-    using Newtonsoft.Json;
+    using Cake.Json;
 
     /// <summary>A cake task to prepare for packaging (by building the platform and copying files).</summary>
     [Dependency(typeof(CopyWebsite))]
@@ -23,7 +20,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            context.PackagingPatterns = JsonConvert.DeserializeObject<PackagingPatterns>(Utilities.ReadFile("./Build/Tasks/packaging.json"));
+            context.PackagingPatterns = context.DeserializeJsonFromFile<PackagingPatterns>("./Build/Tasks/packaging.json");
 
             // Various fixes
             context.CopyFile(

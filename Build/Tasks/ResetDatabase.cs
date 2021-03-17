@@ -8,8 +8,9 @@ namespace DotNetNuke.Build.Tasks
     using System.Linq;
 
     using Cake.Common.Diagnostics;
+    using Cake.Core;
+    using Cake.FileHelpers;
     using Cake.Frosting;
-    using Dnn.CakeUtils;
 
     /// <summary>A cake task to reset the local dev database.</summary>
     public sealed class ResetDatabase : FrostingTask<Context>
@@ -21,18 +22,18 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var script = ReplaceScriptVariables(context, LoadScript("db-connections-drop"));
+            var script = ReplaceScriptVariables(context, LoadScript(context, "db-connections-drop"));
             ExecuteScript(context, script);
-            script = ReplaceScriptVariables(context, LoadScript("create-db"));
+            script = ReplaceScriptVariables(context, LoadScript(context, "create-db"));
             ExecuteScript(context, script);
             if (context.Settings.DnnSqlUsername != string.Empty)
             {
-                script = ReplaceScriptVariables(context, LoadScript("add-db-user"));
+                script = ReplaceScriptVariables(context, LoadScript(context, "add-db-user"));
                 ExecuteScript(context, script);
             }
         }
 
-        private static string LoadScript(string scriptName)
+        private static string LoadScript(ICakeContext context, string scriptName)
         {
             var script = scriptName + ".local.sql";
             if (!System.IO.File.Exists(ScriptsPath + script))
@@ -40,7 +41,7 @@ namespace DotNetNuke.Build.Tasks
                 script = scriptName + ".sql";
             }
 
-            return Utilities.ReadFile(ScriptsPath + script);
+            return context.FileReadText(ScriptsPath + script);
         }
 
         private static string ReplaceScriptVariables(Context context, string script)
