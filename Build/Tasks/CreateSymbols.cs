@@ -8,6 +8,7 @@ namespace DotNetNuke.Build.Tasks
 
     using Cake.Common.IO;
     using Cake.Frosting;
+
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to create the Symbols package.</summary>
@@ -19,9 +20,7 @@ namespace DotNetNuke.Build.Tasks
         public override void Run(Context context)
         {
             context.CreateDirectory(context.ArtifactsFolder);
-            var packageZip = string.Format(
-                context.ArtifactsFolder + "DNN_Platform_{0}_Symbols.zip",
-                context.GetBuildNumber());
+            var packageZip = $"{context.ArtifactsFolder}DNN_Platform_{context.GetBuildNumber()}_Symbols.zip";
             context.Zip("./Build/Symbols/", packageZip, context.GetFiles("./Build/Symbols/*"));
 
             // Fix for WebUtility symbols missing from bin folder
@@ -32,8 +31,8 @@ namespace DotNetNuke.Build.Tasks
                 context.WebsiteFolder,
                 context.PackagingPatterns.SymbolsInclude,
                 context.PackagingPatterns.SymbolsExclude);
-            var resFile = Dnn.CakeUtils.Compression.ZipToBytes(context.WebsiteFolder.TrimEnd('/'), files);
-            Dnn.CakeUtils.Compression.AddBinaryFileToZip(packageZip, resFile, "Resources.zip", true);
+            var resFile = context.ZipToBytes(context.WebsiteFolder.TrimEnd('/'), files);
+            context.AddBinaryFileToZip(packageZip, resFile, "Resources.zip", true);
         }
     }
 }

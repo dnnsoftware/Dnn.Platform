@@ -9,6 +9,7 @@ namespace DotNetNuke.Build.Tasks
 
     using Cake.Common.IO;
     using Cake.Frosting;
+
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to crete the Deploy package.</summary>
@@ -20,9 +21,7 @@ namespace DotNetNuke.Build.Tasks
         public override void Run(Context context)
         {
             context.CreateDirectory(context.ArtifactsFolder);
-            var packageZip = string.Format(
-                context.ArtifactsFolder + "DNN_Platform_{0}_Deploy.zip",
-                context.GetBuildNumber());
+            var packageZip = $"{context.ArtifactsFolder}DNN_Platform_{context.GetBuildNumber()}_Deploy.zip";
 
             const string deployFolder = "./DotNetNuke/";
             var deployDir = context.Directory(deployFolder);
@@ -30,7 +29,7 @@ namespace DotNetNuke.Build.Tasks
             var files = context.GetFilesByPatterns(deployFolder, new[] { "**/*" }, context.PackagingPatterns.InstallExclude);
             files.Add(context.GetFilesByPatterns(deployFolder, context.PackagingPatterns.InstallInclude));
             context.Zip(string.Empty, packageZip, files);
-            Dnn.CakeUtils.Compression.AddFilesToZip(packageZip, "./Build/Deploy", context.GetFiles("./Build/Deploy/*"), append: true);
+            context.AddFilesToZip(packageZip, "./Build/Deploy", context.GetFiles("./Build/Deploy/*"), append: true);
             Directory.Move(deployDir.Path.FullPath, context.WebsiteDir.Path.FullPath);
         }
     }

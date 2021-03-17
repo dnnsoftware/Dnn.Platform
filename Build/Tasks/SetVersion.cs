@@ -9,7 +9,9 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Diagnostics;
     using Cake.Common.Tools.GitVersion;
     using Cake.Frosting;
+
     using Dnn.CakeUtils;
+
     using Newtonsoft.Json;
 
     /// <summary>A cake task to calculate the version.</summary>
@@ -48,7 +50,7 @@ namespace DotNetNuke.Build.Tasks
             context.Information(JsonConvert.SerializeObject(context.Version));
             if (context.Settings.Version != "off")
             {
-                Utilities.UpdateAssemblyInfoVersion(
+                context.UpdateAssemblyInfoVersion(
                     new Version(
                         context.Version.Major,
                         context.Version.Minor,

@@ -9,6 +9,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.IO;
     using Cake.Frosting;
 
+    using Dnn.CakeUtils;
+
     /// <summary>A cake task to generate the Newtonsoft.Json package.</summary>
     public sealed class PackageNewtonsoft : FrostingTask<Context>
     {
@@ -26,7 +28,7 @@ namespace DotNetNuke.Build.Tasks
                 "./DNN Platform/Components/Newtonsoft",
                 packageZip,
                 context.GetFiles("./DNN Platform/Components/Newtonsoft/*"));
-            Dnn.CakeUtils.Compression.AddFilesToZip(
+            context.AddFilesToZip(
                 packageZip,
                 "Website",
                 context.GetFiles(context.WebsiteFolder + "bin/Newtonsoft.Json.dll"),

@@ -9,6 +9,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Diagnostics;
     using Cake.Common.IO;
     using Cake.Frosting;
+
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to create the Install package.</summary>

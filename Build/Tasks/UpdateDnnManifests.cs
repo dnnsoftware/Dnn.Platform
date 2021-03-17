@@ -13,6 +13,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
     using Cake.XdtTransform;
 
+    using Dnn.CakeUtils;
+
     /// <summary>A cake task to set the <c>version</c> attribute in all of the <c>.dnn</c> manifest files.</summary>
     [Dependency(typeof(SetVersion))]
     [Dependency(typeof(SetPackageVersions))]
