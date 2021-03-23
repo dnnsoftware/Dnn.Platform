@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.UI.Services.DTO;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -31,9 +32,6 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
-        private const string CriticalUpdateHash = "e67b666fb40c4f304a41d1706d455c09017b7bcf4ec1e411450ebfcd2c8f12d0";
-        private const string NormalUpdateHash = "df29e1cda367bb8fa8534b5fb2415406100252dec057138b8d63cbadb44fb8e7";
-
         private enum UpdateType
         {
             None = 0,
@@ -59,7 +57,7 @@ namespace Dnn.PersonaBar.UI.Services
                     ServerName = isHost ? Globals.ServerName : string.Empty,
                     LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
                     DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),
-                    UpdateUrl = this.UpdateUrl(),
+                    Update = this.UpdateInfo(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -71,12 +69,14 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
+        /// <summary>
+        /// Returns update information about current framework version.
+        /// </summary>
+        /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
-        public HttpResponseMessage GetUpdateLink()
+        public HttpResponseMessage GetUpdateInfo()
         {
-            var url = this.UpdateUrl();
-            var updateType = url == string.Empty ? UpdateType.None : UpdateType.Normal;
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Url = url, Type = updateType });
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());
         }
 
         private bool GetVisibleSetting(string settingName)
@@ -87,46 +87,67 @@ namespace Dnn.PersonaBar.UI.Services
                    || portalSettings[settingName] == "true";
         }
 
-        private string UpdateUrl()
+        private FrameworkQueryDTO UpdateInfo()
         {
             if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
             {
-                return string.Empty;
+                return new FrameworkQueryDTO();
             }
 
-            return CBO.GetCachedObject<string>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
+            return CBO.GetCachedObject<FrameworkQueryDTO>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
         }
 
-        private string RetrieveUpdateUrl(CacheItemArgs args)
+        private FrameworkQueryDTO RetrieveUpdateUrl(CacheItemArgs args)
         {
             try
             {
-                var latestReleases = Globals.GetJsonObject<List<DTO.GithubLatestReleaseDTO>>("https://api.github.com/repos/dnnsoftware/dnn.platform/releases?per_page=5");
-                if (latestReleases != null)
+                var url = $"{DotNetNukeContext.Current.Application.UpgradeUrl}/Update/FrameworkStatus";
+                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, string.Empty);
+                url += "&type=" + DotNetNukeContext.Current.Application.Type;
+                url += "&name=" + DotNetNukeContext.Current.Application.Name;
+                url += "&id=" + Host.GUID;
+                url += "&no=" + PortalController.Instance.GetPortals().Count;
+                url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
+                url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);
+                url += "&db=" + Globals.FormatVersion(Globals.DatabaseEngineVersion, "00", 2, string.Empty);
+                var response = this.GetJsonObject<FrameworkQueryDTO>(url);
+                if (response.Version.Length == 6)
                 {
-                    foreach (var release in latestReleases)
-                    {
-                        if (!release.Draft && !release.PreRelease)
-                        {
-                            var m = Regex.Match(release.TagName, @"(\d+\.\d+\.\d+)$");
-                            if (m.Success)
-                            {
-                                var latestVersion = new Version(m.Groups[1].Value);
-                                if (latestVersion.CompareTo(DotNetNukeContext.Current.Application.Version) > 0)
-                                {
-                                    return release.Url;
-                                }
-                            }
-                        }
-                    }
+                    response.Version = $"v. {response.Version.Substring(0, 2)}.{response.Version.Substring(2, 2)}.{response.Version.Substring(4, 2)}";
                 }
+
+                return response;
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
             }
 
-            return string.Empty;
+            return new FrameworkQueryDTO();
+        }
+
+        private T GetJsonObject<T>(string url)
+        {
+            var request = Globals.GetExternalRequest(url);
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var dataStream = response.GetResponseStream();
+                    var reader = new StreamReader(dataStream);
+                    var responseFromServer = reader.ReadToEnd();
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseFromServer);
+                }
+            }
+
+            return default(T);
+        }
+
+        private string UpdateUrl()
+        {
+            var url = DotNetNukeContext.Current.Application.UpgradeUrl;
+
+            return url;
         }
     }
 }

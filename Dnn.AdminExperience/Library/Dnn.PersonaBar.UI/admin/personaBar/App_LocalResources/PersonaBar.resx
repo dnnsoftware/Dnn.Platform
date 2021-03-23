@@ -324,7 +324,7 @@
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="NewVersion.Text" xml:space="preserve">
-    <value>Get New Version</value>
+  <data name="LatestVersion.Text" xml:space="preserve">
+    <value>Latest Version</value>
   </data>
 </root>

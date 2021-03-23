@@ -755,6 +755,9 @@ transform: rotate(180deg);
   padding: 2px;
   margin-left: 5px;
 }
+.personabar .personabarLogo a.update.critical {
+    background-color: #D9577A;
+}
 .personabar .personabarLogo a.update.normal-update {
     color: #21A3DA;
     display: block;
@@ -1947,6 +1950,10 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     color: #fff;
     margin-top: 18px;
     cursor: default;
+    padding-bottom: 6px;
+}
+.hoverSummaryMenu ul li.border {
+    border-bottom: 1px solid #868484;
 }
 .hoverSummaryMenu ul li span, .hoverSummaryMenu ul li label {
     display: block;
@@ -1960,8 +1967,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .hoverSummaryMenu ul li label {
     font-size: 12px;
     color: #868484;
-    padding: 2px 0 13px 0;
-    border-bottom: 1px solid #868484;
+    padding: 2px 0 5px 0;
     text-transform: uppercase;
     -moz-word-break: break-all;
     -o-word-break: break-all;
@@ -1986,17 +1992,12 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     margin: 0;
 }
 .server-summary li.version-info {
-    margin-top: 11px;
-}
-.server-summary li.new-version-info {
-  margin-top: 2px;
-}
-.server-summary li.new-version-info a {
-  text-decoration: underline;
+    margin-top: 0px;
 }
 .server-summary li.framework {
     margin-top: 36px;
 }
+.server-summary li.update a, 
 .server-summary li.doc-center a, 
 .server-summary li.logout {
     font-size: 14px;
@@ -2004,12 +2005,22 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     text-decoration: none;
     cursor: pointer;
 }
+.server-summary li.update a:hover, 
 .server-summary li.doc-center a:hover, 
 .server-summary li.logout:hover {
     color: #FFF;
 }
 .server-summary li.logout {
     margin-top: 12px;
+}
+li.new-version-info span.update-critical {
+    font-size: 10px;
+    background-color: red;
+    color: white;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 2px 4px;
+    float: right;
 }
 
 /* Popup Style END */
