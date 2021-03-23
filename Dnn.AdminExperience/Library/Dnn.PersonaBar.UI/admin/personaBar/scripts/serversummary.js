@@ -10,11 +10,11 @@ define(['jquery', 'knockout', 'jquery.hoverIntent.min'], function ($, ko) {
             $summary = $('' +
                 '<div class="server-summary hoverSummaryMenu">' +
                     '<ul>' +
-                        '<li class="title" data-bind="html: ProductName"></li>' +
-                        '<li class="version-info" data-bind="html: ProductVersion"></li>' +
-                        '<li class="new-version-info" data-bind="visible: UpdateUrl.length > 0"><a data-bind="attr: { \'href\': UpdateUrl }, html: resx.NewVersion"></a></li>' +
-                        '<li class="framework" data-bind="visible: FrameworkVersion.length > 0"><span data-bind="html: FrameworkVersion"></span><label data-bind="html: resx.Framework"></label></li>' +
-                        '<li class="server-name" data-bind="visible: ServerName.length > 0"><span data-bind="html: ServerName"></span><label data-bind="html: resx.ServerName"></label></li>' +
+                        '<li class="border version-info"><label data-bind="html: ProductName"></label><span data-bind="html: ProductVersion"></span></li>' +
+                        '<li class="border new-version-info" data-bind="visible: !Update.UpToDate "><label data-bind="html: resx.LatestVersion"></label>' +
+                        '<span><a target="_blank" data-bind="attr: { \'href\': Update.Url }, html: Update.Version"></a><span class="update-critical" data-bind="visible: Update.Critical ">Critical</span></span></li>' +
+                        '<li class="border framework" data-bind="visible: FrameworkVersion.length > 0"><label data-bind="html: resx.Framework"></label><span data-bind="html: FrameworkVersion"></span></li>' +
+                        '<li class="border server-name" data-bind="visible: ServerName.length > 0"><label data-bind="html: resx.ServerName"></label><span data-bind="html: ServerName"></span></li>' +
                         '<li class="separator"></li>' +
                         '<li class="doc-center"><a href="https://dnndocs.com/" data-bind="html: resx.Documentation, visible: visibleCheck(\'DocCenterVisible\')" target="_blank"></a></li>' +
                         '<li id="Logout" class="logout" data-bind="html: resx.nav_Logout"></li>' +

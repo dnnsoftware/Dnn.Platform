@@ -119,7 +119,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Dto\GithubLatestReleaseDTO.cs" />
+    <Compile Include="Services\Dto\FrameworkQueryDTO.cs" />
     <Compile Include="Services\Dto\SuggestionDto.cs" />
     <Compile Include="Services\Dto\RoleGroupDto.cs" />
     <Compile Include="Services\ServerSummaryController.cs" />
