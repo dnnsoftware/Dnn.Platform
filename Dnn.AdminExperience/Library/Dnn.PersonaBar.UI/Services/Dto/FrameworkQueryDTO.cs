@@ -11,16 +11,16 @@ namespace Dnn.PersonaBar.UI.Services.DTO
     public class FrameworkQueryDTO
     {
         [DataMember(Name = "UpToDate")]
-        public bool UpToDate { get; set; }
+        public bool UpToDate { get; set; } = true;
 
         [DataMember(Name = "Version")]
-        public string Version { get; set; }
+        public string Version { get; set; } = string.Empty;
 
         [DataMember(Name = "Url")]
-        public string Url { get; set; }
+        public string Url { get; set; } = string.Empty;
 
         [DataMember(Name = "Critical")]
-        public bool IsCritical { get; set; }
+        public bool IsCritical { get; set; } = false;
 
         [DataMember(Name = "Published")]
         public DateTime Published { get; set; }
