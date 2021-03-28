@@ -6,7 +6,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// This is used to retrieve and keep a list of all commands found in the installation.
     /// </summary>
-    public interface ICommand
+    public interface IDnnCommand
     {
         /// <summary>
         /// Gets or sets the name of the command.

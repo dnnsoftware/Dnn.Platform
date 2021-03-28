@@ -25,7 +25,7 @@ namespace DotNetNuke.Prompt
         }
 
         /// <inheritdoc/>
-        public IEnumerable<ICommand> GetCommands()
+        public IEnumerable<IDnnCommand> GetCommands()
         {
             return this.CommandList().Values;
         }
@@ -42,17 +42,17 @@ namespace DotNetNuke.Prompt
             return null;
         }
 
-        private SortedDictionary<string, ICommand> CommandList()
+        private SortedDictionary<string, IDnnCommand> CommandList()
         {
             return
-                DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
+                DataCache.GetCachedData<SortedDictionary<string, IDnnCommand>>(
                     new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
                     c => GetCommandsInternal());
         }
 
-        private static SortedDictionary<string, ICommand> GetCommandsInternal()
+        private static SortedDictionary<string, IDnnCommand> GetCommandsInternal()
         {
-            var commands = new SortedDictionary<string, ICommand>();
+            var commands = new SortedDictionary<string, IDnnCommand>();
             var typeLocator = new TypeLocator();
             var allCommandTypes = typeLocator.GetAllMatchingTypes(
                 t => t != null &&

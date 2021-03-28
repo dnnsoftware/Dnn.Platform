@@ -13,8 +13,8 @@ namespace DotNetNuke.Abstractions.Prompt
         /// <summary>
         /// Gets a list of all found commands.
         /// </summary>
-        /// <returns>List of ICommand.</returns>
-        IEnumerable<ICommand> GetCommands();
+        /// <returns>List of IDnnCommand.</returns>
+        IEnumerable<IDnnCommand> GetCommands();
 
         /// <summary>
         /// Get the command. Returns null if no command found for the name.

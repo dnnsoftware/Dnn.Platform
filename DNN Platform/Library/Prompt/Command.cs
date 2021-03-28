@@ -10,7 +10,7 @@ namespace DotNetNuke.Prompt
 {
     [Serializable]
     [JsonObject]
-    public class Command : ICommand
+    public class Command : IDnnCommand
     {
         /// <inheritdoc/>
         public string Key { get; set; }
