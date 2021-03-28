@@ -6,7 +6,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// This is used in the IDnnCommandHelp to send a list of command parameters to the client for explanatory help.
     /// </summary>
-    public interface ICommandOption
+    public interface IDnnCommandOption
     {
         /// <summary>
         /// Gets or sets the name of the parameter.

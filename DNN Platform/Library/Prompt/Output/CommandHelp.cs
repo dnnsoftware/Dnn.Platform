@@ -23,7 +23,7 @@ namespace DotNetNuke.Prompt
 
         /// <inheritdoc/>
         [JsonProperty(PropertyName = "options")]
-        public IEnumerable<ICommandOption> Options { get; set; }
+        public IEnumerable<IDnnCommandOption> Options { get; set; }
 
         /// <inheritdoc/>
         [JsonProperty(PropertyName = "resultHtml")]

@@ -10,7 +10,7 @@ namespace DotNetNuke.Prompt
 {
     [Serializable]
     [JsonObject]
-    public class CommandOption : ICommandOption
+    public class CommandOption : IDnnCommandOption
     {
         /// <summary>
         /// Name of the parameter.

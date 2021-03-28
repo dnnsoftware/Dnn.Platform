@@ -23,7 +23,7 @@ namespace DotNetNuke.Abstractions.Prompt
         /// <summary>
         /// Gets or sets the Command parameter list, each with their own help text.
         /// </summary>
-        IEnumerable<ICommandOption> Options { get; set; }
+        IEnumerable<IDnnCommandOption> Options { get; set; }
 
         /// <summary>
         /// Gets or sets the html formatted block of text that describes what this command does.
