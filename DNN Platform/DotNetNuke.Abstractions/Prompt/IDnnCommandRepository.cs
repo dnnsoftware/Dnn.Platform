@@ -8,7 +8,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// The repository handles retrieving of commands from the entire DNN installation.
     /// </summary>
-    public interface ICommandRepository
+    public interface IDnnCommandRepository
     {
         /// <summary>
         /// Gets a list of all found commands.

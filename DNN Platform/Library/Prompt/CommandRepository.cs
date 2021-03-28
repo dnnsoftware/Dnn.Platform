@@ -16,10 +16,10 @@ using System.Web.Caching;
 
 namespace DotNetNuke.Prompt
 {
-    public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
+    public class CommandRepository : ServiceLocator<IDnnCommandRepository, CommandRepository>, IDnnCommandRepository
     {
         /// <inheritdoc/>
-        protected override Func<ICommandRepository> GetFactory()
+        protected override Func<IDnnCommandRepository> GetFactory()
         {
             return () => new CommandRepository();
         }
