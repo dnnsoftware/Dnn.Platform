@@ -11,7 +11,7 @@ namespace DotNetNuke.Prompt
 {
     [Serializable]
     [JsonObject]
-    public class CommandHelp : ICommandHelp
+    public class CommandHelp : IDnnCommandHelp
     {
         /// <inheritdoc/>
         [JsonProperty(PropertyName = "name")]

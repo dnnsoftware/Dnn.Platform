@@ -82,14 +82,14 @@ namespace DotNetNuke.Prompt
         }
 
         /// <inheritdoc/>
-        public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
+        public IDnnCommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
-            return DataCache.GetCachedData<ICommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
+            return DataCache.GetCachedData<IDnnCommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
                 c => this.GetCommandHelpInternal(consoleCommand));
         }
 
-        private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
+        private IDnnCommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
         {
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)

@@ -8,7 +8,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// This is used to send the result back to the client when a user asks help for a command.
     /// </summary>
-    public interface ICommandHelp
+    public interface IDnnCommandHelp
     {
         /// <summary>
         /// Gets or sets the name of the command.

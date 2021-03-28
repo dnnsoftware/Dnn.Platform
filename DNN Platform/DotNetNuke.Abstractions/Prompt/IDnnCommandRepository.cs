@@ -27,7 +27,7 @@ namespace DotNetNuke.Abstractions.Prompt
         /// Get help for the specified command.
         /// </summary>
         /// <param name="consoleCommand">Command to get help for.</param>
-        /// <returns>ICommandHelp class that can be used by the client to compile a help text.</returns>
-        ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand);
+        /// <returns>IDnnCommandHelp class that can be used by the client to compile a help text.</returns>
+        IDnnCommandHelp GetCommandHelp(IConsoleCommand consoleCommand);
     }
 }
