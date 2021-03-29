@@ -10,7 +10,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// This is used to send the result back to the client when a user asks help for a command.
     /// </summary>
-    [Obsolete("Deprecated in favor of IDnnCommandHelp. Will be removed in a future release.", false)]
+    [Obsolete("Deprecated in v9.9.1. Use IDnnCommandHelp instead. Will be removed in v11.", false)]
     public interface ICommandHelp : IDnnCommandHelp
     {
     }

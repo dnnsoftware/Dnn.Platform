@@ -10,7 +10,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// The repository handles retrieving of commands from the entire DNN installation.
     /// </summary>
-    [Obsolete("Deprecated in favor of IDnnCommandRepository. Will be removed in a future release.", false)]
+    [Obsolete("Deprecated in v9.9.1. Use IDnnCommandRepository instead. Will be removed in v11.", false)]
     public interface ICommandRepository : IDnnCommandRepository
     {
     }

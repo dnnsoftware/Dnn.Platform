@@ -9,7 +9,7 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>
     /// This is used to retrieve and keep a list of all commands found in the installation.
     /// </summary>
-    [Obsolete("Deprecated in favor of IDnnCommand. Will be removed in a future release.", false)]
+    [Obsolete("Deprecated in v9.9.1. Use IDnnCommand instead. Will be removed in v11.", false)]
     public interface ICommand : IDnnCommand
     {
     }
