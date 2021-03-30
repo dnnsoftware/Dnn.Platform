@@ -23,6 +23,9 @@
     "/bin/System.IdentityModel.Tokens.Jwt.*",
     "/bin/Telerik.Web.UI.dll",
     "/bin/Telerik.Web.UI.Skins.dll",
+    "/bin/BouncyCastle.Crypto.dll",
+    "/bin/MailKit.dll",
+    "/bin/MimeKit.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],
