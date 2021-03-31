@@ -21,6 +21,7 @@ namespace DotNetNuke.Build.Tasks
         {
             var cleanSettings = new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
                 .WithTarget("Clean")
+                .SetMaxCpuCount(0)
                 .EnableBinaryLogger("clean.binlog")
                 .SetNoConsoleLogger(context.IsRunningInCI);
             context.MSBuild(context.DnnSolutionPath, cleanSettings);
@@ -28,7 +29,7 @@ namespace DotNetNuke.Build.Tasks
             var buildSettings = new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
                 .SetPlatformTarget(PlatformTarget.MSIL)
                 .WithTarget("Rebuild")
-                .SetMaxCpuCount(4)
+                .SetMaxCpuCount(0)
                 .WithProperty("SourceLinkCreate", "true")
                 .EnableBinaryLogger("rebuild.binlog")
                 .SetNoConsoleLogger(context.IsRunningInCI);
