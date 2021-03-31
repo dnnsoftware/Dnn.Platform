@@ -19,13 +19,19 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            context.MSBuild(context.DnnSolutionPath, settings => settings.WithTarget("Clean"));
+            var cleanSettings = new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
+                .WithTarget("Clean")
+                .EnableBinaryLogger("clean.binlog")
+                .SetNoConsoleLogger(context.IsRunningInCI);
+            context.MSBuild(context.DnnSolutionPath, cleanSettings);
 
             var buildSettings = new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
                 .SetPlatformTarget(PlatformTarget.MSIL)
                 .WithTarget("Rebuild")
                 .SetMaxCpuCount(4)
-                .WithProperty("SourceLinkCreate", "true");
+                .WithProperty("SourceLinkCreate", "true")
+                .EnableBinaryLogger("rebuild.binlog")
+                .SetNoConsoleLogger(context.IsRunningInCI);
             context.MSBuild(context.DnnSolutionPath, buildSettings);
         }
     }
