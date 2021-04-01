@@ -138,5 +138,3 @@ yarn-error.log
 /Build/bin/
 /.dotnet/
 /Build/Tools/
-
-*.binlog
