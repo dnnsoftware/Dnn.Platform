@@ -25,6 +25,7 @@ namespace DotNetNuke.Build
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=16.8.0"))
                 .InstallTool(new Uri("nuget:?package=NUnitTestAdapter&version=2.3.0"))
                 .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.0"))
+                .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=0.9.1"))
                 .Run(args);
         }
     }
