@@ -9,6 +9,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Build;
     using Cake.Common.Build.AzurePipelines.Data;
     using Cake.Common.Tools.MSBuild;
+    using Cake.Core.IO;
     using Cake.Frosting;
     using Cake.Issues;
     using Cake.Issues.MsBuild;
@@ -26,37 +27,48 @@ namespace DotNetNuke.Build.Tasks
             // TODO: when Cake.Issues.MsBuild is updated to support Binary Log version 9, can use .EnableBinaryLogger() instead of .WithLogger(…)
             // TODO: also can remove the .InstallTool(…) call for Cake.Issues.MsBuild in Program.cs at that point
             var cleanLog = context.ArtifactsDir.Path.CombineWithFilePath("clean.binlog");
-            var cleanSettings = new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
-                .WithTarget("Clean")
-                .SetMaxCpuCount(0)
-                .WithLogger(context.Tools.Resolve("Cake.Issues.MsBuild*/**/StructuredLogger.dll").FullPath, "BinaryLogger", cleanLog.FullPath)
-                .SetNoConsoleLogger(context.IsRunningInCI);
-            context.MSBuild(context.DnnSolutionPath, cleanSettings);
-
             var buildLog = context.ArtifactsDir.Path.CombineWithFilePath("rebuild.binlog");
-            var buildSettings = new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
-                .SetPlatformTarget(PlatformTarget.MSIL)
-                .WithTarget("Rebuild")
-                .SetMaxCpuCount(0)
-                .WithProperty("SourceLinkCreate", "true")
-                .WithLogger(context.Tools.Resolve("Cake.Issues.MsBuild*/**/StructuredLogger.dll").FullPath, "BinaryLogger", buildLog.FullPath)
-                .SetNoConsoleLogger(context.IsRunningInCI);
-            context.MSBuild(context.DnnSolutionPath, buildSettings);
+            try
+            {
+                var cleanSettings = CreateMsBuildSettings(context, cleanLog).WithTarget("Clean");
+                context.MSBuild(context.DnnSolutionPath, cleanSettings);
 
-            // TODO: when Cake.Issues.Recipe is updated to support Frosting, we can switch to their more robust issue processing and reporting features
+                var buildSettings = CreateMsBuildSettings(context, buildLog)
+                    .SetPlatformTarget(PlatformTarget.MSIL)
+                    .WithTarget("Rebuild")
+                    .WithProperty("SourceLinkCreate", "true");
+                context.MSBuild(context.DnnSolutionPath, buildSettings);
+            }
+            finally
+            {
+                ReportBuildIssues(context, cleanLog, buildLog);
+            }
+        }
+
+        private static MSBuildSettings CreateMsBuildSettings(Context context, FilePath binLogPath)
+        {
+            return new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
+                .SetMaxCpuCount(0)
+                .WithLogger(context.Tools.Resolve("Cake.Issues.MsBuild*/**/StructuredLogger.dll").FullPath, "BinaryLogger", binLogPath.FullPath)
+                .SetNoConsoleLogger(context.IsRunningInCI);
+        }
+
+        private static void ReportBuildIssues(Context context, params FilePath[] logFilePaths)
+        {
             if (!context.IsRunningInCI)
             {
                 return;
             }
 
-            var issueProviders = new[]
-            {
-                context.MsBuildIssuesFromFilePath(cleanLog, context.MsBuildBinaryLogFileFormat()),
-                context.MsBuildIssuesFromFilePath(buildLog, context.MsBuildBinaryLogFileFormat()),
-            };
+            // TODO: when Cake.Issues.Recipe is updated to support Frosting, we can switch to their more robust issue processing and reporting features
+            var issueProviders = logFilePaths.Select(logFilePath => context.MsBuildIssuesFromFilePath(logFilePath, context.MsBuildBinaryLogFileFormat()));
             foreach (var issue in context.ReadIssues(issueProviders, context.Environment.WorkingDirectory))
             {
-                var messageData = new AzurePipelinesMessageData { SourcePath = issue.AffectedFileRelativePath?.FullPath, LineNumber = issue.Line, };
+                var messageData = new AzurePipelinesMessageData
+                                  {
+                                      SourcePath = issue.AffectedFileRelativePath?.FullPath,
+                                      LineNumber = issue.Line,
+                                  };
                 if (issue.Priority == (int)IssuePriority.Error)
                 {
                     context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
