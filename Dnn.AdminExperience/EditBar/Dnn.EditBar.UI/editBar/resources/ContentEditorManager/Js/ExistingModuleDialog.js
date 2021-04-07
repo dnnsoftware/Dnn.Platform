@@ -144,39 +144,6 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             dnn.createDropDownList(id, defaultOptions, {});
         },
 
-        // _createSitesDropdown: function () {
-        //     var handler = this;
-        //     var resx = dnn.ContentEditorManagerResources;
-        //     var label = document.createElement('A')
-        //     var sitePickerOptions = {
-        //         selectSiteCallback: $.proxy(handler._onSelectSiteChanged, handler),
-        //         selectedSite: -1,
-        //         selectedItemCss: 'selected-item',
-        //         internalStateFieldId: 'AddExistingModule_SitePicker_State',
-        //         selectItemDefaultText: resx.sitePicker_selectItemDefaultText,
-        //         itemList: {
-        //             sortAscendingButtonTitle: resx.sitePicker_sortAscendingButtonTitle,
-        //             unsortedOrderButtonTooltip: resx.sitePicker_unsortedOrderButtonTooltip,
-        //             sortAscendingButtonTooltip: resx.sitePicker_sortAscendingButtonTooltip,
-        //             sortDescendingButtonTooltip: resx.sitePicker_sortDescendingButtonTooltip,
-        //             selectedItemExpandTooltip: resx.sitePicker_selectedItemExpandTooltip,
-        //             selectedItemCollapseTooltip: resx.sitePicker_selectedItemCollapseTooltip,
-        //             searchInputPlaceHolder: resx.sitePicker_searchInputPlaceHolder,
-        //             clearButtonTooltip: resx.sitePicker_clearButtonTooltip,
-        //             searchButtonTooltip: resx.sitePicker_searchButtonTooltip,
-        //             loadingResultText: resx.sitePicker_loadingResultText,
-        //             resultsText: resx.sitePicker_resultsText,
-        //             firstItem: null,
-        //             disableUnspecifiedOrder: true
-        //         },
-        //         services: {
-        //             rootNodeName: resx.sitePicker_selectItemDefaultText
-        //         }
-        //     };
-
-        //     // handler._createDropdown($('#AddExistingModule_Sites')[0], sitePickerOptions);
-        // },
-
         _createPagesDropdown: function (portalId) {
             var handler = this;
             var resx = dnn.ContentEditorManagerResources;
