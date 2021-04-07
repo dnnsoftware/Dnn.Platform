@@ -429,6 +429,21 @@
 .dnnModuleDialog .dnnModuleHeader .dnnCheckbox {
     margin-top: 7px;
 }
+.dnnModuleDialog .dnnModuleHeader li.sites {
+    display: flex;
+    align-items: baseline;
+}
+.dnnModuleDialog .dnnModuleHeader li.sites select {
+    border: none;
+    margin: 0 7px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    line-height: 18px;
+}
+.dnnModuleDialog .dnnModuleHeader li.sites select option {
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
 .dnnModuleDialog  .dnnDropDownList.page {
     display: inline-block;
     width: auto;

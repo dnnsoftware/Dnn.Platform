@@ -114,7 +114,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Tree = GetPagesInPortalGroupInternal(sortOrder),
+                Tree = this.GetPagesInPortalGroupInternal(sortOrder),
                 IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -149,6 +149,14 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
+        public HttpResponseMessage GetPortalsInGroup(int sortOrder = 0)
+        {
+            var sites = GetPortalGroup(sortOrder);
+            var portalId = this.PortalSettings.PortalId;
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { sites, portalId });
+        }
+
+        [HttpGet]
         public HttpResponseMessage GetTreePathForPageInPortalGroup(string itemId, int sortOrder = 0,
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true,
             bool includeHostPages = false, string roles = "")
@@ -170,7 +178,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Tree = string.IsNullOrEmpty(searchText) ? GetPagesInPortalGroupInternal(sortOrder)
+                Tree = string.IsNullOrEmpty(searchText) ? this.GetPagesInPortalGroupInternal(sortOrder)
                     : this.SearchPagesInPortalGroupInternal(searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
                 IgnoreRoot = true,
             };
@@ -333,10 +341,10 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
-        private static NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
+        private NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
         {
             var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var portals = GetPortalGroup(sortOrder);
+            var portals = this.GetPortalGroup(sortOrder);
             treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             return treeNode;
         }
@@ -383,9 +391,9 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
+        private IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
         {
-            var mygroup = GetMyPortalGroup();
+            var mygroup = this.GetMyPortalGroup();
             var portals = mygroup.Select(p => new ItemDto
             {
                 Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
@@ -409,15 +417,22 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static IEnumerable<PortalInfo> GetMyPortalGroup()
+        private IEnumerable<PortalInfo> GetMyPortalGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-            var mygroup = (from @group in groups
-                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                into portals
-                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                           select portals.ToArray()).FirstOrDefault();
-            return mygroup;
+            if (groups.Any())
+            {
+                var mygroup = (from @group in groups
+                               select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                    into portals
+                               where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                               select portals.ToArray()).FirstOrDefault();
+                return mygroup;
+            }
+
+            var currentPortal = new List<PortalInfo>();
+            currentPortal.Add(PortalController.Instance.GetPortal(this.PortalSettings.PortalId));
+            return currentPortal;
         }
 
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder, bool includeDisabled = false,
