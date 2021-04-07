@@ -766,7 +766,7 @@ span.dnnFormError {
     }
 
       .personabar .personabarLogo a.update.critical {
-        background-color: #D9577A;
+        background-color: #D63333;
       }
 
       .personabar .personabarLogo a.update.normal-update {
@@ -775,7 +775,7 @@ span.dnnFormError {
       }
 
       .personabar .personabarLogo a.update.critical-update {
-        color: #D9577A;
+        color: #D63333;
         display: block;
       }
 
@@ -2165,16 +2165,16 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 }
 
 .server-summary li.new-version-info.border.critical {
-  border-color: #D9577A;
+  border-color: #D63333;
 }
 
 .server-summary li.new-version-info.critical label {
-  color: #D9577A;
+  color: #D63333;
 }
 
 .server-summary li.new-version-info span.update-critical {
   font-size: 10px;
-  background-color: #D9577A;
+  background-color: #D63333;
   color: white;
   text-transform: uppercase;
   border-radius: 4px;
