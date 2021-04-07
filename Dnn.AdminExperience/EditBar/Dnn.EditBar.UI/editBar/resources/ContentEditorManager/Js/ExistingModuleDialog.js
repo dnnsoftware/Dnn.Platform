@@ -133,7 +133,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                     moduleId: '',
                     serviceRoot: 'InternalServices',
                     rootId: 'Root',
-                    parameters: { includeAllTypes: "true" },
+                    parameters: { includeAllTypes: "true", portalId: options.portalId },
                     includeDisabled: true
                 },
                 onSelectionChangedBackScript: selectPageProxyCallback
@@ -144,11 +144,45 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             dnn.createDropDownList(id, defaultOptions, {});
         },
 
-        _createPagesDropdown: function () {
+        // _createSitesDropdown: function () {
+        //     var handler = this;
+        //     var resx = dnn.ContentEditorManagerResources;
+        //     var label = document.createElement('A')
+        //     var sitePickerOptions = {
+        //         selectSiteCallback: $.proxy(handler._onSelectSiteChanged, handler),
+        //         selectedSite: -1,
+        //         selectedItemCss: 'selected-item',
+        //         internalStateFieldId: 'AddExistingModule_SitePicker_State',
+        //         selectItemDefaultText: resx.sitePicker_selectItemDefaultText,
+        //         itemList: {
+        //             sortAscendingButtonTitle: resx.sitePicker_sortAscendingButtonTitle,
+        //             unsortedOrderButtonTooltip: resx.sitePicker_unsortedOrderButtonTooltip,
+        //             sortAscendingButtonTooltip: resx.sitePicker_sortAscendingButtonTooltip,
+        //             sortDescendingButtonTooltip: resx.sitePicker_sortDescendingButtonTooltip,
+        //             selectedItemExpandTooltip: resx.sitePicker_selectedItemExpandTooltip,
+        //             selectedItemCollapseTooltip: resx.sitePicker_selectedItemCollapseTooltip,
+        //             searchInputPlaceHolder: resx.sitePicker_searchInputPlaceHolder,
+        //             clearButtonTooltip: resx.sitePicker_clearButtonTooltip,
+        //             searchButtonTooltip: resx.sitePicker_searchButtonTooltip,
+        //             loadingResultText: resx.sitePicker_loadingResultText,
+        //             resultsText: resx.sitePicker_resultsText,
+        //             firstItem: null,
+        //             disableUnspecifiedOrder: true
+        //         },
+        //         services: {
+        //             rootNodeName: resx.sitePicker_selectItemDefaultText
+        //         }
+        //     };
+
+        //     // handler._createDropdown($('#AddExistingModule_Sites')[0], sitePickerOptions);
+        // },
+
+        _createPagesDropdown: function (portalId) {
             var handler = this;
             var resx = dnn.ContentEditorManagerResources;
             var pagePickerOptions = {
                 selectPageCallback: $.proxy(handler._onSelectPageChanged, handler),
+                portalId: portalId,
                 selectedFolder: -1,
                 selectedItemCss: 'selected-item',
                 internalStateFieldId: 'AddExistingModule_FolderPicker_State',
@@ -200,6 +234,11 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                             '<div class="dnnDialogBody dnnModuleList">' +
                                 '<div class="dnnModuleHeader">' +
                                     '<ul>' +
+                                        '<li class="sites">' +
+                                            '<label>' + dnn.ContentEditorManagerResources.site + '</label>' +
+                                            '<select id="AddExistingModule_Sites" class="dnnDropDownList site">' +
+                                            '</select>' +
+                                        '</li>' +
                                         '<li>' +
                                             '<label>' + dnn.ContentEditorManagerResources.page + '</label>' +
                                             '<div id="AddExistingModule_Pages" class="dnnDropDownList page">' +
@@ -283,6 +322,14 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             this._dialogLayout.trigger('dialogopen');
         },
 
+        _loadSiteList: function() {
+            if (!this.getModuleDialog()._getItemListService().isLoading()) {
+                this.getModuleDialog()._getItemListService().request('GetPortalsInGroup', 'GET', {
+                    sortOrder: 0
+                }, $.proxy(this._renderSiteList, this));
+            }
+        },
+
         _loadModuleList: function () {
             this._dialogLayout.find('li.dnnModuleItem').remove();
             this._dialogLayout.find('div.dnnModuleDialog_ModuleListMessage').remove();
@@ -298,6 +345,24 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                     tab: this._selectedPageId
                 }, $.proxy(this._renderModuleList, this));
             }
+        },
+
+        _renderSiteList: function (data) {
+            var select = document.querySelector('#AddExistingModule_Sites');
+            data.sites.forEach((siteInfo, index) => {
+                var portalId = parseInt(siteInfo.key.substr(2));
+                var option = document.createElement('option');
+                option.innerText = siteInfo.value;
+                option.value = portalId;
+                select.appendChild(option);
+                if(data.portalId == portalId) {
+                    select.options[index].setAttribute('selected', '');
+                }
+            });
+            select.addEventListener('change', e => {
+                var portalId = parseInt(e.target.value);
+                this._createPagesDropdown(portalId);
+            });
         },
 
         _renderModuleList: function (data) {
@@ -399,8 +464,9 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
         },
 
         _initUI: function () {
-            this._createPagesDropdown();
+            this._createPagesDropdown(undefined);
             this._dialogLayout.find('input[type="checkbox"]').dnnCheckbox();
+            this._loadSiteList();
         },
 
         _closeButtonHandler: function () {
