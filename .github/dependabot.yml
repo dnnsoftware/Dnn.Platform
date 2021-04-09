@@ -4,13 +4,28 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - "Type: Build/Release"
+      - "Type: Maintenance"
+      - "Priority: Low"
+      - "Status: Testing"
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "monthly"
+    labels:
+      - "javascript"
+      - "Type: Maintenance"
+      - "Priority: Low"
+      - "Status: Testing"
 
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "monthly"
+    labels:
+      - ".NET"
+      - "Type: Maintenance"
+      - "Priority: Low"
+      - "Status: Testing"
