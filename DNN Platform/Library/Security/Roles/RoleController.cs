@@ -507,8 +507,8 @@ namespace DotNetNuke.Security.Roles
             else
             {
                 int UserRoleId = -1;
-                DateTime ExpiryDate = DateTime.Now;
-                DateTime EffectiveDate = Null.NullDate;
+                DateTime EffectiveDate = DateTime.Now;
+                DateTime ExpiryDate = Null.NullDate;
                 bool IsTrialUsed = false;
                 int Period = 0;
                 string Frequency = string.Empty;
@@ -542,7 +542,7 @@ namespace DotNetNuke.Security.Roles
 
                 if (ExpiryDate < DateTime.Now)
                 {
-                    ExpiryDate = DateTime.Now;
+                    ExpiryDate = Null.NullDate;
                 }
 
                 if (Period == Null.NullInteger)
