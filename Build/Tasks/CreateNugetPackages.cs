@@ -11,8 +11,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.IO;
     using Cake.Common.Tools.NuGet;
     using Cake.Common.Tools.NuGet.Pack;
+    using Cake.Core;
     using Cake.Frosting;
-
     using DotNetNuke.Build;
 
     /// <summary>A cake task to create the platform's NuGet packages.</summary>
@@ -35,6 +35,7 @@ namespace DotNetNuke.Build.Tasks
                                         IncludeReferencedProjects = true,
                                         Symbols = true,
                                         Properties = new Dictionary<string, string> { { "Configuration", "Release" } },
+                                        ArgumentCustomization = args => args.Append("-SymbolPackageFormat snupkg"),
                                     };
 
             // loop through each nuspec file and create the package
