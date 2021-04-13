@@ -1,0 +1,15 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+-- Add CSS content type, this will help when a Page Style Sheet is uploaded to a folder provider such as AzureFolderProvider.
+IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Lists WHERE ListName='ContentTypes' AND Value = 'css')
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'css', N'text/css', 0, 0, 0, -1, N'', -1, 1, -1, GETDATE(), -1, GETDATE())
+END

@@ -101,6 +101,7 @@ namespace DotNetNuke.Services.FileSystem
             contentTypes.Add("pps", "application/vnd.ms-powerpoint");
             contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
             contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+            contentTypes.Add("css", "text/css");
 
             return contentTypes;
         }

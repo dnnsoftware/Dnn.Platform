@@ -70,6 +70,9 @@ namespace DotNetNuke.Modules.Html
         /// <returns></returns>
         public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
         {
+            // Html decode content
+            content = HttpUtility.HtmlDecode(content);
+
             // token replace
             if (settings.ReplaceTokens)
             {
@@ -82,9 +85,6 @@ namespace DotNetNuke.Modules.Html
                 };
                 content = tr.ReplaceEnvironmentTokens(content);
             }
-
-            // Html decode content
-            content = HttpUtility.HtmlDecode(content);
 
             // manage relative paths
             content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);

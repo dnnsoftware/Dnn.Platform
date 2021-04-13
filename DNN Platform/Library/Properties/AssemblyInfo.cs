@@ -35,6 +35,7 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web.Mvc")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Urls")]
+[assembly: InternalsVisibleTo("DotNetNuke.Tests.Utilities")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Professional")]
 [assembly: InternalsVisibleTo("DotNetNuke.SiteExportImport")]
 [assembly: InternalsVisibleTo("DotNetNuke.Web.DDRMenu")] // Once Globals is refactored to Dependency Injection we should be able to remove this

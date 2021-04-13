@@ -1127,6 +1127,17 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             return this._serviceController;
         },
 
+        _getItemListService: function () {
+            if (!this._itemListServiceController) {
+                this._itemListServiceController = new dnn.dnnModuleService({
+                    service: 'internalservices',
+                    controller: 'itemlistservice'
+                });
+            }
+
+            return this._itemListServiceController;
+        },
+
         _getEditorService: function () {
             if (!this._editorServiceController) {
                 this._editorServiceController = new dnn.dnnModuleService({

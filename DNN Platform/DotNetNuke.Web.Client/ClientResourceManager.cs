@@ -297,7 +297,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             // Some "legacy URLs" could be using their own query string versioning scheme (and we've forced them to use the new API through re-routing PageBase.RegisterStyleSheet
             // Ensure that physical CSS files with query strings have their query strings removed
-            if (filePath.Contains(".css?"))
+            // Ignore absolute urls, they will not exist locally
+            if (!Uri.TryCreate(filePath, UriKind.Absolute, out _) && filePath.Contains(".css?"))
             {
                 var filePathSansQueryString = RemoveQueryString(filePath);
                 if (File.Exists(page.Server.MapPath(filePathSansQueryString)))

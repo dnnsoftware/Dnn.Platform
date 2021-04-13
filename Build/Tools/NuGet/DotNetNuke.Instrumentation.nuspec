@@ -14,9 +14,6 @@
       Provides references to enhanced logging and instrumentation available within DNN Platform for extension developers. Including access to Log4Net
     </description>
     <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
-    <dependencies>
-      <dependency id="DotNetNuke.Core" version="$version$" />
-    </dependencies>
   </metadata>
   <files>
     <file src="..\..\..\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net45\" />

@@ -20,8 +20,8 @@
                 <li class="userName"><a id="dnn_dnnUser_userNameLink" href="#"><%=DisplayName %></a>
                     <ul class="userMenu">
                         <li class="viewProfile"><asp:HyperLink ID="viewProfileLink" runat="server"><%=LocalizeString("Profile")%></asp:HyperLink></li>
-                        <li class="userMessages"><asp:HyperLink ID="messagesLink" runat="server"><asp:Label ID="messageCount" runat="server" Visible="false" /> <%=LocalizeString("Messages") %></asp:HyperLink></li>
-                        <li class="userNotifications"><asp:HyperLink ID="notificationsLink" runat="server"><asp:Label ID="notificationCount" runat="server" Visible="False"/> <%=LocalizeString("Notifications") %></asp:HyperLink></li>
+                        <li class="userMessages"><asp:HyperLink ID="messagesLink" runat="server"><asp:Label ID="messageCount" runat="server" Visible="false" /><%=LocalizeString("Messages") %></asp:HyperLink></li>
+                        <li class="userNotifications"><asp:HyperLink ID="notificationsLink" runat="server"><asp:Label ID="notificationCount" runat="server" Visible="False"/><%=LocalizeString("Notifications") %></asp:HyperLink></li>
                         <li class="userSettings"><asp:HyperLink ID="accountLink" runat="server"><%=LocalizeString("Account") %></asp:HyperLink></li>
                         <li class="userProfilename"><asp:HyperLink ID="editProfileLink" runat="server"><%=LocalizeString("EditProfile") %></asp:HyperLink></li>
                         <li class="userLogout"><asp:HyperLink ID="logoffLink" runat="server"><strong><%=LocalizeString("Logout") %></strong></asp:HyperLink></li>
