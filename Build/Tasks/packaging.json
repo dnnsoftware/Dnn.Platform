@@ -26,6 +26,7 @@
     "/bin/BouncyCastle.Crypto.dll",
     "/bin/MailKit.dll",
     "/bin/MimeKit.dll",
+    "/bin/System.Buffers.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],
