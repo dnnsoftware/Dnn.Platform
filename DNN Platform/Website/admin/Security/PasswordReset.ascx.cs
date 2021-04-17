@@ -27,6 +27,8 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Web.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
+    using Host = DotNetNuke.Entities.Host.Host;
+
     public partial class PasswordReset : UserModuleBase
     {
         private const int RedirectTimeout = 3000;
@@ -114,20 +116,24 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.resetMessages.Visible = true;
             }
 
-            var options = new DnnPaswordStrengthOptions();
-            var optionsAsJsonString = Json.Serialize(options);
-            var script = string.Format(
-                "dnn.initializePasswordStrength('.{0}', {1});{2}",
-                "password-strength", optionsAsJsonString, Environment.NewLine);
+            if (Host.EnableStrengthMeter)
+            {
+                this.passwordContainer.CssClass = "password-strength-container";
+                this.txtPassword.CssClass = "password-strength";
 
-            if (ScriptManager.GetCurrent(this.Page) != null)
-            {
-                // respect MS AJAX
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", script, true);
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
+                var options = new DnnPaswordStrengthOptions();
+                var optionsAsJsonString = Json.Serialize(options);
+                var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}", "password-strength", optionsAsJsonString, Environment.NewLine);
+
+                if (ScriptManager.GetCurrent(this.Page) != null)
+                {
+                    // respect MS AJAX
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", script, true);
+                }
+                else
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
+                }
             }
 
             var confirmPasswordOptions = new DnnConfirmPasswordOptions()
@@ -139,17 +145,17 @@ namespace DotNetNuke.Modules.Admin.Security
                 MatchedCssClass = "matched",
             };
 
-            optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-            script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
+            var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
                 // respect MS AJAX
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", script, true);
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", confirmScript, true);
             }
             else
             {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", script, true);
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
             }
         }
 
