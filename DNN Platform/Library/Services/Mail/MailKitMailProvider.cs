@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Mail
                 mailMessage.ReplyTo.AddRange(InternetAddressList.Parse(mailInfo.ReplyTo));
             }
 
-            mailMessage.Priority = (MessagePriority)mailInfo.Priority;
+            mailMessage.Priority = ToMessagePriority(mailInfo.Priority);
 
             // Only modify senderAddress if smtpAuthentication is enabled
             // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.
@@ -268,6 +268,21 @@ namespace DotNetNuke.Services.Mail
             }
 
             return mailboxAddress;
+        }
+
+        private static MessagePriority ToMessagePriority(MailPriority priority)
+        {
+            switch (priority)
+            {
+                case MailPriority.Low:
+                    return MessagePriority.NonUrgent;
+                case MailPriority.Normal:
+                    return MessagePriority.Normal;
+                case MailPriority.High:
+                    return MessagePriority.Urgent;
+                default:
+                    throw new ArgumentException($"Invalid MailPriority value: {priority}", nameof(priority));
+            }
         }
     }
 }
