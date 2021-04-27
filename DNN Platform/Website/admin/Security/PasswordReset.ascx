@@ -12,8 +12,8 @@
             <asp:RequiredFieldValidator ID="valUsername" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" Display="Dynamic" ControlToValidate="txtUsername" />
         </div>
         <div class="dnnFormItem">
-            <asp:Panel ID="passwordContainer" runat="server" CssClass="password-strength-container">
-                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" size="12" MaxLength="39" AutoCompleteType="Disabled" CssClass="password-strength" />
+            <asp:Panel ID="passwordContainer" runat="server">
+                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" size="12" MaxLength="39" AutoCompleteType="Disabled" />
             </asp:Panel>
             <asp:RegularExpressionValidator ID="valPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Password.Required" Display="Dynamic" ControlToValidate="txtPassword" ValidationExpression="[\w\W]{7,}" />
         </div>
