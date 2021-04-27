@@ -55,7 +55,7 @@
     "react-hot-loader": "4.8.5",
     "react-test-renderer": "^16.6.2",
     "react-widgets": "4.4.7",
-    "string.prototype.startswith": "0.2.0",
+    "string.prototype.startswith": "1.0.0",
     "style-loader": "^0.23.1",
     "throttle-debounce": "^2.0.1",
     "uglifyjs-webpack-plugin": "^2.1.3",
