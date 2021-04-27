@@ -43,7 +43,14 @@ namespace DNNConnect.CKEditorProvider.Helper
                 var parentId = data.ParentId;
                 if (parentIdCheck(parentId))
                 {
-                    var parentNode = this.GetTreeNodeWithParentId(parentId).NodeData;
+                    var parentNodeWithId = this.GetTreeNodeWithParentId(parentId);
+                    if (parentNodeWithId == null)
+                    {
+                        // if node has an invalid parent (e.g. parent page is deleted), it can't be displayed in the tree
+                        continue;
+                    }
+
+                    var parentNode = parentNodeWithId.NodeData;
                     parentNode.ChildNodes.Add(node);
                 }
                 else
@@ -93,7 +100,7 @@ namespace DNNConnect.CKEditorProvider.Helper
 
         private TreeNodeWithParentId<TIdentifier> GetTreeNodeWithParentId(TIdentifier key)
         {
-            return this.nodes[key];
+            return this.nodes.TryGetValue(key, out var node) ? node : null;
         }
 
         private class TreeNodeWithParentId<TParentId>
