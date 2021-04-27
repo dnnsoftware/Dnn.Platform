@@ -205,7 +205,6 @@ export default class SiteGroupRow extends React.Component {
         </div>
         <Collapse
           isOpened={this.props.isOpened}
-          style={{ width: "100%", height: "auto" }}
         >
           {this.props.isOpened && (
             <SiteGroupEditor
