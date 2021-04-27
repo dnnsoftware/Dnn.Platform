@@ -395,9 +395,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.PrivacyTabId = this.ValidateTabId(request.PrivacyTabId, pid);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
-                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), false, cultureCode);
-                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), false, cultureCode);
-                PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", request.RedirectAfterRegistrationTabId.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", this.ValidateTabId(request.RedirectAfterLoginTabId, pid).ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", this.ValidateTabId(request.RedirectAfterLogoutTabId, pid).ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", this.ValidateTabId(request.RedirectAfterRegistrationTabId, pid).ToString(), false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
