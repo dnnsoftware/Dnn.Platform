@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -37,7 +38,7 @@ namespace DotNetNuke.Services.FileSystem
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
-        private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
+        private static readonly ConcurrentDictionary<int, SyncFolderData> SyncFoldersData = new ConcurrentDictionary<int, SyncFolderData>();
         private static readonly object ThreadLocker = new object();
 
         /// <summary>Gets the localization key for MyFolderName.</summary>
@@ -2328,7 +2329,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
-            SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
+            SyncFoldersData.TryAdd(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
 
             return permissions;
         }
@@ -2350,7 +2351,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             else
             {
-                SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
+                SyncFoldersData.TryAdd(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
             }
         }
 
@@ -2359,7 +2360,7 @@ namespace DotNetNuke.Services.FileSystem
             var threadId = Thread.CurrentThread.ManagedThreadId;
             if (SyncFoldersData.ContainsKey(threadId))
             {
-                SyncFoldersData.Remove(threadId);
+                SyncFoldersData.TryRemove(threadId, out _);
             }
         }
 
