@@ -12230,13 +12230,6 @@ prop-types-extra@^1.0.1:
     react-is "^16.3.2"
     warning "^3.0.0"
 
-prop-types@15.5.8:
-  version "15.5.8"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
-  integrity sha1-a3suFBCDvjjIWVqlH8VXdccZk5Q=
-  dependencies:
-    fbjs "^0.8.9"
-
 prop-types@15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
@@ -12644,12 +12637,12 @@ react-focus-lock@^1.17.7:
     prop-types "^15.6.2"
     react-clientside-effect "^1.2.0"
 
-react-height@3.0.0, react-height@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-height/-/react-height-3.0.0.tgz#fae322f9da64d3e9e25536f26b77c73954261524"
-  integrity sha1-+uMi+dpk0+niVTbya3fHOVQmFSQ=
+react-height@3.0.1, react-height@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-height/-/react-height-3.0.1.tgz#2252652fb59468254751224ef1e94a2bb6e90d20"
+  integrity sha512-tduavxh0UamJoK3MTguUxz7zu+hpuZ1m7JivfGKXUF1Wx8D5lURsDkrxzE5TfpzDOXEeqswH7n/P0wfKRUjYAQ==
   dependencies:
-    prop-types "15.5.8"
+    prop-types "^15.5.8"
 
 react-helmet-async@^0.2.0:
   version "0.2.0"
