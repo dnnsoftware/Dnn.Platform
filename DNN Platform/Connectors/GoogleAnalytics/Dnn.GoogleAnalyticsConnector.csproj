@@ -28,7 +28,6 @@
     <DocumentationFile>bin\DNN.Connectors.GoogleAnalytics.xml</DocumentationFile>
     <LangVersion>7</LangVersion>
     <NoWarn>1591</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

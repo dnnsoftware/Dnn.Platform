@@ -33,7 +33,6 @@
     <DocumentationFile>bin\DotNetNuke.Instrumentation.xml</DocumentationFile>
     <NoWarn>1591, 0649</NoWarn>
     <LangVersion>7</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,7 +44,6 @@
     <DocumentationFile>bin\DotNetNuke.Instrumentation.xml</DocumentationFile>
     <NoWarn>1591, 0649</NoWarn>
     <LangVersion>7</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.log4net">
