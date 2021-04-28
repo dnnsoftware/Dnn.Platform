@@ -191,8 +191,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PreBuildEvent>
-	copy /Y "%25TEMP%25\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" "%25TEMP%25\.NETFramework"
-	copy /Y "%25TEMP%25\.NETFramework,Version=v4.7.2.AssemblyAttributes.vb" "$(ProjectDir)Version=v4.7.2.AssemblyAttributes.vb"
     </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>

@@ -6,6 +6,7 @@
     <!-- Make sure start same folder .NET Core CLI and Visual Studio -->
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <RootNamespace>DotNetNuke.Build</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
