@@ -31,7 +31,7 @@
     "enzyme-adapter-react-16": "^1.13.0",
     "es6-object-assign": "1.1.0",
     "eslint": "5.8.0",
-    "eslint-loader": "2.1.1",
+    "eslint-loader": "4.0.2",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-react": "7.11.1",
