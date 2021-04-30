@@ -277,6 +277,9 @@ namespace DotNetNuke.Modules.Admin.Security
                             message = Localization.GetString("MultipleUsers", this.LocalResourceFile);
                         }
 
+                        // no user found so include email or username to help explain why
+                        message += " " + this.txtEmail.Text ?? this.txtUsername.Text;
+
                         canSend = false;
                     }
 
