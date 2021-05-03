@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc
 {
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -76,22 +76,28 @@ namespace DotNetNuke.Web.Mvc
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            try
-            {
-                if (this._result == null)
-                {
-                    return;
-                }
+            this.Page.RegisterAsyncTask(new PageAsyncTask(OnPreRenderAsync));
 
-                var mvcString = this.RenderModule(this._result);
-                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
-                {
-                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
-                }
-            }
-            catch (Exception exc)
+            async Task OnPreRenderAsync()
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                try
+                {
+                    if (this._result == null)
+                    {
+                        return;
+                    }
+
+                    var mvcString = await RenderModule(this._result);
+                    var rawHtmlString = Convert.ToString(mvcString);
+                    if (!string.IsNullOrEmpty(rawHtmlString))
+                    {
+                        this.Controls.Add(new LiteralControl(rawHtmlString));
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.ProcessModuleLoadException(this, exc);
+                }
             }
         }
 
@@ -214,19 +220,19 @@ namespace DotNetNuke.Web.Mvc
             return actions;
         }
 
-        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
+        private static async Task<MvcHtmlString> RenderModule(ModuleRequestResult moduleResult)
         {
-            MvcHtmlString moduleOutput;
-
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
             using (var writer = new StringWriter(CultureInfo.CurrentCulture))
             {
-                var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+                if (moduleResult.ActionResultTask != null)
+                {
+                    await moduleResult.ActionResultTask;
+                }
 
                 moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
-                moduleOutput = MvcHtmlString.Create(writer.ToString());
+                return MvcHtmlString.Create(writer.ToString());
             }
-
-            return moduleOutput;
         }
     }
 }

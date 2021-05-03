@@ -1,14 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     using System;
     using System.Collections.Generic;
     using System.Web.Mvc;
+    using System.Web.Mvc.Async;
 
-    public class ResultCapturingActionInvoker : ControllerActionInvoker
+    public class ResultCapturingActionInvoker : AsyncControllerActionInvoker
     {
         public ActionResult ResultOfLastInvoke { get; set; }
 

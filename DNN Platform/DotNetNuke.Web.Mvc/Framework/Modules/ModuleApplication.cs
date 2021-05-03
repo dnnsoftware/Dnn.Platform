@@ -1,20 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     using System;
     using System.Globalization;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Async;
     using System.Web.Routing;
+    using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Mvc.Common;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Web.Infrastructure.DynamicValidationHelper;
 
@@ -122,22 +126,49 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 // Execute the controller and capture the result
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
-                moduleController.Execute(this.RequestContext);
-                var result = moduleController.ResultOfLastExecute;
-
-                // Return the final result
-                return new ModuleRequestResult
+                Task<ActionResult> actionResultTask;
+                if (moduleController is IAsyncController asyncController)
                 {
-                    ActionResult = result,
-                    ControllerContext = moduleController.ControllerContext,
-                    ModuleActions = moduleController.ModuleActions,
+                    var completionSource = new TaskCompletionSource<ActionResult>();
+                    var pageAsyncTask = new PageAsyncTask(
+                        (sender, args, callback, state) => asyncController.BeginExecute(this.RequestContext, callback, state),
+                        asyncResult =>
+                        {
+                            asyncController.EndExecute(asyncResult);
+                            completionSource.SetResult(moduleController.ResultOfLastExecute);
+                        },
+                        timeoutHandler: null,
+                        state: null);
+                    context.DnnPage.RegisterAsyncTask(pageAsyncTask);
+                    actionResultTask = completionSource.Task;
+                }
+                else
+                {
+                    moduleController.Execute(this.RequestContext);
+                    actionResultTask = Task.FromResult(moduleController.ResultOfLastExecute);
+                }
+
+                var moduleRequestResult = new ModuleRequestResult
+                {
+                    ActionResultTask = actionResultTask,
+                    ControllerContextTask = actionResultTask.ContinueWith(_ => moduleController.ControllerContext),
+                    ModuleActionsTask = actionResultTask.ContinueWith(_ => moduleController.ModuleActions),
                     ModuleContext = context.ModuleContext,
                     ModuleApplication = this,
                 };
+
+                Task.WhenAll(
+                        moduleRequestResult.ActionResultTask,
+                        moduleRequestResult.ControllerContextTask,
+                        moduleRequestResult.ModuleActionsTask)
+                    .ContinueWith(_ => this.ControllerFactory.ReleaseController(controller));
+
+                return moduleRequestResult;
             }
-            finally
+            catch
             {
                 this.ControllerFactory.ReleaseController(controller);
+                throw;
             }
         }
 
