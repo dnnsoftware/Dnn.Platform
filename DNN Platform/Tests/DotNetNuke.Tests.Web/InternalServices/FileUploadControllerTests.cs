@@ -54,6 +54,13 @@
             this.SetupSynchronizationContext();
         }
 
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
+            Globals.DependencyProvider = null;
+            CBO.ClearInstance();
+        }
+
         [Test]
         [SetCulture("tr-TR")]
         public async Task UploadFromLocal_ShouldUploadFile_WithTrCultureAsync()
@@ -64,7 +71,7 @@
             var request = new HttpRequestMessage();
             request.Content = formDataContent;
             this._testInstance.Request = request;
-            await this._testInstance.UploadFromLocal();
+            await this._testInstance.UploadFromLocal(-1);
 
             Assert.IsTrue(_synchronizationContext.IsUploadFileCalled());
         }
