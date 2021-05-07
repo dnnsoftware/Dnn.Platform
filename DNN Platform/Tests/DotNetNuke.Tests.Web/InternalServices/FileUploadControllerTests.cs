@@ -54,6 +54,7 @@
             this.SetupSynchronizationContext();
         }
 
+        [TearDown]
         public void TearDown()
         {
             PortalController.ClearInstance();
