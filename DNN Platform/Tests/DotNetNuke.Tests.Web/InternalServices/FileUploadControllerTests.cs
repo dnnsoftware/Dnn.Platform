@@ -1,7 +1,6 @@
 ﻿namespace DotNetNuke.Tests.Web.InternalServices
 {
     using System.Data;
-    using System.Globalization;
     using System.Linq;
     using System.Net.Http;
     using System.Threading;
@@ -54,6 +53,7 @@
             this.SetupSynchronizationContext();
         }
 
+        [TearDown]
         public void TearDown()
         {
             PortalController.ClearInstance();
@@ -101,7 +101,7 @@
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddTransient<IApplicationStatusInfo>(
-                container => new Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+            container => new Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
             serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient(container => Mock.Of<IEventLogger>());
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
