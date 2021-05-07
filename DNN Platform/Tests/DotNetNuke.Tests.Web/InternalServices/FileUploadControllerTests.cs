@@ -55,9 +55,9 @@
         }
 
         [Test]
+        [SetCulture("tr-TR")]
         public async Task UploadFromLocal_ShouldUploadFile_WithTrCultureAsync()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
             var formDataContent = new MultipartFormDataContent();
             formDataContent.Add(new StringContent("Hello World!"), "\"postfile\"", "\"testing\"");
 
