@@ -90,7 +90,7 @@
     "webpack-bundle-size-analyzer": "^3.0.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^3.0.0"
   },
   "peerDependencies": {
     "prop-types": "^15.6.2",
