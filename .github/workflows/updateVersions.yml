@@ -23,7 +23,7 @@ jobs:
         includePackageJson: true
         includeDnnReactCommon: true
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v2.7.1
+      uses: peter-evans/create-pull-request@v3.9.1
       with:
         commit-message: Updates versions as per release candidate creation
         title: Updates versions as per release candidate creation
