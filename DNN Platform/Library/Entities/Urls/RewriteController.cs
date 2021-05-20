@@ -323,17 +323,14 @@ namespace DotNetNuke.Entities.Urls
             bool reWritten = false;
             bool finished = false;
 
-            string newUrl = CheckIfPortalAlias(url, querystringCol, result, settings, tabDict);
-            if (newUrl != url)
-            {
-                finished = true;
-                reWritten = true;
-            }
+            string newUrl = url;
 
             // start looping through the url segments looking for a match in the tab dictionary
+            var loopCount = -1;
             while (finished == false)
             {
                 // first, try forming up a key based on alias/tabpath
+                loopCount++;
                 int lastIndex = splitUrl.GetUpperBound(0);
                 int arraySize = lastIndex + 1;
                 int totalDepth = maxAliasPathDepth + 1 + maxTabPathDepth + 1;
@@ -660,6 +657,17 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+                    }
+                }
+
+                if (loopCount == 0 && !finished)
+                {
+                    var aliasUrl = CheckIfPortalAlias(url, querystringCol, result, settings, tabDict);
+                    if (aliasUrl != url)
+                    {
+                        finished = true;
+                        reWritten = true;
+                        newUrl = aliasUrl;
                     }
                 }
 
