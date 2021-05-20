@@ -175,18 +175,19 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Begin breadcrumb
                 this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
 
-                // Is this tab disabled? If so, only render the text
+                // Is this tab disabled? If so, only render a span
                 if (tab.DisableLink)
                 {
-                    this._breadcrumb.Append("<span class=\"" + this._cssClass + "\" itemprop=\"name\">" + tabName + "</span>");
+                    this._breadcrumb.Append("<span class=\"" + this._cssClass + "\">" + tabName + "</span>");
                 }
                 else
                 {
+                    // An enabled page, render the breadcrumb
+                    this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
                     this._breadcrumb.Append("<a href=\"" + tabUrl + "\" class=\"" + this._cssClass + "\" itemprop=\"item\"><span itemprop=\"name\">" + tabName + "</span></a>");
+                    this._breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
+                    this._breadcrumb.Append("</span>");
                 }
-
-                this._breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
-                this._breadcrumb.Append("</span>");
             }
 
             this._breadcrumb.Append("</span>"); // End of BreadcrumbList
