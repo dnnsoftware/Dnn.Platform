@@ -172,9 +172,6 @@ namespace DotNetNuke.UI.Skins.Controls
                     tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId);
                 }
 
-                // Begin breadcrumb
-                this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
-
                 // Is this tab disabled? If so, only render a span
                 if (tab.DisableLink)
                 {
