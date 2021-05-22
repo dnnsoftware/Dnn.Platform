@@ -148,7 +148,7 @@
     <value>No modules found.</value>
   </data>
   <data name="Prompt_AddModuleError.Text" xml:space="preserve">
-    <value>An error occurred while attempting to add the module. Please see the DNN Event Viewer for details.</value>
+    <value>An error occurred while attempting to add the module. Please see the DNN Admin Logs for details.</value>
   </data>
   <data name="Prompt_DesktopModuleNotFound.Text" xml:space="preserve">
     <value>Unable to find a desktop module with the name '{0}' for this portal</value>
@@ -172,10 +172,10 @@
     <value>Successfully moved the module.</value>
   </data>
   <data name="Prompt_ErrorWhileCopying.Text" xml:space="preserve">
-    <value>An error occurred while copying the copying the module. See the DNN Event Viewer for Details.</value>
+    <value>An error occurred while attempting to copy the module. See the DNN Admin Logs for Details.</value>
   </data>
   <data name="Prompt_ErrorWhileMoving.Text" xml:space="preserve">
-    <value>An error occurred while copying the moving the module. See the DNN Event Viewer for Details.</value>
+    <value>An error occurred while attempting to move the module. See the DNN Admin Logs for Details.</value>
   </data>
   <data name="Prompt_FailedtoDeleteModule.Text" xml:space="preserve">
     <value>Failed to delete the module with id {0}. Please see log viewer for more details.</value>
@@ -231,7 +231,8 @@
       &lt;strong&gt;Commands are either 1 word or 2 words separated by a single dash (-) and no spaces&lt;/strong&gt;.
     &lt;/li&gt;
     &lt;li&gt;
-      &lt;strong&gt;One-Word Commands:&lt;/strong&gt; These are generally reserved for commands that interact with the Prompt console itself or the browser. In other words, most of these commands take place in the browser. Some examples are: &lt;code&gt;cls&lt;/code&gt; which clears the console screen and &lt;code&gt;reload&lt;/code&gt; which tells the browser to reload the page. There are also two-word commands that operate on the client side such as &lt;code&gt;clear-history&lt;/code&gt; (though there is a shortcut for clear-history: &lt;code&gt;clh&lt;/code&gt;&lt;/li&gt;
+      &lt;strong&gt;One-Word Commands:&lt;/strong&gt; These are generally reserved for commands that interact with the Prompt console itself or the browser. In other words, most of these commands take place in the browser. Some examples are: &lt;code&gt;cls&lt;/code&gt; which clears the console screen and &lt;code&gt;reload&lt;/code&gt; which tells the browser to reload the page. There are also two-word commands that 
+      on the client side such as &lt;code&gt;clear-history&lt;/code&gt; (though there is a shortcut for clear-history: &lt;code&gt;clh&lt;/code&gt;&lt;/li&gt;
     &lt;li&gt;
       &lt;strong&gt;Two-Word Commands:&lt;/strong&gt; These commands follow the format &lt;code&gt;action-component&lt;/code&gt;&amp;mdash;an action followed by a single dash followed by a component or object that the action operates on.
     &lt;/li&gt;
@@ -283,7 +284,7 @@
     &lt;tr&gt;
       &lt;td class="mono"&gt;delete&lt;/td&gt;
       &lt;td&gt;
-        Deletes an object. The results of this action are contextually dependent. If DNN provides a recycle bin facility like it does for pages and users, then the command will send the object to that recycle bin, allowing it to be restored later. If there is no such facility provided, then the object would be permanently deleted
+        Deletes an object. The results of this action are contextually dependent. If DNN provides a recycle bin facility like it does for pages and users, then the command will send the object to that recycle bin, allowing it to be restored later. If there is no such facility provided, then the object would be permanently deleted.
       &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
@@ -316,7 +317,7 @@
     &lt;tr&gt;
       &lt;td class="mono"&gt;user/users&lt;/td&gt;
       &lt;td&gt;
-        A DNN User
+        A DNN User.
       &lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
@@ -325,7 +326,7 @@
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class="mono"&gt;role/roles&lt;/td&gt;
-      &lt;td&gt;A DNN Security Role&lt;/td&gt;
+      &lt;td&gt;A DNN Security Role.&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class="mono"&gt;task/tasks&lt;/td&gt;
@@ -333,7 +334,7 @@
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class="mono"&gt;portal/portals&lt;/td&gt;
-      &lt;td&gt;A DNN site or portal&lt;/td&gt;
+      &lt;td&gt;A DNN site or portal.&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td class="mono"&gt;module/modules&lt;/td&gt;
@@ -492,7 +493,7 @@
     <value>Retrieves a list of modules based on the search criteria</value>
   </data>
   <data name="Prompt_ListModules_FlagDeleted.Text" xml:space="preserve">
-    <value>When specified, the command will find all module instances in the portal that are in the Recycle Bin (if &lt;span class="mono"&gt;--deleted&lt;/span&gt; is true), or all module instances &lt;em&gt;not&lt;/em&gt; in the Recycle Bin (if operate &lt;span class="mono"&gt;--deleted&lt;/span&gt; is false). If the flag is specified but no value is given, it will default to &lt;span class="mono"&gt;true&lt;/span&gt;. This flag may be used with &lt;span class="mono"&gt;--name&lt;/span&gt; and &lt;span class="mono"&gt;--title&lt;/span&gt; to further refine the results</value>
+    <value>When specified, the command will find all module instances in the portal that are in the Recycle Bin (if &lt;span class="mono"&gt;--deleted&lt;/span&gt; is true), or all module instances &lt;em&gt;not&lt;/em&gt; in the Recycle Bin (if &lt;span class="mono"&gt;--deleted&lt;/span&gt; is false). If the flag is specified but no value is given, it will default to &lt;span class="mono"&gt;true&lt;/span&gt;. This flag may be used with &lt;span class="mono"&gt;--name&lt;/span&gt; and &lt;span class="mono"&gt;--title&lt;/span&gt; to further refine the results.</value>
   </data>
   <data name="Prompt_ListModules_FlagMax.Text" xml:space="preserve">
     <value>Page Size for the page. Max is 500.</value>
@@ -563,7 +564,7 @@
         &lt;/table&gt;
 
         &lt;h4&gt;List All Deleted Modules in Portal&lt;/h4&gt;
-        &lt;p&gt;This will return all modules in the DNN Recycle Bin&lt;/p&gt;
+        &lt;p&gt;This will return all modules in the DNN Recycle Bin.&lt;/p&gt;
         &lt;code class="block"&gt;list-modules --deleted&lt;/code&gt;
         &lt;h4&gt;Returns&lt;/h4&gt;
         &lt;table class="command-result-tbl"&gt;
@@ -607,7 +608,7 @@
         &lt;/table&gt;
 
         &lt;h4&gt;List All Deleted Modules Filtered on Name and Title&lt;/h4&gt;
-        &lt;p&gt;This will return all modules in the DNN Recycle Bin whose Module Name ends with &amp;quot;HTML&amp;quot; and whose Module Title contains &amp;quot;that&amp;quot;&lt;/p&gt;
+        &lt;p&gt;This will return all modules in the DNN Recycle Bin whose Module Name ends with &amp;quot;HTML&amp;quot; and whose Module Title contains &amp;quot;that&amp;quot;.&lt;/p&gt;
         &lt;code class="block"&gt;list-modules --deleted --name *HTML --title *that*&lt;/code&gt;
         &lt;h4&gt;Returns&lt;/h4&gt;
         &lt;table class="command-result-tbl"&gt;
@@ -656,7 +657,7 @@
   </data>
   <data name="Prompt_MoveModule_ResultHtml.Text" xml:space="preserve">
     <value>&lt;h4&gt;Move a Module from One Page to Another&lt;/h4&gt;
-    &lt;p&gt;This command the module with Module ID 358 on the Page with Page ID of 71 and places module on the page with a Page ID of 75&lt;/p&gt;
+    &lt;p&gt;This command takes the module with Module ID 358 on the Page with Page ID of 71 and places module on the page with a Page ID of 75&lt;/p&gt;
     &lt;code class="block"&gt;move-module 358 --pageid 71 --topageid 75&lt;/code&gt;
 
     &lt;h4&gt;Results&lt;/h4&gt;
@@ -697,7 +698,7 @@
         &lt;td&gt;71, 75&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-        &lt;td colspan="3"&gt;Successfully copied the module.&lt;/td&gt;
+        &lt;td colspan="3"&gt;Successfully moved the module.&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;</value>
   </data>
