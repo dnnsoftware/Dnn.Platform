@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Is this tab disabled? If so, only render a span
                 if (tab.DisableLink)
                 {
-                    this._breadcrumb.Append("<span class=\"" + this._cssClass + "\">" + tabName + "</span>");
+                    this._breadcrumb.Append("<span><span class=\"" + this._cssClass + "\">" + tabName + "</span></span>");
                 }
                 else
                 {
