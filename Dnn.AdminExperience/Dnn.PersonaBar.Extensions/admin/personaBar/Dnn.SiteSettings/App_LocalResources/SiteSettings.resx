@@ -1480,10 +1480,10 @@
     <value>Enable Popups</value>
   </data>
   <data name="plInjectModuleHyperLink.Help" xml:space="preserve">
-    <value>When switched on DNN will insert a hyperlink at the start of each module with a name of the module id.</value>
+    <value>When switched on DNN will insert an anchor at the start of each module with the module id for its name.</value>
   </data>
   <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
-    <value>Inject Module Hyperlink</value>
+    <value>Inject Module Anchor</value>
   </data>
   <data name="plInlineEditorEnabled.Help" xml:space="preserve">
     <value>When switched on DNN allows editors to edit HTML module content directly on the page instead of having to go through the edit control.</value>
