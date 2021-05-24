@@ -93,9 +93,9 @@ namespace DotNetNuke.UI.Skins.Controls
         public bool HideWithNoBreadCrumb { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether set this to false in the skin to take advantage of the enhanced markup.
+        /// Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).
         /// </summary>
-        public bool LegacyMode { get; set; }
+        public bool CleanerMarkup { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
