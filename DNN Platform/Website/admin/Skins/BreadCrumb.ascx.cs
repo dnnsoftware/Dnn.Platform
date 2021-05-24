@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public BreadCrumb()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-            this.CleanerMarkup = true;
+            this.CleanerMarkup = false;
         }
 
         public int ProfileUserId
