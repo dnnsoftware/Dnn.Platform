@@ -24,9 +24,9 @@
     <Value>True,False</Value>
   </Setting>
   <Setting>
-    <Name>LegacyMode</Name>
+    <Name>CleanerMarkup</Name>
     <Type>Boolean</Type>
-    <Help>Defines whether to wrap span rendered for disabled pages in additional span for skin CSS compatibility (True) or not (False)</Help>
+    <Help>Defines whether to take advantage of the enhanced markup (remove extra wrapping elements).)</Help>
     <Value>True,False</Value>
   </Setting>
 </Settings>
