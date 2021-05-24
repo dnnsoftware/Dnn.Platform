@@ -32,6 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public BreadCrumb()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.LegacyMode = true;
         }
 
         public int ProfileUserId
@@ -90,6 +91,11 @@ namespace DotNetNuke.UI.Skins.Controls
 
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether set this to false in the skin to take advantage of the enhanced markup.
+        /// </summary>
+        public bool LegacyMode { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -175,7 +181,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Is this tab disabled? If so, only render a span
                 if (tab.DisableLink)
                 {
-                    this._breadcrumb.Append("<span><span class=\"" + this._cssClass + "\">" + tabName + "</span></span>");
+                    if (this.LegacyMode)
+                        this._breadcrumb.Append("<span><span class=\"" + this._cssClass + "\">" + tabName + "</span></span>");
+                    else
+                        this._breadcrumb.Append("<span class=\"" + this._cssClass + "\">" + tabName + "</span>");
                 }
                 else
                 {
