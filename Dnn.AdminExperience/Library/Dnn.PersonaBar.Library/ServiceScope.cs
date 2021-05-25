@@ -12,16 +12,16 @@ namespace Dnn.PersonaBar.Library
         /// <summary>
         /// the service available for all users.
         /// </summary>
-        Regular,
+        Regular = 0,
 
         /// <summary>
         /// the service only available for admin users.
         /// </summary>
-        Admin,
+        Admin = 1,
 
         /// <summary>
         /// the service only available for host users.
         /// </summary>
-        Host,
+        Host = 2,
     }
 }

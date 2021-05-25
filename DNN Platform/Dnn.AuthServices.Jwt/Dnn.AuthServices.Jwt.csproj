@@ -2,6 +2,9 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40}</ProjectGuid>
@@ -23,6 +26,7 @@
     <NoWarn>1591</NoWarn>
     <DocumentationFile>bin\Dnn.AuthServices.Jwt.XML</DocumentationFile>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +38,7 @@
     <DocumentationFile>bin\Dnn.AuthServices.Jwt.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <LangVersion>7</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -73,6 +78,7 @@
     <Compile Include="Components\Entity\LoginData.cs" />
     <Compile Include="Components\Entity\PersistedToken.cs" />
     <Compile Include="Components\Entity\RenewalDto.cs" />
+    <Compile Include="Components\Schedule\PurgeExpiredTokensTask.cs" />
     <Compile Include="Data\IDataService.cs" />
     <Compile Include="Data\DataService.cs" />
     <Compile Include="Components\Entity\LoginResultData.cs" />
@@ -84,6 +90,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="Data\Scripts\09.08.00.SqlDataProvider" />
     <None Include="Dnn.Jwt.dnn">
       <SubType>Designer</SubType>
     </None>
@@ -97,6 +104,10 @@
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>

@@ -41,6 +41,7 @@ namespace DotNetNuke.Entities.Modules
             EventQueueController.SendMessage(appStartMessage, "Application_Start_FirstRequest");
         }
 
+        /// <inheritdoc/>
         public override bool ProcessMessage(EventMessage message)
         {
             try

@@ -16,8 +16,8 @@ namespace DotNetNuke.UI.WebControls
     public enum PropertySortType
     {
         None = 0,
-        Alphabetical,
-        Category,
-        SortOrderAttribute,
+        Alphabetical = 1,
+        Category = 2,
+        SortOrderAttribute = 3,
     }
 }

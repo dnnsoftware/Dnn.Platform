@@ -3,10 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
-    using System;
-    using System.Collections.Generic;
-
-    using DotNetNuke.Services.Search.Entities;
     using Lucene.Net.Search;
 
     /// <summary>
@@ -14,6 +10,9 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class LuceneQuery
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LuceneQuery"/> class.
+        /// </summary>
         public LuceneQuery()
         {
             this.PageIndex = 1;

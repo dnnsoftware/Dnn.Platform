@@ -6,7 +6,6 @@ namespace DotNetNuke.Framework
 {
     using System;
 
-    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
 
     /// <summary>
@@ -40,6 +39,7 @@ namespace DotNetNuke.Framework
             return path;
         }
 
+        /// <inheritdoc/>
         protected override Func<IServicesFramework> GetFactory()
         {
             return () => new ServicesFrameworkImpl();

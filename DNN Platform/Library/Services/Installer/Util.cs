@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Installer
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Net;
     using System.Text;
@@ -616,12 +615,6 @@ namespace DotNetNuke.Services.Installer
         public static string CONFIG_Committed = GetLocalizedString("CONFIG_Committed");
         public static string CONFIG_RolledBack = GetLocalizedString("CONFIG_RolledBack");
         public static string CONFIG_Updated = GetLocalizedString("CONFIG_Updated");
-        public static string DASHBOARD_ReadSuccess = GetLocalizedString("DASHBOARD_ReadSuccess");
-        public static string DASHBOARD_SrcMissing = GetLocalizedString("DASHBOARD_SrcMissing");
-        public static string DASHBOARD_Registered = GetLocalizedString("DASHBOARD_Registered");
-        public static string DASHBOARD_KeyMissing = GetLocalizedString("DASHBOARD_KeyMissing");
-        public static string DASHBOARD_LocalResourcesMissing = GetLocalizedString("DASHBOARD_LocalResourcesMissing");
-        public static string DASHBOARD_UnRegistered = GetLocalizedString("DASHBOARD_UnRegistered");
         public static string DNN_Reading = GetLocalizedString("DNN_Reading");
         public static string DNN_ReadingComponent = GetLocalizedString("DNN_ReadingComponent");
         public static string DNN_ReadingPackage = GetLocalizedString("DNN_ReadingPackage");
@@ -707,6 +700,8 @@ namespace DotNetNuke.Services.Installer
         public static string SQL_EndUnInstall = GetLocalizedString("SQL_EndUnInstall");
         public static string SQL_Exceptions = GetLocalizedString("SQL_Exceptions");
         public static string SQL_Executing = GetLocalizedString("SQL_Executing");
+        public static string SQL_Manifest_BadFile = GetLocalizedString("SQL_Manifest_BadFile");
+        public static string SQL_Manifest_Error = GetLocalizedString("SQL_Manifest_Error");
         public static string SQL_RolledBack = GetLocalizedString("SQL_RolledBack");
         public static string UNINSTALL_Start = GetLocalizedString("UNINSTALL_Start");
         public static string UNINSTALL_StartComp = GetLocalizedString("UNINSTALL_StartComp");

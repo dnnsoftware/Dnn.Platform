@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
@@ -15,11 +14,14 @@ namespace Dnn.ExportImport.Components.Controllers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
 
+    /// <inheritdoc cref="ISettingsController" />
+    /// <seealso cref="ServiceLocator{TContract,TSelf}"/>
     public class SettingsController : ServiceLocator<ISettingsController, SettingsController>, ISettingsController
     {
         private const string CacheKey = "ExportImport_Settings";
         private const int CacheDuration = 120;
 
+        /// <inheritdoc/>
         public IEnumerable<ExportImportSetting> GetAllSettings()
         {
             return CBO.GetCachedObject<List<ExportImportSetting>>(
@@ -27,17 +29,20 @@ namespace Dnn.ExportImport.Components.Controllers
                 c => CBO.FillQueryable<ExportImportSetting>(DataProvider.Instance().GetExportImportSettings()).ToList());
         }
 
+        /// <inheritdoc/>
         public ExportImportSetting GetSetting(string settingName)
         {
             return this.GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
         }
 
+        /// <inheritdoc/>
         public void AddSetting(ExportImportSetting exportImportSetting)
         {
             DataProvider.Instance().AddExportImportSetting(exportImportSetting);
             DataCache.RemoveCache(CacheKey);
         }
 
+        /// <inheritdoc/>
         protected override Func<ISettingsController> GetFactory()
         {
             return () => new SettingsController();

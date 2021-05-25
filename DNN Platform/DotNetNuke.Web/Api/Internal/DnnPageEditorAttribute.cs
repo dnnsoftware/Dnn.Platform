@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Api.Internal
 
     public sealed class DnnPageEditorAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
+        /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

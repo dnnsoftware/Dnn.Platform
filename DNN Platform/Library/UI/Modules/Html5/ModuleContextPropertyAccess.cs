@@ -14,16 +14,22 @@ namespace DotNetNuke.UI.Modules.Html5
     {
         private readonly ModuleInstanceContext _moduleContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleContextPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="moduleContext"></param>
         public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
         {
             this._moduleContext = moduleContext;
         }
 
+        /// <inheritdoc/>
         public virtual CacheLevel Cacheability
         {
             get { return CacheLevel.notCacheable; }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())

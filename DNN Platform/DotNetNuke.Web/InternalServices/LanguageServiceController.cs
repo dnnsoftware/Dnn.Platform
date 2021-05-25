@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -13,7 +12,6 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web.Http;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;

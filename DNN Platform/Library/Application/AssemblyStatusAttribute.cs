@@ -24,7 +24,7 @@ namespace DotNetNuke.Application
     public enum ReleaseMode
     {
         /// <summary>
-        /// Not asssigned
+        /// Not assigned
         /// </summary>
         None = 0,
 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Application
     [AttributeUsage(AttributeTargets.Assembly)]
     public class AssemblyStatusAttribute : Attribute
     {
-        private readonly ReleaseMode _releaseMode;
+        private readonly ReleaseMode releaseMode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyStatusAttribute" /> class.
@@ -66,7 +66,7 @@ namespace DotNetNuke.Application
         /// <param name="releaseMode">The release mode.</param>
         public AssemblyStatusAttribute(ReleaseMode releaseMode)
         {
-            this._releaseMode = releaseMode;
+            this.releaseMode = releaseMode;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return this._releaseMode;
+                return this.releaseMode;
             }
         }
     }

@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
-    using System;
-
     using Version = Lucene.Net.Util.Version;
 
     /// <summary>
@@ -95,15 +93,15 @@ namespace DotNetNuke.Services.Search.Internals
         internal static readonly string[] KeyWordSearchFields =
         {
             TitleTag,
-                                                                Tag,
-                                                                DescriptionTag,
-                                                                BodyTag,
-                                                                ContentTag,
-                                                                KeywordsPrefixTag + TitleTag,
-                                                                KeywordsPrefixTag + SubjectTag,
-                                                                KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag,
+            Tag,
+            DescriptionTag,
+            BodyTag,
+            ContentTag,
+            KeywordsPrefixTag + TitleTag,
+            KeywordsPrefixTag + SubjectTag,
+            KeywordsPrefixTag + CommentsTag,
+            KeywordsPrefixTag + AuthorNameTag,
         };
 
-        }
+    }
 }

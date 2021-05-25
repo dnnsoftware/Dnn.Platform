@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -16,6 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string ControlType { get; set; }
 
+        /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
             this.control = Reflection.CreateObject(this.ControlType, this.ControlType) as EditControl;

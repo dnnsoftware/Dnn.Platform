@@ -6,9 +6,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
 {
     public enum HttpMethod
     {
-        GET,
-        POST,
-        PUT,
-        DELETE,
+        GET = 0,
+        POST = 1,
+        PUT = 2,
+        DELETE = 3,
     }
 }

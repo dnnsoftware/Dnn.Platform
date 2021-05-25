@@ -214,7 +214,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
                 new UserRoleInfo
                 {
                     RoleName = roleName,
-                    Status = RoleStatus.Approved
+                    Status = RoleStatus.Approved,
                 },
             };
 

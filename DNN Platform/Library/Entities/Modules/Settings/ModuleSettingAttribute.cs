@@ -12,5 +12,6 @@ namespace DotNetNuke.Entities.Modules.Settings
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     [Serializable]
     public class ModuleSettingAttribute : ParameterAttributeBase
-    {}
+    {
+    }
 }

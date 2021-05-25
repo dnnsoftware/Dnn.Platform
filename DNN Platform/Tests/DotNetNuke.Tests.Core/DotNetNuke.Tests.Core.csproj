@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props" Condition="Exists('..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -35,6 +36,9 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,7 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591, 0618</NoWarn>
+    <NoWarn>1591, 0618,SA0001</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -56,7 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591, 0618</NoWarn>
+    <NoWarn>1591, 0618,SA0001</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -174,6 +178,7 @@
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
     <Compile Include="Entities\Tabs\TabControllerTests.cs" />
     <Compile Include="Entities\Tabs\TabChangeTrackerTests.cs" />
+    <Compile Include="Entities\Urls\AdvancedUrlRewriterTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
@@ -197,6 +202,7 @@
     <Compile Include="Services\ClientCapability\TestClientCapability.cs" />
     <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
     <Compile Include="Services\CryptographyProviders\CoreCryptographyProviderTests.cs" />
+    <Compile Include="Services\Installer\AssemblyInstallerTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
@@ -275,6 +281,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

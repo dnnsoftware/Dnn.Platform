@@ -49,15 +49,13 @@ namespace Dnn.PersonaBar.Security.Services
         public SecurityController()
             : this(
                 new Components.SecurityController(),
-                PortalAliasController.Instance
-            )
+                PortalAliasController.Instance)
         {
         }
 
         internal SecurityController(
             Components.SecurityController controller,
-            IPortalAliasController portalAliasController
-            )
+            IPortalAliasController portalAliasController)
         {
             this._controller = controller;
             this._portalAliasController = portalAliasController;
@@ -67,10 +65,10 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetBasicLoginSettings
         /// <summary>
-        /// Gets portal's basic login settings
+        /// Gets portal's basic login settings.
         /// </summary>
         /// <param name="cultureCode"></param>
-        /// <returns>Portal's basic login settings</returns>
+        /// <returns>Portal's basic login settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
@@ -97,13 +95,13 @@ namespace Dnn.PersonaBar.Security.Services
                 var authProviders = this._controller.GetAuthenticationProviders().Select(v => new
                 {
                     Name = v,
-                    Value = v
+                    Value = v,
                 }).ToList();
 
                 var adminUsers = this._controller.GetAdminUsers(this.PortalId).Select(v => new
                 {
                     v.UserID,
-                    v.FullName
+                    v.FullName,
                 }).ToList();
 
                 var response = new
@@ -114,7 +112,7 @@ namespace Dnn.PersonaBar.Security.Services
                         Settings = settings,
                         AuthProviders = authProviders,
                         Administrators = adminUsers
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -128,7 +126,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/UpdateBasicLoginSettings
         /// <summary>
-        /// Updates an existing log settings
+        /// Updates an existing log settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -174,10 +172,10 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetIpFilters
         /// <summary>
-        /// Gets list of IP filters
+        /// Gets list of IP filters.
         /// </summary>
         /// <param></param>
-        /// <returns>List of IP filters</returns>
+        /// <returns>List of IP filters.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetIpFilters()
@@ -188,7 +186,7 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     v.IPFilterID,
                     IPFilter = NetworkUtils.FormatAsCidr(v.IPAddress, v.SubnetMask),
-                    v.RuleType
+                    v.RuleType,
                 }).ToList();
                 var response = new
                 {
@@ -197,7 +195,7 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Filters = filters,
                         EnableIPChecking = Host.EnableIPChecking
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -211,10 +209,10 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetIpFilter
         /// <summary>
-        /// Gets an IP filter
+        /// Gets an IP filter.
         /// </summary>
         /// <param name="filterId"></param>
-        /// <returns>IP filter</returns>
+        /// <returns>IP filter.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetIpFilter(int filterId)
@@ -231,7 +229,7 @@ namespace Dnn.PersonaBar.Security.Services
                         filter.IPFilterID,
                         filter.RuleType,
                         filter.SubnetMask
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -245,7 +243,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/UpdateIpFilter
         /// <summary>
-        /// Updates an IP filter
+        /// Updates an IP filter.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -296,7 +294,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/DeleteIpFilter
         /// <summary>
-        /// Deletes an IP filter
+        /// Deletes an IP filter.
         /// </summary>
         /// <param name="filterId"></param>
         /// <returns></returns>
@@ -335,9 +333,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetMemberSettings
         /// <summary>
-        /// Gets portal's member settings
+        /// Gets portal's member settings.
         /// </summary>
-        /// <returns>Portal's member settings</returns>
+        /// <returns>Portal's member settings.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetMemberSettings()
@@ -363,7 +361,7 @@ namespace Dnn.PersonaBar.Security.Services
                             Host.PasswordExpiryReminder,
                             ForceLogoutAfterPasswordChanged = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged")
                         }
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -377,7 +375,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/UpdateMemberSettings
         /// <summary>
-        /// Updates member settings
+        /// Updates member settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -411,9 +409,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetRegistrationSettings
         /// <summary>
-        /// Gets portal's registration settings
+        /// Gets portal's registration settings.
         /// </summary>
-        /// <returns>Portal's registration settings</returns>
+        /// <returns>Portal's registration settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView)]
         public HttpResponseMessage GetRegistrationSettings()
@@ -443,6 +441,7 @@ namespace Dnn.PersonaBar.Security.Services
                             UseEmailAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false),
                             RequireUniqueDisplayName = PortalController.GetPortalSettingAsBoolean("Registration_RequireUniqueDisplayName", this.PortalId, false),
                             DisplayNameFormat = PortalController.GetPortalSetting("Security_DisplayNameFormat", this.PortalId, string.Empty),
+                            UserNameMinLength = PortalController.GetPortalSettingAsInteger("Security_UserNameMinLength", this.PortalId, Globals.glbUserNameMinLength),
                             UserNameValidation = PortalController.GetPortalSetting("Security_UserNameValidation", this.PortalId, Globals.glbUserNameRegEx),
                             EmailAddressValidation = PortalController.GetPortalSetting("Security_EmailValidation", this.PortalId, Globals.glbEmailRegEx),
                             UseRandomPassword = PortalController.GetPortalSettingAsBoolean("Registration_RandomPassword", this.PortalId, false),
@@ -480,9 +479,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetSslSettings
         /// <summary>
-        /// Gets portal's SSL settings
+        /// Gets portal's SSL settings.
         /// </summary>
-        /// <returns>Portal's ssl settings</returns>
+        /// <returns>Portal's ssl settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetSslSettings()
@@ -506,7 +505,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Settings = settings
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -520,7 +519,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/UpdateRegistrationSettings
         /// <summary>
-        /// Updates registration settings
+        /// Updates registration settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -551,6 +550,7 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseProfanityFilter", request.UseProfanityFilter.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_RequireUniqueDisplayName", request.RequireUniqueDisplayName.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_DisplayNameFormat", request.DisplayNameFormat, false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_UserNameMinLength", request.UserNameMinLength, false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_UserNameValidation", request.UserNameValidation, false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_EmailValidation", request.EmailAddressValidation, false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_RandomPassword", request.UseRandomPassword.ToString(), false);
@@ -569,7 +569,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/UpdateSslSettings
         /// <summary>
-        /// Updates SSL settings
+        /// Updates SSL settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -607,9 +607,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetSecurityBulletins
         /// <summary>
-        /// Gets security bulletins
+        /// Gets security bulletins.
         /// </summary>
-        /// <returns>Security bulletins</returns>
+        /// <returns>Security bulletins.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetSecurityBulletins()
@@ -622,7 +622,7 @@ namespace Dnn.PersonaBar.Security.Services
                     "DNNCORP.CE",
                     Globals.FormatVersion(plartformVersion, "00", 3, ""));
 
-                //format for display with "." delimiter
+                // format for display with "." delimiter
                 string sVersion = Globals.FormatVersion(plartformVersion, "00", 3, ".");
 
                 // make remote request
@@ -661,7 +661,7 @@ namespace Dnn.PersonaBar.Security.Services
                         Link = selectNode.SelectSingleNode("link") != null ? selectNode.SelectSingleNode("link").InnerText : "",
                         Description = selectNode.SelectSingleNode("description") != null ? selectNode.SelectSingleNode("description").InnerText : "",
                         Author = selectNode.SelectSingleNode("author") != null ? selectNode.SelectSingleNode("author").InnerText : "",
-                        PubDate = selectNode.SelectSingleNode("pubDate") != null ? selectNode.SelectSingleNode("pubDate").InnerText.Split(' ')[0] : ""
+                        PubDate = selectNode.SelectSingleNode("pubDate") != null ? selectNode.SelectSingleNode("pubDate").InnerText.Split(' ')[0] : "",
                     });
                 }
 
@@ -672,7 +672,7 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         PlatformVersion = sVersion,
                         SecurityBulletins = items
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -690,9 +690,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetOtherSettings
         /// <summary>
-        /// Gets host other settings
+        /// Gets host other settings.
         /// </summary>
-        /// <returns>Portal's ssl settings</returns>
+        /// <returns>Portal's ssl settings.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetOtherSettings()
@@ -716,7 +716,7 @@ namespace Dnn.PersonaBar.Security.Services
                             AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
                             DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString()
                         }
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -730,7 +730,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// POST: api/Security/UpdateOtherSettings
         /// <summary>
-        /// Updates other settings
+        /// Updates other settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -780,9 +780,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetAuditCheckResults
         /// <summary>
-        /// Gets audit check results
+        /// Gets audit check results.
         /// </summary>
-        /// <returns>audit check results</returns>
+        /// <returns>audit check results.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetAuditCheckResults([FromUri] bool checkAll = false)
@@ -794,7 +794,7 @@ namespace Dnn.PersonaBar.Security.Services
                 var response = new
                 {
                     Success = true,
-                    Results = results
+                    Results = results,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -810,7 +810,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <summary>
         /// Gets audit check result for a specific checker.
         /// </summary>
-        /// <returns>audit check result</returns>
+        /// <returns>audit check result.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetAuditCheckResult([FromUri] string id)
@@ -822,7 +822,7 @@ namespace Dnn.PersonaBar.Security.Services
                 var response = new
                 {
                     Success = true,
-                    Result = result
+                    Result = result,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -854,7 +854,7 @@ namespace Dnn.PersonaBar.Security.Services
                     u.Email,
                     CreatedDate = this.DisplayDate(u.Membership.CreatedDate),
                     LastLoginDate = this.DisplayDate(u.Membership.LastLoginDate),
-                    LastActivityDate = this.DisplayDate(u.Membership.LastActivityDate)
+                    LastActivityDate = this.DisplayDate(u.Membership.LastActivityDate),
                 }).ToList();
 
                 var response = new
@@ -863,7 +863,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Activities = users
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -877,9 +877,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/SearchFileSystemAndDatabase
         /// <summary>
-        /// Searchs file system and database
+        /// Searchs file system and database.
         /// </summary>
-        /// <returns>Searchs file system and database</returns>
+        /// <returns>Searchs file system and database.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage SearchFileSystemAndDatabase(string term)
@@ -900,7 +900,7 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         FoundInFiles = foundinfiles,
                         FoundInDatabase = foundindb
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -914,9 +914,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetLastModifiedFiles
         /// <summary>
-        /// Gets recently modified files
+        /// Gets recently modified files.
         /// </summary>
-        /// <returns>last modified files</returns>
+        /// <returns>last modified files.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetLastModifiedFiles()
@@ -926,12 +926,12 @@ namespace Dnn.PersonaBar.Security.Services
                 var highRiskFiles = Components.Utility.GetLastModifiedExecutableFiles().Select(f => new
                 {
                     FilePath = this.GetFilePath(f.FullName),
-                    LastWriteTime = this.DisplayDate(f.LastWriteTime)
+                    LastWriteTime = this.DisplayDate(f.LastWriteTime),
                 });
                 var lowRiskFiles = Components.Utility.GetLastModifiedFiles().Select(f => new
                 {
                     FilePath = this.GetFilePath(f.FullName),
-                    LastWriteTime = this.DisplayDate(f.LastWriteTime)
+                    LastWriteTime = this.DisplayDate(f.LastWriteTime),
                 });
                 var response = new
                 {
@@ -940,7 +940,7 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         HighRiskFiles = highRiskFiles,
                         LowRiskFiles = lowRiskFiles
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -954,9 +954,9 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetRecentlyModifiedSettings
         /// <summary>
-        /// Gets last modified settings
+        /// Gets last modified settings.
         /// </summary>
-        /// <returns>last modified settings</returns>
+        /// <returns>last modified settings.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetLastModifiedSettings()
@@ -971,7 +971,7 @@ namespace Dnn.PersonaBar.Security.Services
                                           SettingName = Convert.ToString(dr["SettingName"]),
                                           SettingValue = Convert.ToString(dr["SettingValue"]),
                                           LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                       }).ToList();
 
                 var hostSettings = (from DataRow dr in settings[1].Rows
@@ -980,7 +980,7 @@ namespace Dnn.PersonaBar.Security.Services
                                         SettingName = Convert.ToString(dr["SettingName"]),
                                         SettingValue = Convert.ToString(dr["SettingValue"]),
                                         LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                        LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                        LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                     }).ToList();
 
                 var tabSettings = (from DataRow dr in settings[2].Rows
@@ -991,7 +991,7 @@ namespace Dnn.PersonaBar.Security.Services
                                        SettingName = Convert.ToString(dr["SettingName"]),
                                        SettingValue = Convert.ToString(dr["SettingValue"]),
                                        LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                       LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                       LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                    }).ToList();
 
                 var moduleSettings = (from DataRow dr in settings[3].Rows
@@ -1003,7 +1003,7 @@ namespace Dnn.PersonaBar.Security.Services
                                           SettingName = Convert.ToString(dr["SettingName"]),
                                           SettingValue = Convert.ToString(dr["SettingValue"]),
                                           LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"])),
                                       }).ToList();
 
                 var response = new
@@ -1015,7 +1015,7 @@ namespace Dnn.PersonaBar.Security.Services
                         HostSettings = hostSettings,
                         TabSettings = tabSettings,
                         ModuleSettings = moduleSettings
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

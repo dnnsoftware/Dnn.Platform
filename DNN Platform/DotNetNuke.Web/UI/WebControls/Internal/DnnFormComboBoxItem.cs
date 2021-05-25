@@ -54,11 +54,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         protected override void BindList()
         {
             BindListInternal(this.ComboBox, this.Value, this.ListSource, this.ListTextField, this.ListValueField);
         }
 
+        /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
             // ComboBox = new DropDownList { ID = ID + "_ComboBox" };

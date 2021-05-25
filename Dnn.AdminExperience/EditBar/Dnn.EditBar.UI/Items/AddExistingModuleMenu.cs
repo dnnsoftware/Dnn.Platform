@@ -14,6 +14,7 @@ namespace Dnn.EditBar.UI.Items
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
 
     [Serializable]
     public class AddExistingModuleMenu : BaseMenuItem
@@ -46,7 +47,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;
+            return Personalization.GetUserMode() == PortalSettings.Mode.Edit;
         }
     }
 }

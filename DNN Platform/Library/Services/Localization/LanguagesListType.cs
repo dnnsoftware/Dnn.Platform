@@ -11,8 +11,8 @@ namespace DotNetNuke.Services.Localization
     /// -----------------------------------------------------------------------------
     public enum LanguagesListType
     {
-        All,
-        Supported,
-        Enabled,
+        All = 0,
+        Supported = 1,
+        Enabled = 2,
     }
 }

@@ -159,7 +159,7 @@ class App extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.error && this.props.error && this.props.error !== prevProps.error){
             const errorMessage = (this.props.error && this.props.error.message) || Localization.get("AnErrorOccurred");
-            utils.notify(errorMessage);
+            utils.notifyError(errorMessage);
         }
         window.dnn.utility.closeSocialTasks();
         const { selectedPage } = this.props;

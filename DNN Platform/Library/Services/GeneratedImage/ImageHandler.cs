@@ -16,11 +16,19 @@ namespace DotNetNuke.Services.GeneratedImage
     /// </summary>
     public abstract class ImageHandler : IHttpHandler
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageHandler"/> class.
+        /// </summary>
+        /// <param name="imageStore"></param>
+        /// <param name="now"></param>
         internal ImageHandler(IImageStore imageStore, DateTime now)
             : this(new ImageHandlerInternal(imageStore, now))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageHandler"/> class.
+        /// </summary>
         protected ImageHandler()
             : this(new ImageHandlerInternal())
         {
@@ -31,6 +39,7 @@ namespace DotNetNuke.Services.GeneratedImage
             this.Implementation = implementation;
         }
 
+        /// <inheritdoc/>
         public virtual bool IsReusable => false;
 
         /// <summary>
@@ -136,6 +145,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public abstract ImageInfo GenerateImage(NameValueCollection parameters);
 
+        /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
             if (context == null)

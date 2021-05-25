@@ -6,13 +6,11 @@ namespace DotNetNuke.UI.UserControls
     using System;
     using System.Collections;
     using System.IO;
-    using System.Text.RegularExpressions;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
@@ -24,7 +22,6 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
-    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
     using Globals = DotNetNuke.Common.Globals;
 
     public abstract class UrlControl : UserControlBase
@@ -586,6 +583,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -599,6 +597,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -645,6 +644,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

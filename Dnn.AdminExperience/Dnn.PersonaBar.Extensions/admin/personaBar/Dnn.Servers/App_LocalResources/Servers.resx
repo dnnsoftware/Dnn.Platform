@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -653,5 +653,68 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="plHostEmail.Text" xml:space="preserve">
     <value>Host Email</value>
+  </data>
+  <data name="NonCoreMailProvider.Text" xml:space="preserve">
+    <value>This DNN installation is running an alternative mail provider. The configuration is done in the provider's interface.</value>
+  </data>
+  <data name="tabServersTitle.Text" xml:space="preserve">
+    <value>Web Servers</value>
+  </data>
+  <data name="Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="errorMessageLoadingServers.Text" xml:space="preserve">
+    <value>Error loading web servers list</value>
+  </data>
+  <data name="LastActivityDate.Text" xml:space="preserve">
+    <value>Last Activity</value>
+  </data>
+  <data name="plWebServers.Text" xml:space="preserve">
+    <value>Web Servers:</value>
+  </data>
+  <data name="Servers_CurrentServerName.Help" xml:space="preserve">
+    <value>This is the name of the server through which this request was served</value>
+  </data>
+  <data name="Servers_CurrentServerName.Text" xml:space="preserve">
+    <value>Current Server Name</value>
+  </data>
+  <data name="Url.Text" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteServerConfirm.Text" xml:space="preserve">
+    <value>Do you wish to delete this web server?</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="errorMessageDeleteServers.Text" xml:space="preserve">
+    <value>There was an error deleting this server</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ServerUpdateUrlError.Text" xml:space="preserve">
+    <value>Couldn't update web server url</value>
+  </data>
+  <data name="Url.Help" xml:space="preserve">
+    <value>The URL for direct connection to this web server.  In multi-server environments, this is typically an IP address or unique DNS entry that points directly to an individual server.</value>
+  </data>
+  <data name="DeleteNonActiveServers.Confirm" xml:space="preserve">
+    <value>Do you wish to delete all inactive servers?</value>
+  </data>
+  <data name="DeleteNonActiveServers.Text" xml:space="preserve">
+    <value>Delete Non Active Servers</value>
+  </data>
+  <data name="DeleteNonActiveServers.Warning" xml:space="preserve">
+    <value>You can delete all servers that have not been active for 24 hours below</value>
   </data>
 </root>

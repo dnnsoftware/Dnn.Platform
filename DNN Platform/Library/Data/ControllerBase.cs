@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Data
 {
-    using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Common;
@@ -16,10 +15,17 @@ namespace DotNetNuke.Data
     {
         protected readonly IDataContext DataContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.
+        /// </summary>
         protected ControllerBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.
+        /// </summary>
+        /// <param name="dataContext"></param>
         protected ControllerBase(IDataContext dataContext)
         {
             // Argument Contract

@@ -17,6 +17,9 @@ namespace DotNetNuke.Services.Localization
     [Serializable]
     public class Locale : BaseEntityInfo, IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Locale"/> class.
+        /// </summary>
         public Locale()
         {
             this.PortalId = Null.NullInteger;
@@ -86,6 +89,7 @@ namespace DotNetNuke.Services.Localization
 
         public string Text { get; set; }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -99,6 +103,7 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.LanguageId = Null.SetNullInteger(dr["LanguageID"]);

@@ -97,21 +97,37 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         }
 
         public string ModuleTitle { get; set; }
+
         public string CultureCode { get; set; }
+
         public Guid DefaultLanguageGuid { get; set; }
+
         public int TabId { get; set; }
+
         public int TabModuleId { get; set; }
+
         public int ModuleId { get; set; }
+
         public int DefaultModuleId { get; set; }
+
         public string DefaultTabName { get; set; }
+
         public string ModuleInfoHelp { get; set; }
+
         public bool IsTranslated { get; set; }
+
         public bool IsLocalized { get; set; }
+
         public bool IsShared { get; set; }
+
         public bool IsDeleted { get; set; }
+
         public bool CopyModule { get; set; }
+
         public bool ErrorDuplicateModule { get; set; }
+
         public bool ErrorDefaultOnOtherTab { get; set; }
+
         public bool ErrorCultureOfModuleNotCultureOfTab { get; set; }
 
         [JsonIgnore]

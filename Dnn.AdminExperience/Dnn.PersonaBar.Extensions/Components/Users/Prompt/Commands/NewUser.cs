@@ -43,11 +43,17 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
+
         private string Username { get; set; }
+
         private string FirstName { get; set; }
+
         private string LastName { get; set; }
+
         private string Password { get; set; }
+
         private bool Approved { get; set; }
+
         private bool Notify { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -81,14 +87,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 Notify = this.Notify,
                 Authorize = this.Approved,
                 RandomPassword = string.IsNullOrEmpty(this.Password),
-                IgnoreRegistrationMode = true
+                IgnoreRegistrationMode = true,
             };
             try
             {
                 var userInfo = RegisterController.Instance.Register(settings);
                 var lstResult = new List<UserModel>
                 {
-                    new UserModel(UserController.Instance.GetUser(this.PortalId, userInfo.UserId))
+                    new UserModel(UserController.Instance.GetUser(this.PortalId, userInfo.UserId)),
                 };
                 return new ConsoleResultModel(this.LocalizeString("UserCreated")) { Data = lstResult, Records = lstResult.Count };
             }

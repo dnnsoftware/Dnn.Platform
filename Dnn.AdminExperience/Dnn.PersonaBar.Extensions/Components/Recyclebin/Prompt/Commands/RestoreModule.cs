@@ -20,7 +20,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         private const string FlagPageId = "pageid";
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int ModuleId { get; set; }
+
         private int PageId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

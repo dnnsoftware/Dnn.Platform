@@ -125,6 +125,7 @@ namespace DotNetNuke.Services.Search.Internals
             return typesList;
         }
 
+        /// <inheritdoc/>
         protected override Func<ISearchQueryStringParser> GetFactory()
         {
             return () => new SearchQueryStringParser();

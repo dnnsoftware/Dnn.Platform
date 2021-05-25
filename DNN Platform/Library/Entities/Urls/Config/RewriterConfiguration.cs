@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Urls.Config
     using System.Xml.Serialization;
     using System.Xml.XPath;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;

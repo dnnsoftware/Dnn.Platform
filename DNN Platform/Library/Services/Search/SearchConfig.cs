@@ -26,11 +26,19 @@ namespace DotNetNuke.Services.Search
         private readonly int _SearchMaxWordlLength;
         private readonly int _SearchMinWordlLength;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchConfig"/> class.
+        /// </summary>
+        /// <param name="portalID"></param>
         public SearchConfig(int portalID)
             : this(PortalController.Instance.GetPortalSettings(portalID))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchConfig"/> class.
+        /// </summary>
+        /// <param name="settings"></param>
         public SearchConfig(Dictionary<string, string> settings)
         {
             this._SearchIncludeCommon = this.GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);

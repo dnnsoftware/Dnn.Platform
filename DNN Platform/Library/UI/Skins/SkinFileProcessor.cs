@@ -6,7 +6,6 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections;
     using System.IO;
-    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Xml;
@@ -18,8 +17,8 @@ namespace DotNetNuke.UI.Skins
 
     public enum SkinParser
     {
-        Localized,
-        Portable,
+        Localized = 0,
+        Portable = 1,
     }
 
     /// -----------------------------------------------------------------------------

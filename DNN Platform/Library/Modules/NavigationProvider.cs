@@ -22,29 +22,29 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public enum Alignment
         {
-            Left,
-            Right,
-            Center,
-            Justify,
+            Left = 0,
+            Right = 1,
+            Center = 2,
+            Justify = 3,
         }
 
         public enum HoverAction
         {
-            Expand,
-            None,
+            Expand = 0,
+            None = 1,
         }
 
         public enum HoverDisplay
         {
-            Highlight,
-            Outset,
-            None,
+            Highlight = 0,
+            Outset = 1,
+            None = 2,
         }
 
         public enum Orientation
         {
-            Horizontal,
-            Vertical,
+            Horizontal = 0,
+            Vertical = 1,
         }
 
         public abstract Control NavigationControl { get; }
@@ -1030,6 +1030,11 @@ namespace DotNetNuke.Modules.NavigationProvider
         public string ID;
         public DNNNode Node;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavigationEventArgs"/> class.
+        /// </summary>
+        /// <param name="strID"></param>
+        /// <param name="objNode"></param>
         public NavigationEventArgs(string strID, DNNNode objNode)
         {
             this.ID = strID;

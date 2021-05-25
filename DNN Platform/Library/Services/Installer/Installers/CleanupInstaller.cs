@@ -6,7 +6,6 @@ namespace DotNetNuke.Services.Installer.Installers
     using System;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
@@ -85,6 +84,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this._fileName = Util.ReadAttribute(manifestNav, "fileName");
@@ -146,6 +146,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        /// <inheritdoc/>
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {
             return base.ReadManifestItem(nav, false);

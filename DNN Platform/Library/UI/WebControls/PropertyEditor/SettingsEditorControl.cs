@@ -7,7 +7,6 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections;
     using System.ComponentModel;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     /// -----------------------------------------------------------------------------
@@ -56,18 +55,21 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void AddEditorRow(Table table, object obj)
         {
             var info = (SettingInfo)obj;
             this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
+        /// <inheritdoc/>
         protected override void AddEditorRow(Panel container, object obj)
         {
             var info = (SettingInfo)obj;
             this.AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
+        /// <inheritdoc/>
         protected override void AddEditorRow(object obj)
         {
             var info = (SettingInfo)obj;

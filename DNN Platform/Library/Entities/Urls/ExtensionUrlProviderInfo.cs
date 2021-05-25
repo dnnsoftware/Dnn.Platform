@@ -14,6 +14,9 @@ namespace DotNetNuke.Entities.Urls
     [Serializable]
     public class ExtensionUrlProviderInfo : IHydratable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtensionUrlProviderInfo"/> class.
+        /// </summary>
         public ExtensionUrlProviderInfo()
         {
             this.ExtensionUrlProviderId = -1;
@@ -77,8 +80,10 @@ namespace DotNetNuke.Entities.Urls
         /// </summary>
         public List<int> TabIds { get; private set; }
 
+        /// <inheritdoc/>
         public int KeyID { get; set; }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.ExtensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderId"]);

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -366,12 +365,14 @@
     <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
+    <Compile Include="Services\Dto\DeleteServerDTO.cs" />
     <Compile Include="Services\Dto\DnnModuleDto.cs" />
     <Compile Include="Services\Dto\DnnModulesRequest.cs" />
     <Compile Include="Services\Dto\DnnModulesDto.cs" />
     <Compile Include="Services\Dto\DnnPageDto.cs" />
     <Compile Include="Services\Dto\DnnPagesRequest.cs" />
     <Compile Include="Services\Dto\DnnPagesDto.cs" />
+    <Compile Include="Services\Dto\EditServerUrlDTO.cs" />
     <Compile Include="Services\Dto\EmailLogItemsRequest.cs" />
     <Compile Include="Services\Dto\ExportTemplateRequest.cs" />
     <Compile Include="Services\Dto\FileDto.cs" />
@@ -441,6 +442,7 @@
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />
+    <Compile Include="Services\Dto\WebServer.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
     <Compile Include="Services\LanguagesController.cs" />
     <Compile Include="Services\LicensingController.cs" />
@@ -462,6 +464,7 @@
     <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
     <Compile Include="Services\SystemInfoApplicationHostController.cs" />
     <Compile Include="Services\SystemInfoDatabaseController.cs" />
+    <Compile Include="Services\SystemInfoServersController.cs" />
     <Compile Include="Services\SystemInfoWebController.cs" />
     <Compile Include="Services\TaskSchedulerController.cs" />
     <Compile Include="Services\ThemesController.cs" />
@@ -728,6 +731,7 @@
       <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json">
@@ -761,12 +765,4 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="Module.build" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props'))" />
-    <Error Condition="!Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets')" />
 </Project>

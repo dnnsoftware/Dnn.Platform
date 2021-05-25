@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
                 l => new InstallerLogEntry
                 {
                     Type = l.Type.ToString(),
-                    Description = l.Description
+                    Description = l.Description,
                 }).ToList() ?? new List<InstallerLogEntry>();
         }
     }

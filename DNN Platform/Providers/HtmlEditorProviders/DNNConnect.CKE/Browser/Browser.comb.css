@@ -1,0 +1,521 @@
+﻿body {background-color:#fff;font-family: Arial, Verdana;color: #333;font-size:small;overflow:auto;}
+a {color:#C00;	text-decoration: none;}
+a:hover {color:#900;}
+
+.LinkDisabled, .LinkDisabled:hover {
+	color:#999; zoom: 1;
+	-webkit-filter: alpha(opacity=30);
+	-moz-filter: alpha(opacity=30);
+	-o-filter: alpha(opacity=30);
+	filter: alpha(opacity=30);
+	-ms-opacity: 0.3;
+	opacity: 0.3;
+}
+
+.ui-widget-content {font-size:small!important;}
+.ui-tabs li a {font-size:85%!important;}
+
+hr {color: #d9d9d9;background-color: #d9d9d9;height:0;border: 1px solid #d9d9d9;}
+h1 {font-weight: bold;margin: 0;font-size:medium;font-family:Arial, Helvetica, sans-serif; color:#333}
+img {border:0}
+#BrowserContainer {
+	margin-bottom:10px;
+	-moz-min-width:800px;
+	-ms-min-width:800px;
+	-o-min-width:800px;
+	-webkit-min-width:800px;
+	min-width:800px;width:800px;
+}
+
+#panelLoading, #panUploadDiv, #panCreate{margin:0 5px 0 5px; padding:3px}
+#panLinkMode, #panPageMode {margin: 10px 0 10px 0;}
+#panPageMode table td {vertical-align:top;}
+
+.PanelSubDivs {margin-top:5px;margin-left:5px;}
+
+#lblCurrentDir {margin-top:5px;display:block;width:783px;padding:3px;}
+
+.LinkModeTable td, .LinkModeTable th {padding: 2px;margin: 2px;}
+.LinkModeTable td {vertical-align:top;}
+
+#BrowserMode label {display:block;width:10em; float:right;font-weight:bold; cursor: pointer; padding: 2px;}
+#BrowserMode input {display:block;float:left;cursor: pointer; margin: 10px; position:absolute;left:-99px;top:-99px;}
+
+#BrowserMode td:hover {cursor:pointer;}
+
+.OverrideFile {
+	margin: 5px;
+}
+
+/* File Space Used Label */
+.fileSpaceUsedLabel {font-style:italic;display:inline-block;padding-top:13px}
+
+.maximumFileUploadInfo {
+	font-style:italic;
+	padding:10px;
+	-ms-word-break: break-all;
+	-moz-word-break:break-all;
+	-o-word-break:break-all;
+	word-break:break-all
+}
+
+/******************************************/
+/* FilesBox Main Styles*/
+#FilesBox {
+	border: 1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em; height: 285px;
+	-moz-min-width:524px;
+	-ms-min-width:524px;
+	-o-min-width:524px;
+	-webkit-min-width:524px;
+	min-width:524px;width:524px; float: left; overflow: auto;padding: 5px;margin-bottom:5px;margin-top:5px
+}
+
+#FilesBox ul {list-style:none;margin:0;padding:0;}
+
+#FilesBox ul a {width:100%;display:block;color:#333;}
+
+#FilesBox .FileName {font-weight: bold;}
+
+/********************************************/
+
+/* FilesBox View : Detail View */
+.FilesDetailView .FilesListRow,
+.FilesDetailView .FilesListRowAlt {padding: 4px 0 4px 0;margin:6px}
+.FilesDetailView .FilesListRowAlt {
+	background-color:#efefef;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Selected Row */
+.FilesDetailView .Selected {
+	background-color: #999; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Hover Row in the Files Box */
+.FilesDetailView li:hover {
+	cursor:pointer;background-color: #d1d1d1!important;-moz-transition: color .15s linear,background-color .15s linear;-webkit-transition: color .15s linear,background-color .15s linear;
+	-ms-transition: color .15s linear,background-color .15s linear;
+	-o-transition: color .15s linear,background-color .15s linear;
+	transition: color .15s linear,background-color .15s linear;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Resize Image Preview */
+.FilesDetailView .FilePreview {max-width:80px;padding-left:10px}
+
+/* Files Info */
+.FilesDetailView .ItemInfo {display:inline-table; vertical-align:top; padding-left:10px}
+
+/********************************************/
+/* FilesBox View : List View */
+.FilesListView .FilesListRow,
+.FilesListView .FilesListRowAlt {padding: 4px 0 4px 0;margin:6px}
+.FilesListView .FilesListRowAlt {
+	background-color:#efefef;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Selected Row */
+.FilesListView .Selected {
+	background-color: #999; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+
+/* Hover Row in the Files Box */
+.FilesListView li:hover {
+	cursor:pointer;background-color: #d1d1d1!important;-moz-transition: color .15s linear,background-color .15s linear;-webkit-transition: color .15s linear,background-color .15s linear;
+	-ms-transition: color .15s linear,background-color .15s linear;
+	-o-transition: color .15s linear,background-color .15s linear;
+	transition: color .15s linear,background-color .15s linear;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Resize Image Preview */
+.FilesListView .FilePreview {padding-left:10px;max-width:16px;}
+
+/* Files Info */
+.FilesListView .ItemInfo {display:inline-table; vertical-align:top; padding-left:10px}
+.FilesListView .ItemInfo br {display:none;}
+.FilesListView .FileInfo {padding-left: 1px;}
+.FilesListView .FileInfo::before {content: ' - ';}
+
+/********************************************/
+
+/* FilesBox View : Icons View */
+.FilesIconsView {margin:4px;padding:4px;}
+
+/* Item List Item */
+.FilesIconsView .FilesListRow,
+.FilesIconsView .FilesListRowAlt {padding: 0;margin:1px;width:80px;height:80px;float:left;}
+
+/* Selected Row */
+.FilesIconsView .Selected {
+	background-color: #999; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Item Link */
+.FilesIconsView .FilesListItem {display:block;margin:4px;padding:4px;}
+
+/* Hover Row in the Files Box */
+.FilesIconsView li:hover {
+	cursor:pointer;background-color: #d1d1d1!important;-moz-transition: color .15s linear,background-color .15s linear;-webkit-transition: color .15s linear,background-color .15s linear;
+	-ms-transition: color .15s linear,background-color .15s linear;
+	-o-transition: color .15s linear,background-color .15s linear;
+	transition: color .15s linear,background-color .15s linear;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+/* Resize Image Preview */
+.FilesIconsView .FilesListItem .FilePreview {max-width:48px;max-height:48px;padding-left:10px}
+
+/* Files Info */
+.FilesIconsView .ItemInfo {
+	vertical-align:bottom;text-align:center;display:block;width:70px;font-size:10px;overflow: hidden;
+	-moz-text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	-moz-binding: url('assets/xml/ellipsis.xml#ellipsis');
+}
+
+.FilesIconsView .ItemInfo br,
+.FilesIconsView .FileInfo {display:none}
+/********************************************/
+
+
+/* FilesList Pager */
+.PagerTable {width:540px;}
+
+.PagerTable .PagerFirstColumn {float:left;width:180px}
+.PagerTable .PagerNumbersColumn {width:180px;padding-top:4px;}	
+.PagerTable .PagerLastColumn {width:180px}
+.PagerTable .PagerLastColumn .FilesPager {float:right;padding-top:2px;width:150px}
+
+.FilesPager{border:0; margin:0; padding:0;}
+
+.FilesPager li{ border:0; margin:0; padding:0; font-size:11px; list-style:none; margin-right:2px; }
+.FilesPager li a{ margin-right:2px; }
+
+.FilesPager a:link,
+.FilesPager a:visited {
+	float:left;padding:3px 6px; color: black;border:1px solid #999;background-color:#e4e4e4;background: -webkit-gradient(linear, left top, left bottom, from(#e4e4e4), to(#999));
+	background: -moz-linear-gradient(top,  #e4e4e4,  #999);background: -o-linear-gradient(top,  #e4e4e4,  #999);-moz-border-radius: 5px;-webkit-border-radius: 5px;-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+	border-radius: 5px;-moz-transition: color .15s linear,background-color .15s linear;-webkit-transition: color .15s linear,background-color .15s linear;
+	-ms-transition: color .15s linear,background-color .15s linear;
+	-o-transition: color .15s linear,background-color .15s linear;
+	transition: color .15s linear,background-color .15s linear;cursor:pointer
+}
+
+.FilesPager a:hover{ color: white; background:#e4e4e4;background: -webkit-gradient(linear, left top, left bottom, from(#757575), to(#4b4b4b));
+	background: -moz-linear-gradient(top,  #757575,  #4b4b4b);background: -o-linear-gradient(top,  #757575,  #4b4b4b); }
+	
+.FilesPager .ActivePage a { color:white; display:block;background: -webkit-gradient(linear, left top, left bottom, from(#757575), to(#4b4b4b));
+	background: -moz-linear-gradient(top,  #757575,  #4b4b4b);background: -o-linear-gradient(top,  #757575,  #4b4b4b); }
+	
+.FilesPager .ActivePage a:hover { color: black;border:1px solid black;background-color:#e4e4e4;background: -webkit-gradient(linear, left top, left bottom, from(#e4e4e4), to(#999));
+	background: -moz-linear-gradient(top,  #e4e4e4,  #999);background: -o-linear-gradient(top,  #e4e4e4,  #999); }
+
+/******************/
+
+
+#FoldersBox {
+	border: 1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em; height: 285px;
+	-moz-min-width:248px;
+	-ms-min-width:248px;
+	-o-min-width:248px;
+	-webkit-min-width:248px;
+	min-width:248px;width:248px; float: left; overflow: auto;padding: 5px;margin-top:8px
+}
+
+#FoldersBox  a {color:Black;}
+
+#TabsBox {
+	border: 1px solid #ccc;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em; height: 300px;
+	-moz-min-width:248px;
+	-ms-min-width:248px;
+	-o-min-width:248px;
+	-webkit-min-width:248px;
+	min-width:248px; padding: 5px; float: left; overflow: auto;
+}
+
+#TabsBox a {color:Black;}
+
+
+#SliderWidth { width:385px;position:absolute; top:505px; left:25px; border: 1px solid #666;}
+#SliderHeight { height:248px;position:absolute; top:244px; left:13px; border: 1px solid #666;}
+.ui-slider-vertical .ui-slider-handle, .ui-slider-horizontal .ui-slider-handle  {border: 1px solid #666!important; background: #CCC!important;}
+
+#ImageTable {width:100%}
+#ImageTable td {vertical-align:top;width:50%;padding: 2px;margin: 2px;}
+#ImageOriginal {
+	background-color:#fff;border: 1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em; height: 300px;width:400px; padding: 5px; float: right;
+}
+
+.ImagePreview {
+	border: 1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;  height: 300px;width:360px; padding: 5px; float: left;
+}
+
+#lblCropInfo { width: 230px;margin: 75px auto 0 auto; display:block;}
+
+#CropButtons {padding-top:25px;}
+#PreviewCrop, #ClearCrop {color: #9eda29; font-weight:bold; text-decoration:underline;float: left;padding: 5px;width: auto;cursor: pointer;}
+
+.Toolbar {padding: 15px 5px;}
+
+/* ModalDialog for Upload Dialog and Create Folder Dialog */
+.MessageBox{ position: absolute;z-index: 100;text-align: left; display:block;top: 96px; left: 220px;}  
+
+.MessageBox .modalHeader:hover {
+    cursor: move;
+}
+
+.ModalDialog .popup {
+	position:relative;
+	border:3px solid #000000;
+	border:3px solid rgba(0,0,0,0);
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	-ms-border-radius:5px;
+	border-radius:5px;
+	-webkit-box-shadow:0 0 18px #000000;
+	-moz-box-shadow:0 0 18px #000000;
+	-ms-box-shadow:0 0 18px #000000;
+	box-shadow:0 0 18px #000000;
+	box-shadow:0 0 18px rgba(0,0,0,0.4);
+	width:390px
+}
+
+.ModalDialog .DialogContent {
+	display:table;width: 370px; padding: 10px;background: #fff;-webkit-border-radius:4px;-moz-border-radius:4px;
+	-ms-border-radius:4px;
+	border-radius:4px;
+}
+
+.ModalDialog .modalHeader {text-align:center;font-size: 12.5pt;}
+.ModalDialog input[type="file"]{width:100%;}
+* html .ModalDialog .modalInner {padding-top:10px}
+*:first-child+html .ModalDialog .modalInner {padding-top:10px}
+
+.ModalDialog_overlayBG {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+}
+
+.MessageBox input[type="text"] {
+	border:1px solid #ccc; background:#e4e4e4!important;margin-top:5px;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+.ModalFooter {float:right}
+
+.LoadingContent h3 {background: url(../images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingMessage {text-align:center}
+
+#cmdCreate img,
+#Syncronize img,
+#cmdUpload img,
+#cmdDownload img,
+#cmdDelete img,
+#cmdResizer img,
+.ButtonNormal img,
+.ButtonSelected img,
+#SwitchDetailView img,
+#SwitchListView img,
+#SwitchIconsView img {vertical-align:middle}
+
+.ButtonSelected img {
+	border: 1px solid #C00;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+.ButtonNormal {border: none;}
+
+/* Multi Upload Control */
+#UploadFilesBox {
+	-moz-min-width:480px;
+	-ms-min-width:480px;
+	-o-min-width:480px;
+	-webkit-min-width:480px;
+	min-width:480px;
+    width:480px; 
+    float: left; 
+    overflow: auto;
+    padding: 5px;
+    margin-bottom:5px;
+    margin-top: 5px;
+    height: 275px;
+    border-top: 1px dotted grey;
+	border-bottom: 1px dotted grey;
+}
+#dropzone {
+    width: auto;
+    padding: 10px 0;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.UploadFiles .progress {
+     height:5px
+}
+#panUploadDiv .ModalDialog .DialogContent {
+	width: 460px; 
+}
+
+#panUploadDiv .ModalDialog .popup {
+	width: 510px; 
+}
+
+#panUploadDiv .MessageBox {
+    left: 150px;
+    top: 56px
+}
+.UploadFiles .preview {
+    -moz-min-width: 80px;
+    -ms-min-width: 80px;
+    -o-min-width: 80px;
+    -webkit-min-width: 80px;
+    min-width: 80px;
+    display: block;
+}
+.UploadFiles .name {
+    width: 288px;
+    -ms-word-break: break-all;
+	-moz-word-break:break-all;
+	-o-word-break:break-all;
+    word-break: break-all;
+    font-weight: bold;
+}
+.UploadFiles .size {
+    font-style:italic;
+}
+.UploadFiles .error {
+    color:red
+}
+
+
+@charset "UTF-8";
+/*
+ * jQuery File Upload Plugin CSS 1.3.0
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+}
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: 'alpha(opacity=0)';
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
+}
+
+/* Fixes for IE < 8 */
+@media screen\9 {
+  .fileinput-button input {
+    filter: alpha(opacity=0);
+    font-size: 100%;
+    height: 100%;
+  }
+}
+
+@charset "UTF-8";
+/*
+ * jQuery File Upload UI Plugin CSS 9.0.0
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2010, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.fileupload-buttonbar .btn,
+.fileupload-buttonbar .toggle {
+  margin-bottom: 5px;
+}
+.progress-animated .progress-bar,
+.progress-animated .bar {
+  background: url("Images/progressbar.gif") !important;
+  filter: none;
+}
+.fileupload-process {
+  float: right;
+  display: none;
+}
+.fileupload-processing .fileupload-process,
+.files .processing .preview {
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: url("../images/loading.gif") center no-repeat;
+  background-size: contain;
+}
+.files audio,
+.files video {
+  max-width: 300px;
+}
+
+@media (max-width: 767px) {
+  .fileupload-buttonbar .toggle,
+  .files .toggle,
+  .files .btn span {
+    display: none;
+  }
+  .files .name {
+    width: 80px;
+    word-wrap: break-word;
+  }
+  .files audio,
+  .files video {
+    max-width: 80px;
+  }
+  .files img,
+  .files canvas {
+    max-width: 100%;
+  }
+}
+

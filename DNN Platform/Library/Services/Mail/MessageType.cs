@@ -6,17 +6,17 @@ namespace DotNetNuke.Services.Mail
 {
     public enum MessageType
     {
-        PasswordReminder,
-        ProfileUpdated,
-        UserRegistrationAdmin,
-        UserRegistrationPrivate,
-        UserRegistrationPrivateNoApprovalRequired,
-        UserRegistrationPublic,
-        UserRegistrationVerified,
-        UserUpdatedOwnPassword,
-        PasswordUpdated,
-        PasswordReminderUserIsNotApproved,
-        UserAuthorized,
-        UserUnAuthorized,
+        PasswordReminder = 0,
+        ProfileUpdated = 1,
+        UserRegistrationAdmin = 2,
+        UserRegistrationPrivate = 3,
+        UserRegistrationPrivateNoApprovalRequired = 4,
+        UserRegistrationPublic = 5,
+        UserRegistrationVerified = 6,
+        UserUpdatedOwnPassword = 7,
+        PasswordUpdated = 8,
+        PasswordReminderUserIsNotApproved = 9,
+        UserAuthorized = 10,
+        UserUnAuthorized = 11,
     }
 }

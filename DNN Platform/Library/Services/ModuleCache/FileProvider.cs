@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.ModuleCache
         private const string AttribFileExtension = ".attrib.resources";
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
+        /// <inheritdoc/>
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
             var cacheKey = new StringBuilder();
@@ -38,11 +39,13 @@ namespace DotNetNuke.Services.ModuleCache
             return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
         }
 
+        /// <inheritdoc/>
         public override int GetItemCount(int tabModuleId)
         {
             return GetCachedItemCount(tabModuleId);
         }
 
+        /// <inheritdoc/>
         public override byte[] GetModule(int tabModuleId, string cacheKey)
         {
             string cachedModule = GetCachedOutputFileName(tabModuleId, cacheKey);
@@ -60,11 +63,13 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
+        /// <inheritdoc/>
         public override void PurgeCache(int portalId)
         {
             this.PurgeCache(GetCacheFolder(portalId));
         }
 
+        /// <inheritdoc/>
         public override void PurgeExpiredItems(int portalId)
         {
             try
@@ -102,6 +107,7 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
+        /// <inheritdoc/>
         public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] output)
         {
             try
@@ -124,6 +130,7 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
+        /// <inheritdoc/>
         public override void Remove(int tabModuleId)
         {
             try

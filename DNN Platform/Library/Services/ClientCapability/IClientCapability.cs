@@ -5,7 +5,6 @@ namespace DotNetNuke.Services.ClientCapability
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
 
     /// <summary>
     ///   ClientCapability provides capabilities supported by the http requester (e.g. Mobile Device, TV, Desktop).

@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable CheckNamespace
+
 namespace DotNetNuke.UI.WebControls
 
 // ReSharper restore CheckNamespace
@@ -35,6 +35,9 @@ namespace DotNetNuke.UI.WebControls
         private bool _itemChanged;
         private Hashtable _sections;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyEditorControl"/> class.
+        /// </summary>
         public PropertyEditorControl()
         {
             this.VisibilityStyle = new Style();
@@ -338,6 +341,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get

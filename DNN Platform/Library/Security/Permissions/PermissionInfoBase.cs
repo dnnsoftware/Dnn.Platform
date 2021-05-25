@@ -39,6 +39,9 @@ namespace DotNetNuke.Security.Permissions
         private int _UserID;
         private string _Username;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PermissionInfoBase"/> class.
+        /// </summary>
         public PermissionInfoBase()
         {
             this._RoleID = int.Parse(Globals.glbRoleNothing);

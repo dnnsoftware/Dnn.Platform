@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
-
     public interface IUserControlExtensionPoint : IExtensionPoint
     {
         string UserControlSrc { get; }

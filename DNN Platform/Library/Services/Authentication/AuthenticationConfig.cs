@@ -21,6 +21,10 @@ namespace DotNetNuke.Services.Authentication
         private const string CACHEKEY = "Authentication.DNN";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationConfig"/> class.
+        /// </summary>
+        /// <param name="portalID"></param>
         protected AuthenticationConfig(int portalID)
             : base(portalID)
         {

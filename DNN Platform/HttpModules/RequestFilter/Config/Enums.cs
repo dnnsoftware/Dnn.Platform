@@ -6,15 +6,15 @@ namespace DotNetNuke.HttpModules.RequestFilter
 {
     public enum RequestFilterRuleType
     {
-        Redirect,
-        PermanentRedirect,
-        NotFound,
+        Redirect = 0,
+        PermanentRedirect = 1,
+        NotFound = 2,
     }
 
     public enum RequestFilterOperatorType
     {
-        Equal,
-        NotEqual,
-        Regex,
+        Equal = 0,
+        NotEqual = 1,
+        Regex = 2,
     }
 }

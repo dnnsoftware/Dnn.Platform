@@ -4,29 +4,29 @@
 namespace DotNetNuke.Common
 {
     using System;
-    using System.Collections;
     using System.IO;
     using System.Reflection;
     using System.Threading;
     using System.Web;
     using System.Web.Hosting;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Connections;
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Upgrade;
     using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Win32;
 
     /// <summary>
@@ -36,20 +36,19 @@ namespace DotNetNuke.Common
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
         private static readonly object InitializeLock = new object();
-        private static bool InitializedAlready;
+        private static bool alreadyInitialized;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Inits the app.
         /// </summary>
         /// <param name="app">The app.</param>
-        /// -----------------------------------------------------------------------------
         public static void Init(HttpApplication app)
         {
             string redirect;
+            var status = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
 
             // Check if app is initialised
-            if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
+            if (alreadyInitialized && status == UpgradeStatus.None)
             {
                 return;
             }
@@ -57,13 +56,13 @@ namespace DotNetNuke.Common
             lock (InitializeLock)
             {
                 // Double-Check if app was initialised by another request
-                if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
+                if (alreadyInitialized && status == UpgradeStatus.None)
                 {
                     return;
                 }
 
                 // Initialize ...
-                redirect = InitializeApp(app, ref InitializedAlready);
+                redirect = InitializeApp(app, ref alreadyInitialized);
             }
 
             if (!string.IsNullOrEmpty(redirect))
@@ -72,26 +71,22 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LogStart logs the Application Start Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public static void LogStart()
         {
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString(),
+                LogTypeKey = EventLogType.APPLICATION_START.ToString(),
             };
             LogController.Instance.AddLog(log);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LogEnd logs the Application Start Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public static void LogEnd()
         {
             try
@@ -150,7 +145,7 @@ namespace DotNetNuke.Common
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
+                    LogTypeKey = EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
                 };
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
@@ -159,7 +154,9 @@ namespace DotNetNuke.Common
                 var runtime = typeof(HttpRuntime).InvokeMember(
                     "_theRuntime",
                     BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
-                    null, null, null) as HttpRuntime;
+                    null,
+                    null,
+                    null) as HttpRuntime;
 
                 if (runtime == null)
                 {
@@ -170,12 +167,16 @@ namespace DotNetNuke.Common
                     var shutDownMessage = runtime.GetType().InvokeMember(
                         "_shutDownMessage",
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
-                        null, runtime, null) as string;
+                        null,
+                        runtime,
+                        null) as string;
 
                     var shutDownStack = runtime.GetType().InvokeMember(
                         "_shutDownStack",
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
-                        null, runtime, null) as string;
+                        null,
+                        runtime,
+                        null) as string;
 
                     Logger.Info("Application shutting down. Reason: " + shutdownDetail
                                 + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
@@ -187,19 +188,21 @@ namespace DotNetNuke.Common
                 Exceptions.LogException(exc);
             }
 
-            if (Globals.Status != Globals.UpgradeStatus.Install)
+            var status = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>().Status;
+            if (status != UpgradeStatus.Install)
             {
                 // purge log buffer
                 LoggingProvider.Instance().PurgeLogBuffer();
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Tests whether this request should be processed in an HttpModule.
         /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <param name="request">The Http request.</param>
+        /// <param name="allowUnknownExtensions">When false only .aspx, .asmx, .ashx, .svg are checked for Http Module processing.</param>
+        /// <param name="checkOmitFromRewriteProcessing">A value indicating whether to check for "omit from rewrite" processing.</param>
+        /// <returns>A value indicating whether the request should be processed in an HttpModule.</returns>
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {
             var toLowerLocalPath = request.Url.LocalPath.ToLowerInvariant();
@@ -226,6 +229,10 @@ namespace DotNetNuke.Common
             return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
         }
 
+        /// <summary>
+        /// Attemps to run scheduled tasks when "Request Method" is used in the scheduler.
+        /// </summary>
+        /// <param name="request">The http request.</param>
         public static void RunSchedule(HttpRequest request)
         {
             if (!IsUpgradeOrInstallRequest(request))
@@ -248,14 +255,10 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// StartScheduler starts the Scheduler.
         /// </summary>
         /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static void StartScheduler(bool resetAppStartElapseTime = false)
         {
             if (resetAppStartElapseTime)
@@ -279,13 +282,9 @@ namespace DotNetNuke.Common
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// StopScheduler stops the Scheduler.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static void StopScheduler()
         {
             // stop scheduled jobs
@@ -294,51 +293,52 @@ namespace DotNetNuke.Common
 
         private static string CheckVersion(HttpApplication app)
         {
-            HttpServerUtility Server = app.Server;
+            HttpServerUtility server = app.Server;
 
             bool autoUpgrade = Config.GetSetting("AutoUpgrade") == null || bool.Parse(Config.GetSetting("AutoUpgrade"));
             bool useWizard = Config.GetSetting("UseInstallWizard") == null || bool.Parse(Config.GetSetting("UseInstallWizard"));
 
             // Determine the Upgrade status and redirect as neccessary to InstallWizard.aspx
             string retValue = Null.NullString;
-            switch (Globals.Status)
+            var applicationStatusInfo = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            switch (applicationStatusInfo.Status)
             {
-                case Globals.UpgradeStatus.Install:
+                case UpgradeStatus.Install:
                     if (autoUpgrade || useWizard)
                     {
                         retValue = useWizard ? "~/Install/InstallWizard.aspx" : "~/Install/Install.aspx?mode=install";
                     }
                     else
                     {
-                        CreateUnderConstructionPage(Server);
+                        CreateUnderConstructionPage(server);
                         retValue = "~/Install/UnderConstruction.htm";
                         Logger.Info("UnderConstruction page was shown because application needs to be installed, and both the AutoUpgrade and UseWizard AppSettings in web.config are false. Use /install/install.aspx?mode=install to install application. ");
                     }
 
                     break;
-                case Globals.UpgradeStatus.Upgrade:
+                case UpgradeStatus.Upgrade:
                     if (autoUpgrade || useWizard)
                     {
                         retValue = useWizard ? "~/Install/UpgradeWizard.aspx" : "~/Install/Install.aspx?mode=upgrade";
                     }
                     else
                     {
-                        CreateUnderConstructionPage(Server);
+                        CreateUnderConstructionPage(server);
                         retValue = "~/Install/UnderConstruction.htm";
                         Logger.Info("UnderConstruction page was shown because application needs to be upgraded, and both the AutoUpgrade and UseInstallWizard AppSettings in web.config are false. Use /install/install.aspx?mode=upgrade to upgrade application. ");
                     }
 
                     break;
-                case Globals.UpgradeStatus.Error:
+                case UpgradeStatus.Error:
                     // here we need to check if the application is already installed
                     // or is in pre-install state.
                     // see http://support.dotnetnuke.com/project/DNN/2/item/26053 for scenarios
-                    bool isInstalled = Globals.IsInstalled();
+                    bool isInstalled = applicationStatusInfo.IsInstalled();
 
                     if (!isInstalled && (useWizard || autoUpgrade))
                     {
                         // app has never been installed, and either Wizard or Autoupgrade is configured
-                        CreateUnderConstructionPage(Server);
+                        CreateUnderConstructionPage(server);
                         retValue = "~/Install/UnderConstruction.htm";
                         Logger.Error("UnderConstruction page was shown because we cannot ascertain the application was ever installed, and there is no working database connection. Check database connectivity before continuing. ");
                     }
@@ -454,8 +454,6 @@ namespace DotNetNuke.Common
                     Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                     Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
 
-                    // Try and Upgrade to Current Framewok
-                    Upgrade.TryUpgradeNETFramework();
                     Upgrade.CheckFipsCompilanceAssemblies();
 
                     // Log Server information

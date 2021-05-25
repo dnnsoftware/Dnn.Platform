@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.DDRMenu
     {
         private MenuBase menu;
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))
@@ -74,6 +75,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter htmlWriter)
         {
             using (new DNNContext(this))

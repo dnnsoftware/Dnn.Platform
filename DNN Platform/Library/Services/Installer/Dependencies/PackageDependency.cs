@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     {
         private string PackageName;
 
+        /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
@@ -28,6 +29,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsValid
         {
             get
@@ -45,6 +47,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.PackageName = dependencyNav.Value;

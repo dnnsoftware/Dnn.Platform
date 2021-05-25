@@ -7,25 +7,40 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Runtime.Serialization;
 
-    using DotNetNuke.Services.Exceptions;
-
     [Serializable]
     public class InvalidFileContentException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidFileContentException"/> class.
+        /// </summary>
         public InvalidFileContentException()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidFileContentException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
         public InvalidFileContentException(string message)
             : base(message)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidFileContentException"/> class.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="inner"></param>
         public InvalidFileContentException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvalidFileContentException"/> class.
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public InvalidFileContentException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

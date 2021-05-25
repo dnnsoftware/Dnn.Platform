@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Cache
         internal static string CachingDirectory = "Cache\\";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
 
+        /// <inheritdoc/>
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
                                     CacheItemRemovedCallback onRemoveCallback)
         {
@@ -43,6 +44,7 @@ namespace DotNetNuke.Services.Cache
             base.Insert(cacheKey, itemToCache, d, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
 
+        /// <inheritdoc/>
         public override bool IsWebFarm()
         {
             bool _IsWebFarm = Null.NullBoolean;
@@ -54,12 +56,14 @@ namespace DotNetNuke.Services.Cache
             return _IsWebFarm;
         }
 
+        /// <inheritdoc/>
         public override string PurgeCache()
         {
             // called by scheduled job to remove cache files which are no longer active
             return this.PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
+        /// <inheritdoc/>
         public override void Remove(string Key)
         {
             base.Remove(Key);

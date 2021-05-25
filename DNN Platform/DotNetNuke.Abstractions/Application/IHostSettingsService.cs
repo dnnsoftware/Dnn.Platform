@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Abstractions.Application
 {
     using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace DotNetNuke.Abstractions.Application
     /// Entity.
     /// </summary>
     /// <example>
-    /// 
     /// <code lang="C#">
     /// public class MySampleClass
     /// {
@@ -92,13 +90,13 @@ namespace DotNetNuke.Abstractions.Application
         /// Gets all host settings.
         /// </summary>
         /// <returns>host setting.</returns>
-        Dictionary<string, IConfigurationSetting> GetSettings();
+        IDictionary<string, IConfigurationSetting> GetSettings();
 
         /// <summary>
         /// Gets all host settings as dictionary.
         /// </summary>
         /// <returns>host setting's value.</returns>
-        Dictionary<string, string> GetSettingsDictionary();
+        IDictionary<string, string> GetSettingsDictionary();
 
         /// <summary>
         /// Gets the setting value by the specific key.
@@ -140,7 +138,7 @@ namespace DotNetNuke.Abstractions.Application
         /// Updates the specified settings.
         /// </summary>
         /// <param name="settings">The settings.</param>
-        void Update(Dictionary<string, string> settings);
+        void Update(IDictionary<string, string> settings);
 
         /// <summary>
         /// Updates the setting for a specified key.

@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 Severity = HttpContext.Current.IsDebuggingEnabled
                     ? SeverityEnum.Warning
-                    : SeverityEnum.Pass
+                    : SeverityEnum.Pass,
             };
             return result;
         }

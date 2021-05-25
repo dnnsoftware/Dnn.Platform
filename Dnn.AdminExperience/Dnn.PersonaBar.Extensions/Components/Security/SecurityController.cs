@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Security.Components
                 Name = PortalSettings.PortalName,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ParentTabId = Null.NullInteger,
-                ChildTabs = new List<TabDto>()
+                ChildTabs = new List<TabDto>(),
             };
 
             var portalInfo = PortalController.Instance.GetPortal(portalId);
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Security.Components
                         Name = tab.TabName,
                         TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                         ParentTabId = tab.ParentId,
-                        ChildTabs = new List<TabDto>()
+                        ChildTabs = new List<TabDto>(),
                     };
 
                     this.AddChildNodes(node, portalInfo, cultureCode);
@@ -123,7 +123,7 @@ namespace Dnn.PersonaBar.Security.Components
                         {
                             Name = tab.TabName,
                             TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                            ParentTabId = tab.ParentId
+                            ParentTabId = tab.ParentId,
                         };
                         this.AddChildNodes(node, portal, cultureCode);
                         parentNode.ChildTabs.Add(node);

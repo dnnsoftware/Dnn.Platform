@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
                         uploadDirectory = portal.HomeDirectoryMapPath;
                     }
 
-                    //read CSS file
+                    // read CSS file
                     if (File.Exists(uploadDirectory + "portal.css"))
                     {
                         using (var text = File.OpenText(uploadDirectory + "portal.css"))
@@ -104,19 +104,19 @@ namespace Dnn.PersonaBar.CssEditor.Services
                         relativePath = $"{Globals.ApplicationPath}/{objPortal.HomeDirectory}/portal.css";
                     }
 
-                    //reset attributes
+                    // reset attributes
                     if (File.Exists(strUploadDirectory + "portal.css"))
                     {
                         File.SetAttributes(strUploadDirectory + "portal.css", FileAttributes.Normal);
                     }
 
-                    //write CSS file
+                    // write CSS file
                     using (var writer = File.CreateText(strUploadDirectory + "portal.css"))
                     {
                         writer.WriteLine(request.StyleSheetContent);
                     }
 
-                    //Clear client resource cache
+                    // Clear client resource cache
                     var overrideSetting =
                         PortalController.GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey,
                             request.PortalId, "False");
@@ -171,11 +171,11 @@ namespace Dnn.PersonaBar.CssEditor.Services
                     {
                         if (File.Exists(portal.HomeDirectoryMapPath + "portal.css"))
                         {
-                            //delete existing style sheet
+                            // delete existing style sheet
                             File.Delete(portal.HomeDirectoryMapPath + "portal.css");
                         }
 
-                        //copy file from Host
+                        // copy file from Host
                         if (File.Exists(Globals.HostMapPath + "portal.css"))
                         {
                             File.Copy(Globals.HostMapPath + "portal.css", portal.HomeDirectoryMapPath + "portal.css");
@@ -207,7 +207,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
                 uploadDirectory = portal.HomeDirectoryMapPath;
             }
 
-            //read CSS file
+            // read CSS file
             if (File.Exists(uploadDirectory + "portal.css"))
             {
                 using (var text = File.OpenText(uploadDirectory + "portal.css"))

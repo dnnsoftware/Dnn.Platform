@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props" Condition="Exists('..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,6 +15,9 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>618</NoWarn>
+    <NoWarn>618,SA0001</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <NoWarn>618</NoWarn>
+    <NoWarn>618,SA0001</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -91,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Api\BasicAuthMessageHandlerTests.cs" />
     <Compile Include="Api\Internals\DnnDependencyResolverTests.cs" />
+    <Compile Include="Api\Internals\ServiceContainerTests.cs" />
     <Compile Include="Api\JwtAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DigestAuthMessageHandlerTests.cs" />
     <Compile Include="Api\DnnActionFilterProviderTests.cs" />
@@ -100,6 +105,8 @@
     <Compile Include="Api\HttpRequestMessageExtensionsTests.cs" />
     <Compile Include="Api\StandardTabAndModuleInfoProviderTests.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttributeTests.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensionsTests.cs" />
+    <Compile Include="DependencyInjection\BuildUpExtensions_SampleFilters.cs" />
     <Compile Include="InternalServices\FakeModuleCrawlerController.cs" />
     <Compile Include="InternalServices\SearchServiceControllerTests.cs">
       <SubType>Code</SubType>
@@ -171,6 +178,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnitTestAdapter.2.3.0\build\NUnitTestAdapter.props'))" />
   </Target>
   <!-- <Target Name="AfterBuild">
   </Target> -->

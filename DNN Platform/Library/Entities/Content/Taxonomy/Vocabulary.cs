@@ -33,26 +33,48 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private int _Weight;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
+        /// </summary>
         public Vocabulary()
             : this(Null.NullString, Null.NullString, VocabularyType.Simple)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
+        /// </summary>
+        /// <param name="name"></param>
         public Vocabulary(string name)
             : this(name, Null.NullString, VocabularyType.Simple)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
         public Vocabulary(string name, string description)
             : this(name, description, VocabularyType.Simple)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
+        /// </summary>
+        /// <param name="type"></param>
         public Vocabulary(VocabularyType type)
             : this(Null.NullString, Null.NullString, type)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vocabulary"/> class.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
         public Vocabulary(string name, string description, VocabularyType type)
         {
             this.Description = description;
@@ -208,6 +230,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        /// <inheritdoc/>
         public virtual int KeyID
         {
             get
@@ -221,6 +244,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        /// <inheritdoc/>
         public virtual void Fill(IDataReader dr)
         {
             this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);

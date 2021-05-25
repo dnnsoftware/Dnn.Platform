@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private RadioButtonList _radioButtonList;
 
+        /// <inheritdoc/>
         protected override void BindList()
         {
             if (this._radioButtonList != null)
@@ -56,6 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
             this._radioButtonList = new RadioButtonList { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };

@@ -19,7 +19,6 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.UI.Skins;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

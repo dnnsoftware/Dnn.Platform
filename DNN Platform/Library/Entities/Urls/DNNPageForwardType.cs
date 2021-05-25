@@ -6,8 +6,8 @@ namespace DotNetNuke.Entities.Urls
 {
     public enum DNNPageForwardType
     {
-        NoForward,
-        Redirect302,
-        Redirect301,
+        NoForward = 0,
+        Redirect302 = 1,
+        Redirect301 = 2,
     }
 }

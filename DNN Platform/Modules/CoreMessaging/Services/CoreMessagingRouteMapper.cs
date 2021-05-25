@@ -6,8 +6,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 {
     using DotNetNuke.Web.Api;
 
+    /// <summary>
+    /// Maps the api routes for this module.
+    /// </summary>
     public sealed class CoreMessagingRouteMapper : IServiceRouteMapper
     {
+        /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute("CoreMessaging", "default", "{controller}/{action}", new[] { "DotNetNuke.Modules.CoreMessaging.Services" });

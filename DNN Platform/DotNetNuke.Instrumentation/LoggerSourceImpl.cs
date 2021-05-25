@@ -17,13 +17,16 @@ namespace DotNetNuke.Instrumentation
     using log4net.Repository;
     using log4net.Util;
 
+    /// <summary>An <see cref="ILoggerSource"/> implementation.</summary>
     public class LoggerSourceImpl : ILoggerSource
     {
+        /// <inheritdoc/>
         public ILog GetLogger(Type type)
         {
             return new Logger(LogManager.GetLogger(type).Logger, type);
         }
 
+        /// <inheritdoc/>
         public ILog GetLogger(string name)
         {
             return new Logger(LogManager.GetLogger(name).Logger, null);
@@ -33,55 +36,55 @@ namespace DotNetNuke.Instrumentation
         {
             private const string ConfigFile = "DotNetNuke.log4net.config";
             private static readonly object ConfigLock = new object();
-            private static Level _levelTrace;
-            private static Level _levelDebug;
-            private static Level _levelInfo;
-            private static Level _levelWarn;
-            private static Level _levelError;
-            private static Level _levelFatal;
-            private static bool _configured;
+            private static Level levelTrace;
+            private static Level levelDebug;
+            private static Level levelInfo;
+            private static Level levelWarn;
+            private static Level levelError;
+            private static Level levelFatal;
+            private static bool configured;
 
             // add custom logging levels (below trace value of 20000)
             //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
             //            internal static Level LevelLogError = new Level(10002, "LogError");
-            private readonly Type _stackBoundary = typeof(DnnLogger);
+            private readonly Type stackBoundary = typeof(DnnLogger);
 
             internal Logger(ILogger logger, Type type)
                 : base(logger)
             {
-                this._stackBoundary = type ?? typeof(Logger);
+                this.stackBoundary = type ?? typeof(Logger);
                 EnsureConfig();
                 ReloadLevels(logger.Repository);
             }
 
             public bool IsDebugEnabled
             {
-                get { return this.Logger.IsEnabledFor(_levelDebug); }
+                get { return this.Logger.IsEnabledFor(levelDebug); }
             }
 
             public bool IsInfoEnabled
             {
-                get { return this.Logger.IsEnabledFor(_levelInfo); }
+                get { return this.Logger.IsEnabledFor(levelInfo); }
             }
 
             public bool IsTraceEnabled
             {
-                get { return this.Logger.IsEnabledFor(_levelTrace); }
+                get { return this.Logger.IsEnabledFor(levelTrace); }
             }
 
             public bool IsWarnEnabled
             {
-                get { return this.Logger.IsEnabledFor(_levelWarn); }
+                get { return this.Logger.IsEnabledFor(levelWarn); }
             }
 
             public bool IsErrorEnabled
             {
-                get { return this.Logger.IsEnabledFor(_levelError); }
+                get { return this.Logger.IsEnabledFor(levelError); }
             }
 
             public bool IsFatalEnabled
             {
-                get { return this.Logger.IsEnabledFor(_levelFatal); }
+                get { return this.Logger.IsEnabledFor(levelFatal); }
             }
 
             public void Debug(object message)
@@ -91,7 +94,7 @@ namespace DotNetNuke.Instrumentation
 
             public void Debug(object message, Exception exception)
             {
-                this.Logger.Log(this._stackBoundary, _levelDebug, message, exception);
+                this.Logger.Log(this.stackBoundary, levelDebug, message, exception);
             }
 
             public void DebugFormat(string format, params object[] args)
@@ -101,7 +104,7 @@ namespace DotNetNuke.Instrumentation
 
             public void DebugFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this._stackBoundary, _levelDebug, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this.stackBoundary, levelDebug, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Info(object message)
@@ -111,7 +114,7 @@ namespace DotNetNuke.Instrumentation
 
             public void Info(object message, Exception exception)
             {
-                this.Logger.Log(this._stackBoundary, _levelInfo, message, exception);
+                this.Logger.Log(this.stackBoundary, levelInfo, message, exception);
             }
 
             public void InfoFormat(string format, params object[] args)
@@ -121,7 +124,7 @@ namespace DotNetNuke.Instrumentation
 
             public void InfoFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this._stackBoundary, _levelInfo, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this.stackBoundary, levelInfo, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Trace(object message)
@@ -131,7 +134,7 @@ namespace DotNetNuke.Instrumentation
 
             public void Trace(object message, Exception exception)
             {
-                this.Logger.Log(this._stackBoundary, _levelTrace, message, exception);
+                this.Logger.Log(this.stackBoundary, levelTrace, message, exception);
             }
 
             public void TraceFormat(string format, params object[] args)
@@ -141,7 +144,7 @@ namespace DotNetNuke.Instrumentation
 
             public void TraceFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this._stackBoundary, _levelTrace, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this.stackBoundary, levelTrace, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Warn(object message)
@@ -151,7 +154,7 @@ namespace DotNetNuke.Instrumentation
 
             public void Warn(object message, Exception exception)
             {
-                this.Logger.Log(this._stackBoundary, _levelWarn, message, exception);
+                this.Logger.Log(this.stackBoundary, levelWarn, message, exception);
             }
 
             public void WarnFormat(string format, params object[] args)
@@ -161,7 +164,7 @@ namespace DotNetNuke.Instrumentation
 
             public void WarnFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this._stackBoundary, _levelWarn, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this.stackBoundary, levelWarn, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Error(object message)
@@ -171,7 +174,7 @@ namespace DotNetNuke.Instrumentation
 
             public void Error(object message, Exception exception)
             {
-                this.Logger.Log(this._stackBoundary, _levelError, message, exception);
+                this.Logger.Log(this.stackBoundary, levelError, message, exception);
             }
 
             public void ErrorFormat(string format, params object[] args)
@@ -181,7 +184,7 @@ namespace DotNetNuke.Instrumentation
 
             public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this._stackBoundary, _levelError, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this.stackBoundary, levelError, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Fatal(object message)
@@ -191,7 +194,7 @@ namespace DotNetNuke.Instrumentation
 
             public void Fatal(object message, Exception exception)
             {
-                this.Logger.Log(this._stackBoundary, _levelFatal, message, exception);
+                this.Logger.Log(this.stackBoundary, levelFatal, message, exception);
             }
 
             public void FatalFormat(string format, params object[] args)
@@ -201,16 +204,16 @@ namespace DotNetNuke.Instrumentation
 
             public void FatalFormat(IFormatProvider provider, string format, params object[] args)
             {
-                this.Logger.Log(this._stackBoundary, _levelFatal, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this.stackBoundary, levelFatal, new SystemStringFormat(provider, format, args), null);
             }
 
             private static void EnsureConfig()
             {
-                if (!_configured)
+                if (!configured)
                 {
                     lock (ConfigLock)
                     {
-                        if (!_configured)
+                        if (!configured)
                         {
                             var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
                             var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
@@ -225,7 +228,7 @@ namespace DotNetNuke.Instrumentation
                                 XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
                             }
 
-                            _configured = true;
+                            configured = true;
                         }
                     }
                 }
@@ -235,19 +238,12 @@ namespace DotNetNuke.Instrumentation
             {
                 LevelMap levelMap = repository.LevelMap;
 
-                _levelTrace = levelMap.LookupWithDefault(Level.Trace);
-                _levelDebug = levelMap.LookupWithDefault(Level.Debug);
-                _levelInfo = levelMap.LookupWithDefault(Level.Info);
-                _levelWarn = levelMap.LookupWithDefault(Level.Warn);
-                _levelError = levelMap.LookupWithDefault(Level.Error);
-                _levelFatal = levelMap.LookupWithDefault(Level.Fatal);
-
-                // LevelLogError = levelMap.LookupWithDefault(LevelLogError);
-                //                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
-
-                //// Register custom logging levels with the default LoggerRepository
-                //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
-                //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
+                levelTrace = levelMap.LookupWithDefault(Level.Trace);
+                levelDebug = levelMap.LookupWithDefault(Level.Debug);
+                levelInfo = levelMap.LookupWithDefault(Level.Info);
+                levelWarn = levelMap.LookupWithDefault(Level.Warn);
+                levelError = levelMap.LookupWithDefault(Level.Error);
+                levelFatal = levelMap.LookupWithDefault(Level.Fatal);
             }
 
             private static void AddGlobalContext()
@@ -255,29 +251,8 @@ namespace DotNetNuke.Instrumentation
                 try
                 {
                     GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
-
-                    // bool isFullTrust = false;
-                    // try
-                    // {
-                    //    CodeAccessPermission securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
-                    //    securityTest.Demand();
-                    //    isFullTrust = true;
-                    // }
-                    // catch
-                    // {
-                    //    //code access security error
-                    //    isFullTrust = false;
-                    // }
-                    // if (isFullTrust)
-                    // {
-                    //    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
-                    // }
                 }
-
-                // ReSharper disable EmptyGeneralCatchClause
                 catch
-
-                    // ReSharper restore EmptyGeneralCatchClause
                 {
                     // do nothing but just make sure no exception here.
                 }

@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                     QueryString = string.Empty,
                     LocaleKey = 1,
                     StatusCodeKey = 200,
-                    SiteAliasUsage = 2
+                    SiteAliasUsage = 2,
                 },
             };
             var response = connector.PostJson(CreateCustomUrlApi, postData, null).Content.ReadAsStringAsync().Result;

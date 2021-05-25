@@ -1,23 +1,39 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
 
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
+
     using Moq;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class DnnActionFilterProviderTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            CBO.SetTestableInstance(new MockCBO());
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            CBO.ClearInstance();
+        }
+
         [Test]
         public void RequiresHostAttributeAddedWhenNoOtherActionFiltersPresent()
         {
@@ -34,7 +50,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
 
             // Act
-            var filterProvider = new DnnActionFilterProvider();
+            var filterProvider = new DnnActionFilterProvider(Mock.Of<IServiceProvider>());
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
@@ -58,7 +74,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
 
             // Act
-            var filterProvider = new DnnActionFilterProvider();
+            var filterProvider = new DnnActionFilterProvider(Mock.Of<IServiceProvider>());
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert
@@ -82,7 +98,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
 
             // Act
-            var filterProvider = new DnnActionFilterProvider();
+            var filterProvider = new DnnActionFilterProvider(Mock.Of<IServiceProvider>());
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
             // Assert

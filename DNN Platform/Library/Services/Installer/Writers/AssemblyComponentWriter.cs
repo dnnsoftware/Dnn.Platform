@@ -17,6 +17,12 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class AssemblyComponentWriter : FileComponentWriter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyComponentWriter"/> class.
+        /// </summary>
+        /// <param name="basePath"></param>
+        /// <param name="assemblies"></param>
+        /// <param name="package"></param>
         public AssemblyComponentWriter(string basePath, Dictionary<string, InstallFile> assemblies, PackageInfo package)
             : base(basePath, assemblies, package)
         {

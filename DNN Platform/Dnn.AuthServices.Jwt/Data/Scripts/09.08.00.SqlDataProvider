@@ -1,0 +1,42 @@
+/* Add Schedule Job */
+/*************************************/
+IF NOT EXISTS(SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'Dnn.AuthServices.Jwt.Components.Schedule.PurgeExpiredTokensTask, Dnn.AuthServices.Jwt')
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
+	(   [TypeFullName]
+	   ,[TimeLapse]
+	   ,[TimeLapseMeasurement]
+	   ,[RetryTimeLapse]
+	   ,[RetryTimeLapseMeasurement]
+	   ,[RetainHistoryNum]
+	   ,[AttachToEvent]
+	   ,[CatchUpEnabled]
+	   ,[Enabled]
+	   ,[ObjectDependencies]
+	   ,[Servers]
+	   ,[CreatedByUserID]
+	   ,[CreatedOnDate]
+	   ,[LastModifiedByUserID]
+	   ,[LastModifiedOnDate]
+	   ,[FriendlyName]
+	) VALUES
+    (	'Dnn.AuthServices.Jwt.Components.Schedule.PurgeExpiredTokensTask, Dnn.AuthServices.Jwt'
+	   ,1
+	   ,N'd'
+	   ,6
+	   ,N'h'
+	   ,10
+	   ,N''
+	   ,0
+	   ,1
+	   ,N''
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,NULL
+	   ,N'Purge Expired JWT Tokens'
+	 )
+END
+GO
+

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,41 +26,41 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -211,7 +211,7 @@
     <value>Browse Files in Folder</value>
   </data>
   <data name="EMAIL_SMTP_TEST_SUBJECT.Text" xml:space="preserve">
-    <value>[Host:HostTitle] SMTP Configuration Test</value>
+    <value>[Host:HostTitle] SMTP Configuration Test from [Portal:PortalName]</value>
   </data>
   <data name="MESSAGE_PORTAL_PRIVACY.Text" xml:space="preserve">
     <value>&lt;div align="left"&gt;
@@ -1416,5 +1416,503 @@ Sincerely,
   </data>
   <data name="cc_message.Text" xml:space="preserve">
     <value>This website uses cookies to ensure you get the best experience on our website.</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>&lt;html xmlns="https://www.w3.org/1999/xhtml"&gt;</value>
+  </data>
+  <data name="String10" xml:space="preserve">
+    <value>font-size:0.83em;</value>
+  </data>
+  <data name="String100" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String101" xml:space="preserve">
+    <value>&lt;!-- // End Template Sub Header \\ --&gt;</value>
+  </data>
+  <data name="String102" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String103" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String104" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String105" xml:space="preserve">
+    <value>&lt;td align="center" valign="top" bgcolor="#ffffff"&gt;</value>
+  </data>
+  <data name="String106" xml:space="preserve">
+    <value>&lt;!-- // Begin Template Body \\ --&gt;</value>
+  </data>
+  <data name="String107" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody"&gt;</value>
+  </data>
+  <data name="String108" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String109" xml:space="preserve">
+    <value>&lt;td valign="top" class="bodyContent"&gt;</value>
+  </data>
+  <data name="String11" xml:space="preserve">
+    <value>color:#333;</value>
+  </data>
+  <data name="String110" xml:space="preserve">
+    <value>&lt;!-- // Begin Module: Standard Content \\ --&gt;</value>
+  </data>
+  <data name="String111" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="30" cellspacing="0" width="100%"&gt;</value>
+  </data>
+  <data name="String112" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String113" xml:space="preserve">
+    <value>&lt;td valign="top"&gt;</value>
+  </data>
+  <data name="String114" xml:space="preserve">
+    <value>[MESSAGEBODY]</value>
+  </data>
+  <data name="String115" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String116" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String117" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String118" xml:space="preserve">
+    <value>&lt;!-- // End Module: Standard Content \\ --&gt;</value>
+  </data>
+  <data name="String119" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String12" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String120" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String121" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String122" xml:space="preserve">
+    <value>&lt;!-- // End Template Body \\ --&gt;</value>
+  </data>
+  <data name="String123" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String124" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String125" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String126" xml:space="preserve">
+    <value>&lt;td align="center" valign="top"&gt;</value>
+  </data>
+  <data name="String127" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="30" cellspacing="0" width="600" id="templateFooter"&gt;</value>
+  </data>
+  <data name="String128" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String129" xml:space="preserve">
+    <value>&lt;td valign="top" class="footerContent"&gt;</value>
+  </data>
+  <data name="String13" xml:space="preserve">
+    <value>img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}</value>
+  </data>
+  <data name="String130" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;</value>
+  </data>
+  <data name="String131" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String132" xml:space="preserve">
+    <value>&lt;td align="center"&gt;</value>
+  </data>
+  <data name="String133" xml:space="preserve">
+    <value>&lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;&lt;a href="[NOTIFICATIONURL]" &gt; View online&lt;/a&gt;</value>
+  </data>
+  <data name="String134" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String135" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String136" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String137" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String138" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String139" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String14" xml:space="preserve">
+    <value>table td{border-collapse:collapse;}</value>
+  </data>
+  <data name="String140" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String141" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String142" xml:space="preserve">
+    <value>&lt;/table&gt;&lt;!-- // End Template Body \\ --&gt;</value>
+  </data>
+  <data name="String143" xml:space="preserve">
+    <value>&lt;!-- // Begin Template footer \\ --&gt;</value>
+  </data>
+  <data name="String144" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" id="bodyTemplateFooter" width="600"&gt;</value>
+  </data>
+  <data name="String145" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String146" xml:space="preserve">
+    <value>&lt;td valign="top" class="bodyFooterContent"&gt;</value>
+  </data>
+  <data name="String147" xml:space="preserve">
+    <value>&lt;!-- // Begin Module: Standard Preheader \ --&gt;</value>
+  </data>
+  <data name="String148" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" align="center" &gt;</value>
+  </data>
+  <data name="String149" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String15" xml:space="preserve">
+    <value>p{margin: 0 0 1.6em 0;}</value>
+  </data>
+  <data name="String150" xml:space="preserve">
+    <value>&lt;td align="center"&gt;</value>
+  </data>
+  <data name="String151" xml:space="preserve">
+    <value>&lt;p&gt;Copyright [YEAR] &lt;a href="[SITEURL]"&gt;[PORTALNAME]&lt;/a&gt; All rights reserved.&lt;/p&gt;</value>
+  </data>
+  <data name="String152" xml:space="preserve">
+    <value>&lt;p&gt;If you wish to no longer receive emails in the future, please &lt;a href="[UNSUBSCRIBEURL]"&gt;unsubscribe&lt;/a&gt; here.&lt;/p&gt;</value>
+  </data>
+  <data name="String153" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String154" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String155" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String156" xml:space="preserve">
+    <value>&lt;!-- // End Module: Standard Preheader \ --&gt;</value>
+  </data>
+  <data name="String157" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String158" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String159" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String16" xml:space="preserve">
+    <value>a{color:#417CD3;}</value>
+  </data>
+  <data name="String160" xml:space="preserve">
+    <value>&lt;!-- // End Template footer \\ --&gt;</value>
+  </data>
+  <data name="String161" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String162" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String163" xml:space="preserve">
+    <value>&lt;/table&gt;&lt;!-- wrapper table --&gt;</value>
+  </data>
+  <data name="String164" xml:space="preserve">
+    <value>&lt;/body&gt;</value>
+  </data>
+  <data name="String165" xml:space="preserve">
+    <value>&lt;/html&gt;</value>
+  </data>
+  <data name="String17" xml:space="preserve">
+    <value>#backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;}</value>
+  </data>
+  <data name="String18" xml:space="preserve">
+    <value>body{ background-color:#fafafa; }</value>
+  </data>
+  <data name="String19" xml:space="preserve">
+    <value>#templateContainer{</value>
+  </data>
+  <data name="String2" xml:space="preserve">
+    <value>&lt;head&gt;</value>
+  </data>
+  <data name="String20" xml:space="preserve">
+    <value>border: 1px solid #eeeeee;</value>
+  </data>
+  <data name="String21" xml:space="preserve">
+    <value>box-shadow: 0px 0px 3px 0px #eee;</value>
+  </data>
+  <data name="String22" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String23" xml:space="preserve">
+    <value>/* Pre Header Styles */</value>
+  </data>
+  <data name="String24" xml:space="preserve">
+    <value>.preheaderContent{</value>
+  </data>
+  <data name="String25" xml:space="preserve">
+    <value>padding:15px 0 5px 0;</value>
+  </data>
+  <data name="String26" xml:space="preserve">
+    <value>font-size:0.9em;</value>
+  </data>
+  <data name="String27" xml:space="preserve">
+    <value>color:#999;</value>
+  </data>
+  <data name="String28" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String29" xml:space="preserve">
+    <value>.headerContent {background-color:#bbb;}</value>
+  </data>
+  <data name="String3" xml:space="preserve">
+    <value>&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;</value>
+  </data>
+  <data name="String30" xml:space="preserve">
+    <value>.headerContent a{display:block;}</value>
+  </data>
+  <data name="String31" xml:space="preserve">
+    <value>.headerContent img{ margin-bottom:0;}</value>
+  </data>
+  <data name="String32" xml:space="preserve">
+    <value>/* Sub Header Styles */</value>
+  </data>
+  <data name="String33" xml:space="preserve">
+    <value>#templateSubHeader{ color:#ffffff; }</value>
+  </data>
+  <data name="String34" xml:space="preserve">
+    <value>#templateSubHeader td{ padding:5px 20px; }</value>
+  </data>
+  <data name="String35" xml:space="preserve">
+    <value>/* Template Footer Styles */</value>
+  </data>
+  <data name="String36" xml:space="preserve">
+    <value>.footerContent table td{</value>
+  </data>
+  <data name="String37" xml:space="preserve">
+    <value>padding-top:20px;</value>
+  </data>
+  <data name="String38" xml:space="preserve">
+    <value>border-top:1px solid #ddd;</value>
+  </data>
+  <data name="String39" xml:space="preserve">
+    <value>font-size:0.8em;</value>
+  </data>
+  <data name="String4" xml:space="preserve">
+    <value>&lt;style type="text/css"&gt;</value>
+  </data>
+  <data name="String40" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String41" xml:space="preserve">
+    <value>/* Body Template Footer Styles */</value>
+  </data>
+  <data name="String42" xml:space="preserve">
+    <value>#bodyTemplateFooter{</value>
+  </data>
+  <data name="String43" xml:space="preserve">
+    <value>padding:15px 0 5px 0;</value>
+  </data>
+  <data name="String44" xml:space="preserve">
+    <value>font-size:0.9em;</value>
+  </data>
+  <data name="String45" xml:space="preserve">
+    <value>color:#999;</value>
+  </data>
+  <data name="String46" xml:space="preserve">
+    <value>}</value>
+  </data>
+  <data name="String47" xml:space="preserve">
+    <value>&lt;/style&gt;</value>
+  </data>
+  <data name="String48" xml:space="preserve">
+    <value>&lt;/head&gt;</value>
+  </data>
+  <data name="String49" xml:space="preserve">
+    <value>&lt;body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0"&gt;</value>
+  </data>
+  <data name="String5" xml:space="preserve">
+    <value>/* Reset Styles */</value>
+  </data>
+  <data name="String50" xml:space="preserve">
+    <value>&lt;table cellpadding="0" cellspacing="0" border="0" width="100%" height="100%" id="backgroundTable"&gt;</value>
+  </data>
+  <data name="String51" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String52" xml:space="preserve">
+    <value>&lt;td align="center" valign="top"&gt;</value>
+  </data>
+  <data name="String53" xml:space="preserve">
+    <value>&lt;!-- // Begin Template Preheader \\ --&gt;</value>
+  </data>
+  <data name="String54" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" id="templatePreheader" width="600"&gt;</value>
+  </data>
+  <data name="String55" xml:space="preserve">
+    <value>&lt;tr align="right"&gt;</value>
+  </data>
+  <data name="String56" xml:space="preserve">
+    <value>&lt;td valign="top" class="preheaderContent" style="border-top:5px solid #417CD3;"&gt;</value>
+  </data>
+  <data name="String57" xml:space="preserve">
+    <value>&lt;!-- // Begin Module: Standard Preheader \ --&gt;</value>
+  </data>
+  <data name="String58" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" &gt;</value>
+  </data>
+  <data name="String59" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String6" xml:space="preserve">
+    <value>html, body{height:100%;width:100%;}</value>
+  </data>
+  <data name="String60" xml:space="preserve">
+    <value>&lt;td align="right"&gt;</value>
+  </data>
+  <data name="String61" xml:space="preserve">
+    <value>&lt;p&gt;Problem viewing email? &lt;a href="[NOTIFICATIONURL]"&gt;&lt;span&gt;Click here to view online.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="String62" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String63" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String64" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String65" xml:space="preserve">
+    <value>&lt;!-- // End Module: Standard Preheader \ --&gt;</value>
+  </data>
+  <data name="String66" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String67" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String68" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String69" xml:space="preserve">
+    <value>&lt;!-- // End Template Preheader \\ --&gt;</value>
+  </data>
+  <data name="String7" xml:space="preserve">
+    <value>body{</value>
+  </data>
+  <data name="String70" xml:space="preserve">
+    <value>&lt;!-- // Begin Template body \\ --&gt;</value>
+  </data>
+  <data name="String71" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" style="border:1px solid #eeeeee; " &gt;</value>
+  </data>
+  <data name="String72" xml:space="preserve">
+    <value>&lt;tr &gt;</value>
+  </data>
+  <data name="String73" xml:space="preserve">
+    <value>&lt;td align="center" valign="top"&gt;</value>
+  </data>
+  <data name="String74" xml:space="preserve">
+    <value>&lt;!-- // Begin Template Header \\ --&gt;</value>
+  </data>
+  <data name="String75" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="30" cellspacing="0" width="600" id="templateHeader"&gt;</value>
+  </data>
+  <data name="String76" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String77" xml:space="preserve">
+    <value>&lt;td class="headerContent"&gt;</value>
+  </data>
+  <data name="String78" xml:space="preserve">
+    <value>&lt;a href="[SITEURL]"&gt;</value>
+  </data>
+  <data name="String79" xml:space="preserve">
+    <value>&lt;!--&lt;img src="[LOGOURL]" style="max-width:600px;" id="headerImage campaign-icon" /&gt;--&gt;</value>
+  </data>
+  <data name="String8" xml:space="preserve">
+    <value>margin:0; padding:0;</value>
+  </data>
+  <data name="String80" xml:space="preserve">
+    <value>&lt;img src="[LOGOURL]" style="max-width:600px;" id="headerImage campaign-icon" width="200" /&gt;</value>
+  </data>
+  <data name="String81" xml:space="preserve">
+    <value>&lt;/a&gt;</value>
+  </data>
+  <data name="String82" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String83" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String84" xml:space="preserve">
+    <value>&lt;/table&gt;</value>
+  </data>
+  <data name="String85" xml:space="preserve">
+    <value>&lt;!-- // End Template Header \\ --&gt;</value>
+  </data>
+  <data name="String86" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String87" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
+  </data>
+  <data name="String88" xml:space="preserve">
+    <value>&lt;tr &gt;</value>
+  </data>
+  <data name="String89" xml:space="preserve">
+    <value>&lt;td align="center" valign="top"&gt;</value>
+  </data>
+  <data name="String9" xml:space="preserve">
+    <value>font-family:sans-serif;</value>
+  </data>
+  <data name="String90" xml:space="preserve">
+    <value>&lt;!-- // Begin Template Sub Header \\ --&gt;</value>
+  </data>
+  <data name="String91" xml:space="preserve">
+    <value>&lt;table border="0" cellpadding="0" cellspacing="0" width="600" id="templateSubHeader"&gt;</value>
+  </data>
+  <data name="String92" xml:space="preserve">
+    <value>&lt;tr&gt;</value>
+  </data>
+  <data name="String93" xml:space="preserve">
+    <value>&lt;td class="subHeaderContent" bgcolor="#417CD3" width="66%" align="left"&gt;</value>
+  </data>
+  <data name="String94" xml:space="preserve">
+    <value>&lt;h2 style="color:#fff; font-weight:100; font-size:24px;"&gt;Notifications&lt;/h2&gt;</value>
+  </data>
+  <data name="String95" xml:space="preserve">
+    <value>&lt;/td&gt;&lt;!--close subHeaderContent--&gt;</value>
+  </data>
+  <data name="String96" xml:space="preserve">
+    <value>&lt;td width="33%" bgcolor="#417CD3" align="right"&gt;</value>
+  </data>
+  <data name="String97" xml:space="preserve">
+    <value>&lt;p style="color:#fff;"&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="String98" xml:space="preserve">
+    <value>&lt;/td&gt;</value>
+  </data>
+  <data name="String99" xml:space="preserve">
+    <value>&lt;/tr&gt;</value>
   </data>
 </root>

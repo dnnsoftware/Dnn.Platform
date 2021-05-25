@@ -115,6 +115,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -202,6 +203,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return null;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -268,6 +270,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.UpdateDataSourceInternal(oldValue, newValue, dataField);
         }
 
+        /// <inheritdoc/>
         protected override void LoadControlState(object state)
         {
             this._value = state;
@@ -278,12 +281,14 @@ namespace DotNetNuke.Web.UI.WebControls
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override object SaveControlState()
         {
             return this._value;

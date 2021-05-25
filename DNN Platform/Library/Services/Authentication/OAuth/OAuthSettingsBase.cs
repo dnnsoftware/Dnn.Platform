@@ -5,7 +5,6 @@
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     using System;
-    using System.Linq;
 
     using DotNetNuke.UI.WebControls;
 
@@ -18,6 +17,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             get { return string.Empty; }
         }
 
+        /// <inheritdoc/>
         public override void UpdateSettings()
         {
             if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
@@ -27,6 +27,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

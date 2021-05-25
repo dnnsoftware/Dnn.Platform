@@ -85,32 +85,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                     }
                 }
 
-                // HttpModules Config
-                var systemWebServerHttpModulesConfig = xmlDoc.DocumentElement.SelectSingleNode("system.web/httpModules");
-                if (systemWebServerHttpModulesConfig != null)
-                {
-                    var httpModuleConfig = systemWebServerHttpModulesConfig.SelectSingleNode("add[@name=\"ClientDependencyModule\"]");
-                    if (httpModuleConfig == null)
-                    {
-                        xmlFrag = xmlDoc.CreateDocumentFragment();
-                        xmlFrag.InnerXml = "<add name=\"ClientDependencyModule\" type=\"ClientDependency.Core.Module.ClientDependencyModule, ClientDependency.Core\" />";
-                        xmlDoc.DocumentElement.SelectSingleNode("system.web/httpModules").AppendChild(xmlFrag);
-                    }
-                }
-
-                // HttpHandler Config
-                var systemWebServerHttpHandlersConfig = xmlDoc.DocumentElement.SelectSingleNode("system.web/httpHandlers");
-                if (systemWebServerHttpHandlersConfig != null)
-                {
-                    var httpHandlerConfig = systemWebServerHttpHandlersConfig.SelectSingleNode("add[@type=\"ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core\"]");
-                    if (httpHandlerConfig == null)
-                    {
-                        xmlFrag = xmlDoc.CreateDocumentFragment();
-                        xmlFrag.InnerXml = "<add verb=\"*\" path=\"DependencyHandler.axd\" type=\"ClientDependency.Core.CompositeFiles.CompositeDependencyHandler, ClientDependency.Core\" />";
-                        xmlDoc.DocumentElement.SelectSingleNode("system.web/httpHandlers").AppendChild(xmlFrag);
-                    }
-                }
-
                 // ClientDependency Config
                 var clientDependencyConfig = xmlDoc.DocumentElement.SelectSingleNode("clientDependency");
                 if (clientDependencyConfig == null)
@@ -323,7 +297,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             // Some "legacy URLs" could be using their own query string versioning scheme (and we've forced them to use the new API through re-routing PageBase.RegisterStyleSheet
             // Ensure that physical CSS files with query strings have their query strings removed
-            if (filePath.Contains(".css?"))
+            // Ignore absolute urls, they will not exist locally
+            if (!Uri.TryCreate(filePath, UriKind.Absolute, out _) && filePath.Contains(".css?"))
             {
                 var filePathSansQueryString = RemoveQueryString(filePath);
                 if (File.Exists(page.Server.MapPath(filePathSansQueryString)))

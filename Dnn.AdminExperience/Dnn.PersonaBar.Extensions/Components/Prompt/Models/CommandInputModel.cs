@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         }
 
         public string CmdLine { get; set; }
+
         public int CurrentPage { get; set; }
     }
 }

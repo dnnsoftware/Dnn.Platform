@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Security.Roles
 {
-    using System;
-
     public enum RoleStatus
     {
         Pending = -1,

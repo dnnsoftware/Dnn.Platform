@@ -2,6 +2,9 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7F680294-37DA-4901-A19B-AF09794F73D7}</ProjectGuid>
@@ -69,41 +72,9 @@
     <Reference Include="ClientDependency.Core">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Modules.CoreMessaging">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Modules\CoreMessaging\bin\DotNetNuke.Modules.CoreMessaging.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Client">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.DDRMenu">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -2868,7 +2839,6 @@
     <Content Include="Licenses\jQuery Iframe Transport %28MIT%29.txt.resources" />
     <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt.resources" />
     <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt.resources" />
-    <Content Include="Licenses\json2 %28Public Domain%29.txt.resources" />
     <Content Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Dnn-Connect CkEditorProvider %28MIT%29.txt.resources" />
     <Content Include="Licenses\GitVersion %28MIT%29.txt.resources" />
@@ -3026,7 +2996,6 @@
     <Content Include="Resources\Shared\scripts\jquery\jquery.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.mousewheel.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.tmpl.js" />
-    <Content Include="Resources\Shared\scripts\json2.js" />
     <Content Include="Resources\Shared\scripts\knockout.js" />
     <Content Include="Resources\Shared\scripts\knockout.mapping.js" />
     <Content Include="Resources\Shared\scripts\slides.min.jquery.js" />
@@ -3162,6 +3131,58 @@
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
+    <Content Include="Install\Config\04.06.00.config" />
+    <Content Include="Install\Config\04.07.00.config" />
+    <Content Include="Install\Config\04.08.00.config" />
+    <Content Include="Install\Config\04.09.00.config" />
+    <Content Include="Install\Config\05.01.00.config" />
+    <Content Include="Install\Config\05.02.00.config" />
+    <Content Include="Install\Config\05.02.01.config" />
+    <Content Include="Install\Config\05.03.00.config" />
+    <Content Include="Install\Config\05.05.00.config" />
+    <Content Include="Install\Config\05.06.00.config" />
+    <Content Include="Install\Config\05.06.01.config" />
+    <Content Include="Install\Config\05.06.03.config" />
+    <Content Include="Install\Config\06.00.00.config" />
+    <Content Include="Install\Config\06.01.00.config" />
+    <Content Include="Install\Config\06.01.01.config" />
+    <Content Include="Install\Config\06.02.00.config" />
+    <Content Include="Install\Config\07.00.00.config" />
+    <Content Include="Install\Config\07.00.05.config" />
+    <Content Include="Install\Config\07.00.06.config" />
+    <Content Include="Install\Config\07.01.01.config" />
+    <Content Include="Install\Config\07.01.02.config" />
+    <Content Include="Install\Config\07.02.00.config" />
+    <Content Include="Install\Config\07.02.01.config" />
+    <Content Include="Install\Config\07.03.00.config" />
+    <Content Include="Install\Config\07.04.01.config" />
+    <Content Include="Install\Config\08.00.00.01.config" />
+    <Content Include="Install\Config\08.00.00.02.config" />
+    <Content Include="Install\Config\08.00.00.03.config" />
+    <Content Include="Install\Config\08.00.00.12.config" />
+    <Content Include="Install\Config\08.00.00.22.config" />
+    <Content Include="Install\Config\08.00.00.26.config" />
+    <Content Include="Install\Config\08.00.00.30.config" />
+    <Content Include="Install\Config\08.00.04.config" />
+    <Content Include="Install\Config\09.00.01.config" />
+    <Content Include="Install\Config\09.01.00.config" />
+    <Content Include="Install\Config\09.01.01.config" />
+    <Content Include="Install\Config\09.02.00.config" />
+    <Content Include="Install\Config\09.03.00.config" />
+    <Content Include="Install\Config\09.04.00.config" />
+    <Content Include="Install\Config\09.05.00.config" />
+    <Content Include="Install\Config\09.06.00.config" />
+    <Content Include="Install\Config\09.06.02.config" />
+    <Content Include="Install\Config\09.07.00.config" />
+    <Content Include="Install\Config\09.07.02.config" />
+    <Content Include="Install\Config\BindingRedirect.config" />
+    <Content Include="Install\Config\RemoveBindingRedirect.config" />
+    <Content Include="Install\Config\09.07.03.config" />
+    <Content Include="Install\Config\09.08.00.config" />
+    <Content Include="Install\Config\BindingRedirect.config" />
+    <Content Include="Install\Config\Net35.config" />
+    <Content Include="Install\Config\Net40.config" />
+    <Content Include="Install\Config\RemoveBindingRedirect.config" />
     <None Include="Install\Template\UserProfile.page.template" />
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
@@ -3345,7 +3366,10 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.05.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.06.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.06.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.07.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.07.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.08.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -3381,7 +3405,7 @@
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>

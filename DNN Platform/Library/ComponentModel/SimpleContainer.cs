@@ -37,6 +37,7 @@ namespace DotNetNuke.ComponentModel
             this._name = name;
         }
 
+        /// <inheritdoc/>
         public override string Name
         {
             get
@@ -45,6 +46,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponent(string name, Type type)
         {
             using (this._registeredComponents.GetWriteLock())
@@ -53,6 +55,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        /// <inheritdoc/>
         public override object GetComponent(string name)
         {
             IComponentBuilder builder = this.GetComponentBuilder(name);
@@ -60,6 +63,7 @@ namespace DotNetNuke.ComponentModel
             return this.GetComponent(builder);
         }
 
+        /// <inheritdoc/>
         public override object GetComponent(Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -85,6 +89,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
+        /// <inheritdoc/>
         public override object GetComponent(string name, Type contractType)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -100,6 +105,7 @@ namespace DotNetNuke.ComponentModel
             return component;
         }
 
+        /// <inheritdoc/>
         public override string[] GetComponentList(Type contractType)
         {
             var components = new List<string>();
@@ -118,6 +124,7 @@ namespace DotNetNuke.ComponentModel
             return components.ToArray();
         }
 
+        /// <inheritdoc/>
         public override IDictionary GetComponentSettings(string name)
         {
             IDictionary settings;
@@ -129,6 +136,7 @@ namespace DotNetNuke.ComponentModel
             return settings;
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
             this.AddComponentType(contractType);
@@ -149,6 +157,7 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, type);
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponentInstance(string name, Type contractType, object instance)
         {
             this.AddComponentType(contractType);
@@ -158,6 +167,7 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(name, instance.GetType());
         }
 
+        /// <inheritdoc/>
         public override void RegisterComponentSettings(string name, IDictionary dependencies)
         {
             using (this._componentDependencies.GetWriteLock())

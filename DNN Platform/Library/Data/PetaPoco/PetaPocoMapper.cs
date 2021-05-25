@@ -16,6 +16,10 @@ namespace DotNetNuke.Data.PetaPoco
         private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
         private readonly string _tablePrefix;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PetaPocoMapper"/> class.
+        /// </summary>
+        /// <param name="tablePrefix"></param>
         public PetaPocoMapper(string tablePrefix)
         {
             this._tablePrefix = tablePrefix;
@@ -38,6 +42,7 @@ namespace DotNetNuke.Data.PetaPoco
             }
         }
 
+        /// <inheritdoc/>
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
             bool includeColumn = true;
@@ -73,6 +78,7 @@ namespace DotNetNuke.Data.PetaPoco
             return ci;
         }
 
+        /// <inheritdoc/>
         public TableInfo GetTableInfo(Type pocoType)
         {
             TableInfo ti = TableInfo.FromPoco(pocoType);
@@ -90,11 +96,13 @@ namespace DotNetNuke.Data.PetaPoco
             return ti;
         }
 
+        /// <inheritdoc/>
         public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type SourceType)
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public Func<object, object> GetToDbConverter(PropertyInfo SourceProperty)
         {
             return null;

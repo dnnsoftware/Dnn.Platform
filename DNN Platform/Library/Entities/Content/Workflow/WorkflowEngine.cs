@@ -42,6 +42,9 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowLogger _workflowLogger;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowEngine"/> class.
+        /// </summary>
         public WorkflowEngine()
         {
             this._contentController = Util.GetContentController();
@@ -58,16 +61,19 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
+        /// <inheritdoc/>
         public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
         }
 
+        /// <inheritdoc/>
         public UserInfo GetSubmittedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
         }
 
+        /// <inheritdoc/>
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
         {
             Requires.NotNegative("workflowId", workflowId);
@@ -109,6 +115,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
         }
 
+        /// <inheritdoc/>
         public void CompleteState(StateTransaction stateTransaction)
         {
             var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -169,6 +176,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteState);
         }
 
+        /// <inheritdoc/>
         public void DiscardState(StateTransaction stateTransaction)
         {
             var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -230,12 +238,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardState);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowCompleted(int contentItemId)
         {
             var contentItem = this._contentController.GetContentItem(contentItemId);
             return this.IsWorkflowCompleted(contentItem);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowCompleted(ContentItem contentItem)
         {
             var workflow = this._workflowManager.GetWorkflow(contentItem);
@@ -247,12 +257,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             return contentItem.StateID == Null.NullInteger || workflow.LastState.StateID == contentItem.StateID;
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowOnDraft(int contentItemId)
         {
             var contentItem = this._contentController.GetContentItem(contentItemId); // Ensure DB values
             return this.IsWorkflowOnDraft(contentItem);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowOnDraft(ContentItem contentItem)
         {
             var workflow = this._workflowManager.GetWorkflow(contentItem);
@@ -264,6 +276,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return contentItem.StateID == workflow.FirstState.StateID;
         }
 
+        /// <inheritdoc/>
         public void DiscardWorkflow(StateTransaction stateTransaction)
         {
             var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -292,6 +305,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
         }
 
+        /// <inheritdoc/>
         public void CompleteWorkflow(StateTransaction stateTransaction)
         {
             var contentItem = this._contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -320,6 +334,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowEngine> GetFactory()
         {
             return () => new WorkflowEngine();

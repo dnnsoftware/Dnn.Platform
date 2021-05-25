@@ -7,5 +7,6 @@
   </Target>
   <Target Name="DebugProject">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Extensions.FileSystemGlobbing.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\BouncyCastle.Crypto.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>

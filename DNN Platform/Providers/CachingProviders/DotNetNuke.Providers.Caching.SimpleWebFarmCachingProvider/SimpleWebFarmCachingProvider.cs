@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
     using System;
@@ -19,12 +18,14 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
     using HttpWebRequest = System.Net.HttpWebRequest;
 
+    /// <inheritdoc/>
     public class SimpleWebFarmCachingProvider : CachingProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
+        /// <inheritdoc/>
         public override void Clear(string type, string data)
         {
             // Clear the local cache
@@ -40,6 +41,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             this.NotifyOtherServers("Clear~" + type, data);
         }
 
+        /// <inheritdoc/>
         public override void Remove(string key)
         {
             // Remove from local cache

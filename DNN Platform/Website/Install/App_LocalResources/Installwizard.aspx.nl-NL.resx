@@ -188,11 +188,7 @@
 &amp;lt;p&amp;gt;&amp;lt;b&amp;gt;&amp;lt;font color='red'&amp;gt;De website voldoet niet aan de beveiligingscheck&amp;lt;/font&amp;gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;
 Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ). Rechtermuisklik op de  folder en selecteer Delen en Beveiliging in het popupmenu. Selecteer de beveiligingstab. Voeg de vereiste gebruikers toe en stel de juiste rechten in.
 &amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;
-&amp;lt;h3&amp;gt;Bij gebruik van Windows 2000 - IIS5&amp;lt;/h3&amp;gt;
-&amp;lt;p&amp;gt;De ASPNET User Account moet Lees, Schrijf, en Wijzigrechten hebben op de hoofdfolder van uw website&amp;lt;/p&amp;gt;
-&amp;lt;h3&amp;gt;Bij gebruik van Windows 2003, Windows Vista of Windows Server 2008 en  IIS6 of IIS7&amp;lt;/h3&amp;gt;
-&amp;lt;p&amp;gt;De NT AUTHORITY\NETWORK SERVICE User Account moet Lees, Schrijf en Wijzigrechten hebben op de hoofdfolder van uw website.&amp;lt;/p&amp;gt;
-&amp;lt;h3&amp;gt;Bij gebruik van Windows 7 of Windows Server 2008 R2 en  IIS7.5&amp;lt;/h3&amp;gt;
+&amp;lt;h3&amp;gt;Bij gebruik van Windows 8 of Windows Server 2008 R2 en  IIS7.5&amp;lt;/h3&amp;gt;
 &amp;lt;p&amp;gt;Moet de IIS AppPool\DefaultAppPool User Account Lees, Schrijf en Wijzigrechten hebben op de hoofdfolder van uw website.&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a class="dnnPrimaryAction" href=""&amp;gt;Recheck&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;</value>
   </data>
   <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
@@ -215,15 +211,6 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
   </data>
   <data name="IISVerificationFail.Text" xml:space="preserve">
     <value>AppPool in IIS moet onder Integrated Mode draaien</value>
-  </data>
-  <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Het productverbeteringsprogramma stelt ons in staat om een beter beeld te krijgen hoe we DNNPlatform kunnen verbeteren. De gegevens helpen ons om het gebruik te analyseren en om te zien wat belangrijk is voor de mensen die DNNPlatform gebruiken. Alle data is anoniem en alleen voor intern gebruik.&lt;br /&gt;Kijk voor meer informatie op &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;DNN Productverbeteringsprogramma&lt;/a&gt;.&lt;br /&gt;</value>
-  </data>
-  <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Stuur anonieme gebruiksinformatie naar DNN</value>
-  </data>
-  <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
-    <value>Productverbeteringsprogramma</value>
   </data>
   <data name="InitHostSetting.Text" xml:space="preserve">
     <value>Doorvoeren van applicatiebeheerder instellingen</value>
@@ -282,14 +269,11 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
   <data name="IsSqlServerDbo.Text" xml:space="preserve">
     <value>De door jou opgegeven databasegebruiker heeft geen dbo rechten</value>
   </data>
-  <data name="IsValidDotNetVersion.Text" xml:space="preserve">
-    <value>DNNPlatform heeft .net 4.0 of hoger nodig om te kunnen werken</value>
-  </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DNNPlatform heeft SQL 2008 (Express of volledig produkt) nodig om te kunnen werken.</value>
+    <value>DNNPlatform heeft SQL 2008 R2 (Express of volledig produkt) nodig om te kunnen werken.</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Controleren of database versie SQL 2008 (express of volledig product) of hoger is</value>
+    <value>Controleren of database versie SQL 2008 R2 (express of volledig product) of hoger is</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>De taal die je wilt gebruiken voor je website.</value>

@@ -207,5 +207,6 @@ namespace DotNetNuke.Services.Syndication
     }
 
     public class OpmlOutlines : List<OpmlOutline>
-    {}
+    {
+    }
 }

@@ -25,6 +25,9 @@ namespace DotNetNuke.UI.UserControls
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
         private string _systemUser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleAuditControl"/> class.
+        /// </summary>
         public ModuleAuditControl()
         {
             this.LastModifiedDate = string.Empty;
@@ -69,6 +72,7 @@ namespace DotNetNuke.UI.UserControls
             get { return this.ViewState["Entity"] as EntityInfo; }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

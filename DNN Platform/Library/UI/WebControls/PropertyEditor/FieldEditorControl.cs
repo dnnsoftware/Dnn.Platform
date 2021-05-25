@@ -8,24 +8,22 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
 
     public enum EditorDisplayMode
     {
-        Div,
-        Table,
+        Div = 0,
+        Table = 1,
     }
 
     public enum HelpDisplayMode
     {
-        Never,
-        EditOnly,
-        Always,
+        Never = 0,
+        EditOnly = 1,
+        Always = 2,
     }
 
     /// -----------------------------------------------------------------------------
@@ -49,6 +47,9 @@ namespace DotNetNuke.UI.WebControls
         private StandardEditorInfoAdapter _StdAdapter;
         private bool _Validated;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldEditorControl"/> class.
+        /// </summary>
         public FieldEditorControl()
         {
             this.ValidationExpression = Null.NullString;
@@ -330,6 +331,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
+        /// <inheritdoc/>
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -510,6 +512,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

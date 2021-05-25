@@ -353,6 +353,7 @@ namespace DotNetNuke.Entities.Users
         /// <see cref="UserLoginStatus.LOGIN_INSECUREADMINPASSWORD"/> or
         /// <see cref="UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD"/>.
         /// </param>
+        [Obsolete("Deprecated in 9.8.1.  Scheduled removal in v11.0.0.  No alternative method implemented.")]
         public static void CheckInsecurePassword(string username, string password, ref UserLoginStatus loginStatus)
         {
             if (username == "admin" && (password == "admin" || password == "dnnadmin"))
@@ -1812,7 +1813,15 @@ namespace DotNetNuke.Entities.Users
         public bool IsValidUserName(string userName)
         {
             char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
-            return userName.Length >= 5 &&
+
+            // if the httpcontext is null, then use the default minimum length
+            var usernameMinLength = Globals.glbUserNameMinLength;
+            if (HttpContext.Current != null)
+            {
+                usernameMinLength = PortalController.GetPortalSettingAsInteger("Security_UserNameMinLength", this.PortalId, usernameMinLength);
+            }
+
+            return userName.Length >= usernameMinLength &&
                         userName == userName.Trim() &&
                         userName.All(ch => ch >= ' ') &&
                         userName.IndexOfAny(unallowedAscii) < 0;

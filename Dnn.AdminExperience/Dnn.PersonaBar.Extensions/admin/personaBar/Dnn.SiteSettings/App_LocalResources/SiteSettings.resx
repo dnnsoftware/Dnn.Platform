@@ -1149,12 +1149,6 @@
   <data name="PagesToTranslate.Text" xml:space="preserve">
     <value>Pages To Translate:</value>
   </data>
-  <data name="plImprovementProgram.Help" xml:space="preserve">
-    <value>Check this box to participate in the DNN Improvement Program. &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Learn More&lt;/a&gt;.</value>
-  </data>
-  <data name="plImprovementProgram.Text" xml:space="preserve">
-    <value>Participate in DNN Improvement Program:</value>
-  </data>
   <data name="plUpgrade.Text" xml:space="preserve">
     <value>Check for Software Upgrades</value>
   </data>
@@ -1475,5 +1469,32 @@
   </data>
   <data name="Redirect_AfterRegistration.Text" xml:space="preserve">
     <value>Redirect After Registration</value>
+  </data>
+  <data name="MoreSettings.Text" xml:space="preserve">
+    <value>More Settings</value>
+  </data>
+  <data name="plEnablePopups.Help" xml:space="preserve">
+    <value>When enabled DNN will load some standard controls in a popup. Otherwise it will reload the page and show the control embedded on a page.</value>
+  </data>
+  <data name="plEnablePopups.Text" xml:space="preserve">
+    <value>Enable Popups</value>
+  </data>
+  <data name="plInjectModuleHyperLink.Help" xml:space="preserve">
+    <value>When switched on DNN will insert an anchor at the start of each module with the module id for its name.</value>
+  </data>
+  <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
+    <value>Inject Module Anchor</value>
+  </data>
+  <data name="plInlineEditorEnabled.Help" xml:space="preserve">
+    <value>When switched on DNN allows editors to edit HTML module content directly on the page instead of having to go through the edit control.</value>
+  </data>
+  <data name="plInlineEditorEnabled.Text" xml:space="preserve">
+    <value>Inline Editor Enabled</value>
+  </data>
+  <data name="plShowQuickModuleAddMenu.Help" xml:space="preserve">
+    <value>If switched on this will show a dropdown on the edit bar from which users can quickly add a module to a specified pane.</value>
+  </data>
+  <data name="plShowQuickModuleAddMenu.Text" xml:space="preserve">
+    <value>Show Quick Module Add Menu</value>
   </data>
 </root>

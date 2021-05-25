@@ -30,6 +30,8 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 
         public string DisplayNameFormat { get; set; }
 
+        public string UserNameMinLength { get; set; }
+
         public string UserNameValidation { get; set; }
 
         public string EmailAddressValidation { get; set; }

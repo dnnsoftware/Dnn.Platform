@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         private ISqlQueryController _controller = SqlQueryController.Instance;
 
-        //private const int MaxOutputRecords = 500;
+        // private const int MaxOutputRecords = 500;
 
         [HttpGet]
         public HttpResponseMessage GetSavedQueries()
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
                 queries = this._controller.GetQueries(),
-                connections = this._controller.GetConnections()
+                connections = this._controller.GetConnections(),
             });
         }
 
@@ -143,14 +143,14 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         {
             var props = new LogProperties { new LogDetailInfo("User", this.UserInfo.Username), new LogDetailInfo("SQL Query", query) };
 
-            //Add the event log with host portal id.
+            // Add the event log with host portal id.
             var log = new LogInfo
             {
                 LogUserID = this.UserInfo.UserID,
                 LogTypeKey = EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(),
                 LogProperties = props,
                 BypassBuffering = true,
-                LogPortalID = Null.NullInteger
+                LogPortalID = Null.NullInteger,
             };
 
             LogController.Instance.AddLog(log);

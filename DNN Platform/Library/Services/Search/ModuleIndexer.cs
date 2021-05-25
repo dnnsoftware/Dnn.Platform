@@ -41,11 +41,18 @@ namespace DotNetNuke.Services.Search
 
         private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleIndexer"/> class.
+        /// </summary>
         public ModuleIndexer()
             : this(false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleIndexer"/> class.
+        /// </summary>
+        /// <param name="needSearchModules"></param>
         public ModuleIndexer(bool needSearchModules)
         {
             this._searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();

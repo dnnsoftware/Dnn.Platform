@@ -1,4 +1,4 @@
-' Copyright (c) .NET Foundation. All rights reserved.
+﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System.Web
@@ -23,8 +23,8 @@ Namespace DotNetNuke.UI.Utilities
         End Enum
 
         Public Enum TransportTypeCode
-            XMLHTTP
-            IFRAMEPost
+            XMLHTTP = 0
+            IFRAMEPost = 1
         End Enum
 
         Public Response As String = ""

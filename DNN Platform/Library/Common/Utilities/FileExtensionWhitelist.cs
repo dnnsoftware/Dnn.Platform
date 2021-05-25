@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -20,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
         /// should not have an '.' in the extensions (e.g. txt,jpg,png,doc).</remarks>
         public FileExtensionWhitelist(string extensionList)
         {
-            this._extensions = EscapedString.Seperate(extensionList.ToLowerInvariant()).Select(item => "." + item).ToList();
+            this._extensions = EscapedString.Seperate(extensionList.ToLowerInvariant(), true).Select(item => "." + item).ToList();
         }
 
         /// <summary>
@@ -92,6 +91,7 @@ namespace DotNetNuke.Common.Utilities
             return allExtensions.Contains(extension);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.ToDisplayString();

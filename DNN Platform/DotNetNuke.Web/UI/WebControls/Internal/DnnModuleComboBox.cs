@@ -45,6 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
+        /// <inheritdoc/>
         public override string SelectedValue
         {
             get
@@ -53,6 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         public override bool Enabled
         {
             get
@@ -87,6 +89,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -96,6 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Controls.Add(this._moduleCombo);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -110,6 +114,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             if (this._moduleCombo.FindItemByValue(this._originalValue) != null)

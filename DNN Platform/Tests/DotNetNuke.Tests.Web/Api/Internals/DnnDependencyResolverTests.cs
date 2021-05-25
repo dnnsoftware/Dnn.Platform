@@ -20,7 +20,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         private IDependencyResolver _dependencyResolver;
 
         private interface ITestService
-        {}
+        {
+        }
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -114,7 +115,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         }
 
         private class TestService : ITestService
-        {}
+        {
+        }
 
         private class FakeScopeAccessor : IScopeAccessor
         {

@@ -15,7 +15,6 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Dto.Assets;
     using Dnn.ExportImport.Dto.Users;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
@@ -185,7 +184,8 @@ namespace Dnn.ExportImport.Components.Services
                                         {
                                             var profileDefinitionId = Util.GetProfilePropertyId(
                                                 importJob.PortalId,
-                                                userProfile.PropertyDefinitionId, userProfile.PropertyName);
+                                                userProfile.PropertyDefinitionId,
+                                                userProfile.PropertyName);
                                             if (profileDefinitionId == null || profileDefinitionId == -1)
                                             {
                                                 continue;
@@ -223,8 +223,11 @@ namespace Dnn.ExportImport.Components.Services
                             if (includeProfile)
                             {
                                 DotNetNuke.Data.DataProvider.Instance()
-                                    .BulkInsert("ExportImport_AddUpdateUsersProfilesBulk", "@DataTable",
-                                        tableUserProfile, new Dictionary<string, object> { { "Overwrite", overwrite } });
+                                    .BulkInsert(
+                                        "ExportImport_AddUpdateUsersProfilesBulk",
+                                        "@DataTable",
+                                        tableUserProfile,
+                                        new Dictionary<string, object> { { "Overwrite", overwrite } });
                                 totalProfilesImported += tempUserProfileCount;
                             }
 

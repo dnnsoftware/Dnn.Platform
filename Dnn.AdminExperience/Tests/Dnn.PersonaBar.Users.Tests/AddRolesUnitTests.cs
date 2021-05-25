@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             PortalID = this.testPortalId,
-                            IsPublic = true
+                            IsPublic = true,
                         },
                     });
 
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Users.Tests
                         new RoleInfo
                         {
                             RoleID = 1,
-                            RoleName = "Tester"
+                            RoleName = "Tester",
                         },
                     });
 
@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             PortalID = this.testPortalId,
-                            IsPublic = true
+                            IsPublic = true,
                         },
                     });
 
@@ -129,7 +129,7 @@ namespace Dnn.PersonaBar.Users.Tests
                         new RoleInfo
                         {
                             RoleID = 1,
-                            RoleName = "Tester"
+                            RoleName = "Tester",
                         },
                     });
 

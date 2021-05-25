@@ -14,11 +14,15 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
     {
         private readonly IWorkflowActionRepository _workflowActionRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowActionManager"/> class.
+        /// </summary>
         public WorkflowActionManager()
         {
             this._workflowActionRepository = WorkflowActionRepository.Instance;
         }
 
+        /// <inheritdoc/>
         public IWorkflowAction GetWorkflowActionInstance(int contentTypeId, WorkflowActionTypes actionType)
         {
             var action = this._workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
@@ -30,6 +34,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
             return Reflection.CreateInstance(Reflection.CreateType(action.ActionSource)) as IWorkflowAction;
         }
 
+        /// <inheritdoc/>
         public void RegisterWorkflowAction(WorkflowAction workflowAction)
         {
             Requires.NotNull("workflowAction", workflowAction);
@@ -43,6 +48,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
             this._workflowActionRepository.AddWorkflowAction(workflowAction);
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowActionManager> GetFactory()
         {
             return () => new WorkflowActionManager();

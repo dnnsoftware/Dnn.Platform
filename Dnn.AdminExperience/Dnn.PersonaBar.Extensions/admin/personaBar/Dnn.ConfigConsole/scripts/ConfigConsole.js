@@ -5,19 +5,19 @@
 * Module responsible to Config Console
 */
 'use strict';
+
 define(['jquery',
     'knockout',
     'knockout.mapping',
     'jquery-ui.min',
-    'main/codeEditor',
     'main/config',
     'jquery.easydropdown.min',
     'dnn.jquery',
     'main/koBindingHandlers/jScrollPane'],
-    function ($, ko, koMapping, jqueryUI, codeEditor, cf) {
+    function ($, ko, koMapping, jqueryUI, cf) {
         var config = cf.init();
 
-        var identifier, utility, $panel, viewModel, configEditor, mergeEditor, curConfigName;
+        var utility, $panel, viewModel, monacoConfigFilesEditor, configFilesEditor, configFilesModel, configFilesContent, monacoMergeScriptsEditor, mergeScriptsEditor, mergeScriptsModel, mergeScriptsContent, curConfigName;
 
         var requestService = function (type, method, params, callback, failure) {
             utility.sf.moduleRoot = "personaBar";
@@ -43,10 +43,16 @@ define(['jquery',
         var getConfigFile = function () {
             if (curConfigName === viewModel.resx.plConfigHelp) {
                 // it's the caption, so empty the editor
-                configEditor.setValue('');
+                configFilesContent.setValue('');
             } else {
                 requestService('get', 'GetConfigFile', { 'fileName': curConfigName }, function (data) {
-                    configEditor.setValue(data.FileContent);
+                    if (curConfigName.endsWith("config")) {
+                        configFilesEditor.setModelLanguage(configFilesModel, "xml");
+                    }
+                    else if (curConfigName.endsWith("txt")) {
+                        configFilesEditor.setModelLanguage(configFilesModel, "plain/text");
+                    }
+                    configFilesContent.setValue(data.FileContent);
                 }, function () {
                     // failed
                     utility.notifyError('Failed...');
@@ -56,7 +62,7 @@ define(['jquery',
 
         var saveConfigFile = function () {
             utility.confirm(utility.resx.ConfigConsole.SaveConfirm, utility.resx.ConfigConsole.SaveButton, utility.resx.ConfigConsole.CancelButton, function () {
-                requestService('post', 'UpdateConfigFile', { 'fileName': curConfigName, 'fileContent': configEditor.getValue() }, function (data) {
+                requestService('post', 'UpdateConfigFile', { 'fileName': curConfigName, 'fileContent': configFilesContent.getValue() }, function (data) {
                     utility.notify(utility.resx.ConfigConsole.Success);
                 }, function () {
                     // failed
@@ -71,7 +77,7 @@ define(['jquery',
                 confirmText = utility.resx.ConfigConsole.SaveWarning;
             }
             utility.confirm(confirmText, utility.resx.ConfigConsole.SaveButton, utility.resx.ConfigConsole.CancelButton, function () {
-                requestService('post', 'MergeConfigFile', { 'fileName': '', 'fileContent': mergeEditor.getValue() }, function (data) {
+                requestService('post', 'MergeConfigFile', { 'fileName': '', 'fileContent': mergeScriptsContent.getValue() }, function (data) {
                     utility.notify(utility.resx.ConfigConsole.Success);
                 }, function () {
                     // failed
@@ -116,7 +122,7 @@ define(['jquery',
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        mergeEditor.setValue(reader.result);
+                        mergeScriptsContent.setValue(reader.result);
                     }
 
                     reader.readAsText(file);
@@ -127,7 +133,6 @@ define(['jquery',
         }
 
         var init = function (wrapper, util, params, callback) {
-            identifier = params.identifier;
             utility = util;
             $panel = wrapper;
 
@@ -139,31 +144,119 @@ define(['jquery',
 
             getConfigs();
 
-            configEditor = codeEditor.init($panel.find('.config-xml'), { mode: 'xml' });
-            mergeEditor = codeEditor.init($panel.find('.script-xml'), { mode: 'xml' });
-            configEditor.setSize("100%", 500);
-            mergeEditor.setSize("100%", 500);
-
-            configEditor.on("blur", function (cm) {
-                cm.save();
-                return true;
-            });
-
-            mergeEditor.on("blur", function (cm) {
-                cm.save();
-                return true;
-            });
-
-            viewModel.config.subscribe(configSelectionChanged);
+            initConfigConsole();
 
             initUpload();
 
-            $('.configConsolePanel .body').dnnTabs({ selected: 0 });
+            $('.configConsolePanel .body').dnnTabs({ selected: 0, activate: initTabsClickEvent() });
+            setEditorHeight();
 
             if (typeof callback === 'function') {
                 callback();
             }
         };
+
+        var initTabsClickEvent = function() {
+            const tabs = document.querySelectorAll('.configConsolePanel .tabs-nav li');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', setEditorHeight);
+            });
+        }
+
+        var setEditorHeight = function() {
+            setTimeout(() => {
+                var panelHeight = $('#ConfigConsole-panel').height();
+                if (panelHeight > 400) {
+                    
+                    if(document.querySelector('#configConsole-files').style.display !== 'none') {
+                        $('#monaco-editor-config-files').height(panelHeight - 400);
+                    }
+
+                    if(document.querySelector('#configConsole-merge').style.display !== 'none') {
+                        $('#monaco-editor-merge-scripts').height(panelHeight - 400);
+                    }
+                }
+            }, 300);
+        }
+
+        var initConfigConsole = function() {
+            var monacoEditorLoaderScript = document.createElement('script');
+            monacoEditorLoaderScript.type = 'text/javascript';
+            monacoEditorLoaderScript.src = '/Resources/Shared/components/MonacoEditor/loader.js';
+            document.body.appendChild(monacoEditorLoaderScript);
+
+            require.config({ paths: { 'vs': '/Resources/Shared/components/MonacoEditor' }});
+            require(['vs/editor/editor.main'], function(monaco) {
+        
+                self.MonacoEnvironment = {
+                    getWorkerUrl: function (moduleId, label) {
+                        if (label === 'typescript' || label === 'javascript') {
+                        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                            importScripts('${process.env.ASSET_PATH}/typescript.worker.js');`
+                        )}`;
+                        }
+        
+                    return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                        importScripts('${process.env.ASSET_PATH}/editor.worker.js');`
+                    )}`;
+                    }
+                }
+
+                configFilesEditor = monaco.editor;
+                mergeScriptsEditor = monaco.editor;
+
+                configFilesContent = configFilesEditor.createModel("", "xml");
+                mergeScriptsContent = mergeScriptsEditor.createModel("", "xml");
+
+                initMonacoEditors();
+
+                configFilesModel = monacoConfigFilesEditor.getModel();
+                mergeScriptsModel = monacoMergeScriptsEditor.getModel();
+
+                viewModel.config.subscribe(configSelectionChanged);
+            });
+
+        }
+
+        var initMonacoEditors = function() {
+            var theme = "vs-light";
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                theme = "vs-dark";
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                theme = e.matches ? "vs-dark" : "vs-light";
+            });
+
+            monacoConfigFilesEditor = configFilesEditor.create(document.getElementById("monaco-editor-config-files"), {
+                model: configFilesContent,
+                language: "xml",
+                wordWrap: 'wordWrapColumn',
+                wordWrapColumn: 80,
+                wordWrapMinified: true,
+                wrappingIndent: "indent",
+                lineNumbers: "on",
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                theme: theme,
+                automaticLayout: true
+            });
+
+            monacoMergeScriptsEditor = mergeScriptsEditor.create(document.getElementById("monaco-editor-merge-scripts"), {
+                model: mergeScriptsContent,
+                language: "xml",
+                wordWrap: 'wordWrapColumn',
+                wordWrapColumn: 80,
+                wordWrapMinified: true,
+                wrappingIndent: "indent",
+                lineNumbers: "on",
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                theme: theme,
+                automaticLayout: true
+            });
+        }
 
         var load = function (params, callback) {
             if (typeof callback === 'function') {

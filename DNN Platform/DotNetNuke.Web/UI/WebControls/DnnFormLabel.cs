@@ -4,19 +4,10 @@
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
-
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public class DnnFormLabel : Panel
     {
@@ -30,6 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool RequiredField { get; set; }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             string toolTipText = this.LocalizeString(this.ToolTipKey);

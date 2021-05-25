@@ -73,6 +73,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             this.ClearCache();
         }
 
+        /// <inheritdoc/>
         protected override Func<IJavaScriptLibraryController> GetFactory()
         {
             return () => new JavaScriptLibraryController();

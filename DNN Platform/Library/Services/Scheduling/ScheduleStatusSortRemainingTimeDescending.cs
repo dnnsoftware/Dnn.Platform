@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Scheduling
     /// -----------------------------------------------------------------------------
     public class ScheduleStatusSortRemainingTimeDescending : IComparer
     {
+        /// <inheritdoc/>
         public int Compare(object x, object y)
         {
             return ((ScheduleHistoryItem)x).RemainingTime.CompareTo(((ScheduleHistoryItem)y).RemainingTime);

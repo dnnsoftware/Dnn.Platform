@@ -41,6 +41,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+
     // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
@@ -1631,6 +1632,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc/>
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
@@ -3052,6 +3054,35 @@ namespace DotNetNuke.Entities.Portals
                 UpdatePortalSetting(portalId, "DataConsentDelayMeasurement", XmlUtils.GetNodeValue(nodeSettings, "dataconsentdelaymeasurement", string.Empty), true, currentCulture);
             }
 
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "sitemapcachedays", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "SitemapCacheDays", XmlUtils.GetNodeValue(nodeSettings, "sitemapcachedays", string.Empty), true);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "sitemapexcludepriority", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "SitemapExcludePriority", XmlUtils.GetNodeValue(nodeSettings, "sitemapexcludepriority", string.Empty), true);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "sitemapincludehidden", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "SitemmpIncludeHidden", XmlUtils.GetNodeValue(nodeSettings, "sitemapincludehidden", string.Empty), true);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "sitemaplevelmode", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "SitemapLevelMode", XmlUtils.GetNodeValue(nodeSettings, "sitemaplevelmode", string.Empty), true);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "sitemapminpriority", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "SitemapMinPriority", XmlUtils.GetNodeValue(nodeSettings, "sitemapminpriority", string.Empty), true);
+            }
+
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showquickmoduleaddmenu", string.Empty)))
+            {
+                UpdatePortalSetting(portalId, "ShowQuickModuleAddMenu", XmlUtils.GetNodeValue(nodeSettings, "showquickmoduleaddmenu", string.Empty));
+            }
         }
 
         private void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)
@@ -3661,11 +3692,13 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
+        /// <inheritdoc/>
         IAbPortalSettings IPortalController.GetCurrentSettings()
         {
             return GetCurrentPortalSettingsInternal();
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
@@ -3685,6 +3718,11 @@ namespace DotNetNuke.Entities.Portals
             private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
             private string _resourceFilePath;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.
+            /// </summary>
+            /// <param name="templateFilePath"></param>
+            /// <param name="cultureCode"></param>
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
                 this.TemplateFilePath = templateFilePath;

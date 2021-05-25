@@ -16,9 +16,9 @@ namespace DotNetNuke.UI.WebControls
     public enum LabelMode
     {
         None = 0,
-        Left,
-        Right,
-        Top,
-        Bottom,
+        Left = 1,
+        Right = 2,
+        Top = 3,
+        Bottom = 4,
     }
 }

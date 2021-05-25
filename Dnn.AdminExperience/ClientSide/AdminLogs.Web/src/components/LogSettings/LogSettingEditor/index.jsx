@@ -152,7 +152,7 @@ class LogSettingEditor extends Component {
                     util.utilities.notify(Localization.get("ConfigUpdated"));
                     props.Collapse(event);
                 }, () => {
-                    util.utilities.notify(Localization.get("ConfigUpdateError"));
+                    util.utilities.notifyError(Localization.get("ConfigUpdateError"));
                 }));
             } else {
                 props.dispatch(LogSettingActions.addLogSetting(logSettingDetail, () => {
@@ -175,7 +175,7 @@ class LogSettingEditor extends Component {
                     util.utilities.notify(Localization.get("ConfigDeleted"));
                     props.Collapse(event);
                 }, () => {
-                    util.utilities.notify(Localization.get("DeleteError"));
+                    util.utilities.notifyError(Localization.get("DeleteError"));
                 })
                 );
             }, () => {
@@ -183,7 +183,7 @@ class LogSettingEditor extends Component {
             });
         }
         else {
-            util.utilities.notify(Localization.get("ConfigDeleteInconsistency"));
+            util.utilities.notifyError(Localization.get("ConfigDeleteInconsistency"));
         }
     }
 

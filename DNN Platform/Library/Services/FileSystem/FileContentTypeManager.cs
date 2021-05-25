@@ -4,10 +4,8 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     using DotNetNuke.Common.Lists;
     using DotNetNuke.ComponentModel;
@@ -17,6 +15,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly object _threadLocker = new object();
         private IDictionary<string, string> _contentTypes;
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, string> ContentTypes
         {
             get
@@ -52,6 +51,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <inheritdoc/>
         public virtual string GetContentType(string extension)
         {
             if (string.IsNullOrEmpty(extension))
@@ -101,6 +101,7 @@ namespace DotNetNuke.Services.FileSystem
             contentTypes.Add("pps", "application/vnd.ms-powerpoint");
             contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
             contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+            contentTypes.Add("css", "text/css");
 
             return contentTypes;
         }

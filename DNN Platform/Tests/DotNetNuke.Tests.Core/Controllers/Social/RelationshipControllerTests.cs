@@ -10,6 +10,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -94,10 +95,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_Constructor_Throws_On_Null_DataService()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
+            var mockEventLogger = new Mock<IEventLogger>();
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(null, mockEventLogController.Object));
+            Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(null, mockEventLogger.Object));
         }
 
         [Test]
@@ -143,10 +144,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_DeleteRelationshipType_Calls_EventLogController_AddLog()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
-            var relationshipController = this.CreateRelationshipController(mockEventLogController);
+            var relationshipController = this.CreateRelationshipController(mockEventLogger);
             var relationshipType = new RelationshipType()
             {
                 RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
@@ -158,7 +159,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_RelationshipType_Deleted, Constants.SOCIAL_RelationshipTypeName, Constants.SOCIAL_FollowerRelationshipTypeID);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -270,11 +271,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_SaveRelationshipType_Calls_EventLogController_AddLog()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = this.CreateRelationshipController(mockEventLogController);
+            var relationshipController = this.CreateRelationshipController(mockEventLogger);
             var relationshipType = new RelationshipType()
             {
                 RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
@@ -286,7 +287,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_RelationshipType_Updated, Constants.SOCIAL_RelationshipTypeName);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -340,11 +341,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_DeleteRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = this.CreateRelationshipController(mockEventLogController);
+            var relationshipController = this.CreateRelationshipController(mockEventLogger);
             var relationship = new Relationship()
             {
                 RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
@@ -356,7 +357,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_Relationship_Deleted, Constants.SOCIAL_RelationshipName, Constants.SOCIAL_FollowerRelationshipID);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -572,11 +573,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_SaveRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = this.CreateRelationshipController(mockEventLogController);
+            var relationshipController = this.CreateRelationshipController(mockEventLogger);
             var relationship = new Relationship
             {
                 RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
@@ -588,7 +589,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_Relationship_Updated, Constants.SOCIAL_RelationshipName);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -642,11 +643,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_DeleteUserRelationship_Calls_EventLogController_AddLog()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = this.CreateRelationshipController(mockEventLogController);
+            var relationshipController = this.CreateRelationshipController(mockEventLogger);
             var userRelationship = new UserRelationship
             {
                 UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
@@ -659,7 +660,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_UserRelationship_Deleted, Constants.SOCIAL_UserRelationshipIDUser10User11, Constants.USER_ElevenId, Constants.USER_TenId);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -776,11 +777,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.SaveUserRelationship(It.IsAny<UserRelationship>(), It.IsAny<int>()))
                                 .Returns(Constants.SOCIAL_UserRelationshipIDUser10User11);
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogController.Object);
+            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
             var userRelationship = new UserRelationship
             {
                 UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
@@ -793,7 +794,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_UserRelationship_Updated, Constants.SOCIAL_UserRelationshipIDUser10User11, Constants.USER_ElevenId, Constants.USER_TenId);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -829,11 +830,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         public void RelationshipController_DeleteUserRelationshipPreference_Calls_EventLogController_AddLog()
         {
             // Arrange
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = this.CreateRelationshipController(mockEventLogController);
+            var relationshipController = this.CreateRelationshipController(mockEventLogger);
             var preference = new UserRelationshipPreference()
             {
                 PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
@@ -846,7 +847,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_UserRelationshipPreference_Deleted, Constants.SOCIAL_PrefereceIDForUser11, Constants.USER_ElevenId, Constants.SOCIAL_FriendRelationshipID);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -919,11 +920,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.SaveUserRelationshipPreference(It.IsAny<UserRelationshipPreference>(), It.IsAny<int>()))
                                 .Returns(Constants.SOCIAL_PrefereceIDForUser11);
-            var mockEventLogController = new Mock<IEventLogController>();
-            mockEventLogController.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogController.EventLogType>()));
+            var mockEventLogger = new Mock<IEventLogger>();
+            mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogController.Object);
+            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
             var preference = new UserRelationshipPreference()
             {
                 PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
@@ -936,7 +937,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Assert
             var logContent = string.Format(Constants.LOCALIZATION_UserRelationshipPreference_Updated, Constants.SOCIAL_PrefereceIDForUser11, Constants.USER_ElevenId, Constants.SOCIAL_FriendRelationshipID);
-            mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
+            mockEventLogger.Verify(e => e.AddLog("Message", logContent, EventLogType.ADMIN_ALERT));
         }
 
         [Test]
@@ -1205,14 +1206,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
         private RelationshipControllerImpl CreateRelationshipController(Mock<IDataService> mockDataService)
         {
-            var mockEventLogController = new Mock<IEventLogController>();
-            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogController.Object);
+            var mockEventLogger = new Mock<IEventLogger>();
+            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
         }
 
-        private RelationshipControllerImpl CreateRelationshipController(Mock<IEventLogController> mockEventLogController)
+        private RelationshipControllerImpl CreateRelationshipController(Mock<IEventLogger> mockEventLogger)
         {
             var mockDataService = new Mock<IDataService>();
-            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogController.Object);
+            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
         }
 
         private void SetupDataTables()

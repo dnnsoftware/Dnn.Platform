@@ -7,6 +7,7 @@ import databaseTab from "./databaseTab";
 import smtpServerTab from "./smtpServerTab";
 import logsTab from "./logsTab";
 import performanceTab from "./performanceTab";
+import serversTab from "./serversTab";
 
 export {
     pagination,
@@ -17,5 +18,6 @@ export {
     databaseTab,
     smtpServerTab,
     logsTab,
-    performanceTab
+    performanceTab,
+    serversTab
 };

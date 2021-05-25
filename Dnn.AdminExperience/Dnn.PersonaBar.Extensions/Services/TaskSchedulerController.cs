@@ -51,18 +51,18 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 var availableServers = query.Select(v => new
                 {
                     ServerID = v.ServerID.ToString(),
-                    v.ServerName
+                    v.ServerName,
                 }).ToList();
                 availableServers.Insert(0, new
                 {
                     ServerID = "*",
-                    ServerName = Localization.GetString("All")
+                    ServerName = Localization.GetString("All"),
                 });
                 var response = new
                 {
                     Success = true,
                     Results = availableServers,
-                    TotalResults = servers.Count()
+                    TotalResults = servers.Count(),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -97,9 +97,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         v.Enabled,
                         RetryTimeLapse = this._controller.GetTimeLapse(v.RetryTimeLapse, v.RetryTimeLapseMeasurement),
                         NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : "",
-                        Frequency = this._controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement)
+                        Frequency = this._controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement),
                     }),
-                    TotalResults = arrSchedule.Count()
+                    TotalResults = arrSchedule.Count(),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 {
                     new KeyValuePair<string, string>(Localization.GetString("Disabled", localResourcesFile), "0"),
                     new KeyValuePair<string, string>(Localization.GetString("TimerMethod", localResourcesFile), "1"),
-                    new KeyValuePair<string, string>(Localization.GetString("RequestMethod", localResourcesFile), "2")
+                    new KeyValuePair<string, string>(Localization.GetString("RequestMethod", localResourcesFile), "2"),
                 };
 
                 var response = new
@@ -134,9 +134,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     {
                         SchedulerMode = HostController.Instance.GetString("SchedulerMode"),
                         SchedulerModeOptions = modes,
-                        SchedulerdelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)
+                        SchedulerdelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1),
                     },
-                    TotalResults = 1
+                    TotalResults = 1,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -218,14 +218,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                 history.Succeeded,
                                 StartDate = !Null.IsNull(history.StartDate) ? history.StartDate.ToString() : "",
                                 EndDate = !Null.IsNull(history.EndDate) ? history.EndDate.ToString() : "",
-                                NextStart = !Null.IsNull(history.NextStart) ? history.NextStart.ToString() : ""
+                                NextStart = !Null.IsNull(history.NextStart) ? history.NextStart.ToString() : "",
                             };
 
                 var response = new
                 {
                     Success = true,
                     Results = query.Skip(pageIndex * pageSize).Take(pageSize),
-                    TotalResults = query.Count()
+                    TotalResults = query.Count(),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -249,6 +249,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 ScheduleItem scheduleItem = SchedulingProvider.Instance().GetSchedule(scheduleId);
 
+                var recommendedServers = this._controller.GetRecommendedServers(scheduleItem.ScheduleID);
+
                 var response = new
                 {
                     Success = true,
@@ -268,9 +270,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         scheduleItem.AttachToEvent,
                         scheduleItem.CatchUpEnabled,
                         scheduleItem.ObjectDependencies,
-                        scheduleItem.Servers
+                        scheduleItem.Servers,
+                        RecommendedServers = recommendedServers,
                     },
-                    TotalResults = 1
+                    TotalResults = 1,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -396,7 +399,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                          item.ObjectDependencies,
                                          ScheduleSource = item.ScheduleSource.ToString(),
                                          item.ThreadID,
-                                         item.Servers
+                                         item.Servers,
                                      };
 
                     Collection arrScheduleQueue = SchedulingProvider.Instance().GetScheduleQueue();
@@ -413,7 +416,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                     item.ObjectDependencies,
                                     ScheduleSource = item.ScheduleSource.ToString(),
                                     item.ThreadID,
-                                    item.Servers
+                                    item.Servers,
                                 };
 
                     var response = new
@@ -428,9 +431,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                             ActiveThreadCount = SchedulingProvider.Instance().GetActiveThreadCount().ToString(),
                             MaxThreadCount = SchedulingProvider.Instance().GetMaxThreadCount().ToString(),
                             ScheduleProcessing = processing,
-                            ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingSeconds)
+                            ScheduleQueue = queue.ToList().OrderBy(q => q.RemainingSeconds),
                         },
-                        TotalResults = 1
+                        TotalResults = 1,
                     };
                     return this.Request.CreateResponse(HttpStatusCode.OK, response);
                 }
@@ -447,9 +450,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                             ActiveThreadCount = "0",
                             MaxThreadCount = "0",
                             ScheduleProcessing = new List<string>(),
-                            ScheduleQueue = new List<string>()
+                            ScheduleQueue = new List<string>(),
                         },
-                        TotalResults = 1
+                        TotalResults = 1,
                     };
                     return this.Request.CreateResponse(HttpStatusCode.OK, response);
                 }

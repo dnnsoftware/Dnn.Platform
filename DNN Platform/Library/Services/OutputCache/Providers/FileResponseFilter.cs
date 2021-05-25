@@ -17,6 +17,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
         // Private _content As StringBuilder
         private DateTime _cacheExpiration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileResponseFilter"/> class.
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="maxVaryByCount"></param>
+        /// <param name="filterChain"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="cacheDuration"></param>
         internal FileResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
             : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
@@ -74,6 +82,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override byte[] StopFiltering(int itemId, bool deleteData)
         {
             if (this.HasErrored)

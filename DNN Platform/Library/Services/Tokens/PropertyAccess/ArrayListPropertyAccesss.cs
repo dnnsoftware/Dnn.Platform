@@ -13,11 +13,16 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly ArrayList custom;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ArrayListPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="list"></param>
         public ArrayListPropertyAccess(ArrayList list)
         {
             this.custom = list;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -26,6 +31,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             if (this.custom == null)

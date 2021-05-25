@@ -4,17 +4,13 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 

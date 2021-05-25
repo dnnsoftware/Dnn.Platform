@@ -12,6 +12,9 @@ namespace DotNetNuke.Security
 
     public class RegistrationSettings
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegistrationSettings"/> class.
+        /// </summary>
         public RegistrationSettings()
         {
             this.RandomPassword = false;
@@ -35,6 +38,10 @@ namespace DotNetNuke.Security
             this.EmailValidator = Globals.glbEmailRegEx;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegistrationSettings"/> class.
+        /// </summary>
+        /// <param name="settings"></param>
         public RegistrationSettings(Dictionary<string, string> settings)
             : this()
         {

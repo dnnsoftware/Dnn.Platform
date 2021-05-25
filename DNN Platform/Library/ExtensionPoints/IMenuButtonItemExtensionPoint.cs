@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
-
     public interface IMenuButtonItemExtensionPoint : IExtensionPoint
     {
         string ItemId { get; }

@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Journal.Internal
 
     public class InternalJournalController : ServiceLocator<IInternalJournalController, InternalJournalController>
     {
+        /// <inheritdoc/>
         protected override Func<IInternalJournalController> GetFactory()
         {
             return () => new InternalJournalControllerImpl();

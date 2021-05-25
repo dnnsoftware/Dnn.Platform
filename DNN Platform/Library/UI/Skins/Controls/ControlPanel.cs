@@ -11,13 +11,13 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.UI.ControlPanels;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public class ControlPanel : SkinObjectBase
     {
         public bool IsDockable { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

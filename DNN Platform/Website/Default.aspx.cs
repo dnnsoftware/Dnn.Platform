@@ -270,21 +270,6 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            // check if running with known account defaults
-            if (this.Request.IsAuthenticated && string.IsNullOrEmpty(this.Request.QueryString["runningDefault"]) == false)
-            {
-                var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
-                var usernameLower = userInfo?.Username?.ToLowerInvariant();
-
-                // only show message to default users
-                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
-                {
-                    var messageText = this.RenderDefaultsWarning();
-                    var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
-                }
-            }
-
             // add CSS links
             ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/7.0.0/default.css"));
             ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
@@ -380,7 +365,7 @@ namespace DotNetNuke.Framework
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+            if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
             {
                 var editClass = "dnnEditState";
 
@@ -571,7 +556,7 @@ namespace DotNetNuke.Framework
 
             // META Refresh
             // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
-            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && this.PortalSettings.UserMode == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
+            if (this.PortalSettings.ActiveTab.RefreshInterval > 0 && Personalization.GetUserMode() == PortalSettings.Mode.View && this.Request.QueryString["ctl"] == null)
             {
                 this.MetaRefresh.Content = this.PortalSettings.ActiveTab.RefreshInterval.ToString();
                 this.MetaRefresh.Visible = true;
@@ -647,8 +632,18 @@ namespace DotNetNuke.Framework
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
-                var customStylesheet = Path.Combine(this.PortalSettings.HomeDirectory, this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
-                ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
+                var styleSheet = this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
+
+                // Try and go through the FolderProvider first
+                var stylesheetFile = GetPageStylesheetFileInfo(styleSheet);
+                if (stylesheetFile != null)
+                {
+                    ClientResourceManager.RegisterStyleSheet(this, FileManager.Instance.GetUrl(stylesheetFile));
+                }
+                else
+                {
+                    ClientResourceManager.RegisterStyleSheet(this, styleSheet);
+                }
             }
 
             // Cookie Consent
@@ -738,31 +733,6 @@ namespace DotNetNuke.Framework
             return objDict;
         }
 
-        /// <summary>
-        /// check if a warning about account defaults needs to be rendered.
-        /// </summary>
-        /// <returns>localised error message.</returns>
-        /// <remarks></remarks>
-        private string RenderDefaultsWarning()
-        {
-            var warningLevel = this.Request.QueryString["runningDefault"];
-            var warningMessage = string.Empty;
-            switch (warningLevel)
-            {
-                case "1":
-                    warningMessage = Localization.GetString("InsecureAdmin.Text", Localization.SharedResourceFile);
-                    break;
-                case "2":
-                    warningMessage = Localization.GetString("InsecureHost.Text", Localization.SharedResourceFile);
-                    break;
-                case "3":
-                    warningMessage = Localization.GetString("InsecureDefaults.Text", Localization.SharedResourceFile);
-                    break;
-            }
-
-            return warningMessage;
-        }
-
         private IFileInfo GetBackgroundFileInfo()
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
@@ -776,6 +746,22 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfoCallBack(CacheItemArgs itemArgs)
         {
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
+        }
+
+        private IFileInfo GetPageStylesheetFileInfo(string styleSheet)
+        {
+            string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + styleSheet);
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet),
+                this.GetPageStylesheetInfoCallBack);
+
+            return file;
+        }
+
+        private IFileInfo GetPageStylesheetInfoCallBack(CacheItemArgs itemArgs)
+        {
+            var styleSheet = itemArgs.Params[0].ToString();
+            return FileManager.Instance.GetFile(this.PortalSettings.PortalId, styleSheet);
         }
     }
 }

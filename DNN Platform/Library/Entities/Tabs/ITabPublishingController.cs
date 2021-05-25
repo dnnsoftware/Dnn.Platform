@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Entities.Tabs
 {
-    using System;
-
     public interface ITabPublishingController
     {
         /// <summary>

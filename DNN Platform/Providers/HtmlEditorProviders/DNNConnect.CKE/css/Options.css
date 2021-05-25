@@ -1,0 +1,178 @@
+body {background-color:#ededed;font-family: Arial, Verdana;color: #333;font-size:small;padding:5px}
+a:hover {color:rgb(204, 0, 0);}
+hr {color: #d9d9d9;background-color: #d9d9d9;height:0;border: 1px solid #d9d9d9;}
+h1 {font-weight: bold;margin: 0;font-size:medium;font-family:Arial, Helvetica, sans-serif; color:#333}
+.ui-tabs .ui-tabs-panel {
+	border: 1px dotted #333; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em; display:block;overflow: auto;height:500px;margin-top:5px;
+}
+
+.SettingBox {width:100%;padding-left: 5px; margin-right: 15px;float: left; }
+#SettingsBox {
+	height:auto;margin-bottom:10px;padding:10px 10px 67px 10px;padding-right:20px;
+	-moz-min-width:550px;
+	-ms-min-width:550px;
+	-o-min-width:550px;
+	-webkit-min-width:550px;
+	min-width:550px;border:1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;background-color:white;min-width:500px;
+}
+
+.optionsContainer #SettingsBox {padding:10px 20px 40px 10px;}
+#tblMainSet td, #tblMainSet th {padding: 2px;margin: 2px;}
+#CKEditor_Options_ctlConfigUrl_TypeRow br,
+#CKEditor_Options_ctlStylesURL_TypeRow br,
+#CKEditor_Options_ctlCSSURL_TypeRow br,
+#CKEditor_Options_ctlTemplUrl_TypeRow br {display:none;}
+.Toolbar {padding:2px;}
+
+/* Loading Dialog */
+.panelLoading {margin:0 5px 0 5px; padding:3px}
+.MessageBox{ position: absolute;z-index: 100;text-align: left; display:block;top: 96px; left: 220px;}  
+
+.ModalDialog .popup {
+	position:relative;
+	border:3px solid #000000;
+	border:3px solid rgba(0,0,0,0);-webkit-border-radius:5px;-moz-border-radius:5px;
+	-ms-border-radius:5px;
+	border-radius:5px;
+	-webkit-box-shadow:0 0 18px #000000;
+	-moz-box-shadow:0 0 18px #000000;
+	-ms-box-shadow:0 0 18px #000000;
+	box-shadow:0 0 18px #000000;
+	box-shadow:0 0 18px rgba(0,0,0,0.4);
+}
+
+.ModalDialog .DialogContent {
+	display:table;width: 370px; padding: 10px;background: #fff;-webkit-border-radius:4px;-moz-border-radius:4px;
+	-ms-border-radius:4px;
+	border-radius:4px;
+}
+
+.ModalDialog .modalHeader {text-align:center;font-size: 12.5pt;}
+.ModalDialog input[type="file"]{width:100%;}
+* html .ModalDialog .modalInner {padding-top:10px}
+*:first-child+html .ModalDialog .modalInner {padding-top:10px}
+.ModalDialog_overlayBG {
+	position: absolute;top: 0;left: 0;height:100%;width:100%;background-color: #000;z-index: 99;
+	-ms-opacity: 0.2;
+	opacity: 0.2
+}
+
+.LoadingContent h3 {background: url(../images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingMessage {text-align:center}
+
+/* Manager Module */
+.managerLeftPane {float:left;width:250px; vertical-align:top}
+.managerSettingHeader {font-weight:bold;min-height: 30px;margin-left:5px}
+.managerSettingContent {margin-left:20px}
+.optionsContainer {/*margin-left:255px; width: 700px;*/ width:70%; float:left; margin:0; padding-left:2.5em;}
+.iconLegend {
+	margin:5px 0;padding:5px 0;border:1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;background-color:white;
+}
+
+.optionsSidebar {float:left; /*width:250px;*/ width:25%; vertical-align:top;}
+
+.iconLegend ul li {list-style:none;}
+.ui-state-error p {padding:10px;}
+/*.portalTabsAndModulesTree {margin-left:47px}*/
+.portalOnlyCheckBox {margin:10px 0 0 50px}
+
+/* Settings Container */
+.settingNameColumn {width:250px; vertical-align:top;font-weight:bold;}
+.settingNameContainer { float:left;width:250px; vertical-align:top;font-weight:bold;min-height: 30px;}
+
+.settingValueColumn {vertical-align:top;}
+.settingValueContainer {margin-left:250px; vertical-align:top;min-height: 30px;margin:3px 0 3px 0}
+
+.settingValueContainer .settingValueInput,
+.settingValueContainer input[type="text"] {width:97%}
+
+.settingValueInput,     
+input[type="text"] {
+	-moz-border-radius: 5px;-webkit-border-radius: 5px;-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+	border-radius: 5px;
+}
+
+/* Default Buttons */
+
+.ui-widget-content a,#lnkToolbarGuide,a, a:hover {color:rgb(204, 0, 0);	text-decoration: none;}
+
+.Hidden { position: absolute;top: -999px;left: -999px;}
+
+.DefaultDropDown {width:400px}
+
+.DefaultButton, .ui-widget-content,.ui-button-text {font-size:small!important;}
+.ui-tabs li a {font-size:85%;}
+.ui-button .ui-button-text {line-height: 1.0;}
+.Toolbar .ui-widget-content,.ui-button-text {font-size:12px!important}
+
+ /* Toolbar Editor Styling */
+.availableButtons, .groups {padding: 8px;margin:2px; height: 290px;overflow: auto;}
+.groups,.sortable {
+	list-style-type: none; margin: 0; padding: 0; float: left; margin-right: 10px; background: #efefef; padding: 5px; width: 220px;-moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;
+}
+
+.groups li,.sortable li {margin:5px; padding: 5px; font-size: 1.2em; list-style:none }
+.groupButton {width: 160px}
+	
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+.ui-icon-cancel {float:right;cursor:pointer}
+
+.rowBreakLabel,.rowBreak,.rowBreakItem .groupName {display:none;}
+
+.rowBreakItem .rowBreakLabel  {display:block;margin-left:50px;color:black;font-size:small;font-weight:bolder}
+
+#CKEditor_Options_rBlSetMode .ui-widget {font-size:small;}
+	
+/* Available Buttons List */
+.availableButtons {
+	border: 1px dotted #333; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;background-color: transparent;
+}
+
+.availableButtons li {width:170px}
+	
+.item {font-family: Arial, Verdana;color: #333;font-size:small;}
+
+.groupName {font-family: Arial, Verdana;color: #333;text-decoration:none}
+.groupEdit {display:none;width: 150px}
+
+.groupButtons .itemIcon {padding-left:10px;}
+
+.groupItem {
+	border: 1px dotted #333; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+	-ms-border-radius: 0.4em;
+	border-radius: 0.4em;background-color: white;width:185px
+}
+
+.saveGroupName {margin-left:3px;padding-left:1px;width:18px;height:18px;cursor:pointer;display:none}
+
+.addRowBreakButton, .createGroupButton {cursor:pointer;width:150px;display:inline-block;margin:5px;padding:5px;font-family: Arial, Verdana;color: #333;}
+
+.dnnFormItem {display:block;}
+
+.ui-selectgroup {display: block; overflow: hidden; position: relative; width: 200px; text-decoration: none;}
+.ui-selectgroup-copy {display: block; padding: 5px;min-height:5px;margin:1px;}
+.ui-selectgroup-icon {position: absolute; top: 5px; right: 0;}
+.ui-selectgroup-group {position: absolute;width: 200px;z-index:30000}
+.ui-selectgroup-list {list-style: none; padding: 0; margin: 0;}
+.ui-selectgroup-list li {list-style: none;border-top: 1px dotted transparent; border-bottom: 1px dotted transparent;}
+.ui-selectgroup-list .ui-state-hover {border-right: none; border-left: none; font-weight: normal;}
+.ui-selectgroup-list .ui-state-active {border-right: none; border-left: none; font-weight: normal;}
+.ui-selectgroup-list a {display: block; padding: 5px; text-decoration: none;}
+.ui-selectgroup-optgroup {padding: 0 0 0 5px;}
+.ui-selectgroup-optgroup span {display: block; padding: 5px 0;}
+.ui-selectgroup-optgroup ul {list-style: none; padding: 0;margin: 0; }
+.ui-selectgroup-optgroup li {padding: 0 0 0 10px; margin: 0 0 0 -5px;}
+
+#ImportDialog.ui-dialog-content {margin-top:10px;margin-bottom:10px;}
+#ExportDialog.ui-dialog-content {margin-top:10px;margin-bottom:10px;}

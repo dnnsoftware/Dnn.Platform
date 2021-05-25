@@ -29,6 +29,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
         private Components.VocabulariesController _controller = new Components.VocabulariesController();
+
         private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Vocabularies/App_LocalResources/Vocabularies.resx");
 
         /// GET: api/Vocabularies/GetVocabularies
@@ -52,14 +53,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                     TypeId = (int)v.Type,
                     v.ScopeType.ScopeType,
                     v.ScopeTypeId,
-                    v.IsSystem
+                    v.IsSystem,
                 });
 
                 var response = new
                 {
                     Success = true,
                     Results = vocabularies,
-                    TotalResults = total
+                    TotalResults = total,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -189,9 +190,9 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                         t.Description,
                         t.Name,
                         ParentTermId = t.ParentTermId ?? Null.NullInteger,
-                        t.VocabularyId
+                        t.VocabularyId,
                     }),
-                    TotalResults = terms.Count
+                    TotalResults = terms.Count,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -221,7 +222,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                     TermPath = term.GetTermPath(),
                     term.VocabularyId,
                     term.Name,
-                    term.Description
+                    term.Description,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }

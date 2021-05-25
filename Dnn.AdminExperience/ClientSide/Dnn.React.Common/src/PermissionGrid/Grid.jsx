@@ -139,7 +139,7 @@ class Grid extends Component {
 }
 
 Grid.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
     permissions: PropTypes.object.isRequired,
     definitions: PropTypes.object.isRequired,
     localization: PropTypes.object,

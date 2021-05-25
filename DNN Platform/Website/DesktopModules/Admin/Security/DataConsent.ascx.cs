@@ -20,10 +20,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public enum DataConsentStatus
         {
-            Consented,
-            Cancelled,
-            RemovedAccount,
-            FailedToRemoveAccount,
+            Consented = 0,
+            Cancelled = 1,
+            RemovedAccount = 2,
+            FailedToRemoveAccount = 3,
         }
 
         public string DeleteMeConfirmString

@@ -19,6 +19,7 @@ namespace DotNetNuke.HttpModules
             get { return "UrlRewriteModule"; }
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
             this._providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
@@ -43,6 +44,7 @@ namespace DotNetNuke.HttpModules
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }

@@ -3,17 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.Modules.Console.Components
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Text;
-    using System.Xml;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Services.Exceptions;
 
     /// <summary>
     /// Controls the Console.

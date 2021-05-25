@@ -29,6 +29,13 @@ namespace DotNetNuke.UI.WebControls
         private readonly Hashtable FieldNames;
         private readonly string Name;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollectionEditorInfoAdapter"/> class.
+        /// </summary>
+        /// <param name="dataSource"></param>
+        /// <param name="name"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="fieldNames"></param>
         public CollectionEditorInfoAdapter(object dataSource, string name, string fieldName, Hashtable fieldNames)
         {
             this.DataSource = dataSource;
@@ -36,11 +43,13 @@ namespace DotNetNuke.UI.WebControls
             this.Name = name;
         }
 
+        /// <inheritdoc/>
         public EditorInfo CreateEditControl()
         {
             return this.GetEditorInfo();
         }
 
+        /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
             string NameDataField = Convert.ToString(this.FieldNames["Name"]);
@@ -87,6 +96,7 @@ namespace DotNetNuke.UI.WebControls
             return _IsDirty;
         }
 
+        /// <inheritdoc/>
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
             string nameDataField = Convert.ToString(this.FieldNames["Name"]);

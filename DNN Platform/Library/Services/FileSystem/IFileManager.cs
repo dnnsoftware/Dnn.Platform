@@ -2,11 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+
 namespace DotNetNuke.Services.FileSystem
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
+
+    using DotNetNuke.Common.Utilities;
 
     /// <summary>
     /// Do not implement.  This interface is meant for reference and unit test purposes only.
@@ -19,7 +22,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled removal in v10.0.0.")]
         IDictionary<string, string> ContentTypes { get; }
-
         /// <summary>
         /// Adds a file to the specified folder.
         /// </summary>
@@ -275,5 +277,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The file to download.</param>
         /// <param name="contentDisposition">Indicates how to display the document once downloaded.</param>
         void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition);
+
+        /// <summary>
+        /// Current user's file upload extension whitelist.
+        /// </summary>
+        FileExtensionWhitelist WhiteList { get; }
     }
 }

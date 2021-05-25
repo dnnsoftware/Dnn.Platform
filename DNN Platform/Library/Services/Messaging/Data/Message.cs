@@ -40,6 +40,9 @@ namespace DotNetNuke.Services.Messaging.Data
         private Guid _EmailSchedulerInstance;
         private DateTime _EmailSentDate;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Message"/> class.
+        /// </summary>
         public Message()
         {
             this.Conversation = Guid.Empty;
@@ -284,6 +287,7 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
+        /// <inheritdoc/>
         public int KeyID
         {
             get
@@ -314,6 +318,7 @@ namespace DotNetNuke.Services.Messaging.Data
             return message;
         }
 
+        /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
             this.MessageID = Null.SetNullInteger(dr["MessageID"]);

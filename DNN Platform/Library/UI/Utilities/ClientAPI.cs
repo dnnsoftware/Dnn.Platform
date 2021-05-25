@@ -32,10 +32,10 @@ namespace DotNetNuke.UI.Utilities
 
         public enum MinMaxPersistanceType
         {
-            None,
-            Page,
-            Cookie,
-            Personalization,
+            None = 0,
+            Page = 1,
+            Cookie = 2,
+            Personalization = 3,
         }
 
         public enum PageCallBackType
