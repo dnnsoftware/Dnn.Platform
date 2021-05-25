@@ -231,7 +231,7 @@
       &lt;strong&gt;Commands are either 1 word or 2 words separated by a single dash (-) and no spaces&lt;/strong&gt;.
     &lt;/li&gt;
     &lt;li&gt;
-      &lt;strong&gt;One-Word Commands:&lt;/strong&gt; These are generally reserved for commands that interact with the Prompt console itself or the browser. In other words, most of these commands take place in the browser. Some examples are: &lt;code&gt;cls&lt;/code&gt; which clears the console screen and &lt;code&gt;reload&lt;/code&gt; which tells the browser to reload the page. There are also two-word commands that 
+      &lt;strong&gt;One-Word Commands:&lt;/strong&gt; These are generally reserved for commands that interact with the Prompt console itself or the browser. In other words, most of these commands take place in the browser. Some examples are: &lt;code&gt;cls&lt;/code&gt; which clears the console screen and &lt;code&gt;reload&lt;/code&gt; which tells the browser to reload the page. There are also two-word commands that operate
       on the client side such as &lt;code&gt;clear-history&lt;/code&gt; (though there is a shortcut for clear-history: &lt;code&gt;clh&lt;/code&gt;&lt;/li&gt;
     &lt;li&gt;
       &lt;strong&gt;Two-Word Commands:&lt;/strong&gt; These commands follow the format &lt;code&gt;action-component&lt;/code&gt;&amp;mdash;an action followed by a single dash followed by a component or object that the action operates on.
