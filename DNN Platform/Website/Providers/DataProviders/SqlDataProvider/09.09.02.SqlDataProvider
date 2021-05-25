@@ -81,7 +81,8 @@ BEGIN
 END -- Procedure
 GO
 
-DROP FUNCTION {databaseOwner}[{objectQualifier}UserPortalRoles]
+IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortalRoles]') IS NOT NULL)
+	DROP FUNCTION {databaseOwner}[{objectQualifier}UserPortalRoles]
 GO
 
 -- =============================================
