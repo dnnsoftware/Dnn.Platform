@@ -1,21 +1,11 @@
-﻿
-/****************************************************************
- * SPROC: GetFoldersByPermission #4573
- ****************************************************************/
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND type in (N'P', N'PC'))
+﻿IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
 GO
 
--- =============================================
--- Author: Sebastian Leupold, dnnWerk
--- Create date: 2021-05-15
--- Description: Returns all folders for user and
--- permissions
--- =============================================
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
-    @PortalID Int, -- Null|-1 retrieves host folders
-    @permissions nVarChar(300), -- list of permissions, to be required any of it, not the complete set. Use '*', '' OR Null for ANY.
-    @userid Int, -- Id of the user to be inspected, Null|-1 for anonymous users
+    @PortalId Int, -- Null|-1 retrieves host folders
+    @Permissions nVarChar(300), -- list of permissions, to be required any of it, not the complete set. Use '*', '' OR Null for ANY.
+    @UserId Int, -- Id of the user to be inspected, Null|-1 for anonymous users
     @FolderId Int, -- optional ID of a single folder to check (or Null|-1 for all)
     @FolderPath nVarChar(300) -- optional path of a single folder to check (or Null|'' for all)
 AS
@@ -29,25 +19,25 @@ BEGIN
     DECLARE @AddPerm Int = 0
 
     -- Determine Admin or SuperUser
-    IF IsNull(@UserID, -1) > 0 BEGIN -- not anonymous user
-        SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}[{objectQualifier}Users] WHERE UserId = @UserID;
+    IF IsNull(@UserId, -1) > 0 BEGIN -- not anonymous user
+        SELECT @IsSuperUser = IsSuperUser FROM {databaseOwner}[{objectQualifier}Users] WHERE UserId = @UserId;
         IF @IsSuperUser != 0
             SET @IsAdmin = 1; -- superuser has portal admin permission as well 
-         ELSE IF IsNull(@PortalID, -1) = -1
+         ELSE IF IsNull(@PortalId, -1) = -1
             SET @IsAdmin = 0 -- only superusers may access host files
-         ELSE IF {databaseOwner}[{objectQualifier}UserIsInRole](@UserID, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalID)) != 0
+         ELSE IF {databaseOwner}[{objectQualifier}UserIsInRole](@UserId, {databaseOwner}[{objectQualifier}AdministratorRoleId](@PortalId)) != 0
             SET @IsAdmin = 1;
     END;
 
-    IF (IsNull(@PortalID, -1) = -1 AND @IsSuperUser != 0) OR (@IsAdmin != 0)
+    IF (IsNull(@PortalId, -1) = -1 AND @IsSuperUser != 0) OR (@IsAdmin != 0)
         -- shortcut for admins/superusers: return all folders (they are having always access to all of them)
         SELECT F.*
          FROM  {databaseOwner}[{objectQualifier}Folders] F
-         WHERE IsNull(F.PortalID, -1) = IsNull(@PortalID, -1)
+         WHERE IsNull(F.PortalID, -1) = IsNull(@PortalId, -1)
            AND (F.FolderID   = @FolderID   OR IsNull(@FolderID,    -1) =  -1)
            AND (F.FolderPath = @FolderPath OR IsNull(@FolderPath, N'') = N'')
          ORDER BY F.PortalID, F.FolderPath
-         OPTION (OPTIMIZE FOR (@PortalID UNKNOWN));
+         OPTION (OPTIMIZE FOR (@PortalId UNKNOWN));
     ELSE BEGIN
         --Retrieve Permission IDs
             SELECT TOP 1 @AllPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'WRITE';
@@ -60,23 +50,23 @@ BEGIN
             SELECT TOP 1 @AddPerm    = PermissionID FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'SYSTEM_FOLDER' AND ModuleDefId = -1 AND PermissionKey = N'ADD';
 
         SELECT * FROM {databaseOwner}[{objectQualifier}Folders]
-         WHERE (PortalID = IsNull(@PortalID, -1))
+         WHERE (PortalID = IsNull(@PortalId, -1))
            AND (FolderPath = @FolderPath OR IsNull(@FolderPath, N'') = N'')
            AND (FolderID   = @FolderID   OR IsNull(@FolderID, -1) = -1)
            AND FolderId IN -- granted folders
                 (SELECT DISTINCT P.FolderId FROM {databaseOwner}[{objectQualifier}FolderPermission] P
-                                       LEFT JOIN {databaseOwner}[{objectQualifier}UserPortalRoles](@PortalID, @UserID) R ON P.RoleID = R.RoleID
-                  WHERE (P.UserID = @UserID OR (R.RoleID Is Not Null))
+                                       LEFT JOIN {databaseOwner}[{objectQualifier}UserPortalRoles](@PortalId, @UserId) R ON P.RoleID = R.RoleID
+                  WHERE (P.UserID = @UserId OR (R.RoleID Is Not Null))
                     AND PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @AllPerm)
                     AND AllowAccess = 1)
            AND NOT FolderId IN -- denied folders
                 (SELECT DISTINCT P.FolderId FROM {databaseOwner}[{objectQualifier}FolderPermission] P
-                                       LEFT JOIN {databaseOwner}[{objectQualifier}UserPortalRoles](@PortalID, @UserID) R ON P.RoleID = R.RoleID
-                  WHERE (P.UserID = @UserID OR (R.RoleID Is Not Null))
+                                       LEFT JOIN {databaseOwner}[{objectQualifier}UserPortalRoles](@PortalId, @UserId) R ON P.RoleID = R.RoleID
+                  WHERE (P.UserID = @UserId OR (R.RoleID Is Not Null))
                     AND PermissionID IN (@AddPerm, @ReadPerm, @BrowsePerm, @WritePerm)
                     AND AllowAccess = 0)
          ORDER BY PortalID, FolderPath
-         OPTION (OPTIMIZE FOR (@FolderPath Unknown, @FolderId Unknown, @UserID Unknown));
+         OPTION (OPTIMIZE FOR (@FolderPath Unknown, @FolderId Unknown, @UserId Unknown));
     END
 END -- Procedure
 GO
@@ -85,28 +75,21 @@ IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortalRoles]') IS NOT NULL)
 	DROP FUNCTION {databaseOwner}[{objectQualifier}UserPortalRoles]
 GO
 
--- =============================================
--- Author: Sebastian Leupold, dnnWerk
--- Create date: 2017-10-17
--- Description: Return all Roles of a User
--- for Permission Checks
--- Note: IsSuperuser not evaluated (perf)
--- =============================================
 CREATE FUNCTION {databaseOwner}[{objectQualifier}UserPortalRoles]
 (
-    @PortalID int, -- not Null
-    @userid int -- not Null, -1 for anonymous users | > 0 for real users
+    @PortalId int, -- not Null
+    @UserId int -- not Null, -1 for anonymous users | > 0 for real users
 )
 RETURNS TABLE
 AS
 RETURN
     ( SELECT RoleID
         FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
-        WHERE PortalID = @PortalID
-            AND UserID = @userid
+        WHERE PortalID = @PortalId
+            AND UserID = @UserId
             AND ISNull(EffectiveDate, GetDate()) <= GetDate()
             AND IsNull(ExpiryDate, GetDate()) >= GetDate()
         UNION (SELECT -1)
-        UNION (SELECT -3 WHERE @userid <= 0)
+        UNION (SELECT -3 WHERE @UserId <= 0)
     )
 GO
