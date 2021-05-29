@@ -11,11 +11,9 @@
 
     using Common;
     using Common.Lists;
-    using Common.Utilities;
 
     using Data;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.InternalServices;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -33,9 +31,7 @@
     [TestFixture]
     public class FileUploadControllerTests
     {
-        private Mock<ILoggerSource> _mockLoggerSource = new Mock<ILoggerSource>();
         private Mock<DataProvider> _mockDataProvider;
-        private Mock<ICBO> _mockCBO = new Mock<ICBO>();
         private FileUploadController _testInstance;
         private Mock<CachingProvider> _mockCachingProvider;
         private Mock<IPortalController> _mockPortalController;
@@ -44,21 +40,14 @@
         [SetUp]
         public void SetUp()
         {
-            LoggerSource.SetTestableInstance(this._mockLoggerSource.Object);
-            CBO.SetTestableInstance(this._mockCBO.Object);
+
             this.SetupDataProvider();
+
             this.SetupCachingProvider();
+
             this.SetupPortalSettings();
             this.SetupServiceProvider();
             this.SetupSynchronizationContext();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            PortalController.ClearInstance();
-            Globals.DependencyProvider = null;
-            CBO.ClearInstance();
         }
 
         [Test]
