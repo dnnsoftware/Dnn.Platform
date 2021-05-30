@@ -26,8 +26,10 @@
     var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random(): '');
     var styles = [];
     var mainJs = mobi ? 'scripts/main.mobi.js' : 'scripts/main.js';
+    var themeCss = 'css/theme.css';
     var mainCss = mobi ? 'css/main.mobi.css' : 'css/main.css';
 
+    styles.push(themeCss);
     styles.push(mainCss);
 
     addCssToHead(styles, version);

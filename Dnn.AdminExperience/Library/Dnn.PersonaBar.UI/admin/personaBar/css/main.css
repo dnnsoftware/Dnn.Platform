@@ -716,7 +716,7 @@ transform: rotate(180deg);
 /* persona bar Menu*/
 .personabar {
     width: 80px;
-    background-color: #0e2936;
+    background-color: var(--dnn-color-pb-menu-background);
     height: 100%;
     position: fixed;
     top: 0;
@@ -727,14 +727,14 @@ transform: rotate(180deg);
 .personabar .personabarLogo {
     width: 80px;
     height: 103px;
-    background: url('../images/Logo.svg') no-repeat center center;
+    background: var(--dnn-pb-menu-brand-background);
     -ms-background-size: 32px auto;
     background-size: 32px auto;
     position: relative;
-    border-bottom: 1px solid #1e485e;
+    border-bottom: 1px solid var(--dnn-color-pb-menu-divider);
 }
 .personabar .personabarLogo:hover {
-    background-color: #0b1c24;
+    background-color: var(--dnn-color-pb-menu-background-hover);
 }
 .personabar .personabarLogo a.update {
     text-decoration: none;
@@ -799,10 +799,10 @@ transform: rotate(180deg);
     fill: #868484;
 }
 .personabarnav > li > span.icon-loader svg .back {
-    fill: #0b1c24;
+    fill: var(--dnn-color-pb-menu-icon-background);
 }
 .personabarnav>li>span.icon-loader svg .main {
-    fill: #3c7a9a;
+    fill: var(--dnn-color-pb-menu-icon);
 }
 .personabarnav > li:hover > span.icon-loader svg,
 .personabarnav > li.active > span.icon-loader svg,
@@ -822,7 +822,7 @@ transform: rotate(180deg);
 }
 .personabarnav > li:hover,.personabarnav > li.active {
     color: #fff;
-    background-color: #0b1c24;
+    background-color: var(--dnn-color-pb-menu-background-hover);
     border-right: none !important;
 }
 .personabarnav > li.pending {
@@ -830,7 +830,7 @@ transform: rotate(180deg);
 }
 
 .personabarnav > li#Edit {
-    border-top: 1px solid #1e485e;
+    border-top: 1px solid var(--dnn-color-pb-menu-divider);
 }
 
 .personabarnav > li#Edit.selected {
@@ -1249,10 +1249,6 @@ only screen and (min-width: 768px) and (max-width: 1024px)   {
 .socialpanelbody {
     z-index: 1000;
     margin-top: 103px;
-}
-
-.ie .socialpanelbody {
-    /*margin-top: 0;*/
 }
 
 .socialpanelbody > div {
@@ -1912,7 +1908,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .hoverSummaryMenu {
     position: absolute;
     width: 200px;
-    background-color: #0b1c24;
+    background-color: var(--dnn-color-pb-menu-background-hover);
     padding: 27px 37px 42px 37px;
     left: 80px;
     top: 0;
@@ -1959,9 +1955,9 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 }
 .hoverSummaryMenu ul li label {
     font-size: 12px;
-    color: #3c7a9a;
+    color: var(--dnn-color-pb-menu-text-highlight);
     padding: 11px 0 18px 0;
-    border-bottom: 1px solid #1e485e;
+    border-bottom: 1px solid var(--dnn-color-pb-menu-divider);
     text-transform: uppercase;
     -moz-word-break: break-all;
     -o-word-break: break-all;
