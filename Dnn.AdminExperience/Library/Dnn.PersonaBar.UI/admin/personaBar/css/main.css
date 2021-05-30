@@ -921,7 +921,7 @@ transform: rotate(180deg);
     position: absolute;
     left: 80px;
     padding: 0 0px 42px 37px;
-    background-color: #0b1c24;
+    background-color: var(--dnn-color-pb-menu-background-hover);
     display: none;
     /* display: none; IE not apply list-style-type: none; with this active
        it will be applied in js
