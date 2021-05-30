@@ -6,8 +6,10 @@ namespace Dnn.PersonaBar.Library.Containers
 {
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Threading;
     using System.Web;
+    using System.Web.Hosting;
     using System.Web.UI;
 
     using Dnn.PersonaBar.Library.Common;
@@ -18,7 +20,6 @@ namespace Dnn.PersonaBar.Library.Containers
     using DotNetNuke.Application;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Personalization;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json.Linq;
@@ -119,6 +120,10 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("customModules", customModules);
 
             settings.Add("disableEditBar", Host.DisableEditBar);
+
+            var customThemePath = HostingEnvironment.MapPath(Path.Combine("Portals", "_default", "PersonaBarTheme.css"));
+            var customThemeExists = File.Exists(customThemePath);
+            settings.Add("theme", customThemeExists);
 
             return settings;
         }
