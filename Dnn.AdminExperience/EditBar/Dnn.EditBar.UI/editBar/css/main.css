@@ -27,7 +27,7 @@ body {
     visibility: visible;
     height: 80px;
     display: block;
-    background-color: #0B1C24;
+    background-color: var(--dnn-color-editbar-background);
     color: white;
     min-height: 20px;
     padding: 26px 26px 0;
@@ -99,9 +99,7 @@ body {
 .editbar .left-section {
     margin-left: 20px;
 }
-.editbar .left-section ul {
-    
-}
+
 .editbar .left-section ul li {
         margin-left: 7px;
 }
