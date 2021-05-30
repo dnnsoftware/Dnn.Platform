@@ -26,8 +26,15 @@
     var mainJs = 'scripts/main.js';
     var themeCss = 'css/theme.css';
     var mainCss = 'css/main.css';
+    var hasCustomTheme = editBarSettings['theme'];
 
-    styles.push(themeCss);
+    if (hasCustomTheme){
+        styles.push('../../../../Portals/_default/PersonaBarTheme.css');
+    }
+    else{
+        styles.push(themeCss);
+    }
+
     styles.push(mainCss);
     styles.push('css/graph.css');
 
