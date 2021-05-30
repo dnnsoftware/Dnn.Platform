@@ -716,23 +716,25 @@ transform: rotate(180deg);
 /* persona bar Menu*/
 .personabar {
     width: 80px;
-    background-color: #3d3c3c;
+    background-color: #0e2936;
     height: 100%;
     position: fixed;
     top: 0;
     left: -100px;
-    z-index: 1000;display: none;
+    z-index: 1000;
+    display: none;
 }
 .personabar .personabarLogo {
     width: 80px;
     height: 103px;
-    background: #515050 url('../images/Logo.svg') no-repeat center center;
+    background: url('../images/Logo.svg') no-repeat center center;
     -ms-background-size: 32px auto;
     background-size: 32px auto;
     position: relative;
+    border-bottom: 1px solid #1e485e;
 }
 .personabar .personabarLogo:hover {
-    background-color: #2f2f2f;
+    background-color: #0b1c24;
 }
 .personabar .personabarLogo a.update {
     text-decoration: none;
@@ -757,13 +759,12 @@ transform: rotate(180deg);
 .personabarnav {
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid #373737;
 }
 
 .personabarnav > li {
     list-style-type: none;
     margin: 0;
-    padding: 28px;
+    padding: 17px 16px;
     cursor: pointer;
     text-align: center;
     background-repeat: repeat-x;
@@ -771,7 +772,6 @@ transform: rotate(180deg);
     color: #737171;
     font-weight: 600;
     position: relative;
-    border-top: 1px solid #373737;
     height: 80px;
     transition: background-color 200ms linear, color 200ms linear;
     -webkit-box-sizing: border-box;
@@ -784,10 +784,10 @@ transform: rotate(180deg);
 }
 .personabarnav > li > span.icon-loader {
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 38px;
+    height: 38px;
     margin: 0;
-    padding: 0;
+    padding: 5px;
     vertical-align: top;
 }
 .personabarnav > li > span.icon-loader img {
@@ -797,6 +797,12 @@ transform: rotate(180deg);
 }
 .personabarnav > li > span.icon-loader svg {
     fill: #868484;
+}
+.personabarnav > li > span.icon-loader svg .back {
+    fill: #0b1c24;
+}
+.personabarnav>li>span.icon-loader svg .main {
+    fill: #3c7a9a;
 }
 .personabarnav > li:hover > span.icon-loader svg,
 .personabarnav > li.active > span.icon-loader svg,
@@ -816,11 +822,15 @@ transform: rotate(180deg);
 }
 .personabarnav > li:hover,.personabarnav > li.active {
     color: #fff;
-    background-color: #2f2f2f;
+    background-color: #0b1c24;
     border-right: none !important;
 }
 .personabarnav > li.pending {
     border-right: 3px solid #9FDBF0;
+}
+
+.personabarnav > li#Edit {
+    border-top: 1px solid #1e485e;
 }
 
 .personabarnav > li#Edit.selected {
@@ -911,7 +921,7 @@ transform: rotate(180deg);
     position: absolute;
     left: 80px;
     padding: 0 0px 42px 37px;
-    background-color: #2f2f2f;
+    background-color: #0b1c24;
     display: none;
     /* display: none; IE not apply list-style-type: none; with this active
        it will be applied in js
@@ -1902,7 +1912,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .hoverSummaryMenu {
     position: absolute;
     width: 200px;
-    background-color: #2f2f2f;
+    background-color: #0b1c24;
     padding: 27px 37px 42px 37px;
     left: 80px;
     top: 0;
@@ -1949,9 +1959,9 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 }
 .hoverSummaryMenu ul li label {
     font-size: 12px;
-    color: #868484;
-    padding: 2px 0 13px 0;
-    border-bottom: 1px solid #868484;
+    color: #3c7a9a;
+    padding: 11px 0 18px 0;
+    border-bottom: 1px solid #1e485e;
     text-transform: uppercase;
     -moz-word-break: break-all;
     -o-word-break: break-all;
