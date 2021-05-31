@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
     font-family: 'pb_regular';
     src: url('open-sans.semibold.ttf') format('truetype');
     font-weight: normal;
@@ -732,27 +732,42 @@ transform: rotate(180deg);
     background-size: 32px auto;
     position: relative;
     border-bottom: 1px solid var(--dnn-color-pb-menu-divider);
+    text-align: center;
 }
+    .personabar .personabarLogo.updateLogo {
+      background-position: center 14px;
+    }
 .personabar .personabarLogo:hover {
     background-color: var(--dnn-color-pb-menu-background-hover);
 }
 .personabar .personabarLogo a.update {
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 7px;
+      font-size: 10px;
     font-family: pb_semibold;
     display: none;
     position: absolute;
     bottom: 8px;
-    width: 100%;
+      width: 64px;
     text-align: center;
+      background-color: #21a3da;
+      border-radius: 3px;
+      color: #fff;
+      display: block;
+      padding: 2px;
+      margin-left: 5px;
 }
+
+      .personabar .personabarLogo a.update.critical {
+        background-color: #D63333;
+      }
+
 .personabar .personabarLogo a.update.normal-update {
     color: #21A3DA;
     display: block;
 }
 .personabar .personabarLogo a.update.critical-update {
-    color: #D9577A;
+        color: #D63333;
     display: block;
 }
 
@@ -1943,7 +1958,13 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     color: #fff;
     margin-top: 18px;
     cursor: default;
+    padding-bottom: 6px;
 }
+
+    .hoverSummaryMenu ul li.border {
+      border-bottom: 1px solid #868484;
+    }
+
 .hoverSummaryMenu ul li span, .hoverSummaryMenu ul li label {
     display: block;
     line-height: 13px;
@@ -1956,8 +1977,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .hoverSummaryMenu ul li label {
     font-size: 12px;
     color: var(--dnn-color-pb-menu-text-highlight);
-    padding: 11px 0 18px 0;
-    border-bottom: 1px solid var(--dnn-color-pb-menu-divider);
+      padding: 2px 0 5px 0;
     text-transform: uppercase;
     -moz-word-break: break-all;
     -o-word-break: break-all;
@@ -1994,12 +2014,40 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+  .server-summary li.update a:hover,
 .server-summary li.doc-center a:hover, 
 .server-summary li.logout:hover {
     color: #FFF;
 }
 .server-summary li.logout {
     margin-top: 12px;
+}
+
+.server-summary li.new-version-info.border {
+  border-color: #21a3da;
+}
+
+.server-summary li.new-version-info label {
+  color: #21a3da;
+}
+
+.server-summary li.new-version-info.border.critical {
+  border-color: #D63333;
+}
+
+.server-summary li.new-version-info.critical label {
+  color: #D63333;
+}
+
+.server-summary li.new-version-info span.update-critical {
+  font-size: 10px;
+  background-color: #D63333;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 4px;
+  padding: 2px 4px;
+  float: right;
 }
 
 /* Popup Style END */
