@@ -26,9 +26,9 @@
     var mainJs = 'scripts/main.js';
     var themeCss = 'css/theme.css';
     var mainCss = 'css/main.css';
-    var hasCustomTheme = editBarSettings['theme'];
 
-    if (hasCustomTheme){
+    var hasCustomPersonaBarTheme = personaBarSettings['personaBarTheme'];
+    if (hasCustomPersonaBarTheme){
         styles.push('../../../../Portals/_default/PersonaBarTheme.css');
     }
     else{

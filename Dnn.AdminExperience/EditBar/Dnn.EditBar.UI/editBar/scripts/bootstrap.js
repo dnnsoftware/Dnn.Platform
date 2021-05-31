@@ -21,12 +21,22 @@
         body.appendChild(script);
     };
 
-    var debugMode = window.parent['editBarSettings']['debugMode'] === true;
-    var cdv = window.parent['editBarSettings']['buildNumber'];
+    var editBarSettings = window.parent['editBarSettings'];
+    var debugMode = editBarSettings['debugMode'] === true;
+    var cdv = editBarSettings['buildNumber'];
     var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random(): '');
     var styles = [];
     var mainJs = mobi ? 'scripts/main.mobi.js' : 'scripts/main.js';
+    var themeCss = 'css/theme.css';
     var mainCss = mobi ? 'css/main.mobi.css' : 'css/main.css';
+
+    var hasCustomEditBarTheme = editBarSettings['editBarTheme'];
+    if (hasCustomEditBarTheme){
+        styles.push('../../../../Portals/_default/EditBarTheme.css');
+    }
+    else{
+        styles.push(themeCss);
+    }
 
     styles.push(mainCss);
 

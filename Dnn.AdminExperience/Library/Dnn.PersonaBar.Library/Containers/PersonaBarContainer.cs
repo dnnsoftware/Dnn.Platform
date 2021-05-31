@@ -121,9 +121,9 @@ namespace Dnn.PersonaBar.Library.Containers
 
             settings.Add("disableEditBar", Host.DisableEditBar);
 
-            var customThemePath = HostingEnvironment.MapPath("~/Portals/_default/PersonaBarTheme.css");
-            var customThemeExists = File.Exists(customThemePath);
-            settings.Add("theme", customThemeExists);
+            var customPersonaBarThemePath = HostingEnvironment.MapPath("~/Portals/_default/PersonaBarTheme.css");
+            var customPersonaBarThemeExists = File.Exists(customPersonaBarThemePath);
+            settings.Add("personaBarTheme", customPersonaBarThemeExists);
 
             return settings;
         }
