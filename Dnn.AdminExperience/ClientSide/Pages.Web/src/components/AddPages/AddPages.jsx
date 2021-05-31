@@ -10,7 +10,7 @@ import DisplayInMenu from "./DisplayInMenu";
 import EnableScheduling from "./EnableScheduling";
 
 class AddPages extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this._isFinishLoad = false;
 

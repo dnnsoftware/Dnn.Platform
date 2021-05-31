@@ -39,18 +39,18 @@ class IpFilterEditor extends Component {
         const {props} = this;
         if (props.ipFilterId) {
             props.dispatch(SecurityActions.getIpFilter({
-                    filterId: props.ipFilterId
-                }, (data) => {
-                    let ipFilter = Object.assign({}, data.Results);
-                    this.setState({
-                        error: {
-                            ip: false,
-                            mask: false
-                        },
-                        ruleSpecificity: ipFilter.SubnetMask === "" ? SINGLE_IP : IP_RANGE,
-                        ipFilter
-                    });
-                }));
+                filterId: props.ipFilterId
+            }, (data) => {
+                let ipFilter = Object.assign({}, data.Results);
+                this.setState({
+                    error: {
+                        ip: false,
+                        mask: false
+                    },
+                    ruleSpecificity: ipFilter.SubnetMask === "" ? SINGLE_IP : IP_RANGE,
+                    ipFilter
+                });
+            }));
         }
     }
 
@@ -87,7 +87,7 @@ class IpFilterEditor extends Component {
             triedToSubmit: true
         });
         
-        if(this.validateIPAddressContainsError()) {
+        if (this.validateIPAddressContainsError()) {
             return;
         }
         
@@ -128,11 +128,11 @@ class IpFilterEditor extends Component {
                     labelType="inline"
                     tooltipMessage={resx.get("plRuleSpecifity.Help") }
                     label={resx.get("plRuleSpecifity") } />
-                    <RadioButtons
-                        onChange={this.onRuleSpecificityChange.bind(this) }
-                        options={specificityOptions}
-                        buttonGroup="specificity"
-                        value={this.state.ruleSpecificity}/>
+                <RadioButtons
+                    onChange={this.onRuleSpecificityChange.bind(this) }
+                    options={specificityOptions}
+                    buttonGroup="specificity"
+                    value={this.state.ruleSpecificity}/>
             </InputGroup>
             <InputGroup>
                 <Label

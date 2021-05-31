@@ -60,7 +60,7 @@ class ProfilePropertyEditor extends Component {
             const current = props.profileProperty[key];
             const previous = prevProps.profileProperty ? prevProps.profileProperty[key] : undefined;
 
-            if(current !== previous) {
+            if (current !== previous) {
                 updateState = true;
             }
         });
@@ -108,7 +108,7 @@ class ProfilePropertyEditor extends Component {
             }
         }
 
-        if(updateState) {
+        if (updateState) {
             this.setState({
                 profileProperty: Object.assign({}, props.profileProperty),
                 propertyLocalization: Object.assign({}, props.propertyLocalization),

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
@@ -45,7 +45,7 @@ class ListView extends Component {
         let portalsettings = {
             portalId: portal.PortalID,
             cultureCode: this.props.culture
-        }
+        };
         
         event2 = Object.assign(event2, portalsettings);
 
@@ -138,11 +138,11 @@ class ListView extends Component {
         });
     }
     getPortalMapping(portal) {
-        const localizedFormat = require('dayjs/plugin/localizedFormat');
+        const localizedFormat = require("dayjs/plugin/localizedFormat");
         dayjs.extend(localizedFormat);
-        const relativeTime = require('dayjs/plugin/relativeTime');
+        const relativeTime = require("dayjs/plugin/relativeTime");
         dayjs.extend(relativeTime);
-        require('dayjs/locale/' + this.props.culture.substring(0,2));
+        require("dayjs/locale/" + this.props.culture.substring(0,2));
 
         return [
             {
@@ -214,7 +214,7 @@ ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
     sitesModule: "Dnn.Sites",
     siteImportExportModule: "Dnn.SiteImportExport",
-    culture: 'en-US'
+    culture: "en-US"
 };
 
 function mapStateToProps(state) {

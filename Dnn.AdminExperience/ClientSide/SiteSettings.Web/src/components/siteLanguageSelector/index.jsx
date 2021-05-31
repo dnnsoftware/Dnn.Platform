@@ -66,7 +66,7 @@ class SiteLanguageSelector extends Component {
     onSiteChange(event) {
         let {state, props} = this;
 
-        if(event.value === state.portalId){
+        if (event.value === state.portalId) {
             return;
         }
 

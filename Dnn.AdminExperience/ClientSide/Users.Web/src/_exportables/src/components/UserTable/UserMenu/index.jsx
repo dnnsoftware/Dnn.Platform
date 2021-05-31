@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Menu from "./menu/Menu";
@@ -239,9 +239,9 @@ class UserMenu extends Component {
         if (showMenu)
         {
             return (
-            <div ref={node => this.rootElement = node}>
-                <GridCell className="dnn-user-menu menu-popup">
-                    {!this.state.ChangePasswordVisible &&
+                <div ref={node => this.rootElement = node}>
+                    <GridCell className="dnn-user-menu menu-popup">
+                        {!this.state.ChangePasswordVisible &&
                         <Menu>
                             {
                                 visibleMenus.map((menu, index) => {
@@ -249,12 +249,12 @@ class UserMenu extends Component {
                                 })
                             }
                         </Menu>
-                    }
-                    {this.state.ChangePasswordVisible &&
+                        }
+                        {this.state.ChangePasswordVisible &&
                         <ChangePassword onCancel={this.toggleChangePassword.bind(this, true) } userId={this.props.userId} />
-                    }
-                </GridCell>
-            </div>
+                        }
+                    </GridCell>
+                </div>
             );
         }
         else

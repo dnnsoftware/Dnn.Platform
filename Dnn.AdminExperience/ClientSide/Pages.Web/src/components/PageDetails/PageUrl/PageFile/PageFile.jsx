@@ -56,7 +56,7 @@ class PageFile extends Component {
                             searchFoldersPlaceHolderText={Localization.get("SearchFoldersPlaceHolder")}
                             fileText={Localization.get("File")}
                             folderText={Localization.get("Folder")}
-                            />
+                        />
                     </GridCell>
                     <GridCell className="right-column">
                         <PageUrlCommons {...this.props} display="vertical" />
