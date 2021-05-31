@@ -1,3 +1,9 @@
+/*--------------------------------------------------------------------------------
+These default CSS variables can be overridden and customized by creating a file, 
+containing a copy of the below, called "PersonaBarTheme.css" and placing it in 
+the "Portals/_default" directory. If the custom CSS file exists, it will be loaded 
+instead of this one.
+---------------------------------------------------------------------------------*/
 :root{
     --dnn-color-pb-menu-background: #0e2936;
     --dnn-color-pb-menu-background-hover: #0b1c24;
