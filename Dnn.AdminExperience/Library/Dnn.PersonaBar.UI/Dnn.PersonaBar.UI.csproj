@@ -140,6 +140,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="admin\personaBar\data\adminpages.resources" />
+    <Content Include="admin\personaBar\css\theme.css" />
     <Content Include="admin\personaBar\images\arrow_forward.svg">
       <SubType>Designer</SubType>
     </Content>

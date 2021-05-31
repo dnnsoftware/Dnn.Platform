@@ -21,13 +21,18 @@
     var personaBarSettings = window.parent['personaBarSettings'];
     var debugMode = personaBarSettings['debugMode'] === true;
     var cdv = personaBarSettings['buildNumber'];
-    var skin = personaBarSettings['skin'];
     var version = (cdv ? '?cdv=' + cdv : '') + (debugMode ? '&t=' + Math.random(): '');
     var styles = [];
     var mainJs = 'scripts/main.js';
+    var themeCss = 'css/theme.css';
     var mainCss = 'css/main.css';
-    if (skin) {
-        mainCss = 'css/' + skin + '.css';
+
+    var hasCustomPersonaBarTheme = personaBarSettings['personaBarTheme'];
+    if (hasCustomPersonaBarTheme){
+        styles.push('../../../../Portals/_default/PersonaBarTheme.css');
+    }
+    else{
+        styles.push(themeCss);
     }
 
     styles.push(mainCss);

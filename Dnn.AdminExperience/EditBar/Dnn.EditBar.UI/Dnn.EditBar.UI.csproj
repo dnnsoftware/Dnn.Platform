@@ -119,6 +119,7 @@
     <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
     <Content Include="editBar\css\QuickAddModule.css" />
+    <Content Include="editBar\css\theme.css" />
     <Content Include="editBar\QuickAddModule.html" />
     <Content Include="editBar\scripts\QuickAddModule.js" />
     <Content Include="Module.build">
