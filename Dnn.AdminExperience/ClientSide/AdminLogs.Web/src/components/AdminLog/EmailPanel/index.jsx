@@ -106,7 +106,7 @@ class EmailPanel extends Component {
                                             labelType="inline"
                                             tooltipMessage={Localization.get("plEmailAddress.Help")}
                                             label={Localization.get("plEmailAddress")}
-                                            />
+                                        />
                                         <SingleLineInputWithError
                                             error={state.error.email && state.triedToSubmit}
                                             inputStyle={{ marginBottom: "15px" }}
@@ -119,24 +119,24 @@ class EmailPanel extends Component {
                                             labelType="inline"
                                             tooltipMessage={Localization.get("plSubject.Help")}
                                             label={Localization.get("plSubject")}
-                                            />
+                                        />
                                         <SingleLineInputWithError
                                             error={false}
                                             inputStyle={{ marginBottom: "15px" }}
                                             value={state.emailRequest.Subject}
                                             onChange={this.onEmailValueChange.bind(this, "Subject")}
-                                            />
+                                        />
                                     </InputGroup>
                                     <InputGroup>
                                         <Label
                                             labelType="inline"
                                             tooltipMessage={Localization.get("SendMessage.Help")}
                                             label={Localization.get("SendMessage")}
-                                            />
+                                        />
                                         <MultiLineInput
                                             value={state.emailRequest.Message}
                                             onChange={this.onEmailValueChange.bind(this, "Message")}
-                                            />
+                                        />
                                     </InputGroup>
                                     <div className="action-buttons">
                                         <Button type="secondary" onClick={this.onCloseEmailPanel.bind(this)}>{Localization.get("btnCancel")}</Button>

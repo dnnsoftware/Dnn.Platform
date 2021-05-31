@@ -126,9 +126,9 @@ class DetailsRow extends Component {
                 {
                     index: 3,
                     content: <GridCell key={`gc-userstatus-${user.userId}`} columnSize={columnSizes.find(x=>x.index===3).size}>
-                            <span dangerouslySetInnerHTML={{__html: statusIcon}} className={"user-status " + statusClass} title={hoverText}></span>
-                        </GridCell>
-                }]
+                        <span dangerouslySetInnerHTML={{__html: statusIcon}} className={"user-status " + statusClass} title={hoverText}></span>
+                    </GridCell>
+                }];
         }
         userColumns = userColumns.concat([
             {

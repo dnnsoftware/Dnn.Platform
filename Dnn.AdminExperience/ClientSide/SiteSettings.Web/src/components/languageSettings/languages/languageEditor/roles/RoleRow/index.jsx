@@ -25,7 +25,7 @@ class RoleRow extends Component {
 
     componentDidUpdate(prevProps) {
         const { props } = this;
-        if(props.selected !== prevProps.selected) {
+        if (props.selected !== prevProps.selected) {
             this.setState({
                 selected: props.selected
             });

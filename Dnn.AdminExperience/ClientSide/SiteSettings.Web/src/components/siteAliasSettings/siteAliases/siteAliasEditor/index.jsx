@@ -35,9 +35,9 @@ class SiteAliasEditor extends Component {
         }
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps) {
         const {props, state} = this;
-        if ((props !== prevProps) && props.aliasDetail ){
+        if ((props !== prevProps) && props.aliasDetail ) {
             if (props.aliasDetail["HTTPAlias"] === undefined || props.aliasDetail["HTTPAlias"] === "") {
                 state.error["alias"] = true;
             }

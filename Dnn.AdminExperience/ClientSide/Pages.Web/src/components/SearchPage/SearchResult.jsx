@@ -53,48 +53,48 @@ class SearchResult extends Component {
                         <p>{searchResult.TotalResults === 0 ? Localization.get("NoPageFound").toUpperCase() : (`${searchResult.TotalResults} ` + Localization.get(searchResult.TotalResults > 1 ? "lblPagesFound" : "lblPageFound").toUpperCase())}</p>
                     </GridCell>
                     <GridCell columnSize={100}>
-                    <div>
-                        <LazyLoad 
-                            pageIndex={0} 
-                            loadMore={this.loadMore.bind(this)}
-                            hasMore={searchList.length !== searchResult.TotalResults}
-                            loadingComponent={loader}
-                            filtersUpdated={this.props.filtersUpdated}
-                        >
-                        {searchList.map((item,index) => {
-                            return (
-                                <SearchResultCard key={index}
-                                    item={item}
-                                    clearSearch={this.props.clearSearch}
-                                    onLoadPage={this.props.onLoadPage}
-                                    buildBreadCrumbPath={this.props.buildBreadCrumbPath}
-                                    setEmptyStateMessage={this.props.setEmptyStateMessage}
-                                    tags={this.props.tags}
-                                    onSearch={this.props.onSearch}
-                                    onViewPage={this.props.onViewPage}
-                                    onViewEditPage={this.props.onViewEditPage}
-                                    CallCustomAction={this.props.CallCustomAction}
-                                    getPageTypeLabel={this.props.getPageTypeLabel}
-                                    getPublishStatusLabel={this.props.getPublishStatusLabel}
-                                    filterByPageType={this.props.filterByPageType}
-                                    filterByPublishStatus={this.props.filterByPublishStatus}
-                                    updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
-                                    updateFilterByPageTypeOptions={this.props.updateFilterByPageTypeOptions}
-                                    updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
-                                    updateFilterStartEndDate={this.props.updateFilterStartEndDate}
-                                    startDate={this.props.startDate}
-                                    endDate={this.props.endDate} 
-                                    pageInContextComponents={this.props.pageInContextComponents} 
-                                    pageTypeSelectorComponents={this.props.pageTypeSelectorComponents}
-                                    updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
-                                    filterByWorkflow={this.props.filterByWorkflow}  />
-                            );})}
-                        </LazyLoad>                            
+                        <div>
+                            <LazyLoad 
+                                pageIndex={0} 
+                                loadMore={this.loadMore.bind(this)}
+                                hasMore={searchList.length !== searchResult.TotalResults}
+                                loadingComponent={loader}
+                                filtersUpdated={this.props.filtersUpdated}
+                            >
+                                {searchList.map((item,index) => {
+                                    return (
+                                        <SearchResultCard key={index}
+                                            item={item}
+                                            clearSearch={this.props.clearSearch}
+                                            onLoadPage={this.props.onLoadPage}
+                                            buildBreadCrumbPath={this.props.buildBreadCrumbPath}
+                                            setEmptyStateMessage={this.props.setEmptyStateMessage}
+                                            tags={this.props.tags}
+                                            onSearch={this.props.onSearch}
+                                            onViewPage={this.props.onViewPage}
+                                            onViewEditPage={this.props.onViewEditPage}
+                                            CallCustomAction={this.props.CallCustomAction}
+                                            getPageTypeLabel={this.props.getPageTypeLabel}
+                                            getPublishStatusLabel={this.props.getPublishStatusLabel}
+                                            filterByPageType={this.props.filterByPageType}
+                                            filterByPublishStatus={this.props.filterByPublishStatus}
+                                            updateFilterByPageStatusOptions={this.props.updateFilterByPageStatusOptions}
+                                            updateFilterByPageTypeOptions={this.props.updateFilterByPageTypeOptions}
+                                            updateFilterByWorkflowOptions={this.props.updateFilterByWorkflowOptions}
+                                            updateFilterStartEndDate={this.props.updateFilterStartEndDate}
+                                            startDate={this.props.startDate}
+                                            endDate={this.props.endDate} 
+                                            pageInContextComponents={this.props.pageInContextComponents} 
+                                            pageTypeSelectorComponents={this.props.pageTypeSelectorComponents}
+                                            updateSearchAdvancedTags={this.props.updateSearchAdvancedTags}
+                                            filterByWorkflow={this.props.filterByWorkflow}  />
+                                    );})}
+                            </LazyLoad>                            
                         </div>
                     </GridCell>
                 </GridCell>
             </GridCell>
-        :null);
+            :null);
     }
 }
 
