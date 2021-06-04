@@ -70,7 +70,7 @@ class Performance extends Component {
 
     onChangeField(key, event) {
         let value = event;
-        if (event && event.value) {
+        if (event && event.value !== undefined) {
             value = event.value;
         } else if (event && event.target && event.target.value) {
             value = event.target.value;
