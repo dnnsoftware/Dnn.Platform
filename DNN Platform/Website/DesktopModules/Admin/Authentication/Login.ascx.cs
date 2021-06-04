@@ -1301,13 +1301,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
             switch (validStatus)
             {
                 case UserValidStatus.VALID:
+                    
+                    //Obtain the current client IP
+                    var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                    var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+                    
                     // check if the user is an admin/host and validate their IP
                     if (Host.EnableIPChecking)
                     {
                         bool isAdminUser = objUser.IsSuperUser || objUser.IsInRole(this.PortalSettings.AdministratorRoleName);
                         if (isAdminUser)
                         {
-                            var clientIp = NetworkUtils.GetClientIpAddress(this.Request);
+                            var clientIp = ipAddress;
                             if (IPFilterController.Instance.IsIPBanned(clientIp))
                             {
                                 PortalSecurity.Instance.SignOut();
@@ -1331,9 +1336,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     // Set the Authentication Type used
                     AuthenticationController.SetAuthenticationType(this.AuthenticationType);
 
-                    // Complete Login
-                    var userRequestIpAddressController = UserRequestIPAddressController.Instance;
-                    var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+                    // Complete Login                    
                     UserController.UserLogin(this.PortalId, objUser, this.PortalSettings.PortalName, ipAddress, this.RememberMe);
 
                     // check whether user request comes with IPv6 and log it to make sure admin is aware of that
