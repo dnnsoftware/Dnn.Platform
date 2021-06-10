@@ -271,7 +271,7 @@ namespace DotNetNuke.Web.DDRMenu
                 }
                 else
                 {
-                    filteredNodes.Add(this.RootNode.FindByNameOrId(nodeText));
+                    filteredNodes.AddRange(this.RootNode.FindAllByNameOrId(nodeText));
                 }
             }
 
