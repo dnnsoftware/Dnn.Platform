@@ -83,6 +83,32 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
         }
 
+        /// POST: api/ConfigConsole/ValidateConfigFile
+        /// <summary>
+        /// Validates a config file against a well known schema.
+        /// </summary>
+        /// <param name="configFileDto">Content of config file.</param>
+        /// <returns>A list of validation errors.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage ValidateConfigFile(ConfigFileDto configFileDto)
+        {
+            try
+            {
+                var errors = this._controller.ValidateConfigFile(configFileDto.FileName, configFileDto.FileContent);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { ValidationErrors = errors });
+            }
+            catch (ArgumentException exc)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         /// POST: api/ConfigConsole/UpdateConfigFile
         /// <summary>
         /// Updates a config file.
