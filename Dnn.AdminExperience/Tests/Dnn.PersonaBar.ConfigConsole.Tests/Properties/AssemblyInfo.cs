@@ -3,13 +3,12 @@
 // See the LICENSE file in the project root for more information
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dnn.PersonaBar.Extensions")]
+[assembly: AssemblyTitle("Dnn.PersonaBar.ConfigConsole.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 
@@ -19,7 +18,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("859C93DE-7107-4F63-9631-B8499A2263BB")]
-
-[assembly: InternalsVisibleTo("Dnn.PersonaBar.Security.Tests")]
-[assembly: InternalsVisibleTo("Dnn.PersonaBar.ConfigConsole.Tests")]
+[assembly: Guid("12583a7e-7bef-4f79-9cea-3736d28c3241")]

@@ -165,6 +165,9 @@
   <data name="SaveConfirm.Text" xml:space="preserve">
     <value>Are you sure you want to save changes this config file?</value>
   </data>
+  <data name="ValidationErrorsConfirm.Text" xml:space="preserve">
+    <value>Validation errors were found.{0}Do you want to save the file anyway?</value>
+  </data>
   <data name="SelectConfig.Text" xml:space="preserve">
     <value>Select a config file...</value>
   </data>

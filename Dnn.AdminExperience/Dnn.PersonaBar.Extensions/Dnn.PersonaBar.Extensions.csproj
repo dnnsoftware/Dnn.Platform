@@ -737,6 +737,9 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <EmbeddedResource Include="Components\ConfigConsole\Schemas\DotNetConfig.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">

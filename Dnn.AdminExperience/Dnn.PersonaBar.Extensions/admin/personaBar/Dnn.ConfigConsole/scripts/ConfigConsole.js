@@ -61,14 +61,63 @@ define(['jquery',
         }
 
         var saveConfigFile = function () {
-            utility.confirm(utility.resx.ConfigConsole.SaveConfirm, utility.resx.ConfigConsole.SaveButton, utility.resx.ConfigConsole.CancelButton, function () {
-                requestService('post', 'UpdateConfigFile', { 'fileName': curConfigName, 'fileContent': configFilesContent.getValue() }, function (data) {
-                    utility.notify(utility.resx.ConfigConsole.Success);
-                }, function () {
-                    // failed
-                    utility.notifyError(utility.resx.ConfigConsole.ERROR_ConfigurationFormat);
-                });
-            });
+            utility.confirm(
+                utility.resx.ConfigConsole.SaveConfirm,
+                utility.resx.ConfigConsole.SaveButton,
+                utility.resx.ConfigConsole.CancelButton,
+                function () {
+                    validate({
+                        'fileName': curConfigName,
+                        'fileContent': configFilesContent.getValue()
+                    });
+                }
+            );
+        }
+
+        var validate = function(configFile) {
+            var callback = function(data) {
+                if (data && data.ValidationErrors && data.ValidationErrors.length) {
+                    confirmValidationErrors(data.ValidationErrors, configFile);
+                } else {
+                    update(configFile);
+                }
+            };
+
+            requestService('post', 'ValidateConfigFile', configFile, callback, fail);
+        }
+
+        var confirmValidationErrors = function(validationErrors, configFile) {
+            const BR = '<br/>';
+            const TOP = 5;
+
+            var question = utility.resx.ConfigConsole.ValidationErrorsConfirm.replace('{0}', BR);
+
+            // remove duplicates and take top N
+            var errors = validationErrors
+                .filter((value, index, self) => self.indexOf(value) === index)
+                .slice(0, TOP)
+                .concat(validationErrors.length > TOP ? ['...'] : []);
+
+            utility.confirm(
+                question + BR + BR + errors.join(BR),
+                utility.resx.ConfigConsole.SaveButton,
+                utility.resx.ConfigConsole.CancelButton,
+                function () {
+                    update(configFile);
+                }
+            );
+        }
+
+        var update = function(configFile) {
+            requestService('post', 'UpdateConfigFile', configFile, succeed, fail);
+        }
+
+        var succeed = () => {
+            utility.notify(utility.resx.ConfigConsole.Success);
+        }
+
+        var fail = () => {
+            utility.notifyError(utility.resx.ConfigConsole.ERROR_ConfigurationFormat);
         }
 
         var mergeConfigFile = function () {
