@@ -1,8 +1,6 @@
 using Cantarus.Libraries.Encryption;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,11 +9,11 @@ using System.Web.Script.Serialization;
 
 namespace DeployClient
 {
-    class Program
+    internal static class Program
     {
-        internal static CommandLineOptions Options = new CommandLineOptions();
+        internal static readonly CommandLineOptions Options = new CommandLineOptions();
 
-        enum ExitCode : int
+        private enum ExitCode
         {
             Success = 0,
             Error = 1,
@@ -24,7 +22,7 @@ namespace DeployClient
             InstallFailure = 4
         }
 
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             try
             {
@@ -55,29 +53,12 @@ namespace DeployClient
                 // Output identifying module archives.
                 WriteLine("Identifying module archives...");
 
-                // Read zip files in current directory.
-                string currentDirectory = Directory.GetCurrentDirectory();
-                List<string> zipFiles = new List<string>(Directory.GetFiles(currentDirectory, "*.zip"));
+                // Read zip files from packages directory if provided, otherwise from current directory
+                var packageCrawler = new PackageCrawler(Options.PackagesDirectoryPath);
+                var zipFiles = packageCrawler.GetPackagesFullPaths().ToArray();
 
-                // Is there something to do?
-                if (zipFiles.Count <= 0)
-                {
-                    // No, exit.
-                    WriteLine("No module archives found.");
-                    WriteLine("Exiting.");
-                    ReadLine();
-                    Environment.Exit((int)ExitCode.NoModulesFound);
-                }
-
-                // Inform user of modules found.
-                WriteLine(string.Format("Found {0} module archives in {1}:", zipFiles.Count, currentDirectory));
-
-                foreach (string zipFile in zipFiles)
-                {
-                    WriteLine(string.Format("\t{0}. {1}", zipFiles.IndexOf(zipFile) + 1, Path.GetFileName(zipFile)));
-                }
-                WriteLine();
-
+                ValidateFoundPackages(zipFiles, packageCrawler.PackageDirectoryPath);
+                
                 if (!Options.NoPrompt)
                 {
                     // Prompt to continue.
@@ -269,6 +250,11 @@ namespace DeployClient
                 {
                     Options.EncryptionKey = Properties.Settings.Default.EncryptionKey;
                 }
+
+                if (string.IsNullOrWhiteSpace(Options.PackagesDirectoryPath))
+                {
+                    Options.PackagesDirectoryPath = Properties.Settings.Default.PackagesDirectory;
+                }
             }
         }
 
@@ -350,6 +336,31 @@ namespace DeployClient
             }
 
             Console.WriteLine(message);
+        }
+
+        private static void ValidateFoundPackages(IEnumerable<string> zipFiles, string directory)
+        {
+            var packages = zipFiles?.ToArray() ?? new string[0];
+
+            // Is there something to do?
+            if (!packages.Any())
+            {
+                // No, exit.
+                WriteLine("No module archives found.");
+                WriteLine("Exiting.");
+                ReadLine();
+                Environment.Exit((int)ExitCode.NoModulesFound);
+            }
+
+            // Inform user of modules found.
+            WriteLine($"Found {packages.Length} module archives in {directory}:");
+
+            var fileCounter = 1;
+            foreach (var package in packages)
+            {
+                WriteLine($"\t{fileCounter++}. {Path.GetFileName(package)}");
+            }
+            WriteLine();
         }
 
         private static string ReadLine()
