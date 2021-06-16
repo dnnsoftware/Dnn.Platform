@@ -360,7 +360,7 @@ GO
 /***********************/
 /* Update TabModules table to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
-IF OBJECT_ID('{databaseOwner}[DF_abModules_IsWebSlice]', 'C') IS NOT NULL 
+IF OBJECT_ID('{databaseOwner}[DF_abModules_IsWebSlice]', 'D') IS NOT NULL 
     ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
     DROP CONSTRAINT DF_abModules_IsWebSlice
 
