@@ -3370,6 +3370,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.08.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />

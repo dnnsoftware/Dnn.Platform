@@ -997,10 +997,8 @@ namespace DotNetNuke.Data
                                          int ModuleOrder, string PaneName, int CacheTime, string CacheMethod,
                                          string Alignment, string Color, string Border, string IconFile, int Visibility,
                                          string ContainerSrc, bool DisplayTitle, bool DisplayPrint,
-                                         bool DisplaySyndicate, bool IsWebSlice, string WebSliceTitle,
-                                         DateTime WebSliceExpiryDate, int WebSliceTTL, Guid UniqueId, Guid VersionGuid,
-                                         Guid DefaultLanguageGuid, Guid LocalizedVersionGuid, string CultureCode,
-                                         int createdByUserID)
+                                         bool DisplaySyndicate, Guid UniqueId, Guid VersionGuid, Guid DefaultLanguageGuid, 
+                                         Guid LocalizedVersionGuid, string CultureCode, int createdByUserID)
         {
             this.ExecuteNonQuery(
                 "AddTabModule",
@@ -1022,10 +1020,6 @@ namespace DotNetNuke.Data
                 DisplayTitle,
                 DisplayPrint,
                 DisplaySyndicate,
-                IsWebSlice,
-                WebSliceTitle,
-                this.GetNull(WebSliceExpiryDate),
-                WebSliceTTL,
                 UniqueId,
                 VersionGuid,
                 this.GetNull(DefaultLanguageGuid),
@@ -1211,9 +1205,7 @@ namespace DotNetNuke.Data
                                             string Footer, int ModuleOrder, string PaneName, int CacheTime,
                                             string CacheMethod, string Alignment, string Color, string Border,
                                             string IconFile, int Visibility, string ContainerSrc, bool DisplayTitle,
-                                            bool DisplayPrint, bool DisplaySyndicate, bool IsWebSlice,
-                                            string WebSliceTitle, DateTime WebSliceExpiryDate, int WebSliceTTL,
-                                            Guid VersionGuid,
+                                            bool DisplayPrint, bool DisplaySyndicate, Guid VersionGuid,
                                             Guid DefaultLanguageGuid, Guid LocalizedVersionGuid, string CultureCode,
                                             int lastModifiedByUserID)
         {
@@ -1238,10 +1230,6 @@ namespace DotNetNuke.Data
                 DisplayTitle,
                 DisplayPrint,
                 DisplaySyndicate,
-                IsWebSlice,
-                WebSliceTitle,
-                this.GetNull(WebSliceExpiryDate),
-                WebSliceTTL,
                 VersionGuid,
                 this.GetNull(DefaultLanguageGuid),
                 LocalizedVersionGuid,

@@ -902,10 +902,6 @@ namespace Dnn.ExportImport.Components.Services
                         DisplayTitle = other.DisplayTitle,
                         DisplayPrint = other.DisplayPrint,
                         DisplaySyndicate = other.DisplaySyndicate,
-                        IsWebSlice = other.IsWebSlice,
-                        WebSliceTitle = other.WebSliceTitle,
-                        WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue,
-                        WebSliceTTL = other.WebSliceTTL ?? -1,
                         IsDeleted = false,
                         CacheMethod = other.CacheMethod,
                         ModuleTitle = other.ModuleTitle,
@@ -1004,10 +1000,6 @@ namespace Dnn.ExportImport.Components.Services
                                     DisplayTitle = other.DisplayTitle,
                                     DisplayPrint = other.DisplayPrint,
                                     DisplaySyndicate = other.DisplaySyndicate,
-                                    IsWebSlice = other.IsWebSlice,
-                                    WebSliceTitle = other.WebSliceTitle,
-                                    WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue,
-                                    WebSliceTTL = other.WebSliceTTL ?? -1,
                                     IsDeleted = other.IsDeleted,
                                     CacheMethod = other.CacheMethod,
                                     ModuleTitle = other.ModuleTitle,
@@ -1085,10 +1077,6 @@ namespace Dnn.ExportImport.Components.Services
                                 local.DisplaySyndicate = other.DisplaySyndicate;
                                 local.IsShareable = otherModule.IsShareable;
                                 local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
-                                local.IsWebSlice = other.IsWebSlice;
-                                local.WebSliceTitle = other.WebSliceTitle;
-                                local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
-                                local.WebSliceTTL = other.WebSliceTTL ?? -1;
                                 local.VersionGuid = other.VersionGuid;
                                 local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
                                 local.LocalizedVersionGuid = other.LocalizedVersionGuid;
