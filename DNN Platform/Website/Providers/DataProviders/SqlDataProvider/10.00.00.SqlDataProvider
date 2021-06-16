@@ -13,7 +13,9 @@
 /* Update AddTabModule SP to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabModule]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
     DROP PROCEDURE {databaseOwner} [{objectQualifier}AddTabModule]
+END
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabModule]
@@ -109,7 +111,9 @@ GO
 /* Update UpdateTabModule SP to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModule]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
     DROP PROCEDURE {databaseOwner} [{objectQualifier}UpdateTabModule]
+END
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModule]
@@ -173,7 +177,9 @@ GO
 /***********************/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_Modules]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+BEGIN
     DROP VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+END
 GO
 
 CREATE VIEW {databaseOwner}[{objectQualifier}vw_Modules]
@@ -255,7 +261,9 @@ GO
 /* Update vw_TabModules to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_TabModules]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+BEGIN
     DROP VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+END
 GO
 
 CREATE VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
@@ -324,20 +332,26 @@ AS
      LEFT  JOIN {databaseOwner}[{objectQualifier}TabModules]     AS TM ON M.ModuleID = TM.ModuleID
      LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]           AS T  ON TM.TabID = T.TabID
     WHERE (MC.ControlKey IS NULL)
-
+GO
 
 /***********************/
 /* Update TabModules table to Remove Index*/
 /***********************/
 IF EXISTS (SELECT * FROM sys.indexes WHERE name ='IX_{objectQualifier}TabModules_ModuleID')
-    BEGIN DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleID]
+BEGIN 
+    DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleID]
 END
+GO
+
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] ([ModuleID], [TabID]) INCLUDE ([Alignment], [Border], [CacheMethod], [CacheTime], [Color], [ContainerSrc], [CultureCode], [DefaultLanguageGuid], [DisplayPrint], [DisplaySyndicate], [DisplayTitle], [Footer], [Header], [IconFile], [IsDeleted], [LocalizedVersionGuid], [ModuleOrder], [ModuleTitle], [PaneName], [TabModuleID], [UniqueId], [VersionGuid], [Visibility])
 GO
 
 IF EXISTS (SELECT * FROM sys.indexes WHERE name ='IX_{objectQualifier}TabModules_ModuleOrder')
-    BEGIN DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleOrder]
+BEGIN 
+    DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleOrder]
 END
+GO 
+
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules] ([TabID], [PaneName], [ModuleOrder]) INCLUDE ([Alignment], [Border], [CacheMethod], [CacheTime], [Color], [ContainerSrc], [CreatedByUserID], [CreatedOnDate], [CultureCode], [DefaultLanguageGuid], [DisplayPrint], [DisplaySyndicate], [DisplayTitle], [Footer], [Header], [IconFile], [IsDeleted], [LastModifiedByUserID], [LastModifiedOnDate], [LocalizedVersionGuid], [ModuleID], [ModuleTitle], [TabModuleID], [UniqueId], [VersionGuid], [Visibility])
 GO
 
@@ -346,8 +360,9 @@ GO
 /***********************/
 /* Update TabModules table to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
-ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
-DROP CONSTRAINT DF_abModules_IsWebSlice;
+IF OBJECT_ID('{databaseOwner}[DF_abModules_IsWebSlice]', 'C') IS NOT NULL 
+    ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
+    DROP CONSTRAINT DF_abModules_IsWebSlice
 
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
 DROP COLUMN [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL]
