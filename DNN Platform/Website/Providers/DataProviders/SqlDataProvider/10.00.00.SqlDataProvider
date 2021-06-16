@@ -346,8 +346,8 @@ GO
 /***********************/
 /* Update TabModules table to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
-ALTER TABLE [{databaseOwner}[{objectQualifier}TabModules]
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
 DROP CONSTRAINT DF_abModules_IsWebSlice;
 
-ALTER TABLE [{databaseOwner}[{objectQualifier}TabModules]
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
 DROP COLUMN [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL]
