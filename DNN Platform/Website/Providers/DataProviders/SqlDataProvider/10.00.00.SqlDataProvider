@@ -335,7 +335,7 @@ END
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] ([ModuleID], [TabID]) INCLUDE ([Alignment], [Border], [CacheMethod], [CacheTime], [Color], [ContainerSrc], [CultureCode], [DefaultLanguageGuid], [DisplayPrint], [DisplaySyndicate], [DisplayTitle], [Footer], [Header], [IconFile], [IsDeleted], [LocalizedVersionGuid], [ModuleOrder], [ModuleTitle], [PaneName], [TabModuleID], [UniqueId], [VersionGuid], [Visibility])
 GO
 
-IF EXISTS (SELECT * FROM sys.indexes WHERE name ='[IX_{objectQualifier}TabModules_ModuleOrder]')
+IF EXISTS (SELECT * FROM sys.indexes WHERE name ='IX_{objectQualifier}TabModules_ModuleOrder')
     BEGIN DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleOrder]
 END
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules] ([TabID], [PaneName], [ModuleOrder]) INCLUDE ([Alignment], [Border], [CacheMethod], [CacheTime], [Color], [ContainerSrc], [CreatedByUserID], [CreatedOnDate], [CultureCode], [DefaultLanguageGuid], [DisplayPrint], [DisplaySyndicate], [DisplayTitle], [Footer], [Header], [IconFile], [IsDeleted], [LastModifiedByUserID], [LastModifiedOnDate], [LocalizedVersionGuid], [ModuleID], [ModuleTitle], [TabModuleID], [UniqueId], [VersionGuid], [Visibility])
