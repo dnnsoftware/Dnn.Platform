@@ -17,6 +17,7 @@ namespace DotNetNuke.Data.PetaPoco
             try
             {
                 database.OpenSharedConnection();
+                sql = NormalizeSql(sql, args);
 
                 using (IDbCommand command = database.CreateCommand(database.Connection, sql, args))
                 {
@@ -35,6 +36,27 @@ namespace DotNetNuke.Data.PetaPoco
             }
 
             return reader;
+        }
+
+        /// <summary>
+        /// Escapes the "@" character if the arguments are empty and the sql string contains any "@" characters.
+        /// </summary>
+        /// <param name="sql">Sql string to normalize.</param>
+        /// <param name="args">Sql command arguments.</param>
+        /// <returns>Normalized sql string.</returns>
+        private static string NormalizeSql(string sql, object[] args)
+        {
+            const string ReplaceFrom = "@";
+            const string ReplaceTo = "@@";
+
+            if (
+                (args != null && args.Length != 0) ||
+                string.IsNullOrWhiteSpace(sql))
+            {
+                return sql;
+            }
+
+            return sql.Replace(ReplaceFrom, ReplaceTo);
         }
     }
 }
