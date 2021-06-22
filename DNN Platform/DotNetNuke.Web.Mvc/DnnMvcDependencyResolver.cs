@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc
 {
     using System;
@@ -17,11 +16,11 @@ namespace DotNetNuke.Web.Mvc
     /// </summary>
     internal class DnnMvcDependencyResolver : IDependencyResolver
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceProvider serviceProvider;
 
         public DnnMvcDependencyResolver(IServiceProvider serviceProvider)
         {
-            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace DotNetNuke.Web.Mvc
         /// </returns>
         public object GetService(Type serviceType)
         {
-            var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
+            var accessor = this.serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             if (scope != null)
             {
@@ -56,7 +55,7 @@ namespace DotNetNuke.Web.Mvc
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
+            var accessor = this.serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             if (scope != null)
             {
