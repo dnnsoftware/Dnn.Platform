@@ -10,10 +10,11 @@
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>
-      <license>License.txt</license>
+      <license src="License.txt"/>
       <releaseNotes>
         This package includes MailKit assembly version 2.10.1.
-        Please go to http://www.mimekit.com/ to view release notes on this particular version.</releaseNotes>
+        Please go to http://www.mimekit.com/ to view release notes on this particular version.
+      </releaseNotes>
       <components>
         <component type="Assembly">
           <assemblies>
