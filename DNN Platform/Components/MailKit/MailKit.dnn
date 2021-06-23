@@ -30,7 +30,7 @@
             <assembly>
               <path>bin</path>
               <name>BouncyCastle.Crypto.dll</name>
-              <version>1.8.8</version>
+              <version>1.8.10</version>
             </assembly>
             <assembly>
               <path>bin</path>
