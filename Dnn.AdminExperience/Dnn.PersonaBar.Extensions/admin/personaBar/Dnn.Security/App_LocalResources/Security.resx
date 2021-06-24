@@ -59,7 +59,10 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root"
+    xmlns=""
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -845,7 +848,7 @@
   </data>
   <data name="CheckViewstatemacReason.Text" xml:space="preserve">
     <value>A view-state MAC is an encrypted version of the hidden variable that a page's view state is persisted to when the page is sent to the browser. When this property is set to true, the encrypted view state is checked to verify that it has not been tampered with on the client. 
-</value>
+    </value>
   </data>
   <data name="CheckViewstatemacSuccess.Text" xml:space="preserve">
     <value>The viewstate is protected via the usage of a MAC</value>
@@ -884,7 +887,7 @@
     <value>Check if default.aspx or default.aspx.cs files have been modified</value>
   </data>
   <data name="CheckDefaultPageFailure.Text" xml:space="preserve">
-    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN or Evoq version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
+    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
   </data>
   <data name="CheckDefaultPageReason.Text" xml:space="preserve">
     <value>DNN use default.aspx to load everything, so all requests will load this file when user browse the site, if someone modify this file, it may cause huge risk.</value>
