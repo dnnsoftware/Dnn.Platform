@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
@@ -15,23 +14,26 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
     public class DnnAuthorizeAttribute : AuthorizeAttributeBase
     {
-        private string _staticRoles;
-        private string[] _staticRolesSplit = new string[0];
+        private string staticRoles;
+        private string[] staticRolesSplit = new string[0];
 
-        private string _denyRoles;
-        private string[] _denyRolesSplit = new string[0];
+        private string denyRoles;
+        private string[] denyRolesSplit = new string[0];
 
         /// <summary>
         /// Gets or sets the authorized roles (separated by comma).
         /// </summary>
         public string StaticRoles
         {
-            get { return this._staticRoles; }
+            get
+            {
+                return this.staticRoles;
+            }
 
             set
             {
-                this._staticRoles = value;
-                this._staticRolesSplit = this.SplitString(this._staticRoles);
+                this.staticRoles = value;
+                this.staticRolesSplit = this.SplitString(this.staticRoles);
             }
         }
 
@@ -40,12 +42,15 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// </summary>
         public string DenyRoles
         {
-            get { return this._denyRoles; }
+            get
+            {
+                return this.denyRoles;
+            }
 
             set
             {
-                this._denyRoles = value;
-                this._denyRolesSplit = this.SplitString(this._denyRoles);
+                this.denyRoles = value;
+                this.denyRolesSplit = this.SplitString(this.denyRoles);
             }
         }
 
@@ -66,19 +71,19 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 return false;
             }
 
-            if (this._denyRolesSplit.Any())
+            if (this.denyRolesSplit.Any())
             {
                 var currentUser = this.GetCurrentUser();
-                if (!currentUser.IsSuperUser && this._denyRolesSplit.Any(currentUser.IsInRole))
+                if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }
             }
 
-            if (this._staticRolesSplit.Any())
+            if (this.staticRolesSplit.Any())
             {
                 var currentUser = this.GetCurrentUser();
-                if (!this._staticRolesSplit.Any(currentUser.IsInRole))
+                if (!this.staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }

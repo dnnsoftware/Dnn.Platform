@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     using System;
@@ -17,9 +16,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
     public class DnnUrlHelper
     {
-        private readonly ViewContext _viewContext;
+        private readonly ViewContext viewContext;
 
-        private readonly IDnnController _controller;
+        private readonly IDnnController controller;
 
         public DnnUrlHelper(ViewContext viewContext)
             : this(viewContext, RouteTable.Routes)
@@ -32,8 +31,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
             Requires.NotNull("controller", controller);
 
             this.UrlHelper = new UrlHelper(requestContext);
-            this._controller = controller;
-            this.ModuleContext = this._controller.ModuleContext;
+            this.controller = controller;
+            this.ModuleContext = this.controller.ModuleContext;
         }
 
         public DnnUrlHelper(ViewContext viewContext, RouteCollection routeCollection)
@@ -42,16 +41,16 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
             this.UrlHelper = new UrlHelper(viewContext.RequestContext, routeCollection);
 
-            this._viewContext = viewContext;
+            this.viewContext = viewContext;
 
-            this._controller = viewContext.Controller as IDnnController;
+            this.controller = viewContext.Controller as IDnnController;
 
-            if (this._controller == null)
+            if (this.controller == null)
             {
                 throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
             }
 
-            this.ModuleContext = this._controller.ModuleContext;
+            this.ModuleContext = this.controller.ModuleContext;
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }
@@ -126,7 +125,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            routeValues["controller"] = controllerName ?? this._controller.ControllerContext?.RouteData.Values["controller"];
+            routeValues["controller"] = controllerName ?? this.controller.ControllerContext?.RouteData.Values["controller"];
             routeValues["action"] = actionName;
             return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, this.ModuleContext);
         }

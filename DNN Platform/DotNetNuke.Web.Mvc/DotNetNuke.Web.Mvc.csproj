@@ -141,6 +141,9 @@
     <Compile Include="Framework\ActionResults\IDnnViewResult.cs" />
     <Compile Include="Framework\Controllers\DnnController.cs" />
     <Compile Include="Framework\Controllers\IDnnController.cs" />
+    <Compile Include="Framework\DnnWebViewPage{TModel}.cs" />
+    <Compile Include="Helpers\DnnHelper{TModel}.cs" />
+    <Compile Include="Helpers\DnnHtmlHelper{TModel}.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="HttpContextExtensions.cs" />
     <Compile Include="Routing\HttpRequestExtensions.cs" />
@@ -150,7 +153,6 @@
     <Compile Include="Routing\IMvcRouteMapper.cs" />
     <Compile Include="Framework\ViewEngineCollectionExt.cs" />
     <Compile Include="Framework\DnnWebViewPage.cs" />
-    <Compile Include="Framework\DnnWebViewPageOfT.cs" />
     <Compile Include="Framework\ModuleDelegatingViewEngine.cs" />
     <Compile Include="Framework\Modules\IModuleExecutionEngine.cs" />
     <Compile Include="Framework\Modules\ModuleApplication.cs" />
@@ -158,7 +160,6 @@
     <Compile Include="Framework\Modules\ModuleRequestContext.cs" />
     <Compile Include="Framework\Modules\ModuleRequestResult.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
-    <Compile Include="Helpers\DnnHelperOfT.cs" />
     <Compile Include="Helpers\DnnLabelExtensions.cs" />
     <Compile Include="Helpers\HtmlDisplayTextExtensions.cs" />
     <Compile Include="Helpers\HtmlDisplayNameExtensions.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="Helpers\HtmlLabelExtensions.cs" />
     <Compile Include="Helpers\HtmlDisplayExtensions.cs" />
     <Compile Include="Helpers\DnnHelper.cs" />
-    <Compile Include="Helpers\DnnHtmlHelperOfT.cs" />
     <Compile Include="Helpers\DnnHtmlHelper.cs" />
     <Compile Include="Helpers\DnnUrlHelper.cs" />
     <Compile Include="Helpers\HtmlLinkExtensions.cs" />

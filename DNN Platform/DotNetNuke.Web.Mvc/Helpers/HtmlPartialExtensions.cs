@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     using System.Web.Mvc;
@@ -59,8 +58,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The partial view that is rendered as an HTML-encoded string.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="partialViewName">The name of the partial view.</param><param name="model">The model for the partial view.</param><param name="viewData">The view data dictionary for the partial view.</param>
-        public static MvcHtmlString Partial(this DnnHtmlHelper html, string partialViewName, object model,
-            ViewDataDictionary viewData)
+        public static MvcHtmlString Partial(this DnnHtmlHelper html, string partialViewName, object model, ViewDataDictionary viewData)
         {
             return html.HtmlHelper.Partial(partialViewName, model, viewData);
         }

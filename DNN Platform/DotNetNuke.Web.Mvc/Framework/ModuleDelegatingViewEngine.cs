@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework
 {
     using System;
@@ -17,7 +16,7 @@ namespace DotNetNuke.Web.Mvc.Framework
     /// </summary>
     public class ModuleDelegatingViewEngine : IViewEngine
     {
-        private readonly Dictionary<IView, IViewEngine> _viewEngineMappings = new Dictionary<IView, IViewEngine>();
+        private readonly Dictionary<IView, IViewEngine> viewEngineMappings = new Dictionary<IView, IViewEngine>();
 
         /// <summary>
         /// Finds the specified partial view by using the specified controller context.
@@ -49,9 +48,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="view">The view.</param>
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
-            if (this._viewEngineMappings.ContainsKey(view))
+            if (this.viewEngineMappings.ContainsKey(view))
             {
-                this._viewEngineMappings[view].ReleaseView(controllerContext, view);
+                this.viewEngineMappings[view].ReleaseView(controllerContext, view);
             }
         }
 
@@ -78,7 +77,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             // If there is a view, store the view<->viewengine mapping so release works correctly
             if (result.View != null)
             {
-                this._viewEngineMappings[result.View] = result.ViewEngine;
+                this.viewEngineMappings[result.View] = result.ViewEngine;
             }
 
             return result;

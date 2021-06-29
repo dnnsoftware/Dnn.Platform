@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc
 {
     using System;
@@ -26,17 +25,17 @@ namespace DotNetNuke.Web.Mvc
 
     public class MvcHostControl : ModuleControlBase, IActionable
     {
-        private ModuleRequestResult _result;
-        private string _controlKey;
+        private ModuleRequestResult result;
+        private string controlKey;
 
         public MvcHostControl()
         {
-            this._controlKey = string.Empty;
+            this.controlKey = string.Empty;
         }
 
         public MvcHostControl(string controlKey)
         {
-            this._controlKey = controlKey;
+            this.controlKey = controlKey;
         }
 
         public ModuleActionCollection ModuleActions { get; private set; }
@@ -51,11 +50,11 @@ namespace DotNetNuke.Web.Mvc
 
                 var moduleExecutionEngine = this.GetModuleExecutionEngine();
 
-                this._result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
+                this.result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
 
-                this.ModuleActions = this.LoadActions(this._result);
+                this.ModuleActions = this.LoadActions(this.result);
 
-                httpContext.SetModuleRequestResult(this._result);
+                httpContext.SetModuleRequestResult(this.result);
             }
             catch (Exception exc)
             {
@@ -78,12 +77,12 @@ namespace DotNetNuke.Web.Mvc
             base.OnPreRender(e);
             try
             {
-                if (this._result == null)
+                if (this.result == null)
                 {
                     return;
                 }
 
-                var mvcString = this.RenderModule(this._result);
+                var mvcString = this.RenderModule(this.result);
                 if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
                 {
                     this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
@@ -164,9 +163,9 @@ namespace DotNetNuke.Web.Mvc
 
             var queryString = httpContext.Request.QueryString;
 
-            if (string.IsNullOrEmpty(this._controlKey))
+            if (string.IsNullOrEmpty(this.controlKey))
             {
-                this._controlKey = queryString.GetValueOrDefault("ctl", string.Empty);
+                this.controlKey = queryString.GetValueOrDefault("ctl", string.Empty);
             }
 
             var moduleId = Null.NullInteger;
@@ -175,14 +174,14 @@ namespace DotNetNuke.Web.Mvc
                 int.TryParse(queryString["moduleid"], out moduleId);
             }
 
-            if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this._controlKey))
+            if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this.controlKey))
             {
                 // Set default routeData for module that is not the "selected" module
                 routeData = defaultRouteData;
             }
             else
             {
-                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(this._controlKey, module.ModuleDefID);
+                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(this.controlKey, module.ModuleDefID);
                 routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, control);
             }
 
