@@ -421,7 +421,12 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
 
-                    return PropertyAccess.FormatString(this.Username, format);
+                    var settings = PortalController.Instance.GetPortalSettings(this.PortalID);
+                    var regSettings = new RegistrationSettings(settings);
+
+                    return regSettings.UseEmailAsUserName ?
+                        PropertyAccess.FormatString(this.Email, format) :
+                        PropertyAccess.FormatString(this.Username, format);
                 case "fullname": // fullname is obsolete, it will return DisplayName
                     if (internScope < Scope.Configuration)
                     {

@@ -1,14 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Extensions
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using DotNetNuke.DependencyInjection.Extensions;
     using DotNetNuke.Instrumentation;
@@ -17,7 +13,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <summary>
-    /// Adds DNN MVC Contoller Specific startup extensions to simplify the
+    /// Adds DNN MVC Controller Specific startup extensions to simplify the
     /// <see cref="Startup"/> Class.
     /// </summary>
     public static class StartupExtensions
@@ -30,7 +26,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
         /// </summary>
         /// <param name="services">
         /// Service Collection used to registering services in the container.
-        /// </param>       
+        /// </param>
         public static void AddMvcControllers(this IServiceCollection services)
         {
             var controllerTypes = AppDomain.CurrentDomain.GetAssemblies()
