@@ -63,7 +63,7 @@
     "enzyme": "^3.5.0",
     "enzyme-adapter-react-16": "^1.13.0",
     "enzyme-to-json": "^3.3.4",
-    "eslint": "^5.4.0",
+    "eslint": "^7.29.0",
     "eslint-import-resolver-node": "^0.3.2",
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-loader": "^4.0.2",

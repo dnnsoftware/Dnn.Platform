@@ -23,7 +23,7 @@
     "babel-polyfill": "6.26.0",
     "css-loader": "2.1.1",
     "es6-object-assign": "1.1.0",
-    "eslint": "5.8.0",
+    "eslint": "7.29.0",
     "eslint-loader": "4.0.2",
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-spellcheck": "0.0.11",
