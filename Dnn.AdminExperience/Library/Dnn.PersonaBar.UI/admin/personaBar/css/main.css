@@ -762,6 +762,7 @@ span.dnnFormError:after {
     text-transform: uppercase;
     font-size: 10px;
     font-family: pb_semibold;
+    display: none;
     position: absolute;
     bottom: 8px;
     width: 50px;
