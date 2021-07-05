@@ -1236,10 +1236,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 return Globals.AddHTTP(url);
             }
 
-            if (!url.StartsWith("/"))
-            {
-                return "/" + url;
-            }
 
             return url;
         }
