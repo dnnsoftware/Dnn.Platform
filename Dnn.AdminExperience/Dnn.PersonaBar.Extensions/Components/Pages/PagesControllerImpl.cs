@@ -1230,7 +1230,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
             }
 
-            if (url.ToLower().StartsWith("http"))
+            if (url.IndexOf("://") != -1)
+
             {
                 return Globals.AddHTTP(url);
             }
