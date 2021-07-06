@@ -1219,7 +1219,25 @@ namespace Dnn.PersonaBar.Pages.Components
                 return null;
             }
 
-            return url.ToLower() == "http://" ? "" : Globals.AddHTTP(url);
+            if (url.ToLower() == "http://")
+            {
+                return string.Empty;
+            }
+
+            if (url.StartsWith("//"))
+            {
+                return url;
+
+            }
+
+            if (url.IndexOf("://") != -1)
+
+            {
+                return Globals.AddHTTP(url);
+            }
+
+
+            return url;
         }
 
         private static Func<RolePermission, bool> NoLocked()
