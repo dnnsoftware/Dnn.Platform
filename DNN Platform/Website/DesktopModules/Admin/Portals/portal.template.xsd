@@ -372,10 +372,6 @@
                                             <xs:element name="displaytitle" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                                             <xs:element name="displayprint" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                                             <xs:element name="displaysyndicate" type="xs:boolean" minOccurs="0" maxOccurs="1" />
-                                            <xs:element name="iswebslice" type="xs:boolean" minOccurs="0" maxOccurs="1" />
-                                            <xs:element name="webslicetitle" type="xs:string" minOccurs="0" maxOccurs="1" />
-                                            <xs:element name="websliceexpirydate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
-                                            <xs:element name="webslicettl" type="xs:integer" minOccurs="0" maxOccurs="1" />
                                             <xs:element name="definition" type="xs:string" minOccurs="1" maxOccurs="1" />
                                             <xs:element name="moduledefinition" type="xs:string" minOccurs="0" maxOccurs="1" />
                                             <xs:element name="uniqueId" type="xs:string" minOccurs="0" maxOccurs="1" />

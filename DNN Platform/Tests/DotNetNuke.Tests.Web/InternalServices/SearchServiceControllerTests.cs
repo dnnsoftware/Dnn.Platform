@@ -566,10 +566,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("DisplayTitle", typeof(byte));
             table.Columns.Add("DisplayPrint", typeof(byte));
             table.Columns.Add("DisplaySyndicate", typeof(byte));
-            table.Columns.Add("IsWebSlice", typeof(byte));
-            table.Columns.Add("WebSliceTitle", typeof(string));
-            table.Columns.Add("WebSliceExpiryDate", typeof(DateTime));
-            table.Columns.Add("WebSliceTTL", typeof(int));
             table.Columns.Add("InheritViewPermissions", typeof(int));
             table.Columns.Add("IsShareable", typeof(int));
             table.Columns.Add("IsShareableViewOnly", typeof(int));

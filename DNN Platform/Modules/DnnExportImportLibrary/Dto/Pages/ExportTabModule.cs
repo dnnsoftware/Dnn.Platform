@@ -39,18 +39,6 @@ namespace Dnn.ExportImport.Dto.Pages
 
         public bool DisplaySyndicate { get; set; }
 
-        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
-        public bool IsWebSlice { get; set; }
-
-        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
-        public string WebSliceTitle { get; set; }
-
-        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
-        public DateTime? WebSliceExpiryDate { get; set; }
-
-        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
-        public int? WebSliceTTL { get; set; }
-
         public int? CreatedByUserID { get; set; }
 
         public DateTime? CreatedOnDate { get; set; }

@@ -561,7 +561,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -574,8 +573,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>16c37514-4342-4c43-a635-d199b929f18b</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings />
@@ -605,7 +602,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -618,8 +614,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>b361b2b6-798f-4414-bb37-ed6c53aad219</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -718,7 +712,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -731,8 +724,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>4e3a818c-75c9-437f-8cb8-bb6d5a2d41a3</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -863,7 +854,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -876,8 +866,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>b0a82478-76ee-4a14-978d-d556f3f90288</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -961,7 +949,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -974,8 +961,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>112315bd-4b0e-4e74-9a89-c67233d8f7f3</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -1017,7 +1002,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1042,8 +1026,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>ba1870c9-02ea-4e87-a7d8-b93109ca43f2</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -1091,7 +1073,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1116,8 +1097,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>87717b03-04bf-4e27-bf3a-bfe2e1cc5625</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -1224,7 +1203,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1249,8 +1227,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>215e24c2-2f0a-4e91-a776-24995e00bbc8</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings />
@@ -1368,7 +1344,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1381,8 +1356,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>f346db7d-1dc1-4b0b-87df-09dc62fd82fe</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -1473,7 +1446,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1498,8 +1470,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>e3216d03-e61b-418e-b07e-3604858b7c6a</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -1614,7 +1584,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1627,8 +1596,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>81873a98-793a-4cf5-8be4-62cf481a64fa</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -1707,7 +1674,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1732,8 +1698,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>9b2dbc21-eefa-43eb-b2cf-a76e62b3f4e2</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -1775,7 +1739,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1800,8 +1763,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>ccf030cf-ff0e-419c-b765-f9bfe5c3fb6f</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -1849,7 +1810,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1874,8 +1834,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>03d384c1-07db-4f4b-adb8-56994468c8fa</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -1991,7 +1949,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2016,8 +1973,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>a45686b9-0728-4109-9f36-9b0252dd5881</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -2132,7 +2087,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2145,8 +2099,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>b4713823-4e91-4b66-9b88-7281f3233660</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -2225,7 +2177,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2250,8 +2201,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>74368905-4f66-47f1-85ec-d692c5b47e93</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -2293,7 +2242,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2318,8 +2266,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>6a1fe60f-df22-4cbe-83e4-b8113f50be7f</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -2367,7 +2313,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2392,8 +2337,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>486c9371-e321-496a-9629-d56654de297e</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -2508,7 +2451,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2533,8 +2475,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>31d3ee95-5805-4c3b-8c31-b05272deb90d</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -2649,7 +2589,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2662,8 +2601,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>825a402a-1395-4f10-b360-3afcc408d4a5</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -2742,7 +2679,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2767,8 +2703,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>bf74428f-d035-487c-a0ce-559f741a53c5</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -2810,7 +2744,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2835,8 +2768,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>ece23c10-c6fd-4bb0-ab51-371707b9cfee</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -2884,7 +2815,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>false</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2909,8 +2839,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>2868b561-ffbd-47a2-a240-7a2a3faf05a9</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -2989,7 +2917,6 @@
               <header />
               <iconfile />
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -3008,8 +2935,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>62592bc6-53da-4115-b97e-fb666aa14953</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings>
                 <modulesetting>
@@ -3116,7 +3041,6 @@
               <header />
               <iconfile>~/Icons/Sigma/Files_32X32_Standard.png</iconfile>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -3129,8 +3053,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>7cf1c967-f148-4c69-9c71-977044fd389d</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>
@@ -3208,7 +3130,6 @@
               <header />
               <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
               <inheritviewpermissions>true</inheritviewpermissions>
-              <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -3221,8 +3142,6 @@
               <startdate>0001-01-01T00:00:00</startdate>
               <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
               <visibility>Maximized</visibility>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <cultureCode />
               <modulesettings />
               <tabmodulesettings>

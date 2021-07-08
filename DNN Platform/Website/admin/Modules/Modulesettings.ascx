@@ -195,28 +195,6 @@
                     <dnn:label id="plDisplaySyndicate" runat="server" controlname="chkDisplaySyndicate" />
                     <asp:CheckBox ID="chkDisplaySyndicate" runat="server" />
                 </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plWebSlice" runat="server" controlname="chkWebSlice" />
-                    <asp:CheckBox ID="chkWebSlice" runat="server" AutoPostBack="true" />
-                </div>
-                <div class="dnnFormItem" id="webSliceTitle" runat="server" ViewStateMode="Disabled">
-                    <dnn:label id="plWebSliceTitle" runat="server" controlname="txtWebSliceTitle" />
-                    <asp:TextBox ID="txtWebSliceTitle" runat="server" />
-                </div>
-                <div class="dnnFormItem" id="webSliceExpiry" runat="server" ViewStateMode="Disabled">
-                    <dnn:label id="plWebSliceExpiry" runat="server" controlname="txtWebSliceExpiry" />
-                    <dnnweb:dnndatepicker ID="diWebSliceExpiry" runat="server"/>
-                    <asp:CompareValidator ID="valWebSliceExpiry" ControlToValidate="diWebSliceExpiry"
-                        Operator="DataTypeCheck" Type="Date" runat="server" Display="Dynamic" resourcekey="valWebSliceExpiry.ErrorMessage"
-                        CssClass="dnnFormMessage dnnFormError" />
-                </div>
-                <div class="dnnFormItem" id="webSliceTTL" runat="server" ViewStateMode="Disabled">
-                    <dnn:label id="plWebSliceTTL" runat="server" controlname="txtWebSliceTTL" />
-                    <asp:TextBox ID="txtWebSliceTTL" runat="server" />
-                    <asp:CompareValidator ID="valWebSliceTTL" ControlToValidate="txtWebSliceTTL" Operator="DataTypeCheck"
-                        Type="Integer" runat="server" Display="Dynamic" resourcekey="valWebSliceTTL.ErrorMessage"
-                        CssClass="dnnFormMessage dnnFormError" />
-                </div>
                 <div class="dnnFormItem dnnContainerPreview">
                     <dnn:label id="plModuleContainer" runat="server" controlname="ctlModuleContainer" />
                     <dnnweb:DnnSkinComboBox ID="moduleContainerCombo" runat="server" />

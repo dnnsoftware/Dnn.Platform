@@ -64,9 +64,6 @@
               <displaytitle>true</displaytitle>
               <displayprint>true</displayprint>
               <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
