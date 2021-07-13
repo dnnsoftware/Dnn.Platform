@@ -17,10 +17,36 @@
           <assemblies>
             <assembly>
               <path>bin</path>
+              <name>DotNetNuke.Web.Mvc.dll</name>
+              <version>9.10.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>System.Web.Mvc.dll</name>
               <version>5.2.7</version>
             </assembly>
           </assemblies>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/system.webServer/modules" action="update" key="name" collision="ignore">
+                    <add name="MVCModules" type="DotNetNuke.Web.Mvc.MvcHttpModule, DotNetNuke.Web.Mvc" preCondition="managedHandler" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/system.webServer/modules/add[@name='MVCModules']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
         </component>
       </components>
     </package>
