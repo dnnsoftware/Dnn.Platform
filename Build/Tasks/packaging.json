@@ -37,6 +37,8 @@
     "/bin/System.Web.WebPages.dll",
     "/bin/System.Web.WebPages.Deployment.dll",
     "/bin/System.Web.WebPages.Razor.dll",
+    "/bin/WebMatrix.Data.dll",
+    "/bin/WebMatrix.WebData.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],

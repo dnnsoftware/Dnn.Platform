@@ -45,6 +45,16 @@
               <name>System.Web.WebPages.Razor.dll</name>
               <version>3.2.7</version>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>WebMatrix.Data.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>WebMatrix.WebData.dll</name>
+              <version>3.2.7</version>
+            </assembly>
           </assemblies>
         </component>
       </components>
