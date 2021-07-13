@@ -30,6 +30,7 @@
     "/bin/System.Net.Http.Formatting.dll",
     "/bin/System.Web.Http.dll",
     "/bin/System.Web.Http.WebHost.dll",
+    "/bin/DotNetNuke.Web.Mvc.dll",
     "/bin/System.Web.Mvc.dll",
     "/bin/System.Web.Helpers.dll",
     "/bin/Microsoft.Web.Helpers.dll",

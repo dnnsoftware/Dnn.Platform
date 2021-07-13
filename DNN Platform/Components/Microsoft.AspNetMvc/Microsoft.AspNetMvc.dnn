@@ -17,6 +17,11 @@
           <assemblies>
             <assembly>
               <path>bin</path>
+              <name>DotNetNuke.Web.Mvc.dll</name>
+              <version>9.10.0</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>System.Web.Mvc.dll</name>
               <version>5.2.7</version>
             </assembly>
