@@ -841,7 +841,8 @@ span.dnnFormError:after {
     fill: var(--dnn-color-pb-menu-icon);
 }
 
-.personabarnav>li:hover>span.icon-loader svg, .personabarnav>li.active>span.icon-loader svg, .personabarnav>li.selected>span.icon-loader svg {
+.personabarnav>li:hover>span.icon-loader svg, .personabarnav>li.active>span.icon-loader svg, .personabarnav>li.selected>span.icon-loader svg,
+.personabarnav>li:hover>span.icon-loader svg .main, .personabarnav>li.active>span.icon-loader svg .main, .personabarnav>li.selected>span.icon-loader svg .main {
     fill: #FFFFFF;
 }
 
@@ -931,6 +932,14 @@ span.dnnFormError:after {
 
 .personabarnav>li#Edit.locked svg {
     fill: #79bfdb;
+}
+
+.personabarnav>li#Edit.locked svg .back {
+    fill: #0a85c3;
+}
+
+.personabarnav>li#Edit.locked svg .main {
+    fill: #fff
 }
 
 .personabarnav>li#Edit.disabled svg {
