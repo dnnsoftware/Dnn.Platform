@@ -39,7 +39,7 @@
     "css-loader": "2.1.1",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.13.0",
-    "eslint": "^5.9.0",
+    "eslint": "^7.30.0",
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-loader": "4.0.2",
     "eslint-plugin-react": "7.11.1",
