@@ -29,7 +29,7 @@ class PageUrlCommons extends Component {
                             labelType="inline"
                             tooltipMessage={Localization.get("PermanentRedirectTooltip") }
                             label={Localization.get("PermanentRedirect") }
-                            />
+                        />
                         <Switch
                             labelHidden={false}
                             onText={Localization.get("On") }
@@ -42,7 +42,7 @@ class PageUrlCommons extends Component {
                             labelType="inline"
                             tooltipMessage={Localization.get("OpenLinkInNewWindowTooltip") }
                             label={Localization.get("OpenLinkInNewWindow") }
-                            />
+                        />
                         <Switch
                             labelHidden={false}
                             onText={Localization.get("On") }

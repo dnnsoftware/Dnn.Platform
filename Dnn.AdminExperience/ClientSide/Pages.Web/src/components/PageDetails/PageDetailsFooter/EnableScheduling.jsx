@@ -12,7 +12,7 @@ class EnableScheduling extends Component {
                 labelType="inline"
                 tooltipMessage={Localization.get("EnableSchedulingTooltip") }
                 label={Localization.get("EnableScheduling") }
-                />
+            />
             <Switch
                 labelHidden={false}
                 onText={Localization.get("On") }

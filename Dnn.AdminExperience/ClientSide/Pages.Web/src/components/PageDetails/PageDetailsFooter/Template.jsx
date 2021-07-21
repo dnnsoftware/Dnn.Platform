@@ -35,7 +35,7 @@ class Template extends Component {
                 labelType="inline"
                 tooltipMessage={Localization.get("TemplateTooltip")}
                 label={Localization.get("Template")}
-                />
+            />
             <Dropdown style={styles.dropdown} 
                 options={this.getTemplatesOptions()}
                 value={selectedTemplateId}

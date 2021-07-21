@@ -356,6 +356,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 9.9.2. Scheduled for removal in v11.0.0")]
         public static bool DisplayCopyright
         {
             get

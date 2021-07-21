@@ -7,12 +7,13 @@ namespace Dnn.EditBar.UI.Controllers
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
-
+    using System.Web.Hosting;
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Application;
@@ -47,6 +48,10 @@ namespace Dnn.EditBar.UI.Controllers
             settings.Add("culture", portalSettings.CultureCode);
             settings.Add("loginUrl", Globals.LoginURL(HttpContext.Current?.Request.RawUrl, false));
             settings.Add("items", this.GetMenuItems());
+
+            var customEditBarThemePath = HostingEnvironment.MapPath("~/Portals/_default/EditBarTheme.css");
+            var customEditBarThemeExists = File.Exists(customEditBarThemePath);
+            settings.Add("editBarTheme", customEditBarThemeExists);
 
             return settings;
         }

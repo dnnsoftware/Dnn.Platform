@@ -32,6 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public BreadCrumb()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.CleanerMarkup = false;
         }
 
         public int ProfileUserId
@@ -90,6 +91,11 @@ namespace DotNetNuke.UI.Skins.Controls
 
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).
+        /// </summary>
+        public bool CleanerMarkup { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -172,21 +178,26 @@ namespace DotNetNuke.UI.Skins.Controls
                     tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId);
                 }
 
-                // Begin breadcrumb
-                this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
-
-                // Is this tab disabled? If so, only render the text
+                // Is this tab disabled? If so, only render a span
                 if (tab.DisableLink)
                 {
-                    this._breadcrumb.Append("<span class=\"" + this._cssClass + "\" itemprop=\"name\">" + tabName + "</span>");
+                    if (this.CleanerMarkup)
+                    {
+                        this._breadcrumb.Append("<span class=\"" + this._cssClass + "\">" + tabName + "</span>");
+                    }
+                    else
+                    {
+                        this._breadcrumb.Append("<span><span class=\"" + this._cssClass + "\">" + tabName + "</span></span>");
+                    }
                 }
                 else
                 {
+                    // An enabled page, render the breadcrumb
+                    this._breadcrumb.Append("<span itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">");
                     this._breadcrumb.Append("<a href=\"" + tabUrl + "\" class=\"" + this._cssClass + "\" itemprop=\"item\"><span itemprop=\"name\">" + tabName + "</span></a>");
+                    this._breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
+                    this._breadcrumb.Append("</span>");
                 }
-
-                this._breadcrumb.Append("<meta itemprop=\"position\" content=\"" + position++ + "\" />"); // Notice we post-increment the position variable
-                this._breadcrumb.Append("</span>");
             }
 
             this._breadcrumb.Append("</span>"); // End of BreadcrumbList

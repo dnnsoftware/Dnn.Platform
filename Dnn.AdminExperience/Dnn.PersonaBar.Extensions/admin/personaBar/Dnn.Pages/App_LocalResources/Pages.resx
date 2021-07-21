@@ -382,10 +382,10 @@
     <value>Redirect to an existing page on your site.</value>
   </data>
   <data name="ExternalUrl.Text" xml:space="preserve">
-    <value>External Url</value>
+    <value>URL</value>
   </data>
   <data name="ExternalUrlTooltip.Text" xml:space="preserve">
-    <value>Redirect to an External URL Resource.</value>
+    <value>Redirect to an absolute or relative URL.</value>
   </data>
   <data name="PermanentRedirect.Text" xml:space="preserve">
     <value>Permanent Redirect</value>
@@ -1691,7 +1691,7 @@
     <value>Wrong Format</value>
   </data>
   <data name="ExternalRedirectionUrlRequired.Text" xml:space="preserve">
-    <value>The URL is required.</value>
+    <value>An absolute or relative URL is required.</value>
   </data>
   <data name="NoPermissionViewRedirectPage.Text" xml:space="preserve">
     <value>You don't have permission to view the redirect page.</value>

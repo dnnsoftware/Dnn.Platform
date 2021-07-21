@@ -11,8 +11,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.IO;
     using Cake.Common.Tools.NuGet;
     using Cake.Common.Tools.NuGet.Pack;
+    using Cake.Core;
     using Cake.Frosting;
-
     using DotNetNuke.Build;
 
     /// <summary>A cake task to create the platform's NuGet packages.</summary>
@@ -24,6 +24,7 @@ namespace DotNetNuke.Build.Tasks
         {
             // look for solutions and start building them
             var nuspecFiles = context.GetFiles("./Build/Tools/NuGet/*.nuspec");
+            var noSymbolsNuspecFiles = context.GetFiles("./Build/Tools/NuGet/DotNetNuke.WebApi.nuspec");
 
             context.Information("Found {0} nuspec files.", nuspecFiles.Count);
 
@@ -35,15 +36,22 @@ namespace DotNetNuke.Build.Tasks
                                         IncludeReferencedProjects = true,
                                         Symbols = true,
                                         Properties = new Dictionary<string, string> { { "Configuration", "Release" } },
+                                        ArgumentCustomization = args => args.Append("-SymbolPackageFormat snupkg"),
                                     };
 
-            // loop through each nuspec file and create the package
+            nuspecFiles -= noSymbolsNuspecFiles;
             foreach (var spec in nuspecFiles)
             {
-                var specPath = spec.ToString();
+                context.Information("Starting to pack: {0}", spec);
+                context.NuGetPack(spec.FullPath, nuGetPackSettings);
+            }
 
-                context.Information("Starting to pack: {0}", specPath);
-                context.NuGetPack(specPath, nuGetPackSettings);
+            nuGetPackSettings.Symbols = false;
+            nuGetPackSettings.ArgumentCustomization = null;
+            foreach (var spec in noSymbolsNuspecFiles)
+            {
+                context.Information("Starting to pack: {0}", spec);
+                context.NuGetPack(spec.FullPath, nuGetPackSettings);
             }
         }
     }

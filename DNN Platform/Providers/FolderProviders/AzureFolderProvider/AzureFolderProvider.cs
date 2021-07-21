@@ -15,6 +15,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Providers.FolderProviders.Components;
     using DotNetNuke.Services.FileSystem;
     using Microsoft.WindowsAzure.Storage;
@@ -26,11 +27,25 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     /// </summary>
     public class AzureFolderProvider : BaseRemoteStorageProvider
     {
+        internal const string ProviderName = "AzureFolderProvider";
+        internal const string ProviderType = "folder";
+
+        private readonly ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+        private readonly string _cacheControl = string.Empty;
+
         public AzureFolderProvider()
         {
             ServicePointManager.DefaultConnectionLimit = 100;
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
+
+            // Read the configuration specific information for this provider
+            var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
+
+            if (!string.IsNullOrEmpty(objProvider.Attributes["cacheControl"]))
+            {
+                _cacheControl = objProvider.Attributes["cacheControl"].ToLowerInvariant();
+            }
         }
 
         protected override string FileNotFoundMessage
@@ -301,6 +316,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             // Set the content type
             blob.Properties.ContentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(uri));
+
+            // Set cache control
+            if (!string.IsNullOrEmpty(this._cacheControl))
+            {
+                blob.Properties.CacheControl = this._cacheControl;
+            }
+
             blob.SetProperties();
 
             this.ClearCache(folderMapping.FolderMappingID);

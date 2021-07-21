@@ -33,7 +33,7 @@ class BasicSearchSettingsPanelBody extends Component {
         this._mounted = true;
         if (this.isHost()) {
             props.dispatch(SearchActions.getBasicSearchSettings((data) => {
-                if(this._mounted) {
+                if (this._mounted) {
                     this.setState({
                         basicSearchSettings: Object.assign({}, data.Settings)
                     });

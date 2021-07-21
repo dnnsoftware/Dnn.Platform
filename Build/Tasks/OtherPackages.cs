@@ -18,6 +18,9 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to include other 3rd party packages.</summary>
     [Dependency(typeof(PackageNewtonsoft))]
     [Dependency(typeof(PackageMailKit))]
+    [Dependency(typeof(PackageAspNetWebApi))]
+    [Dependency(typeof(PackageAspNetWebPages))]
+    [Dependency(typeof(PackageAspNetMvc))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
         /// <inheritdoc/>

@@ -1,6 +1,6 @@
 {
   "name": "prompt",
-  "version": "9.9.0",
+  "version": "9.9.1",
   "description": "DNN Prompt",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.9.0",
+    "@dnnsoftware/dnn-react-common": "9.9.1",
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
     "babel-eslint": "^10.0.1",
@@ -31,7 +31,7 @@
     "enzyme-adapter-react-16": "^1.13.0",
     "es6-object-assign": "1.1.0",
     "eslint": "5.8.0",
-    "eslint-loader": "2.1.1",
+    "eslint-loader": "4.0.2",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-react": "7.11.1",
@@ -64,10 +64,10 @@
     "redux-mock-store": "^1.4.0",
     "redux-thunk": "2.3.0",
     "style-loader": "^0.23.1",
-    "throttle-debounce": "^2.0.1",
+    "throttle-debounce": "^3.0.1",
     "url-loader": "1.1.2",
     "webpack": "^4.31.0",
-    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-bundle-analyzer": "^4.4.1",
     "webpack-bundle-size-analyzer": "3.0.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14"

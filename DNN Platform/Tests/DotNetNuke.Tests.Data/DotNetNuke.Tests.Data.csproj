@@ -103,6 +103,7 @@
     <Compile Include="DataAssert.cs" />
     <Compile Include="DatabaseConnectionProviderTests.cs" />
     <Compile Include="Fakes\FakeDbConnectionProvider.cs" />
+    <Compile Include="PetaPocoExtTests.cs" />
     <Compile Include="RepositoryBaseTests.cs" />
     <Compile Include="DataContextTests.cs" />
     <Compile Include="DataProviderTests.cs" />

@@ -32,7 +32,7 @@ class SiteAliasesPanel extends Component {
 
     componentDidUpdate(prevProps) {
         const {props} = this;
-        if (props !== prevProps){
+        if (props !== prevProps) {
             let tableFields = [];
             if (tableFields.length === 0) {
                 tableFields.push({ "name": resx.get("Alias.Header"), "id": "Alias" });

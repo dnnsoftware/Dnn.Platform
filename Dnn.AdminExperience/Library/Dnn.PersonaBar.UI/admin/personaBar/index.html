@@ -26,8 +26,8 @@
 <body>
     <div id="personabar-wrap">
         <div class="personabar" id="personabar">
-            <div class="personabarLogo">
-                <a class="update" target="_blank" data-bind="attr: {'href': updateLink}, html: updateText, css: {'normal-update': updateType() === 1, 'critical-update': updateType() === 2}"></a>
+            <div class="personabarLogo" data-bind="css: { 'updateLogo': !upToDate() }">
+                <a class="update" target="_blank" data-bind="visible: !upToDate(), attr: {'href': updateLink}, html: updateText, css: { 'critical': updateCritical() }"></a>
             </div>
             <div id="topLevelMenu">
                 <ul class="personabarnav">

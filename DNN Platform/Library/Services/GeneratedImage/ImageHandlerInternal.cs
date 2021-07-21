@@ -260,7 +260,8 @@ namespace DotNetNuke.Services.GeneratedImage
             // Handle Server cache
             if (this.EnableServerCache)
             {
-                if (isProfilePic && !this.IsPicVisibleToCurrentUser(userId))
+                var isAnonymousUser = userId <= 0 ? true : false;
+                if (isProfilePic && !isAnonymousUser && !this.IsPicVisibleToCurrentUser(userId))
                 {
                     string message = "Not allowed to see profile picture";
 

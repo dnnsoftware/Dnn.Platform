@@ -113,9 +113,9 @@ class EditUrl extends Component {
                                 tooltipMessage={Localization.get("Pages_Seo_SelectedAliasUsage.Help")}
                                 label={Localization.get("Pages_Seo_SelectedAliasUsage")} />
                             <RadioButtons
-                                    options={siteAliasUsageOptions} 
-                                    onChange={this.onChangeField.bind(this, "siteAliasUsage")}
-                                    value={url.siteAliasUsage}/>                        
+                                options={siteAliasUsageOptions} 
+                                onChange={this.onChangeField.bind(this, "siteAliasUsage")}
+                                value={url.siteAliasUsage}/>                        
                         </GridCell>
                     </GridCell>}
                     <GridCell>
