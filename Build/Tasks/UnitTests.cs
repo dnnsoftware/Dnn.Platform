@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Build.Tasks
 {
     using System;
@@ -37,7 +36,7 @@ namespace DotNetNuke.Build.Tasks
                     Logger = "trx",
                     Parallel = true,
                     EnableCodeCoverage = true,
-                    TestAdapterPath = @"tools\NUnitTestAdapter.2.3.0\build",
+                    TestAdapterPath = @"tools\NUnit3TestAdapter.4.0.0\build",
                 });
         }
     }
