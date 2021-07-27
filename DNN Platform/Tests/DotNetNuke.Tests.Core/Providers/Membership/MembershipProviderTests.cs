@@ -101,14 +101,13 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         [TestCase("<img>")]
         [TestCase("<img onerror=alert(1)>")]
         [TestCase("<img onload=document.write(1)>")]
-        [ExpectedException(typeof(ArgumentException))]
         [Ignore]
         public void ChangeUserName_Should_Throw_Exception_With_Invalid_Username(string invalidParts)
         {
             var user = CreateNewUser();
 
             var newUsername = $"{user.Username}{invalidParts}";
-            UserController.ChangeUsername(user.UserID, newUsername);
+            Assert.Throws<ArgumentException>(() => UserController.ChangeUsername(user.UserID, newUsername));
         }
 
         private static UserInfo CreateNewUser()

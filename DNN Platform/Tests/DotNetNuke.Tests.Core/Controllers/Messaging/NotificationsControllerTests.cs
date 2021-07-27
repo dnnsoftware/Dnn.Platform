@@ -102,22 +102,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void CreateNotificationType_Throws_On_Null_NotificationType()
         {
-            this._notificationsController.CreateNotificationType(null);
+            Assert.Throws<ArgumentNullException>(() => this._notificationsController.CreateNotificationType(null));
         }
 
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void CreateNotificationType_Throws_On_Null_Or_Empty_Name(string name)
         {
             var notificationType = CreateNewNotificationType();
             notificationType.Name = name;
 
-            this._notificationsController.CreateNotificationType(notificationType);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.CreateNotificationType(notificationType));
         }
 
         [Test]
@@ -243,10 +241,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetNotificationType_By_Name_Throws_On_Null_Or_Empty_Name(string name)
         {
-            this._notificationsController.GetNotificationType(name);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.GetNotificationType(name));
         }
 
         [Test]
@@ -299,39 +296,35 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void SetNotificationTypeActions_Throws_On_Null()
         {
-            this._notificationsController.SetNotificationTypeActions(null, Constants.Messaging_NotificationTypeId);
+            Assert.Throws<ArgumentNullException>(() => this._notificationsController.SetNotificationTypeActions(null, Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SetNotificationTypeActions_Throws_On_EmptyList()
         {
-            this._notificationsController.SetNotificationTypeActions(new List<NotificationTypeAction>(), Constants.Messaging_NotificationTypeId);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SetNotificationTypeActions(new List<NotificationTypeAction>(), Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void SetNotificationTypeActions_Throws_On_Null_Or_Empty_Name(string name)
         {
             var action = CreateNewNotificationTypeAction();
             action.NameResourceKey = name;
-            this._notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void SetNotificationTypeActions_Throws_On_Null_Or_Empty_APICall(string apiCall)
         {
             var action = CreateNewNotificationTypeAction();
             action.APICall = apiCall;
-            this._notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SetNotificationTypeActions(new[] { action }, Constants.Messaging_NotificationTypeId));
         }
 
         [Test]
@@ -463,10 +456,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetNotificationTypeAction_By_Name_Throws_On_Null_Or_Empty_Name(string name)
         {
-            this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, name);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, name));
         }
 
         [Test]
@@ -596,7 +588,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TestCase(null, "")]
         [TestCase("", null)]
         [TestCase("", "")]
-        [ExpectedException(typeof(ArgumentException))]
         public void SendNotification_Throws_On_Null_Or_Empty_Subject_And_Body(string subject, string body)
         {
             var notification = CreateUnsavedNotification();
@@ -606,29 +597,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            this._notificationsController.SendNotification(
-                notification,
-                Constants.PORTAL_Zero,
-                new List<RoleInfo>(),
-                new List<UserInfo>());
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(notification, Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SendNotification_Throws_On_Null_Roles_And_Users()
         {
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            this._notificationsController.SendNotification(
-                CreateUnsavedNotification(),
-                Constants.PORTAL_Zero,
-                null,
-                null);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, null, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SendNotification_Throws_On_Large_Subject()
         {
             var notification = CreateUnsavedNotification();
@@ -643,29 +624,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            this._notificationsController.SendNotification(
-                notification,
-                Constants.PORTAL_Zero,
-                new List<RoleInfo>(),
-                new List<UserInfo>());
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(notification, Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SendNotification_Throws_On_Roles_And_Users_With_No_DisplayNames()
         {
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            this._notificationsController.SendNotification(
-                CreateUnsavedNotification(),
-                Constants.PORTAL_Zero,
-                new List<RoleInfo>(),
-                new List<UserInfo>());
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, new List<RoleInfo>(), new List<UserInfo>()));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SendNotification_Throws_On_Large_To_List()
         {
             var roles = new List<RoleInfo>();
@@ -680,11 +651,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            this._notificationsController.SendNotification(
-                CreateUnsavedNotification(),
-                Constants.PORTAL_Zero,
-                roles,
-                users);
+            Assert.Throws<ArgumentException>(() => this._notificationsController.SendNotification(CreateUnsavedNotification(), Constants.PORTAL_Zero, roles, users));
         }
 
         [Test]

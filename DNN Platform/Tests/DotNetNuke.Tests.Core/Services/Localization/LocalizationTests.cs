@@ -42,25 +42,23 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void CultureCodesCannotBeNull()
         {
             // Arrange
 
             // Act
-            TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(null);
+            Assert.Throws<ArgumentException>(() => TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(null));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void FallBackCannotBeNull()
         {
             // Arrange
 
             // Act
-            TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], null);
+            Assert.Throws<ArgumentException>(() => TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], null));
 
             // Assert
         }

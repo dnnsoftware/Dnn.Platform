@@ -1096,7 +1096,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_GetResult_Throws_When_CustomNumericField_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1106,11 +1105,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.CustomNumericField,
             };
 
-            this.searchController.SiteSearch(query);
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(query));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_GetResult_Throws_When_CustomStringField_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1120,11 +1118,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.CustomStringField,
             };
 
-            this.searchController.SiteSearch(query);
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(query));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_GetResult_Throws_When_NumericKey_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1134,11 +1131,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.NumericKey,
             };
 
-            this.searchController.SiteSearch(query);
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(query));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_GetResult_Throws_When_Keyword_Is_Specified_And_CustomSortField_Is_Not()
         {
             // Act
@@ -1148,7 +1144,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SortField = SortFields.Keyword,
             };
 
-            this.searchController.SiteSearch(query);
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(query));
         }
 
         [Test]
@@ -1971,51 +1967,46 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Add_Use_Of_Module_Search_Type_Requires_ModuleDefinitionId()
         {
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
-            this.internalSearchController.AddSearchDocument(doc1);
+            Assert.Throws<ArgumentException>(() => this.internalSearchController.AddSearchDocument(doc1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Add_Use_Of_Module_Search_Type_Requires_ModuleId()
         {
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId };
 
             // Act
-            this.internalSearchController.AddSearchDocument(doc1);
+            Assert.Throws<ArgumentException>(() => this.internalSearchController.AddSearchDocument(doc1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Add_Non_Module_Type_SearchId_Should_Not_Provide_ModuleDefinitionId()
         {
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId };
 
             // Act
-            this.internalSearchController.AddSearchDocument(doc1);
+            Assert.Throws<ArgumentException>(() => this.internalSearchController.AddSearchDocument(doc1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Add_Non_Module_Type_SearchId_Should_Not_Provide_ModuleId()
         {
             // Arrange
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = "awesome", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleId = HtmlModuleId };
 
             // Act
-            this.internalSearchController.AddSearchDocument(doc1);
+            Assert.Throws<ArgumentException>(() => this.internalSearchController.AddSearchDocument(doc1));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Search_For_ModuleId_Must_Have_Only_One_Search_Type_Id_Specified()
         {
             // Arrange
@@ -2024,11 +2015,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { DocumentSearchTypeId, OtherSearchTypeId }, ModuleId = IdeasModuleId };
 
             // Act
-            this.searchController.SiteSearch(query);
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(query));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Search_For_ModuleId_Must_Have_Only_Module_Search_Type_Id_Specified()
         {
             // Arrange
@@ -2037,7 +2027,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { ModuleSearchTypeId, OtherSearchTypeId }, ModuleId = IdeasModuleId };
 
             // Act
-            this.searchController.SiteSearch(query);
+            Assert.Throws<ArgumentException>(() => this.searchController.SiteSearch(query));
         }
 
         [Test]
