@@ -274,7 +274,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             expectations.TryGetValue(key, out expected);
             if (string.IsNullOrEmpty(expected))
             {
-                Assert.IsNullOrEmpty(value, string.Format("Checking value of " + key));
+                Assert.That(value, Is.Null.Or.Empty, string.Format("Checking value of " + key));
             }
             else
             {
