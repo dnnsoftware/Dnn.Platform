@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         protected static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId, PortalID = PortalId, };
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public virtual void TestFixtureSetUp()
         {
             this.MockRepository = new MockRepository(MockBehavior.Default);

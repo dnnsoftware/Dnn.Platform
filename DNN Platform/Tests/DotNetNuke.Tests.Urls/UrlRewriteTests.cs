@@ -104,7 +104,7 @@ namespace DotNetNuke.Tests.Urls
             }
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
@@ -140,7 +140,7 @@ namespace DotNetNuke.Tests.Urls
                                 });
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();

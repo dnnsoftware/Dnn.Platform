@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<CryptographyProvider> _cryptographyProviderMock;
         private Mock<ILocaleController> _localeControllerMock;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             var serviceCollection = new ServiceCollection();
@@ -60,7 +60,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             Globals.DependencyProvider = null;

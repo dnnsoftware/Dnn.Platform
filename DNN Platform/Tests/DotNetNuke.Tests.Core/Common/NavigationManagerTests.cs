@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Core.Common
         private const string LanguagePattern = "&language={0}";
         private INavigationManager navigationManager;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             this.navigationManager = new NavigationManager(PortalControllerMock());
@@ -104,7 +104,7 @@ namespace DotNetNuke.Tests.Core.Common
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             Globals.DependencyProvider = null;

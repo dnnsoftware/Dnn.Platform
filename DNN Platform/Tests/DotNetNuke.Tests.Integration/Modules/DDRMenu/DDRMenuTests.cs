@@ -30,7 +30,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
             this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
