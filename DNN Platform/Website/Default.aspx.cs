@@ -649,6 +649,7 @@ namespace DotNetNuke.Framework
             // Cookie Consent
             if (this.PortalSettings.ShowCookieConsent)
             {
+                JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn);
                 ClientAPI.RegisterClientVariable(this, "cc_morelink", this.PortalSettings.CookieMoreLink, true);
                 ClientAPI.RegisterClientVariable(this, "cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
