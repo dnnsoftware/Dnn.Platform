@@ -74,7 +74,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-        [TestCaseSource(typeof(PortalSettingsControllerTestFactory), "LoadPortalSettings_Loads_Default_Value")]
+        [TestCaseSource(typeof(PortalSettingsControllerTestFactory), nameof(PortalSettingsControllerTestFactory.LoadPortalSettings_Loads_Default_Value))]
         public void LoadPortalSettings_Loads_Default_Value(Dictionary<string, string> testFields)
         {
             // Arrange
@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-        [TestCaseSource(typeof(PortalSettingsControllerTestFactory), "LoadPortalSettings_Loads_Setting_Value")]
+        [TestCaseSource(typeof(PortalSettingsControllerTestFactory), nameof(PortalSettingsControllerTestFactory.LoadPortalSettings_Loads_Setting_Value))]
         public void LoadPortalSettings_Loads_Setting_Value(Dictionary<string, string> testFields)
         {
             // Arrange

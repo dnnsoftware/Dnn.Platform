@@ -46,14 +46,14 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [TestCaseSource("GetWriteMethods")]
+        [TestCaseSource(nameof(GetWriteMethods))]
         public void WriteRequiresLock(Action<SharedList<string>> writeAction)
         {
             Assert.Throws<WriteLockRequiredException>(() => writeAction.Invoke(this.InitSharedList("value")));
         }
 
         [Test]
-        [TestCaseSource("GetReadMethods")]
+        [TestCaseSource(nameof(GetReadMethods))]
         public void ReadRequiresLock(Action<SharedList<string>> readAction)
         {
             Assert.Throws<ReadLockRequiredException>(() => readAction.Invoke(this.InitSharedList("value")));
@@ -127,7 +127,7 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [TestCaseSource("GetObjectDisposedExceptionMethods")]
+        [TestCaseSource(nameof(GetObjectDisposedExceptionMethods))]
         public void MethodsThrowAfterDisposed(Action<SharedList<string>> methodCall)
         {
             var d = new SharedList<string>(this.LockingStrategy);
@@ -156,17 +156,17 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-        protected IEnumerable<Action<SharedList<string>>> GetObjectDisposedExceptionMethods()
+        protected static IEnumerable<Action<SharedList<string>>> GetObjectDisposedExceptionMethods()
         {
             var list = new List<Action<SharedList<string>>> { (SharedList<string> l) => l.GetReadLock(), (SharedList<string> l) => l.GetWriteLock() };
 
-            list.AddRange(this.GetReadMethods());
-            list.AddRange(this.GetWriteMethods());
+            list.AddRange(GetReadMethods());
+            list.AddRange(GetWriteMethods());
 
             return list;
         }
 
-        protected IEnumerable<Action<SharedList<string>>> GetReadMethods()
+        protected static IEnumerable<Action<SharedList<string>>> GetReadMethods()
         {
             var list = new List<Action<SharedList<string>>>();
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.Tests.Core.Collections
             return list;
         }
 
-        protected IEnumerable<Action<SharedList<string>>> GetWriteMethods()
+        protected static IEnumerable<Action<SharedList<string>>> GetWriteMethods()
         {
             var list = new List<Action<SharedList<string>>> { l => l.Add("more"), l => l.Clear(), l => l.Remove("value"), l => l.Insert(0, "more"), l => l[0] = "more", l => l.RemoveAt(0) };
 

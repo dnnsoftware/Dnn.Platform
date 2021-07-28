@@ -151,8 +151,8 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [TestCaseSource("GetObjectDisposedExceptionMethods")]
-        public void MethodsThrowAfterDisposed(Action<ILockStrategy> methodCall)
+        [TestCaseSource(nameof(GetObjectDisposedExceptionMethods))]
+        public virtual void MethodsThrowAfterDisposed(Action<ILockStrategy> methodCall)
         {
             var strategy = this.GetLockStrategy();
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         internal abstract ILockStrategy GetLockStrategy();
 
-        protected virtual IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
+        protected static IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
         {
             var l = new List<Action<ILockStrategy>>();
 

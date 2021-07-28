@@ -29,9 +29,10 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class ServiceRoutingManagerTests
     {
-        // ReSharper disable UnusedMember.Local
-        private readonly List<string[]> emptyStringArrays = new List<string[]>
-                                                        { null, new string[0], new[] { string.Empty }, new string[] { null } };
+        private static readonly List<string[]> EmptyStringArrays = new List<string[]>
+        {
+            null, new string[0], new[] { string.Empty }, new string[] { null }
+        };
 
         // ReSharper restore UnusedMember.Local
         private Mock<IPortalController> mockPortalController;
@@ -107,7 +108,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void NameSpaceRequiredOnMapRouteCalls([ValueSource("emptyStringArrays")] string[] namespaces)
+        public void NameSpaceRequiredOnMapRouteCalls([ValueSource(nameof(EmptyStringArrays))] string[] namespaces)
         {
             var srm = new ServicesRoutingManager(new RouteCollection());
 
