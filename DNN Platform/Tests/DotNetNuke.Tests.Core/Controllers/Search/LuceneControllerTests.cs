@@ -128,7 +128,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
             var inf1 = new DirectoryInfo(searchIndexFolder);
             var inf2 = new DirectoryInfo(this.luceneController.IndexFolder);
-            Assert.AreEqual(inf1.FullName, inf2.FullName);
+            Assert.AreEqual(inf1.Name, inf2.Name);
         }
 
         [Test]
@@ -649,8 +649,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // Arrange
             const string fieldName = "content";
-            var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
-            var lockFile = Path.Combine(searchIndexFolder, WriteLockFile);
+            var lockFile = Path.Combine(this.luceneController.IndexFolder, WriteLockFile);
 
             // Act
             var doc1 = new Document();
