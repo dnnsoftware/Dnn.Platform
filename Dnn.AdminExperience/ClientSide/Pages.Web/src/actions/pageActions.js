@@ -58,6 +58,10 @@ const loadPage = function (dispatch, pageId, callback) {
     });
 };
 
+const redirectFromNonExistingPage = function (redirectUrl) {
+    window.top.location.href = redirectUrl ? redirectUrl : utils.getDefaultPageUrl();
+};
+
 const pageActions = {
     getPageList(id) {
         return (dispatch) => PagesService.getPageList(id).then(pageList => {
@@ -224,7 +228,15 @@ const pageActions = {
                     type: ActionTypes.DELETED_PAGE
                 });
                 if (page.tabId !== 0 && (page.tabId === utils.getCurrentPageId()) || redirectUrl) {
-                    window.top.location.href = redirectUrl ? redirectUrl : utils.getDefaultPageUrl();
+                    redirectFromNonExistingPage(redirectUrl);
+                }
+                else if (page.hasChild === true) {
+                    let currentPageId = utils.getCurrentPageId();
+                    PagesService.getPageHierarchy(currentPageId).then(hierarchy => {
+                        if (Array.isArray(hierarchy) && hierarchy.indexOf(page.tabId) > -1) {
+                            redirectFromNonExistingPage(redirectUrl);
+                        }
+                    });
                 }
             }).catch((error) => {
                 dispatch({
