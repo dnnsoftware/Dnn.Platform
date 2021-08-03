@@ -203,7 +203,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ContentController_DeleteContentItem_Throws_On_Null_ContentItem()
         {
             // Arrange
@@ -211,7 +210,7 @@ namespace DotNetNuke.Tests.Content
             ContentController controller = new ContentController(mockDataService.Object);
 
             // Act, Arrange
-            controller.DeleteContentItem(null);
+            Assert.Throws<ArgumentNullException>(() => controller.DeleteContentItem(null));
         }
 
         [Test]

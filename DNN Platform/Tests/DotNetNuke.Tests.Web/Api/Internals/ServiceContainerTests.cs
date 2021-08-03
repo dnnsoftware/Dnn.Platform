@@ -18,7 +18,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
     [TestFixture]
     public class ServiceContainerTests
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             Globals.DependencyProvider = null;

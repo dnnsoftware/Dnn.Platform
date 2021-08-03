@@ -32,7 +32,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             this.UpdateContentLocalization(true);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();

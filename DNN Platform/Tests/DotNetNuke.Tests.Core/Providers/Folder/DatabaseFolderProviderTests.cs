@@ -52,30 +52,27 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Folder()
         {
             var stream = new Mock<Stream>();
 
-            this._dfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void AddFile_Throws_On_NullOrEmpty_FileName(string fileName)
         {
             var stream = new Mock<Stream>();
 
-            this._dfp.AddFile(this._folderInfo.Object, fileName, stream.Object);
+            Assert.Throws<ArgumentException>(() => this._dfp.AddFile(this._folderInfo.Object, fileName, stream.Object));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
         {
-            this._dfp.DeleteFile(null);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.DeleteFile(null));
         }
 
         [Test]
@@ -89,17 +86,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_Folder()
         {
-            this._dfp.FileExists(null, Constants.FOLDER_ValidFileName);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.FileExists(null, Constants.FOLDER_ValidFileName));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_FileName()
         {
-            this._dfp.FileExists(this._folderInfo.Object, null);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.FileExists(this._folderInfo.Object, null));
         }
 
         [Test]
@@ -130,19 +125,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderMapping()
         {
-            this._dfp.FolderExists(Constants.FOLDER_ValidFolderPath, null);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.FolderExists(Constants.FOLDER_ValidFolderPath, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderPath()
         {
             var folderMapping = new FolderMappingInfo();
 
-            this._dfp.FolderExists(null, folderMapping);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.FolderExists(null, folderMapping));
         }
 
         [Test]
@@ -181,10 +174,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFiles_Throws_On_Null_Folder()
         {
-            this._dfp.GetFiles(null);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.GetFiles(null));
         }
 
         [Test]
@@ -243,17 +235,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileStream_Throws_On_Null_Folder()
         {
-            this._dfp.GetFileStream(null, Constants.FOLDER_ValidFileName);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.GetFileStream(null, Constants.FOLDER_ValidFileName));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetFileStream_Throws_On_NullOrEmpty_FileName()
         {
-            this._dfp.GetFileStream(this._folderInfo.Object, null);
+            Assert.Throws<ArgumentException>(() => this._dfp.GetFileStream(this._folderInfo.Object, null));
         }
 
         [Test]
@@ -341,19 +331,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderMapping()
         {
-            this._dfp.GetSubFolders(Constants.FOLDER_ValidFolderPath, null).ToList();
+            Assert.Throws<ArgumentNullException>(() => this._dfp.GetSubFolders(Constants.FOLDER_ValidFolderPath, null).ToList());
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderPath()
         {
             var folderMappingInfo = new FolderMappingInfo();
 
-            this._dfp.GetSubFolders(null, folderMappingInfo).ToList();
+            Assert.Throws<ArgumentNullException>(() => this._dfp.GetSubFolders(null, folderMappingInfo).ToList());
         }
 
         [Test]
@@ -433,23 +421,21 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateFile_Throws_On_Null_Folder()
         {
             var stream = new Mock<Stream>();
 
-            this._dfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+            Assert.Throws<ArgumentNullException>(() => this._dfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object));
         }
 
         [Test]
         [TestCase(null)]
         [TestCase("")]
-        [ExpectedException(typeof(ArgumentException))]
         public void UpdateFile_Throws_On_NullOrEmpty_FileName(string fileName)
         {
             var stream = new Mock<Stream>();
 
-            this._dfp.UpdateFile(this._folderInfo.Object, fileName, stream.Object);
+            Assert.Throws<ArgumentException>(() => this._dfp.UpdateFile(this._folderInfo.Object, fileName, stream.Object));
         }
 
         [Test]
