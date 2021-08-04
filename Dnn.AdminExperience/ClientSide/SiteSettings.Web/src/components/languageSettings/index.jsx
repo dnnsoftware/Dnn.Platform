@@ -198,7 +198,6 @@ class LanguageSettingsPanelBody extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger test */
     render() {
         const {props} = this;
         if (props.languageSettings) {
