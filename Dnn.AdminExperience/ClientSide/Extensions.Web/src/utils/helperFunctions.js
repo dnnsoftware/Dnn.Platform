@@ -24,7 +24,7 @@ export function validationMapExtensionBeingEdited(extensionBeingEdited) {
         let validateRequired = getValidateRequired(key);
         let tabMapping = getTabMapping(key);
         _extensionBeingEdited[key] = {
-            value: _extensionBeingEdited[key] && !_extensionBeingEdited[key].hasOwnProperty("value") ? _extensionBeingEdited[key] : _extensionBeingEdited[key] && _extensionBeingEdited[key].value,
+            value: _extensionBeingEdited[key] && !Object.prototype.hasOwnProperty.call(_extensionBeingEdited[key], "value") ? _extensionBeingEdited[key] : _extensionBeingEdited[key] && _extensionBeingEdited[key].value,
             validateRequired,
             tabMapping,
             error: false
