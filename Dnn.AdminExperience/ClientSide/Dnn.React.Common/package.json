@@ -17,7 +17,7 @@
     "Persona Bar"
   ],
   "scripts": {
-    "eslint": "eslint ./src/**/*.jsx --fix",
+    "lint": "eslint --fix",
     "test": "echo \"No tests script specified to run.\"",
     "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js",
     "debug": "set NODE_ENV=debug && webpack -p --config dist.webpack.config.js",
