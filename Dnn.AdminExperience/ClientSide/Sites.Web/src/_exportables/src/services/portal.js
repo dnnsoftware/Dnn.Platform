@@ -2,7 +2,7 @@ import utilities from "utils";
 function serializeQueryStringParameters(obj) {
     let s = [];
     for (let p in obj) {
-        if (obj.hasOwnProperty(p)) {
+        if (Object.prototype.hasOwnProperty.call(obj, p)) {
             s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
         }
     }
