@@ -35,6 +35,7 @@ class PageFile extends Component {
                             utils={utilities}
                             selectedFile={selectedFile}
                             onSelectFile={this.onFileSelect.bind(this)}
+                            validationCode={this.props.page.validationCode}
                             browseButtonText={Localization.get("BrowseButton")}
                             uploadButtonText={Localization.get("UploadButton")}
                             linkButtonText={Localization.get("LinkButton")}
@@ -55,7 +56,7 @@ class PageFile extends Component {
                             searchFoldersPlaceHolderText={Localization.get("SearchFoldersPlaceHolder")}
                             fileText={Localization.get("File")}
                             folderText={Localization.get("Folder")}
-                            />
+                        />
                     </GridCell>
                     <GridCell className="right-column">
                         <PageUrlCommons {...this.props} display="vertical" />

@@ -6,6 +6,10 @@ mergeable:
         no_empty:
           enabled: true # Cannot be empty when true.
           message: 'A milestone must be assigned to this pull request'
+        must_exclude:
+          regex: 'Future:'
+          regex_flag: 'none'
+          message: 'A milestone that does not contain `Future:` must be assigned to this pull request'
       - do: label
         begins_with:
           match: 'Type:' # or array of strings

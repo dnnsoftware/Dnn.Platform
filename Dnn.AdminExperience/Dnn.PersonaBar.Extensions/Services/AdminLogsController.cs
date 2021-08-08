@@ -50,20 +50,20 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 logTypes.Insert(0, new LogTypeInfo
                 {
                     LogTypeFriendlyName = Localization.GetString("AllTypes", Components.Constants.LocalResourcesFile),
-                    LogTypeKey = "*"
+                    LogTypeKey = "*",
                 });
 
                 var types = logTypes.Select(v => new
                 {
                     v.LogTypeFriendlyName,
-                    v.LogTypeKey
+                    v.LogTypeKey,
                 }).ToList();
 
                 var response = new
                 {
                     Success = true,
                     Results = types,
-                    TotalResults = types.Count
+                    TotalResults = types.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -106,14 +106,14 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     v.LogPortalName,
                     LogCreateDate = v.LogCreateDate.ToString("G", CultureInfo.InvariantCulture),
                     v.LogProperties.Summary,
-                    LogProperties = this._controller.GetPropertiesText(v)
+                    LogProperties = this._controller.GetPropertiesText(v),
                 });
 
                 var response = new
                 {
                     Success = true,
                     Results = items,
-                    TotalResults = totalRecords
+                    TotalResults = totalRecords,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -165,11 +165,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                if (!this.UserInfo.IsSuperUser && request.LogIds.Any(
-                    x =>
-                        ((LogInfo)
-                            LogController.Instance.GetSingleLog(new LogInfo { LogGUID = x },
-                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != this.PortalId))
+                if (!this.UserInfo.IsSuperUser && request.LogIds.Any(logGuid => (LogController.Instance.GetLog(logGuid)?.LogPortalId != this.PortalId)))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                         Localization.GetString("UnAuthorizedToSendLog", Components.Constants.LocalResourcesFile));
@@ -189,7 +185,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 {
                     Success = string.IsNullOrEmpty(returnMsg) ? true : false,
                     ErrorMessage = error,
-                    ReturnMessage = returnMsg
+                    ReturnMessage = returnMsg,
                 });
             }
             catch (Exception exc)
@@ -240,7 +236,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 {
                     Success = true,
                     Results = options,
-                    TotalResults = options.Count
+                    TotalResults = options.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -271,9 +267,9 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     {
                         Thresholds = this._controller.GetOccurenceThresholds().ToList(),
                         NotificationTimes = this._controller.GetOccurenceThresholdNotificationTimes().ToList(),
-                        NotificationTimeTypes = this._controller.GetOccurenceThresholdNotificationTimeTypes().ToList()
+                        NotificationTimeTypes = this._controller.GetOccurenceThresholdNotificationTimeTypes().ToList(),
                     },
-                    TotalResults = 1
+                    TotalResults = 1,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -313,14 +309,14 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                                 : "*",
                         v.LoggingIsActive,
                         v.LogFileName,
-                        v.ID
+                        v.ID,
                     }).ToList();
 
                 var response = new
                 {
                     Success = true,
                     Results = types,
-                    TotalResults = types.Count
+                    TotalResults = types.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -367,7 +363,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     configInfo.NotificationThresholdTime,
                     configInfo.NotificationThresholdTimeType,
                     configInfo.MailFromAddress,
-                    configInfo.MailToAddress
+                    configInfo.MailToAddress,
                 });
             }
             catch (Exception exc)
@@ -390,12 +386,10 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                var isAdmin = this.UserInfo.Roles.Contains(this.PortalSettings.AdministratorRoleName);
-                if (isAdmin)
+                if (!this.UserInfo.IsSuperUser)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
-                request.LogTypePortalID = this.UserInfo.IsSuperUser ? request.LogTypePortalID : this.PortalId.ToString();
 
                 var logTypeConfigInfo = JObject.FromObject(request).ToObject<LogTypeConfigInfo>();
                 this._controller.AddLogTypeConfig(logTypeConfigInfo);
@@ -506,7 +500,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                         configInfo.NotificationThresholdTime,
                         configInfo.NotificationThresholdTimeType,
                         configInfo.MailFromAddress,
-                        configInfo.MailToAddress
+                        configInfo.MailToAddress,
                     });
                 }
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });

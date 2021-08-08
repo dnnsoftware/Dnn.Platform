@@ -32,16 +32,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         private readonly ISecurityService _securityService;
         private readonly IContentVerifier _contentVerifier;
 
-        public GetPage() :
-            this(TabController.Instance, SecurityService.Instance, new ContentVerifier())
+        public GetPage() : this(TabController.Instance, SecurityService.Instance, new ContentVerifier())
         {
         }
 
         public GetPage(
             ITabController tabController,
             ISecurityService securityService,
-            IContentVerifier contentVerifier
-        )
+            IContentVerifier contentVerifier)
         {
             this._tabController = tabController;
             this._securityService = securityService;
@@ -51,7 +49,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int PageId { get; set; } = -1;
+
         private string PageName { get; set; }
+
         private int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

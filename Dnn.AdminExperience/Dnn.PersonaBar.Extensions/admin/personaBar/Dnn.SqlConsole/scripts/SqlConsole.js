@@ -7,7 +7,6 @@
 define(['jquery',
             'knockout',
             'knockout.mapping',
-            'main/codeEditor',
             './sort',
             './exportData',
             './clipboard.min',
@@ -15,10 +14,10 @@ define(['jquery',
             './FileSaver.min',
             'dnn.jquery',
             'main/koBindingHandlers/jScrollPane'],
-    function ($, ko, koMapping, codeEditor, sort, exportData, Clipboard) {
+    function ($, ko, koMapping, sort, exportData, Clipboard) {
         'use strict';
 
-        var identifier, utility, resx, $panel, viewModel, queryEditor, jsPdf;
+        var utility, resx, $panel, viewModel, sqlConsole, sqlContent, jsPdf;
 
         var pagesCount = 7;
 
@@ -127,7 +126,7 @@ define(['jquery',
         }
 
         var startSaveQuery = function() {
-            viewModel.query(queryEditor.getValue());
+            viewModel.query(sqlContent.getValue());
 
             if (!viewModel.query()) {
                 return;
@@ -143,7 +142,7 @@ define(['jquery',
         }
 
         var saveQuery = function () {
-            viewModel.query(queryEditor.getValue());
+            viewModel.query(sqlContent.getValue());
 
             if (!viewModel.query()) {
                 return;
@@ -643,7 +642,7 @@ define(['jquery',
         }
 
         var runQuery = function () {
-            var newQuery = queryEditor.getValue();
+            var newQuery = sqlContent.getValue();
             viewModel.query(newQuery);
 
             if (!viewModel.query()) {
@@ -689,7 +688,7 @@ define(['jquery',
             return $('<div />').text(textToDecode).html();
         }
         var queryChanged = function (data) {
-            queryEditor.setValue(data);
+            sqlContent.setValue(data);
         }
 
         var initViewModel = function () {
@@ -720,7 +719,6 @@ define(['jquery',
 
 
         var init = function (wrapper, util, params, callback) {
-            identifier = params.identifier;
             utility = util;
             resx = utility.resx.SqlConsole;
             $panel = wrapper;
@@ -734,12 +732,67 @@ define(['jquery',
             getSavedQueries(-1);
             initUpload();
 
-            queryEditor = codeEditor.init($panel.find('textarea'), { mode: 'mssql' });
+            initSqlConsole();
 
             if (typeof callback === 'function') {
                 callback();
             }
         };
+
+        var initSqlConsole = function() {
+            var monacoEditorLoaderScript = document.createElement('script');
+            monacoEditorLoaderScript.type = 'text/javascript';
+            monacoEditorLoaderScript.src = '/Resources/Shared/components/MonacoEditor/loader.js';
+            document.body.appendChild(monacoEditorLoaderScript);
+
+            require.config({ paths: { 'vs': '/Resources/Shared/components/MonacoEditor' }});
+            require(['vs/editor/editor.main'], function(monaco) {
+        
+                self.MonacoEnvironment = {
+                    getWorkerUrl: function (moduleId, label) {
+                        if (label === 'typescript' || label === 'javascript') {
+                        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                            importScripts('${process.env.ASSET_PATH}/typescript.worker.js');`
+                        )}`;
+                        }
+        
+                    return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                        importScripts('${process.env.ASSET_PATH}/editor.worker.js');`
+                    )}`;
+                    }
+                }
+
+                sqlConsole = monaco.editor;
+                sqlContent = sqlConsole.createModel("", "sql");
+                initMonacoEditor();
+            });
+
+        }
+
+        var initMonacoEditor = function() {
+            var theme = "vs-light";
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                theme = "vs-dark";
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                theme = e.matches ? "vs-dark" : "vs-light";
+            });
+
+            var monacoEditor = sqlConsole.create(document.getElementById("monaco-editor"), {
+                model: sqlContent,
+                language: "sql",
+                wordWrap: 'wordWrapColumn',
+                wordWrapColumn: 80,
+                wordWrapMinified: true,
+                wrappingIndent: "indent",
+                lineNumbers: "on",
+                roundedSelection: false,
+                scrollBeyondLastLine: false,
+                readOnly: false,
+                theme: theme,
+                automaticLayout: true
+            });
+        }
 
         var load = function (params, callback) {
             if (typeof callback === 'function') {

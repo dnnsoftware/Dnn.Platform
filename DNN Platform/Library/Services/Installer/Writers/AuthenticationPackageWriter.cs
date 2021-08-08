@@ -18,6 +18,10 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class AuthenticationPackageWriter : PackageWriterBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.
+        /// </summary>
+        /// <param name="package"></param>
         public AuthenticationPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -25,6 +29,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.
+        /// </summary>
+        /// <param name="authSystem"></param>
+        /// <param name="package"></param>
         public AuthenticationPackageWriter(AuthenticationInfo authSystem, PackageInfo package)
             : base(package)
         {
@@ -40,6 +49,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
 
+        /// <inheritdoc/>
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Write Authentication Component

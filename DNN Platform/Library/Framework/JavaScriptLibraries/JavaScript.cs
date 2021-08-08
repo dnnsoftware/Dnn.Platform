@@ -35,6 +35,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JavaScript"/> class.
+        /// </summary>
         protected JavaScript()
         {
         }

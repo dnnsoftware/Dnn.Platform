@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.FileSystem
         int LastModifiedByUserID { get; }
 
         DateTime LastModifiedOnDate { get; }
+
         string DisplayName { get; set; }
 
         string DisplayPath { get; set; }

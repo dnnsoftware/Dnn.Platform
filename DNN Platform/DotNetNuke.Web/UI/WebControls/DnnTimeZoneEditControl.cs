@@ -5,7 +5,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Web.UI;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.UI.WebControls.Extensions;
@@ -18,6 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
+        /// <inheritdoc/>
         public override string EditControlClientId
         {
             get
@@ -27,6 +27,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -41,6 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return dataChanged;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             this.TimeZones = new DnnTimeZoneComboBox();
@@ -52,6 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
+        /// <inheritdoc/>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -61,12 +64,14 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnValueChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(System.EventArgs e)
         {
             this.EnsureChildControls();
             base.OnInit(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -79,11 +84,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void RenderEditMode(System.Web.UI.HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
+        /// <inheritdoc/>
         protected override void RenderViewMode(System.Web.UI.HtmlTextWriter writer)
         {
             string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));

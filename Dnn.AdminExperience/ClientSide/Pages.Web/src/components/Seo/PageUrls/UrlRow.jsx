@@ -43,7 +43,7 @@ class UrlRow extends Component {
             /* eslint-disable react/no-danger */
             <div className={styles.urlRow + (opened ? " row-opened" : "")} >
                 <GridCell columnSize={50} className="url-path">
-                   {url.path}
+                    {url.path}
                 </GridCell>
                 <GridCell columnSize={20} >
                     {url.statusCode.Value}

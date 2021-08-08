@@ -7,7 +7,6 @@ namespace DotNetNuke.Entities.Content.Data
     using System.Data;
 
     using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Services.FileSystem;
 
     /// <summary>
     /// Interface of DataService.

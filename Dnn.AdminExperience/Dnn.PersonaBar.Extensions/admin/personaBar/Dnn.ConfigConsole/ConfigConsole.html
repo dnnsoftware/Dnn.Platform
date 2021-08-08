@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="form-item">
-                    <textarea class="config-xml" data-bind="value: configxml" aria-label="Content"></textarea>
+                    <div id="monaco-editor-config-files"></div>
                 </div>
                 <div class="actions">
                     <button class="create-page dnn-ui-common-button" role="primary" data-bind="html: resx.cmdSave, click: saveConfig"></button>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-item">
-                    <textarea class="script-xml" data-bind="value: mergexml" aria-label="Scripts"></textarea>
+                    <div id="monaco-editor-merge-scripts"></div>
                 </div>
                 <div class="actions">
                     <button class="create-page dnn-ui-common-button" role="primary" href="#" data-bind="html: resx.cmdExecute, click: mergeConfig"></button>

@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.Journal.Components
                                         { "TabId", tabId },
                                         { "TabModuleId", tabModuleId },
                                         { "ProfileId", profileId },
-                                        { "GroupId", groupId }
+                                        { "GroupId", groupId },
                                     },
                                 };
 

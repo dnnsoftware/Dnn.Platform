@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
         [TemplateContainer(typeof(DnnFormEmptyTemplate))]
         public ITemplate ItemTemplate { get; set; }
 
+        /// <inheritdoc/>
         protected override void CreateControlHierarchy()
         {
             this.CssClass += " dnnFormItem";

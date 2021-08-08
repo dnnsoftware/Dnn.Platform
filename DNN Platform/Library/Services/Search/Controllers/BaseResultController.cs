@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
-    using System.Collections.Generic;
 
     using DotNetNuke.Services.Search.Entities;
 

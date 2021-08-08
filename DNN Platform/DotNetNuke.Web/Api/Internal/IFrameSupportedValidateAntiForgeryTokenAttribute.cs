@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Api.Internal
 
     public class IFrameSupportedValidateAntiForgeryTokenAttribute : ValidateAntiForgeryTokenAttribute
     {
+        /// <inheritdoc/>
         protected override Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
             var result = base.IsAuthorized(actionContext);

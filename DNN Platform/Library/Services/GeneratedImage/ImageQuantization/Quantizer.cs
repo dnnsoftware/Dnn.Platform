@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 {
                     this.InitialQuantizePixel(new Color32(pSourcePixel));
                     pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
-                }   // Now I have the pixel, call the FirstPassQuantize function...
+                } // Now I have the pixel, call the FirstPassQuantize function...
 
                 // Add the stride to the source row
                 pSourceRow = (IntPtr)((long)pSourceRow + sourceData.Stride);
@@ -274,6 +274,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             [FieldOffset(0)]
             public int ARGB;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Color32"/> struct.
+            /// </summary>
+            /// <param name="pSourcePixel"></param>
             public Color32(IntPtr pSourcePixel)
             {
                 this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));

@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
     using System.Linq;
     using System.Reflection;
     using System.Web;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;

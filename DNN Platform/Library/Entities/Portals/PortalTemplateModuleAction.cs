@@ -6,8 +6,8 @@ namespace DotNetNuke.Entities.Portals
 {
     public enum PortalTemplateModuleAction
     {
-        Ignore,
-        Merge,
-        Replace,
+        Ignore = 0,
+        Merge = 1,
+        Replace = 2,
     }
 }

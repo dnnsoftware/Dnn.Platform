@@ -19,7 +19,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.ModuleCache;
@@ -54,6 +53,9 @@ namespace DotNetNuke.Entities.Modules
         private Hashtable _moduleSettings;
         private Hashtable _tabModuleSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleInfo"/> class.
+        /// </summary>
         public ModuleInfo()
         {
             // initialize the properties that can be null
@@ -310,6 +312,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -390,6 +393,7 @@ namespace DotNetNuke.Entities.Modules
         [XmlIgnore]
         public bool IsShareableViewOnly { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("iswebslice")]
         public bool IsWebSlice { get; set; }
 
@@ -472,12 +476,15 @@ namespace DotNetNuke.Entities.Modules
         [XmlElement("visibility")]
         public VisibilityState Visibility { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("websliceexpirydate")]
         public DateTime WebSliceExpiryDate { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("webslicetitle")]
         public string WebSliceTitle { get; set; }
 
+        [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
         [XmlElement("webslicettl")]
         public int WebSliceTTL { get; set; }
 
@@ -640,6 +647,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;

@@ -14,8 +14,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;

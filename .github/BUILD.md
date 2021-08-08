@@ -49,7 +49,7 @@ You'll need to be running IIS and SQL server (Express) locally for this to work.
 The build process uses a local settings file which is excluded from source control so you won't accidentally upload this to Github. First open up Powershell at the root of this repository and run the following:
 
 ```
-.\Build.ps1 -Target CreateSettings
+.\Build.ps1 --target=CreateSettings
 ```
 
 This will create a file called `settings.local.json` at the root with the following content:
@@ -87,7 +87,7 @@ The settings are as follows:
 Once you've set up the above, run the following in Powershell:
 
 ```
-.\Build.ps1 -Target ResetDevSite
+.\Build.ps1 --target=ResetDevSite
 ```
 
 This will attempt to delete all content in `WebsitePath` and will build DNN to that location.
@@ -107,8 +107,38 @@ To build the .net projects to the right location, you'll need to create your ove
 ```
 
 Once you've created this file every time you click "rebuild" in Visual Studio on a project (or the solution) you'll see the content change in your dev site.
+**Note**: You may have to restart Visual Studio for this new build file to take effect.
 
 For the Webpack projects it is set up to read from the `settings.local.json` file and use the `WebsitePath` to copy generated js files to their right place.
+
+## Build React Projects
+
+The solution includes a number of React projects. Notably for the PersonaBar (`Dnn.AdminExperience/ClientSide/*`). To build these to your development site you 
+need to use Yarn and scope to the project you're working on. Go to the `package.json` file for the project and find the identifier (name) and use that. So if you're
+working on the Site Settings PersonaBar project, you'll find that file here: `Dnn.AdminExperience/ClientSide/SiteSettings.Web/package.json`. Open it up
+and you'll see something like this:
+
+``` json
+{
+  "name": "site_settings",
+  "version": "9.8.1",
+  "private": true,
+  ...
+```
+
+The "key" for this project is "site_settings". Use the following command at the root of the project to build this:
+
+```
+yarn watch --scope site_settings
+```
+
+and the React project will be built to the dev site and yarn will watch for changes you make and rebuild continuously.
+
+## Gotchas
+
+1. Always check your version in the settings.local.json file if something is not quite right. It is important it is set correctly!
+2. After a build to reset your dev site you may find a large number of changed files in Git. You can safely remove all of those changes while you're working on the solution but you must leave the SolutionInfo.cs file intact as it holds the version nr when you press build in Visual Studio!
+3. If you're building a React project make sure to disable the caching in your browser so your changed file is loaded!
 
 ## Tips and tricks
 

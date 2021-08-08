@@ -11,5 +11,6 @@ namespace DotNetNuke.Entities.Modules.Settings
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class TabModuleSettingAttribute : ParameterAttributeBase
-    {}
+    {
+    }
 }

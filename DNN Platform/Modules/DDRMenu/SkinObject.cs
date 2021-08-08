@@ -44,6 +44,7 @@ namespace DotNetNuke.Web.DDRMenu
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<TemplateArgument> TemplateArguments { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))
@@ -90,6 +91,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             using (new DNNContext(this))

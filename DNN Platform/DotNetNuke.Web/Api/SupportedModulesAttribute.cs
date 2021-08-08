@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.Api
 {
-    using System;
     using System.Linq;
     using System.Net.Http;
     using System.Web.Http.Controllers;
@@ -20,6 +19,7 @@ namespace DotNetNuke.Web.Api
             this._supportedModules = supportedModules.Split(new[] { ',' });
         }
 
+        /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var module = this.FindModuleInfo(context.ActionContext.Request);
@@ -37,6 +37,7 @@ namespace DotNetNuke.Web.Api
             return request.FindModuleInfo();
         }
 
+        /// <inheritdoc/>
         protected override bool SkipAuthorization(HttpActionContext actionContext)
         {
             return false;

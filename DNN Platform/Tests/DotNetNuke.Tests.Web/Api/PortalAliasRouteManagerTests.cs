@@ -110,11 +110,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
                 });
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
                 });
 
             var mockGlobals = new Mock<IGlobals>();
@@ -139,11 +139,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" },
                 });
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" },
                 });
 
             var mockGlobals = new Mock<IGlobals>();
@@ -273,25 +273,23 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetRouteNameThrowsOnEmptyModuleFolderName(string moduleFolderName)
         {
             // Arrange
 
             // Act
-            new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0);
+            Assert.Throws<ArgumentException>(() => new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void GetRouteNameThrowsOnCountLessThan0()
         {
             // Arrange
 
             // Act
-            new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1));
 
             // Assert
         }

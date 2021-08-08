@@ -231,10 +231,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void RedirectionController_GetRedirectionUrl_Throws_On_Null_UserAgent()
         {
-            this._redirectionController.GetRedirectUrl(null, Portal0, 0);
+            Assert.Throws<ArgumentException>(() => this._redirectionController.GetRedirectUrl(null, Portal0, 0));
         }
 
         [Test]

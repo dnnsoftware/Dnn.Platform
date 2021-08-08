@@ -20,8 +20,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    using Microsoft.Extensions.DependencyInjection;
-
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : PortalModuleBase
@@ -43,7 +41,7 @@ namespace DotNetNuke.Entities.Modules
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly Lazy<IServiceScope> _serviceScope = new Lazy<IServiceScope>(Globals.DependencyProvider.CreateScope);
+        private readonly Lazy<ServiceScopeContainer> _serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 
@@ -365,7 +363,7 @@ namespace DotNetNuke.Entities.Modules
         /// <value>
         /// The Dependency Service.
         /// </value>
-        protected IServiceProvider DependencyProvider => this._serviceScope.Value.ServiceProvider;
+        protected IServiceProvider DependencyProvider => this._serviceScopeContainer.Value.ServiceScope.ServiceProvider;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -418,9 +416,9 @@ namespace DotNetNuke.Entities.Modules
         public override void Dispose()
         {
             base.Dispose();
-            if (this._serviceScope.IsValueCreated)
+            if (this._serviceScopeContainer.IsValueCreated)
             {
-                this._serviceScope.Value.Dispose();
+                this._serviceScopeContainer.Value.Dispose();
             }
         }
 
@@ -448,6 +446,7 @@ namespace DotNetNuke.Entities.Modules
             ModuleController.SynchronizeModule(this.ModuleId);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)
@@ -462,6 +461,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)

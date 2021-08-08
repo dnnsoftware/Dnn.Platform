@@ -4,14 +4,13 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
-    using System;
     using System.Text;
-    using System.Web;
 
     using DotNetNuke.Common;
 
     public class ToolBarMenuButtonRenderer : IExtensionControlRenderer
     {
+        /// <inheritdoc/>
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarMenuButtonExtensionPoint)extensionPoint;

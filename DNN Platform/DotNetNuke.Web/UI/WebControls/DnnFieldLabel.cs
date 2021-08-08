@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFieldLabel : DnnLabel
     {
+        /// <inheritdoc/>
         public override void LocalizeStrings()
         {
             base.LocalizeStrings();

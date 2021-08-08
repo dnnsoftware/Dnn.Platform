@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+	<Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -166,7 +169,7 @@
     <Compile Include="UI\WebControls\DnnToolBarButton.cs" />
     <Compile Include="UI\WebControls\DnnToolBarDropDown.cs" />
     <Compile Include="UI\WebControls\DnnToolBarSplitButton.cs" />
-    <Compile Include="UI\WebControls\Core Wrappers\DnnRadTab.cs" />
+    <Compile Include="UI\WebControls\DnnRadTab.cs" />
     <Compile Include="UI\WebControls\DnnAsyncUpload.cs" />
     <Compile Include="UI\WebControls\DnnBinaryImage.cs" />
     <Compile Include="UI\WebControls\DnnCalendar.cs" />
@@ -308,6 +311,7 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

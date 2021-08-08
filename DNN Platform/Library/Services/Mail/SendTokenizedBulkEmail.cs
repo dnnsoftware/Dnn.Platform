@@ -22,7 +22,6 @@ namespace DotNetNuke.Services.Mail
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Messaging.Data;
     using DotNetNuke.Services.Tokens;
 
@@ -75,6 +74,9 @@ namespace DotNetNuke.Services.Mail
         private string _strSenderLanguage;
         private bool _isDisposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.
+        /// </summary>
         public SendTokenizedBulkEmail()
         {
             this.ReportRecipients = true;
@@ -85,6 +87,14 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.
+        /// </summary>
+        /// <param name="addressedRoles"></param>
+        /// <param name="addressedUsers"></param>
+        /// <param name="removeDuplicates"></param>
+        /// <param name="subject"></param>
+        /// <param name="body"></param>
         public SendTokenizedBulkEmail(List<string> addressedRoles, List<UserInfo> addressedUsers, bool removeDuplicates, string subject, string body)
         {
             this.ReportRecipients = true;
@@ -100,6 +110,9 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="SendTokenizedBulkEmail"/> class.
+        /// </summary>
         ~SendTokenizedBulkEmail()
         {
             this.Dispose(false);
@@ -636,6 +649,7 @@ namespace DotNetNuke.Services.Mail
             this.SendMails();
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             this.Dispose(true);

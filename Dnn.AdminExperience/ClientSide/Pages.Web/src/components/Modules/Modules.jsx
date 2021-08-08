@@ -28,7 +28,7 @@ class Modules extends Component {
             });
     }
 
-    onEditingModule(editType, module){
+    onEditingModule(editType, module) {
         const { onEditingModule } = this.props;
         this.setState({editType: editType}, () => {
             onEditingModule(module);
@@ -40,8 +40,8 @@ class Modules extends Component {
 
         if (modules.length === 0) {
             return <GridCell className="no-modules" columnSize={100} >
-                        {Localization.get("NoModules")}
-                    </GridCell>;
+                {Localization.get("NoModules")}
+            </GridCell>;
         }
 
         return modules.map((module, index) => {
@@ -69,9 +69,9 @@ class Modules extends Component {
             /* eslint-disable react/no-danger */
             <div className={styles.moduleContainer}>
                 <div className="module-title">
-                        <div className="module-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
-                        <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
-                    </div>
+                    <div className="module-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
+                    <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
+                </div>
                 <div className="module-table">    
                     <div className="header-row">
                         {showCopySettings &&
@@ -96,7 +96,7 @@ class Modules extends Component {
                             editType={state.editType}
                             onUpdatedModuleSettings={onCancelEditingModule}
                             selectedPage={selectedPage}
-                            /> }
+                        /> }
                 </Modal>      
             </div>      
             /* eslint-enable react/no-danger */

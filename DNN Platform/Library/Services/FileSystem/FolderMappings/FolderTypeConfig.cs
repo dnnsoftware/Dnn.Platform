@@ -12,6 +12,9 @@ namespace DotNetNuke.Services.FileSystem
     /// -----------------------------------------------------------------------------
     public class FolderTypeConfig
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FolderTypeConfig"/> class.
+        /// </summary>
         public FolderTypeConfig()
         {
             this.Settings = new List<FolderTypeSettingConfig>();

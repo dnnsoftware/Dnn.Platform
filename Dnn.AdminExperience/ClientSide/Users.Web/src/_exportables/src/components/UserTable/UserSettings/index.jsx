@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Localization from "localization";
@@ -29,6 +29,9 @@ class UserSettings extends Component {
                 userName: false,
                 loading: false,
                 email: false
+            },
+            startingValues: {
+                userName: undefined,
             },
             ChangePasswordVisible: false
         };
@@ -70,14 +73,16 @@ class UserSettings extends Component {
     }
     updateUserDetailsState(details) {
         let userDetails = Object.assign({}, details);
-        let {accountSettings} = this.state;
+        let {accountSettings, startingValues} = this.state;
         accountSettings.displayName = userDetails.displayName;
         accountSettings.userName = userDetails.userName;
         accountSettings.email = userDetails.email;
         accountSettings.userId = userDetails.userId;
+        startingValues.userName = userDetails.userName;
         this.setState({
             accountSettings,
             userDetails,
+            startingValues,
             loading: false
         });
     }
@@ -109,12 +114,16 @@ class UserSettings extends Component {
         errors.displayName = false;
         errors.userName = false;
         errors.email = false;
-        let {accountSettings} = this.state;
+        let {accountSettings, startingValues} = this.state;
         if (accountSettings.displayName === "") {
             errors.displayName = true;
             valid = false;
         }
         if (accountSettings.userName === "") {
+            errors.userName = true;
+            valid = false;
+        }
+        if (startingValues.userName !== accountSettings.userName && accountSettings.userName.length < this.props.appSettings.applicationSettings.settings.userNameMinLength) {
             errors.userName = true;
             valid = false;
         }

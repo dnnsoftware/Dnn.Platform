@@ -8,6 +8,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Net;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -29,10 +30,11 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         private enum IncludeExcludeType
         {
-            IncludeByDefault,
-            ExcludeByDefault,
+            IncludeByDefault = 0,
+            ExcludeByDefault = 1,
         }
 
+        /// <inheritdoc/>
         public void Init(HttpApplication httpApp)
         {
             this._app = httpApp;
@@ -41,6 +43,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             httpApp.UpdateRequestCache += this.OnUpdateRequestCache;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }
@@ -244,7 +247,10 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         private void OnUpdateRequestCache(object sender, EventArgs e)
         {
-            if (!HttpContext.Current.Request.Browser.Crawler)
+            var request = HttpContext.Current.Request;
+            var response = HttpContext.Current.Response;
+            var isRedirect = response.StatusCode == (int)HttpStatusCode.Redirect;
+            if (!request.Browser.Crawler && !isRedirect)
             {
                 var responseFilter = this._app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
                 if (responseFilter != null)

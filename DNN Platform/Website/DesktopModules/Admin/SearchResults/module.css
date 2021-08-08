@@ -1,14 +1,14 @@
 ﻿.dnnSearchBoxPanel {
     width: 100%;
-    max-width: 980px;
-    padding: 10px 0 10px 0;
+    padding: 10px 5px;
     background-color: #ddd;
 }
 
     .dnnSearchBoxPanel .dnnSearchBox {
-        margin-left: 10px;
+        margin-left: 0;
         margin-right: 105px;
         display: block;
+        padding-right: 10px;
     }
 
     .dnnSearchBoxPanel > div {
@@ -18,13 +18,13 @@
 .dnnSearchResultAdvancedTip {
     float: right;
     display: block;
-    margin: 10px 13px 0 0;
+    margin: 10px 0 0 0;
+    width: 90px;
 }
 
 .dnnSearchResultPanel {
     width: 100%;
-    max-width: 980px;
-    margin: 30px 0 0 0;
+    margin: 10px 0 0 0;
     padding: 10px 0 7px 0;
     background-color: #ddd;
 }
@@ -79,9 +79,9 @@
                 color: #333;
             }
 
-    .dnnSearchResultPanel > .dnnRight > span.dnnSearchResultCountPerPage {
+    .dnnSearchResultPanel > .dnnRight > span.dnnSearchResultCountPerPage, .dnnSearchResultPanel > .dnnLeft > span.dnnSearchResultCountPerPage {
         display: inline-block;
-        margin: 10px 5px 0 0;
+        margin: 10px 5px 0 10px;
         color: #666;
         vertical-align: top;
     }
@@ -130,9 +130,9 @@
         color: #777;
     }
 
-    .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others span + label {
-        font-weight: normal;
-    }
+        .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others span + label {
+            font-weight: normal;
+        }
 
     .dnnSearchResultContainer > .dnnSearchResultItem > .dnnSearchResultItem-Others a {
         display: inline-block;
@@ -163,9 +163,9 @@
         color: #777;
     }
 
-    .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span + label {
-        font-weight: normal;
-    }
+        .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others span + label {
+            font-weight: normal;
+        }
 
     .dnnSearchResultContainer > .dnnSearchResultItem-Subset > .dnnSearchResultItem-Others a {
         display: inline-block;
@@ -180,11 +180,11 @@
     border-top: 1px solid #ccc;
 }
 
-.dnnSearchResultPager.dnnSearchResultPagerTop {
-    border-top: none;
-    border-bottom: 1px solid #ccc;
-    margin: 10px 0 30px 0;
-}
+    .dnnSearchResultPager.dnnSearchResultPagerTop {
+        border-top: none;
+        border-bottom: 1px solid #ccc;
+        margin: 10px 0 30px 0;
+    }
 
     .dnnSearchResultPager span {
         display: inline-block;
@@ -193,10 +193,9 @@
         vertical-align: top;
     }
 
-    .dnnSearchResultPager span.dnnPager-current {
-        margin: 6px 20px 0 0;
-
-    }
+        .dnnSearchResultPager span.dnnPager-current {
+            margin: 6px 20px 0 0;
+        }
 
     .dnnSearchResultPager a {
         -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 1);
@@ -240,7 +239,7 @@
         }
 
         .dnnSearchResultPager a.dnnPager-disable {
-             opacity: 0.65;
+            opacity: 0.65;
         }
 
 #dnnSearchResultAdvancedForm {
@@ -275,44 +274,44 @@
 }
 
 @media only screen and (max-width: 715px) {
-    .dnnSearchBox_advanced_dropdown {             
-        width: 420px;       
-        left: -254px;     
+    .dnnSearchBox_advanced_dropdown {
+        width: 420px;
+        left: -254px;
     }
 }
 
 @media only screen and (max-width: 580px) {
 
     #dnnSearchResultAdvancedForm {
-        width: 250px; 
+        width: 250px;
     }
 
     .dnnSearchBox_advanced_dropdown {
-        left:-150px !important;
-        width: 250px;            
+        left: -150px !important;
+        width: 250px;
     }
 
     #dnnSearchResultAdvancedForm .dnnLabel {
         white-space: nowrap;
         margin-right: 1em;
         text-align: left;
-        float:none;
-        display:block;
-        width:100%;
+        float: none;
+        display: block;
+        width: 100%;
     }
 
-    #dnnSearchResultAdvancedForm .dnnLabel label {
-        margin-right:.3em;
-    }
+        #dnnSearchResultAdvancedForm .dnnLabel label {
+            margin-right: .3em;
+        }
 
     #dnnSearchResultAdvancedForm .dnnFormHelp {
-        position:relative !important;
-        width:20px;
+        position: relative !important;
+        width: 20px;
     }
 
     #dnnSearchResultAdvancedForm .dnnTooltip {
-        left:30% !important;
-        white-space:normal;
+        left: 30% !important;
+        white-space: normal;
     }
 
     #dnnSearchResultAdvancedForm .dnnCheckbox {
@@ -323,9 +322,9 @@
 }
 
 @media only screen and (max-width: 475px) {
-    .dnnSearchBox_advanced_dropdown {            
+    .dnnSearchBox_advanced_dropdown {
         left: -48px !important;
-    }    
+    }
 }
 
 

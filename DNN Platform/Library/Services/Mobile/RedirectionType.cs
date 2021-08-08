@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Mobile
 {
-    using System;
-
     public enum RedirectionType
     {
         /// <summary>

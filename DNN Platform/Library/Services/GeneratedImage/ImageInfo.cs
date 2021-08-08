@@ -13,11 +13,19 @@ namespace DotNetNuke.Services.GeneratedImage
     /// </summary>
     public class ImageInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageInfo"/> class.
+        /// </summary>
+        /// <param name="statusCode"></param>
         public ImageInfo(HttpStatusCode statusCode)
         {
             this.HttpStatusCode = statusCode;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageInfo"/> class.
+        /// </summary>
+        /// <param name="image"></param>
         public ImageInfo(Image image)
         {
             if (image == null)
@@ -28,6 +36,10 @@ namespace DotNetNuke.Services.GeneratedImage
             this.Image = image;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageInfo"/> class.
+        /// </summary>
+        /// <param name="imageBuffer"></param>
         public ImageInfo(byte[] imageBuffer)
         {
             if (imageBuffer == null)

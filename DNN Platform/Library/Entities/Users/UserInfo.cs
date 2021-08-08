@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Abstractions.Users;
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -40,6 +41,9 @@ namespace DotNetNuke.Entities.Users
         private UserMembership _membership;
         private UserProfile _profile;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserInfo"/> class.
+        /// </summary>
         public UserInfo()
         {
             this.IsDeleted = Null.NullBoolean;
@@ -80,6 +84,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// <inheritdoc/>
         [Browsable(false)]
         public CacheLevel Cacheability
         {
@@ -260,6 +265,7 @@ namespace DotNetNuke.Entities.Users
             set { this._profile = value; }
         }
 
+        /// <inheritdoc/>
         [Browsable(false)]
         public string[] Roles
         {
@@ -302,6 +308,7 @@ namespace DotNetNuke.Entities.Users
         [Required(true)]
         public string Username { get; set; }
 
+        /// <inheritdoc/>
         public string VanityUrl { get; set; }
 
         /// <summary>
@@ -414,7 +421,12 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
 
-                    return PropertyAccess.FormatString(this.Username, format);
+                    var settings = PortalController.Instance.GetPortalSettings(this.PortalID);
+                    var regSettings = new RegistrationSettings(settings);
+
+                    return regSettings.UseEmailAsUserName ?
+                        PropertyAccess.FormatString(this.Email, format) :
+                        PropertyAccess.FormatString(this.Username, format);
                 case "fullname": // fullname is obsolete, it will return DisplayName
                     if (internScope < Scope.Configuration)
                     {

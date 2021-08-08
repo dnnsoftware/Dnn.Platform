@@ -59,17 +59,17 @@ namespace DotNetNuke.Web.UI.WebControls
             /// <summary>
             ///   The File Control is in its Normal mode
             /// </summary>
-            Normal,
+            Normal = 0,
 
             /// <summary>
             ///   The File Control is in the Upload File mode
             /// </summary>
-            UpLoadFile,
+            UpLoadFile = 1,
 
             /// <summary>
             ///   The File Control is in the Preview mode
             /// </summary>
-            Preview,
+            Preview = 2,
         }
 
         public int MaxHeight
@@ -302,6 +302,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public UserInfo User { get; set; }
 
+        /// <inheritdoc/>
         public bool Localize
         {
             get
@@ -315,6 +316,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
         /// <summary>
@@ -405,10 +407,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <inheritdoc/>
         public virtual void LocalizeStrings()
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

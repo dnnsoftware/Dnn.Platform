@@ -35,23 +35,31 @@ namespace DotNetNuke.ModulePipeline
 #endif
     {
         private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private Dictionary<string, IModuleControlFactory> _controlFactories;
+        private Dictionary<string, IModuleControlFactory> controlFactories;
 
+        /// <summary>Initializes a new instance of the <see cref="ModuleControlPipeline"/> class.</summary>
+        /// <param name="webforms">The <see cref="WebFormsModuleControlFactory"/>.</param>
+        /// <param name="html5">The <see cref="Html5ModuleControlFactory"/>.</param>
+        /// <param name="razor3">The <see cref="RazorModuleControlFactory"/>.</param>
+        /// <param name="mvc">The <see cref="MvcModuleControlFactory"/>.</param>
+        /// <param name="fallthrough">The <see cref="ReflectedModuleControlFactory"/>.</param>
         public ModuleControlPipeline(
             WebFormsModuleControlFactory webforms,
             Html5ModuleControlFactory html5,
+#pragma warning disable CS0618 // Obsolete
             RazorModuleControlFactory razor3,
+#pragma warning restore CS0618 // Obsolete
             MvcModuleControlFactory mvc,
             ReflectedModuleControlFactory fallthrough)
         {
-            this._controlFactories = new Dictionary<string, IModuleControlFactory>(StringComparer.OrdinalIgnoreCase);
-            this._controlFactories.Add(".ascx", webforms);
-            this._controlFactories.Add(".htm", html5);
-            this._controlFactories.Add(".html", html5);
-            this._controlFactories.Add(".cshtml", razor3);
-            this._controlFactories.Add(".vbhtml", razor3);
-            this._controlFactories.Add(".mvc", mvc);
-            this._controlFactories.Add("default", fallthrough);
+            this.controlFactories = new Dictionary<string, IModuleControlFactory>(StringComparer.OrdinalIgnoreCase);
+            this.controlFactories.Add(".ascx", webforms);
+            this.controlFactories.Add(".htm", html5);
+            this.controlFactories.Add(".html", html5);
+            this.controlFactories.Add(".cshtml", razor3);
+            this.controlFactories.Add(".vbhtml", razor3);
+            this.controlFactories.Add(".mvc", mvc);
+            this.controlFactories.Add("default", fallthrough);
         }
 
 #if NET472
@@ -191,9 +199,9 @@ namespace DotNetNuke.ModulePipeline
         private IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc);
-            this._controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
+            this.controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
 
-            return factory ?? this._controlFactories["default"];
+            return factory ?? this.controlFactories["default"];
         }
 #endif
     }

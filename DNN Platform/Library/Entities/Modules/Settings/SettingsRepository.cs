@@ -1,77 +1,87 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Modules.Settings
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Web.Caching;
+
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
-    public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <inheritdoc/>
+    public abstract class SettingsRepository<T> : ISettingsRepository<T>
+        where T : class, new()
     {
-        public const string CachePrefix = "ModuleSettingsPersister_";
+        private readonly IModuleController moduleController;
 
-        private readonly IModuleController _moduleController;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SettingsRepository{T}"/> class.
+        /// </summary>
         protected SettingsRepository()
         {
             this.Mapping = this.LoadMapping();
-            this._moduleController = ModuleController.Instance;
+            this.moduleController = ModuleController.Instance;
         }
+
+        /// <summary>
+        /// Gets cache key for this class. Used for parameter mapping storage as well as entire class persistence.
+        /// </summary>
         protected virtual string MappingCacheKey
         {
             get
             {
                 var type = typeof(T);
-                return CachePrefix + type.FullName.Replace(".", "_");
+                return "SettingsRepository_" + type.FullName.Replace(".", "_");
             }
         }
 
+        private static ISerializationManager SerializationManager =>
+    Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+
         private IList<ParameterMapping> Mapping { get; }
 
+        /// <inheritdoc/>
         public T GetSettings(ModuleInfo moduleContext)
         {
             return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
+        /// <inheritdoc/>
+        public T GetSettings(int portalId)
+        {
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(portalId), 20, CacheItemPriority.AboveNormal, null, portalId), this.Load, false);
+        }
+
+        /// <inheritdoc/>
         public void SaveSettings(ModuleInfo moduleContext, T settings)
         {
             Requires.NotNull("settings", settings);
             Requires.NotNull("ctlModule", moduleContext);
-
-            this.Mapping.ForEach(mapping =>
-            {
-                var attribute = mapping.Attribute;
-                var property = mapping.Property;
-
-                if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
-                {
-                    var settingValueAsString = SerializationController.SerializeProperty(settings, property, attribute.Serializer);
-
-                    if (attribute is ModuleSettingAttribute)
-                    {
-                        this._moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
-                        moduleContext.ModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
-                    }
-                    else if (attribute is TabModuleSettingAttribute)
-                    {
-                        this._moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
-                        moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
-                    }
-                    else if (attribute is PortalSettingAttribute)
-                    {
-                        PortalController.UpdatePortalSetting(moduleContext.PortalID, mapping.FullParameterName, settingValueAsString);
-                    }
-                }
-            });
-            DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
+            this.SaveSettings(moduleContext.PortalID, moduleContext, settings);
         }
 
+        /// <inheritdoc/>
+        public void SaveSettings(int portalId, T settings)
+        {
+            Requires.NotNull("settings", settings);
+            this.SaveSettings(portalId, null, settings);
+        }
+
+        /// <summary>
+        /// Retrieves the parameter mapping from cache if still there, otherwise recreates it.
+        /// </summary>
+        /// <returns>List of parameters.</returns>
         protected IList<ParameterMapping> LoadMapping()
         {
             var cacheKey = this.MappingCacheKey;
@@ -88,6 +98,10 @@ namespace DotNetNuke.Entities.Modules.Settings
             return mapping;
         }
 
+        /// <summary>
+        /// Rebuilds parameter mapping of the class.
+        /// </summary>
+        /// <returns>List of parameters.</returns>
         protected virtual IList<ParameterMapping> CreateMapping()
         {
             var mapping = new List<ParameterMapping>();
@@ -103,10 +117,69 @@ namespace DotNetNuke.Entities.Modules.Settings
             return mapping;
         }
 
+        private void SaveSettings(int portalId, ModuleInfo moduleContext, T settings)
+        {
+            var hostSettingsService = Globals.DependencyProvider.GetRequiredService<Abstractions.Application.IHostSettingsService>();
+
+            this.Mapping.ForEach(mapping =>
+            {
+                var attribute = mapping.Attribute;
+                var property = mapping.Property;
+
+                if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
+                {
+                    var settingValueAsString = SerializationManager.SerializeProperty(settings, property, attribute.Serializer);
+
+                    if (attribute is ModuleSettingAttribute msa && moduleContext != null)
+                    {
+                        if (msa.IsSecure)
+                        {
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(settingValueAsString, Config.GetDecryptionkey(), Host.Host.GUID);
+                        }
+
+                        this.moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
+                        moduleContext.ModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
+                    }
+                    else if (attribute is TabModuleSettingAttribute tmsa && moduleContext != null)
+                    {
+                        if (tmsa.IsSecure)
+                        {
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(settingValueAsString, Config.GetDecryptionkey(), Host.Host.GUID);
+                        }
+
+                        this.moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
+                        moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
+                    }
+                    else if (attribute is PortalSettingAttribute psa && portalId != -1)
+                    {
+                        PortalController.UpdatePortalSetting(
+                            portalId,
+                            mapping.FullParameterName,
+                            settingValueAsString,
+                            clearCache: true,
+                            cultureCode: Null.NullString,
+                            isSecure: psa.IsSecure);
+                    }
+                    else if (attribute is HostSettingAttribute hsa)
+                    {
+                        if (hsa.IsSecure)
+                        {
+                            settingValueAsString = Security.FIPSCompliant.EncryptAES(settingValueAsString, Config.GetDecryptionkey(), Host.Host.GUID);
+                        }
+
+                        hostSettingsService.Update(mapping.FullParameterName, settingValueAsString);
+                    }
+                }
+            });
+            DataCache.SetCache(this.CacheKey(moduleContext == null ? portalId : moduleContext.TabModuleID), settings);
+        }
+
         private T Load(CacheItemArgs args)
         {
             var ctlModule = (ModuleInfo)args.ParamList[0];
+            var portalId = ctlModule == null ? (int)args.ParamList[1] : ctlModule.PortalID;
             var settings = new T();
+            var hostSettings = Globals.DependencyProvider.GetRequiredService<Abstractions.Application.IHostSettingsService>().GetSettings();
 
             this.Mapping.ForEach(mapping =>
             {
@@ -116,17 +189,33 @@ namespace DotNetNuke.Entities.Modules.Settings
                 var property = mapping.Property;
 
                 // TODO: Make more extensible, enable other attributes to be defined
-                if (attribute is PortalSettingAttribute && PortalController.Instance.GetPortalSettings(ctlModule.PortalID).ContainsKey(mapping.FullParameterName))
+                if (attribute is HostSettingAttribute hsa && hostSettings.ContainsKey(mapping.FullParameterName))
                 {
-                    settingValue = PortalController.Instance.GetPortalSettings(ctlModule.PortalID)[mapping.FullParameterName];
+                    settingValue = hostSettings[mapping.FullParameterName].Value;
                 }
-                else if (attribute is TabModuleSettingAttribute && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
+                else if (attribute is PortalSettingAttribute && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
+                {
+                    settingValue = PortalController.Instance.GetPortalSettings(portalId)[mapping.FullParameterName];
+                }
+                else if (attribute is TabModuleSettingAttribute && ctlModule != null && ctlModule.TabModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = (string)ctlModule.TabModuleSettings[mapping.FullParameterName];
                 }
-                else if (attribute is ModuleSettingAttribute && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
+                else if (attribute is ModuleSettingAttribute && ctlModule != null && ctlModule.ModuleSettings.ContainsKey(mapping.FullParameterName))
                 {
                     settingValue = (string)ctlModule.ModuleSettings[mapping.FullParameterName];
+                }
+
+                if (attribute.IsSecure)
+                {
+                    try
+                    {
+                        settingValue = Security.FIPSCompliant.DecryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+                    }
+                    catch (Exception ex)
+                    {
+                        Exceptions.LogException(new ModuleLoadException(string.Format(Localization.GetString("ErrorDecryptingSetting", Localization.SharedResourceFile), mapping.FullParameterName), ex, ctlModule));
+                    }
                 }
 
                 if (settingValue != null && property.CanWrite)
@@ -138,10 +227,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             return settings;
         }
 
-        private string CacheKey(int moduleId)
-        {
-            return string.Format("SettingsModule{0}", moduleId);
-        }
+        private string CacheKey(int id) => $"Settings{this.MappingCacheKey}_{id}";
 
         /// <summary>
         /// Deserializes the property.
@@ -149,10 +235,10 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <param name="settings">The settings.</param>
         /// <param name="property">The property.</param>
         /// <param name="propertyValue">The property value.</param>
-        /// <exception cref="System.InvalidCastException"></exception>
+        /// <exception cref="InvalidCastException">Thrown if string value cannot be deserialized to desired type.</exception>
         private void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, string propertyValue)
         {
-            SerializationController.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
+            SerializationManager.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
         }
     }
 }

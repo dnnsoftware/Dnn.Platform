@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Licensing.Services
                         DotNetNukeContext.Current.Application.Name,
                         DotNetNukeContext.Current.Application.SKU,
                         DotNetNukeContext.Current.Application.Description
-                    }
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

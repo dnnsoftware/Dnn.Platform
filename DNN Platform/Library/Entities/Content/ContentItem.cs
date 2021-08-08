@@ -68,6 +68,9 @@ namespace DotNetNuke.Entities.Content
         private List<IFileInfo> _videos;
         private List<IFileInfo> _images;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentItem"/> class.
+        /// </summary>
         public ContentItem()
         {
             this.TabID = Null.NullInteger;

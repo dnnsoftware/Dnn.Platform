@@ -4,22 +4,7 @@
 namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data.SqlClient;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Web;
-    using System.Xml;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
 
     public partial class LogController
     {

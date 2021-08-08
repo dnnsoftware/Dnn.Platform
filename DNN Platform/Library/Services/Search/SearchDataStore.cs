@@ -8,12 +8,9 @@ namespace DotNetNuke.Services.Search
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Web;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;

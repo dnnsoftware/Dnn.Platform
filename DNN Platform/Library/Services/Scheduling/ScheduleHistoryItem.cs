@@ -21,6 +21,9 @@ namespace DotNetNuke.Services.Scheduling
         private DateTime _StartDate;
         private bool _Succeeded;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.
+        /// </summary>
         public ScheduleHistoryItem()
         {
             this._ScheduleHistoryID = Null.NullInteger;
@@ -31,6 +34,10 @@ namespace DotNetNuke.Services.Scheduling
             this._Server = Null.NullString;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.
+        /// </summary>
+        /// <param name="objScheduleItem"></param>
         public ScheduleHistoryItem(ScheduleItem objScheduleItem)
         {
             this.AttachToEvent = objScheduleItem.AttachToEvent;
@@ -146,6 +153,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
+        /// <inheritdoc/>
         public override DateTime NextStart { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -228,6 +236,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
+        /// <inheritdoc/>
         public override void Fill(IDataReader dr)
         {
             this.ScheduleHistoryID = Null.SetNullInteger(dr["ScheduleHistoryID"]);

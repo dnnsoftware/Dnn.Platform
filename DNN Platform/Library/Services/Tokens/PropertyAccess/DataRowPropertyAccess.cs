@@ -13,11 +13,16 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly DataRow dr;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.
+        /// </summary>
+        /// <param name="row"></param>
         public DataRowPropertyAccess(DataRow row)
         {
             this.dr = row;
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -26,6 +31,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             if (this.dr == null)

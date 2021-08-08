@@ -36,7 +36,7 @@ class BasicSettingsPanelBody extends Component {
     getPortalSettings() {
         const {props} = this;
         props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
-            if(this._mounted) {
+            if (this._mounted) {
                 this.setState({
                     basicSettings: Object.assign({}, data.Settings)
                 });

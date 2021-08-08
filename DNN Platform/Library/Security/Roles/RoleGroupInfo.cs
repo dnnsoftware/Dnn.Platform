@@ -13,7 +13,6 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security.Roles.Internal;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
@@ -33,10 +32,19 @@ namespace DotNetNuke.Security.Roles
         private string _RoleGroupName;
         private Dictionary<string, RoleInfo> _Roles;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleGroupInfo"/> class.
+        /// </summary>
         public RoleGroupInfo()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoleGroupInfo"/> class.
+        /// </summary>
+        /// <param name="roleGroupID"></param>
+        /// <param name="portalID"></param>
+        /// <param name="loadRoles"></param>
         public RoleGroupInfo(int roleGroupID, int portalID, bool loadRoles)
         {
             this._PortalID = portalID;

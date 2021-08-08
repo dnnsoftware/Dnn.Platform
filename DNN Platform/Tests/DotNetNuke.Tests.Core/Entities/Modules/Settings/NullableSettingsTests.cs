@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class NullableSettingsTests : BaseSettingsTests
     {
-        public readonly object[] NullableCases =
+        public static readonly object[] NullableCases =
         {
             new object[] { null, null, null, null, },
             new object[] { string.Empty, -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
@@ -39,6 +39,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
             serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
             serviceCollection.AddTransient<IHostSettingsService, HostController>();
+            serviceCollection.AddTransient<ISerializationManager, SerializationManager>();
             Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
@@ -285,6 +286,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings>
-        {}
+        {
+        }
     }
 }

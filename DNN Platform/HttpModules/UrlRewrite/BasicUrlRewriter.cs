@@ -29,6 +29,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
 
+        /// <inheritdoc/>
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;

@@ -18,9 +18,9 @@ namespace DotNetNuke.Tests.Integration.Executers
     public enum LoginAsUser
     {
         GivenUserName = 0,
-        AnonymousUser,
-        RegisteredUser,
-        Host,
+        AnonymousUser = 1,
+        RegisteredUser = 2,
+        Host = 3,
     }
 
     public abstract class WebApiExecuter

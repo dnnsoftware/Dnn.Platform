@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.UI
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Text.RegularExpressions;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -20,31 +19,30 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
     public enum DotNetNukeErrorCode
     {
-        NotSet,
-        PageExists,
-        PageNameRequired,
-        PageNameInvalid,
-        DeserializePanesFailed,
-        PageCircularReference,
-        ParentTabInvalid,
-        PageEditorPermissionError,
-        HostBeforeAfterError,
-        DuplicateWithAlias,
+        NotSet = 0,
+        PageExists = 1,
+        PageNameRequired = 2,
+        PageNameInvalid = 3,
+        DeserializePanesFailed = 4,
+        PageCircularReference = 5,
+        ParentTabInvalid = 6,
+        PageEditorPermissionError = 7,
+        HostBeforeAfterError = 8,
+        DuplicateWithAlias = 9,
     }
 
     public enum TabRelativeLocation
     {
-        NOTSET,
-        BEFORE,
-        AFTER,
-        CHILD,
+        NOTSET = 0,
+        BEFORE = 1,
+        AFTER = 2,
+        CHILD = 3,
     }
 
     public class RibbonBarManager

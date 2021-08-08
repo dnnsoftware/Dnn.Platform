@@ -20,6 +20,10 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly object obj;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyAccess"/> class.
+        /// </summary>
+        /// <param name="TokenSource"></param>
         public PropertyAccess(object TokenSource)
         {
             this.obj = TokenSource;
@@ -33,6 +37,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public CacheLevel Cacheability
         {
             get
@@ -126,6 +131,7 @@ namespace DotNetNuke.Services.Tokens
             return string.Empty;
         }
 
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             if (this.obj == null)

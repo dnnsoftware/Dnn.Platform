@@ -114,6 +114,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 DNN [Pp]latform/[Cc]onnectors/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
+DNN [Pp]latform/Modules/ResourceManager/**/scripts/*-bundle.*
+
 # ignore all other language resx files
 *.de-DE.resx
 *.es-ES.resx
@@ -130,3 +132,9 @@ DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
 
 # Add fips back
 !DNN Platform/[Ww]ebsite/App_Data/FipsCompilanceAssemblies/Lucene.Net.dll
+
+yarn-error.log
+
+/Build/bin/
+/.dotnet/
+/Build/Tools/

@@ -203,7 +203,62 @@ class SchedulerEditor extends Component {
             return;
         }
 
-        props.onUpdate(props.scheduleItemDetail);
+        this.handleRecommendedServers(() => props.onUpdate(props.scheduleItemDetail));
+    }
+
+    compareIgnoreCase(prev, next) {
+        return prev.toLowerCase().localeCompare(next.toLowerCase());
+    }
+
+    uniqueIgnoreCase(value, index, self) {
+        const lower = self.map(x => (x || "").toLowerCase());
+        return lower.indexOf(value.toLowerCase()) === index;
+    }
+
+    normalizeServers(commaSeparatedServers) {
+        return (commaSeparatedServers || "")
+            .split(",")
+            .map(x => x.trim())
+            .filter(x => !!x)
+            .filter(this.uniqueIgnoreCase)
+            .sort(this.compareIgnoreCase)
+            .join(", ");
+    }
+
+    onServersBlur() {
+        const { scheduleItemDetail } = this.props;
+        this.onSettingChange("Servers", {
+            target: {
+                value: this.normalizeServers(scheduleItemDetail.Servers)
+            }
+        });
+    }
+
+    handleRecommendedServers(callback) {
+        const { scheduleItemDetail } = this.props;
+        const recommendedServers = scheduleItemDetail.RecommendedServers || [];
+
+        const proceed = () => {
+            if (callback && typeof(callback) === "function") {
+                callback();
+            }
+        };
+
+        if (scheduleItemDetail.Enabled && recommendedServers.length > 0) {
+            const servers = this.normalizeServers(scheduleItemDetail.Servers);
+            const recommended = this.normalizeServers(recommendedServers.join(", "));
+
+            if (this.compareIgnoreCase(servers, recommended) !== 0) {
+                const message = util.formatString(resx.get("RecommendServers"), recommended);
+                const yes = resx.get("Yes");
+                const no = resx.get("No");
+                util.utilities.confirm(message, yes, no, () => proceed());
+            } else {
+                proceed();
+            }
+        } else {
+            proceed();
+        }
     }
 
     onCancel() {
@@ -264,6 +319,7 @@ class SchedulerEditor extends Component {
                         label={resx.get("Servers")}
                         error={false}
                         value={this.getValue("Servers") || ""}
+                        onBlur={this.onServersBlur.bind(this)}
                         onChange={this.onSettingChange.bind(this, "Servers")}
                     />
                 </div>

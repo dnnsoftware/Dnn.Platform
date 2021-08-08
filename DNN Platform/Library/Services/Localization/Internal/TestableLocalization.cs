@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Localization.Internal
 
     public class TestableLocalization : ServiceLocator<ILocalization, TestableLocalization>
     {
+        /// <inheritdoc/>
         protected override Func<ILocalization> GetFactory()
         {
             return () => new LocalizationImpl();

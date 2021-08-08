@@ -34,9 +34,9 @@ namespace Dnn.PersonaBar.Servers.Services
                     Results = new
                     {
                         LogList = this._logController.GetLogFilesList(),
-                        UpgradeLogList = this._logController.GetUpgradeLogList()
+                        UpgradeLogList = this._logController.GetUpgradeLogList(),
                     },
-                    TotalResults = 1
+                    TotalResults = 1,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
-                return CreateLogFileResponse(logFilePath);
+                return this.CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
             {
@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var providerPath = DataProvider.Instance().GetProviderPath();
                 var logFilePath = Path.Combine(providerPath, logName);
-                return CreateLogFileResponse(logFilePath);
+                return this.CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
             {
@@ -102,14 +102,14 @@ namespace Dnn.PersonaBar.Servers.Services
             ValidateFilePath(logFilePath);
             if (!File.Exists(logFilePath))
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
 
             }
 
             using (var reader = File.OpenText(logFilePath))
             {
                 var logText = reader.ReadToEnd();
-                return Request.CreateResponse(HttpStatusCode.OK, logText);
+                return this.Request.CreateResponse(HttpStatusCode.OK, logText);
             }
         }
     }

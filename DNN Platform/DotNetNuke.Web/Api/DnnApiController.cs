@@ -11,14 +11,20 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
+    /// <summary>
+    /// Defines properties and methods for Dnn specific API controllers.
+    /// </summary>
     [DnnExceptionFilter]
     public abstract class DnnApiController : ApiController
     {
-        private readonly Lazy<ModuleInfo> _activeModule;
+        private readonly Lazy<ModuleInfo> activeModule;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnApiController"/> class.
+        /// </summary>
         protected DnnApiController()
         {
-            this._activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
+            this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }
 
         /// <summary>
@@ -46,7 +52,7 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public ModuleInfo ActiveModule
         {
-            get { return this._activeModule.Value; }
+            get { return this.activeModule.Value; }
         }
 
         private ModuleInfo InitModuleInfo()

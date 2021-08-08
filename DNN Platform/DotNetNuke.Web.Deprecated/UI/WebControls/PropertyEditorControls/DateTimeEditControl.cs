@@ -15,7 +15,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
-    using Telerik.Web.UI;
 
     using Calendar = DotNetNuke.Common.Utilities.Calendar;
 
@@ -31,6 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
+    [Obsolete("Telerik support will be removed in DNN Platform 10.0.0.  You will need to find an alternative solution")]
     [ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
     public class DateTimeEditControl : EditControl
     {

@@ -4,11 +4,8 @@
 
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Security;
@@ -22,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
             return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
 
-        internal static string ComputeValidationCode(IList<object> parameters)
+        public static string ComputeValidationCode(IList<object> parameters)
         {
             if (parameters != null && parameters.Any())
             {

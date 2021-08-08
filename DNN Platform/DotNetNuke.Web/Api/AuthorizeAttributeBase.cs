@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Web.Api
 {
-    using System;
     using System.Linq;
     using System.Web.Http;
     using System.Web.Http.Controllers;
@@ -12,8 +11,16 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Common;
 
+    /// <summary>
+    /// Provides Dnn specific details for authorization filter.
+    /// </summary>
     public abstract class AuthorizeAttributeBase : AuthorizationFilterAttribute
     {
+        /// <summary>
+        /// Checks if the <see cref="AllowAnonymousAttribute"/> is present.
+        /// </summary>
+        /// <param name="actionContext">The HTTP action context.</param>
+        /// <returns>A value indicating whether the <see cref="AllowAnonymousAttribute"/> is present.</returns>
         public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
         {
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
@@ -31,7 +38,7 @@ namespace DotNetNuke.Web.Api
         /// <summary>
         /// Called by framework at start of Auth process, check if auth should be skipped and handles auth failure.  Should rarely need to be overridden.
         /// </summary>
-        /// <param name="actionContext"></param>
+        /// <param name="actionContext">The HTTP action context.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             Requires.NotNull("actionContext", actionContext);
@@ -52,8 +59,8 @@ namespace DotNetNuke.Web.Api
         /// <summary>
         /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.
         /// </summary>
-        /// <param name="actionContext"></param>
-        /// <returns></returns>
+        /// <param name="actionContext">The HTTP Action Context.</param>
+        /// <returns>A value indicating whether to skip the authorization.</returns>
         protected virtual bool SkipAuthorization(HttpActionContext actionContext)
         {
             return IsAnonymousAttributePresent(actionContext);

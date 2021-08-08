@@ -22,6 +22,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowManager _workflowManager = WorkflowManager.Instance;
         private readonly IWorkflowStatePermissionsRepository _statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
 
+        /// <inheritdoc/>
         public bool HasStateReviewerPermission(PortalSettings settings, UserInfo user, int stateId)
         {
             var permissions = this._statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
@@ -31,6 +32,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 PortalSecurity.IsInRoles(user, settings, PermissionController.BuildPermissions(permissions.ToList(), ReviewPermissionKey));
         }
 
+        /// <inheritdoc/>
         public bool HasStateReviewerPermission(int portalId, int userId, int stateId)
         {
             var user = this._userController.GetUserById(portalId, userId);
@@ -38,23 +40,27 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this.HasStateReviewerPermission(portalSettings, user, stateId);
         }
 
+        /// <inheritdoc/>
         public bool HasStateReviewerPermission(int stateId)
         {
             var user = this._userController.GetCurrentUserInfo();
             return this.HasStateReviewerPermission(PortalSettings.Current, user, stateId);
         }
 
+        /// <inheritdoc/>
         public bool IsWorkflowReviewer(int workflowId, int userId)
         {
             var workflow = this._workflowManager.GetWorkflow(workflowId);
             return workflow.States.Any(contentWorkflowState => this.HasStateReviewerPermission(workflow.PortalID, userId, contentWorkflowState.StateID));
         }
 
+        /// <inheritdoc/>
         public PermissionInfo GetStateReviewPermission()
         {
             return (PermissionInfo)new PermissionController().GetPermissionByCodeAndKey(ReviewPermissionCode, ReviewPermissionKey)[0];
         }
 
+        /// <inheritdoc/>
         protected override Func<IWorkflowSecurity> GetFactory()
         {
             return () => new WorkflowSecurity();

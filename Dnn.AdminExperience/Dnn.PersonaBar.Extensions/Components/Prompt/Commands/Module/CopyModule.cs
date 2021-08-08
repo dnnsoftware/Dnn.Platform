@@ -35,10 +35,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private const string FlagIncludesettings = "includesettings";
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         private int ModuleId { get; set; }
+
         private int PageId { get; set; }
+
         private int TargetPageId { get; set; }
+
         private string Pane { get; set; }
+
         private bool? IncludeSettings { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -66,8 +71,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                 this.TargetPageId,
                 this.Pane,
                 this.IncludeSettings ?? true,
-                out message
-                );
+                out message);
             if (copiedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(copiedModule));

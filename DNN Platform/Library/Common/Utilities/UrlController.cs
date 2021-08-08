@@ -12,8 +12,6 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
-    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
     public class UrlController
     {
         public ArrayList GetUrls(int PortalID)

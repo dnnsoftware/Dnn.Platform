@@ -19,6 +19,9 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly Regex FolderPathRx = new Regex("^0\\\\", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathUtils"/> class.
+        /// </summary>
         internal PathUtils()
         {
         }
@@ -222,7 +225,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Strips the original path by removing starting 0 or 0\\.
+        /// Strips the original path by removing starting 0\\.
         /// </summary>
         /// <param name="originalPath">The original path.</param>
         /// <returns>The stripped path.</returns>
@@ -235,7 +238,7 @@ namespace DotNetNuke.Common.Utilities
                 return FolderPathRx.Replace(originalPath, string.Empty);
             }
 
-            return originalPath.StartsWith("0") ? originalPath.Substring(1) : originalPath;
+            return originalPath;
         }
 
         internal string GetUserFolderPathElementInternal(int userId, UserFolderElement mode)

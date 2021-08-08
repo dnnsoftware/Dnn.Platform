@@ -20,9 +20,10 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         private IDependencyResolver _dependencyResolver;
 
         private interface ITestService
-        {}
+        {
+        }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             var services = new ServiceCollection();
@@ -33,7 +34,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             this._dependencyResolver = new DnnDependencyResolver(this._serviceProvider);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             this._dependencyResolver = null;
@@ -114,7 +115,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         }
 
         private class TestService : ITestService
-        {}
+        {
+        }
 
         private class FakeScopeAccessor : IScopeAccessor
         {

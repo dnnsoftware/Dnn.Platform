@@ -4,12 +4,10 @@
 
 namespace DotNetNuke.Entities.Modules
 {
-    using System;
-
     public enum ModuleSharing
     {
-        Unknown,
-        Unsupported,
-        Supported,
+        Unknown = 0,
+        Unsupported = 1,
+        Supported = 2,
     }
 }

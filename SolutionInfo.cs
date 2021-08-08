@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 using System.Reflection;
 
 // General Information about an assembly is controlled through the following
@@ -12,6 +13,6 @@ using System.Reflection;
 [assembly: AssemblyProduct("https://dnncommunity.org")]
 [assembly: AssemblyCopyright("DNN Platform is copyright 2002-2020 by .NET Foundation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
-[assembly: AssemblyVersion("9.7.0.0")]
-[assembly: AssemblyFileVersion("9.7.0.0")]
-[assembly: AssemblyInformationalVersion("9.7.0.0 Custom build")]
+[assembly: AssemblyVersion("9.9.1")]
+[assembly: AssemblyFileVersion("9.9.1.0")]
+[assembly: AssemblyInformationalVersion("9.9.1 Custom build")]

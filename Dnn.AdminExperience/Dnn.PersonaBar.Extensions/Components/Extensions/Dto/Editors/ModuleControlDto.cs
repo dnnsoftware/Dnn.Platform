@@ -76,7 +76,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 IconFile = this.Icon,
                 HelpURL = this.HelpUrl,
                 SupportsPartialRendering = this.SupportPartialRendering,
-                SupportsPopUps = this.SupportPopups
+                SupportsPopUps = this.SupportPopups,
             };
         }
     }

@@ -65,55 +65,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                 if (isHostUser)
                 {
-                    foreach (var settingName in packageSettings.EditorActions.Keys)
-                    {
-                        var settingValue = packageSettings.EditorActions[settingName];
-
-                        switch (settingName.ToLowerInvariant())
-                        {
-                            case "foldername":
-                                desktopModule.FolderName = settingValue;
-                                break;
-                            case "category":
-                                desktopModule.Category = settingValue;
-                                break;
-                            case "businesscontroller":
-                                desktopModule.BusinessControllerClass = settingValue;
-                                break;
-                            case "dependencies":
-                                desktopModule.Dependencies = settingValue;
-                                break;
-                            case "hostpermissions":
-                                desktopModule.Permissions = settingValue;
-                                break;
-                            case "premiummodule":
-                                desktopModule.IsPremium = Convert.ToBoolean(settingValue);
-                                break;
-                            case "shareable":
-                                desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue);
-                                break;
-                            case "assignportal":
-                                AssignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
-                                break;
-                            case "unassignportal":
-                                UnassignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
-                                break;
-                            case "savedefinition":
-                                var definition = JsonConvert.DeserializeObject<ModuleDefinitionDto>(settingValue);
-                                SaveModuleDefinition(definition);
-                                break;
-                            case "deletedefinition":
-                                DeleteModuleDefinition(Convert.ToInt32(settingValue));
-                                break;
-                            case "savemodulecontrol":
-                                var moduleControl = JsonConvert.DeserializeObject<ModuleControlDto>(settingValue);
-                                SaveModuleControl(moduleControl);
-                                break;
-                            case "deletemodulecontrol":
-                                DeleteModuleControl(Convert.ToInt32(settingValue));
-                                break;
-                        }
-                    }
+                    this.UpdateModuleProperties(desktopModule, packageSettings.Settings);
+                    this.UpdateModuleProperties(desktopModule, packageSettings.EditorActions);
 
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
                 }
@@ -124,6 +77,63 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 Logger.Error(ex);
                 errorMessage = ex.Message;
                 return false;
+            }
+        }
+
+        private void UpdateModuleProperties(DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
+        {
+            foreach (var setting in settings)
+            {
+                var settingName = setting.Key;
+                var settingValue = setting.Value;
+
+                switch (settingName.ToLowerInvariant())
+                {
+                    case "foldername":
+                        desktopModule.FolderName = settingValue;
+                        break;
+                    case "category":
+                        desktopModule.Category = settingValue;
+                        break;
+                    case "businesscontroller":
+                        desktopModule.BusinessControllerClass = settingValue;
+                        break;
+                    case "dependencies":
+                        desktopModule.Dependencies = settingValue;
+                        break;
+                    case "hostpermissions":
+                        desktopModule.Permissions = settingValue;
+                        break;
+                    case "premiummodule":
+                        desktopModule.IsPremium = Convert.ToBoolean(settingValue);
+                        break;
+                    case "shareable":
+                        desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue);
+                        break;
+                    case "assignportal":
+                        AssignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
+                        break;
+                    case "unassignportal":
+                        UnassignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
+                        break;
+                    case "savedefinition":
+                        var definition = JsonConvert.DeserializeObject<ModuleDefinitionDto>(settingValue);
+                        SaveModuleDefinition(definition);
+                        break;
+                    case "deletedefinition":
+                        DeleteModuleDefinition(Convert.ToInt32(settingValue));
+                        break;
+                    case "savemodulecontrol":
+                        var moduleControl = JsonConvert.DeserializeObject<ModuleControlDto>(settingValue);
+                        SaveModuleControl(moduleControl);
+                        break;
+                    case "deletemodulecontrol":
+                        DeleteModuleControl(Convert.ToInt32(settingValue));
+                        break;
+                    case "friendlyname":
+                        desktopModule.FriendlyName = settingValue;
+                        break;
+                }
             }
         }
 
@@ -218,10 +228,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId);
 
             var desktopModulePermissions = new DesktopModulePermissionCollection();
-            //add default permissions for administrators
+            // add default permissions for administrators
             if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
             {
-                //add default permissions
+                // add default permissions
                 var permissionController = new PermissionController();
                 var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_DESKTOPMODULE", "DEPLOY");
                 foreach (PermissionInfo permissionInfo in permissionsList)
@@ -232,14 +242,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         UserID = Null.NullInteger,
                         PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
                         AllowAccess = true,
-                        RoleName = portalSettings.AdministratorRoleName
+                        RoleName = portalSettings.AdministratorRoleName,
                     };
                     desktopModulePermissions.Add(permission);
 
                 }
             }
 
-            //add role permissions
+            // add role permissions
             if (permissions.RolePermissions != null)
             {
                 foreach (var rolePermission in permissions.RolePermissions)
@@ -252,13 +262,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             RoleID = rolePermission.RoleId,
                             UserID = Null.NullInteger,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
-                            AllowAccess = permission.AllowAccess
+                            AllowAccess = permission.AllowAccess,
                         });
                     }
                 }
             }
 
-            //add user permissions
+            // add user permissions
             if (permissions.UserPermissions != null)
             {
                 foreach (var userPermission in permissions.UserPermissions)
@@ -273,13 +283,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             RoleID = roleId,
                             UserID = userPermission.UserId,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
-                            AllowAccess = permission.AllowAccess
+                            AllowAccess = permission.AllowAccess,
                         });
                     }
                 }
             }
 
-            //Update DesktopModule Permissions
+            // Update DesktopModule Permissions
             var currentPermissions = DesktopModulePermissionController.GetDesktopModulePermissions(portalModule.PortalDesktopModuleID);
             if (!currentPermissions.CompareTo(desktopModulePermissions))
             {

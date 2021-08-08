@@ -227,7 +227,7 @@ class RolesPanel extends Component {
                     roleGroups={this.props.roleGroups}
                     onKeywordChanged={this.onKeywordChanged.bind(this)}
                     DeleteAllowed={state.deleteAllowed}
-                    />
+                />
                 <div className="container">
                     {this.renderHeader()}
                     <div className="add-setting-editor">

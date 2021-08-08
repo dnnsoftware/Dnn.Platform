@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Tokens
     public abstract class TokenProvider
     {
         public abstract bool ContainsTokens(string content, TokenContext context);
+
         public abstract string Tokenize(string content, TokenContext context);
     }
 }

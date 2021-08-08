@@ -12,6 +12,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageInvertTransform : ImageTransform
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageInvertTransform"/> class.
+        /// </summary>
         public ImageInvertTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

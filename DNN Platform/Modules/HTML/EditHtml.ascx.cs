@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
-    using Telerik.Web.UI;
 
     /// <summary>
     ///   The EditHtml PortalModuleBase is used to manage Html.

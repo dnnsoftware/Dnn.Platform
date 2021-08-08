@@ -42,6 +42,12 @@ namespace DotNetNuke.Entities.Controllers
 
         /// <inheritdoc/>
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
+        public Dictionary<string, string> GetSettingsDictionary() =>
+            ((IHostSettingsService)this).GetSettingsDictionary()
+                .ToDictionary(setting => setting.Key, setting => setting.Value);
+
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
         public void Update(ConfigurationSetting config) =>
             ((IHostSettingsService)this).Update(config);
 
@@ -49,5 +55,10 @@ namespace DotNetNuke.Entities.Controllers
         [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
         public void Update(ConfigurationSetting config, bool clearCache) =>
             ((IHostSettingsService)this).Update(config, clearCache);
+
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.7.1. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.IHostSettingsService instead.")]
+        public void Update(Dictionary<string, string> settings) =>
+            ((IHostSettingsService)this).Update(settings);
     }
 }

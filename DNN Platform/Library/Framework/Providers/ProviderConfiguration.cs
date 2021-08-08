@@ -10,14 +10,14 @@ namespace DotNetNuke.Framework.Providers
 
     public class ProviderConfiguration
     {
-        private readonly Hashtable _Providers = new Hashtable();
-        private string _DefaultProvider;
+        private readonly Hashtable providers = new Hashtable();
+        private string defaultProvider;
 
         public string DefaultProvider
         {
             get
             {
-                return this._DefaultProvider;
+                return this.defaultProvider;
             }
         }
 
@@ -25,8 +25,13 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return this._Providers;
+                return this.providers;
             }
+        }
+
+        public Provider GetDefaultProvider()
+        {
+            return (Provider)this.providers[this.defaultProvider];
         }
 
         public static ProviderConfiguration GetProviderConfiguration(string strProvider)
@@ -39,7 +44,7 @@ namespace DotNetNuke.Framework.Providers
             XmlAttributeCollection attributeCollection = node.Attributes;
 
             // Get the default provider
-            this._DefaultProvider = attributeCollection["defaultProvider"].Value;
+            this.defaultProvider = attributeCollection["defaultProvider"].Value;
 
             // Read child nodes
             foreach (XmlNode child in node.ChildNodes)

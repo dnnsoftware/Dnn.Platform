@@ -71,6 +71,7 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -112,6 +113,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public string Text { get; set; }
 
+        /// <inheritdoc/>
         protected override void RenderContents(HtmlTextWriter op)
         {
             op.Write(@"<div class=""" + this.CssClass + @""">

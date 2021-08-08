@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.Mvp
     {
         private TModel _model;
 
+        /// <inheritdoc/>
         public TModel Model
         {
             get
@@ -21,11 +22,13 @@ namespace DotNetNuke.Web.Mvp
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
                 }
-
                 return this._model;
             }
 
-            set { this._model = value; }
+            set
+            {
+                this._model = value;
+            }
         }
 
         protected string GetModuleSetting(string key, string defaultValue)

@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public abstract class DependencyBase : IDependency
     {
+        /// <inheritdoc/>
         public virtual string ErrorMessage
         {
             get
@@ -24,6 +25,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public virtual bool IsValid
         {
             get
@@ -32,6 +34,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        /// <inheritdoc/>
         public virtual void ReadManifest(XPathNavigator dependencyNav)
         {
         }

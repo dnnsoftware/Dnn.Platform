@@ -4,19 +4,13 @@
 namespace DotNetNuke.Entities.Host
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
     using System.Web;
-    using System.Web.Caching;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Client;
@@ -109,6 +103,22 @@ namespace DotNetNuke.Entities.Host
             get
             {
                 return HostController.Instance.GetString("ControlPanel", Globals.glbDefaultControlPanel);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets a value indicating whether the default Edit Bar is disabled.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to false.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static bool DisableEditBar
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DisableEditBar", false);
             }
         }
 
@@ -346,6 +356,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in 9.9.2. Scheduled for removal in v11.0.0")]
         public static bool DisplayCopyright
         {
             get
@@ -409,6 +420,7 @@ namespace DotNetNuke.Entities.Host
         ///   Gets a value indicating whether gets whether the installation participates in the improvements program.
         /// </summary>
         /// -----------------------------------------------------------------------------
+        [Obsolete("Improvement program functionality removed in 9.7.3.  API Scheduled for removal in 10.0.0.")]
         public static bool ParticipateInImprovementProg
         {
             get

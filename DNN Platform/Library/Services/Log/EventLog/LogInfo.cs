@@ -8,59 +8,95 @@ namespace DotNetNuke.Services.Log.EventLog
     using System.Text;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Services.Exceptions;
 
+    /// <inheritdoc />
     [Serializable]
-    public class LogInfo
+    public partial class LogInfo : ILogInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogInfo"/> class.
+        /// </summary>
         public LogInfo()
         {
-            this.LogGUID = Guid.NewGuid().ToString();
+            ((ILogInfo)this).LogGuid = Guid.NewGuid().ToString();
             this.BypassBuffering = false;
-            this.LogProperties = new LogProperties();
-            this.LogPortalID = -1;
+            ((ILogInfo)this).LogProperties = new LogProperties();
+            ((ILogInfo)this).LogPortalId = -1;
             this.LogPortalName = string.Empty;
-            this.LogUserID = -1;
-            this.LogEventID = -1;
+            ((ILogInfo)this).LogUserId = -1;
+            ((ILogInfo)this).LogEventId = -1;
             this.LogUserName = string.Empty;
             this.Exception = new ExceptionInfo();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogInfo"/> class.
+        /// </summary>
+        /// <param name="content"></param>
         public LogInfo(string content)
             : this()
         {
             this.Deserialize(content);
         }
 
-        public string LogGUID { get; set; }
+        /// <inheritdoc />
+        string ILogInfo.LogGuid { get; set; }
 
-        public string LogFileID { get; set; }
+        /// <inheritdoc />
+        string ILogInfo.LogFileId { get; set; }
 
+        /// <inheritdoc />
         public string LogTypeKey { get; set; }
 
-        public int LogUserID { get; set; }
+        /// <inheritdoc />
+        int ILogInfo.LogUserId { get; set; }
 
-        public int LogEventID { get; set; }
+        /// <inheritdoc />
+        int ILogInfo.LogEventId { get; set; }
 
+        /// <inheritdoc />
         public string LogUserName { get; set; }
 
-        public int LogPortalID { get; set; }
+        /// <inheritdoc />
+        int ILogInfo.LogPortalId { get; set; }
 
+        /// <inheritdoc />
         public string LogPortalName { get; set; }
 
+        /// <inheritdoc />
         public DateTime LogCreateDate { get; set; }
 
+        /// <inheritdoc />
         public long LogCreateDateNum { get; set; }
 
-        public LogProperties LogProperties { get; set; }
+        public LogProperties LogProperties
+        {
+            get => (LogProperties)((ILogInfo)this).LogProperties;
+            set => ((ILogInfo)this).LogProperties = value;
+        }
 
+        /// <inheritdoc />
+        ILogProperties ILogInfo.LogProperties { get; set; }
+
+        /// <inheritdoc />
         public bool BypassBuffering { get; set; }
 
+        /// <inheritdoc />
         public string LogServerName { get; set; }
 
-        public string LogConfigID { get; set; }
+        /// <inheritdoc />
+        string ILogInfo.LogConfigId { get; set; }
 
-        public ExceptionInfo Exception { get; set; }
+        public ExceptionInfo Exception
+        {
+            get => (ExceptionInfo)((ILogInfo)this).Exception;
+            set => ((ILogInfo)this).Exception = value;
+        }
+
+        /// <inheritdoc />
+        IExceptionInfo ILogInfo.Exception { get; set; }
 
         public static bool IsSystemType(string PropName)
         {
@@ -83,6 +119,7 @@ namespace DotNetNuke.Services.Log.EventLog
             return false;
         }
 
+        /// <inheritdoc />
         public void AddProperty(string PropertyName, string PropertyValue)
         {
             try
@@ -135,25 +172,25 @@ namespace DotNetNuke.Services.Log.EventLog
                     switch (reader.Name)
                     {
                         case "LogGUID":
-                            this.LogGUID = reader.ReadContentAsString();
+                            ((ILogInfo)this).LogGuid = reader.ReadContentAsString();
                             break;
                         case "LogFileID":
-                            this.LogFileID = reader.ReadContentAsString();
+                            ((ILogInfo)this).LogFileId = reader.ReadContentAsString();
                             break;
                         case "LogTypeKey":
                             this.LogTypeKey = reader.ReadContentAsString();
                             break;
                         case "LogUserID":
-                            this.LogUserID = reader.ReadContentAsInt();
+                            ((ILogInfo)this).LogUserId = reader.ReadContentAsInt();
                             break;
                         case "LogEventID":
-                            this.LogEventID = reader.ReadContentAsInt();
+                            ((ILogInfo)this).LogEventId = reader.ReadContentAsInt();
                             break;
                         case "LogUserName":
                             this.LogUserName = reader.ReadContentAsString();
                             break;
                         case "LogPortalID":
-                            this.LogPortalID = reader.ReadContentAsInt();
+                            ((ILogInfo)this).LogPortalId = reader.ReadContentAsInt();
                             break;
                         case "LogPortalName":
                             this.LogPortalName = reader.ReadContentAsString();
@@ -171,7 +208,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             this.LogServerName = reader.ReadContentAsString();
                             break;
                         case "LogConfigID":
-                            this.LogConfigID = reader.ReadContentAsString();
+                            ((ILogInfo)this).LogConfigId = reader.ReadContentAsString();
                             break;
                     }
                 }
@@ -209,15 +246,16 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             var str = new StringBuilder();
-            str.Append("<p><strong>LogGUID:</strong>" + this.LogGUID + "</p>");
+            str.Append("<p><strong>LogGUID:</strong>" + ((ILogInfo)this).LogGuid + "</p>");
             str.Append("<p><strong>LogType:</strong>" + this.LogTypeKey + "</p>");
-            str.Append("<p><strong>UserID:</strong>" + this.LogUserID + "</p>");
-            str.Append("<p><strong>EventID:</strong>" + this.LogEventID + "</p>");
+            str.Append("<p><strong>UserID:</strong>" + ((ILogInfo)this).LogUserId + "</p>");
+            str.Append("<p><strong>EventID:</strong>" + ((ILogInfo)this).LogEventId + "</p>");
             str.Append("<p><strong>Username:</strong>" + this.LogUserName + "</p>");
-            str.Append("<p><strong>PortalID:</strong>" + this.LogPortalID + "</p>");
+            str.Append("<p><strong>PortalID:</strong>" + ((ILogInfo)this).LogPortalId + "</p>");
             str.Append("<p><strong>PortalName:</strong>" + this.LogPortalName + "</p>");
             str.Append("<p><strong>CreateDate:</strong>" + this.LogCreateDate + "</p>");
             str.Append("<p><strong>ServerName:</strong>" + this.LogServerName + "</p>");
@@ -233,19 +271,19 @@ namespace DotNetNuke.Services.Log.EventLog
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("log");
-            writer.WriteAttributeString("LogGUID", this.LogGUID);
-            writer.WriteAttributeString("LogFileID", this.LogFileID);
+            writer.WriteAttributeString("LogGUID", ((ILogInfo)this).LogGuid);
+            writer.WriteAttributeString("LogFileID", ((ILogInfo)this).LogFileId);
             writer.WriteAttributeString("LogTypeKey", this.LogTypeKey);
-            writer.WriteAttributeString("LogUserID", this.LogUserID.ToString());
-            writer.WriteAttributeString("LogEventID", this.LogEventID.ToString());
+            writer.WriteAttributeString("LogUserID", ((ILogInfo)this).LogUserId.ToString());
+            writer.WriteAttributeString("LogEventID", ((ILogInfo)this).LogEventId.ToString());
             writer.WriteAttributeString("LogUserName", this.LogUserName);
-            writer.WriteAttributeString("LogPortalID", this.LogPortalID.ToString());
+            writer.WriteAttributeString("LogPortalID", ((ILogInfo)this).LogPortalId.ToString());
             writer.WriteAttributeString("LogPortalName", this.LogPortalName);
             writer.WriteAttributeString("LogCreateDate", this.LogCreateDate.ToString());
             writer.WriteAttributeString("LogCreateDateNum", this.LogCreateDateNum.ToString());
             writer.WriteAttributeString("BypassBuffering", this.BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", this.LogServerName);
-            writer.WriteAttributeString("LogConfigID", this.LogConfigID);
+            writer.WriteAttributeString("LogConfigID", ((ILogInfo)this).LogConfigId);
             this.LogProperties.WriteXml(writer);
             if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
             {

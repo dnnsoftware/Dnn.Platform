@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.OutputCache
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using DotNetNuke.Entities.Portals;
@@ -15,11 +14,16 @@ namespace DotNetNuke.Services.OutputCache
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeOutputCache));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PurgeOutputCache"/> class.
+        /// </summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public PurgeOutputCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

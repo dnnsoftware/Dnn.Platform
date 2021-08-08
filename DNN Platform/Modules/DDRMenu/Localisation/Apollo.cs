@@ -5,7 +5,6 @@
 namespace DotNetNuke.Web.DDRMenu.Localisation
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
 
     using DotNetNuke.Entities.Modules;
@@ -13,13 +12,17 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.UI.WebControls;
 
-    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+    /// <summary>
+    /// Deprecated Apollo localization.
+    /// </summary>
+    [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
     public class Apollo : ILocalisation
     {
         private bool haveChecked;
         private MethodInfo apiMember;
 
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public bool HaveApi()
         {
             if (!this.haveChecked)
@@ -33,11 +36,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                         this.apiMember = apiType.GetMethod("getLocalizedTab", new[] { typeof(TabInfo) });
                     }
                 }
-
-                // ReSharper disable EmptyGeneralCatchClause
                 catch
-
-                // ReSharper restore EmptyGeneralCatchClause
                 {
                 }
 
@@ -47,13 +46,15 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return this.apiMember != null;
         }
 
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
             return this.apiMember.Invoke(null, new object[] { tab }) as TabInfo ?? tab;
         }
 
-        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v11.0.0.")]
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
             return null;

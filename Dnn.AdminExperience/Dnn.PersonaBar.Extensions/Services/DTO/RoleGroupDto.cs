@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
                 Id = roleGroup.RoleGroupID,
                 Name = roleGroup.RoleGroupName?.Trim(),
                 Description = roleGroup.Description,
-                RolesCount = roleGroup.Roles?.Count ?? 0
+                RolesCount = roleGroup.Roles?.Count ?? 0,
             };
         }
 
@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
             {
                 RoleGroupID = this.Id,
                 RoleGroupName = this.Name?.Trim(),
-                Description = this.Description ?? ""
+                Description = this.Description ?? "",
             };
         }
     }

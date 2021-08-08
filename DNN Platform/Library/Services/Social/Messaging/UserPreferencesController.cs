@@ -16,11 +16,18 @@ namespace DotNetNuke.Services.Social.Messaging
     {
         private readonly IDataService dataService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserPreferencesController"/> class.
+        /// </summary>
         public UserPreferencesController()
             : this(DataService.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserPreferencesController"/> class.
+        /// </summary>
+        /// <param name="dataService"></param>
         public UserPreferencesController(IDataService dataService)
         {
             // Argument Contract
@@ -29,16 +36,19 @@ namespace DotNetNuke.Services.Social.Messaging
             this.dataService = dataService;
         }
 
+        /// <inheritdoc/>
         public void SetUserPreference(UserPreference userPreference)
         {
             this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
         }
 
+        /// <inheritdoc/>
         public UserPreference GetUserPreference(UserInfo userinfo)
         {
             return CBO.FillObject<UserPreference>(this.dataService.GetUserPreference(userinfo.PortalID, userinfo.UserID));
         }
 
+        /// <inheritdoc/>
         protected override Func<IUserPreferencesController> GetFactory()
         {
             return () => new UserPreferencesController();

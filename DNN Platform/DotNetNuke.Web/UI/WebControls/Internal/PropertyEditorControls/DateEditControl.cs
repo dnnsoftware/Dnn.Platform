@@ -28,6 +28,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
         private DnnDatePicker _dateControl;
 
+        /// <inheritdoc/>
         public override string EditControlClientId
         {
             get
@@ -37,6 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
+        /// <inheritdoc/>
         public override string ID
         {
             get
@@ -184,6 +186,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
+        /// <inheritdoc/>
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this.EnsureChildControls();
@@ -208,6 +211,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             return dataChanged;
         }
 
+        /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -239,6 +243,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             base.OnValueChanged(args);
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

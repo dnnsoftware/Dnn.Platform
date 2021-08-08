@@ -1153,6 +1153,7 @@ namespace DotNetNuke.Entities.Tabs
             CacheController.FlushPageIndexFromCache();
         }
 
+        /// <inheritdoc/>
         public void RefreshCache(int portalId, int tabId)
         {
             var portalTabs = this.GetTabsByPortal(portalId);
@@ -2276,6 +2277,7 @@ namespace DotNetNuke.Entities.Tabs
                 this.GetTabUrlsCallback);
         }
 
+        /// <inheritdoc/>
         protected override Func<ITabController> GetFactory()
         {
             return () => new TabController();

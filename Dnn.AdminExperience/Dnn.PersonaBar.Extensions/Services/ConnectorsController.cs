@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     icon = Globals.ResolveUrl(c.IconUrl),
                     pluginFolder = Globals.ResolveUrl(c.PluginFolder),
                     configurations = c.GetConfig(this.PortalSettings.PortalId),
-                    supportsMultiple = c.SupportsMultiple
+                    supportsMultiple = c.SupportsMultiple,
                 }).OrderBy(connection => connection.name).ToList();
             return this.Request.CreateResponse(HttpStatusCode.OK, connections);
         }
@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                             Validated = validated,
                             Message = string.IsNullOrEmpty(customErrorMessage)
                                 ? Localization.GetString("ErrSavingConnectorSettings.Text", Constants.SharedResources)
-                                : customErrorMessage
+                                : customErrorMessage,
                         });
                     }
                 }
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     {
                         Success = true,
                         Validated = validated,
-                        connector?.Id
+                        connector?.Id,
                     });
             }
             catch (Exception ex)
@@ -174,7 +174,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     return this.Request.CreateResponse(HttpStatusCode.OK,
                         new
                         {
-                            Success = true
+                            Success = true,
                         });
                 }
                 return this.Request.CreateResponse(HttpStatusCode.OK,
@@ -182,7 +182,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                     {
                         Success = true,
                         Message =
-                            Localization.GetString("ErrConnectorNotFound.Text", Components.Constants.LocalResourcesFile)
+                            Localization.GetString("ErrConnectorNotFound.Text", Components.Constants.LocalResourcesFile),
                     });
             }
             catch (Exception ex)

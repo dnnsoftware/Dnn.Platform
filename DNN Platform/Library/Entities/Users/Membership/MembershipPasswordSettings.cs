@@ -4,11 +4,9 @@
 
 namespace DotNetNuke.Entities.Users.Membership
 {
-    using System;
     using System.Web;
     using System.Web.Security;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Security.Membership;
 
     public class MembershipPasswordSettings

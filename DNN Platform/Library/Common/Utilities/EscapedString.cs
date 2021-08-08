@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Common.Utilities
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -63,10 +62,35 @@ namespace DotNetNuke.Common.Utilities
         /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
         /// </summary>
         /// <param name="combinedString">The string to seperate.</param>
+        /// <param name="trimWhitespaces">Trims whitespaces.</param>
+        /// <returns>IEnumerable of all the seperated strings.</returns>
+        /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
+        public static IEnumerable<string> Seperate(string combinedString, bool trimWhitespaces)
+        {
+            return Seperate(combinedString, DefaultSeperator, trimWhitespaces);
+        }
+
+        /// <summary>
+        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
+        /// </summary>
+        /// <param name="combinedString">The string to seperate.</param>
+        /// <param name="separator">The character on which to split.</param>
+        /// <returns>IEnumerable of all the seperated strings.</returns>
+        /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
+        public static IEnumerable<string> Seperate(string combinedString, char separator)
+        {
+            return Seperate(combinedString, separator, false);
+        }
+
+        /// <summary>
+        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
+        /// </summary>
+        /// <param name="combinedString">The string to seperate.</param>
         /// <param name="seperator">The character on which to split.</param>
+        /// <param name="trimWhitespaces">Trims whitespaces.</param>
         /// <returns>IEnumerable of all the seperated strings.</returns>
         /// <remarks>The escape character is '\'.</remarks>
-        public static IEnumerable<string> Seperate(string combinedString, char seperator)
+        public static IEnumerable<string> Seperate(string combinedString, char seperator, bool trimWhitespaces)
         {
             var result = new List<string>();
 
@@ -79,7 +103,7 @@ namespace DotNetNuke.Common.Utilities
 
             for (int i = 0; i < segments.Length; i++)
             {
-                var current = segments[i];
+                var current = trimWhitespaces ? segments[i].Trim() : segments[i];
 
                 while (current.EndsWith(EscapeSequence.ToString()))
                 {

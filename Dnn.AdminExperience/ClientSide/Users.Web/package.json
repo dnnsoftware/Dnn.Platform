@@ -1,6 +1,6 @@
 {
   "name": "users",
-  "version": "9.7.0",
+  "version": "9.9.1",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -21,7 +21,7 @@
     "create-react-class": "^15.6.3",
     "css-loader": "2.1.1",
     "eslint": "5.8.0",
-    "eslint-loader": "2.1.1",
+    "eslint-loader": "4.0.2",
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-spellcheck": "0.0.11",
     "file-loader": "3.0.1",
@@ -42,7 +42,7 @@
     "redux-thunk": "^2.3.0",
     "services": "^0.0.3",
     "style-loader": "^0.23.1",
-    "throttle-debounce": "^2.0.1",
+    "throttle-debounce": "^3.0.1",
     "url-loader": "1.1.2",
     "utils": "^0.3.1",
     "webpack": "4.31.0",
@@ -51,7 +51,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "9.7.0",
+    "@dnnsoftware/dnn-react-common": "9.9.1",
     "localization": "^1.0.2",
     "react-widgets": "^4.4.6"
   }

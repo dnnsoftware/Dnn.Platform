@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Authentication
 {
     using System;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
@@ -149,22 +151,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         redirectURL = ReplaceLanguage(redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
                     }
-                }
-
-                // check for insecure account defaults
-                var qsDelimiter = "?";
-                if (redirectURL.Contains("?"))
-                {
-                    qsDelimiter = "&";
-                }
-
-                if (this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD)
-                {
-                    redirectURL = redirectURL + qsDelimiter + "runningDefault=1";
-                }
-                else if (this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD)
-                {
-                    redirectURL = redirectURL + qsDelimiter + "runningDefault=2";
                 }
 
                 return redirectURL;
@@ -796,10 +782,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return returnValue;
         }
 
+        private string GetLoginPath()
+        {
+            if (this.PortalSettings.LoginTabId == Null.NullInteger)
+            {
+                return LOGIN_PATH;
+            }
+
+            var tab = TabController.Instance.GetTab(this.PortalSettings.LoginTabId, this.PortalId);
+            return tab != null ? new Uri(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId), UriKind.RelativeOrAbsolute).LocalPath : LOGIN_PATH;
+        }
+
         private bool IsRedirectingFromLoginUrl()
         {
             return this.Request.UrlReferrer != null &&
-                this.Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
+                this.Request.UrlReferrer.LocalPath.EndsWith(this.GetLoginPath(), StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
@@ -1304,13 +1301,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
             switch (validStatus)
             {
                 case UserValidStatus.VALID:
+                    
+                    //Obtain the current client IP
+                    var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                    var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+                    
                     // check if the user is an admin/host and validate their IP
                     if (Host.EnableIPChecking)
                     {
                         bool isAdminUser = objUser.IsSuperUser || objUser.IsInRole(this.PortalSettings.AdministratorRoleName);
                         if (isAdminUser)
                         {
-                            var clientIp = NetworkUtils.GetClientIpAddress(this.Request);
+                            var clientIp = ipAddress;
                             if (IPFilterController.Instance.IsIPBanned(clientIp))
                             {
                                 PortalSecurity.Instance.SignOut();
@@ -1334,9 +1336,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     // Set the Authentication Type used
                     AuthenticationController.SetAuthenticationType(this.AuthenticationType);
 
-                    // Complete Login
-                    var userRequestIpAddressController = UserRequestIPAddressController.Instance;
-                    var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+                    // Complete Login                    
                     UserController.UserLogin(this.PortalId, objUser, this.PortalSettings.PortalName, ipAddress, this.RememberMe);
 
                     // check whether user request comes with IPv6 and log it to make sure admin is aware of that

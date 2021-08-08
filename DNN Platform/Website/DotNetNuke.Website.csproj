@@ -2,6 +2,9 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7F680294-37DA-4901-A19B-AF09794F73D7}</ProjectGuid>
@@ -66,44 +69,12 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core">
+    <Reference Include="ClientDependency.Core, Version=1.9.2.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.2.7\lib\net45\ClientDependency.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.HttpModules">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Modules.CoreMessaging">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Modules\CoreMessaging\bin\DotNetNuke.Modules.CoreMessaging.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.Client">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Web.DDRMenu">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Modules\DDRMenu\bin\DotNetNuke.Web.DDRMenu.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -134,38 +105,35 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.Mvc.5.1.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -623,7 +591,6 @@
     <Content Include="Licenses\NSubstitute %28Custom%29.txt.resources" />
     <Content Include="Licenses\NTestDataBuilder %28MIT%29.txt.resources" />
     <Content Include="Licenses\NUnit %28MIT%29.txt.resources" />
-    <Content Include="Licenses\NUnitTestAdapter %28MIT%29.txt.resources" />
     <Content Include="Licenses\PetaPoco %28Apache%29.txt.resources" />
     <Content Include="Licenses\Pikaday %28MIT%29.txt.resources" />
     <Content Include="Licenses\QuickIO.NET %28Ms-PL%29.txt.resources" />
@@ -2868,7 +2835,6 @@
     <Content Include="Licenses\jQuery Iframe Transport %28MIT%29.txt.resources" />
     <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt.resources" />
     <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt.resources" />
-    <Content Include="Licenses\json2 %28Public Domain%29.txt.resources" />
     <Content Include="Licenses\Dnn ClientDependency %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Dnn-Connect CkEditorProvider %28MIT%29.txt.resources" />
     <Content Include="Licenses\GitVersion %28MIT%29.txt.resources" />
@@ -3026,7 +2992,6 @@
     <Content Include="Resources\Shared\scripts\jquery\jquery.min.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.mousewheel.js" />
     <Content Include="Resources\Shared\scripts\jquery\jquery.tmpl.js" />
-    <Content Include="Resources\Shared\scripts\json2.js" />
     <Content Include="Resources\Shared\scripts\knockout.js" />
     <Content Include="Resources\Shared\scripts\knockout.mapping.js" />
     <Content Include="Resources\Shared\scripts\slides.min.jquery.js" />
@@ -3162,6 +3127,58 @@
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
+    <Content Include="Install\Config\04.06.00.config" />
+    <Content Include="Install\Config\04.07.00.config" />
+    <Content Include="Install\Config\04.08.00.config" />
+    <Content Include="Install\Config\04.09.00.config" />
+    <Content Include="Install\Config\05.01.00.config" />
+    <Content Include="Install\Config\05.02.00.config" />
+    <Content Include="Install\Config\05.02.01.config" />
+    <Content Include="Install\Config\05.03.00.config" />
+    <Content Include="Install\Config\05.05.00.config" />
+    <Content Include="Install\Config\05.06.00.config" />
+    <Content Include="Install\Config\05.06.01.config" />
+    <Content Include="Install\Config\05.06.03.config" />
+    <Content Include="Install\Config\06.00.00.config" />
+    <Content Include="Install\Config\06.01.00.config" />
+    <Content Include="Install\Config\06.01.01.config" />
+    <Content Include="Install\Config\06.02.00.config" />
+    <Content Include="Install\Config\07.00.00.config" />
+    <Content Include="Install\Config\07.00.05.config" />
+    <Content Include="Install\Config\07.00.06.config" />
+    <Content Include="Install\Config\07.01.01.config" />
+    <Content Include="Install\Config\07.01.02.config" />
+    <Content Include="Install\Config\07.02.00.config" />
+    <Content Include="Install\Config\07.02.01.config" />
+    <Content Include="Install\Config\07.03.00.config" />
+    <Content Include="Install\Config\07.04.01.config" />
+    <Content Include="Install\Config\08.00.00.01.config" />
+    <Content Include="Install\Config\08.00.00.02.config" />
+    <Content Include="Install\Config\08.00.00.03.config" />
+    <Content Include="Install\Config\08.00.00.12.config" />
+    <Content Include="Install\Config\08.00.00.22.config" />
+    <Content Include="Install\Config\08.00.00.26.config" />
+    <Content Include="Install\Config\08.00.00.30.config" />
+    <Content Include="Install\Config\08.00.04.config" />
+    <Content Include="Install\Config\09.00.01.config" />
+    <Content Include="Install\Config\09.01.00.config" />
+    <Content Include="Install\Config\09.01.01.config" />
+    <Content Include="Install\Config\09.02.00.config" />
+    <Content Include="Install\Config\09.03.00.config" />
+    <Content Include="Install\Config\09.04.00.config" />
+    <Content Include="Install\Config\09.05.00.config" />
+    <Content Include="Install\Config\09.06.00.config" />
+    <Content Include="Install\Config\09.06.02.config" />
+    <Content Include="Install\Config\09.07.00.config" />
+    <Content Include="Install\Config\09.07.02.config" />
+    <Content Include="Install\Config\BindingRedirect.config" />
+    <Content Include="Install\Config\RemoveBindingRedirect.config" />
+    <Content Include="Install\Config\09.07.03.config" />
+    <Content Include="Install\Config\09.08.00.config" />
+    <Content Include="Install\Config\BindingRedirect.config" />
+    <Content Include="Install\Config\Net35.config" />
+    <Content Include="Install\Config\Net40.config" />
+    <Content Include="Install\Config\RemoveBindingRedirect.config" />
     <None Include="Install\Template\UserProfile.page.template" />
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
@@ -3345,7 +3362,10 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.05.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.06.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.06.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.07.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.07.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.08.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -3381,7 +3401,7 @@
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+    <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
     </ProjectReference>
@@ -3424,6 +3444,9 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Licenses\NUnit3TestAdapter %28MIT%29.txt.resources" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -15,8 +15,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     public class FileDto
     {
         public int fileId { get; set; }
+
         public string fileName { get; set; }
+
         public int folderId { get; set; }
+
         public string folderPath { get; set; }
     }
 }

@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Services.Tokens;
@@ -69,21 +70,21 @@ namespace DotNetNuke.Modules.Html
         /// <returns></returns>
         public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
         {
+            // Html decode content
+            content = HttpUtility.HtmlDecode(content);
+
             // token replace
             if (settings.ReplaceTokens)
             {
                 var tr = new HtmlTokenReplace(page)
                 {
                     AccessingUser = UserController.Instance.GetCurrentUserInfo(),
-                    DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
+                    DebugMessages = Personalization.GetUserMode() != PortalSettings.Mode.View,
                     ModuleId = moduleId,
                     PortalSettings = portalSettings,
                 };
                 content = tr.ReplaceEnvironmentTokens(content);
             }
-
-            // Html decode content
-            content = HttpUtility.HtmlDecode(content);
 
             // manage relative paths
             content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);

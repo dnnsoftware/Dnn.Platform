@@ -14,7 +14,6 @@ namespace DotNetNuke.Collections
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Instrumentation;
 
     /// <summary>
@@ -844,7 +843,7 @@ namespace DotNetNuke.Collections
         /// <typeparam name="TType">The type of the type.</typeparam>
         /// <param name="source">The source.</param>
         /// <param name="action">The action.</param>
-        /// <returns></returns>
+        /// <returns>The provided source after the action was performed on each element.</returns>
         public static IEnumerable<TType> ForEach<TType>(this IEnumerable<TType> source, Action<TType> action)
         {
             foreach (TType element in source)

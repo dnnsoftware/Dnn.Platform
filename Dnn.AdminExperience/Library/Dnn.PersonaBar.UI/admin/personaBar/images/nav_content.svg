@@ -1,11 +1,12 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 2048 2048" style="enable-background:new 0 0 2048 2048;" xml:space="preserve">
-    <g>
-	    <rect x="1309.1" y="597.1" width="479.8" height="530.8"/>
-	    <rect x="252" y="937.4" width="916.5" height="190.6"/>
-	    <rect x="252" y="597.1" width="916.5" height="190.6"/>
-	    <rect x="252" y="1598.4" width="1057" height="190.6"/>
-	    <rect x="252" y="1258.1" width="1537" height="190.6"/>
-	    <rect x="252" y="253" width="1537" height="190.6"/>
-    </g>
+	<circle class="back" cx="1024" cy="1024" r="1024"></circle>
+	<g>
+		<rect x="1228.5" y="727.9" class="main" width="340.1" height="370.7"></rect>
+		<rect x="479.2" y="965.6" class="main" width="649.7" height="133.1"></rect>
+		<rect x="479.2" y="727.9" class="main" width="649.7" height="133.1"></rect>
+		<rect x="479.2" y="1427.3" class="main" width="749.3" height="133.1"></rect>
+		<rect x="479.2" y="1189.6" class="main" width="1089.5" height="133.1"></rect>
+		<rect x="479.2" y="487.6" class="main" width="1089.5" height="133.1"></rect>
+	</g>
 </svg>

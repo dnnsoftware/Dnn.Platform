@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserProfilePageHandler));
 
+        /// <inheritdoc/>
         public bool IsReusable
         {
             get

@@ -6,6 +6,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Services.Localization;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +18,23 @@ namespace DotNetNuke.Prompt
 {
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
+        /// <inheritdoc/>
         protected override Func<ICommandRepository> GetFactory()
         {
             return () => new CommandRepository();
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ICommand> GetCommands()
         {
-            return CommandList().Values;
+            return this.CommandList().Values;
         }
 
+        /// <inheritdoc/>
         public IConsoleCommand GetCommand(string commandName)
         {
             commandName = commandName.ToUpper();
-            var allCommands = CommandList();
+            var allCommands = this.CommandList();
             if (allCommands.ContainsKey(commandName))
             {
                 return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
@@ -71,17 +75,18 @@ namespace DotNetNuke.Prompt
                     Key = key,
                     Name = commandAttribute.Name,
                     Version = version,
-                    TypeFullName = cmd.AssemblyQualifiedName
+                    TypeFullName = cmd.AssemblyQualifiedName,
                 });
             }
             return commands;
         }
 
+        /// <inheritdoc/>
         public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
             return DataCache.GetCachedData<ICommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => GetCommandHelpInternal(consoleCommand));
+                c => this.GetCommandHelpInternal(consoleCommand));
         }
 
         private ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
@@ -104,7 +109,7 @@ namespace DotNetNuke.Prompt
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         Description =
-                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile)
+                               LocalizeString(attribute.DescriptionKey, consoleCommand.LocalResourceFile),
                     }).ToList();
                     commandHelp.Options = options;
                 }
@@ -128,6 +133,7 @@ namespace DotNetNuke.Prompt
             var camelCasedParts = SplitCamelCase(className);
             return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
         }
+
         private static string[] SplitCamelCase(string source)
         {
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");

@@ -1,5 +1,6 @@
-import Moment from "moment";
 import UrlParse from "url-parse";
+import * as dayjs from "dayjs";
+const localizedFormat = require('dayjs/plugin/localizedFormat');
 let utilities = null;
 let config = null;
 let moduleName = null;
@@ -190,7 +191,9 @@ function formatDate(dateValue, longformat) {
         return "-";
     }
 
-    return Moment(dateValue).locale(utilities.getCulture()).format(longformat === true ? "LLL" : "L");
+    dayjs.extend(localizedFormat);
+    require('dayjs/locale/' + utilities.getCulture().substring(0,2));
+    return dayjs(dateValue).locale(utilities.getCulture().substring(0,2)).format(longformat === true ? "LLL" : "L");
 }
 function getUserMode() {
     return config.userMode;

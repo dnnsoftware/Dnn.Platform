@@ -4,18 +4,18 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
-    using System;
-
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Icons;
 
     internal class IconControllerWrapper : ComponentBase<IIconController, IconControllerWrapper>, IIconController
     {
+        /// <inheritdoc/>
         public string IconURL(string key)
         {
             return IconController.IconURL(key);
         }
 
+        /// <inheritdoc/>
         public string IconURL(string key, string size)
         {
             return IconController.IconURL(key, size);

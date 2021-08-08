@@ -114,7 +114,7 @@
                                     <dl>
                                         <dt class="subject"><a href="#" data-bind="text: Subject, click: $root.getReplies"></a></dt>
                                         <dd class="meta"><em><%=LocalizeString("From")%>: <a data-bind="text: From, attr: { href: SenderProfileUrl }"></a></em><br/><em><%=LocalizeString("SentTo")%>: <span data-bind="    text: To"></span></em></dd>
-                                        <dd class="message" data-bind="text: MessageAbstract"></dd>
+                                        <dd class="message" data-bind="html: MessageAbstract"></dd>
                                     </dl>
                                 </li>
                                 <li class="ListCol-4">
@@ -176,7 +176,7 @@
                                                 <dd class="meta">
                                                     <em><a data-bind="text: SenderDisplayName, attr: { href: SenderProfileUrl }" aria-label="Display Name"></a></em>
                                                 </dd>
-                                                <dd class="message" data-bind="text: Body"></dd>
+                                                <dd class="message" data-bind="html: Body"></dd>
                                                 <dd class="attachements" data-bind="if: AttachmentCount > 0">
                                                     <strong><%=LocalizeString("Attachments")%>:</strong>
                                                     <ul data-bind="foreach: Attachments">
