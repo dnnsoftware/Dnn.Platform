@@ -37,5 +37,6 @@
     "clean": "lerna run clean",
     "lint": "lerna run lint",
     "test": "lerna run test"
-  }
+  },
+  "packageManager": "yarn@3.0.0"
 }
