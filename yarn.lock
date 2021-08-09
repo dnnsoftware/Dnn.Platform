@@ -20173,9 +20173,9 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"resource-library@workspace:Dnn Platform/Modules/ResourceManager/ResourceManager.Web":
+"resource-library@workspace:DNN Platform/Modules/ResourceManager/ResourceManager.Web":
   version: 0.0.0-use.local
-  resolution: "resource-library@workspace:Dnn Platform/Modules/ResourceManager/ResourceManager.Web"
+  resolution: "resource-library@workspace:DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   dependencies:
     "@babel/core": ^7.2.0
     "@babel/plugin-proposal-class-properties": ^7.10.4
