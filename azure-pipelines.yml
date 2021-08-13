@@ -5,7 +5,7 @@ variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
   - name: "YARN_CACHE_FOLDER"
-    value: "$(Pipeline.Workspace)/.yarn"
+    value: "$(Pipeline.Workspace)/.yarn/cache"
 
 parameters:
   - name: "CakeTarget"

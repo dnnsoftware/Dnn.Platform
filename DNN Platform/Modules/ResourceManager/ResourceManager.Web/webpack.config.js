@@ -16,8 +16,7 @@ module.exports = {
               __dirname,
               "../scripts/"
           )
-          : settings.WebsitePath +
-          "\\DesktopModules\\ResourceManager\\scripts",
+          : path.join(settings.WebsitePath, "\\DesktopModules\\ResourceManager\\scripts"),
         publicPath: isProduction ? "" : "http://localhost:8080/dist/",
         filename: "resourceManager-bundle.js"
     },

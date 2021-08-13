@@ -17,8 +17,7 @@ module.exports = {
             __dirname,
             "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.TaskScheduler/scripts/bundles/"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.TaskScheduler\\scripts\\bundles\\",
+        : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.TaskScheduler\\scripts\\bundles\\"),
     publicPath: isProduction ? "" : "http://localhost:8080/dist/",
     filename: "task-scheduler-bundle.js"
   },

@@ -16,8 +16,7 @@ module.exports = {
         ? path.resolve(
             "../../../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Users\\scripts\\exportables\\Users\\",
+        : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Users\\scripts\\exportables\\Users\\"),
     filename: "UsersCommon.js",
     publicPath: isProduction ? "" : "http://localhost:8050/dist/"
   },
