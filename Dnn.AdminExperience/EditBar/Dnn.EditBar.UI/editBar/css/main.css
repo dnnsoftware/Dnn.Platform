@@ -195,3 +195,11 @@ body {
 #editBarOptionsExtensionPoint {
     margin-left: 7px;
 }
+
+
+/* IE10+ specific editbar styles go here */
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    .editbar {
+        background-color: #0b1c24;
+    }
+}
