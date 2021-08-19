@@ -26,8 +26,8 @@ class ModuleEdit extends Component {
     onIFrameLoad() {
         const iframe = this.iframeRef;
         const location = iframe.contentWindow.location.href;
-        if(location.toLowerCase().indexOf("popup") === -1){
-            if(this.closeOnEndRequest){
+        if (location.toLowerCase().indexOf("popup") === -1) {
+            if (this.closeOnEndRequest) {
                 this.props.onUpdatedModuleSettings();
             } else {
                 this.redirectUrl(location);
@@ -48,16 +48,16 @@ class ModuleEdit extends Component {
     beginRequestHandler(pageRequestManager, beginRequestEventArgs) {
         const postBackElement = beginRequestEventArgs._postBackElement;
         this.closeOnEndRequest = postBackElement.id === ("dnn_ctr" + this.props.module.id + "_ModuleSettings_cmdUpdate");
-        if(!this.closeOnEndRequest){
+        if (!this.closeOnEndRequest) {
             this.closeOnEndRequest = postBackElement.id.indexOf("dnn_ctr" + this.props.module.id) > -1
                 && postBackElement.id.match(/Close$|Cancel$|Save$/) !== null;
         }
     }
 
-    checkUrlType(){
+    checkUrlType() {
         const {props} = this;
         let editUrl = "";
-        switch(props.editType){
+        switch (props.editType) {
             case "content":
                 editUrl = props.module.editContentUrl;
                 break;
@@ -66,8 +66,8 @@ class ModuleEdit extends Component {
                 break;
         }
 
-        if(editUrl !== ""){
-            if(editUrl.toLowerCase().indexOf('popup') === -1){
+        if (editUrl !== "") {
+            if (editUrl.toLowerCase().indexOf('popup') === -1) {
                 this.redirectUrl(editUrl);
             } else {
                 editUrl = utils.url.appendQueryString(editUrl, queryString);
@@ -77,22 +77,22 @@ class ModuleEdit extends Component {
         }
     }
 
-    redirectUrl(url){
+    redirectUrl(url) {
         utils.getUtilities().closePersonaBar(function () {
             window.parent.location = url;
         });
     }
 
-    addEventListener(){
+    addEventListener() {
         const iframe = this.iframeRef;
-        if(iframe){
+        if (iframe) {
             iframe.addEventListener("load", this.onIFrameLoad);
         }
     }
 
-    removeEventListener(){
+    removeEventListener() {
         const iframe = this.iframeRef;
-        if(iframe){
+        if (iframe) {
             iframe.removeEventListener("load", this.onIFrameLoad);
         }
     }

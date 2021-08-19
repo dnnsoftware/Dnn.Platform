@@ -1,14 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
@@ -45,8 +39,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// Renders the specified partial view, replacing the partial view's ViewData property with the specified <see cref="T:System.Web.Mvc.ViewDataDictionary"/> object and setting the Model property of the view data to the specified model.
         /// </summary>
         /// <param name="html">The HTML helper.</param><param name="partialViewName">The name of the partial view.</param><param name="model">The model for the partial view.</param><param name="viewData">The view data for the partial view.</param>
-        public static void RenderPartial(this DnnHtmlHelper html, string partialViewName, object model,
-            ViewDataDictionary viewData)
+        public static void RenderPartial(this DnnHtmlHelper html, string partialViewName, object model, ViewDataDictionary viewData)
         {
             html.HtmlHelper.RenderPartial(partialViewName, model, viewData);
         }

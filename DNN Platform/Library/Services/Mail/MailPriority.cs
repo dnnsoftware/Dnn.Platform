@@ -9,8 +9,8 @@ namespace DotNetNuke.Services.Mail
     /// </summary>
     public enum MailPriority
     {
-        Normal,
-        Low,
-        High,
+        Normal = 0,
+        Low = 1,
+        High = 2,
     }
 }

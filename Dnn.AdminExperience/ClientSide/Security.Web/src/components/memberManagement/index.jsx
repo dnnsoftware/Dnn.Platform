@@ -46,7 +46,7 @@ class MemberManagementPanelBody extends Component {
     }
 
     updateMemberSettings(memberSettings) {
-        if (!memberSettings){
+        if (!memberSettings) {
             return;
         }
         let {state} = this;

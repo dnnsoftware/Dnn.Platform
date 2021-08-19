@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
     using System;
@@ -15,7 +14,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
     public class DnnModuleAuthorizeAttribute : AuthorizeAttributeBase
     {
-        private ModuleInfo _module;
+        private ModuleInfo module;
 
         public DnnModuleAuthorizeAttribute()
         {
@@ -35,14 +34,14 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
 
-            this._module = controller.ModuleContext.Configuration;
+            this.module = controller.ModuleContext.Configuration;
 
             base.OnAuthorization(filterContext);
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (this._module != null)
+            if (this.module != null)
             {
                 return this.HasModuleAccess();
             }
@@ -52,7 +51,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected virtual bool HasModuleAccess()
         {
-            return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, this._module);
+            return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, this.module);
         }
     }
 }

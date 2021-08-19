@@ -1,7 +1,6 @@
 {
   "name": "@dnnsoftware/dnn-react-common",
-  "version": "9.8.1",
-  "private": false,
+  "version": "9.9.1",
   "description": "DNN React Component Library",
   "main": "dist/dnn-react-common.min.js",
   "repository": {
@@ -17,15 +16,15 @@
     "Persona Bar"
   ],
   "scripts": {
-    "eslint": "eslint ./src/**/*.jsx --fix",
+    "lint": "eslint --fix",
     "test": "echo \"No tests script specified to run.\"",
     "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js",
     "debug": "set NODE_ENV=debug && webpack -p --config dist.webpack.config.js",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
+    "dayjs": "^1.10.4",
     "interact.js": "^1.2.8",
-    "moment": "^2.22.2",
     "raw-loader": "2.0.0",
     "react-accessible-tooltip": "^2.0.3",
     "react-collapse": "^4.0.3",
@@ -38,12 +37,12 @@
     "react-slider": "0.11.2",
     "react-tabs": "3.0.0",
     "react-test-utils": "0.0.1",
-    "react-tooltip": "^3.8.4",
+    "react-tooltip": "^4.2.21",
     "react-widgets": "^4.4.4",
     "redux-undo": "^1.0.0-beta9",
     "scroll": "^3.0.1",
     "shortid": "^2.2.13",
-    "throttle-debounce": "^2.0.1"
+    "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
@@ -63,13 +62,13 @@
     "enzyme": "^3.5.0",
     "enzyme-adapter-react-16": "^1.13.0",
     "enzyme-to-json": "^3.3.4",
-    "eslint": "^5.4.0",
+    "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.2",
     "eslint-import-resolver-webpack": "^0.11.1",
-    "eslint-loader": "^2.1.0",
+    "eslint-loader": "^4.0.2",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-spellcheck": "0.0.11",
@@ -90,7 +89,7 @@
     "webpack-bundle-size-analyzer": "^3.0.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^3.0.0"
   },
   "peerDependencies": {
     "prop-types": "^15.6.2",

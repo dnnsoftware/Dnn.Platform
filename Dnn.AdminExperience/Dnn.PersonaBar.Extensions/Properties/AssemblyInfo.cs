@@ -22,3 +22,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("859C93DE-7107-4F63-9631-B8499A2263BB")]
 
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Security.Tests")]
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.ConfigConsole.Tests")]

@@ -14,7 +14,7 @@ export default class PersonaBarSelectionArrow extends Component {
         };
     }
 
-    hasAtLeastOnePermission(item){
+    hasAtLeastOnePermission(item) {
         switch (true) {
             case item.canViewPage:
             case item.canManagePage:
@@ -51,10 +51,10 @@ export default class PersonaBarSelectionArrow extends Component {
         return <div className={this.state.showMenu ? "dots active" : "dots"}
             onMouseEnter={this.onMouseEnter.bind(this)}
             onMouseLeave={this.onMouseLeave.bind(this)}>
-                <div dangerouslySetInnerHTML={{ __html: SvgIcons.MoreMenuIcon }} ></div>
-                {this.state.showMenu && 
+            <div dangerouslySetInnerHTML={{ __html: SvgIcons.MoreMenuIcon }} ></div>
+            {this.state.showMenu && 
                     <PersonaBarTreeInContextMenu {...this.props} onClose={this.onMouseLeave.bind(this)} />
-                }
+            }
         </div>;
     }
 
@@ -63,7 +63,7 @@ export default class PersonaBarSelectionArrow extends Component {
         /*eslint-disable react/no-danger*/
         return (
             <div id={`menu-item-${item.name} ${item.selected}`} 
-            className="selection-arrow">
+                className="selection-arrow">
                 {item.selected ? <div dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowForward }} /> : <div></div>}
                 {item.selected ? this.renderMoreActions() : <div></div>}                
             </div>

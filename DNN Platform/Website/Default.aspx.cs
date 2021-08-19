@@ -632,13 +632,24 @@ namespace DotNetNuke.Framework
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
-                var customStylesheet = Path.Combine(this.PortalSettings.HomeDirectory, this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
-                ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
+                var styleSheet = this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
+
+                // Try and go through the FolderProvider first
+                var stylesheetFile = GetPageStylesheetFileInfo(styleSheet);
+                if (stylesheetFile != null)
+                {
+                    ClientResourceManager.RegisterStyleSheet(this, FileManager.Instance.GetUrl(stylesheetFile));
+                }
+                else
+                {
+                    ClientResourceManager.RegisterStyleSheet(this, styleSheet);
+                }
             }
 
             // Cookie Consent
             if (this.PortalSettings.ShowCookieConsent)
             {
+                JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn);
                 ClientAPI.RegisterClientVariable(this, "cc_morelink", this.PortalSettings.CookieMoreLink, true);
                 ClientAPI.RegisterClientVariable(this, "cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
@@ -736,6 +747,22 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfoCallBack(CacheItemArgs itemArgs)
         {
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
+        }
+
+        private IFileInfo GetPageStylesheetFileInfo(string styleSheet)
+        {
+            string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + styleSheet);
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet),
+                this.GetPageStylesheetInfoCallBack);
+
+            return file;
+        }
+
+        private IFileInfo GetPageStylesheetInfoCallBack(CacheItemArgs itemArgs)
+        {
+            var styleSheet = itemArgs.Params[0].ToString();
+            return FileManager.Instance.GetFile(this.PortalSettings.PortalId, styleSheet);
         }
     }
 }

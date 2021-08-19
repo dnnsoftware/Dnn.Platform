@@ -1150,4 +1150,13 @@
   <data name="IncorrectDisplayNameConfiguration.Text" xml:space="preserve">
     <value>The Display Name configuration is not correct. Either provide Display Name Format or include Display Name in the list of fields.</value>
   </data>
+  <data name="Security_UserNameMinLength.Text" xml:space="preserve">
+    <value>Minimum Username length</value>
+  </data>
+  <data name="Security_UserNameMinLength.Help" xml:space="preserve">
+    <value>Specify the minimum length of a username for new users or changed usernames.</value>
+  </data>
+  <data name="Security_UserNameMinLength.ErrorMessage" xml:space="preserve">
+    <value>Minimum Username length must be an integer greater than 0 and less than or equal to 100.</value>
+  </data>
 </root>

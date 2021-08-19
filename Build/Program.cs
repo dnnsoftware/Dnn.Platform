@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Cake.Core;
-using Cake.Core.Configuration;
-using Cake.Frosting;
-using Cake.NuGet;
-
-public class Program : IFrostingStartup
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+namespace DotNetNuke.Build
 {
-    public static int Main(string[] args)
+    using System;
+
+    using Cake.AzurePipelines.Module;
+    using Cake.Frosting;
+
+    /// <summary>Runs the build process.</summary>
+    public class Program
     {
-        // Create the host.
-        var host = new CakeHostBuilder()
-            .WithArguments(args)
-            .UseStartup<Program>()
-            .Build();
-
-        // Run the host.
-        return host.Run();
-    }
-
-    public void Configure(ICakeServices services)
-    {
-        services.UseContext<Context>();
-        services.UseLifetime<Lifetime>();
-        services.UseWorkingDirectory("..");
-
-        // from https://github.com/cake-build/cake/discussions/2931
-        var module = new NuGetModule(new CakeConfiguration(new Dictionary<string, string>()));
-        module.Register(services);
-        
-        services.UseTool(new Uri("nuget:?package=GitVersion.CommandLine&version=5.0.1"));
-        services.UseTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=16.8.0"));
-        services.UseTool(new Uri("nuget:?package=NUnitTestAdapter&version=2.3.0"));
-        services.UseTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.0"));
+        /// <summary>Runs the build process.</summary>
+        /// <param name="args">The arguments from the command line.</param>
+        /// <returns>A status code.</returns>
+        public static int Main(string[] args)
+        {
+            return new CakeHost()
+                .UseContext<Context>()
+                .UseLifetime<Lifetime>()
+                .UseWorkingDirectory("..")
+                .UseModule<AzurePipelinesModule>()
+                .InstallTool(new Uri("nuget:?package=GitVersion.CommandLine&version=5.0.1"))
+                .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=16.8.0"))
+                .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=4.0.0"))
+                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.0"))
+                .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=0.9.1"))
+                .Run(args);
+        }
     }
 }

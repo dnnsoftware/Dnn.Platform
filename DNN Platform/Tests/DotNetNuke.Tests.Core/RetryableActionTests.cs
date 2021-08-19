@@ -62,13 +62,12 @@ namespace DotNetNuke.Tests.Core
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
         public void ActionNeverSucceeds()
         {
             var monitor = new ActionMonitor(-1);
             var retryable = CreateRetryable(monitor.Action);
 
-            retryable.TryIt();
+            Assert.Throws<Exception>(() => retryable.TryIt());
         }
 
         private static RetryableAction CreateRetryable(Action action)

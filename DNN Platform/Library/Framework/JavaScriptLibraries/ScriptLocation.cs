@@ -9,8 +9,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     /// </summary>
     public enum ScriptLocation
     {
-        PageHead,
-        BodyTop,
-        BodyBottom,
+        PageHead = 0,
+        BodyTop = 1,
+        BodyBottom = 2,
     }
 }

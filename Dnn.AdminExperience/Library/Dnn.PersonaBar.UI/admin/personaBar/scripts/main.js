@@ -754,8 +754,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         var viewModel = {
                             resx: util.resx.PersonaBar,
                             menu: menuViewModel.menu,
+                            upToDate: ko.observable(true),
                             updateLink: ko.observable(''),
-                            updateType: ko.observable(0),
+                            updateCritical: ko.observable(false),
                             logOff: function() {
                                 function onLogOffSuccess() {
                                     if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
@@ -770,7 +771,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         };
 
                         viewModel.updateText = ko.computed(function() {
-                            return viewModel.updateType() === 2 ? util.resx.PersonaBar.CriticalUpdate : util.resx.PersonaBar.NormalUpdate;
+                            return util.resx.PersonaBar.Update;
                         });
 
                         ko.applyBindings(viewModel, document.getElementById('personabar'));
@@ -779,9 +780,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                         util.sf.moduleRoot = 'personabar';
                         util.sf.controller = "serversummary";
-                        util.sf.getsilence('GetUpdateLink', {}, function (data) {
+                        util.sf.getsilence('GetUpdateInfo', {}, function (data) {
+                            viewModel.upToDate(data.UpToDate);
                             viewModel.updateLink(data.Url);
-                            viewModel.updateType(data.Type);
+                            viewModel.updateCritical(data.Critical);
                         });
 
                         document.addEventListener("click", function(e) {

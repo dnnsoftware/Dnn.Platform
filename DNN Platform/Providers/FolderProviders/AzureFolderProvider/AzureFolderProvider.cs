@@ -15,6 +15,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Providers.FolderProviders.Components;
     using DotNetNuke.Services.FileSystem;
     using Microsoft.WindowsAzure.Storage;
@@ -26,11 +27,25 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     /// </summary>
     public class AzureFolderProvider : BaseRemoteStorageProvider
     {
+        internal const string ProviderName = "AzureFolderProvider";
+        internal const string ProviderType = "folder";
+
+        private readonly ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+        private readonly string _cacheControl = string.Empty;
+
         public AzureFolderProvider()
         {
             ServicePointManager.DefaultConnectionLimit = 100;
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
+
+            // Read the configuration specific information for this provider
+            var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
+
+            if (!string.IsNullOrEmpty(objProvider.Attributes["cacheControl"]))
+            {
+                _cacheControl = objProvider.Attributes["cacheControl"].ToLowerInvariant();
+            }
         }
 
         protected override string FileNotFoundMessage
@@ -270,6 +285,27 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
+        /// <summary>
+        /// Updates a file in Azure folder provider.
+        /// </summary>
+        /// <remarks>
+        /// Azure is case sensitive.  If you update dnninternals.pdf with DNNINTERNALS.pdf, to DNN it's the same
+        /// so it just re-uploads it, causing both files to exist in Azure. This azure specific method deletes the
+        /// old existing duplicate that only differs in case as part of the update.
+        /// </remarks>
+        public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
+        {
+            IFileInfo originalFile = FileManager.Instance.GetFile(folder, fileName);
+
+            base.UpdateFile(folder, fileName, content);
+
+            if (originalFile != null && originalFile.FileName != fileName)
+            {
+                FolderMappingInfo folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID);
+                this.DeleteFileInternal(folderMapping, folder.MappedPath + originalFile.FileName);
+            }
+        }
+
         protected override void UpdateFileInternal(Stream stream, FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);
@@ -280,6 +316,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             // Set the content type
             blob.Properties.ContentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(uri));
+
+            // Set cache control
+            if (!string.IsNullOrEmpty(this._cacheControl))
+            {
+                blob.Properties.CacheControl = this._cacheControl;
+            }
+
             blob.SetProperties();
 
             this.ClearCache(folderMapping.FolderMappingID);

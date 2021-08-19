@@ -297,6 +297,11 @@
         $('.ui-tabs .ui-tabs-panel').height($(window).height() - 285);
     });
 
+    $(win).bind('fileUploadRequest', function (evt) {
+        console.log("setting module headers");
+        $.ServicesFramework(-1).setModuleHeaders(evt.data.fileLoader.xhr);
+    });
+
 })(jQuery, window);
 
 

@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" 
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.16.0\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.props')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
@@ -45,7 +45,7 @@
   <Target Name="RunYarnWorkspace">
     <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
 
-    <Yarn Command="install" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
+    <Yarn Command="install --no-immutable" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
     <Yarn Command="build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>

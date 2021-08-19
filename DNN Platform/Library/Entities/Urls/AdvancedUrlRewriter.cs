@@ -255,7 +255,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
-                if (queryStringCol != null && queryStringCol["forceAlias"] != null && queryStringCol["forceAlias"] != "true")
+                // if we're not on the primary alias, and portalaliasmapping is set to redirect, we might need to be redirected
+                var redirectToPrimary = !result.PortalAlias.IsPrimary && result.PortalAliasMapping == PortalSettings.PortalAliasMapping.Redirect;
+
+                // forceAlias used in querystring?
+                var forceAliasInQueryString = queryStringCol != null && queryStringCol["forceAlias"] != null && queryStringCol["forceAlias"] != "true";
+                if (redirectToPrimary || forceAliasInQueryString)
                 {
                     if (portalAliases.Count > 0)
                     {
@@ -1023,22 +1028,18 @@ namespace DotNetNuke.Entities.Urls
                                     if (redirectUrl != null)
                                     {
                                         doRedirect = true;
-                                        if (settings.ForwardExternalUrlsType == DNNPageForwardType.Redirect301)
+                                        if (tab.PermanentRedirect)
                                         {
                                             result.Action = ActionType.Redirect301;
-                                            result.Reason = RedirectReason.Tab_External_Url;
                                         }
-                                        else if (settings.ForwardExternalUrlsType == DNNPageForwardType.Redirect302)
+                                        else
                                         {
                                             result.Action = ActionType.Redirect302;
-                                            result.Reason = RedirectReason.Tab_External_Url;
                                         }
                                     }
 
                                     break;
                                 case TabType.Tab:
-                                    // if a tabType.tab is specified, it's either an external url or a permanent redirect
-
                                     // get the redirect path of the specific tab, as long as we have a valid request to work from
                                     if (request != null)
                                     {
@@ -1078,24 +1079,16 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             result.Action = ActionType.Redirect301;
                                             result.Reason = RedirectReason.Tab_Permanent_Redirect;
-
-                                            // should be already set, anyway
-                                            result.RewritePath = cleanPath;
                                         }
                                         else
                                         {
                                             // not a permanent redirect, check if the page forwarding is set
-                                            if (settings.ForwardExternalUrlsType == DNNPageForwardType.Redirect301)
-                                            {
-                                                result.Action = ActionType.Redirect301;
-                                                result.Reason = RedirectReason.Tab_External_Url;
-                                            }
-                                            else if (settings.ForwardExternalUrlsType == DNNPageForwardType.Redirect302)
-                                            {
-                                                result.Action = ActionType.Redirect302;
-                                                result.Reason = RedirectReason.Tab_External_Url;
-                                            }
+                                            result.Action = ActionType.Redirect302;
+                                            result.Reason = RedirectReason.Tab_Temporary_Redirect;
                                         }
+
+                                        // should be already set, anyway
+                                        result.RewritePath = cleanPath;
                                     }
 
                                     break;

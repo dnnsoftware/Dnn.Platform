@@ -25,7 +25,7 @@ class ModuleRow extends Component {
                 {showCopySettings &&
                     <GridCell columnSize={10}>
                         <Checkbox value={module.includedInCopy !== null ? module.includedInCopy : true} 
-                        onChange={onCopyChange.bind(this, module.id, "includedInCopy")} />
+                            onChange={onCopyChange.bind(this, module.id, "includedInCopy")} />
                     </GridCell>
                 }
                 <GridCell columnSize={showCopySettings ? 25 : 45} >

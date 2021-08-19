@@ -983,7 +983,7 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             var localExpModule = localExportModules.FirstOrDefault(
                                 m => m.ModuleID == local.ModuleID && m.FriendlyName == local.ModuleDefinition.FriendlyName);
-                            var hasPaneChanged = local.PaneName != other.PaneName;
+                            var hasPaneChanged = local.PaneName != other.PaneName || local.ModuleOrder != other.ModuleOrder;
 
                             if (localExpModule == null || hasPaneChanged)
                             {

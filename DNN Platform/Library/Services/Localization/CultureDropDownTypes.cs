@@ -15,36 +15,36 @@ namespace DotNetNuke.Services.Localization
         /// <summary>
         /// Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in the .NET Framework language
         /// </summary>
-        DisplayName,
+        DisplayName = 0,
 
         /// <summary>
         /// Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in English
         /// </summary>
-        EnglishName,
+        EnglishName = 1,
 
         /// <summary>
         /// Displays the culture identifier
         /// </summary>
-        Lcid,
+        Lcid = 2,
 
         /// <summary>
         /// Displays the culture name in the format "&lt;languagecode2&gt; (&lt;country/regioncode2&gt;)
         /// </summary>
-        Name,
+        Name = 3,
 
         /// <summary>
         /// Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in the language that the culture is set to display
         /// </summary>
-        NativeName,
+        NativeName = 4,
 
         /// <summary>
         /// Displays the IS0 639-1 two letter code
         /// </summary>
-        TwoLetterIsoCode,
+        TwoLetterIsoCode = 5,
 
         /// <summary>
         /// Displays the ISO 629-2 three letter code "&lt;languagefull&gt; (&lt;country/regionfull&gt;)
         /// </summary>
-        ThreeLetterIsoCode,
+        ThreeLetterIsoCode = 6,
     }
 }

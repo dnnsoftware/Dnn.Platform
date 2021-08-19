@@ -15,8 +15,8 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public enum VisibilityState
     {
-        Maximized,
-        Minimized,
-        None,
+        Maximized = 0,
+        Minimized = 1,
+        None = 2,
     }
 }

@@ -1,0 +1,144 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForInstantDispatch]
+    @SchedulerInstance UNIQUEIDENTIFIER,
+    @BatchSize         INT
+AS 
+BEGIN
+    -- reset possibly remaining records from any previous run of this SchedulerInstance:
+    UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+       SET [EmailSchedulerInstance] = Null,
+           [LastModifiedOnDate]     = GetDate()
+     WHERE [EmailSchedulerInstance] = @SchedulerInstance
+       AND [EmailSent] = 0 AND [Read] = 0 AND [Archived] = 0;
+       
+    -- reset possibly remaining outdated records from other instances:
+    UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+     SET   [EmailSchedulerInstance] = Null
+     WHERE [EmailSent] = 0 AND [Read] = 0 AND [Archived] = 0
+       AND [EmailSchedulerInstance] Is Not Null AND [LastModifiedOnDate] < DateAdd(hh, -2, GetDate());
+       
+
+    -- mark messages for dispatch, so they won't be handled by another SchedulerInstance:
+    UPDATE TOP (@BatchSize) R
+     SET   [EmailSchedulerInstance] = @SchedulerInstance,
+           [LastModifiedOnDate]     = GetDate()
+     FROM       {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] AS R 
+     INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages]          AS M ON R.MessageID = M.MessageID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}CoreMessaging_UserPreferences]   AS P ON R.UserID    = P.UserID    AND M.PortalID = P.PortalID
+     WHERE R.[EmailSent] = 0 AND R.[Read] = 0 AND R.[Archived] = 0 AND EmailSchedulerInstance IS NULL
+       AND CASE 
+            WHEN M.NotificationTypeID IS Null 
+            THEN IsNull(P.[MessagesEmailFrequency],      0) -- direct mails are sent immediately by default
+            ELSE IsNull(p.[NotificationsEmailFrequency], 2) -- notifications are sent as daily digest by default
+           END = 0;
+
+    SELECT M.[PortalID],
+           M.[NotificationTypeID],
+           M.[To],
+           M.[From],
+           M.[Subject],
+           M.[Body],
+           M.[SenderUserID],
+           M.[ExpirationDate],
+           M.[Context],
+           R.[RecipientID],
+           R.[MessageID],
+           R.[EmailSent],
+           R.[Read],
+           R.[Archived],
+           R.[EmailSchedulerInstance],
+           R.[UserID],
+		   R.[CreatedByUserID],
+		   R.[CreatedOnDate],
+		   R.[LastModifiedByUserID],
+		   R.[LastModifiedOnDate],
+		   R.[SendToast]
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] R
+     JOIN  {databaseOwner}[{objectQualifier}CoreMessaging_Messages]          M ON R.MessageID = M.MessageID
+     WHERE [EmailSent] = 0 -- Filter these columms 4 to use proper index
+       AND [Read]      = 0
+       AND [Archived]  = 0
+       AND [EmailSchedulerInstance] = @SchedulerInstance
+     ORDER BY --[PortalID],
+              [UserID],
+              [RecipientID]
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch];
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'[dbo].[CoreMessaging_GetNextMessagesForDigestDispatch]'))
+    DROP PROCEDURE [dbo].[CoreMessaging_GetNextMessagesForDigestDispatch];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNextMessagesForDigestDispatch]
+    @Frequency         INT,
+    @SchedulerInstance UNIQUEIDENTIFIER,
+    @BatchSize         INT
+AS 
+BEGIN
+    UPDATE R
+     SET   [EmailSchedulerInstance] = @SchedulerInstance,
+           [LastModifiedOnDate]     = GetDate()
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] R
+     JOIN  (SELECT TOP (@BatchSize)
+                   UserID
+             FROM  {databaseOwner}[{objectQualifier}vw_MessagesForDispatch] 
+             WHERE [EmailSchedulerInstance] IS NULL
+             AND   [EmailFrequency] = @Frequency
+             GROUP BY UserID
+             ORDER BY UserID) D ON R.UserID = D.UserID 
+
+    SELECT M.[PortalID],
+           M.[NotificationTypeID],
+           M.[To],
+           M.[From],
+           M.[Subject],
+           M.[Body],
+           M.[SenderUserID],
+           M.[ExpirationDate],
+           M.[Context],
+           R.[RecipientID],
+           R.[MessageID],
+           R.[UserID],
+           R.[EmailSent],
+           R.[Read],
+           R.[Archived],
+           R.[EmailSchedulerInstance],
+		   R.[CreatedByUserID],
+		   R.[CreatedOnDate],
+		   R.[LastModifiedByUserID],
+		   R.[LastModifiedOnDate],
+		   R.[SendToast]
+     FROM  {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] R
+     JOIN  {databaseOwner}[{objectQualifier}CoreMessaging_Messages]          M ON R.MessageID = M.MessageID
+     WHERE [EmailSent] = 0 -- Filter these 4 columms to use proper index
+       AND [Read]      = 0
+       AND [Archived]  = 0
+       AND [EmailSchedulerInstance] = @SchedulerInstance
+     ORDER BY --[PortalID],
+              [UserID],
+              [RecipientID] DESC
+END; -- Procedure
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

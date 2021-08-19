@@ -4,13 +4,33 @@ pool:
 variables:
   - name: "Build.ArtifactStagingDirectory"
     value: "Artifacts/"
-  # The following variables are defined as settable at queue time, so they cannot be included here
-  # Branch.CdfProvider: dnn
-  # Branch.CkEditor: development
-  # CakeTarget: BuildAll
-  # CakeVerbosity: Normal # valid values include Quiet, Minimal, Normal, Verbose, Diagnostic
-  # ReleaseMode: Beta
-  # RunTests: True
+  - name: "YARN_CACHE_FOLDER"
+    value: "$(Pipeline.Workspace)/.yarn/cache"
+
+parameters:
+  - name: "CakeTarget"
+    type: string
+    default: "BuildAll"
+  - name: "CakeVerbosity"
+    type: string
+    default: "Normal"
+    values:
+    - "Quiet"
+    - "Minimal"
+    - "Normal"
+    - "Verbose"
+    - "Diagnostic"
+  - name: "ReleaseMode"
+    type: string
+    default: "Beta"
+    values:
+    - "Alpha"
+    - "Beta"
+    - "RC"
+    - "Stable"
+  - name: "RunTests"
+    type: boolean
+    default: true
 
 trigger:
   batch: true
@@ -26,16 +46,23 @@ pr:
 
 steps:
 
+- task: Cache@2
+  displayName: Cache Yarn packages
+  inputs:
+    key: 'yarn | "$(Agent.OS)" | yarn.lock'
+    restoreKeys: 'yarn | "$(Agent.OS)"'
+    path: $(YARN_CACHE_FOLDER)
+
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=BuildServerSetVersion --verbosity=$(CakeVerbosity)'
+    arguments: '--target=BuildServerSetVersion --verbosity=${{ parameters.CakeVerbosity }}'
 
-- script: 'sqllocaldb start mssqllocaldb'
-  displayName: 'Start Sql LocalDb Service'
-  condition: and(succeeded(), eq(variables['RunTests'], 'True'))
+- ${{ if eq(parameters.RunTests, true) }}:
+  - script: 'sqllocaldb start mssqllocaldb'
+    displayName: 'Start Sql LocalDb Service'
 
 - powershell: 'npm config set registry https://www.myget.org/F/dnn-software-public/npm/'
   displayName: 'npm config set registry'
@@ -47,7 +74,7 @@ steps:
    (Get-Content $path) | ForEach-Object{
       if($_ -match $pattern3){
        # We have found the matching line
-       '[assembly: AssemblyStatus(ReleaseMode.{0})]' -f '$(ReleaseMode)'
+       '[assembly: AssemblyStatus(ReleaseMode.{0})]' -f '${{ parameters.ReleaseMode }}'
       } else {
        $_
       }
@@ -60,39 +87,24 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./build.ps1
-    arguments: '--target=$(CakeTarget) --verbosity=$(CakeVerbosity) --CkBranch="$(Branch.CkEditor)" --CdfBranch="$(Branch.CdfProvider)"'
+    arguments: '--target=${{ parameters.CakeTarget }} --verbosity=${{ parameters.CakeVerbosity }}'
 
-- task: PowerShell@2
-  displayName: 'Run Unit Tests via Cake'
-  inputs:
-    targetType: filePath
-    filePath: ./build.ps1
-    arguments: '--target=UnitTests --verbosity=$(CakeVerbosity)'
+- ${{ if eq(parameters.RunTests, true) }}:
+  - task: PowerShell@2
+    displayName: 'Run Unit Tests via Cake'
+    inputs:
+      targetType: filePath
+      filePath: ./build.ps1
+      arguments: '--target=UnitTests --verbosity=${{ parameters.CakeVerbosity }}'
+    continueOnError: true
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/TestResults/*.xml'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/TestResults/*.trx'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+    condition: always()
+
+- publish: 'Artifacts'
   continueOnError: true
-  condition: and(succeeded(), eq(variables['RunTests'], 'True'))
-
-- task: PublishTestResults@2
-  displayName: 'Publish Test Results **/TestResults/*.xml'
-  inputs:
-    testResultsFormat: VSTest
-    testResultsFiles: '**/TestResults/*.xml'
-    mergeTestResults: true
-    failTaskOnFailedTests: true
-  condition: eq(variables['RunTests'], 'True')
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    PathtoPublish: Artifacts
-    ArtifactName: Artifacts
-  continueOnError: true
-
-- task: NuGetCommand@2
-  displayName: 'Publish to MyGet'
-  inputs:
-    command: push
-    packagesToPush: 'Artifacts/**/*.nupkg;!Artifacts/**/*.symbols.nupkg'
-    nuGetFeedType: external
-    publishFeedCredentials: 'DNN-NuGet-MyGet'
-  enabled: false
-

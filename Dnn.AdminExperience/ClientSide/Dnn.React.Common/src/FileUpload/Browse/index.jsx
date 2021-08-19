@@ -18,7 +18,7 @@ function findKey(thisObject, id) {
                 return thisObject;
             }
         } else if (thisObject[p] instanceof Object) {
-            if (thisObject.hasOwnProperty(p)) {
+            if (Object.prototype.hasOwnProperty.call(thisObject, p)) {
                 tRet = findKey(thisObject[p], id);
                 if (tRet) { return tRet; }
             }

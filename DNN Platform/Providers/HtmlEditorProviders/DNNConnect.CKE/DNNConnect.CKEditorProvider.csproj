@@ -2,6 +2,9 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -72,16 +75,30 @@
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -90,9 +107,11 @@
     <Compile Include="Browser\FileUploader.ashx.cs">
       <DependentUpon>FileUploader.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Constants\Browser.cs" />
+    <Compile Include="Constants\ImageButtonType.cs" />
+    <Compile Include="Constants\BrowserType.cs" />
     <Compile Include="Constants\EnterModus.cs" />
     <Compile Include="Constants\LanguageDirection.cs" />
+    <Compile Include="Constants\LinkProtocol.cs" />
     <Compile Include="Constants\LinkMode.cs" />
     <Compile Include="Constants\LinkType.cs" />
     <Compile Include="Constants\SettingConstants.cs" />
@@ -124,6 +143,8 @@
     <Compile Include="Objects\ToolbarSet.cs" />
     <Compile Include="Objects\UploadSizeRoles.cs" />
     <Compile Include="Objects\WordCountConfig.cs" />
+    <Compile Include="Services\CKEditorProviderRouteMapper.cs" />
+    <Compile Include="Services\CloudServicesController.cs" />
     <Compile Include="Tabs.ashx.cs">
       <DependentUpon>Tabs.ashx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -220,6 +241,87 @@
     <Content Include="css\CkEditorContents.css" />
     <Content Include="css\CkEditorToolBars.css" />
     <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+    <Content Include="icons\About.png" />
+    <Content Include="icons\Anchor.png" />
+    <Content Include="icons\BGColor.png" />
+    <Content Include="icons\BidiLtr.png" />
+    <Content Include="icons\BidiRtl.png" />
+    <Content Include="icons\Blockquote.png" />
+    <Content Include="icons\Bold.png" />
+    <Content Include="icons\BulletedList.png" />
+    <Content Include="icons\Copy.png" />
+    <Content Include="icons\CreateDiv.png" />
+    <Content Include="icons\Cut.png" />
+    <Content Include="icons\Find.png" />
+    <Content Include="icons\Flash.png" />
+    <Content Include="icons\Font.png" />
+    <Content Include="icons\FontSize.png" />
+    <Content Include="icons\Format.png" />
+    <Content Include="icons\HorizontalRule.png" />
+    <Content Include="icons\Iframe.png" />
+    <Content Include="icons\Image.png" />
+    <Content Include="icons\Indent.png" />
+    <Content Include="icons\Italic.png" />
+    <Content Include="icons\JustifyBlock.png" />
+    <Content Include="icons\JustifyCenter.png" />
+    <Content Include="icons\JustifyLeft.png" />
+    <Content Include="icons\JustifyRight.png" />
+    <Content Include="icons\Link.png" />
+    <Content Include="icons\mathjax.png" />
+    <Content Include="icons\Maximize.png" />
+    <Content Include="icons\NewPage.png" />
+    <Content Include="icons\newsarticleslinks.gif" />
+    <Content Include="icons\NumberedList.png" />
+    <Content Include="icons\oEmbed.png" />
+    <Content Include="icons\Outdent.png" />
+    <Content Include="icons\PageBreak.png" />
+    <Content Include="icons\Paste.png" />
+    <Content Include="icons\PasteFromWord.png" />
+    <Content Include="icons\PasteText.png" />
+    <Content Include="icons\Preview.png" />
+    <Content Include="icons\Print.png" />
+    <Content Include="icons\qrcodes.jpg" />
+    <Content Include="icons\Redo.png" />
+    <Content Include="icons\RemoveFormat.png" />
+    <Content Include="icons\Replace.png" />
+    <Content Include="icons\Save.png" />
+    <Content Include="icons\SelectAll.png" />
+    <Content Include="icons\separator.png" />
+    <Content Include="icons\ShowBlocks.png" />
+    <Content Include="icons\Smiley.png" />
+    <Content Include="icons\Source.png" />
+    <Content Include="icons\SpecialChar.png" />
+    <Content Include="icons\SpellChecker.png" />
+    <Content Include="icons\Strike.png" />
+    <Content Include="icons\Styles.png" />
+    <Content Include="icons\Subscript.png" />
+    <Content Include="icons\Superscript.png" />
+    <Content Include="icons\syntaxhighlight.gif" />
+    <Content Include="icons\Table.png" />
+    <Content Include="icons\Templates.png" />
+    <Content Include="icons\TextColor.png" />
+    <Content Include="icons\Underline.png" />
+    <Content Include="icons\Undo.png" />
+    <Content Include="icons\Unlink.png" />
+    <Content Include="images\bg-input-focus.png" />
+    <Content Include="images\bg-input.png" />
+    <Content Include="images\editor_config_large.png" />
+    <Content Include="images\editor_config_small.png" />
+    <Content Include="images\error.png" />
+    <Content Include="images\HostHasSetting.png" />
+    <Content Include="images\HostNoSetting.png" />
+    <Content Include="images\information.png" />
+    <Content Include="images\loading.gif" />
+    <Content Include="images\ModuleHasSetting.png" />
+    <Content Include="images\ModuleNoSetting.png" />
+    <Content Include="images\PageHasSetting.png" />
+    <Content Include="images\PageNoSetting.png" />
+    <Content Include="images\PortalHasSetting.png" />
+    <Content Include="images\PortalNoSetting.png" />
+    <Content Include="images\progressbar.gif" />
+    <Content Include="images\spacer.gif" />
+    <Content Include="images\tick.png" />
+    <Content Include="images\warning.png" />
     <Content Include="Install\Dnn.CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -228,7 +330,6 @@
     <Content Include="css\Options.css" />
     <Content Include="Install\DNNCkeditor.license.txt" />
     <Content Include="js\editorOverride.js" />
-    <Content Include="js\jquery.ckeditor.adapter.js" />
     <Content Include="js\jquery.notification.js" />
     <Content Include="js\jquery.ui.controls.js" />
     <Content Include="js\Options.js" />
@@ -325,6 +426,7 @@
     <Analyzer Include="..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\..\..\Packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

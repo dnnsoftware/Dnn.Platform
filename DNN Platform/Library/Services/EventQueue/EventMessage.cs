@@ -13,9 +13,9 @@ namespace DotNetNuke.Services.EventQueue
 
     public enum MessagePriority
     {
-        High,
-        Medium,
-        Low,
+        High = 0,
+        Medium = 1,
+        Low = 2,
     }
 
     [Serializable]

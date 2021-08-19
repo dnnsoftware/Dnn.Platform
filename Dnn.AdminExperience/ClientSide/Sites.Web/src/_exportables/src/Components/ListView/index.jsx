@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PortalListItem from "./PortalListItem";
@@ -6,7 +6,7 @@ import Localization from "localization";
 import { CommonVisiblePanelActions, CommonPortalListActions } from "actions";
 import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import utilities from "utils";
-import Moment from "moment";
+import * as dayjs from "dayjs";
 import styles from "./style.less";
 
 class ListView extends Component {
@@ -45,7 +45,7 @@ class ListView extends Component {
         let portalsettings = {
             portalId: portal.PortalID,
             cultureCode: this.props.culture
-        }
+        };
         
         event2 = Object.assign(event2, portalsettings);
 
@@ -138,6 +138,12 @@ class ListView extends Component {
         });
     }
     getPortalMapping(portal) {
+        const localizedFormat = require("dayjs/plugin/localizedFormat");
+        dayjs.extend(localizedFormat);
+        const relativeTime = require("dayjs/plugin/relativeTime");
+        dayjs.extend(relativeTime);
+        require("dayjs/locale/" + this.props.culture.substring(0,2));
+
         return [
             {
                 label: Localization.get("SiteDetails_SiteID"),
@@ -149,7 +155,7 @@ class ListView extends Component {
             },
             {
                 label: Localization.get("SiteDetails_Updated"),
-                value: Moment(portal.LastModifiedOnDate).locale(this.props.culture).fromNow()
+                value: dayjs(portal.LastModifiedOnDate).locale(this.props.culture.substring(0,2)).fromNow()
             },
             {
                 label: Localization.get("SiteDetails_Pages"),
@@ -208,7 +214,7 @@ ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
     sitesModule: "Dnn.Sites",
     siteImportExportModule: "Dnn.SiteImportExport",
-    culture: 'en-US'
+    culture: "en-US"
 };
 
 function mapStateToProps(state) {

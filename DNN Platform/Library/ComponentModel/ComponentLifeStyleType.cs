@@ -6,7 +6,7 @@ namespace DotNetNuke.ComponentModel
 {
     public enum ComponentLifeStyleType
     {
-        Singleton,
-        Transient,
+        Singleton = 0,
+        Transient = 1,
     }
 }

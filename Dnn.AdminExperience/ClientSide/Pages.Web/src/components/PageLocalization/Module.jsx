@@ -38,7 +38,7 @@ class Module extends Component {
                 <Tooltip
                     messages={[toolTip]}
                     style={{ float: "left", position: "static" }}
-                    />
+                />
                 <input type="text" value={module.ModuleTitle} onChange={this.onUpdateModules.bind(this, "ModuleTitle") } aria-label="Title"/>
                 {module.IsDeleted && <div className="icons-container">
                     <span className="icon" onClick={this.onDeleteModule.bind(this, module.TabModuleId) } dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} />

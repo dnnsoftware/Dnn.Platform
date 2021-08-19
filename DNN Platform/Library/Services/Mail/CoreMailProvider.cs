@@ -9,6 +9,8 @@ namespace DotNetNuke.Services.Mail
     using System.Net;
     using System.Net.Mail;
     using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -24,47 +26,120 @@ namespace DotNetNuke.Services.Mail
         /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
-            // validate smtp server
-            if (smtpInfo == null || string.IsNullOrEmpty(smtpInfo.Server))
+            var (host, port, errorMessage) = ParseSmtpServer(ref smtpInfo);
+            if (errorMessage != null)
             {
-                if (string.IsNullOrWhiteSpace(Host.SMTPServer))
-                {
-                    return "SMTP Server not configured";
-                }
-
-                smtpInfo = new SmtpInfo()
-                {
-                    Server = Host.SMTPServer,
-                    Authentication = Host.SMTPAuthentication,
-                    Username = Host.SMTPUsername,
-                    Password = Host.SMTPPassword,
-                    EnableSSL = Host.EnableSMTPSSL,
-                };
+                return errorMessage;
             }
 
+            using (var mailMessage = CreateMailMessage(mailInfo, smtpInfo))
+            {
+                try
+                {
+                    using (var smtpClient = CreateSmtpClient(smtpInfo, host, port))
+                    {
+                        smtpClient.Send(mailMessage);
+                    }
+
+                    return string.Empty;
+                }
+                catch (Exception exc)
+                {
+                    return HandleException(exc);
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override async Task<string> SendMailAsync(MailInfo mailInfo, SmtpInfo smtpInfo = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var (host, port, errorMessage) = ParseSmtpServer(ref smtpInfo);
+            if (errorMessage != null)
+            {
+                return errorMessage;
+            }
+
+            using (var mailMessage = CreateMailMessage(mailInfo, smtpInfo))
+            {
+                try
+                {
+                    using (var smtpClient = CreateSmtpClient(smtpInfo, host, port))
+                    {
+                        await smtpClient.SendMailAsync(mailMessage);
+                    }
+
+                    return string.Empty;
+                }
+                catch (Exception exc)
+                {
+                    return HandleException(exc);
+                }
+            }
+        }
+
+        private static string ValidateSmtpInfo(SmtpInfo smtpInfo)
+        {
+            if (smtpInfo != null && !string.IsNullOrEmpty(smtpInfo.Server))
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(Host.SMTPServer))
+            {
+                return null;
+            }
+
+            return "SMTP Server not configured";
+        }
+
+        private static SmtpInfo GetDefaultSmtpInfo(SmtpInfo smtpInfo)
+        {
+            if (smtpInfo != null && !string.IsNullOrEmpty(smtpInfo.Server))
+            {
+                return smtpInfo;
+            }
+
+            return new SmtpInfo
+                   {
+                       Server = Host.SMTPServer,
+                       Authentication = Host.SMTPAuthentication,
+                       Username = Host.SMTPUsername,
+                       Password = Host.SMTPPassword,
+                       EnableSSL = Host.EnableSMTPSSL,
+                   };
+        }
+
+        private static MailMessage CreateMailMessage(MailInfo mailInfo, SmtpInfo smtpInfo)
+        {
             // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
             if (!string.IsNullOrEmpty(mailInfo.To))
             {
                 mailInfo.To = mailInfo.To.Replace(";", ",");
             }
 
-            if (!string.IsNullOrEmpty(mailInfo.CC))
-            {
-                mailInfo.CC = mailInfo.CC.Replace(";", ",");
-            }
-
-            if (!string.IsNullOrEmpty(mailInfo.BCC))
-            {
-                mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
-            }
-
-            var retValue = string.Empty;
-
             var mailMessage = new MailMessage(mailInfo.From, mailInfo.To);
 
             if (!string.IsNullOrEmpty(mailInfo.Sender))
             {
                 mailMessage.Sender = new MailAddress(mailInfo.Sender);
+            }
+
+            if (!string.IsNullOrEmpty(mailInfo.CC))
+            {
+                mailInfo.CC = mailInfo.CC.Replace(";", ",");
+                mailMessage.CC.Add(mailInfo.CC);
+            }
+
+            if (!string.IsNullOrEmpty(mailInfo.BCC))
+            {
+                mailInfo.BCC = mailInfo.BCC.Replace(";", ",");
+                mailMessage.Bcc.Add(mailInfo.BCC);
+            }
+
+            if (!string.IsNullOrEmpty(mailInfo.ReplyTo))
+            {
+                mailInfo.ReplyTo = mailInfo.ReplyTo.Replace(";", ",");
+                mailMessage.ReplyToList.Add(mailInfo.ReplyTo);
             }
 
             mailMessage.Priority = (System.Net.Mail.MailPriority)mailInfo.Priority;
@@ -81,8 +156,9 @@ namespace DotNetNuke.Services.Mail
                     var senderAddress = mailInfo.Sender;
                     var senderDisplayName = mailInfo.FromName;
                     var needUpdateSender = false;
-                    if (smtpInfo.Username.Contains("@") && senderAddress == Host.HostEmail &&
-                        !senderAddress.Equals(smtpInfo.Username, StringComparison.InvariantCultureIgnoreCase))
+                    if (smtpInfo.Username.Contains("@")
+                        && senderAddress == Host.HostEmail
+                        && !senderAddress.Equals(smtpInfo.Username, StringComparison.InvariantCultureIgnoreCase))
                     {
                         senderAddress = smtpInfo.Username;
                         needUpdateSender = true;
@@ -101,7 +177,9 @@ namespace DotNetNuke.Services.Mail
                 }
                 else if (smtpInfo.Username.Contains("@"))
                 {
-                    mailMessage.Sender = new MailAddress(smtpInfo.Username, Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
+                    mailMessage.Sender = new MailAddress(
+                        smtpInfo.Username,
+                        Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle);
                 }
             }
 
@@ -119,80 +197,108 @@ namespace DotNetNuke.Services.Mail
             }
 
             // message
+            mailMessage.SubjectEncoding = mailInfo.BodyEncoding;
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(mailInfo.Subject, true);
+            mailMessage.BodyEncoding = mailInfo.BodyEncoding;
             mailMessage.Body = mailInfo.Body;
-            smtpInfo.Server = smtpInfo.Server.Trim();
-            if (SmtpServerRegex.IsMatch(smtpInfo.Server))
+            return mailMessage;
+        }
+
+        private static (string host, int? port, string errorMessage) ParseSmtpServer(ref SmtpInfo smtpInfo)
+        {
+            var errorMessage = ValidateSmtpInfo(smtpInfo);
+            if (errorMessage != null)
             {
-                try
+                return (null, null, errorMessage);
+            }
+
+            smtpInfo = GetDefaultSmtpInfo(smtpInfo);
+
+            smtpInfo.Server = smtpInfo.Server.Trim();
+            if (!SmtpServerRegex.IsMatch(smtpInfo.Server))
+            {
+                return (null, null, Localize.GetString("SMTPConfigurationProblem"));
+            }
+
+            var smtpHostParts = smtpInfo.Server.Split(':');
+            var host = smtpHostParts[0];
+            if (smtpHostParts.Length <= 1)
+            {
+                return (host, null, null);
+            }
+
+            // port is guaranteed to be of max 5 digits numeric by the RegEx check
+            var port = int.Parse(smtpHostParts[1]);
+            if (port < 1 || port > 65535)
+            {
+                return (null, null, Localize.GetString("SmtpInvalidPort"));
+            }
+
+            return (host, port, null);
+        }
+
+        private static SmtpClient CreateSmtpClient(SmtpInfo smtpInfo, string host, int? port)
+        {
+            SmtpClient client = null;
+            try
+            {
+                client = new SmtpClient();
+                client.Host = host;
+                if (port != null)
                 {
-                    // to workaround problem in 4.0 need to specify host name
-                    using (var smtpClient = new SmtpClient())
-                    {
-                        var smtpHostParts = smtpInfo.Server.Split(':');
-                        smtpClient.Host = smtpHostParts[0];
-                        if (smtpHostParts.Length > 1)
-                        {
-                            // port is guaranteed to be of max 5 digits numeric by the RegEx check
-                            var port = int.Parse(smtpHostParts[1]);
-                            if (port < 1 || port > 65535)
-                            {
-                                return Localize.GetString("SmtpInvalidPort");
-                            }
-
-                            smtpClient.Port = port;
-                        }
-
-                        switch (smtpInfo.Authentication)
-                        {
-                            case "":
-                            case "0": // anonymous
-                                break;
-                            case "1": // basic
-                                if (!string.IsNullOrEmpty(smtpInfo.Username)
-                                    && !string.IsNullOrEmpty(smtpInfo.Password))
-                                {
-                                    smtpClient.UseDefaultCredentials = false;
-                                    smtpClient.Credentials = new NetworkCredential(
-                                        smtpInfo.Username,
-                                        smtpInfo.Password);
-                                }
-
-                                break;
-                            case "2": // NTLM
-                                smtpClient.UseDefaultCredentials = true;
-                                break;
-                        }
-
-                        smtpClient.EnableSsl = smtpInfo.EnableSSL;
-                        smtpClient.Send(mailMessage);
-                        smtpClient.Dispose();
-                    }
+                    client.Port = port.Value;
                 }
-                catch (Exception exc)
-                {
-                    retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
 
-                    // mail configuration problem
-                    if (exc.InnerException != null)
+                SetSmtpClientAuthentication(smtpInfo, client);
+
+                client.EnableSsl = smtpInfo.EnableSSL;
+
+                var returnedClient = client;
+                client = null;
+
+                return returnedClient;
+            }
+            finally
+            {
+                client?.Dispose();
+            }
+        }
+
+        private static void SetSmtpClientAuthentication(SmtpInfo smtpInfo, SmtpClient smtpClient)
+        {
+            switch (smtpInfo.Authentication)
+            {
+                case "":
+                case "0": // anonymous
+                    break;
+                case "1": // basic
+                    if (!string.IsNullOrEmpty(smtpInfo.Username) && !string.IsNullOrEmpty(smtpInfo.Password))
                     {
-                        retValue += string.Concat(exc.Message, Environment.NewLine, exc.InnerException.Message);
-                        Exceptions.Exceptions.LogException(exc.InnerException);
+                        smtpClient.UseDefaultCredentials = false;
+                        smtpClient.Credentials = new NetworkCredential(smtpInfo.Username, smtpInfo.Password);
                     }
-                    else
-                    {
-                        retValue += exc.Message;
-                        Exceptions.Exceptions.LogException(exc);
-                    }
-                }
-                finally
-                {
-                    mailMessage.Dispose();
-                }
+
+                    break;
+                case "2": // NTLM
+                    smtpClient.UseDefaultCredentials = true;
+                    break;
+            }
+        }
+
+        private static string HandleException(Exception exc)
+        {
+            var retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
+
+            // mail configuration problem
+            if (exc.InnerException != null)
+            {
+                retValue += string.Concat(exc.Message, Environment.NewLine, exc.InnerException.Message);
+                Exceptions.Exceptions.LogException(exc.InnerException);
             }
             else
             {
-                retValue = Localize.GetString("SMTPConfigurationProblem");
+                retValue += exc.Message;
+                Exceptions.Exceptions.LogException(exc);
             }
 
             return retValue;

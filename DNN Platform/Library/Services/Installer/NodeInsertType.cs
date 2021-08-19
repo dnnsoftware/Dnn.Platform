@@ -6,7 +6,7 @@ namespace DotNetNuke.Services.Installer
 {
     public enum NodeInsertType
     {
-        Before,
-        After,
+        Before = 0,
+        After = 1,
     }
 }

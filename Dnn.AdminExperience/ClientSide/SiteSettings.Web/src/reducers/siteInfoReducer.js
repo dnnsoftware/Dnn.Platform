@@ -26,11 +26,13 @@ export default function siteInfo(state = {
             return { ...state,
                 clientModified: action.data.clientModified
             };
-        case ActionTypes.RETRIEVED_PORTALS:
+        case ActionTypes.RETRIEVED_PORTALS: {
+            let currentPortal = action.data.portals.find(a => a.IsCurrentPortal === true);
             return { ...state,
                 portals: action.data.portals,
-                portalId: action.data.portals[0].PortalID
+                portalId: currentPortal != null ? currentPortal.PortalID : action.data.portals[0].PortalID
             };
+        }
         default:
             return state;
     }

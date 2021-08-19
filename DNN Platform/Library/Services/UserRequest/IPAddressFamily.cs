@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.UserRequest
     /// </summary>
     public enum IPAddressFamily
     {
-        IPv4,
-        IPv6,
+        IPv4 = 0,
+        IPv6 = 1,
     }
 }

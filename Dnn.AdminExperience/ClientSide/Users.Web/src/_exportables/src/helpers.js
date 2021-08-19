@@ -12,10 +12,11 @@ export function formatDate(dateValue, longformat) {
         return "-";
     }
 
-    const localizedFormat = require('dayjs/plugin/localizedFormat');
+    const localizedFormat = require("dayjs/plugin/localizedFormat");
     dayjs.extend(localizedFormat);
+    require("dayjs/locale/" + utilities.getCulture().substring(0,2));
 
-    return dayjs(dateValue).locale(utilities.getCulture()).format(longformat === true ? "LLL" : "L");
+    return dayjs(dateValue).locale(utilities.getCulture().substring(0,2)).format(longformat === true ? "LLL" : "L");
 }
 
 export function validateEmail(value) {

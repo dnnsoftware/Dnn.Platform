@@ -6,10 +6,10 @@ namespace DotNetNuke.Entities.Tabs
 {
     public enum TabType
     {
-        File,
-        Normal,
-        Tab,
-        Url,
-        Member,
+        File = 0,
+        Normal = 1,
+        Tab = 2,
+        Url = 3,
+        Member = 4,
     }
 }

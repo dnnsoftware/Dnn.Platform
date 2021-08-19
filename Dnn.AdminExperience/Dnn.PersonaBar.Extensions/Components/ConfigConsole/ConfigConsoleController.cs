@@ -8,8 +8,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Xml;
+    using System.Xml.Schema;
 
     using DotNetNuke.Application;
     using DotNetNuke.Common;
@@ -18,6 +20,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
     public class ConfigConsoleController
     {
+        /// <summary>
+        /// Name of the Web configuration file.
+        /// </summary>
+        internal const string WebConfig = "Web.config";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
         private const string CONFIG_EXT = ".config";
         private const string ROBOTS_EXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
@@ -73,6 +80,31 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
+        /// <summary>
+        /// Validates a config file against a well known schema.
+        /// </summary>
+        /// <param name="fileName">The config file name.</param>
+        /// <param name="fileContent">The contents of the config file.</param>
+        /// <returns>A list of validation errors.</returns>
+        public IEnumerable<string> ValidateConfigFile(string fileName, string fileContent)
+        {
+            this.ValidateFilePath(fileName);
+
+            if (!fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new string[0];
+            }
+
+            if (fileName.EndsWith(WebConfig, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var configDoc = new XmlDocument { XmlResolver = null };
+                configDoc.LoadXml(fileContent);
+                return ValidateSchema(configDoc, "Schemas/DotNetConfig.xsd");
+            }
+
+            return new string[0];
+        }
+
         public void MergeConfigFile(string fileContent)
         {
             if (this.IsValidXmlMergDocument(fileContent))
@@ -82,6 +114,39 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                 var app = DotNetNukeContext.Current.Application;
                 var merge = new DotNetNuke.Services.Installer.XmlMerge(doc, Globals.FormatVersion(app.Version), app.Description);
                 merge.UpdateConfigs();
+            }
+        }
+
+        private static IEnumerable<string> ValidateSchema(XmlDocument configDoc, string schemaRelPath)
+        {
+            var errors = new List<string>();
+
+            configDoc.Schemas.Add(LoadSchema(schemaRelPath));
+            configDoc.Validate((_, e) => errors.Add(e.Message));
+
+            return errors;
+        }
+
+        private static XmlSchema LoadSchema(string schemaRelPath)
+        {
+            var xsd = LoadResource(schemaRelPath);
+
+            using (var reader = new StringReader(xsd))
+            {
+                return XmlSchema.Read(reader, (_, e) => { });
+            }
+        }
+
+        private static string LoadResource(string relativePath)
+        {
+            var segments = relativePath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var relativeName = string.Join(".", segments);
+            var name = $"Dnn.PersonaBar.Extensions.Components.ConfigConsole.{relativeName}";
+
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
             }
         }
 

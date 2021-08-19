@@ -10,8 +10,8 @@ namespace DotNetNuke.UI.Skins
 
     public enum SkinDefaultType
     {
-        SkinInfo,
-        ContainerInfo,
+        SkinInfo = 0,
+        ContainerInfo = 1,
     }
 
     [Serializable]
