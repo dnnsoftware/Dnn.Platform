@@ -34,7 +34,6 @@ namespace DotNetNuke.Services.Authentication
         public int PortalID { get; set; }
 
         /// <summary>Gets the Dependency Provider to resolve registered services with the container.</summary>
-        [NonSerialized]
         protected IServiceProvider DependencyProvider => Globals.DependencyProvider;
     }
 }
