@@ -22,6 +22,7 @@
             }
 
             AnsiConsole.Render(GetPackagesTree(packageCrawler.PackageDirectoryPath, zipFiles));
+            AnsiConsole.WriteLine();
 
             if (!input.NoPrompt)
             {
@@ -49,9 +50,11 @@
             }
 
             AnsiConsole.MarkupLine($"Got session: [aqua]{session.Guid}[/].");
-            
+            AnsiConsole.WriteLine();
+
             await AnsiConsole.Status().StartAsync("Encrypting and uploading…", async context => 
                 await Task.WhenAll(zipFiles.Select(zipFile => AddPackageAsync(httpClient, input, session, zipFile, context))));
+            AnsiConsole.WriteLine();
 
             _ = httpClient.GetAsync($"Remote/Install?sessionGuid={session.Guid}");
 
@@ -69,7 +72,8 @@
                         AnsiConsole.WriteException(exception, ExceptionFormats.ShortenEverything);
                     }
 
-                    if (progress == null && (attemptStart - DateTime.Now) > TimeSpan.FromSeconds(input.InstallationStatusTimeout))
+                    var timeUntilTimeout = TimeSpan.FromSeconds(input.InstallationStatusTimeout) - (DateTime.Now - attemptStart);
+                    if (timeUntilTimeout < TimeSpan.Zero)
                     {
                         AnsiConsole.MarkupLine("[white on red]Unable to access API to get session details[/]");
                         return 1;
@@ -77,7 +81,7 @@
 
                     if (string.IsNullOrWhiteSpace(progress?.Response))
                     {
-                        AnsiConsole.MarkupLine("[white on red]Retrying session request[/]");
+                        AnsiConsole.MarkupLine($"[white on red]Retrying session request, timeout in {timeUntilTimeout}[/]");
                         await Task.Delay(TimeSpan.FromSeconds(2));
                         continue;
                     }
@@ -111,6 +115,7 @@
                     context.Refresh();
 
                     isComplete = progress.Status == SessionStatus.Complete;
+                    attemptStart = DateTime.Now;
                 }
 
                 return 0;
