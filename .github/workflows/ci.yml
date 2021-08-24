@@ -1,6 +1,7 @@
 name: CI (Build and Package)
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master, develop ]
   pull_request:
