@@ -17,8 +17,7 @@ module.exports = {
             __dirname,
             "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Seo/scripts/bundles/"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Seo\\scripts\\bundles\\",
+        : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Seo\\scripts\\bundles\\"),
     publicPath: isProduction ? "" : "http://localhost:8080/dist/",
     filename: "seo-bundle.js"
   },

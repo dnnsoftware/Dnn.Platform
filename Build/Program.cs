@@ -23,7 +23,7 @@ namespace DotNetNuke.Build
                 .UseModule<AzurePipelinesModule>()
                 .InstallTool(new Uri("nuget:?package=GitVersion.CommandLine&version=5.0.1"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=16.8.0"))
-                .InstallTool(new Uri("nuget:?package=NUnitTestAdapter&version=2.3.0"))
+                .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=4.0.0"))
                 .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.0"))
                 .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=0.9.1"))
                 .Run(args);

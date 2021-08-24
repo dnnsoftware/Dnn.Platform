@@ -75,7 +75,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(FileLockedException))]
         public void DeleteFile_Throws_WhenFileIsLocked()
         {
             // Arrange
@@ -85,11 +84,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(true);
 
             // Act
-            FileDeletionController.Instance.DeleteFile(fileInfo);
+            Assert.Throws<FileLockedException>(() => FileDeletionController.Instance.DeleteFile(fileInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(FolderProviderException))]
         public void DeleteFile_Throws_WhenFolderProviderThrows()
         {
             // Arrange
@@ -106,7 +104,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Throws<Exception>();
 
-            FileDeletionController.Instance.DeleteFile(fileInfo);
+            Assert.Throws<FolderProviderException>(() => FileDeletionController.Instance.DeleteFile(fileInfo));
         }
 
         [Test]

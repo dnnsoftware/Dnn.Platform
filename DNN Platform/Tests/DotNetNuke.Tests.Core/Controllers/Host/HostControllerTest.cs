@@ -298,10 +298,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void HostController_GetString_NullEmpty(string key)
         {
-            HostController.Instance.GetString(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetString(key));
         }
 
         [Test]
@@ -333,10 +332,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void HostController_GetInteger_NullEmpty(string key)
         {
-            HostController.Instance.GetInteger(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetInteger(key));
         }
 
         [Test]
@@ -369,10 +367,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void HostController_GetBoolean_NullEmpty(string key)
         {
-            HostController.Instance.GetBoolean(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetBoolean(key));
         }
 
         [Test]
@@ -404,10 +401,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void HostController_GetDouble_NullEmpty(string key)
         {
-            HostController.Instance.GetDouble(key);
+            Assert.Throws<ArgumentException>(() => HostController.Instance.GetDouble(key));
         }
 
         private string GetValue(string key)

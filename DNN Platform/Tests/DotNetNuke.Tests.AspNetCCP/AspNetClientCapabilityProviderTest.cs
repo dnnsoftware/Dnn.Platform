@@ -45,21 +45,19 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void AspNetClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_Empty_ClientCapabilityId()
         {
             // Act
             string nullClientCapabilityId = string.Empty;
-            var clientCapabilitiesByNullId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
+            Assert.Throws<ArgumentException>(() => this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void AspNetClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_Null_ClientCapabilityId()
         {
             // Act
             string nullClientCapabilityId = null;
-            var clientCapabilitiesByEmptyId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
+            Assert.Throws<ArgumentException>(() => this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId));
         }
     }
 }

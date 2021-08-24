@@ -1,14 +1,14 @@
-﻿PROJECT: NUnitTestAdapter
+﻿PROJECT: NUnit3TestAdapter
 
-WHERE WE USE IT: As part of our tests, see https://github.com/dnnsoftware/Dnn.Platform/search?q=nunittestadapter&unscoped_q=nunittestadapter
+WHERE WE USE IT: As part of our tests, see https://github.com/dnnsoftware/Dnn.Platform/search?q=NUnit3TestAdapter&unscoped_q=NUnit3TestAdapter
 
 LICENSE TYPE: MIT
 
 PROJECT LINK: https://github.com/nunit/nunit3-vs-adapter
 
-LICENSE (AS OF 2019-04-20): 
+LICENSE (AS OF 2021-07-27): 
 
-Copyright (c) 2011-2019 Charlie Poole, 2014-2019 Terje Sandstrom
+Copyright (c) 2011-2020 Charlie Poole, 2014-2020 Terje Sandstrom
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

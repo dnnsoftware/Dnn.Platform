@@ -116,14 +116,13 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
-        [ExpectedException(typeof(LockRecursionException))]
         public void NoWritesWhileEnumerating()
         {
             var list = new NaiveLockingList<int> { 0, 1, 2, 3 };
 
             using (list.GetEnumerator())
             {
-                list.Add(4);
+                Assert.Throws<LockRecursionException>(() => list.Add(4));
             }
         }
 
