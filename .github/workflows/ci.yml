@@ -17,24 +17,24 @@ jobs:
     strategy:
       matrix:
         configuration: [Release]
-        node-version: [12.x]
+        node-version: [14.x]
 
     runs-on: windows-latest
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2.3.4
 
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.0.3
     
     - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: NuGet/setup-nuget@v1.0.5
       with:
         nuget-version: latest
     
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2.4.0
       with:
         node-version: ${{ matrix.node-version }}
     
@@ -58,6 +58,6 @@ jobs:
       run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2.2.4
       with:
         path: dist/
