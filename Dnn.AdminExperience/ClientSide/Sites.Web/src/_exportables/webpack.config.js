@@ -16,8 +16,7 @@ module.exports = {
         ? path.resolve(
             "../../../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/scripts/exportables/Sites"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Sites\\scripts\\exportables\\Sites\\",
+        : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Sites\\scripts\\exportables\\Sites\\"),
     filename: "SitesListView.js",
     publicPath: isProduction ? "" : "http://localhost:8050/dist/"
   },

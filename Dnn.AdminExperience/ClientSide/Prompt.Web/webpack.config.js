@@ -22,8 +22,10 @@ module.exports = {
             __dirname,
             "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Prompt/scripts/bundles/"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Prompt\\scripts\\bundles\\",
+        : path.join(
+            settings.WebsitePath,
+            "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Prompt\\scripts\\bundles\\"
+          ),
     publicPath: isProduction ? "" : "http://localhost:8100/dist/",
     filename: "prompt-bundle.js"
   },

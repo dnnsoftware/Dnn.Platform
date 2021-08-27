@@ -1,7 +1,6 @@
 {
   "name": "@dnnsoftware/dnn-react-common",
-  "version": "9.9.1",
-  "private": false,
+  "version": "9.10.1",
   "description": "DNN React Component Library",
   "main": "dist/dnn-react-common.min.js",
   "repository": {
@@ -17,7 +16,7 @@
     "Persona Bar"
   ],
   "scripts": {
-    "eslint": "eslint ./src/**/*.jsx --fix",
+    "lint": "eslint --fix",
     "test": "echo \"No tests script specified to run.\"",
     "build": "set NODE_ENV=production && webpack -p --config dist.webpack.config.js",
     "debug": "set NODE_ENV=debug && webpack -p --config dist.webpack.config.js",
@@ -63,13 +62,13 @@
     "enzyme": "^3.5.0",
     "enzyme-adapter-react-16": "^1.13.0",
     "enzyme-to-json": "^3.3.4",
-    "eslint": "^5.4.0",
+    "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.2",
     "eslint-import-resolver-webpack": "^0.11.1",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-spellcheck": "0.0.11",

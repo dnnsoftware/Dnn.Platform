@@ -21,7 +21,7 @@ module.exports = {
   output: {
     path: isProduction || settings.WebsitePath == ""
       ? path.resolve("../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.AdminLogs/scripts/bundles/")
-      : settings.WebsitePath + "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.AdminLogs\\scripts\\bundles\\",
+      : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.AdminLogs\\scripts\\bundles\\"),
     filename: "adminLogs-bundle.js",
     publicPath: isProduction ? "" : "http://localhost:8080/dist/"
   },

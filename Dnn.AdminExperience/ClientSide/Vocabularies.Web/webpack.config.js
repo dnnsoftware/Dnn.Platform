@@ -17,8 +17,7 @@ module.exports = {
             __dirname,
             "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Vocabularies/scripts/bundles/"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Vocabularies\\scripts\\bundles\\",
+        : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Vocabularies\\scripts\\bundles\\"),
     publicPath: isProduction ? "" : "http://localhost:8080/dist/",
     filename: moduleName + "-bundle.js"
   },
