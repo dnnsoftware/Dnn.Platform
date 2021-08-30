@@ -4,9 +4,11 @@
 namespace DotNetNuke.Build
 {
     using System;
+    using System.Reflection;
 
     using Cake.AzurePipelines.Module;
     using Cake.Frosting;
+    using Cake.Frosting.Issues.Recipe;
 
     /// <summary>Runs the build process.</summary>
     public class Program
