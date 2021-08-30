@@ -1,4 +1,4 @@
-CKEDITOR.plugins.setLang('dnnpages', 'en', {
+CKEDITOR.plugins.setLang('dnnpages', 'fr', {
     dnnpages: 'Page du site',
     fileToBig: 'Le fichier est trop grand pour être télévresé.',
 	localPageLabel : 'Page qui provient de votre site.',
