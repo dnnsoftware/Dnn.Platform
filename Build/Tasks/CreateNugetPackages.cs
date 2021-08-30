@@ -35,8 +35,8 @@ namespace DotNetNuke.Build.Tasks
                                         OutputDirectory = @"./Artifacts/",
                                         IncludeReferencedProjects = true,
                                         Symbols = true,
+                                        SymbolPackageFormat = "snupkg",
                                         Properties = new Dictionary<string, string> { { "Configuration", "Release" } },
-                                        ArgumentCustomization = args => args.Append("-SymbolPackageFormat snupkg"),
                                     };
 
             nuspecFiles -= noSymbolsNuspecFiles;
@@ -47,7 +47,7 @@ namespace DotNetNuke.Build.Tasks
             }
 
             nuGetPackSettings.Symbols = false;
-            nuGetPackSettings.ArgumentCustomization = null;
+            nuGetPackSettings.SymbolPackageFormat = null;
             foreach (var spec in noSymbolsNuspecFiles)
             {
                 context.Information("Starting to pack: {0}", spec);
