@@ -18,52 +18,60 @@
     {
         public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
         {
-            var packageCrawler = new PackageCrawler(input.PackagesDirectory);
-            var zipFiles = packageCrawler.GetPackagesFullPaths().ToList();
-            if (!zipFiles.Any())
+            try
             {
-                AnsiConsole.MarkupLine($"No package zip files found in [yellow]{packageCrawler.PackageDirectoryPath}[/]");
-                return 2;
-            }
-
-            AnsiConsole.Render(GetPackagesTree(packageCrawler.PackageDirectoryPath, zipFiles));
-            AnsiConsole.WriteLine();
-
-            if (!input.NoPrompt)
-            {
-                if (!AnsiConsole.Confirm("Would you like to continue?", false))
+                var packageCrawler = new PackageCrawler(input.PackagesDirectory);
+                var zipFiles = packageCrawler.GetPackagesFullPaths().ToList();
+                if (!zipFiles.Any())
                 {
-                    AnsiConsole.WriteLine("Exiting");
-                    return 3;
+                    AnsiConsole.MarkupLine($"No package zip files found in [yellow]{packageCrawler.PackageDirectoryPath}[/]");
+                    return 2;
                 }
+
+                AnsiConsole.Render(GetPackagesTree(packageCrawler.PackageDirectoryPath, zipFiles));
                 AnsiConsole.WriteLine();
+
+                if (!input.NoPrompt)
+                {
+                    if (!AnsiConsole.Confirm("Would you like to continue?", false))
+                    {
+                        AnsiConsole.WriteLine("Exiting");
+                        return 3;
+                    }
+                    AnsiConsole.WriteLine();
+                }
+
+                var httpClient = new HttpClient
+                {
+                    BaseAddress = new Uri(new Uri(input.TargetUri), "DesktopModules/PolyDeploy/API/"),
+                    DefaultRequestHeaders = { { "x-api-key", input.ApiKey }, },
+                };
+
+                var session = await AnsiConsole.Status().StartAsync<Session?>("Creating session…", async context => 
+                    await httpClient.GetFromJsonAsync<Session>("Remote/CreateSession"));
+
+                if (session == null || string.IsNullOrWhiteSpace(session.Guid))
+                {
+                    AnsiConsole.MarkupLine("[white on red]Unable to create session via API[/]");
+                    return 1;
+                }
+
+                AnsiConsole.MarkupLine($"Got session: [aqua]{session.Guid}[/].");
+                AnsiConsole.WriteLine();
+
+                await AnsiConsole.Status().StartAsync("Encrypting and uploading…", async context => 
+                    await Task.WhenAll(zipFiles.Select(zipFile => AddPackageAsync(httpClient, input, session, zipFile, context))));
+                AnsiConsole.WriteLine();
+
+                _ = httpClient.GetAsync($"Remote/Install?sessionGuid={session.Guid}");
+
+                return await GetInstallStatus(input, httpClient, session);
             }
-
-            var httpClient = new HttpClient
+            catch (Exception exception)
             {
-                BaseAddress = new Uri(new Uri(input.TargetUri), "DesktopModules/PolyDeploy/API/"),
-                DefaultRequestHeaders = { { "x-api-key", input.ApiKey }, },
-            };
-
-            var session = await AnsiConsole.Status().StartAsync<Session?>("Creating session…", async context => 
-                await httpClient.GetFromJsonAsync<Session>("Remote/CreateSession"));
-
-            if (session == null || string.IsNullOrWhiteSpace(session.Guid))
-            {
-                AnsiConsole.MarkupLine("[white on red]Unable to create session via API[/]");
-                return 1;
+                AnsiConsole.WriteException(exception);
+                throw;
             }
-
-            AnsiConsole.MarkupLine($"Got session: [aqua]{session.Guid}[/].");
-            AnsiConsole.WriteLine();
-
-            await AnsiConsole.Status().StartAsync("Encrypting and uploading…", async context => 
-                await Task.WhenAll(zipFiles.Select(zipFile => AddPackageAsync(httpClient, input, session, zipFile, context))));
-            AnsiConsole.WriteLine();
-
-            _ = httpClient.GetAsync($"Remote/Install?sessionGuid={session.Guid}");
-
-            return await GetInstallStatus(input, httpClient, session);
         }
 
         private static async Task<int> GetInstallStatus(DeployInput input, HttpClient httpClient, Session? session)
