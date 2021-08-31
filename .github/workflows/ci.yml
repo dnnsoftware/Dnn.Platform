@@ -29,18 +29,17 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.3
     
-    - name: Install .NET Core
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1.8.1
       with:
-        dotnet-version: '6.0'
-        include-prerelease: True
+        dotnet-version: '5.0.x'
     
     - name: Setup NuGet.exe for use with actions
       uses: NuGet/setup-nuget@v1.0.5
       with:
         nuget-version: latest
     
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2.4.0
       with:
         node-version: ${{ matrix.node-version }}
