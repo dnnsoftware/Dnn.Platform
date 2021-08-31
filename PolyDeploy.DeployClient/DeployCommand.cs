@@ -63,68 +63,98 @@
 
             _ = httpClient.GetAsync($"Remote/Install?sessionGuid={session.Guid}");
 
+            return await GetInstallStatus(input, httpClient, session);
+        }
+
+        private static async Task<int> GetInstallStatus(DeployInput input, HttpClient httpClient, Session? session)
+        {
             var table = new Table().Centered();
             table.Title = new TableTitle("Installation Jobs");
-            return await AnsiConsole.Live(table).AutoClear(false).StartAsync(async context => {
-                DateTime attemptStart = DateTime.Now;
-                bool isComplete = false;
-                while (!isComplete) 
-                {
-                    SessionProgress? progress = null;
-                    try {
-                        progress = await httpClient.GetFromJsonAsync<SessionProgress>($"Remote/GetSession?sessionGuid={session.Guid}");
-                    } catch (Exception exception) {
-                        AnsiConsole.WriteException(exception, ExceptionFormats.ShortenEverything);
-                    }
+            return await AnsiConsole.Live(table)
+                                    .AutoClear(false)
+                                    .StartAsync(
+                                        async context =>
+                                        {
+                                            DateTime attemptStart = DateTime.Now;
+                                            bool isComplete = false;
+                                            while (!isComplete)
+                                            {
+                                                SessionProgress? progress = null;
+                                                try
+                                                {
+                                                    progress = await httpClient.GetFromJsonAsync<SessionProgress>(
+                                                        $"Remote/GetSession?sessionGuid={session.Guid}");
+                                                }
+                                                catch (Exception exception)
+                                                {
+                                                    AnsiConsole.WriteException(exception, ExceptionFormats.ShortenEverything);
+                                                }
 
-                    var timeUntilTimeout = TimeSpan.FromSeconds(input.InstallationStatusTimeout) - (DateTime.Now - attemptStart);
-                    if (timeUntilTimeout < TimeSpan.Zero)
-                    {
-                        AnsiConsole.MarkupLine("[white on red]Unable to access API to get session details[/]");
-                        return 1;
-                    }
+                                                var timeUntilTimeout =
+                                                    TimeSpan.FromSeconds(input.InstallationStatusTimeout)
+                                                    - (DateTime.Now - attemptStart);
+                                                if (timeUntilTimeout < TimeSpan.Zero)
+                                                {
+                                                    AnsiConsole.MarkupLine(
+                                                        "[white on red]Unable to access API to get session details[/]");
+                                                    return 1;
+                                                }
 
-                    if (string.IsNullOrWhiteSpace(progress?.Response))
-                    {
-                        AnsiConsole.MarkupLine($"[white on red]Retrying session request, timeout in {timeUntilTimeout}[/]");
-                        await Task.Delay(TimeSpan.FromSeconds(2));
-                        continue;
-                    }
+                                                if (string.IsNullOrWhiteSpace(progress?.Response))
+                                                {
+                                                    AnsiConsole.MarkupLine(
+                                                        $"[white on red]Retrying session request, timeout in {timeUntilTimeout}[/]");
+                                                    await Task.Delay(TimeSpan.FromSeconds(2));
+                                                    continue;
+                                                }
 
-                    var jobs = JsonSerializer.Deserialize<SortedList<string, InstallJob?>>(progress.Response);
-                    if (!table.Columns.Any()) { 
-                        table.AddColumns("Name", "Attempted", "Success", "Packages", "Failures");
-                    }
+                                                var jobs = JsonSerializer.Deserialize<SortedList<string, InstallJob?>>(
+                                                    progress.Response);
+                                                if (!table.Columns.Any())
+                                                {
+                                                    table.AddColumns("Name", "Attempted", "Success", "Packages", "Failures");
+                                                }
 
-                    while (table.Rows.Any())
-                    { 
-                        table.RemoveRow(0);
-                    }
+                                                while (table.Rows.Any())
+                                                {
+                                                    table.RemoveRow(0);
+                                                }
 
-                    foreach (var job in jobs ?? Enumerable.Empty<KeyValuePair<string, InstallJob?>>())
-                    {
-                        if (job.Value == null)
-                        {
-                            continue;
-                        }
+                                                foreach (var job in jobs
+                                                                    ?? Enumerable.Empty<KeyValuePair<string, InstallJob?>>())
+                                                {
+                                                    if (job.Value == null)
+                                                    {
+                                                        continue;
+                                                    }
 
-                        table.AddRow(new IRenderable[] {
-                            new Markup(job.Value.Name ?? string.Empty),
-                            new Markup(job.Value.Attempted ? "[green]:check_mark_button:[/]" : string.Empty),
-                            new Markup(job.Value.Success ? "[green]:check_mark_button:[/]" : job.Value.Attempted ? "[red]:cross_mark_button:[/]" : string.Empty),
-                            GetPackageTable(job.Value.Packages),
-                            GetFailuresTree(job.Value.Failures),
-                        });
-                    }
+                                                    table.AddRow(
+                                                        new IRenderable[]
+                                                        {
+                                                            new Markup(job.Value.Name ?? string.Empty),
+                                                            new Markup(
+                                                                job.Value.Attempted
+                                                                    ? "[green]:check_mark_button:[/]"
+                                                                    : string.Empty),
+                                                            new Markup(
+                                                                job.Value.Success
+                                                                    ? "[green]:check_mark_button:[/]"
+                                                                    : job.Value.Attempted
+                                                                        ? "[red]:cross_mark_button:[/]"
+                                                                        : string.Empty),
+                                                            GetPackageTable(job.Value.Packages),
+                                                            GetFailuresTree(job.Value.Failures),
+                                                        });
+                                                }
 
-                    context.Refresh();
+                                                context.Refresh();
 
-                    isComplete = progress.Status == SessionStatus.Complete;
-                    attemptStart = DateTime.Now;
-                }
+                                                isComplete = progress.Status == SessionStatus.Complete;
+                                                attemptStart = DateTime.Now;
+                                            }
 
-                return 0;
-            });
+                                            return 0;
+                                        });
         }
 
         private static IRenderable GetFailuresTree(IReadOnlyCollection<string?>? failures)
