@@ -2,10 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using PolyDeploy.Encryption;
-    using Spectre.Cli;
-    using Spectre.Console;
-    using Spectre.Console.Rendering;
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
@@ -14,6 +10,12 @@
     using System.Text.Json;
     using System.Threading.Tasks;
     
+    using PolyDeploy.Encryption;
+    
+    using Spectre.Cli;
+    using Spectre.Console;
+    using Spectre.Console.Rendering;
+
     public class DeployCommand : AsyncCommand<DeployCommand.DeployInput>
     {
         public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
@@ -47,7 +49,7 @@
                     DefaultRequestHeaders = { { "x-api-key", input.ApiKey }, },
                 };
 
-                var session = await AnsiConsole.Status().StartAsync<Session?>("Creating session…", async context => 
+                var session = await AnsiConsole.Status().StartAsync("Creating session…", async _ => 
                     await httpClient.GetFromJsonAsync<Session>("Remote/CreateSession"));
 
                 if (session == null || string.IsNullOrWhiteSpace(session.Guid))
@@ -59,8 +61,8 @@
                 AnsiConsole.MarkupLine($"Got session: [aqua]{session.Guid}[/].");
                 AnsiConsole.WriteLine();
 
-                await AnsiConsole.Status().StartAsync("Encrypting and uploading…", async context => 
-                    await Task.WhenAll(zipFiles.Select(zipFile => AddPackageAsync(httpClient, input, session, zipFile, context))));
+                await AnsiConsole.Status().StartAsync("Encrypting and uploading…", async _ => 
+                    await Task.WhenAll(zipFiles.Select(zipFile => AddPackageAsync(httpClient, input, session, zipFile))));
                 AnsiConsole.WriteLine();
 
                 _ = httpClient.GetAsync($"Remote/Install?sessionGuid={session.Guid}");
@@ -89,7 +91,7 @@
             }
         }
 
-        private static async Task<int> GetInstallStatus(DeployInput input, HttpClient httpClient, Session? session, Table table, Action<Table> render)
+        private static async Task<int> GetInstallStatus(DeployInput input, HttpClient httpClient, Session session, Table table, Action<Table> render)
         {
             DateTime attemptStart = DateTime.Now;
             bool isComplete = false;
@@ -169,7 +171,7 @@
 
         private static IRenderable GetFailuresTree(IReadOnlyCollection<string?>? failures)
         {
-            if (failures == null || !failures.Any(f => !string.IsNullOrWhiteSpace(f)))
+            if (failures == null || failures.All(string.IsNullOrWhiteSpace))
             { 
                 return new Markup(string.Empty);
             }
@@ -193,10 +195,10 @@
             return table;
         }
 
-        private static async Task AddPackageAsync(HttpClient httpClient, DeployInput input, Session session, string zipFile, StatusContext context)
+        private static async Task AddPackageAsync(HttpClient httpClient, DeployInput input, Session session, string zipFile)
         {
-            using var fileStream = File.OpenRead(zipFile);
-            using var encrypted = Crypto.Encrypt(fileStream, input.EncryptionKey);
+            await using var fileStream = File.OpenRead(zipFile);
+            await using var encrypted = Crypto.Encrypt(fileStream, input.EncryptionKey);
             string fileName = Path.GetFileName(zipFile);
             var content = new MultipartFormDataContent { { new StreamContent(encrypted), "none", fileName }, };
             await httpClient.PostAsync($"Remote/AddPackages?sessionGuid={session.Guid}", content);
