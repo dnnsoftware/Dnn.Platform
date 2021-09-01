@@ -1625,7 +1625,7 @@ __metadata:
     react: ^16.4.2
     react-accessible-tooltip: ^2.0.3
     react-addons-test-utils: ^15.6.2
-    react-collapse: ^4.0.3
+    react-collapse: ^5.1.0
     react-custom-scrollbars: ^4.2.1
     react-day-picker: ^7.1.10
     react-dom: ^16.4.2
@@ -10793,7 +10793,7 @@ __metadata:
     prop-types: ^15.6.2
     raw-loader: 2.0.0
     react: ^16.6.3
-    react-collapse: 4.0.3
+    react-collapse: 5.1.0
     react-custom-scrollbars: 4.2.1
     react-dom: ^16.6.3
     react-height: 3.0.1
@@ -19227,15 +19227,12 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"react-collapse@npm:4.0.3, react-collapse@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "react-collapse@npm:4.0.3"
-  dependencies:
-    prop-types: ^15.5.8
+"react-collapse@npm:5.1.0, react-collapse@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "react-collapse@npm:5.1.0"
   peerDependencies:
-    react: ">=15.3"
-    react-motion: ^0.4 || ^0.5
-  checksum: 634ffd1588f12da5734cbe3a71eb0c37ea68447187d5be4129846207815ecf5c96fd3b7891903b3ba08c08ea8c2b6d1b41518708224e2a09de0f0f22ab6b68d5
+    react: ">=16.3.0"
+  checksum: 760ba253b9f8436ece846a5f19f66db5d18c915aa585b2fd88170879b00069743f93b987a0bb469a4047e62c1dc0fe4c8a09baa7bf6973c0d43ae2ca57f5f85d
   languageName: node
   linkType: hard
 
