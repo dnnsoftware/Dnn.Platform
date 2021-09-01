@@ -1485,6 +1485,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.9.2":
+  version: 7.15.4
+  resolution: "@babel/runtime@npm:7.15.4"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: c40825430400e47c19b97e4142d5315d2910305b9714d44a711472587ee2fd4521fdba5f02ddd9df3902f5e988d9854fa83f4da1e0c091f70f6983fa52480606
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.1.0, @babel/template@npm:^7.1.2, @babel/template@npm:^7.2.2, @babel/template@npm:^7.4.0, @babel/template@npm:^7.4.4":
   version: 7.4.4
   resolution: "@babel/template@npm:7.4.4"
@@ -1583,7 +1592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@9.9.1, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@9.10.1, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -4198,7 +4207,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": ^7.0.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -8784,7 +8793,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babel-polyfill: 6.26.0
@@ -8820,7 +8829,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.4
     babel-plugin-transform-react-remove-prop-types: 0.4.20
     babel-polyfill: 6.26.0
@@ -8856,7 +8865,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.6
     create-react-class: ^15.6.3
     css-loader: 2.1.1
@@ -8877,7 +8886,7 @@ __metadata:
     react-hot-loader: ^4.8.5
     react-redux: ^5.1.1
     react-widgets: ^4.4.7
-    redux: 4.0.1
+    redux: 4.1.1
     style-loader: ^0.23.1
     throttle-debounce: ^3.0.1
     utils: ^0.3.1
@@ -10230,7 +10239,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -10267,7 +10276,7 @@ __metadata:
     react-tabs: 3.0.0
     react-tooltip: 4.2.21
     react-widgets: 4.4.6
-    redux: 4.0.1
+    redux: 4.1.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.1.3
     redux-devtools-log-monitor: 1.4.0
@@ -10409,7 +10418,7 @@ __metadata:
     "@babel/core": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
     babel-plugin-transform-object-rest-spread: 6.26.0
@@ -14434,7 +14443,7 @@ fsevents@~2.3.2:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -16894,7 +16903,7 @@ fsevents@~2.3.2:
     "@babel/plugin-proposal-object-rest-spread": ^7.0.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     "@types/knockout": ^3.4.66
     "@types/redux": 3.6.31
     babel-eslint: ^10.0.1
@@ -18065,7 +18074,7 @@ fsevents@~2.3.2:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-eslint: ^10.0.1
@@ -18107,7 +18116,7 @@ fsevents@~2.3.2:
     react-hot-loader: 4.8.5
     react-redux: 5.1.0
     react-test-renderer: ^16.6.2
-    redux: 4.0.1
+    redux: 4.1.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: 1.1.3
     redux-devtools-log-monitor: 1.4.0
@@ -19647,7 +19656,16 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"redux@npm:4.0.1, redux@npm:^4.0.1":
+"redux@npm:4.1.1":
+  version: 4.1.1
+  resolution: "redux@npm:4.1.1"
+  dependencies:
+    "@babel/runtime": ^7.9.2
+  checksum: 99519438a5d20b69404ad3816307ccc189f16df04b64c50d82c415ec488ea68b656d7a2fc81b6345e8d90f095344dfea68246500f72613d76464986660bc0485
+  languageName: node
+  linkType: hard
+
+"redux@npm:^4.0.1":
   version: 4.0.1
   resolution: "redux@npm:4.0.1"
   dependencies:
@@ -19716,6 +19734,13 @@ fsevents@~2.3.2:
   version: 0.13.2
   resolution: "regenerator-runtime@npm:0.13.2"
   checksum: 0ef69207737b538dcdc1efa2179662c533a455e0bdc632822a4a4f954203a223d0521bdc76d9b48334619abd9dafeb5840160f7a68044eed117496e59a54da56
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.13.4":
+  version: 0.13.9
+  resolution: "regenerator-runtime@npm:0.13.9"
+  checksum: 65ed455fe5afd799e2897baf691ca21c2772e1a969d19bb0c4695757c2d96249eb74ee3553ea34a91062b2a676beedf630b4c1551cc6299afb937be1426ec55e
   languageName: node
   linkType: hard
 
@@ -20168,7 +20193,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-arrow-functions": ^7.10.4
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-eslint: ^10.1.0
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
@@ -20322,7 +20347,7 @@ resolve@^1.4.0:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: ^2.0.0
     array.prototype.findindex: ^2.0.0
     babel-loader: ^8.0.6
@@ -20561,7 +20586,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     create-react-class: ^15.6.3
@@ -20713,7 +20738,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -20823,7 +20848,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     "@types/redux": ^3.6.31
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
@@ -21082,7 +21107,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-eslint: ^10.0.1
     babel-loader: 8.0.6
     babel-plugin-transform-class-properties: ^6.22.0
@@ -21137,7 +21162,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -21185,7 +21210,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babel-polyfill: 6.26.0
@@ -22254,7 +22279,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -22296,7 +22321,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -22474,7 +22499,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
     babel-plugin-transform-object-rest-spread: 6.26.0
@@ -23228,7 +23253,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.9.1
+    "@dnnsoftware/dnn-react-common": 9.10.1
     babel-loader: ^8.0.6
     create-react-class: ^15.6.3
     css-loader: 2.1.1
