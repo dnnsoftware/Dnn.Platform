@@ -10,6 +10,8 @@
     using System.Text.Json;
     using System.Threading.Tasks;
     
+    using IsCI;
+
     using PolyDeploy.Encryption;
     
     using Spectre.Cli;
@@ -69,7 +71,7 @@
 
                 var table = new Table().Centered();
                 table.Title = new TableTitle("Installation Jobs");
-                if (Environment.UserInteractive)
+                if (Environment.UserInteractive && !DetectCI.IsCI())
                 {
                     return await AnsiConsole.Live(table)
                                             .AutoClear(false)
