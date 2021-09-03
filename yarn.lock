@@ -1476,16 +1476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.4.3":
-  version: 7.4.4
-  resolution: "@babel/runtime@npm:7.4.4"
-  dependencies:
-    regenerator-runtime: ^0.13.2
-  checksum: 7e375aeb0f04c3473433fdb95672d374e5edd16c61c4e1569e2f7ff433f3c1aa119ba26cd7fc0d14b19d3aa0fc700d3ba8bd4e5ed654019a36a83946991a4347
-  languageName: node
-  linkType: hard
-
-"@babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.4.3, @babel/runtime@npm:^7.9.2":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
@@ -19727,13 +19718,6 @@ fsevents@~2.3.2:
   version: 0.12.1
   resolution: "regenerator-runtime@npm:0.12.1"
   checksum: 348c401336bcebe2be17fd4f24c5b0a1ed75bff3024dc817a69cdc776b48b98c7f6f3b98e1baa4220569440bb9215e1fff3dcb01c8aad3ff2ed3732e30d017bf
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "regenerator-runtime@npm:0.13.2"
-  checksum: 0ef69207737b538dcdc1efa2179662c533a455e0bdc632822a4a4f954203a223d0521bdc76d9b48334619abd9dafeb5840160f7a68044eed117496e59a54da56
   languageName: node
   linkType: hard
 
