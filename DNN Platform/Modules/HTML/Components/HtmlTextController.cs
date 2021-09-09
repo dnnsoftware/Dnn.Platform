@@ -50,8 +50,13 @@ namespace DotNetNuke.Modules.Html
         private const string PortalRootToken = "{{PortalRoot}}";
 
         public HtmlTextController()
+            : this(Globals.DependencyProvider.GetRequiredService<INavigationManager>())
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public HtmlTextController(INavigationManager navigationManager)
+        {
+            this.NavigationManager = navigationManager;
         }
 
         protected INavigationManager NavigationManager { get; }
