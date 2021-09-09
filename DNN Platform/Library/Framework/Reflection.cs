@@ -303,9 +303,14 @@ namespace DotNetNuke.Framework
 
         public static object CreateInstance(Type Type)
         {
+            return CreateInstance(Type, null);
+        }
+
+        public static object CreateInstance(Type Type, object[] args)
+        {
             if (Type != null)
             {
-                return Type.InvokeMember(string.Empty, BindingFlags.CreateInstance, null, null, null, null);
+                return Type.InvokeMember(string.Empty, BindingFlags.CreateInstance, null, null, args, null);
             }
             else
             {
