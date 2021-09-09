@@ -378,11 +378,11 @@ namespace DotNetNuke.Services.Search.Internals
                         var analyzerType = Reflection.CreateType(customAnalyzerType);
 
                         // If parameterless ctor exists, use that; if not, pass the Lucene Version.
-                        if (analyzerType.GetConstructor(Type.EmptyTypes) != null)
+                        if (analyzerType?.GetConstructor(Type.EmptyTypes) != null)
                         {
                             analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
                         }
-                        else if (analyzerType.GetConstructor(new Type[] { typeof(Lucene.Net.Util.Version) }) != null)
+                        else if (analyzerType?.GetConstructor(new Type[] { typeof(Lucene.Net.Util.Version) }) != null)
                         {
                             analyzer = Reflection.CreateInstance(analyzerType, new object[] { Constants.LuceneVersion }) as Analyzer;
                         }

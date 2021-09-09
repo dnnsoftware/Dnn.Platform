@@ -11,13 +11,13 @@
         {
             // Arrange
             var typeToCreate = typeof(StringBuilder);
-            var argToPass = new object[] { 1 };
+            var argToPass = new object[] { "one" };
 
             // Act
-            var result = Reflection.CreateInstance(typeToCreate, argToPass) as StringBuilder;
+            var result = (StringBuilder)Reflection.CreateInstance(typeToCreate, argToPass);
 
             // Assert
-            Assert.AreEqual(1, result.Capacity);
+            Assert.AreEqual("one", result.ToString());
         }
 
         [Test]
@@ -27,10 +27,10 @@
             var typeToCreate = typeof(StringBuilder);
 
             // Act
-            var result = Reflection.CreateInstance(typeToCreate) as StringBuilder;
+            var result = (StringBuilder)Reflection.CreateInstance(typeToCreate);
 
             // Assert
-            Assert.AreEqual(16, result.Capacity);
+            Assert.AreEqual(string.Empty, result.ToString());
         }
     }
 }
