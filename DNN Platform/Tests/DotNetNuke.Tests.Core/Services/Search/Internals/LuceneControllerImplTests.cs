@@ -4,6 +4,7 @@
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Mocks;
     using Lucene.Net.Analysis.Cz;
@@ -39,7 +40,8 @@
             services.AddTransient(container => mockedApplicationStatusInfo.Object);
             services.AddTransient(container => Mock.Of<INavigationManager>());
             Globals.DependencyProvider = services.BuildServiceProvider();
-            var cachingProvider = MockComponentProvider.CreateDataCacheProvider();
+            MockComponentProvider.CreateDataCacheProvider();
+            DataCache.ClearCache();
             var luceneController = new LuceneControllerImpl();
 
             // Act
