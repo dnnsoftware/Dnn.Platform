@@ -2370,3 +2370,54 @@ div.ui-dialog-titlebar>.ui-dialog-titlebar-close:hover {
 .monaco-editor .view-lines * {
     font-family: inherit;
 }
+
+
+
+/* IE10+ specific personabar styles go here */
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    .personabar {
+        background-color: #0e2936;
+    }
+
+        .personabar .personabarLogo {
+            background: url("../images/Logo.svg") no-repeat center center;
+            border-bottom: 1px solid #1e485e;
+        }
+
+            .personabar .personabarLogo:hover {
+                background-color: #0b1c24;
+            }
+
+    .personabarnav > li > span.icon-loader svg .back {
+        fill: #0b1c24;
+    }
+
+    .personabarnav > li > span.icon-loader svg .main {
+        fill: #3c7a9a;
+    }
+
+    .personabarnav > li:hover,
+    .personabarnav > li.active {
+        background-color: #0b1c24;
+    }
+
+    .personabarnav > li#Edit {
+        border-top: 1px solid #1e485e;
+    }
+
+    .hovermenu {
+        background-color: #0b1c24;
+    }
+
+    .hoverSummaryMenu {
+        background-color: #0b1c24;
+    }
+
+        .hoverSummaryMenu ul li.border {
+            border-left: 1px solid #3c7a9a;
+        }
+
+        .hoverSummaryMenu ul li label {
+            color: #3c7a9a;
+        }
+}
