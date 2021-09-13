@@ -152,9 +152,11 @@ The build scripts should leave you with 0 tracked modified files in git.
 If a build fails midway and you have tracked artifacts, you can simply run:
 `git reset --hard` and/or `git clean -dxf` in order to come back to a clean state.
 
-### Running Cake
+### Troubleshooting
 
 If you encounter PowerShell security issues, please read [Cake - PowerShell Security](https://cakebuild.net/docs/tutorials/powershell-security)
+
+If you encounter Yarn issues, please [update to the latest version of Yarn](https://yarnpkg.com/getting-started/install)
 
 ### Git branching strategy
 
