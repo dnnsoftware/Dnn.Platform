@@ -25,7 +25,9 @@ namespace DNNConnect.CKEditorProvider.Web
     using DNNConnect.CKEditorProvider.Extensions;
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -38,6 +40,7 @@ namespace DNNConnect.CKEditorProvider.Web
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The CKEditor control.
@@ -48,6 +51,8 @@ namespace DNNConnect.CKEditorProvider.Web
         /// The provider type.
         /// </summary>
         private const string ProviderType = "htmlEditor";
+
+        private readonly INavigationManager navigationManager;
 
         /// <summary>
         /// The portal settings.
@@ -90,8 +95,8 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </summary>
         public EditorControl()
         {
+            this.navigationManager = this.Context.GetScope().ServiceProvider.GetRequiredService<INavigationManager>();
             this.LoadConfigSettings();
-
             this.Init += this.CKEditorInit;
         }
 
@@ -892,7 +897,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
             if (PortalSecurity.IsInRoles(this.portalSettings.AdministratorRoleName))
             {
-                var editorUrl = Globals.NavigateURL(
+                var editorUrl = this.navigationManager.NavigateURL(
                     "CKEditorOptions",
                     "ModuleId=" + this.parentModulId,
                     "minc=" + this.ID,
@@ -1351,7 +1356,6 @@ namespace DNNConnect.CKEditorProvider.Web
             Type csType = this.GetType();
 
             const string CsName = "CKEdScript";
-            const string CsAdaptName = "CKAdaptScript";
             const string CsFindName = "CKFindScript";
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
