@@ -9530,10 +9530,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es6-shim@npm:0.35.0":
-  version: 0.35.0
-  resolution: "es6-shim@npm:0.35.0"
-  checksum: 4ad983823bd9e46f045b5a111c50b617bfa28b3d46e28d591ed672e971892c80d2664bbde9b547015a9a583fbda0a931e266738db0b53f29fab694800a24ab24
+"es6-shim@npm:0.35.6":
+  version: 0.35.6
+  resolution: "es6-shim@npm:0.35.6"
+  checksum: 31b27a7ce0432dd97c523da97e43dbcbf607093ac139697ac2e70d7ab67a90e9c362477a85f36961ebb0d09d0ffdaace45f5c9807f788849b28cc6a847e68c53
   languageName: node
   linkType: hard
 
@@ -20186,7 +20186,7 @@ resolve@^1.4.0:
     babel-polyfill: 6.26.0
     copy-to-clipboard: ^3.0.5
     css-loader: 2.1.1
-    es6-shim: 0.35.0
+    es6-shim: 0.35.6
     eslint: 5.8.0
     eslint-loader: 2.1.1
     eslint-plugin-babel: 5.3.0
