@@ -40,38 +40,4 @@ namespace PolyDeploy.DeployClient.Tests
             actualFiles.ShouldBe(new[] { "Package 1.zip", "Another Package.zip" }, ignoreOrder: true);
         }
     }
-
-    public interface IPackageFileSource
-    {
-        Task<IReadOnlyCollection<string>> GetPackageFiles();
-    }
-
-    public interface IDeployer
-    {
-        Task StartAsync();
-    }
-
-    public class Deployer : IDeployer
-    {
-
-        private readonly IRenderer renderer;
-        private readonly IPackageFileSource packageFileSource;
-
-        public Deployer(IRenderer renderer, IPackageFileSource packageFileSource)
-        {
-            this.renderer = renderer;
-            this.packageFileSource = packageFileSource;
-        }
-
-        public async Task StartAsync()
-        {
-            var packageFiles = await this.packageFileSource.GetPackageFiles();
-            await this.renderer.RenderListOfFiles(packageFiles);
-        }
-    }
-
-    public interface IRenderer
-    {
-        Task RenderListOfFiles(IEnumerable<string> files);
-    }
 }
