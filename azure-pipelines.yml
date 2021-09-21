@@ -107,4 +107,4 @@ steps:
     condition: always()
 
 - publish: 'Artifacts'
-  continueOnError: true
+  condition: always()
