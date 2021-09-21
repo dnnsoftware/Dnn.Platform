@@ -267,8 +267,8 @@ namespace DotNetNuke.Modules.Admin.Users
                             break;
                         case "Edit":
                             // The Friendly URL parser does not like non-alphanumeric characters
-                            // so first create the format string with a dummy value and then
-                            // replace the dummy value with the FormatString place holder
+                            // so first create the format string with a fake value and then
+                            // replace the fake value with the FormatString place holder
                             string formatString = this.EditUrl("PropertyDefinitionID", "KEYFIELD", "EditProfileProperty");
                             formatString = formatString.Replace("KEYFIELD", "{0}");
                             imageColumn.NavigateURLFormatString = formatString;

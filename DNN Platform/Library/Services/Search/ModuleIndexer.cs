@@ -296,7 +296,7 @@ namespace DotNetNuke.Services.Search
 
             var searchDoc = new SearchDocument
             {
-                // Assigns as a Search key the SearchItems' GUID, if not it creates a dummy guid.
+                // Assigns as a Search key the SearchItems' GUID, if not it creates a new guid.
                 UniqueKey = (searchItem.SearchKey.Trim() != string.Empty) ? searchItem.SearchKey : Guid.NewGuid().ToString(),
                 QueryString = searchItem.GUID,
                 Title = searchItem.Title,

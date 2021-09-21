@@ -3392,9 +3392,9 @@ Sys._ScriptLoader.getInstance = function Sys$_ScriptLoader$getInstance() {
 }
 
 Sys._ScriptLoader.isScriptLoaded = function Sys$_ScriptLoader$isScriptLoaded(scriptSrc) {
-                    var dummyScript = document.createElement('script');
-    dummyScript.src = scriptSrc;
-    return Array.contains(Sys._ScriptLoader._getLoadedScripts(), dummyScript.src);
+    var scriptElement = document.createElement('script');
+    scriptElement.src = scriptSrc;
+    return Array.contains(Sys._ScriptLoader._getLoadedScripts(), scriptElement.src);
 }
 
 Sys._ScriptLoader.readLoadedScripts = function Sys$_ScriptLoader$readLoadedScripts() {
