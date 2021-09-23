@@ -1,4 +1,4 @@
-namespace PolyDeploy.DeployClient.Tests
+namespace PolyDeploy.DeployClient
 {
     using System.Threading.Tasks;
 
@@ -16,8 +16,8 @@ namespace PolyDeploy.DeployClient.Tests
 
         public async Task StartAsync()
         {
-            var packageFiles = await this.packageFileSource.GetPackageFiles();
-            await this.renderer.RenderListOfFiles(packageFiles);
+            var packageFiles = this.packageFileSource.GetPackageFiles();
+            this.renderer.RenderListOfFiles(packageFiles);
         }
     }
 }

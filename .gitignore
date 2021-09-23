@@ -309,3 +309,4 @@ __pycache__/
 docs_compiled/
 
 dist/
+.vscode/

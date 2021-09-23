@@ -30,7 +30,7 @@ namespace PolyDeploy.DeployClient.Tests
             var actualFiles = new List<string>();
             var renderer = A.Fake<IRenderer>();
             A.CallTo(() => renderer.RenderListOfFiles(A<IEnumerable<string>>._))
-             .ReturnsLazily(async (IEnumerable<string> files) => actualFiles.AddRange(files));
+             .Invokes((IEnumerable<string> files) => actualFiles.AddRange(files));
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Another Package.zip" });
 

@@ -1,4 +1,4 @@
-namespace PolyDeploy.DeployClient.Tests
+namespace PolyDeploy.DeployClient
 {
     using System.Threading.Tasks;
 
