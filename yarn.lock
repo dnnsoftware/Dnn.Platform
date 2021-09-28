@@ -1476,12 +1476,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.4.3":
-  version: 7.4.4
-  resolution: "@babel/runtime@npm:7.4.4"
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.4.3, @babel/runtime@npm:^7.9.2":
+  version: 7.15.4
+  resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
-    regenerator-runtime: ^0.13.2
-  checksum: 7e375aeb0f04c3473433fdb95672d374e5edd16c61c4e1569e2f7ff433f3c1aa119ba26cd7fc0d14b19d3aa0fc700d3ba8bd4e5ed654019a36a83946991a4347
+    regenerator-runtime: ^0.13.4
+  checksum: c40825430400e47c19b97e4142d5315d2910305b9714d44a711472587ee2fd4521fdba5f02ddd9df3902f5e988d9854fa83f4da1e0c091f70f6983fa52480606
   languageName: node
   linkType: hard
 
@@ -8877,7 +8877,7 @@ __metadata:
     react-hot-loader: ^4.8.5
     react-redux: ^5.1.1
     react-widgets: ^4.4.7
-    redux: 4.0.1
+    redux: 4.1.1
     style-loader: ^0.23.1
     throttle-debounce: ^3.0.1
     utils: ^0.3.1
@@ -10267,7 +10267,7 @@ __metadata:
     react-tabs: 3.0.0
     react-tooltip: 4.2.21
     react-widgets: 4.4.6
-    redux: 4.0.1
+    redux: 4.1.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.1.3
     redux-devtools-log-monitor: 1.4.0
@@ -18107,7 +18107,7 @@ fsevents@~2.3.2:
     react-hot-loader: 4.8.5
     react-redux: 5.1.0
     react-test-renderer: ^16.6.2
-    redux: 4.0.1
+    redux: 4.1.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: 1.1.3
     redux-devtools-log-monitor: 1.4.0
@@ -19647,7 +19647,16 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"redux@npm:4.0.1, redux@npm:^4.0.1":
+"redux@npm:4.1.1":
+  version: 4.1.1
+  resolution: "redux@npm:4.1.1"
+  dependencies:
+    "@babel/runtime": ^7.9.2
+  checksum: 99519438a5d20b69404ad3816307ccc189f16df04b64c50d82c415ec488ea68b656d7a2fc81b6345e8d90f095344dfea68246500f72613d76464986660bc0485
+  languageName: node
+  linkType: hard
+
+"redux@npm:^4.0.1":
   version: 4.0.1
   resolution: "redux@npm:4.0.1"
   dependencies:
@@ -19712,10 +19721,10 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "regenerator-runtime@npm:0.13.2"
-  checksum: 0ef69207737b538dcdc1efa2179662c533a455e0bdc632822a4a4f954203a223d0521bdc76d9b48334619abd9dafeb5840160f7a68044eed117496e59a54da56
+"regenerator-runtime@npm:^0.13.4":
+  version: 0.13.9
+  resolution: "regenerator-runtime@npm:0.13.9"
+  checksum: 65ed455fe5afd799e2897baf691ca21c2772e1a969d19bb0c4695757c2d96249eb74ee3553ea34a91062b2a676beedf630b4c1551cc6299afb937be1426ec55e
   languageName: node
   linkType: hard
 
