@@ -4556,6 +4556,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"abab@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "abab@npm:2.0.5"
+  checksum: 0ec951b46d5418c2c2f923021ec193eaebdb4e802ffd5506286781b454be722a13a8430f98085cd3e204918401d9130ec6cc8f5ae19be315b3a0e857d83196e1
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:1":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
@@ -5426,7 +5433,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^2.1.4, async@npm:^2.4.1, async@npm:^2.5.0":
+"async@npm:^2.1.4, async@npm:^2.4.1":
   version: 2.6.2
   resolution: "async@npm:2.6.2"
   dependencies:
@@ -10810,7 +10817,7 @@ __metadata:
     redux-devtools-log-monitor: 1.4.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
-    source-map-loader: ^0.2.3
+    source-map-loader: ^3.0.0
     style-loader: 0.23.1
     throttle-debounce: 3.0.1
     url-loader: 1.1.2
@@ -21983,7 +21990,7 @@ resolve@^1.4.0:
     redux: ^4.0.1
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
-    source-map-loader: ^0.2.3
+    source-map-loader: ^3.0.0
     style-loader: ^0.23.1
     url-loader: 1.1.2
     webpack: 4.31.0
@@ -22228,13 +22235,23 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"source-map-loader@npm:^0.2.3":
-  version: 0.2.4
-  resolution: "source-map-loader@npm:0.2.4"
+"source-map-js@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "source-map-js@npm:0.6.2"
+  checksum: 9c8151a29e00fd8d3ba87709fdf9a9ce48313d653f4a29a39b4ae53d346ac79e005de624796ff42eff55cbaf26d2e87f4466001ca87831d400d818c5cf146a0e
+  languageName: node
+  linkType: hard
+
+"source-map-loader@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "source-map-loader@npm:3.0.0"
   dependencies:
-    async: ^2.5.0
-    loader-utils: ^1.1.0
-  checksum: ec67c402ba4559641af01bdf351816ae2fcfee2e0b5948477f86bc59dbc06d791eaca64e34428469b2c8a88e6ea7ec14c540daee706925a75a0b7ba2152e984c
+    abab: ^2.0.5
+    iconv-lite: ^0.6.2
+    source-map-js: ^0.6.2
+  peerDependencies:
+    webpack: ^5.0.0
+  checksum: c4459cef5a43917ca1c7ad53b106ba715d545daae1ace259c867c36b2b2443c3b9eebe8630cac8f193760db39965c22d1b44d8f69e9910b88c8aca1c836757b5
   languageName: node
   linkType: hard
 
