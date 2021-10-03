@@ -310,7 +310,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
-                var portalSettings = new PortalSettings(portal);
+                var localizedPortalSettings = PortalController.Instance.GetPortalSettings(portal.PortalID, cultureCode);
+
+                int redirectAfterLoginTabId = int.TryParse(localizedPortalSettings["Redirect_AfterLogin"], out redirectAfterLoginTabId) ? redirectAfterLoginTabId : -1;
+                int redirectAfterLogoutTabId = int.TryParse(localizedPortalSettings["Redirect_AfterLogout"], out redirectAfterLogoutTabId) ? redirectAfterLogoutTabId : -1;
+                int redirectAfterRegistrationTabId = int.TryParse(localizedPortalSettings["Redirect_AfterRegistration"], out redirectAfterRegistrationTabId) ? redirectAfterRegistrationTabId : -1;
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -338,13 +342,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         TermsTabName = this.TabSanitizer(portal.TermsTabId, pid)?.TabName,
                         PrivacyTabId = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabID,
                         PrivacyTabName = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabName,
-                        RedirectAfterLoginTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogin, pid)?.TabID,
-                        RedirectAfterLoginTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogin, pid)?.TabName,
-                        RedirectAfterLogoutTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogout, pid)?.TabID,
-                        RedirectAfterLogoutTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogout, pid)?.TabName,
-                        RedirectAfterRegistrationTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterRegistration, pid)?.TabID,
-                        RedirectAfterRegistrationTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterRegistration, pid)?.TabName,
-                        portalSettings.PageHeadText,
+                        RedirectAfterLoginTabId = this.TabSanitizer(redirectAfterLoginTabId, pid)?.TabID,
+                        RedirectAfterLoginTabName = this.TabSanitizer(redirectAfterLoginTabId, pid)?.TabName,
+                        RedirectAfterLogoutTabId = this.TabSanitizer(redirectAfterLogoutTabId, pid)?.TabID,
+                        RedirectAfterLogoutTabName = this.TabSanitizer(redirectAfterLogoutTabId, pid)?.TabName,
+                        RedirectAfterRegistrationTabId = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabID,
+                        RedirectAfterRegistrationTabName = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabName,
+                        PageHeadText = localizedPortalSettings["PageHeadText"],
                     },
                 });
             }
@@ -395,6 +399,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.PrivacyTabId = this.ValidateTabId(request.PrivacyTabId, pid);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", this.ValidateTabId(request.RedirectAfterLoginTabId, pid).ToString(), false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", this.ValidateTabId(request.RedirectAfterLogoutTabId, pid).ToString(), false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", this.ValidateTabId(request.RedirectAfterRegistrationTabId, pid).ToString(), false, cultureCode);
