@@ -44,7 +44,7 @@
   {
     "name": "MicrosoftFileSystemGlobbing",
     "folder": "DNN Platform/Components/Microsoft.Extensions.FileSystemGlobbing/",
-    "destination": "Install/Module",
+    "destination": "Install/Library",
     "excludes": [ "**/*.xml" ]
   }
 ]
