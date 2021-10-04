@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
     using Dnn.CakeUtils;
 
-    /// <summary>A cake task to generate the ASP.NET MVC package.</summary>
+    /// <summary>A cake task to generate the Microsoft.Extensions.FileSystemGlobbing package.</summary>
     public sealed class PackageMicrosoftGlobbing : FrostingTask<Context>
     {
         /// <inheritdoc/>

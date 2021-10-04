@@ -42,7 +42,7 @@
     "extension": "resources"
   },
   {
-    "name": "Telerik",
+    "name": "MicrosoftFileSystemGlobbing",
     "folder": "DNN Platform/Components/Microsoft.Extensions.FileSystemGlobbing/",
     "destination": "Install/Module",
     "excludes": [ "**/*.xml" ]
