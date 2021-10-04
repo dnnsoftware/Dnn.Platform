@@ -1,8 +1,8 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="Microsoft.Extensions.FileSystemGlobbing" type="Library" version="05.00.00" isSystem="true">
-      <friendlyName>Newtonsoft Json Components</friendlyName>
-      <description>Provides Newtonsoft Json Components for DotNetNuke.</description>
+      <friendlyName>Microsoft.Extensions.FileSystemGlobbing Components</friendlyName>
+      <description>Provides file globbing support for DotNetNuke.</description>
       <dependencies/>
       <owner>
         <name>DNN</name>
