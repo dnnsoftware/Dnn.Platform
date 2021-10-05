@@ -4036,7 +4036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
+"@types/prop-types@npm:*, @types/prop-types@npm:^15.7.3":
   version: 15.7.4
   resolution: "@types/prop-types@npm:15.7.4"
   checksum: ef6e1899e59b876c273811b1bd845022fc66d5a3d11cb38a25b6c566b30514ae38fe20a40f67622f362a4f4f7f9224e22d8da101cff3d6e97e11d7b4c307cfc1
@@ -4717,7 +4717,7 @@ __metadata:
     react-redux: ^5.1.1
     redux: ^4.0.1
     redux-devtools: 3.5.0
-    redux-devtools-dock-monitor: 1.1.3
+    redux-devtools-dock-monitor: 1.2.0
     redux-devtools-log-monitor: 1.4.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
@@ -10820,7 +10820,7 @@ __metadata:
     react-widgets: 4.4.6
     redux: 4.1.1
     redux-devtools: 3.5.0
-    redux-devtools-dock-monitor: 1.1.3
+    redux-devtools-dock-monitor: 1.2.0
     redux-devtools-log-monitor: 1.4.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
@@ -18793,7 +18793,7 @@ fsevents@~2.3.2:
     react-test-renderer: ^17.0.2
     redux: 4.1.1
     redux-devtools: ^3.5.0
-    redux-devtools-dock-monitor: 1.1.3
+    redux-devtools-dock-monitor: 1.2.0
     redux-devtools-log-monitor: 1.4.0
     redux-immutable-state-invariant: 2.1.0
     redux-mock-store: ^1.4.0
@@ -19385,6 +19385,20 @@ fsevents@~2.3.2:
     babel-runtime: ^6.3.13
     react: ">=0.13.0"
   checksum: 22023d04c7d98539b08d2fb41c3b0451b1fc94890ef9f40255eb640806a32b64357d12644284c49ea167e387eca95512d927ef58722a4bc3695f6686e6c34789
+  languageName: node
+  linkType: hard
+
+"react-dock@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "react-dock@npm:0.3.0"
+  dependencies:
+    "@types/prop-types": ^15.7.3
+    lodash.debounce: ^4.0.8
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@types/react": ^16.3.18
+    react: ^16.3.0
+  checksum: ec2aee39bbb622435e2de273bfafb1dabf4e05179f8f5bd67c8d992e9c9f290c6b4faa10959530d9231f0642c4021ca1cc9843501dd343cef0395035566bd3e6
   languageName: node
   linkType: hard
 
@@ -20350,7 +20364,24 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"redux-devtools-dock-monitor@npm:1.1.3, redux-devtools-dock-monitor@npm:^1.1.3":
+"redux-devtools-dock-monitor@npm:1.2.0":
+  version: 1.2.0
+  resolution: "redux-devtools-dock-monitor@npm:1.2.0"
+  dependencies:
+    "@types/prop-types": ^15.7.3
+    parse-key: ^0.2.1
+    prop-types: ^15.7.2
+    react-dock: ^0.3.0
+  peerDependencies:
+    "@types/react": ^16.3.18
+    react: ^16.3.0
+    redux: ^3.4.0 || ^4.0.0
+    redux-devtools: ^3.4.0
+  checksum: b62954430370ba439491f76074253e6a306ec1b30a8a5474ae42506d72edeac1fc900fba47ae65d093cb1f0a851d67272ff6631021843a0cbb3756536c7b0c7f
+  languageName: node
+  linkType: hard
+
+"redux-devtools-dock-monitor@npm:^1.1.3":
   version: 1.1.3
   resolution: "redux-devtools-dock-monitor@npm:1.1.3"
   dependencies:
@@ -21950,7 +21981,7 @@ resolve@^1.4.0:
     react-redux: ^6.0.0
     redux: ^4.0.1
     redux-devtools: 3.5.0
-    redux-devtools-dock-monitor: 1.1.3
+    redux-devtools-dock-monitor: 1.2.0
     redux-devtools-log-monitor: 1.4.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
