@@ -21,6 +21,7 @@ namespace DotNetNuke.Build.Tasks
     [Dependency(typeof(PackageAspNetWebApi))]
     [Dependency(typeof(PackageAspNetWebPages))]
     [Dependency(typeof(PackageAspNetMvc))]
+    [Dependency(typeof(PackageMicrosoftGlobbing))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
         /// <inheritdoc/>

@@ -215,9 +215,8 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
+                    // create empty dictionary for host tabs
                     urlDict = new SharedDictionary<int, SharedDictionary<string, string>>();
-
-                    // create dummy dictionary for this tab
                 }
 
                 if (ignoreCustomRedirects == false)

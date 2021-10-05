@@ -179,6 +179,7 @@
     <Compile Include="Entities\Tabs\TabChangeTrackerTests.cs" />
     <Compile Include="Entities\Urls\AdvancedUrlRewriterTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
+    <Compile Include="Framework\ReflectionTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
     <Compile Include="Providers\Builders\FolderInfoBuilder.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Services\Localization\LocalizationTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
+    <Compile Include="Services\Search\Internals\LuceneControllerImplTests.cs" />
     <Compile Include="Services\Tokens\TokenReplaceTests.cs" />
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />
     <Compile Include="FileSystemUtilsTests.cs" />

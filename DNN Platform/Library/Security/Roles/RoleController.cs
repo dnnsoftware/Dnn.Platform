@@ -248,7 +248,7 @@ namespace DotNetNuke.Security.Roles
             var globalRoleGroup = new RoleGroupInfo(Null.NullInteger, portalID, true)
             {
                 RoleGroupName = "GlobalRoles",
-                Description = "A dummy role group that represents the Global roles",
+                Description = "A role group that represents the Global roles",
             };
             CBO.SerializeObject(globalRoleGroup, writer);
             writer.WriteEndElement();

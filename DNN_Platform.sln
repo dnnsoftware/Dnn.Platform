@@ -521,6 +521,55 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.ConfigConsole.Tests", "Dnn.AdminExperience\Tests\Dnn.PersonaBar.ConfigConsole.Tests\Dnn.PersonaBar.ConfigConsole.Tests.csproj", "{12583A7E-7BEF-4F79-9CEA-3736D28C3241}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{A193D0F9-C722-44BD-B209-2AA2F25C9816}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MailKit", "MailKit", "{88B6C3F7-8E53-4338-A7F9-40EEE18374C0}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\MailKit\License.txt = DNN Platform\Components\MailKit\License.txt
+		DNN Platform\Components\MailKit\MailKit.dnn = DNN Platform\Components\MailKit\MailKit.dnn
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.AspNetMvc", "Microsoft.AspNetMvc", "{EC500979-80C0-4FD2-9B7E-5EB978D6D69C}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Microsoft.AspNetMvc\License.txt = DNN Platform\Components\Microsoft.AspNetMvc\License.txt
+		DNN Platform\Components\Microsoft.AspNetMvc\Microsoft.AspNetMvc.dnn = DNN Platform\Components\Microsoft.AspNetMvc\Microsoft.AspNetMvc.dnn
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.AspNetWebApi", "Microsoft.AspNetWebApi", "{4C5DD300-BCDF-44A2-A3DF-EC8D3E0788D2}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Microsoft.AspNetWebApi\License.txt = DNN Platform\Components\Microsoft.AspNetWebApi\License.txt
+		DNN Platform\Components\Microsoft.AspNetWebApi\Microsoft.AspNetWebApi.dnn = DNN Platform\Components\Microsoft.AspNetWebApi\Microsoft.AspNetWebApi.dnn
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.AspNetWebPages", "Microsoft.AspNetWebPages", "{881A75D6-DA09-4ADD-9B5B-ACAFE8962D3B}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Microsoft.AspNetWebPages\License.txt = DNN Platform\Components\Microsoft.AspNetWebPages\License.txt
+		DNN Platform\Components\Microsoft.AspNetWebPages\Microsoft.AspNetWebPages.dnn = DNN Platform\Components\Microsoft.AspNetWebPages\Microsoft.AspNetWebPages.dnn
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.CodeDom.Providers.DotNetCompilerPlatform", "Microsoft.CodeDom.Providers.DotNetCompilerPlatform", "{F3E526A3-3420-4B0B-9C31-FD813CCD83F7}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn
+		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\releaseNotes.txt = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\releaseNotes.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Newtonsoft", "Newtonsoft", "{CBBA26D2-68FF-4FDB-BD9E-17D4C2CE717F}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn = DNN Platform\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn
+		DNN Platform\Components\Newtonsoft\License.txt = DNN Platform\Components\Newtonsoft\License.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telerik", "Telerik", "{6395573E-D778-4DBE-BD22-A39273DBF0C9}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn = DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.Extensions.FileSystemGlobbing", "Microsoft.Extensions.FileSystemGlobbing", "{890623E0-F6C8-4011-9FAF-00939601EBE8}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Microsoft.Extensions.FileSystemGlobbing\License.txt = DNN Platform\Components\Microsoft.Extensions.FileSystemGlobbing\License.txt
+		DNN Platform\Components\Microsoft.Extensions.FileSystemGlobbing\Microsoft.Extensions.FileSystemGlobbing.dnn = DNN Platform\Components\Microsoft.Extensions.FileSystemGlobbing\Microsoft.Extensions.FileSystemGlobbing.dnn
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -2144,6 +2193,15 @@ Global
 		{7B43D266-D6E1-4496-A9A1-487AFEE0D9C0} = {9A986091-4238-4804-8C86-6A9A005F72C2}
 		{22E535CC-385B-44BB-998D-A3C0A144F9E1} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{12583A7E-7BEF-4F79-9CEA-3736D28C3241} = {8EB4193C-A708-4DA0-9F2A-F5B7599F6F8F}
+		{A193D0F9-C722-44BD-B209-2AA2F25C9816} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
+		{88B6C3F7-8E53-4338-A7F9-40EEE18374C0} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{EC500979-80C0-4FD2-9B7E-5EB978D6D69C} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{4C5DD300-BCDF-44A2-A3DF-EC8D3E0788D2} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{881A75D6-DA09-4ADD-9B5B-ACAFE8962D3B} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{F3E526A3-3420-4B0B-9C31-FD813CCD83F7} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{CBBA26D2-68FF-4FDB-BD9E-17D4C2CE717F} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{6395573E-D778-4DBE-BD22-A39273DBF0C9} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{890623E0-F6C8-4011-9FAF-00939601EBE8} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}
