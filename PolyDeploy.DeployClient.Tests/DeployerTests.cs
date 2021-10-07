@@ -18,8 +18,8 @@ namespace PolyDeploy.DeployClient.Tests
             var renderer = A.Fake<IRenderer>();
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(Array.Empty<string>());
-            var deployer = new Deployer(renderer, packageFileSource);
-            await deployer.StartAsync();
+            var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>());
+            await deployer.StartAsync(A.Dummy<DeployInput>());
 
             A.CallTo(() => renderer.RenderListOfFiles(Array.Empty<string>())).MustHaveHappened();
         }
@@ -34,10 +34,21 @@ namespace PolyDeploy.DeployClient.Tests
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Another Package.zip" });
 
-            var deployer = new Deployer(renderer, packageFileSource);
-            await deployer.StartAsync();
+            var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>());
+            await deployer.StartAsync(A.Dummy<DeployInput>());
 
             actualFiles.ShouldBe(new[] { "Package 1.zip", "Another Package.zip" }, ignoreOrder: true);
+        }
+
+        [Fact]
+        public async Task StartAsync_CallsGetSessionApi()
+        {
+            var installer = A.Fake<IInstaller>();
+
+            var deployer = new Deployer(A.Fake<IRenderer>(), A.Fake<IPackageFileSource>(), installer);
+            await deployer.StartAsync(A.Dummy<DeployInput>());
+
+            A.CallTo(() => installer.StartSessionAsync(A<DeployInput>._)).MustHaveHappened();
         }
     }
 }

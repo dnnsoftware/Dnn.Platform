@@ -18,18 +18,36 @@
     using Spectre.Cli;
     using Spectre.Console;
     using Spectre.Console.Rendering;
+    using ValidationResult = Spectre.Cli.ValidationResult;
 
-    public class DeployCommand : AsyncCommand<DeployCommand.DeployInput>
+    public class DeployCommand : AsyncCommand<DeployInput>
     {
         public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
         {
-            await new Deployer(new Renderer(AnsiConsole.Console), new PackageFileSource(new FileSystem())).StartAsync();
+            var deployer = new Deployer(new Renderer(AnsiConsole.Console), new PackageFileSource(new FileSystem()), new Installer());
+            await deployer.StartAsync(input);
             return 0;
         }
+    }
 
-        public class DeployInput : CommandSettings
+    public class DeployInput : CommandSettings
+    {
+        public DeployInput(string targetUri)
         {
+            this.TargetUri = targetUri;
+        }
 
+        [CommandOption("-u|--target-uri")]
+        [Description("The URL of the site to which the packages will be deployed.")]
+        public string TargetUri { get; init; }
+
+        public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
+
+        public override ValidationResult Validate()
+        {
+            return Uri.TryCreate(this.TargetUri, UriKind.Absolute, out _)
+                ? ValidationResult.Error("--target-uri must be a valid URI")
+                : ValidationResult.Success();
         }
     }
 }
