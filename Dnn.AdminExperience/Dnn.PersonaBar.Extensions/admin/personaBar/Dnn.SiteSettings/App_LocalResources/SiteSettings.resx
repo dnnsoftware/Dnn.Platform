@@ -1336,7 +1336,7 @@
     <value>Privacy Statement Page</value>
   </data>
   <data name="plCookieMoreLink.Help" xml:space="preserve">
-    <value>In the cookie consent popup a link is shown to explain about cookies to users. If you wish to override this link (by default it points to cookiesandme.com) it will link to this url.</value>
+    <value>In the cookie consent popup a link is shown to explain about cookies to users. If you wish to override this link (by default it points to cookiesandyou.com) it will link to this url.</value>
   </data>
   <data name="plCookieMoreLink.Text" xml:space="preserve">
     <value>Cookie Consent Url</value>
