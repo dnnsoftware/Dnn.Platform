@@ -446,10 +446,10 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // We start the chain with an empty image
-            var dummy = new Bitmap(1, 1);
+            var emptyImage = new Bitmap(1, 1);
             using (var ms = new MemoryStream())
             {
-                dummy.Save(ms, this.ContentType);
+                emptyImage.Save(ms, this.ContentType);
                 return new ImageInfo(ms.ToArray());
             }
         }

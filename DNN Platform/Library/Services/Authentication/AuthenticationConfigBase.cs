@@ -17,18 +17,13 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public abstract class AuthenticationConfigBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationConfigBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationConfigBase"/> class.</summary>
         public AuthenticationConfigBase()
         {
-            this.DependencyProvider = Globals.DependencyProvider;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationConfigBase"/> class.
-        /// </summary>
-        /// <param name="portalID"></param>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationConfigBase"/> class.</summary>
+        /// <param name="portalID">The portal ID.</param>
         protected AuthenticationConfigBase(int portalID)
             : this()
         {
@@ -38,13 +33,7 @@ namespace DotNetNuke.Services.Authentication
         [Browsable(false)]
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets the Dependency Provider to resolve registered
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider { get; }
+        /// <summary>Gets the Dependency Provider to resolve registered services with the container.</summary>
+        protected IServiceProvider DependencyProvider => Globals.DependencyProvider;
     }
 }

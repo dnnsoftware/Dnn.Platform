@@ -67,6 +67,7 @@
     "/bin/Newtonsoft*",
     "/bin/SchwabenCode*",
     "/bin/System*",
-    "/bin/WebFormsMvp*"
+    "/bin/WebFormsMvp*",
+    "/bin/Microsoft.Extensions.FileSystemGlobbing*"
   ]
 }

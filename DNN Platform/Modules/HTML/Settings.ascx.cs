@@ -7,9 +7,12 @@ namespace DotNetNuke.Modules.Html
     using System.Collections;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Services.Exceptions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     ///   The Settings ModuleSettingsBase is used to manage the
@@ -20,6 +23,13 @@ namespace DotNetNuke.Modules.Html
     public partial class Settings : ModuleSettingsBase
     {
         private HtmlModuleSettings _moduleSettings;
+
+        private readonly INavigationManager _navigationManager;
+
+        public Settings()
+        {
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         private new HtmlModuleSettings ModuleSettings
         {
@@ -40,7 +50,7 @@ namespace DotNetNuke.Modules.Html
             {
                 if (!this.Page.IsPostBack)
                 {
-                    var htmlTextController = new HtmlTextController();
+                    var htmlTextController = new HtmlTextController(this._navigationManager);
                     var workflowStateController = new WorkflowStateController();
 
                     this.chkReplaceTokens.Checked = this.ModuleSettings.ReplaceTokens;
@@ -89,7 +99,7 @@ namespace DotNetNuke.Modules.Html
         {
             try
             {
-                var htmlTextController = new HtmlTextController();
+                var htmlTextController = new HtmlTextController(this._navigationManager);
 
                 // update replace token setting
                 this.ModuleSettings.ReplaceTokens = this.chkReplaceTokens.Checked;

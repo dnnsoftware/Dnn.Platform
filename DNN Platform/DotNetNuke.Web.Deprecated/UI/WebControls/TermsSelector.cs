@@ -159,7 +159,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             ITermController termRep = Util.GetTermController();
 
-            // Add a dummy parent term if simple vocabulary
+            // Add a blank parent term if simple vocabulary
             if (v.Type == VocabularyType.Simple)
             {
                 terms.Add(new { termId = -v.VocabularyId, name = v.Name, parentTermId = Null.NullInteger });

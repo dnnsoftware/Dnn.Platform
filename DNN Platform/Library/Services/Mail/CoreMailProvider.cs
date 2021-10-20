@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Mail
     using System.Linq;
     using System.Net;
     using System.Net.Mail;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -74,6 +75,23 @@ namespace DotNetNuke.Services.Mail
                 {
                     return HandleException(exc);
                 }
+            }
+        }
+
+        /// <summary>Adds alternate views to the <paramref name="mailMessage"/>.</summary>
+        /// <param name="mailMessage">The message to which the alternate views should be added.</param>
+        /// <param name="body">The message body.</param>
+        /// <param name="bodyEncoding">The encoding of the message body.</param>
+        internal static void AddAlternateView(MailMessage mailMessage, string body, Encoding bodyEncoding)
+        {
+            // added support for multipart html messages
+            // add text part as alternate view
+            var plainView = AlternateView.CreateAlternateViewFromString(Mail.ConvertToText(body), bodyEncoding, "text/plain");
+            mailMessage.AlternateViews.Add(plainView);
+            if (mailMessage.IsBodyHtml)
+            {
+                var htmlView = AlternateView.CreateAlternateViewFromString(body, bodyEncoding, "text/html");
+                mailMessage.AlternateViews.Add(htmlView);
             }
         }
 
@@ -201,6 +219,9 @@ namespace DotNetNuke.Services.Mail
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(mailInfo.Subject, true);
             mailMessage.BodyEncoding = mailInfo.BodyEncoding;
             mailMessage.Body = mailInfo.Body;
+
+            AddAlternateView(mailMessage, mailInfo.Body, mailInfo.BodyEncoding);
+
             return mailMessage;
         }
 

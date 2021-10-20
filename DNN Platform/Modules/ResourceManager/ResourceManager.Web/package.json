@@ -1,6 +1,6 @@
 {
   "name": "resource-library",
-  "version": "9.10.1",
+  "version": "9.10.2",
   "description": "Resource Library",
   "private": true,
   "scripts": {
@@ -19,7 +19,7 @@
     "@babel/plugin-transform-arrow-functions": "^7.10.4",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.10.1",
+    "@dnnsoftware/dnn-react-common": "9.10.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.0.6",
     "babel-plugin-transform-object-assign": "6.22.0",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "copy-to-clipboard": "^3.0.5",
-    "es6-shim": "0.35.0",
+    "es6-shim": "0.35.6",
     "fetch-ie8": "1.4.2",
     "file-loader": "3.0.1",
     "less": "3.9.0",

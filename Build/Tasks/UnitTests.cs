@@ -26,7 +26,7 @@ namespace DotNetNuke.Build.Tasks
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
 
-            var vsTestPath = context.GetFiles("tools/Microsoft.TestPlatform.16.8.0/tools/**/vstest.console.exe")
+            var vsTestPath = context.GetFiles($"tools/Microsoft.TestPlatform.{Program.MicrosoftTestPlatformVersion}/tools/**/vstest.console.exe")
                 .First();
             context.VSTest(
                 testAssemblies,
@@ -36,7 +36,7 @@ namespace DotNetNuke.Build.Tasks
                     Logger = "trx",
                     Parallel = true,
                     EnableCodeCoverage = true,
-                    TestAdapterPath = @"tools\NUnit3TestAdapter.4.0.0\build",
+                    TestAdapterPath = $@"tools\NUnit3TestAdapter.{Program.NUnit3TestAdapterVersion}\build",
                 });
         }
     }

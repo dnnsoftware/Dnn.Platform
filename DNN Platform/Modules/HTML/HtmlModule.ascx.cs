@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Html
                     false);
 
                 // get the content
-                var objHTML = new HtmlTextController();
+                var objHTML = new HtmlTextController(this._navigationManager);
                 var objWorkflow = new WorkflowStateController();
                 this.WorkflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Html
             this.EditorEnabled = this.PortalSettings.InlineEditorEnabled;
             try
             {
-                this.WorkflowID = new HtmlTextController().GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+                this.WorkflowID = new HtmlTextController(this._navigationManager).GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 // Add an Action Event Handler to the Skin
                 this.AddActionHandler(this.ModuleAction_Click);
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.Html
             base.OnLoad(e);
             try
             {
-                var objHTML = new HtmlTextController();
+                var objHTML = new HtmlTextController(this._navigationManager);
 
                 // edit in place
                 if (this.EditorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
@@ -290,7 +290,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 else if (this.EditorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
                     // get content
-                    var objHTML = new HtmlTextController();
+                    var objHTML = new HtmlTextController(this._navigationManager);
                     var objWorkflow = new WorkflowStateController();
                     HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
                     if (objContent == null)
@@ -336,7 +336,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     if (this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                     {
                         // get content
-                        var objHTML = new HtmlTextController();
+                        var objHTML = new HtmlTextController(this._navigationManager);
                         HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
 
                         var objWorkflow = new WorkflowStateController();

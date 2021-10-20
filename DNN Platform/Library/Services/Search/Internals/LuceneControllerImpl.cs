@@ -376,7 +376,17 @@ namespace DotNetNuke.Services.Search.Internals
                     try
                     {
                         var analyzerType = Reflection.CreateType(customAnalyzerType);
-                        analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
+
+                        // If parameterless ctor exists, use that; if not, pass the Lucene Version.
+                        if (analyzerType?.GetConstructor(Type.EmptyTypes) != null)
+                        {
+                            analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
+                        }
+                        else if (analyzerType?.GetConstructor(new Type[] { typeof(Lucene.Net.Util.Version) }) != null)
+                        {
+                            analyzer = Reflection.CreateInstance(analyzerType, new object[] { Constants.LuceneVersion }) as Analyzer;
+                        }
+
                         if (analyzer == null)
                         {
                             throw new ArgumentException(string.Format(

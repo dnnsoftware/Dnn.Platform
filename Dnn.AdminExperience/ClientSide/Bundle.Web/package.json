@@ -1,6 +1,6 @@
 {
   "name": "export-bundle",
-  "version": "9.10.1",
+  "version": "9.10.2",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p --progress",
@@ -51,9 +51,9 @@
     "react-tabs": "3.0.0",
     "react-tooltip": "4.2.21",
     "react-widgets": "4.4.6",
-    "redux": "4.0.1",
+    "redux": "4.1.1",
     "redux-devtools": "3.5.0",
-    "redux-devtools-dock-monitor": "1.1.3",
+    "redux-devtools-dock-monitor": "1.2.0",
     "redux-devtools-log-monitor": "1.4.0",
     "redux-immutable-state-invariant": "2.1.0",
     "redux-thunk": "2.3.0",
@@ -67,6 +67,6 @@
     "webpack-dev-server": "3.1.14"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "9.10.1"
+    "@dnnsoftware/dnn-react-common": "9.10.2"
   }
 }
