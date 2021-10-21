@@ -1,6 +1,16 @@
-﻿using PolyDeploy.DeployClient;
+﻿using System;
+using PolyDeploy.DeployClient;
 using Spectre.Cli;
 
-var app = new CommandApp<DeployCommand>();
-app.Configure(config => config.PropagateExceptions());
-return app.Run(args);
+try
+{
+    var app = new CommandApp<DeployCommand>();
+    app.Configure(config => config.PropagateExceptions());
+    return app.Run(args);
+}
+catch (Exception exc)
+{
+    Spectre.Console.AnsiConsole.WriteLine();
+    Spectre.Console.AnsiConsole.WriteException(exc);
+    return 1;
+}
