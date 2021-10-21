@@ -1,30 +1,24 @@
 ﻿namespace PolyDeploy.DeployClient
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
-    using System.IO;
     using System.IO.Abstractions;
     using System.Linq;
     using System.Net.Http;
-    using System.Net.Http.Json;
-    using System.Text.Json;
     using System.Threading.Tasks;
-
-    using IsCI;
-
-    using PolyDeploy.Encryption;
 
     using Spectre.Cli;
     using Spectre.Console;
-    using Spectre.Console.Rendering;
     using ValidationResult = Spectre.Cli.ValidationResult;
 
     public class DeployCommand : AsyncCommand<DeployInput>
     {
         public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
         {
-            var deployer = new Deployer(new Renderer(AnsiConsole.Console), new PackageFileSource(new FileSystem()), new Installer());
+            var deployer = new Deployer(
+                new Renderer(AnsiConsole.Console),
+                new PackageFileSource(new FileSystem()),
+                new Installer(new HttpClient()));
             await deployer.StartAsync(input);
             return 0;
         }
