@@ -5,8 +5,8 @@
       <description>DotNetNuke Simple Web Farm Caching Provider</description>
       <dependencies/>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

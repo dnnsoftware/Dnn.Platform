@@ -5,8 +5,8 @@
       <description>DotNetNuke Corporation Site Export Import Library</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>
