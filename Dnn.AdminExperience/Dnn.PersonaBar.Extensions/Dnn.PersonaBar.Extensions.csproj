@@ -238,6 +238,8 @@
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />
     <Compile Include="Components\Security\SeverityEnum.cs" />
+    <Compile Include="Components\Security\Ssl\PortalStats.cs" />
+    <Compile Include="Components\Security\Ssl\SslController.cs" />
     <Compile Include="Components\Security\Utility.cs" />
     <Compile Include="Components\Seo\ExtensionMenuController.cs" />
     <Compile Include="Components\Seo\SeoController.cs" />
@@ -738,6 +740,7 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="web.config" />
+    <Content Include="SqlDataProvider\09.11.00.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
