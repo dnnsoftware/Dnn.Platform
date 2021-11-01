@@ -597,12 +597,6 @@
   <data name="GlobalSetting.Text" xml:space="preserve">
     <value>This is a global setting. Changes to this setting will affect all of your sites.</value>
   </data>
-  <data name="plSSLEnabled.Text" xml:space="preserve">
-    <value>SSL Enabled</value>
-  </data>
-  <data name="plSSLEnabled.Help" xml:space="preserve">
-    <value>Check the box if an SSL certificate has been installed for use on this site.</value>
-  </data>
   <data name="plSSLEnforced.Text" xml:space="preserve">
     <value>SSL Enforced</value>
   </data>
@@ -1176,5 +1170,23 @@
   </data>
   <data name="Security_UserNameMinLength.ErrorMessage" xml:space="preserve">
     <value>Minimum Username length must be an integer greater than 0 and less than or equal to 100.</value>
+  </data>
+  <data name="SslOn.Help" xml:space="preserve">
+    <value>Use this mode to serve all content secure</value>
+  </data>
+  <data name="SslAdvanced.Help" xml:space="preserve">
+    <value>In this mode your website will serve both secure and unsecure pages depending on the setting on the page. Note you have [NrNonSecureTabs] non secure pages on this site.</value>
+  </data>
+  <data name="SslOff.Help" xml:space="preserve">
+    <value>Use this when you don't have an SSL certificate installed on your server</value>
+  </data>
+  <data name="SslAdvanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="SslOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SslOff.Text" xml:space="preserve">
+    <value>Off</value>
   </data>
 </root>

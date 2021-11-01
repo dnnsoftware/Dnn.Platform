@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Sitemap
         {
             var pageUrl = new SitemapUrl();
             var url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, string.Empty, language);
-            if ((ps.SSLEnforced || (objTab.IsSecure && ps.SSLEnabled)) && url.StartsWith("http://"))
+            if ((ps.SSLSetup == Abstractions.Security.SiteSslSetup.On || ps.SSLEnforced || (objTab.IsSecure && ps.SSLEnabled)) && url.StartsWith("http://"))
             {
                 url = "https://" + url.Substring("http://".Length);
             }

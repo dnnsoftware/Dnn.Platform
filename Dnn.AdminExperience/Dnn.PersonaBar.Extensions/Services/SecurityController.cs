@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Security.Services
     using System.Web;
     using System.Web.Http;
     using System.Xml;
-
+    using Dnn.PersonaBar.Extensions.Components.Security.Ssl;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Security.Helper;
@@ -494,10 +494,14 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 dynamic settings = new ExpandoObject();
-                settings.SSLEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
+                settings.SSLSetup = PortalController.GetPortalSettingAsInteger("SSLSetup", this.PortalId, 0);
                 settings.SSLEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
                 settings.SSLURL = PortalController.GetPortalSetting("SSLURL", this.PortalId, Null.NullString);
                 settings.STDURL = PortalController.GetPortalSetting("STDURL", this.PortalId, Null.NullString);
+
+                var portalStats = SslController.Instance.GetPortalStats(this.PortalId);
+                settings.NrSecureTabs = portalStats.NrSecureTabs;
+                settings.NrNonSecureTabs = portalStats.NrNonSecureTabs;
 
                 if (this.UserInfo.IsSuperUser)
                 {
@@ -585,7 +589,17 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", request.SSLEnabled.ToString(), false);
+                switch (request.SSLSetup)
+                {
+                    case 0:
+                    case 1:
+                        request.SSLEnforced = false;
+                        request.SSLURL = string.Empty;
+                        request.STDURL = string.Empty;
+                        break;
+                }
+
+                PortalController.UpdatePortalSetting(this.PortalId, "SSLSetup", request.SSLSetup.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", request.SSLEnforced.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "SSLURL", this.AddPortalAlias(request.SSLURL, this.PortalId), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "STDURL", this.AddPortalAlias(request.STDURL, this.PortalId), false);

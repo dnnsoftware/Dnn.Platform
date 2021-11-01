@@ -2670,46 +2670,55 @@ namespace DotNetNuke.Entities.Urls
                                              portalSettings.ActiveTab.TabName + " IsSecure: " +
                                              portalSettings.ActiveTab.IsSecure.ToString());
 
-                    // check ssl enabled
-                    if (portalSettings.SSLEnabled)
+                    switch (portalSettings.SSLSetup)
                     {
-                        // 717 : check page is secure, connection is not secure
-                        // 952 : support SSl Offloading in DNN 6.2+
-                        if (portalSettings.ActiveTab.IsSecure && !result.IsSecureConnection && !result.IsSSLOffloaded)
-                        {
-                            redirectSecure = true;
-                            string stdUrl = portalSettings.STDURL;
-                            string sslUrl = portalSettings.SSLURL;
-                            if (string.IsNullOrEmpty(result.HttpAlias) == false)
+                        case Abstractions.Security.SiteSslSetup.On:
+                            if (!result.IsSecureConnection)
                             {
-                                stdUrl = result.HttpAlias;
+                                redirectSecure = true;
+                                url = url.Replace("http://", "https://");
                             }
 
-                            url = url.Replace("http://", "https://");
-                            url = this.ReplaceDomainName(url, stdUrl, sslUrl);
-                        }
-                    }
-
-                    // check ssl enforced
-                    if (portalSettings.SSLEnforced)
-                    {
-                        // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe
-                        // from an unsecure page
-                        if (!portalSettings.ActiveTab.IsSecure &&
-                            result.IsSecureConnection &&
-                            !UrlUtils.IsPopUp(url))
-                        {
-                            // has connection already been forced to secure?
-                            if (queryStringCol["ssl"] == null)
+                            break;
+                        case Abstractions.Security.SiteSslSetup.Advanced:
+                            // 717 : check page is secure, connection is not secure
+                            // 952 : support SSl Offloading in DNN 6.2+
+                            if (portalSettings.ActiveTab.IsSecure && !result.IsSecureConnection && !result.IsSSLOffloaded)
                             {
-                                // no? well this page shouldn't be secure
+                                redirectSecure = true;
                                 string stdUrl = portalSettings.STDURL;
                                 string sslUrl = portalSettings.SSLURL;
-                                url = url.Replace("https://", "http://");
-                                url = this.ReplaceDomainName(url, sslUrl, stdUrl);
-                                redirectSecure = true;
+                                if (string.IsNullOrEmpty(result.HttpAlias) == false)
+                                {
+                                    stdUrl = result.HttpAlias;
+                                }
+
+                                url = url.Replace("http://", "https://");
+                                url = this.ReplaceDomainName(url, stdUrl, sslUrl);
                             }
-                        }
+
+                            if (portalSettings.SSLEnforced)
+                            {
+                                // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe
+                                // from an unsecure page
+                                if (!portalSettings.ActiveTab.IsSecure &&
+                                    result.IsSecureConnection &&
+                                    !UrlUtils.IsPopUp(url))
+                                {
+                                    // has connection already been forced to secure?
+                                    if (queryStringCol["ssl"] == null)
+                                    {
+                                        // no? well this page shouldn't be secure
+                                        string stdUrl = portalSettings.STDURL;
+                                        string sslUrl = portalSettings.SSLURL;
+                                        url = url.Replace("https://", "http://");
+                                        url = this.ReplaceDomainName(url, sslUrl, stdUrl);
+                                        redirectSecure = true;
+                                    }
+                                }
+                            }
+
+                            break;
                     }
                 }
 
