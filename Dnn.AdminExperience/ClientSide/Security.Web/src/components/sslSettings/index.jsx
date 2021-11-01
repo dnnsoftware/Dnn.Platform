@@ -74,6 +74,32 @@ class SslSettingsPanelBody extends Component {
         );
     }
 
+    onSetAllPagesSecure() {
+        util.utilities.confirm(
+            resx.get("SslSetAllPagesSecure.Confirm"),
+            resx.get("Yes"),
+            resx.get("No"),
+            function onSetAllPagesSecureConfirm() {
+                this.props.dispatch(
+                    SecurityActions.updateSslSettings(
+                        this.state.sslSettings,
+                        () => {
+                            SecurityActions.setAllPagesSecure(() => {
+                                util.utilities.notify(
+                                    resx.get("SslSetAllPagesSecure.Completed")
+                                );
+                                this.getSslSettings();
+                            });
+                        },
+                        () => {
+                            util.utilities.notifyError(resx.get("SslSettingsError"));
+                        }
+                    )
+                );
+            }.bind(this)
+        );
+    }
+
     getSslSettings() {
         const { props } = this;
         props.dispatch(
@@ -90,25 +116,47 @@ class SslSettingsPanelBody extends Component {
     render() {
         const { state } = this;
         if (state.sslSettings) {
-            let helpText = "";
+            let warningBox = <div />;
             switch (state.sslSettings.SSLSetup) {
                 case 0:
-                    helpText = resx.get("SslOff.Help");
+                    warningBox = (
+                        <div className="warningBox">
+                            <div className="warningText">{resx.get("SslOff.Help")}</div>
+                        </div>
+                    );
                     break;
                 case 1:
-                    helpText = resx.get("SslOn.Help");
+                    warningBox = (
+                        <div className="warningBox">
+                            <div className="warningText">{resx.get("SslOn.Help")}</div>
+                        </div>
+                    );
                     break;
                 case 2:
-                    helpText = resx
-                        .get("SslAdvanced.Help")
-                        .replace(
-                            "[NrSecureTabs]",
-                            state.sslSettings.NrSecureTabs.toString()
-                        )
-                        .replace(
-                            "[NrNonSecureTabs]",
-                            state.sslSettings.NrNonSecureTabs.toString()
-                        );
+                    warningBox = (
+                        <div className="warningBox">
+                            <div className="warningText">
+                                {resx
+                                    .get("SslAdvanced.Help")
+                                    .replace(
+                                        "[NrSecureTabs]",
+                                        state.sslSettings.NrSecureTabs.toString()
+                                    )
+                                    .replace(
+                                        "[NrNonSecureTabs]",
+                                        state.sslSettings.NrNonSecureTabs.toString()
+                                    )}
+                            </div>
+                            <div className="warningButton">
+                                <Button
+                                    type="secondary"
+                                    onClick={this.onSetAllPagesSecure.bind(this)}
+                                >
+                                    {resx.get("SslSetAllPagesSecure")}
+                                </Button>
+                            </div>
+                        </div>
+                    );
                     break;
             }
             return (
@@ -134,7 +182,7 @@ class SslSettingsPanelBody extends Component {
                             enabled={true}
                         />
                     </InputGroup>
-                    <div className="helpBox">{helpText}</div>
+                    {warningBox}
                     {state.sslSettings.SSLSetup == 2 && (
                         <>
                             <InputGroup>
@@ -148,10 +196,7 @@ class SslSettingsPanelBody extends Component {
                                         onText={resx.get("SwitchOn")}
                                         offText={resx.get("SwitchOff")}
                                         value={state.sslSettings.SSLEnforced}
-                                        onChange={this.onSettingChange.bind(
-                                            this,
-                                            "SSLEnforced"
-                                        )}
+                                        onChange={this.onSettingChange.bind(this, "SSLEnforced")}
                                     />
                                 </div>
                             </InputGroup>

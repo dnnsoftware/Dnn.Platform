@@ -46,9 +46,26 @@
       margin: 5px;
     }
   }
-  .helpBox {
+  .warningBox {
+    border: 1px solid @alto;
+    background-color: @gallery;
+    width: 100%;
+    padding: 15px;
     margin-bottom: 20px;
-    padding: 20px;
-    background-color: @alto;
+    .warningText {
+      font-weight: bolder;
+      color: @thunder;
+    }
+    .warningButton {
+      width: 100%;
+      .dnn-ui-common-button {
+        width: 100%;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        &:first-child {
+          margin-top: 15px;
+        }
+      }
+    }
   }
 }

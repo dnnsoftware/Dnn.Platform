@@ -1189,4 +1189,13 @@
   <data name="SslOff.Text" xml:space="preserve">
     <value>Off</value>
   </data>
+  <data name="SslSetAllPagesSecure.Text" xml:space="preserve">
+    <value>Set All Pages To Secure</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Completed" xml:space="preserve">
+    <value>All pages of the site have been set to be secure</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Confirm" xml:space="preserve">
+    <value>Do you wish to set all pages of this site to be only accessible through https?</value>
+  </data>
 </root>

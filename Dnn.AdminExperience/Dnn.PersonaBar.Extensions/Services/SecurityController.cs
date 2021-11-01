@@ -620,6 +620,28 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
+        /// POST: api/Security/SetAllPagesSecure
+        /// <summary>
+        /// Sets all pages in the portal to be secure.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
+        public HttpResponseMessage SetAllPagesSecure()
+        {
+            try
+            {
+                SslController.Instance.SetAllPortalTabsSecure(this.PortalId, true);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         #endregion
 
         #region Security Bulletins
