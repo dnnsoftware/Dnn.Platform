@@ -598,10 +598,10 @@
     <value>This is a global setting. Changes to this setting will affect all of your sites.</value>
   </data>
   <data name="plSSLEnforced.Text" xml:space="preserve">
-    <value>Non-SSL Enforced</value>
+    <value>Mixed Mode</value>
   </data>
   <data name="plSSLEnforced.Help" xml:space="preserve">
-    <value>Check the box if unsecure pages will not be accessible with SSL (HTTPS) and should always be directed to HTTP.</value>
+    <value>Check the box if pages marked as insecure should not be accessible through HTTPS and should always be directed to HTTP.</value>
   </data>
   <data name="plSSLURL.Text" xml:space="preserve">
     <value>SSL URL</value>
