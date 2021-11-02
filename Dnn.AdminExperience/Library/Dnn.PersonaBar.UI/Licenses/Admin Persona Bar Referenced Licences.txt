@@ -2426,11 +2426,6 @@ MIT License
 License File: Admin Persona Bar Referenced Licences.zip\kw-react-tween-state\LICENSE.txt
 --------------------------------------------------------------------------------------
 
-nuka-carousel (Pure React Carousel)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\nuka-carousel\LICENSE
---------------------------------------------------------------------------------------
-
 object-path (Access deep properties using a path)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\object-path\LICENSE
