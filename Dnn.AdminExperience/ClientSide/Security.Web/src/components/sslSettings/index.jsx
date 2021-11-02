@@ -224,35 +224,32 @@ class SslSettingsPanelBody extends Component {
                                     onChange={this.onSettingChange.bind(this, "STDURL")}
                                 />
                             </InputGroup>
-                            {
-                                /*eslint-disable eqeqeq*/
-                                state.sslSettings.SSLOffloadHeader != undefined && (
-                                    <InputGroup>
-                                        <Label
-                                            tooltipMessage={resx.get("plSSLOffload.Help")}
-                                            label={resx.get("plSSLOffload")}
-                                            extra={
-                                                <Tooltip
-                                                    messages={[resx.get("GlobalSetting")]}
-                                                    type="global"
-                                                    style={{ float: "left", position: "static" }}
-                                                />
-                                            }
-                                        />
-                                        <SingleLineInputWithError
-                                            withLabel={false}
-                                            error={false}
-                                            value={state.sslSettings.SSLOffloadHeader}
-                                            onChange={this.onSettingChange.bind(
-                                                this,
-                                                "SSLOffloadHeader"
-                                            )}
-                                        />
-                                    </InputGroup>
-                                )
-                            }
                         </>
                     )}
+                    {
+                        /*eslint-disable eqeqeq*/
+                        state.sslSettings.SSLOffloadHeader != undefined && state.sslSettings.SSLSetup != 1 && (
+                            <InputGroup>
+                                <Label
+                                    tooltipMessage={resx.get("plSSLOffload.Help")}
+                                    label={resx.get("plSSLOffload")}
+                                    extra={
+                                        <Tooltip
+                                            messages={[resx.get("GlobalSetting")]}
+                                            type="global"
+                                            style={{ float: "left", position: "static" }}
+                                        />
+                                    }
+                                />
+                                <SingleLineInputWithError
+                                    withLabel={false}
+                                    error={false}
+                                    value={state.sslSettings.SSLOffloadHeader}
+                                    onChange={this.onSettingChange.bind(this, "SSLOffloadHeader")}
+                                />
+                            </InputGroup>
+                        )
+                    }
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.sslSettingsClientModified}

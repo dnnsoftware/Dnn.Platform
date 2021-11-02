@@ -587,10 +587,15 @@ namespace Dnn.PersonaBar.Security.Services
                 switch (request.SSLSetup)
                 {
                     case 0:
+                        request.SSLEnforced = false;
+                        request.SSLURL = string.Empty;
+                        request.STDURL = string.Empty;
+                        break;
                     case 1:
                         request.SSLEnforced = false;
                         request.SSLURL = string.Empty;
                         request.STDURL = string.Empty;
+                        request.SSLOffloadHeader = string.Empty;
                         break;
                 }
 
