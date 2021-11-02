@@ -5,8 +5,8 @@
       <description>DNN Deprecated Website Codebehind files for backward compability.</description>
       <dependencies/>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

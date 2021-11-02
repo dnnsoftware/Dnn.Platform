@@ -5,8 +5,8 @@
       <description>Selectize is the hybrid of a textbox and select box. It's jQuery-based and it's useful for tagging, contact lists, country selectors, and so on.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

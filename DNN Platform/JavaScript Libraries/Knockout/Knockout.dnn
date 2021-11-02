@@ -5,8 +5,8 @@
       <description>Knockout is an MVVM library that is used for client side databinding.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

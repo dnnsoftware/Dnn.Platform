@@ -5,8 +5,8 @@
       <description>This module allows you to manage files on the server</description>
       <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>
