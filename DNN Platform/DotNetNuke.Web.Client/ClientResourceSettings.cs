@@ -90,7 +90,7 @@ namespace DotNetNuke.Web.Client
             }
         }
 
-        [Obsolete("Deprecated in DotNetNuke 9.10.2 This function has been replaced by an overload with portalId as param.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.0.  Use overload taking portalId. Scheduled removal in v11.0.0.")]
         public bool IsOverridingDefaultSettingsEnabled()
         {
             int? portalId = GetPortalIdThroughReflection();
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Client
             return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
         }
 
-        [Obsolete("Deprecated in DotNetNuke 9.10.2 This function has been replaced by an overload with portalId as param.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.0. Use overload taking portalId. Scheduled removal in v11.0.0.")]
         public int? GetVersion()
         {
             int? portalId = GetPortalIdThroughReflection();
