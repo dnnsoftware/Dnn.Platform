@@ -90,14 +90,21 @@ namespace DotNetNuke.Web.Client
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
+        [Obsolete("Consider using the overload that takes the portalId. That version works also outside the HttpContext")]
         public bool IsOverridingDefaultSettingsEnabled()
         {
             var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
             var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+
+            // if portal version is set
+            // and the portal "override default settings" flag is set and set to true
+            return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
+        }
+
+        public bool IsOverridingDefaultSettingsEnabled(int? portalId)
+        {
+            var portalVersion = GetIntegerSetting(portalId, PortalSettingsDictionaryKey, VersionKey);
+            var overrideDefaultSettings = GetBooleanSetting(portalId, PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
 
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
@@ -154,9 +161,36 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
+        private static bool? GetBooleanSetting(int? portalId, string dictionaryKey, string settingKey)
+        {
+            var setting = GetSetting(portalId, dictionaryKey, settingKey);
+            bool result;
+            if (setting != null && bool.TryParse(setting, out result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
         private static int? GetIntegerSetting(string dictionaryKey, string settingKey)
         {
             var setting = GetSetting(dictionaryKey, settingKey);
+            int version;
+            if (setting != null && int.TryParse(setting, out version))
+            {
+                if (version > -1)
+                {
+                    return version;
+                }
+            }
+
+            return null;
+        }
+
+        private static int? GetIntegerSetting(int? portalId, string dictionaryKey, string settingKey)
+        {
+            var setting = GetSetting(portalId, dictionaryKey, settingKey);
             int version;
             if (setting != null && int.TryParse(setting, out version))
             {
@@ -194,11 +228,59 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
+        private static string GetSetting(int? portalId, string dictionaryKey, string settingKey)
+        {
+            bool isHttpContext = HttpContext.Current != null && HttpContext.Current.Items.Contains(dictionaryKey);
+            var settings = isHttpContext ? HttpContext.Current.Items[dictionaryKey] : null;
+            if (settings == null)
+            {
+                if (dictionaryKey == HostSettingsDictionaryKey)
+                {
+                    return GetHostSettingThroughReflection(settingKey);
+                }
+
+                return GetPortalSettingThroughReflection(portalId, settingKey);
+            }
+
+            string value;
+            var dictionary = (Dictionary<string, string>)settings;
+            if (dictionary.TryGetValue(settingKey, out value))
+            {
+                return value;
+            }
+
+            // no valid setting was found
+            return null;
+        }
+
         private static string GetPortalSettingThroughReflection(string settingKey)
         {
             try
             {
                 int? portalId = GetPortalIdThroughReflection();
+                if (portalId.HasValue)
+                {
+                    var method = _portalControllerType.GetMethod("GetPortalSettingsDictionary");
+                    var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
+                    string value;
+                    if (dictionary.TryGetValue(settingKey, out value))
+                    {
+                        return value;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // ignore
+            }
+
+            return null;
+        }
+
+        private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
+        {
+            try
+            {
                 if (portalId.HasValue)
                 {
                     var method = _portalControllerType.GetMethod("GetPortalSettingsDictionary");

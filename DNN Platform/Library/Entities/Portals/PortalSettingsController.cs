@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.Registration = new RegistrationSettings(settings);
 
             var clientResourcesSettings = new ClientResourceSettings();
-            bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
+            bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled(portalSettings.PortalId);
 
             int crmVersion;
             if (overridingDefaultSettings)
