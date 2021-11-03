@@ -21,7 +21,7 @@ SearchIncludeNumeric,			SearchIncludeNumeric,			SearchIncludeNumeric,			false
 SearchIncludedTagInfoFilter,	SearchIncludedTagInfoFilter,	SearchIncludedTagInfoFilter,	b
 SearchMaxWordlLength,			SearchMaxWordlLength,			MaxSearchWordLength,			15
 SearchMinWordlLength,			SearchMinWordlLength,			MinSearchWordLength,			4
-SSLSetup,						SSLSetup,						SSLSetup,						0
+SSLSetup,						SSLSetup,						SSLSetup,						Off
 SSLEnforced,					SSLEnforced,					SSLEnforced,					true
 SSLURL,							SSLURL,							SSLURL,							ssl
 STDURL,							STDURL,							STDURL,							std
