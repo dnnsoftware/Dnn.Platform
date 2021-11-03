@@ -223,7 +223,7 @@ namespace DotNetNuke.Web.Client
             try
             {
                 var method = _portalAliasControllerType.GetMethod("GetPortalAliasInfo");
-                var portalAliasInfo = method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host });
+                var portalAliasInfo = HttpContext.Current != null ? method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host }) : null;
                 if (portalAliasInfo != null)
                 {
                     object portalId = portalAliasInfo.GetType().GetProperty("PortalID").GetValue(portalAliasInfo, new object[] { });
