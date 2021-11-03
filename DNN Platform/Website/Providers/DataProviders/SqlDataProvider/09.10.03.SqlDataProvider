@@ -1,5 +1,5 @@
 ﻿/****************************************************************
- * SPROC: GetFoldersByPermission #4573
+ * SPROC: GetFoldersByPermission
  ****************************************************************/
 IF (OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]') IS NOT NULL)
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
