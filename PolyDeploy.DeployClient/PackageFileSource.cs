@@ -2,6 +2,7 @@ namespace PolyDeploy.DeployClient
 {
     using System.Collections.Generic;
     using System.IO.Abstractions;
+    using System.IO;
 
     public class PackageFileSource : IPackageFileSource
     {
@@ -14,7 +15,12 @@ namespace PolyDeploy.DeployClient
 
         public IReadOnlyCollection<string> GetPackageFiles()
         {
-            return fileSystem.Directory.GetFiles(".", "*.zip");
+            return this.fileSystem.Directory.GetFiles(".", "*.zip");
+        }
+
+        public Stream GetFileStream(string fileName)
+        {
+            return this.fileSystem.File.Open(fileName, FileMode.Open);
         }
     }
 }

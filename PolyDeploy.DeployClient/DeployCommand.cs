@@ -18,7 +18,8 @@
             var deployer = new Deployer(
                 new Renderer(AnsiConsole.Console),
                 new PackageFileSource(new FileSystem()),
-                new Installer(new HttpClient()));
+                new Installer(new HttpClient()),
+                new Encryptor());
             await deployer.StartAsync(input);
             return 0;
         }
