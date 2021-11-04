@@ -5,6 +5,7 @@ namespace PolyDeploy.DeployClient.Tests
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
+    using FakeItEasy;
     using Shouldly;
     using Xunit;
 
@@ -15,7 +16,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString());
+            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
@@ -34,7 +35,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString());
+            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),

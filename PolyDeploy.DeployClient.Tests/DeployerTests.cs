@@ -56,6 +56,7 @@ namespace PolyDeploy.DeployClient.Tests
         [Fact]
         public async Task StartAsync_EncryptsPackages()
         {
+            var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Another Package.zip" });
             var package1Stream = new MemoryStream(Encoding.UTF8.GetBytes("This is a zip file"));
@@ -66,8 +67,8 @@ namespace PolyDeploy.DeployClient.Tests
             var encryptor = A.Fake<IEncryptor>();
             var encryptedPackage1Stream = new MemoryStream(Encoding.UTF8.GetBytes("This is an encrypted zip file"));
             var encryptedAnotherPackageStream = new MemoryStream(Encoding.UTF8.GetBytes("This is another encrypted zip file"));
-            A.CallTo(() => encryptor.GetEncryptedStream(package1Stream)).Returns(encryptedPackage1Stream);
-            A.CallTo(() => encryptor.GetEncryptedStream(anotherPackageStream)).Returns(encryptedAnotherPackageStream);
+            A.CallTo(() => encryptor.GetEncryptedStream(options, package1Stream)).Returns(encryptedPackage1Stream);
+            A.CallTo(() => encryptor.GetEncryptedStream(options, anotherPackageStream)).Returns(encryptedAnotherPackageStream);
 
             var actualFiles = new Dictionary<string, string>();
             var installer = A.Fake<IInstaller>();
@@ -75,7 +76,7 @@ namespace PolyDeploy.DeployClient.Tests
                 .Invokes((DeployInput DeployInput, string sessionId, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
 
             var deployer = new Deployer(A.Fake<IRenderer>(), packageFileSource, installer, encryptor);
-            await deployer.StartAsync(A.Dummy<DeployInput>());
+            await deployer.StartAsync(options);
 
             actualFiles.ShouldBe(
                 new Dictionary<string, string> {

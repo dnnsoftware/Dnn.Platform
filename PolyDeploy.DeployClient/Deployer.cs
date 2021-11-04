@@ -27,7 +27,7 @@ namespace PolyDeploy.DeployClient
             foreach (var packageFile in packageFiles)
             {
                 using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
-                using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(packageFileStream);
+                using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
                 await this.installer.UploadPackageAsync(options, sessionId, encryptedPackageStream, packageFile);
             }
         }

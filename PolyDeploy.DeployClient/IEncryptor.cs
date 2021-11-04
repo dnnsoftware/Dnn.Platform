@@ -5,6 +5,6 @@ namespace PolyDeploy.DeployClient
 
     public interface IEncryptor
     {
-        Task<Stream> GetEncryptedStream(Stream packageStream);
+        Task<Stream> GetEncryptedStream(DeployInput options, Stream packageStream);
     }
 }
