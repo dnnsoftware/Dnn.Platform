@@ -176,7 +176,7 @@ namespace DotNetNuke.Entities.Portals
             int crmVersion;
             if (overridingDefaultSettings)
             {
-                int? globalVersion = new ClientResourceSettings().GetVersion();
+                int? globalVersion = new ClientResourceSettings().GetVersion(portalSettings.PortalId);
                 crmVersion = globalVersion ?? default(int);
             }
             else
