@@ -171,12 +171,12 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.Registration = new RegistrationSettings(settings);
 
             var clientResourcesSettings = new ClientResourceSettings();
-            bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
+            bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled(portalSettings.PortalId);
 
             int crmVersion;
             if (overridingDefaultSettings)
             {
-                int? globalVersion = new ClientResourceSettings().GetVersion();
+                int? globalVersion = new ClientResourceSettings().GetVersion(portalSettings.PortalId);
                 crmVersion = globalVersion ?? default(int);
             }
             else
