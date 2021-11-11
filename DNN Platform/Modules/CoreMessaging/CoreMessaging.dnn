@@ -1,12 +1,12 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" isSystem="true" version="09.10.01">
+    <package name="DotNetNuke.Modules.CoreMessaging" type="Module" isSystem="true" version="09.10.02">
       <friendlyName>Message Center</friendlyName>      
       <description>Core Messaging module allows users to message each other.</description>
       <iconFile>~/DesktopModules/CoreMessaging/Images/messaging_32X32.png</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

@@ -1,6 +1,6 @@
 {
   "name": "admin_logs",
-  "version": "9.10.1",
+  "version": "9.10.2",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",
@@ -16,7 +16,7 @@
     "@babel/plugin-transform-object-assign": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.10.1",
+    "@dnnsoftware/dnn-react-common": "9.10.2",
     "array.prototype.find": "2.0.4",
     "array.prototype.findindex": "2.0.2",
     "babel-loader": "8.0.6",
@@ -43,7 +43,7 @@
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",
     "redux-devtools": "3.5.0",
-    "redux-devtools-dock-monitor": "1.1.3",
+    "redux-devtools-dock-monitor": "1.2.0",
     "redux-devtools-log-monitor": "1.4.0",
     "redux-immutable-state-invariant": "2.1.0",
     "redux-thunk": "2.3.0",

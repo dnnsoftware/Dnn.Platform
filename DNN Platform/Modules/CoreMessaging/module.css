@@ -449,7 +449,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
         padding-top: 18px;
     }
 	.composeMessageDialog .fileUploadArea{ display: inline-block;vertical-align: top;}
-    .composeMessageDialog .dnnTertiaryAction{ margin: 0 10px 0 0;padding: 6px 6px;height: 32px;}
+    .composeMessageDialog .dnnTertiaryAction{ margin: 0 10px 0 0;}
 	/*Attachments*/
 	.composeMessageDialog .messageAttachments{ margin-top: 5px;}
 	/* File Upload */

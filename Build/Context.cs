@@ -12,16 +12,16 @@ namespace DotNetNuke.Build
     using Cake.Common.IO.Paths;
     using Cake.Common.Tools.GitVersion;
     using Cake.Core;
-    using Cake.Frosting;
+    using Cake.Frosting.Issues.Recipe;
     using Cake.Json;
 
     /// <inheritdoc/>
-    public class Context : FrostingContext
+    public class Context : IssuesContext
     {
         /// <summary>Initializes a new instance of the <see cref="Context"/> class.</summary>
         /// <param name="context">The base context.</param>
         public Context(ICakeContext context)
-            : base(context)
+            : base(context, RepositoryInfoProviderType.CakeGit)
         {
             try
             {

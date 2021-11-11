@@ -1,13 +1,13 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_GoogleAuthentication" type="Auth_System" version="09.10.01" >
+    <package name="DNN_GoogleAuthentication" type="Auth_System" version="09.10.02" >
       <friendlyName>DotNetNuke Google Authentication Project</friendlyName>
       <description>The DotNetNuke Google Authentication Project is an Authentication provider for DotNetNuke that uses 
         Google authentication to authenticate users.
       </description>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

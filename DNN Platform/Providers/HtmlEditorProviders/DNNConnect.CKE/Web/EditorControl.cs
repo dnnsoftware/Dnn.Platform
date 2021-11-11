@@ -25,12 +25,15 @@ namespace DNNConnect.CKEditorProvider.Web
     using DNNConnect.CKEditorProvider.Extensions;
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security;
@@ -38,51 +41,21 @@ namespace DNNConnect.CKEditorProvider.Web
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The CKEditor control.
     /// </summary>
     public class EditorControl : WebControl, IPostBackDataHandler
     {
-        /// <summary>
-        /// The provider type.
-        /// </summary>
         private const string ProviderType = "htmlEditor";
-
-        /// <summary>
-        /// The portal settings.
-        /// </summary>
+        private readonly INavigationManager navigationManager;
         private readonly PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-
-        /// <summary>
-        /// Check if the Settings Collection
-        /// is Merged with all Settings.
-        /// </summary>
-        private bool isMerged;
-
-        /// <summary>
-        /// The settings collection.
-        /// </summary>
+        private bool isMerged; // Check if the Settings Collection is Merged with all Settings.
         private NameValueCollection settings;
-
-        /// <summary>
-        /// Current Settings Base.
-        /// </summary>
-        private EditorProviderSettings currentSettings = new EditorProviderSettings();
-
-        /// <summary>
-        /// The tool bar name override.
-        /// </summary>
-        private string toolBarNameOverride; // EL 20101006
-
-        /// <summary>
-        /// The parent module that contains the editor.
-        /// </summary>
-        private PortalModuleBase myParModule;
-
-        /// <summary>
-        /// The Parent Module ID.
-        /// </summary>
+        private EditorProviderSettings currentEditorSettings = new EditorProviderSettings();
+        private string toolBarNameOverride;
+        private PortalModuleBase portalModule;
         private int parentModulId;
 
         /// <summary>
@@ -90,18 +63,18 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </summary>
         public EditorControl()
         {
+            this.navigationManager = this.Context.GetScope().ServiceProvider.GetRequiredService<INavigationManager>();
             this.LoadConfigSettings();
-
             this.Init += this.CKEditorInit;
         }
 
         /// <summary>
-        /// Gets a value indicating whether IsRendered.
+        /// Gets a value indicating whether CKEditor is rendered.
         /// </summary>
         public bool IsRendered { get; private set; }
 
         /// <summary>
-        /// Gets Settings.
+        /// Gets the editor settings.
         /// </summary>
         public NameValueCollection Settings
         {
@@ -128,12 +101,12 @@ namespace DNNConnect.CKEditorProvider.Web
 
                     if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
                     {
-                        if (info.GetValue(this.currentSettings.Config, null) == null)
+                        if (info.GetValue(this.currentEditorSettings.Config, null) == null)
                         {
                             continue;
                         }
 
-                        var rawValue = info.GetValue(this.currentSettings.Config, null);
+                        var rawValue = info.GetValue(this.currentEditorSettings.Config, null);
 
                         settingValue = info.PropertyType.Name.Equals("Double")
                                            ? Convert.ToDouble(rawValue)
@@ -202,7 +175,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         var xmlAttribute =
                                             codeMirrorInfo.GetCustomAttribute<XmlAttributeAttribute>(true);
                                         var rawSettingValue = codeMirrorInfo.GetValue(
-                                            this.currentSettings.Config.CodeMirror, null);
+                                            this.currentEditorSettings.Config.CodeMirror, null);
 
                                         var codeMirrorSettingValue = rawSettingValue.ToString();
 
@@ -239,7 +212,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                             wordCountInfo.GetCustomAttribute<XmlAttributeAttribute>(true);
 
                                         var rawSettingValue =
-                                            wordCountInfo.GetValue(this.currentSettings.Config.WordCount, null);
+                                            wordCountInfo.GetValue(this.currentEditorSettings.Config.WordCount, null);
 
                                         var wordCountSettingValue = rawSettingValue.ToString();
 
@@ -279,7 +252,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                     this.settings["language"] = currentCulture.Name.ToLowerInvariant();
 
-                    if (string.IsNullOrEmpty(this.currentSettings.Config.Scayt_sLang))
+                    if (string.IsNullOrEmpty(this.currentEditorSettings.Config.Scayt_sLang))
                     {
                         // 'en-us' is not a language code that is supported, the correct is 'en_US'
                         // https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-scayt_sLang
@@ -291,42 +264,42 @@ namespace DNNConnect.CKEditorProvider.Web
                     this.settings["language"] = "en";
                 }
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.CustomConfig))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.Config.CustomConfig))
                 {
-                    this.settings["customConfig"] = this.FormatUrl(this.currentSettings.Config.CustomConfig);
+                    this.settings["customConfig"] = this.FormatUrl(this.currentEditorSettings.Config.CustomConfig);
                 }
                 else
                 {
                     this.settings["customConfig"] = string.Empty;
                 }
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Skin))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.Config.Skin))
                 {
-                    if (this.currentSettings.Config.Skin.Equals("office2003")
-                        || this.currentSettings.Config.Skin.Equals("BootstrapCK-Skin")
-                        || this.currentSettings.Config.Skin.Equals("chris")
-                        || this.currentSettings.Config.Skin.Equals("v2"))
+                    if (this.currentEditorSettings.Config.Skin.Equals("office2003")
+                        || this.currentEditorSettings.Config.Skin.Equals("BootstrapCK-Skin")
+                        || this.currentEditorSettings.Config.Skin.Equals("chris")
+                        || this.currentEditorSettings.Config.Skin.Equals("v2"))
                     {
                         this.settings["skin"] = "moono";
                     }
                     else
                     {
-                        this.settings["skin"] = this.currentSettings.Config.Skin;
+                        this.settings["skin"] = this.currentEditorSettings.Config.Skin;
                     }
                 }
 
-                this.settings["linkDefaultProtocol"] = this.currentSettings.DefaultLinkProtocol.ToSettingValue();
+                this.settings["linkDefaultProtocol"] = this.currentEditorSettings.DefaultLinkProtocol.ToSettingValue();
 
                 var cssFiles = new List<string>();
-                var skinSrc = this.GetSkinSource();
-                var containerSrc = this.GetContainerSource();
+                var skinSrc = this.GetSkinSourcePath();
+                var containerSrc = this.GetContainerSourcePath();
 
                 cssFiles.Add("~/portals/_default/default.css");
                 cssFiles.Add(skinSrc.Replace(skinSrc.Substring(skinSrc.LastIndexOf('/'), skinSrc.Length - skinSrc.Substring(0, skinSrc.LastIndexOf('/')).Length), "/skin.css"));
                 cssFiles.Add(containerSrc.Replace(containerSrc.Substring(containerSrc.LastIndexOf('/'), containerSrc.Length - containerSrc.Substring(0, containerSrc.LastIndexOf('/')).Length), "/container.css"));
-                if (this.myParModule != null && this.myParModule.ModuleId > -1)
+                if (this.portalModule != null && this.portalModule.ModuleId > -1)
                 {
-                    cssFiles.Add("~/DesktopModules/" + this.myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
+                    cssFiles.Add("~/DesktopModules/" + this.portalModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
                 }
 
                 cssFiles.Add("~" + this.portalSettings.HomeDirectory + "portal.css");
@@ -334,18 +307,18 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(this.MapPathSecure(cssFile))).Select(Globals.ResolveUrl).ToList();
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.ContentsCss))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.Config.ContentsCss))
                 {
-                    var customCss = Globals.ResolveUrl(this.FormatUrl(this.currentSettings.Config.ContentsCss));
+                    var customCss = Globals.ResolveUrl(this.FormatUrl(this.currentEditorSettings.Config.ContentsCss));
                     resolvedCssFiles.Add(customCss);
                 }
 
                 var serializer = new JavaScriptSerializer();
                 this.settings["contentsCss"] = serializer.Serialize(resolvedCssFiles);
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Templates_Files))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.Config.Templates_Files))
                 {
-                    var templateUrl = this.FormatUrl(this.currentSettings.Config.Templates_Files);
+                    var templateUrl = this.FormatUrl(this.currentEditorSettings.Config.Templates_Files);
 
                     this.settings["templates_files"] = string.Format(
                         "[ '{0}' ]",
@@ -371,7 +344,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Easy Image Upload
-                if (this.currentSettings.ImageButtonMode == ImageButtonType.EasyImageButton)
+                if (this.currentEditorSettings.ImageButtonMode == ImageButtonType.EasyImageButton)
                 {
                     // replace 'Image' Plugin with 'EasyImage'
                     this.settings["toolbar"] = this.settings["toolbar"].Replace("'Image'", "'EasyImageUpload'");
@@ -408,7 +381,7 @@ namespace DNNConnect.CKEditorProvider.Web
                             this.portalSettings.PortalId,
                             this.parentModulId,
                             this.ID,
-                            this.currentSettings.SettingMode,
+                            this.currentEditorSettings.SettingMode,
                             CultureInfo.CurrentCulture.Name)));
                 }
                 else
@@ -426,12 +399,13 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // cloudservices variables need to be set regardless
-                this.settings.Add("cloudServices_tokenUrl", "/API/CKEditorProvider/CloudServices/GetToken");
+                var tokenUrl = ServicesFramework.GetServiceFrameworkRoot() + "API/CKEditorProvider/CloudServices/GetToken";
+                this.settings.Add("cloudServices_tokenUrl", tokenUrl);
 
                 // Editor Width
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.Config.Width))
                 {
-                    this.settings["width"] = this.currentSettings.Config.Width;
+                    this.settings["width"] = this.currentEditorSettings.Config.Width;
                 }
                 else
                 {
@@ -442,9 +416,9 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Editor Height
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Height))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.Config.Height))
                 {
-                    this.settings["height"] = this.currentSettings.Config.Height;
+                    this.settings["height"] = this.currentEditorSettings.Config.Height;
                 }
                 else
                 {
@@ -487,7 +461,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 HttpContext.Current.Session["CKDNNporid"] = this.portalSettings.PortalId;
 
                 // Add FileBrowser
-                switch (this.currentSettings.BrowserMode)
+                switch (this.currentEditorSettings.BrowserMode)
                 {
                     case BrowserType.StandardBrowser:
                         {
@@ -499,7 +473,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         this.portalSettings.PortalId,
                                         this.parentModulId,
                                         this.ID,
-                                        this.currentSettings.SettingMode,
+                                        this.currentEditorSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
                             this.settings["filebrowserImageBrowseUrl"] =
                                 Globals.ResolveUrl(
@@ -509,7 +483,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         this.portalSettings.PortalId,
                                         this.parentModulId,
                                         this.ID,
-                                        this.currentSettings.SettingMode,
+                                        this.currentEditorSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
                             this.settings["filebrowserFlashBrowseUrl"] =
                                 Globals.ResolveUrl(
@@ -519,10 +493,10 @@ namespace DNNConnect.CKEditorProvider.Web
                                         this.portalSettings.PortalId,
                                         this.parentModulId,
                                         this.ID,
-                                        this.currentSettings.SettingMode,
+                                        this.currentEditorSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
 
-                            if (this.currentSettings.ImageButtonMode == ImageButtonType.StandardButton && Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
+                            if (this.currentEditorSettings.ImageButtonMode == ImageButtonType.StandardButton && Utility.CheckIfUserHasFolderWriteAccess(this.currentEditorSettings.UploadDirId, this.portalSettings))
                             {
                                 this.settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
@@ -532,7 +506,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                             this.portalSettings.PortalId,
                                             this.parentModulId,
                                             this.ID,
-                                            this.currentSettings.SettingMode,
+                                            this.currentEditorSettings.SettingMode,
                                             CultureInfo.CurrentCulture.Name));
                                 this.settings["filebrowserFlashUploadUrl"] =
                                     Globals.ResolveUrl(
@@ -542,7 +516,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                             this.portalSettings.PortalId,
                                             this.parentModulId,
                                             this.ID,
-                                            this.currentSettings.SettingMode,
+                                            this.currentEditorSettings.SettingMode,
                                             CultureInfo.CurrentCulture.Name));
                                 this.settings["filebrowserImageUploadUrl"] =
                                     Globals.ResolveUrl(
@@ -552,7 +526,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                             this.portalSettings.PortalId,
                                             this.parentModulId,
                                             this.ID,
-                                            this.currentSettings.SettingMode,
+                                            this.currentEditorSettings.SettingMode,
                                             CultureInfo.CurrentCulture.Name));
                             }
 
@@ -589,7 +563,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         this.portalSettings.ActiveTab.TabID,
                                         this.portalSettings.PortalId));
 
-                            if (Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this.portalSettings))
+                            if (Utility.CheckIfUserHasFolderWriteAccess(this.currentEditorSettings.UploadDirId, this.portalSettings))
                             {
                                 this.settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
@@ -611,10 +585,10 @@ namespace DNNConnect.CKEditorProvider.Web
                                             this.portalSettings.PortalId));
                             }
 
-                            HttpContext.Current.Session["CKDNNSubDirs"] = this.currentSettings.SubDirs;
+                            HttpContext.Current.Session["CKDNNSubDirs"] = this.currentEditorSettings.SubDirs;
 
-                            HttpContext.Current.Session["CKDNNRootDirId"] = this.currentSettings.BrowserRootDirId;
-                            HttpContext.Current.Session["CKDNNUpDirId"] = this.currentSettings.UploadDirId;
+                            HttpContext.Current.Session["CKDNNRootDirId"] = this.currentEditorSettings.BrowserRootDirId;
+                            HttpContext.Current.Session["CKDNNUpDirId"] = this.currentEditorSettings.UploadDirId;
 
                             // Set Browser Authorize
                             const bool isAuthorized = true;
@@ -638,7 +612,6 @@ namespace DNNConnect.CKEditorProvider.Web
         /// </summary>
         public string ToolBarName
         {
-            // EL 20101006
             get
             {
                 return this.toolBarNameOverride;
@@ -669,10 +642,7 @@ namespace DNNConnect.CKEditorProvider.Web
             }
         }
 
-        /// <summary>
-        ///   Gets Name for the Current Resource file name.
-        /// </summary>
-        private static string SResXFile
+        private static string GetResxFileName
         {
             get
             {
@@ -686,9 +656,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// Finds the module instance.
         /// </summary>
         /// <param name="editorControl">The editor control.</param>
-        /// <returns>
-        /// The Instances found.
-        /// </returns>
+        /// <returns>The Instances found.</returns>
         public static Control FindModuleInstance(Control editorControl)
         {
             Control ctl = editorControl.Parent;
@@ -724,14 +692,10 @@ namespace DNNConnect.CKEditorProvider.Web
         }
 
         /// <summary>
-        /// The has rendered text area.
+        /// Checks if the text area was rendered.
         /// </summary>
-        /// <param name="control">
-        /// The control.
-        /// </param>
-        /// <returns>
-        /// Returns if it has rendered text area.
-        /// </returns>
+        /// <param name="control">The control to ckeck.</param>
+        /// <returns>Returns a value indicating whether the text area has rendered.</returns>
         public bool HasRenderedTextArea(Control control)
         {
             if (control is EditorControl && ((EditorControl)control).IsRendered)
@@ -743,17 +707,11 @@ namespace DNNConnect.CKEditorProvider.Web
         }
 
         /// <summary>
-        /// The load post data.
+        /// Loads the post data.
         /// </summary>
-        /// <param name="postDataKey">
-        /// The post data key.
-        /// </param>
-        /// <param name="postCollection">
-        /// The post collection.
-        /// </param>
-        /// <returns>
-        /// Returns if the PostData are loaded.
-        /// </returns>
+        /// <param name="postDataKey">The post data key.</param>
+        /// <param name="postCollection">The post collection.</param>
+        /// <returns>A value indicating whether the PostData has loaded.</returns>
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             try
@@ -763,7 +721,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                 if (currentValue == null | !postedValue.Equals(currentValue))
                 {
-                    if (this.currentSettings.InjectSyntaxJs)
+                    if (this.currentEditorSettings.InjectSyntaxJs)
                     {
                         if (postedValue.Contains("<pre class=\"brush:") && !postedValue.Contains("shCore.js"))
                         {
@@ -799,7 +757,7 @@ namespace DNNConnect.CKEditorProvider.Web
         }
 
         /// <summary>
-        /// The raise post data changed event.
+        /// Taises post data changed event.
         /// </summary>
         public void RaisePostDataChangedEvent()
         {
@@ -814,37 +772,26 @@ namespace DNNConnect.CKEditorProvider.Web
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-
-            // if (HasMsAjax)
-            // {
-            //    return;
-            // }
-
-            // RegisterCKEditorLibrary();
-
-            // GenerateEditorLoadScript();
         }
 
         /// <summary>
-        /// The render.
+        /// Renders the control.
         /// </summary>
-        /// <param name="outWriter">
-        /// The out writer.
-        /// </param>
+        /// <param name="outWriter">The Writer to render to.</param>
         protected override void Render(HtmlTextWriter outWriter)
         {
             outWriter.Write("<div>");
             outWriter.Write("<noscript>");
             outWriter.Write("<p>");
-            outWriter.Write(Localization.GetString("NoJava.Text", SResXFile));
+            outWriter.Write(Localization.GetString("NoJava.Text", GetResxFileName));
             outWriter.Write("</p>");
             outWriter.Write("</noscript>");
             outWriter.Write("</div>");
 
             outWriter.Write(outWriter.NewLine);
 
-            var styleWidth = !string.IsNullOrEmpty(this.currentSettings.Config.Width)
-                                 ? string.Format(" style=\"width:{0};\"", this.currentSettings.Config.Width)
+            var styleWidth = !string.IsNullOrEmpty(this.currentEditorSettings.Config.Width)
+                                 ? string.Format(" style=\"width:{0};\"", this.currentEditorSettings.Config.Width)
                                  : string.Empty;
 
             outWriter.Write("<div{0}>", styleWidth);
@@ -865,9 +812,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
             if (string.IsNullOrEmpty(this.Value))
             {
-                if (!string.IsNullOrEmpty(this.currentSettings.BlankText))
+                if (!string.IsNullOrEmpty(this.currentEditorSettings.BlankText))
                 {
-                    outWriter.Write(this.Context.Server.HtmlEncode(this.currentSettings.BlankText));
+                    outWriter.Write(this.Context.Server.HtmlEncode(this.currentEditorSettings.BlankText));
                 }
             }
             else
@@ -881,8 +828,6 @@ namespace DNNConnect.CKEditorProvider.Web
 
             this.IsRendered = true;
 
-            /////////////////
-
             if (!this.HasRenderedTextArea(this.Page))
             {
                 return;
@@ -892,7 +837,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
             if (PortalSecurity.IsInRoles(this.portalSettings.AdministratorRoleName))
             {
-                var editorUrl = Globals.NavigateURL(
+                var editorUrl = this.navigationManager.NavigateURL(
                     "CKEditorOptions",
                     "ModuleId=" + this.parentModulId,
                     "minc=" + this.ID,
@@ -904,69 +849,39 @@ namespace DNNConnect.CKEditorProvider.Web
                     "<a href=\"javascript:void(0)\" onclick='window.open({0},\"Options\", \"width=850,height=750,resizable=yes\")' class=\"CommandButton\" id=\"{1}\">{2}</a>",
                     HttpUtility.HtmlAttributeEncode(HttpUtility.JavaScriptStringEncode(editorUrl, true)),
                     string.Format("{0}_ckoptions", this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty)),
-                    Localization.GetString("Options.Text", SResXFile));
+                    Localization.GetString("Options.Text", GetResxFileName));
             }
 
             outWriter.Write("</p>");
-            /////////////////
         }
 
-        /// <summary>
-        /// Re-Formats Url from the Url Control.
-        /// </summary>
-        /// <param name="inputUrl">The input Url.</param>
-        /// <returns>
-        /// Returns the Formatted Url.
-        /// </returns>
-        private string ReFormatURL(string inputUrl)
-        {
-            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("FileID="))
-            {
-                return inputUrl;
-            }
-
-            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this.portalSettings.PortalId));
-        }
-
-        /// <summary>Gets the container source.</summary>
-        /// <returns>The container source path.</returns>
-        private string GetContainerSource()
+        private string GetContainerSourcePath()
         {
             var containerSource = this.portalSettings.ActiveTab.ContainerSrc ?? this.portalSettings.DefaultPortalContainer;
             containerSource = this.ResolveSourcePath(containerSource);
             return containerSource;
         }
 
-        /// <summary>Gets the skin source.</summary>
-        /// <returns>The skin source path.</returns>
-        private string GetSkinSource()
+        private string GetSkinSourcePath()
         {
             var skinSource = this.portalSettings.ActiveTab.SkinSrc ?? this.portalSettings.DefaultPortalSkin;
             skinSource = this.ResolveSourcePath(skinSource);
             return skinSource;
         }
 
-        /// <summary>Resolves the source path.</summary>
-        /// <param name="source">The source.</param>
-        /// <returns>The source path of the select resource.</returns>
         private string ResolveSourcePath(string source)
         {
             source = "~" + source;
             return source;
         }
 
-        /// <summary>
-        /// Initializes the Editor.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void CKEditorInit(object sender, EventArgs e)
         {
             this.Page?.RegisterRequiresPostBack(this); // Ensures that postback is handled
 
-            this.myParModule = (PortalModuleBase)FindModuleInstance(this);
+            this.portalModule = (PortalModuleBase)FindModuleInstance(this);
 
-            if (this.myParModule == null || this.myParModule.ModuleId == -1)
+            if (this.portalModule == null || this.portalModule.ModuleId == -1)
             {
                 // Get Parent ModuleID From this ClientID
                 string sClientId = this.ClientID.Substring(this.ClientID.IndexOf("ctr") + 3);
@@ -984,27 +899,16 @@ namespace DNNConnect.CKEditorProvider.Web
             }
             else
             {
-                this.parentModulId = this.myParModule.ModuleId;
+                this.parentModulId = this.portalModule.ModuleId;
             }
 
-            this.CheckFileBrowser();
-
+            this.SetFileBrowserMode();
             this.LoadAllSettings();
-
-            ////if (!HasMsAjax)
-            ////{
-            ////   return;
-            ////}
-
             this.RegisterCKEditorLibrary();
-
             this.GenerateEditorLoadScript();
         }
 
-        /// <summary>
-        /// The check file browser.
-        /// </summary>
-        private void CheckFileBrowser()
+        private void SetFileBrowserMode()
         {
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
             Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
@@ -1017,37 +921,13 @@ namespace DNNConnect.CKEditorProvider.Web
             switch (objProvider.Attributes["ck_browser"])
             {
                 case "ckfinder":
-                    this.currentSettings.BrowserMode = BrowserType.CKFinder;
+                    this.currentEditorSettings.BrowserMode = BrowserType.CKFinder;
                     break;
                 case "standard":
-                    this.currentSettings.BrowserMode = BrowserType.StandardBrowser;
+                    this.currentEditorSettings.BrowserMode = BrowserType.StandardBrowser;
                     break;
                 case "none":
-                    this.currentSettings.BrowserMode = BrowserType.None;
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// The check image browser.
-        /// </summary>
-        private void CheckImageButton()
-        {
-            ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-            Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
-
-            if (objProvider == null || string.IsNullOrEmpty(objProvider.Attributes["ck_imagebutton"]))
-            {
-                return;
-            }
-
-            switch (objProvider.Attributes["ck_imagebutton"])
-            {
-                case "easyimage":
-                    this.currentSettings.ImageButtonMode = ImageButtonType.EasyImageButton;
-                    break;
-                case "standard":
-                    this.currentSettings.ImageButtonMode = ImageButtonType.StandardButton;
+                    this.currentEditorSettings.BrowserMode = BrowserType.None;
                     break;
             }
         }
@@ -1061,14 +941,14 @@ namespace DNNConnect.CKEditorProvider.Web
             var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
 
             // Load Default Settings
-            this.currentSettings = SettingsUtil.GetDefaultSettings(
+            this.currentEditorSettings = SettingsUtil.GetDefaultSettings(
                 this.portalSettings,
                 this.portalSettings.HomeDirectoryMapPath,
                 this.settings["configFolder"],
                 portalRoles);
 
             // Set Current Mode to Default
-            this.currentSettings.SettingMode = SettingsMode.Default;
+            this.currentEditorSettings.SettingMode = SettingsMode.Default;
 
             const string hostKey = "DNNCKH#";
             var portalKey = string.Format("DNNCKP#{0}#", this.portalSettings.PortalId);
@@ -1079,27 +959,27 @@ namespace DNNConnect.CKEditorProvider.Web
             if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))
             {
                 var hostPortalRoles = RoleController.Instance.GetRoles(Host.HostPortalID);
-                this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                this.currentEditorSettings = SettingsUtil.LoadEditorSettingsByKey(
                     this.portalSettings,
-                    this.currentSettings,
+                    this.currentEditorSettings,
                     settingsDictionary,
                     hostKey,
                     hostPortalRoles);
 
                 // Set Current Mode to Host
-                this.currentSettings.SettingMode = SettingsMode.Host;
+                this.currentEditorSettings.SettingMode = SettingsMode.Host;
 
                 // reset the roles to the correct portal
                 if (this.portalSettings.PortalId != Host.HostPortalID)
                 {
-                    foreach (var toolbarRole in this.currentSettings.ToolBarRoles)
+                    foreach (var toolbarRole in this.currentEditorSettings.ToolBarRoles)
                     {
                         var roleName = hostPortalRoles.FirstOrDefault(role => role.RoleID == toolbarRole.RoleId)?.RoleName ?? string.Empty;
                         var roleId = portalRoles.FirstOrDefault(role => role.RoleName.Equals(roleName))?.RoleID ?? Null.NullInteger;
                         toolbarRole.RoleId = roleId;
                     }
 
-                    foreach (var uploadRoles in this.currentSettings.UploadSizeRoles)
+                    foreach (var uploadRoles in this.currentEditorSettings.UploadSizeRoles)
                     {
                         var roleName = hostPortalRoles.FirstOrDefault(role => role.RoleID == uploadRoles.RoleId)?.RoleName ?? string.Empty;
                         var roleId = portalRoles.FirstOrDefault(role => role.RoleName.Equals(roleName))?.RoleID ?? Null.NullInteger;
@@ -1111,28 +991,25 @@ namespace DNNConnect.CKEditorProvider.Web
             // Load Portal Settings ?!
             if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, portalKey))
             {
-                /* throw new ApplicationException(settingsDictionary.FirstOrDefault(
-                             setting => setting.Name.Equals(string.Format("{0}{1}", portalKey, "StartupMode"))).Value);*/
-
-                this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                this.currentEditorSettings = SettingsUtil.LoadEditorSettingsByKey(
                     this.portalSettings,
-                    this.currentSettings,
+                    this.currentEditorSettings,
                     settingsDictionary,
                     portalKey,
                     portalRoles);
 
                 // Set Current Mode to Portal
-                this.currentSettings.SettingMode = SettingsMode.Portal;
+                this.currentEditorSettings.SettingMode = SettingsMode.Portal;
             }
 
             // Load Page Settings ?!
             if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey))
             {
-                this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                    this.portalSettings, this.currentSettings, settingsDictionary, pageKey, portalRoles);
+                this.currentEditorSettings = SettingsUtil.LoadEditorSettingsByKey(
+                    this.portalSettings, this.currentEditorSettings, settingsDictionary, pageKey, portalRoles);
 
                 // Set Current Mode to Page
-                this.currentSettings.SettingMode = SettingsMode.Page;
+                this.currentEditorSettings.SettingMode = SettingsMode.Page;
             }
 
             // Load Module Settings ?!
@@ -1141,22 +1018,18 @@ namespace DNNConnect.CKEditorProvider.Web
                 return;
             }
 
-            this.currentSettings = SettingsUtil.LoadModuleSettings(
-                this.portalSettings, this.currentSettings, moduleKey, this.parentModulId, portalRoles);
+            this.currentEditorSettings = SettingsUtil.LoadModuleSettings(
+                this.portalSettings, this.currentEditorSettings, moduleKey, this.parentModulId, portalRoles);
 
             // Set Current Mode to Module Instance
-            this.currentSettings.SettingMode = SettingsMode.ModuleInstance;
+            this.currentEditorSettings.SettingMode = SettingsMode.ModuleInstance;
         }
 
         /// <summary>
         /// Format the URL from FileID to File Path URL.
         /// </summary>
-        /// <param name="inputUrl">
-        /// The Input URL.
-        /// </param>
-        /// <returns>
-        /// The formatted URL.
-        /// </returns>
+        /// <param name="inputUrl">The Input URL.</param>
+        /// <returns>The formatted URL.</returns>
         private string FormatUrl(string inputUrl)
         {
             var formattedUrl = string.Empty;
@@ -1223,18 +1096,6 @@ namespace DNNConnect.CKEditorProvider.Web
             }
         }
 
-        /// <summary>
-        /// This registers a startup JavaScript with compatibility with the Microsoft Ajax.
-        /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="script">
-        /// The script.
-        /// </param>
-        /// <param name="addScriptTags">
-        /// The add Script Tags.
-        /// </param>
         private void RegisterStartupScript(string key, string script, bool addScriptTags)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), key, script, addScriptTags);
@@ -1245,26 +1106,11 @@ namespace DNNConnect.CKEditorProvider.Web
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), key, script, addScriptTags);
         }
 
-        /// <summary>
-        /// Registers the on submit statement.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="script">The script.</param>
         private void RegisterOnSubmitStatement(Type type, string key, string script)
         {
             ScriptManager.RegisterOnSubmitStatement(this, type, key, script);
         }
 
-        /// <summary>
-        /// Set Toolbar based on Current User.
-        /// </summary>
-        /// <param name="alternateConfigSubFolder">
-        /// The alternate config sub folder.
-        /// </param>
-        /// <returns>
-        /// Toolbar Name.
-        /// </returns>
         private string SetUserToolbar(string alternateConfigSubFolder)
         {
             string toolbarName = this.CanUseFullToolbarAsDefault() ? "Full" : "Basic";
@@ -1274,12 +1120,12 @@ namespace DNNConnect.CKEditorProvider.Web
 
             var listUserToolbarSets = new List<ToolbarSet>();
 
-            if (this.currentSettings.ToolBarRoles.Count <= 0)
+            if (this.currentEditorSettings.ToolBarRoles.Count <= 0)
             {
                 return toolbarName;
             }
 
-            foreach (var roleToolbar in this.currentSettings.ToolBarRoles)
+            foreach (var roleToolbar in this.currentEditorSettings.ToolBarRoles)
             {
                 if (roleToolbar.RoleId.Equals(-1) && !HttpContext.Current.Request.IsAuthenticated)
                 {
@@ -1337,9 +1183,6 @@ namespace DNNConnect.CKEditorProvider.Web
             return currentUser.IsSuperUser || PortalSecurity.IsInRole(this.portalSettings.AdministratorRoleName);
         }
 
-        /// <summary>
-        /// Registers the CKEditor library.
-        /// </summary>
         private void RegisterCKEditorLibrary()
         {
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
@@ -1351,7 +1194,6 @@ namespace DNNConnect.CKEditorProvider.Web
             Type csType = this.GetType();
 
             const string CsName = "CKEdScript";
-            const string CsAdaptName = "CKAdaptScript";
             const string CsFindName = "CKFindScript";
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
@@ -1373,7 +1215,7 @@ namespace DNNConnect.CKEditorProvider.Web
             if (
                 File.Exists(
                     this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js")) &&
-                !cs.IsClientScriptIncludeRegistered(csType, CsFindName) && this.currentSettings.BrowserMode.Equals(BrowserType.CKFinder))
+                !cs.IsClientScriptIncludeRegistered(csType, CsFindName) && this.currentEditorSettings.BrowserMode.Equals(BrowserType.CKFinder))
             {
                 cs.RegisterClientScriptInclude(
                     csType,
@@ -1384,19 +1226,16 @@ namespace DNNConnect.CKEditorProvider.Web
             ClientResourceManager.RegisterScript(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js"));
 
             // Load Custom JS File
-            if (!string.IsNullOrEmpty(this.currentSettings.CustomJsFile)
+            if (!string.IsNullOrEmpty(this.currentEditorSettings.CustomJsFile)
                 && !cs.IsClientScriptIncludeRegistered(csType, "CKCustomJSFile"))
             {
                 cs.RegisterClientScriptInclude(
                     csType,
                     "CKCustomJSFile",
-                    this.FormatUrl(this.currentSettings.CustomJsFile));
+                    this.FormatUrl(this.currentEditorSettings.CustomJsFile));
             }
         }
 
-        /// <summary>
-        /// Generates the editor load script.
-        /// </summary>
         private void GenerateEditorLoadScript()
         {
             var editorVar = string.Format(

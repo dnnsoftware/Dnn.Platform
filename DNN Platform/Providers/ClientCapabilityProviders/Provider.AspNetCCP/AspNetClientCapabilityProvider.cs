@@ -22,7 +22,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         private static IQueryable<IClientCapability> allCapabilities;
         private static Dictionary<string, List<string>> allClientCapabilityValues;
         private static IDictionary<string, int> highPiorityCapabilityValues;
-        private static IDictionary<string, string> dummyProperies;
+        private static IDictionary<string, string> sampleProperies;
 
         /// <inheritdoc/>
         public override bool SupportsTabletDetection
@@ -108,12 +108,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        private static IDictionary<string, string> DummyProperties
+        private static IDictionary<string, string> SampleProperties
         {
             get
             {
-                return dummyProperies ??
-                       (dummyProperies = new Dictionary<string, string>
+                return sampleProperies ??
+                       (sampleProperies = new Dictionary<string, string>
                        {
                            { "Id", "UNKNOWN" },
                            { "IsMobile", "false" },
@@ -148,7 +148,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             if (string.IsNullOrEmpty(userAgent))
             {
-                return new AspNetClientCapability(DummyProperties);
+                return new AspNetClientCapability(SampleProperties);
             }
 
             return new AspNetClientCapability(userAgent, GetHttpBrowserCapabilities(new NameValueCollection(), userAgent));

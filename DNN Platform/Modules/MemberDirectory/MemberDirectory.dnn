@@ -1,12 +1,12 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.Modules.MemberDirectory" type="Module"  isSystem="true" version="09.10.01">
+    <package name="DotNetNuke.Modules.MemberDirectory" type="Module"  isSystem="true" version="09.10.02">
       <friendlyName>Member Directory</friendlyName>      
       <description>The Member Directory module displays a list of Members based on role, profile property or relationship.</description>
       <iconFile>~/DesktopModules/MemberDirectory/Images/member_list_32X32.png</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

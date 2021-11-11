@@ -3,7 +3,7 @@
     "name": "Telerik",
     "folder": "DNN Platform/Components/Telerik/",
     "destination": "Install/Module",
-    "excludes": ["**/*.xml"]
+    "excludes": [ "**/*.xml" ]
   },
   {
     "name": "jQuery",
@@ -40,5 +40,11 @@
     "folder": "DNN Platform/Components/Microsoft.CodeDom.Providers.DotNetCompilerPlatform/",
     "destination": "Install/Library",
     "extension": "resources"
+  },
+  {
+    "name": "MicrosoftFileSystemGlobbing",
+    "folder": "DNN Platform/Components/Microsoft.Extensions.FileSystemGlobbing/",
+    "destination": "Install/Library",
+    "excludes": [ "**/*.xml" ]
   }
 ]
