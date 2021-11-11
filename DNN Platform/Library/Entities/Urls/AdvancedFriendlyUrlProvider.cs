@@ -230,11 +230,11 @@ namespace DotNetNuke.Entities.Urls
         private static string AddPage(string path, string pageName)
         {
             string friendlyPath = path;
-            if (friendlyPath.EndsWith(pageName + "/"))
+            if (friendlyPath.EndsWith(pageName + "/", StringComparison.OrdinalIgnoreCase))
             {
                 friendlyPath = friendlyPath.TrimEnd('/');
             }
-            else if (friendlyPath.EndsWith(pageName) == false)
+            else if (!friendlyPath.EndsWith(pageName, StringComparison.OrdinalIgnoreCase))
             {
                 if (friendlyPath.EndsWith("/"))
                 {
