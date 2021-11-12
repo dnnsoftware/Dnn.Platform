@@ -1,6 +1,6 @@
 {
   "name": "dnn-platform",
-  "version": "9.10.2",
+  "version": "9.11.0",
   "private": true,
   "workspaces": [
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
@@ -38,5 +38,6 @@
     "lint": "lerna run lint",
     "test": "lerna run test"
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.0.2"
+}
 }

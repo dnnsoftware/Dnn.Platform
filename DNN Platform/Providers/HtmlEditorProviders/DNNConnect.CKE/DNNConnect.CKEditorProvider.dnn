@@ -1,5 +1,5 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="09.10.02">
+  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="09.11.00">
 
   <friendlyName>CKEditor Provider</friendlyName>
   <description>CKEditor Provider for DNN</description>
