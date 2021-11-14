@@ -135,6 +135,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{6308FA00-5E1A-4924-98C1-4B4010AD2BEB}"
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\JavaScript Libraries\Knockout\02.02.01.txt = DNN Platform\JavaScript Libraries\Knockout\02.02.01.txt
+		DNN Platform\JavaScript Libraries\Knockout\03.03.00.txt = DNN Platform\JavaScript Libraries\Knockout\03.03.00.txt
 		DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt = DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt
 		DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn = DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn
 		DNN Platform\JavaScript Libraries\Knockout\knockout.js = DNN Platform\JavaScript Libraries\Knockout\knockout.js
