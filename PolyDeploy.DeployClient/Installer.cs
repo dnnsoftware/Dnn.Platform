@@ -38,9 +38,14 @@ namespace PolyDeploy.DeployClient
             return response.Guid;
         }
 
-        public Task UploadPackageAsync(DeployInput options, string sessionId, Stream encryptedPackage, string packageName)
+        public async Task UploadPackageAsync(DeployInput options, string sessionId, Stream encryptedPackage, string packageName)
         {
-            throw new System.NotImplementedException();
+            var requestUri = new Uri(options.GetTargetUri(), $"DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}");
+
+            var form = new MultipartFormDataContent();
+            form.Add(new StreamContent(encryptedPackage), "none", packageName);
+
+            await this.httpClient.PostAsync(requestUri, form);
         }
 
         private class CreateSessionResponse

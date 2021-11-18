@@ -1,7 +1,9 @@
 namespace PolyDeploy.DeployClient.Tests
 {
     using System;
+    using System.IO;
     using System.Net.Http;
+    using System.Text;
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
@@ -47,6 +49,29 @@ namespace PolyDeploy.DeployClient.Tests
             await Should.ThrowAsync<HttpRequestException>(() => installer.StartSessionAsync(options));
         }
 
+        [Fact]
+        public async Task UploadPackageAsync_CallsAddPackagesPostApiWithUsesCorrectSessionId()
+        {
+            var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var targetUri = new Uri("https://polydeploy.example.com/");
+            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>());
+
+            var handler = new FakeMessageHandler(
+                new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+                new HttpResponseMessage(System.Net.HttpStatusCode.NotFound));
+            var client = new HttpClient(handler);
+
+            var installer = new Installer(client);
+
+            await installer.UploadPackageAsync(options, sessionId, new MemoryStream(Encoding.UTF8.GetBytes("XYZ")), "Jamestown_install_5.5.7.zip");
+
+            handler.Request.ShouldNotBeNull();
+            handler.Request.Method.ShouldBe(HttpMethod.Post);
+            var formContent = handler.Request.Content.ShouldBeOfType<MultipartFormDataContent>();
+            var innerContent = formContent.ShouldHaveSingleItem();
+            (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
+        }
+
         private class FakeMessageHandler : HttpMessageHandler
         {
             public FakeMessageHandler(Uri uri, HttpResponseMessage response)
@@ -63,6 +88,7 @@ namespace PolyDeploy.DeployClient.Tests
             {
                 this.Request = request;
                 request.RequestUri.ShouldBe(this.Uri);
+
                 return Task.FromResult(this.Response);
             }
         }
