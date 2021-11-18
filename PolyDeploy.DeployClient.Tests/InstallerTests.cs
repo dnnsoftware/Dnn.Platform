@@ -2,6 +2,7 @@ namespace PolyDeploy.DeployClient.Tests
 {
     using System;
     using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Text.Json;
@@ -58,7 +59,7 @@ namespace PolyDeploy.DeployClient.Tests
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
-                new HttpResponseMessage(System.Net.HttpStatusCode.NotFound));
+                null);
             var client = new HttpClient(handler);
 
             var installer = new Installer(client);
@@ -74,7 +75,7 @@ namespace PolyDeploy.DeployClient.Tests
 
         private class FakeMessageHandler : HttpMessageHandler
         {
-            public FakeMessageHandler(Uri uri, HttpResponseMessage response)
+            public FakeMessageHandler(Uri uri, HttpResponseMessage? response)
             {
                 this.Uri = uri;
                 this.Response = response;
@@ -82,14 +83,14 @@ namespace PolyDeploy.DeployClient.Tests
 
             public Uri Uri { get; set; }
             public HttpRequestMessage? Request { get; set; }
-            public HttpResponseMessage Response { get; set; }
+            public HttpResponseMessage? Response { get; set; }
 
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 this.Request = request;
                 request.RequestUri.ShouldBe(this.Uri);
 
-                return Task.FromResult(this.Response);
+                return Task.FromResult(this.Response ?? new HttpResponseMessage(HttpStatusCode.NoContent));
             }
         }
     }
