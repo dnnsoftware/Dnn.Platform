@@ -172,13 +172,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                 using (var oWrite = File.CreateText(attribFile))
                 {
-                    var currentCulture = CultureInfo.CurrentCulture.DateTimeFormat;
-                    var currentCultureX = CultureInfo.DefaultThreadCurrentCulture.DateTimeFormat;
-
-                    var datetimeUtc = DateTime.UtcNow.Add(duration).ToString(CultureInfo.InvariantCulture);
-                    var datetime1 = DateTime.UtcNow.Add(duration).ToString();
-                    var datetime2 = DateTime.UtcNow.Add(duration).ToString();
-
                     oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString(CultureInfo.InvariantCulture));
                     oWrite.Close();
                 }
