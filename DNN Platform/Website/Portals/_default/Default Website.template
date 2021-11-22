@@ -3,7 +3,7 @@
   <settings>
     <logofile>Images/Logo.png</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
-    <userregistration>1</userregistration>
+    <userregistration>0</userregistration>
     <banneradvertising>0</banneradvertising>
     <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
     <skinsrc>[G]Skins/Xcillion/Inner.ascx</skinsrc>
