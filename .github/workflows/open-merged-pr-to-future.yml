@@ -7,7 +7,7 @@ on:
       - develop
 
 jobs:
-  open-merged-pr-to-ten-branch:
+  open-merged-pr-to-release-branch:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged }}
     steps:
@@ -17,12 +17,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.merge_commit_sha }}
+          branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
 
       - name: Create Pull Request
         uses: repo-sync/pull-request@v2.6
         with:
-          source_branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.merge_commit_sha }}
+          source_branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
           destination_branch: release/10.0.0
           pr_title: v10 ${{ github.event.pull_request.title }}
           pr_body: |
