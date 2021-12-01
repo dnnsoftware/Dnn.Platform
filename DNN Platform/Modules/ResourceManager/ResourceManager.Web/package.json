@@ -45,7 +45,7 @@
     "es6-shim": "0.35.6",
     "fetch-ie8": "1.4.2",
     "file-loader": "3.0.1",
-    "less": "3.9.0",
+    "less": "4.1.2",
     "less-loader": "5.0.0",
     "lodash": "^4.17.4",
     "raw-loader": "2.0.0",
