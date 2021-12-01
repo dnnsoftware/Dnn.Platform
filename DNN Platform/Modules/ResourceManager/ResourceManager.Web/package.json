@@ -1,6 +1,6 @@
 {
   "name": "resource-library",
-  "version": "9.10.2",
+  "version": "9.11.0",
   "description": "Resource Library",
   "private": true,
   "scripts": {
@@ -19,7 +19,7 @@
     "@babel/plugin-transform-arrow-functions": "^7.10.4",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.10.2",
+    "@dnnsoftware/dnn-react-common": "9.11.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.0.6",
     "babel-plugin-transform-object-assign": "6.22.0",
