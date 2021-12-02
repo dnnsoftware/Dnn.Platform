@@ -299,7 +299,7 @@ namespace DotNetNuke.UI.Skins
             var s = new Skin();
             var moduleMessage = (ModuleMessage)s.LoadControl("~/admin/skins/ModuleMessage.ascx");
             moduleMessage.Heading = heading;
-            moduleMessage.Text = message;
+            moduleMessage.Text = new Security.PortalSecurity().InputFilter(message, Security.PortalSecurity.FilterFlag.NoScripting);
             moduleMessage.IconImage = iconImage;
             moduleMessage.IconType = moduleMessageType;
             return moduleMessage;
