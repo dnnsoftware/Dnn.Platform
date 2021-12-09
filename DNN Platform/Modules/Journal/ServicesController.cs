@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.Journal
 
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
-
     public class ServicesController : DnnApiController
     {
         private const int MentionNotificationLength = 100;
