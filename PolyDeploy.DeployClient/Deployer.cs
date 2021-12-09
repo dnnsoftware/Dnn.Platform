@@ -28,6 +28,8 @@ namespace PolyDeploy.DeployClient
             {
                 using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
                 using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
+
+                this.renderer.RenderFileUploadStarted(packageFile);
                 await this.installer.UploadPackageAsync(options, sessionId, encryptedPackageStream, packageFile);
             }
         }

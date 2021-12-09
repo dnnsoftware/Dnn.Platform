@@ -24,5 +24,33 @@ namespace PolyDeploy.DeployClient.Tests
             actual.ShouldContain("OpenContent_4.5.0_Install.zip");
             actual.ShouldContain("2sxc_12.4.4_Install.zip");
         }
+
+        [Fact]
+        public void RenderFileUploadStarted_RendersSomething()
+        {
+            var consoleFactory = new AnsiConsoleFactory();
+            var console = consoleFactory.Create(new AnsiConsoleSettings());
+            var recorder = console.CreateRecorder();
+
+            var renderer = new Renderer(recorder);
+            renderer.RenderFileUploadStarted("OpenContent_4.5.0_Install.zip");
+
+            var actual = recorder.ExportText();
+            actual.ShouldContain("OpenContent_4.5.0_Install.zip");
+        }
+
+        [Fact]
+        public void RenderFileUploadComplete_RendersSomething()
+        {
+            var consoleFactory = new AnsiConsoleFactory();
+            var console = consoleFactory.Create(new AnsiConsoleSettings());
+            var recorder = console.CreateRecorder();
+
+            var renderer = new Renderer(recorder);
+            renderer.RenderFileUploadComplete("OpenContent_4.5.0_Install.zip");
+
+            var actual = recorder.ExportText();
+            actual.ShouldContain("OpenContent_4.5.0_Install.zip");
+        }
     }
 }

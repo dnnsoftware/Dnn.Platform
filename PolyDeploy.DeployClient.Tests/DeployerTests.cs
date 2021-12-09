@@ -84,5 +84,19 @@ namespace PolyDeploy.DeployClient.Tests
                     {"Another Package.zip", "This is another encrypted zip file"},
                 });
         }
+
+        [Fact]
+        public async Task StartAsync_RendersFileUploadStatus()
+        {
+            var options = A.Dummy<DeployInput>();
+            var renderer = A.Fake<IRenderer>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Install.zip", });
+
+            var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>(), A.Fake<IEncryptor>());
+            await deployer.StartAsync(options);
+
+            A.CallTo(() => renderer.RenderFileUploadStarted("Install.zip")).MustHaveHappened();
+        }
     }
 }
