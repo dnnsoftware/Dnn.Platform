@@ -318,7 +318,9 @@ namespace DotNetNuke.Modules.Journal
 
         private static bool IsAllowedLink(string url)
         {
-            return !string.IsNullOrEmpty(url) && (url.Contains("https://") || url.Contains("http://") || url.Contains("www."));
+            Uri uriResult;
+            return Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                && uriResult.Scheme != Uri.UriSchemeFile;
         }
 
         // Check if a user can post content on a specific profile's page
