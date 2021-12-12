@@ -154,22 +154,27 @@ namespace DotNetNuke.Modules.Journal.Components
             url = url.Trim();
             if (!url.StartsWith("http"))
             {
-                url = "http://" + url;
+                url = "https://" + url;
             }
 
-            if (url.Contains("https://"))
+            if (url.Contains("http://"))
             {
-                url = url.Replace("https://", "http://");
+                url = url.Replace("http://", "https://");
             }
 
             if (url.Contains("http://http://"))
             {
-                url = url.Replace("http://http://", "http://");
+                url = url.Replace("http://http://", "https://");
             }
 
-            if (!(url.IndexOf("http://") == 0))
+            if (url.Contains("https://https://"))
             {
-                url = "http://" + url;
+                url = url.Replace("https://https://", "https://");
+            }
+
+            if (!(url.IndexOf("https://") == 0))
+            {
+                url = "https://" + url;
             }
 
             Uri objURI = null;
@@ -177,7 +182,7 @@ namespace DotNetNuke.Modules.Journal.Components
             objURI = new Uri(url);
             return url;
         }
-
+        
         internal static LinkInfo GetLinkData(string URL)
         {
             string sPage = GetPageFromURL(ref URL, string.Empty, string.Empty);
