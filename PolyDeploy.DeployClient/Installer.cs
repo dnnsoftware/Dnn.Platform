@@ -28,6 +28,7 @@ namespace PolyDeploy.DeployClient
         public async Task<string> StartSessionAsync(DeployInput options)
         {
             var requestUri = new Uri(options.GetTargetUri(), "DesktopModules/PolyDeploy/API/Remote/CreateSession");
+            this.httpClient.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
             var responseStream = await this.httpClient.GetStreamAsync(requestUri);
             var response = await JsonSerializer.DeserializeAsync<CreateSessionResponse>(responseStream);
             if (string.IsNullOrWhiteSpace(response?.Guid))

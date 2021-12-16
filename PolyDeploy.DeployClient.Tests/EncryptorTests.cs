@@ -3,6 +3,7 @@ namespace PolyDeploy.DeployClient.Tests
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
+    using FakeItEasy;
     using PolyDeploy.Encryption;
     using Shouldly;
     using Xunit;
@@ -12,7 +13,7 @@ namespace PolyDeploy.DeployClient.Tests
         [Fact]
         public async Task GetEncryptedStream_EncryptsFileContents()
         {
-            var deployInput = new DeployInput("https://example.com", "abcd1234");
+            var deployInput = new DeployInput("https://example.com", A.Dummy<string>(), "abcd1234");
             var encryptor = new Encryptor();
 
             var encryptedStream = await encryptor.GetEncryptedStream(deployInput, new MemoryStream(Encoding.UTF8.GetBytes("ZIP")));
