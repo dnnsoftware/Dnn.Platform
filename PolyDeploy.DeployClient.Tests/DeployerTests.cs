@@ -3,6 +3,7 @@ namespace PolyDeploy.DeployClient.Tests
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -75,7 +76,7 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => installer.UploadPackageAsync(A<DeployInput>._, A<string>._, A<Stream>._, A<string>._))
                 .Invokes((DeployInput DeployInput, string sessionId, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
 
-            var deployer = new Deployer(A.Fake<IRenderer>(), packageFileSource, installer, encryptor);
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, encryptor);
             await deployer.StartAsync(options);
 
             actualFiles.ShouldBe(
@@ -88,15 +89,32 @@ namespace PolyDeploy.DeployClient.Tests
         [Fact]
         public async Task StartAsync_RendersFileUploadStatus()
         {
+            IEnumerable<(string, Task)>? uploads = null;
             var options = A.Dummy<DeployInput>();
             var renderer = A.Fake<IRenderer>();
+            A.CallTo(() => renderer.RenderFileUploadsAsync(A<IEnumerable<(string, Task)>>._))
+             .Invokes((IEnumerable<(string, Task)> theUploads) => uploads = theUploads); ;
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Install.zip", });
 
             var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>(), A.Fake<IEncryptor>());
             await deployer.StartAsync(options);
 
-            A.CallTo(() => renderer.RenderFileUploadStarted("Install.zip")).MustHaveHappened();
+            uploads.ShouldNotBeNull();
+            var (file, task) = uploads.ShouldHaveSingleItem();
+            file.ShouldBe("Install.zip");
+        }
+
+        private class FakeRenderer : IRenderer
+        {
+            public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
+            {
+                await Task.WhenAll(uploads.Select(u => u.uploadTask));
+            }
+
+            public void RenderListOfFiles(IEnumerable<string> files)
+            {
+            }
         }
     }
 }

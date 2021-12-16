@@ -26,28 +26,14 @@ namespace PolyDeploy.DeployClient.Tests
         }
 
         [Fact]
-        public void RenderFileUploadStarted_RendersSomething()
+        public async Task RenderFileUploadsAsync_RendersSomething()
         {
             var consoleFactory = new AnsiConsoleFactory();
             var console = consoleFactory.Create(new AnsiConsoleSettings());
             var recorder = console.CreateRecorder();
 
             var renderer = new Renderer(recorder);
-            renderer.RenderFileUploadStarted("OpenContent_4.5.0_Install.zip");
-
-            var actual = recorder.ExportText();
-            actual.ShouldContain("OpenContent_4.5.0_Install.zip");
-        }
-
-        [Fact]
-        public void RenderFileUploadComplete_RendersSomething()
-        {
-            var consoleFactory = new AnsiConsoleFactory();
-            var console = consoleFactory.Create(new AnsiConsoleSettings());
-            var recorder = console.CreateRecorder();
-
-            var renderer = new Renderer(recorder);
-            renderer.RenderFileUploadComplete("OpenContent_4.5.0_Install.zip");
+            await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask) });
 
             var actual = recorder.ExportText();
             actual.ShouldContain("OpenContent_4.5.0_Install.zip");

@@ -2,7 +2,7 @@ namespace PolyDeploy.DeployClient
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using Spectre.Console;
 
     public class Renderer : IRenderer
@@ -14,14 +14,19 @@ namespace PolyDeploy.DeployClient
             this.console = console;
         }
 
-        public void RenderFileUploadStarted(string file)
+        public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
         {
-            this.console.Write(new Markup($"Uploading [aqua]{file}[/]…"));
-        }
-
-        public void RenderFileUploadComplete(string file)
-        {
-            this.console.Write(new Markup($"Uploaded [aqua]{file}[/]!"));
+            await this.console.Progress()
+            //.Columns(new ProgressColumn[] { new TaskDescriptionColumn(), new ProgressBarColumn() })
+            .StartAsync(async context =>
+            {
+                await Task.WhenAll(uploads.Select(async upload =>
+                {
+                    var progressTask = context.AddTask(upload.file);
+                    await upload.uploadTask;
+                    progressTask.StopTask();
+                }));
+            });
         }
 
         public void RenderListOfFiles(IEnumerable<string> files)

@@ -1,5 +1,7 @@
 namespace PolyDeploy.DeployClient
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class Deployer : IDeployer
@@ -24,14 +26,16 @@ namespace PolyDeploy.DeployClient
 
             var sessionId = await this.installer.StartSessionAsync(options);
 
-            foreach (var packageFile in packageFiles)
-            {
-                using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
-                using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
+            var uploads = packageFiles.Select(file => (file, this.UploadPackage(sessionId, file, options)));
+            await this.renderer.RenderFileUploadsAsync(uploads);
+        }
 
-                this.renderer.RenderFileUploadStarted(packageFile);
-                await this.installer.UploadPackageAsync(options, sessionId, encryptedPackageStream, packageFile);
-            }
+        private async Task UploadPackage(string sessionId, string packageFile, DeployInput options)
+        {
+            using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
+            using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
+
+            await this.installer.UploadPackageAsync(options, sessionId, encryptedPackageStream, packageFile);
         }
     }
 }
