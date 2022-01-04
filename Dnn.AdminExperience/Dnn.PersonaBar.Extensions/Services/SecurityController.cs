@@ -500,8 +500,8 @@ namespace Dnn.PersonaBar.Security.Services
                 settings.STDURL = PortalController.GetPortalSetting("STDURL", this.PortalId, Null.NullString);
 
                 var portalStats = SslController.Instance.GetPortalStats(this.PortalId);
-                settings.NrSecureTabs = portalStats.NrSecureTabs;
-                settings.NrNonSecureTabs = portalStats.NrNonSecureTabs;
+                settings.NumberOfSecureTabs = portalStats.NumberOfSecureTabs;
+                settings.NumberOfNonSecureTabs = portalStats.NumberOfNonSecureTabs;
 
                 if (this.UserInfo.IsSuperUser)
                 {

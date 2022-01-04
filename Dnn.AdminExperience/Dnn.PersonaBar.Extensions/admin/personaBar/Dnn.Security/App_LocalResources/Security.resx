@@ -1175,7 +1175,7 @@
     <value>Use this mode to serve all content secure</value>
   </data>
   <data name="SslAdvanced.Help" xml:space="preserve">
-    <value>In this mode your website will serve both secure and unsecure pages depending on the setting on the page. Note you have [NrNonSecureTabs] non secure pages on this site.</value>
+    <value>In this mode your website will serve both secure and unsecure pages depending on the setting on the page. Note you have [NumberOfNonSecureTabs] non secure pages on this site.</value>
   </data>
   <data name="SslOff.Help" xml:space="preserve">
     <value>Use this when you don't have an SSL certificate installed on your server</value>
