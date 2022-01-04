@@ -139,12 +139,12 @@ class SslSettingsPanelBody extends Component {
                                 {resx
                                     .get("SslAdvanced.Help")
                                     .replace(
-                                        "[NrSecureTabs]",
-                                        state.sslSettings.NrSecureTabs.toString()
+                                        "[NumberOfSecureTabs]",
+                                        state.sslSettings.NumberOfSecureTabs.toString()
                                     )
                                     .replace(
-                                        "[NrNonSecureTabs]",
-                                        state.sslSettings.NrNonSecureTabs.toString()
+                                        "[NumberOfNonSecureTabs]",
+                                        state.sslSettings.NumberOfNonSecureTabs.toString()
                                     )}
                             </div>
                             <div className="warningButton">

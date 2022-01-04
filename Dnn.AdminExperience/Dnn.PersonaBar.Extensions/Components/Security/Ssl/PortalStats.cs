@@ -17,16 +17,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Security.Ssl
         /// <summary>
         /// Gets or sets the total nr of (non-deleted) tabs of the portal.
         /// </summary>
-        public int NrTabs { get; set; }
+        public int NumberOfTabs { get; set; }
 
         /// <summary>
         /// Gets or sets the nr of published secure (i.e. https) tabs of the portal.
         /// </summary>
-        public int NrSecureTabs { get; set; }
+        public int NumberOfSecureTabs { get; set; }
 
         /// <summary>
         /// Gets or sets the nr of published non-secure (i.e. http) tabs of the portal.
         /// </summary>
-        public int NrNonSecureTabs { get; set; }
+        public int NumberOfNonSecureTabs { get; set; }
     }
 }

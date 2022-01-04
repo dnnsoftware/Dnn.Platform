@@ -17,9 +17,9 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPortalStats]
 AS
 SELECT
  p.PortalID,
- (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0) NrTabs,
- (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0 AND t.HasBeenPublished=1 AND t.IsSecure=1) NrSecureTabs,
- (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0 AND t.HasBeenPublished=1 AND t.IsSecure=0) NrNonSecureTabs
+ (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0) NumberOfTabs,
+ (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0 AND t.HasBeenPublished=1 AND t.IsSecure=1) NumberOfSecureTabs,
+ (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0 AND t.HasBeenPublished=1 AND t.IsSecure=0) NumberOfNonSecureTabs
 FROM {databaseOwner}[{objectQualifier}Portals] p
 WHERE p.PortalID=@PortalId
 GO
