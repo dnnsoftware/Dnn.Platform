@@ -1457,7 +1457,7 @@ namespace DotNetNuke.Entities.Urls
 
             // Replace http:// by https:// if SSL is enabled and site is marked as secure
             // (i.e. requests to http://... will be redirected to https://...)
-            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
+            if (tab != null && portalSettings.SSLEnabled && (tab.IsSecure || portalSettings.SSLSetup == Abstractions.Security.SiteSslSetup.On) &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
                 friendlyPath = "https://" + friendlyPath.Substring("http://".Length);

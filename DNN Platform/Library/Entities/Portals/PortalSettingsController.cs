@@ -210,7 +210,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.SearchIncludedTagInfoFilter = settings.GetValueOrDefault("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
             portalSettings.SearchMaxWordlLength = settings.GetValueOrDefault("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
             portalSettings.SearchMinWordlLength = settings.GetValueOrDefault("MinSearchWordLength", Host.Host.SearchMinWordlLength);
-            portalSettings.SSLEnabled = settings.GetValueOrDefault("SSLEnabled", false);
+            portalSettings.SSLSetup = (Abstractions.Security.SiteSslSetup)settings.GetValueOrDefault("SSLSetup", (int)Abstractions.Security.SiteSslSetup.Off);
             portalSettings.SSLEnforced = settings.GetValueOrDefault("SSLEnforced", false);
             portalSettings.SSLURL = settings.GetValueOrDefault("SSLURL", Null.NullString);
             portalSettings.STDURL = settings.GetValueOrDefault("STDURL", Null.NullString);

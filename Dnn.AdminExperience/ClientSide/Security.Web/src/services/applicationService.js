@@ -81,6 +81,11 @@ class ApplicationService {
         sf.post("UpdateSslSettings", payload, callback);
     }
 
+    setAllPagesSecure(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("SetAllPagesSecure", {}, callback);
+    }
+
     getOtherSettings(callback) {
         const sf = this.getServiceFramework("Security");
         sf.get("GetOtherSettings", {}, callback);
