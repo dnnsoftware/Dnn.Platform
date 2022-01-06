@@ -24,6 +24,7 @@ namespace PolyDeploy.DeployClient
                 {
                     var progressTask = context.AddTask(upload.file);
                     await upload.uploadTask;
+                    progressTask.Increment(100);
                     progressTask.StopTask();
                 }));
             });

@@ -4,8 +4,7 @@ namespace PolyDeploy.DeployClient.Tests
 
     using Shouldly;
 
-    using Spectre.Console;
-
+    using Spectre.Console.Testing;
     using Xunit;
 
     public class RendererTests
@@ -13,30 +12,25 @@ namespace PolyDeploy.DeployClient.Tests
         [Fact]
         public void RenderListOfFiles_GivenFiles_RendersTreeOfFiles()
         {
-            var consoleFactory = new AnsiConsoleFactory();
-            var console = consoleFactory.Create(new AnsiConsoleSettings());
-            var recorder = console.CreateRecorder();
+            var console = new TestConsole().Interactive();
 
-            var renderer = new Renderer(recorder);
+            var renderer = new Renderer(console);
             renderer.RenderListOfFiles(new[] { "OpenContent_4.5.0_Install.zip", "2sxc_12.4.4_Install.zip", });
 
-            var actual = recorder.ExportText();
-            actual.ShouldContain("OpenContent_4.5.0_Install.zip");
-            actual.ShouldContain("2sxc_12.4.4_Install.zip");
+            console.Output.ShouldContain("OpenContent_4.5.0_Install.zip");
+            console.Output.ShouldContain("2sxc_12.4.4_Install.zip");
         }
 
         [Fact]
         public async Task RenderFileUploadsAsync_RendersSomething()
         {
-            var consoleFactory = new AnsiConsoleFactory();
-            var console = consoleFactory.Create(new AnsiConsoleSettings());
-            var recorder = console.CreateRecorder();
+            var console = new TestConsole().Interactive();
 
-            var renderer = new Renderer(recorder);
-            await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask) });
+            var renderer = new Renderer(console);
+            await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
 
-            var actual = recorder.ExportText();
-            actual.ShouldContain("OpenContent_4.5.0_Install.zip");
+            console.Output.ShouldContain("OpenContent_4.5.0_Install.zip");
+            console.Output.ShouldContain("100%");
         }
     }
 }
