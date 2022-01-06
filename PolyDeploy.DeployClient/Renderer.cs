@@ -16,18 +16,18 @@ namespace PolyDeploy.DeployClient
 
         public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
         {
+            // TODO: actually show upload progress
             await this.console.Progress()
-            //.Columns(new ProgressColumn[] { new TaskDescriptionColumn(), new ProgressBarColumn() })
-            .StartAsync(async context =>
-            {
-                await Task.WhenAll(uploads.Select(async upload =>
+                .StartAsync(async context =>
                 {
-                    var progressTask = context.AddTask(upload.file);
-                    await upload.uploadTask;
-                    progressTask.Increment(100);
-                    progressTask.StopTask();
-                }));
-            });
+                    await Task.WhenAll(uploads.Select(async upload =>
+                    {
+                        var progressTask = context.AddTask(upload.file);
+                        await upload.uploadTask;
+                        progressTask.Increment(100);
+                        progressTask.StopTask();
+                    }));
+                });
         }
 
         public void RenderListOfFiles(IEnumerable<string> files)
