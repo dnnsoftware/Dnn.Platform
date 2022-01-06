@@ -21,6 +21,8 @@ namespace PolyDeploy.DeployClient
 
         public async Task StartAsync(DeployInput options)
         {
+            this.renderer.Welcome();
+
             var packageFiles = this.packageFileSource.GetPackageFiles();
             this.renderer.RenderListOfFiles(packageFiles);
 

@@ -16,6 +16,16 @@ namespace PolyDeploy.DeployClient.Tests
     public class DeployerTests
     {
         [Fact]
+        public async Task StartAsync_WelcomesUsers()
+        {
+            var renderer = A.Fake<IRenderer>();
+            var deployer = new Deployer(renderer, A.Fake<IPackageFileSource>(), A.Fake<IInstaller>(), A.Fake<IEncryptor>());
+            await deployer.StartAsync(A.Dummy<DeployInput>());
+
+            A.CallTo(() => renderer.Welcome()).MustHaveHappened();
+        }
+
+        [Fact]
         public async Task StartAsync_GivenRenderer_MustRenderFiles()
         {
             var renderer = A.Fake<IRenderer>();
@@ -110,6 +120,10 @@ namespace PolyDeploy.DeployClient.Tests
             public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
             {
                 await Task.WhenAll(uploads.Select(u => u.uploadTask));
+            }
+
+            public void Welcome()
+            {
             }
 
             public void RenderListOfFiles(IEnumerable<string> files)

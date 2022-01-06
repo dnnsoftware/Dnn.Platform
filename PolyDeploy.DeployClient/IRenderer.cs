@@ -5,6 +5,7 @@ namespace PolyDeploy.DeployClient
 
     public interface IRenderer
     {
+        void Welcome();
         void RenderListOfFiles(IEnumerable<string> files);
         Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads);
     }

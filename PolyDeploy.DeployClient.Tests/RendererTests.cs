@@ -10,6 +10,17 @@ namespace PolyDeploy.DeployClient.Tests
     public class RendererTests
     {
         [Fact]
+        public void Welcome_DisplaysSomething()
+        {
+            var console = new TestConsole();
+
+            var renderer = new Renderer(console);
+            renderer.Welcome();
+
+            console.Output.ShouldNotBeNullOrWhiteSpace();
+        }
+
+        [Fact]
         public void RenderListOfFiles_GivenFiles_RendersTreeOfFiles()
         {
             var console = new TestConsole().Interactive();

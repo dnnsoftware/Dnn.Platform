@@ -14,6 +14,11 @@ namespace PolyDeploy.DeployClient
             this.console = console;
         }
 
+        public void Welcome()
+        {
+            this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
+        }
+
         public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
         {
             // TODO: actually show upload progress
