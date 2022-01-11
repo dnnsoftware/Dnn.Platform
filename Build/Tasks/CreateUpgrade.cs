@@ -25,6 +25,7 @@ namespace DotNetNuke.Build.Tasks
         public override void Run(Context context)
         {
             this.RenameResourcesFor98xUpgrades(context);
+            this.RenameResourcesFor910xUpgrades(context);
             context.CreateDirectory(context.ArtifactsFolder);
             var excludes = new string[context.PackagingPatterns.InstallExclude.Length + context.PackagingPatterns.UpgradeExclude.Length];
             context.PackagingPatterns.InstallExclude.CopyTo(excludes, 0);
@@ -52,6 +53,19 @@ namespace DotNetNuke.Build.Tasks
                                   };
 
             var filesToRename = context.GetFilesByPatterns(telerikPackages);
+            foreach (var fileToRename in filesToRename)
+            {
+                File.Move(
+                    fileToRename.ToString(),
+                    fileToRename.ChangeExtension("resources").ToString());
+            }
+        }
+
+        private void RenameResourcesFor910xUpgrades(Context context)
+        {
+            var damPackage = new[] { $"{context.WebsiteFolder}Install/Module/DNNCE_ResourceManager*.zip" };
+
+            var filesToRename = context.GetFilesByPatterns(damPackage);
             foreach (var fileToRename in filesToRename)
             {
                 File.Move(
