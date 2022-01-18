@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.OutputCache.Providers
 {
     using System;
+    using System.Globalization;
     using System.IO;
 
     using DotNetNuke.Common.Utilities;
@@ -102,7 +103,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 File.Move(this.CachedOutputTempFileName, this.CachedOutputFileName);
 
                 StreamWriter oWrite = File.CreateText(this.CachedOutputAttribFileName);
-                oWrite.WriteLine(this._cacheExpiration.ToString());
+                oWrite.WriteLine(this._cacheExpiration.ToString(CultureInfo.InvariantCulture));
                 oWrite.Close();
             }
 

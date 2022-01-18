@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Text;
     using System.Web;
@@ -171,7 +172,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                 using (var oWrite = File.CreateText(attribFile))
                 {
-                    oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString());
+                    oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString(CultureInfo.InvariantCulture));
                     oWrite.Close();
                 }
             }
@@ -193,6 +194,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
             try
             {
                 string attribFile = GetAttribFileName(tabId, cacheKey);
+                if (!File.Exists(attribFile))
+                {
+                    return false;
+                }
+
                 string captureFile = GetCachedOutputFileName(tabId, cacheKey);
                 StreamReader oRead = File.OpenText(attribFile);
                 DateTime expires = Convert.ToDateTime(oRead.ReadLine());

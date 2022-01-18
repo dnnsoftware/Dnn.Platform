@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.ModuleCache
 
             if (!string.IsNullOrEmpty(homeDirectoryMapPath))
             {
-                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
+                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Modules\\");
                 if (!Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
