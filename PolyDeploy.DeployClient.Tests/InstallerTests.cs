@@ -73,6 +73,26 @@ namespace PolyDeploy.DeployClient.Tests
             (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
         }
 
+        [Fact]
+        public async Task InstallPackagesAsync_DoesGetInstall()
+        {
+            var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var targetUri = new Uri("https://polydeploy.example.com/");
+            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>(), A.Dummy<string>());
+
+            var handler = new FakeMessageHandler(
+                new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}"),
+                null);
+            var client = new HttpClient(handler);
+
+            var installer = new Installer(client);
+
+            await installer.InstallPackagesAsync(options, sessionId);
+
+            handler.Request.ShouldNotBeNull();
+            handler.Request.Method.ShouldBe(HttpMethod.Get);
+        }
+
         private class FakeMessageHandler : HttpMessageHandler
         {
             public FakeMessageHandler(Uri uri, HttpResponseMessage? response)

@@ -81,9 +81,11 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => encryptor.GetEncryptedStream(options, package1Stream)).Returns(encryptedPackage1Stream);
             A.CallTo(() => encryptor.GetEncryptedStream(options, anotherPackageStream)).Returns(encryptedAnotherPackageStream);
 
+            var sessionId = Guid.NewGuid().ToString();
             var actualFiles = new Dictionary<string, string>();
             var installer = A.Fake<IInstaller>();
-            A.CallTo(() => installer.UploadPackageAsync(A<DeployInput>._, A<string>._, A<Stream>._, A<string>._))
+            A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
+            A.CallTo(() => installer.UploadPackageAsync(A<DeployInput>._, sessionId, A<Stream>._, A<string>._))
                 .Invokes((DeployInput DeployInput, string sessionId, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
 
             var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, encryptor);
@@ -113,6 +115,41 @@ namespace PolyDeploy.DeployClient.Tests
             uploads.ShouldNotBeNull();
             var (file, task) = uploads.ShouldHaveSingleItem();
             file.ShouldBe("Install.zip");
+        }
+
+        [Fact]
+        public async Task StartAsync_StartsInstallation()
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", });
+
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
+
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>());
+            await deployer.StartAsync(options);
+
+            A.CallTo(() => installer.UploadPackageAsync(options, A<string>._, A<Stream>._, A<string>._)).MustHaveHappened()
+             .Then(A.CallTo(() => installer.InstallPackagesAsync(options, sessionId)).MustHaveHappenedOnceExactly());
+        }
+
+        [Fact]
+        public async Task StartAsync_DoesNotWaitForInstallationResponse()
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", });
+
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
+            A.CallTo(() => installer.InstallPackagesAsync(options, sessionId)).Returns(
+                Task.FromException(new InvalidOperationException("This method does not return until the installation is complete and should not be awaited")));
+
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>());
+            await Should.NotThrowAsync(async () => await deployer.StartAsync(options));
         }
 
         private class FakeRenderer : IRenderer

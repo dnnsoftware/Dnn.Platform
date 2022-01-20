@@ -30,6 +30,8 @@ namespace PolyDeploy.DeployClient
 
             var uploads = packageFiles.Select(file => (file, this.UploadPackage(sessionId, file, options)));
             await this.renderer.RenderFileUploadsAsync(uploads);
+
+            _ = this.installer.InstallPackagesAsync(options, sessionId);
         }
 
         private async Task UploadPackage(string sessionId, string packageFile, DeployInput options)

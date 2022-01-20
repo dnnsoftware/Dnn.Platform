@@ -20,9 +20,11 @@ namespace PolyDeploy.DeployClient
             throw new System.NotImplementedException();
         }
 
-        public Task InstallPackagesAsync(DeployInput options, string sessionId)
+        public async Task InstallPackagesAsync(DeployInput options, string sessionId)
         {
-            throw new System.NotImplementedException();
+            var requestUri = new Uri(options.GetTargetUri(), $"DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}");
+            this.httpClient.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
+            await this.httpClient.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead);
         }
 
         public async Task<string> StartSessionAsync(DeployInput options)
