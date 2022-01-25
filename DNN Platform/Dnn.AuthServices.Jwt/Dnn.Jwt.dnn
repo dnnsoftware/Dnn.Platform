@@ -27,6 +27,18 @@
               <path>bin</path>
               <name>System.IdentityModel.Tokens.Jwt.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.IdentityModel.JsonWebTokens.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.IdentityModel.Logging.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.IdentityModel.Tokens.dll</name>
+            </assembly>
           </assemblies>
         </component>
         <component type="Script">
