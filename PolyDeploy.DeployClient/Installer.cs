@@ -22,33 +22,43 @@ namespace PolyDeploy.DeployClient
 
         public async Task InstallPackagesAsync(DeployInput options, string sessionId)
         {
-            var requestUri = new Uri(options.GetTargetUri(), $"DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}");
-            this.httpClient.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
-            await this.httpClient.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead);
+            await this.SendRequestAsync(options, HttpMethod.Get, $"Install?sessionGuid={sessionId}");
         }
 
         public async Task<string> StartSessionAsync(DeployInput options)
         {
-            var requestUri = new Uri(options.GetTargetUri(), "DesktopModules/PolyDeploy/API/Remote/CreateSession");
-            this.httpClient.DefaultRequestHeaders.Add("x-api-key", options.ApiKey);
-            var responseStream = await this.httpClient.GetStreamAsync(requestUri);
-            var response = await JsonSerializer.DeserializeAsync<CreateSessionResponse>(responseStream);
-            if (string.IsNullOrWhiteSpace(response?.Guid))
+            var response = await this.SendRequestAsync(options, HttpMethod.Get, "CreateSession");
+            var responseStream = await response.Content.ReadAsStreamAsync();
+            var responseBody = await JsonSerializer.DeserializeAsync<CreateSessionResponse>(responseStream);
+            if (string.IsNullOrWhiteSpace(responseBody?.Guid))
             {
                 throw new InvalidOperationException("Received an empty response trying to create PolyDeploy session");
             }
 
-            return response.Guid;
+            return responseBody.Guid;
         }
 
         public async Task UploadPackageAsync(DeployInput options, string sessionId, Stream encryptedPackage, string packageName)
         {
-            var requestUri = new Uri(options.GetTargetUri(), $"DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}");
-
             var form = new MultipartFormDataContent();
             form.Add(new StreamContent(encryptedPackage), "none", packageName);
 
-            await this.httpClient.PostAsync(requestUri, form);
+            await this.SendRequestAsync(options, HttpMethod.Post, $"AddPackages?sessionGuid={sessionId}", form);
+        }
+
+        private async Task<HttpResponseMessage> SendRequestAsync(DeployInput options, HttpMethod method, string path, HttpContent? content = null)
+        {
+            var request = new HttpRequestMessage
+            {
+                Headers = { { "x-api-key", options.ApiKey }, },
+                RequestUri = new Uri(options.GetTargetUri(), "DesktopModules/PolyDeploy/API/Remote/" + path),
+                Method = method,
+                Content = content,
+            };
+
+            var response = await this.httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            return response;
         }
 
         private class CreateSessionResponse

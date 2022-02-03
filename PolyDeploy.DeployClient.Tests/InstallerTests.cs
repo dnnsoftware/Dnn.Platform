@@ -19,7 +19,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>(), A.Dummy<string>());
+            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
@@ -30,6 +30,9 @@ namespace PolyDeploy.DeployClient.Tests
 
             var sessionId = await installer.StartSessionAsync(options);
 
+            handler.Request.ShouldNotBeNull();
+            handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
+
             sessionId.ShouldBe(expectedSessionId);
         }
 
@@ -38,7 +41,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>(), A.Dummy<string>());
+            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
@@ -55,7 +58,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>(), A.Dummy<string>());
+            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
@@ -68,6 +71,7 @@ namespace PolyDeploy.DeployClient.Tests
 
             handler.Request.ShouldNotBeNull();
             handler.Request.Method.ShouldBe(HttpMethod.Post);
+            handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
             var formContent = handler.Request.Content.ShouldBeOfType<MultipartFormDataContent>();
             var innerContent = formContent.ShouldHaveSingleItem();
             (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
@@ -78,7 +82,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>(), A.Dummy<string>());
+            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}"),
@@ -91,6 +95,7 @@ namespace PolyDeploy.DeployClient.Tests
 
             handler.Request.ShouldNotBeNull();
             handler.Request.Method.ShouldBe(HttpMethod.Get);
+            handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
         }
 
         private class FakeMessageHandler : HttpMessageHandler
