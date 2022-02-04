@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Major class of Taxonomy.
@@ -118,6 +119,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public List<Term> ChildTerms
         {
             get
@@ -133,6 +135,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public bool IsHeirarchical
         {
             get
@@ -143,6 +146,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int Left
         {
             get
@@ -153,6 +157,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int Right
         {
             get
@@ -163,6 +168,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public List<string> Synonyms
         {
             get
@@ -173,6 +179,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public Vocabulary Vocabulary
         {
             get
@@ -188,6 +195,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int VocabularyId
         {
             get
@@ -198,6 +206,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public string Description
         {
             get
@@ -213,6 +222,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public string Name
         {
             get
@@ -238,6 +248,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int? ParentTermId
         {
             get
@@ -253,6 +264,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int TermId
         {
             get
@@ -268,6 +280,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int Weight
         {
             get
