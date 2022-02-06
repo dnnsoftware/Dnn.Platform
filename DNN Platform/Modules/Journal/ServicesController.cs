@@ -319,14 +319,14 @@ namespace DotNetNuke.Modules.Journal
         {
             Uri uriResult;
             return Uri.TryCreate(url, UriKind.Absolute, out uriResult)
-                && (
-                    uriResult.Scheme == Uri.UriSchemeHttp ||
-                    uriResult.Scheme == Uri.UriSchemeHttps ||
-                    uriResult.Scheme == Uri.UriSchemeFtp ||
-                    uriResult.Scheme == Uri.UriSchemeMailto ||
-                    uriResult.Scheme == Uri.UriSchemeNews ||
-                    uriResult.Scheme == Uri.UriSchemeNntp
-                );
+                    && ((
+                        uriResult.Scheme == Uri.UriSchemeHttp ||
+                        uriResult.Scheme == Uri.UriSchemeHttps ||
+                        uriResult.Scheme == Uri.UriSchemeFtp ||
+                        uriResult.Scheme == Uri.UriSchemeMailto ||
+                        uriResult.Scheme == Uri.UriSchemeNews ||
+                        uriResult.Scheme == Uri.UriSchemeNntp)
+                        || url.StartsWith("//"));
         }
 
         // Check if a user can post content on a specific profile's page
