@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.Journal.Components
             sText = HttpUtility.HtmlEncode(sText);
             return sText;
         }
-
+        
         public static bool AreFriends(UserInfo profileUser, UserInfo currentUser)
         {
             var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
@@ -154,35 +154,31 @@ namespace DotNetNuke.Modules.Journal.Components
             url = url.Trim();
             if (!url.StartsWith("http"))
             {
-                url = "https://" + url;
+                url = "http://" + url;
             }
 
-            if (url.Contains("http://"))
+            if (url.Contains("https://"))
             {
-                url = url.Replace("http://", "https://");
+                url = url.Replace("https://", "http://");
             }
 
             if (url.Contains("http://http://"))
             {
-                url = url.Replace("http://http://", "https://");
+                url = url.Replace("http://http://", "http://");
             }
 
-            if (url.Contains("https://https://"))
+            if (!(url.IndexOf("http://") == 0))
             {
-                url = url.Replace("https://https://", "https://");
-            }
-
-            if (!(url.IndexOf("https://") == 0))
-            {
-                url = "https://" + url;
+                url = "http://" + url;
             }
 
             Uri objURI = null;
 
             objURI = new Uri(url);
+
             return url;
         }
-        
+
         internal static LinkInfo GetLinkData(string URL)
         {
             string sPage = GetPageFromURL(ref URL, string.Empty, string.Empty);
@@ -195,6 +191,16 @@ namespace DotNetNuke.Modules.Journal.Components
             string sTitle = string.Empty;
             string sDescription = string.Empty;
             string sImage = string.Empty;
+
+            if (URL.Contains("http://"))
+            {
+                URL = URL.Replace("http://", "//");
+            }
+
+            if (URL.Contains("https://"))
+            {
+                URL = URL.Replace("https://", "//");
+            }
 
             link.URL = URL;
             link.Images = new List<ImageInfo>();
@@ -230,6 +236,14 @@ namespace DotNetNuke.Modules.Journal.Components
                     {
                         sImage = subM.Groups[9].Value;
                         ImageInfo img = new ImageInfo();
+                        if (sImage.Contains("http://"))
+                        {
+                            sImage = sImage.Replace("http://", "//");
+                        }
+                        if (sImage.Contains("https://"))
+                        {
+                            sImage = sImage.Replace("https://", "//");
+                        }
                         img.URL = sImage;
                         link.Images.Add(img);
                         i += 1;
@@ -255,18 +269,18 @@ namespace DotNetNuke.Modules.Journal.Components
             string hostUrl = string.Empty;
             if (!URL.Contains("http"))
             {
-                URL = "http://" + URL;
+                URL = "//" + URL;
             }
 
             Uri uri = new Uri(URL);
             hostUrl = uri.Host;
             if (URL.Contains("https:"))
             {
-                hostUrl = "https://" + hostUrl;
+                hostUrl = "//" + hostUrl;
             }
             else
             {
-                hostUrl = "http://" + hostUrl;
+                hostUrl = "//" + hostUrl;
             }
 
             foreach (Match match in matches)
@@ -281,7 +295,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     if (!sImg.Contains("http"))
                     {
-                        sImg = hostUrl + sImg;
+                        sImg = "//" + hostUrl + sImg;
                     }
 
                     ImageInfo img = new ImageInfo();
