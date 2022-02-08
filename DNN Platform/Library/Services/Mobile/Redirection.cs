@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Mobile
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     [Serializable]
     public class Redirection : IRedirection, IHydratable
@@ -18,6 +19,7 @@ namespace DotNetNuke.Services.Mobile
         private int _id = -1;
 
         [XmlIgnore]
+        [JsonIgnore]
         private IList<IMatchRule> _matchRules;
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace DotNetNuke.Services.Mobile
         /// Gets or sets when redirection type is RedirectionType.Other, should use this collection to match the request by capability info.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public IList<IMatchRule> MatchRules
         {
             get
@@ -132,6 +135,7 @@ namespace DotNetNuke.Services.Mobile
         /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get

@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// PortalInfo provides a base class for Portal information
@@ -93,6 +94,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public string HomeDirectoryMapPath
         {
             get
@@ -103,6 +105,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public string HomeSystemDirectoryMapPath
         {
             get
@@ -173,6 +176,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc />
         [XmlIgnore]
+        [JsonIgnore]
         public Guid GUID { get; set; }
 
         /// <inheritdoc />
@@ -414,6 +418,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
         public int TimeZoneOffset { get; set; }
 

@@ -23,6 +23,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Services.Tokens;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -98,6 +99,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public DesktopModuleInfo DesktopModule
         {
             get
@@ -110,6 +112,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool HideAdminBorder
         {
             get
@@ -127,6 +130,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsShared
         {
             get { return this.OwnerPortalID != this.PortalID; }
@@ -150,6 +154,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>A ModuleDefinitionInfo.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public ModuleDefinitionInfo ModuleDefinition
         {
             get
@@ -162,6 +167,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public Hashtable ModuleSettings
         {
             get
@@ -183,6 +189,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public Hashtable TabModuleSettings
         {
             get
@@ -204,6 +211,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public ModuleInfo DefaultLanguageModule
         {
             get
@@ -250,6 +258,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsTranslated
         {
             get
@@ -266,6 +275,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<string, ModuleInfo> LocalizedModules
         {
             get
@@ -325,6 +335,7 @@ namespace DotNetNuke.Entities.Modules
         public string Alignment { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool AllModules { get; set; }
 
         [XmlElement("alltabs")]
@@ -343,6 +354,7 @@ namespace DotNetNuke.Entities.Modules
         public string Color { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public string ContainerPath { get; set; }
 
         [XmlElement("containersrc")]
@@ -355,6 +367,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int DesktopModuleID { get; set; }
 
         [XmlElement("displayprint")]
@@ -382,15 +395,18 @@ namespace DotNetNuke.Entities.Modules
         public bool InheritViewPermissions { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsDefaultModule { get; set; }
 
         [XmlElement("isdeleted")]
         public bool IsDeleted { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsShareable { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsShareableViewOnly { get; set; }
 
         [Obsolete("WebSlice functionality is no longer used.  Will be removed in v10.0.0")]
@@ -398,9 +414,11 @@ namespace DotNetNuke.Entities.Modules
         public bool IsWebSlice { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public DateTime LastContentModifiedOnDate { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int ModuleControlId { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -410,6 +428,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int ModuleDefID { get; set; }
 
         [XmlElement("moduleorder")]
@@ -444,15 +463,19 @@ namespace DotNetNuke.Entities.Modules
         public string ModuleTitle { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int ModuleVersion { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int OwnerPortalID { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int PaneModuleCount { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int PaneModuleIndex { get; set; }
 
         [XmlElement("panename")]
@@ -537,6 +560,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public override int KeyID
         {
             get
