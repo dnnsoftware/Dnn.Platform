@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Users.Social
     using System.Data;
     using System.Xml.Serialization;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
