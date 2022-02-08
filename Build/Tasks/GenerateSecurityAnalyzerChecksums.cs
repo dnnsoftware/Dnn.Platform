@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to generate the <c>Default.aspx</c> checksum for the Security Analyzer.</summary>
-    [Dependency(typeof(SetVersion))]
+    [IsDependentOn(typeof(SetVersion))]
     public sealed class GenerateSecurityAnalyzerChecksums : FrostingTask<Context>
     {
         /// <inheritdoc/>
