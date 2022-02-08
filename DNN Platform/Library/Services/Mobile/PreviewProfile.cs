@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Mobile
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     [Serializable]
     public class PreviewProfile : IPreviewProfile, IHydratable
@@ -79,6 +80,7 @@ namespace DotNetNuke.Services.Mobile
         /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get

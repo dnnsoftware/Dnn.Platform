@@ -9,6 +9,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     [Serializable]
     public class FolderPermissionInfo : PermissionInfoBase, IHydratable
@@ -51,6 +52,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int FolderPermissionID
         {
             get
@@ -65,6 +67,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int FolderID
         {
             get
@@ -79,6 +82,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int PortalID
         {
             get
@@ -113,6 +117,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get

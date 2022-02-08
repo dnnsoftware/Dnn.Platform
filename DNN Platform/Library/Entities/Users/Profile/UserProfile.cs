@@ -19,6 +19,7 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The UserProfile class provides a Business Layer entity for the Users Profile.
@@ -410,6 +411,7 @@ namespace DotNetNuke.Entities.Users
         /// Gets or sets the preferred time zone.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public TimeZoneInfo PreferredTimeZone
         {
             get
