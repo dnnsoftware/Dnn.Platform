@@ -3,17 +3,22 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
+    using System.Collections.Generic;
+
+    using Cake.Common.Build;
+    using Cake.Common.Build.AzurePipelines.Data;
+    using Cake.Common.IO;
     using Cake.Common.Tools.MSBuild;
     using Cake.Core.IO;
     using Cake.Frosting;
-    using Cake.Frosting.Issues.Recipe;
+    using Cake.Issues;
+    using Cake.Issues.MsBuild;
 
     using DotNetNuke.Build;
 
     /// <summary>A cake task to compile the platform.</summary>
     [Dependency(typeof(CleanWebsite))]
     [Dependency(typeof(RestoreNuGetPackages))]
-    [IsDependeeOf(typeof(ReadIssuesTask))]
     public sealed class Build : FrostingTask<Context>
     {
         /// <inheritdoc/>
@@ -36,8 +41,28 @@ namespace DotNetNuke.Build.Tasks
             }
             finally
             {
-                context.Parameters.InputFiles.AddMsBuildBinaryLogFile(cleanLog);
-                context.Parameters.InputFiles.AddMsBuildBinaryLogFile(buildLog);
+                var issues = context.ReadIssues(
+                    new List<IIssueProvider>
+                    {
+                        new MsBuildIssuesProvider(
+                            context.Log,
+                            new MsBuildIssuesSettings(cleanLog, context.MsBuildBinaryLogFileFormat())),
+                        new MsBuildIssuesProvider(
+                            context.Log,
+                            new MsBuildIssuesSettings(buildLog, context.MsBuildBinaryLogFileFormat())),
+                    },
+                    context.Directory("."));
+
+                foreach (var issue in issues)
+                {
+                    context.AzurePipelines()
+                           .Commands.WriteWarning(
+                               issue.MessageText,
+                               new AzurePipelinesMessageData
+                               {
+                                   SourcePath = issue.AffectedFileRelativePath?.FullPath, LineNumber = issue.Line,
+                               });
+                }
             }
         }
 
