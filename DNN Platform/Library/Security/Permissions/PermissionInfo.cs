@@ -9,6 +9,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -29,6 +30,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -65,6 +67,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public string PermissionName { get; set; }
 
         /// -----------------------------------------------------------------------------

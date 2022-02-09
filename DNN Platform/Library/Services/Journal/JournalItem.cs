@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Journal
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Tokens;
+    using Newtonsoft.Json;
 
     public class JournalItem : IHydratable, IPropertyAccess
     {
@@ -85,6 +86,7 @@ namespace DotNetNuke.Services.Journal
         /// If you derive class has its own key id, please override this property and set the value to your own key id.
         /// </remarks>
         [XmlIgnore]
+        [JsonIgnore]
         public virtual int KeyID
         {
             get

@@ -20,16 +20,17 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Tokens;
+using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Roles
-    /// Class:      RoleInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The RoleInfo class provides the Entity Layer Role object.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+/// -----------------------------------------------------------------------------
+/// Project:    DotNetNuke
+/// Namespace:  DotNetNuke.Security.Roles
+/// Class:      RoleInfo
+/// -----------------------------------------------------------------------------
+/// <summary>
+/// The RoleInfo class provides the Entity Layer Role object.
+/// </summary>
+/// -----------------------------------------------------------------------------
     [Serializable]
     public class RoleInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPropertyAccess
     {
@@ -74,6 +75,7 @@ namespace DotNetNuke.Security.Roles
         /// </summary>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<string, string> Settings
         {
             get
@@ -184,6 +186,7 @@ namespace DotNetNuke.Security.Roles
         /// <value>An Integer representing the Id of the Portal.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int PortalID { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -193,6 +196,7 @@ namespace DotNetNuke.Security.Roles
         /// <value>An Integer representing the Id of the Role.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int RoleID { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -202,6 +206,7 @@ namespace DotNetNuke.Security.Roles
         /// <value>An Integer representing the Id of the RoleGroup.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int RoleGroupID { get; set; }
 
         /// -----------------------------------------------------------------------------

@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
@@ -39,6 +40,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Gets a value indicating whether is this a Portal-Level Relationship.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsPortalList
         {
             get
@@ -51,6 +53,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Gets a value indicating whether is this a Host-Level Relationship (very uncommon).
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsHostList
         {
             get
@@ -63,6 +66,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Gets a value indicating whether is this a USer-Level Relationship.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsUserList
         {
             get
@@ -117,6 +121,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
