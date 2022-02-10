@@ -1,6 +1,7 @@
 namespace PolyDeploy.DeployClient
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
     using System.Text.Json;
@@ -15,9 +16,29 @@ namespace PolyDeploy.DeployClient
             this.httpClient = httpClient;
         }
 
-        public Task<object> GetSessionAsync(DeployInput options, string sessionId)
+        public async Task<Session> GetSessionAsync(DeployInput options, string sessionId)
         {
-            throw new System.NotImplementedException();
+            var response = await this.SendRequestAsync(options, HttpMethod.Get, $"GetSession?sessionGuid={sessionId}");
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseBody = JsonSerializer.Deserialize<Session>(responseString);
+            if (responseBody == null)
+            {
+                throw new InvalidOperationException("Received an empty response trying to get a PolyDeploy session");
+            }
+
+            var responseJson = JsonSerializer.Deserialize<ResponseJson>(responseString);
+            if (!string.IsNullOrWhiteSpace(responseJson?.Response))
+            {
+                responseBody.Responses = JsonSerializer.Deserialize<SortedList<int, SessionResponse?>>(responseJson.Response);
+            }
+
+            return responseBody;
+        }
+
+        private class ResponseJson
+        {
+            public string? Response { get; set; }
         }
 
         public async Task InstallPackagesAsync(DeployInput options, string sessionId)
@@ -48,6 +69,7 @@ namespace PolyDeploy.DeployClient
 
         private async Task<HttpResponseMessage> SendRequestAsync(DeployInput options, HttpMethod method, string path, HttpContent? content = null)
         {
+            // TODO: also set user-agent header
             var request = new HttpRequestMessage
             {
                 Headers = { { "x-api-key", options.ApiKey }, },

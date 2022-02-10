@@ -7,7 +7,7 @@ namespace PolyDeploy.DeployClient
     {
         Task<string> StartSessionAsync(DeployInput options);
 
-        Task<object> GetSessionAsync(DeployInput options, string sessionId);
+        Task<Session> GetSessionAsync(DeployInput options, string sessionId);
 
         Task UploadPackageAsync(DeployInput options, string sessionId, Stream encryptedPackage, string packageName);
 
