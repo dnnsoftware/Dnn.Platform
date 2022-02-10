@@ -12,6 +12,7 @@ namespace PolyDeploy.DeployClient.Tests
     using Shouldly;
 
     using Xunit;
+    using Xunit.Abstractions;
 
     public class DeployerTests
     {
@@ -19,7 +20,9 @@ namespace PolyDeploy.DeployClient.Tests
         public async Task StartAsync_WelcomesUsers()
         {
             var renderer = A.Fake<IRenderer>();
-            var deployer = new Deployer(renderer, A.Fake<IPackageFileSource>(), A.Fake<IInstaller>(), A.Fake<IEncryptor>());
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
+            var deployer = new Deployer(renderer, A.Fake<IPackageFileSource>(), installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(A.Dummy<DeployInput>());
 
             A.CallTo(() => renderer.Welcome()).MustHaveHappened();
@@ -31,7 +34,10 @@ namespace PolyDeploy.DeployClient.Tests
             var renderer = A.Fake<IRenderer>();
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(Array.Empty<string>());
-            var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>(), A.Fake<IEncryptor>());
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
+
+            var deployer = new Deployer(renderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(A.Dummy<DeployInput>());
 
             A.CallTo(() => renderer.RenderListOfFiles(Array.Empty<string>())).MustHaveHappened();
@@ -46,8 +52,10 @@ namespace PolyDeploy.DeployClient.Tests
              .Invokes((IEnumerable<string> files) => actualFiles.AddRange(files));
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Another Package.zip" });
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
-            var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>(), A.Fake<IEncryptor>());
+            var deployer = new Deployer(renderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(A.Dummy<DeployInput>());
 
             actualFiles.ShouldBe(new[] { "Package 1.zip", "Another Package.zip" }, ignoreOrder: true);
@@ -57,8 +65,9 @@ namespace PolyDeploy.DeployClient.Tests
         public async Task StartAsync_CallsGetSessionApi()
         {
             var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
-            var deployer = new Deployer(A.Fake<IRenderer>(), A.Fake<IPackageFileSource>(), installer, A.Fake<IEncryptor>());
+            var deployer = new Deployer(A.Fake<IRenderer>(), A.Fake<IPackageFileSource>(), installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(A.Dummy<DeployInput>());
 
             A.CallTo(() => installer.StartSessionAsync(A<DeployInput>._)).MustHaveHappened();
@@ -87,8 +96,9 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
             A.CallTo(() => installer.UploadPackageAsync(A<DeployInput>._, sessionId, A<Stream>._, A<string>._))
                 .Invokes((DeployInput DeployInput, string sessionId, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
+            A.CallTo(() => installer.GetSessionAsync(options, sessionId)).Returns(new Session { Status = SessionStatus.Complete, });
 
-            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, encryptor);
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, encryptor, A.Fake<IDelayer>());
             await deployer.StartAsync(options);
 
             actualFiles.ShouldBe(
@@ -108,8 +118,10 @@ namespace PolyDeploy.DeployClient.Tests
              .Invokes((IEnumerable<(string, Task)> theUploads) => uploads = theUploads); ;
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Install.zip", });
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.GetSessionAsync(options, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
-            var deployer = new Deployer(renderer, packageFileSource, A.Fake<IInstaller>(), A.Fake<IEncryptor>());
+            var deployer = new Deployer(renderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(options);
 
             uploads.ShouldNotBeNull();
@@ -127,8 +139,9 @@ namespace PolyDeploy.DeployClient.Tests
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
+            A.CallTo(() => installer.GetSessionAsync(options, sessionId)).Returns(new Session { Status = SessionStatus.Complete, });
 
-            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>());
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(options);
 
             A.CallTo(() => installer.UploadPackageAsync(options, A<string>._, A<Stream>._, A<string>._)).MustHaveHappened()
@@ -147,9 +160,54 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
             A.CallTo(() => installer.InstallPackagesAsync(options, sessionId)).Returns(
                 Task.FromException(new InvalidOperationException("This method does not return until the installation is complete and should not be awaited")));
+            A.CallTo(() => installer.GetSessionAsync(options, sessionId)).Returns(new Session { Status = SessionStatus.Complete, });
 
-            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>());
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await Should.NotThrowAsync(async () => await deployer.StartAsync(options));
+        }
+
+        [Fact]
+        public async Task StartAsync_CallsGetSessionUntilInstallationIsComplete()
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.StartSessionAsync(options))
+             .Returns(sessionId);
+            A.CallTo(() => installer.GetSessionAsync(options, sessionId))
+             .ReturnsNextFromSequence(
+                new Session { Status = SessionStatus.NotStarted, Responses = null, },
+                new Session { Status = SessionStatus.InProgess, Responses = null, },
+                new Session
+                {
+                    Status = SessionStatus.InProgess,
+                    Responses = new SortedList<int, SessionResponse?>
+                    {
+                        { 0, new SessionResponse { Name = "Package 1.zip", Attempted = true, CanInstall = true, Success = true, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 1", VersionStr = "1.10.1", }, } } },
+                        { 1, new SessionResponse { Name = "Package 2.zip", Attempted = false, CanInstall = true, Success = false, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 2", VersionStr = "2.20.2", }, } } },
+                    },
+                },
+                new Session
+                {
+                    Status = SessionStatus.Complete,
+                    Responses = new SortedList<int, SessionResponse?>
+                    {
+                        { 0, new SessionResponse { Name = "Package 1.zip", Attempted = true, CanInstall = true, Success = true, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 1", VersionStr = "1.10.1", }, } } },
+                        { 1, new SessionResponse { Name = "Package 2.zip", Attempted = true, CanInstall = true, Success = true, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 2", VersionStr = "2.20.2", }, } } },
+                    },
+                }
+            );
+
+            var delayer = A.Fake<IDelayer>();
+            A.CallTo(() => delayer.Delay(TimeSpan.FromSeconds(1))).Returns(Task.CompletedTask).NumberOfTimes(3);
+
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), delayer);
+            await deployer.StartAsync(options);
+
+            A.CallTo(() => installer.GetSessionAsync(options, sessionId)).MustHaveHappened(4, Times.Exactly);
         }
 
         private class FakeRenderer : IRenderer

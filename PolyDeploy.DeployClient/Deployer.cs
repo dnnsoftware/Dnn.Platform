@@ -10,13 +10,15 @@ namespace PolyDeploy.DeployClient
         private readonly IPackageFileSource packageFileSource;
         private readonly IInstaller installer;
         private readonly IEncryptor encryptor;
+        private readonly IDelayer delayer;
 
-        public Deployer(IRenderer renderer, IPackageFileSource packageFileSource, IInstaller installer, IEncryptor encryptor)
+        public Deployer(IRenderer renderer, IPackageFileSource packageFileSource, IInstaller installer, IEncryptor encryptor, IDelayer delayer)
         {
             this.renderer = renderer;
             this.packageFileSource = packageFileSource;
             this.installer = installer;
             this.encryptor = encryptor;
+            this.delayer = delayer;
         }
 
         public async Task StartAsync(DeployInput options)
@@ -32,6 +34,17 @@ namespace PolyDeploy.DeployClient
             await this.renderer.RenderFileUploadsAsync(uploads);
 
             _ = this.installer.InstallPackagesAsync(options, sessionId);
+
+            while (true)
+            {
+                var session = await this.installer.GetSessionAsync(options, sessionId);
+                if (session?.Status == SessionStatus.Complete)
+                {
+                    break;
+                }
+
+                await this.delayer.Delay(TimeSpan.FromSeconds(1));
+            }
         }
 
         private async Task UploadPackage(string sessionId, string packageFile, DeployInput options)

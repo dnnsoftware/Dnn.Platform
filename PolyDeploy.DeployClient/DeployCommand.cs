@@ -16,7 +16,8 @@
                 new Renderer(AnsiConsole.Console),
                 new PackageFileSource(new FileSystem()),
                 new Installer(new HttpClient()),
-                new Encryptor());
+                new Encryptor(),
+                new Delayer());
             await deployer.StartAsync(input);
             return 0;
         }
