@@ -7,14 +7,14 @@
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
-  
+
   <PropertyGroup>
-	<Deterministic>true</Deterministic>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

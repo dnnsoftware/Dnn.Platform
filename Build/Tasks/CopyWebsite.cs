@@ -10,8 +10,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to copy the built website folder.</summary>
-    [Dependency(typeof(CleanWebsite))]
-    [Dependency(typeof(GenerateSqlDataProvider))]
+    [IsDependentOn(typeof(CleanWebsite))]
+    [IsDependentOn(typeof(GenerateSqlDataProvider))]
     public sealed class CopyWebsite : FrostingTask<Context>
     {
         /// <inheritdoc/>
