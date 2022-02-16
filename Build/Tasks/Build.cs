@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
+    using System;
     using System.Collections.Generic;
 
     using Cake.Common.Build;
@@ -13,7 +14,6 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
     using Cake.Issues;
     using Cake.Issues.MsBuild;
-
     using DotNetNuke.Build;
 
     /// <summary>A cake task to compile the platform.</summary>
@@ -55,13 +55,20 @@ namespace DotNetNuke.Build.Tasks
 
                 foreach (var issue in issues)
                 {
-                    context.AzurePipelines()
-                           .Commands.WriteWarning(
-                               issue.MessageText,
-                               new AzurePipelinesMessageData
-                               {
-                                   SourcePath = issue.AffectedFileRelativePath?.FullPath, LineNumber = issue.Line,
-                               });
+                    var messageData = new AzurePipelinesMessageData
+                    {
+                        SourcePath = issue.AffectedFileRelativePath?.FullPath,
+                        LineNumber = issue.Line,
+                    };
+
+                    if (string.Equals(issue.PriorityName, "Error", StringComparison.Ordinal))
+                    {
+                        context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
+                    }
+                    else
+                    {
+                        context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
+                    }
                 }
             }
         }
