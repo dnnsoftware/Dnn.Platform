@@ -1,0 +1,28 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.WebFormsMvp" type="Library" version="1.4.5">
+      <friendlyName>WebFormsMvp</friendlyName>
+      <description>Library for module development using MVP pattern.</description>
+      <dependencies/>
+      <owner>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>https://github.com/webformsmvp/webformsmvp/releases</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>WebFormsMvp.dll</name>
+              <version>1.4.5</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
