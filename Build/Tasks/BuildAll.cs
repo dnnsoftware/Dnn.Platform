@@ -4,21 +4,19 @@
 namespace DotNetNuke.Build.Tasks
 {
     using Cake.Frosting;
-    using Cake.Frosting.Issues.Recipe;
 
     /// <summary>A cake task to compile the platform and create all of the packages.</summary>
     /// <remarks>This is the task run during CI.</remarks>
-    [Dependency(typeof(CleanArtifacts))]
-    [Dependency(typeof(UpdateDnnManifests))]
-    [Dependency(typeof(GenerateSecurityAnalyzerChecksums))]
-    [Dependency(typeof(SetPackageVersions))]
-    [Dependency(typeof(CreateInstall))]
-    [Dependency(typeof(CreateUpgrade))]
-    [Dependency(typeof(CreateDeploy))]
-    [Dependency(typeof(CreateSymbols))]
-    [Dependency(typeof(CreateNugetPackages))]
-    [Dependency(typeof(GeneratePackagesChecksums))]
-    [IsDependentOn(typeof(IssuesTask))]
+    [IsDependentOn(typeof(CleanArtifacts))]
+    [IsDependentOn(typeof(UpdateDnnManifests))]
+    [IsDependentOn(typeof(GenerateSecurityAnalyzerChecksums))]
+    [IsDependentOn(typeof(SetPackageVersions))]
+    [IsDependentOn(typeof(CreateInstall))]
+    [IsDependentOn(typeof(CreateUpgrade))]
+    [IsDependentOn(typeof(CreateDeploy))]
+    [IsDependentOn(typeof(CreateSymbols))]
+    [IsDependentOn(typeof(CreateNugetPackages))]
+    [IsDependentOn(typeof(GeneratePackagesChecksums))]
     public sealed class BuildAll : FrostingTask<Context>
     {
         /// <inheritdoc/>
