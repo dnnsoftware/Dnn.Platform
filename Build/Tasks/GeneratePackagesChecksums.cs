@@ -15,12 +15,12 @@ namespace DotNetNuke.Build.Tasks
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to generate a <c>checksums.md</c> file with the artifact checksums.</summary>
-    [Dependency(typeof(CleanArtifacts))]
-    [Dependency(typeof(UpdateDnnManifests))]
-    [Dependency(typeof(CreateInstall))]
-    [Dependency(typeof(CreateUpgrade))]
-    [Dependency(typeof(CreateDeploy))]
-    [Dependency(typeof(CreateSymbols))]
+    [IsDependentOn(typeof(CleanArtifacts))]
+    [IsDependentOn(typeof(UpdateDnnManifests))]
+    [IsDependentOn(typeof(CreateInstall))]
+    [IsDependentOn(typeof(CreateUpgrade))]
+    [IsDependentOn(typeof(CreateDeploy))]
+    [IsDependentOn(typeof(CreateSymbols))]
     public sealed class GeneratePackagesChecksums : FrostingTask<Context>
     {
         /// <inheritdoc/>

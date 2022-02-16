@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to set the version of client-side packages.</summary>
-    [Dependency(typeof(SetVersion))]
+    [IsDependentOn(typeof(SetVersion))]
     public sealed class SetPackageVersions : FrostingTask<Context>
     {
         /// <inheritdoc/>

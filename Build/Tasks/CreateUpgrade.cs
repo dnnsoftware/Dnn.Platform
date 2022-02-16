@@ -14,11 +14,11 @@ namespace DotNetNuke.Build.Tasks
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to create the Upgrade package.</summary>
-    [Dependency(typeof(PreparePackaging))]
-    [Dependency(typeof(OtherPackages))]
-    [Dependency(typeof(CreateInstall))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
-    [Dependency(typeof(CreateSymbols))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
-    [Dependency(typeof(CreateDeploy))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
+    [IsDependentOn(typeof(PreparePackaging))]
+    [IsDependentOn(typeof(OtherPackages))]
+    [IsDependentOn(typeof(CreateInstall))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
+    [IsDependentOn(typeof(CreateSymbols))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
+    [IsDependentOn(typeof(CreateDeploy))] // This is to ensure CreateUpgrade runs last and not in parallel, can be removed when we get to v10 where the telerik workaround is no longer needed
     public sealed class CreateUpgrade : FrostingTask<Context>
     {
         /// <inheritdoc/>
