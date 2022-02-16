@@ -9,11 +9,11 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to build the platform.</summary>
-    [Dependency(typeof(SetVersion))]
-    [Dependency(typeof(UpdateDnnManifests))]
-    [Dependency(typeof(ResetDatabase))]
-    [Dependency(typeof(PreparePackaging))]
-    [Dependency(typeof(OtherPackages))]
+    [IsDependentOn(typeof(SetVersion))]
+    [IsDependentOn(typeof(UpdateDnnManifests))]
+    [IsDependentOn(typeof(ResetDatabase))]
+    [IsDependentOn(typeof(PreparePackaging))]
+    [IsDependentOn(typeof(OtherPackages))]
     public sealed class BuildToTempFolder : FrostingTask<Context>
     {
     }

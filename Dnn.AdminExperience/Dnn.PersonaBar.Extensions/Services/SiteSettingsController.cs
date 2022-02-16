@@ -319,11 +319,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
-                var localizedPortalSettings = PortalController.Instance.GetPortalSettings(portal.PortalID, cultureCode);
+                var localizedPortalSettings = PortalController.Instance.GetPortalSettings(pid, cultureCode);
 
-                int redirectAfterLoginTabId = int.TryParse(localizedPortalSettings["Redirect_AfterLogin"], out redirectAfterLoginTabId) ? redirectAfterLoginTabId : -1;
-                int redirectAfterLogoutTabId = int.TryParse(localizedPortalSettings["Redirect_AfterLogout"], out redirectAfterLogoutTabId) ? redirectAfterLogoutTabId : -1;
-                int redirectAfterRegistrationTabId = int.TryParse(localizedPortalSettings["Redirect_AfterRegistration"], out redirectAfterRegistrationTabId) ? redirectAfterRegistrationTabId : -1;
+                int redirectAfterLoginTabId = this.GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterLogin");
+                int redirectAfterLogoutTabId = this.GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterLogout");
+                int redirectAfterRegistrationTabId = this.GetLocalizedTabIdSetting(localizedPortalSettings, "Redirect_AfterRegistration");
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -3581,6 +3581,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
             return tab != null && !tab.IsDeleted ? tab.TabID : Null.NullInteger;
+        }
+
+        private int GetLocalizedTabIdSetting(Dictionary<string, string> localizedPortalSettings, string settingKey)
+        {
+            var settingValue = string.Empty;
+            if (localizedPortalSettings.TryGetValue(settingKey, out settingValue))
+            {
+                int tabId = int.TryParse(settingValue, out tabId) ? tabId : -1;
+                return tabId;
+            }
+
+            return -1;
         }
     }
 }

@@ -11,10 +11,10 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Json;
 
     /// <summary>A cake task to prepare for packaging (by building the platform and copying files).</summary>
-    [Dependency(typeof(CopyWebsite))]
-    [Dependency(typeof(Build))]
-    [Dependency(typeof(CopyWebConfig))]
-    [Dependency(typeof(CopyWebsiteBinFolder))]
+    [IsDependentOn(typeof(CopyWebsite))]
+    [IsDependentOn(typeof(Build))]
+    [IsDependentOn(typeof(CopyWebConfig))]
+    [IsDependentOn(typeof(CopyWebsiteBinFolder))]
     public sealed class PreparePackaging : FrostingTask<Context>
     {
         /// <inheritdoc/>

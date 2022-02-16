@@ -40,6 +40,7 @@ namespace DotNetNuke.Entities.Users
         private string _administratorRoleName;
         private UserMembership _membership;
         private UserProfile _profile;
+        private string[] _roles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
@@ -271,19 +272,26 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                var socialRoles = this.Social.Roles;
-                if (socialRoles.Count == 0)
+                if (this._roles == null)
                 {
-                    return new string[0];
+                    var socialRoles = this.Social.Roles;
+                    if (socialRoles.Count == 0)
+                    {
+                        this._roles = new string[0];
+                    }
+                    else
+                    {
+                        this._roles = (from r in this.Social.Roles
+                                where
+                                    r.Status == RoleStatus.Approved &&
+                                    (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
+                                    (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
+                                select r.RoleName)
+                            .ToArray();
+                    }
                 }
 
-                return (from r in this.Social.Roles
-                        where
-                            r.Status == RoleStatus.Approved &&
-                            (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
-                            (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
-                        select r.RoleName)
-                        .ToArray();
+                return this._roles;
             }
 
             set { }

@@ -1476,7 +1476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.4.3, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.2.0, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.4.3, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.9.2":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
@@ -1583,7 +1583,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@9.10.1, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@9.10.2, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -4690,7 +4690,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": ^7.0.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -7851,6 +7851,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"combined-stream@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "combined-stream@npm:1.0.8"
+  dependencies:
+    delayed-stream: ~1.0.0
+  checksum: 49fa4aeb4916567e33ea81d088f6584749fc90c7abec76fd516bf1c5aa5c79f3584b5ba3de6b86d26ddd64bae5329c4c7479343250cfe71c75bb366eae53bb7c
+  languageName: node
+  linkType: hard
+
 "comma-separated-tokens@npm:^1.0.0":
   version: 1.0.6
   resolution: "comma-separated-tokens@npm:1.0.6"
@@ -7917,7 +7926,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"component-emitter@npm:^1.2.0, component-emitter@npm:^1.2.1":
+"component-emitter@npm:^1.2.1, component-emitter@npm:^1.3.0":
   version: 1.3.0
   resolution: "component-emitter@npm:1.3.0"
   checksum: b3c46de38ffd35c57d1c02488355be9f218e582aec72d72d1b8bbec95a3ac1b38c96cd6e03ff015577e68f550fbb361a3bfdbd9bb248be9390b7b3745691be6b
@@ -8191,10 +8200,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookiejar@npm:^2.1.0":
-  version: 2.1.2
-  resolution: "cookiejar@npm:2.1.2"
-  checksum: 706cad1a56db51dfb13c1fef73dab8e7fabcfdfbe5d58d463139b4af1482603291832053cc85564bc998a05784956a6cf0ac667414a0a8d7765c65ed3ed42f3e
+"cookiejar@npm:^2.1.2":
+  version: 2.1.3
+  resolution: "cookiejar@npm:2.1.3"
+  checksum: 88259983ebc52ceb23cdacfa48762b6a518a57872eff1c7ed01d214fff5cf492e2660d7d5c04700a28f1787a76811df39e8639f8e17670b3cf94ecd86e161f07
   languageName: node
   linkType: hard
 
@@ -8793,7 +8802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:^2.5.7, csstype@npm:^2.6.3":
+"csstype@npm:^2.5.7":
   version: 2.6.4
   resolution: "csstype@npm:2.6.4"
   checksum: a8ee653b0e9c7ba88291c7e9cd54e1f3ebb929e5fbf7b9991a68d016823f0756de582b4aa2b2faecce289b103a4de04eda2f05931d5e7ac82e80bbe652b354cc
@@ -8820,20 +8829,6 @@ __metadata:
   version: 0.2.2
   resolution: "cyclist@npm:0.2.2"
   checksum: 12563caf471b19401f17296579cf5af3b177c6dd3f4d673a6f838de945918c2f0b487ab6c4f803b557b83826c2aa80e55e465d34a206266a2947a1c19ab5c9ba
-  languageName: node
-  linkType: hard
-
-"d3-ease@npm:^1.0.3":
-  version: 1.0.5
-  resolution: "d3-ease@npm:1.0.5"
-  checksum: 000ac74d9ff1c275785614697b01b4fe847f2ce2f18fb6dc62b8e7a44021f816f7bae6c70b31b4ca371ef58e89a59343cdea815f2bbffbd7d6a46d09d2f97da1
-  languageName: node
-  linkType: hard
-
-"d3-timer@npm:^1.0.9":
-  version: 1.0.9
-  resolution: "d3-timer@npm:1.0.9"
-  checksum: 3b9def37838e46fabedc37916f4f197541384deba6c2b7d74c935bf2c37ecc0a38e6e72358e43b1d3a69900a778fe870f9ceb85b0f9bcde666497f0db0dfd3be
   languageName: node
   linkType: hard
 
@@ -9321,7 +9316,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babel-polyfill: 6.26.0
@@ -9357,7 +9352,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.4
     babel-plugin-transform-react-remove-prop-types: 0.4.20
     babel-polyfill: 6.26.0
@@ -9393,7 +9388,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.6
     create-react-class: ^15.6.3
     css-loader: 2.1.1
@@ -10781,7 +10776,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -10960,7 +10955,7 @@ __metadata:
     "@babel/core": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
     babel-plugin-transform-object-rest-spread: 6.26.0
@@ -11099,6 +11094,13 @@ __metadata:
   version: 2.0.6
   resolution: "fast-levenshtein@npm:2.0.6"
   checksum: 92cfec0a8dfafd9c7a15fba8f2cc29cd0b62b85f056d99ce448bbcd9f708e18ab2764bda4dd5158364f4145a7c72788538994f0d1787b956ef0d1062b0f7c24c
+  languageName: node
+  linkType: hard
+
+"fast-safe-stringify@npm:^2.0.7":
+  version: 2.1.1
+  resolution: "fast-safe-stringify@npm:2.1.1"
+  checksum: a851cbddc451745662f8f00ddb622d6766f9bd97642dabfd9a405fb0d646d69fc0b9a1243cbf67f5f18a39f40f6fa821737651ff1bceeba06c9992ca2dc5bd3d
   languageName: node
   linkType: hard
 
@@ -11549,14 +11551,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^2.3.1":
-  version: 2.5.1
-  resolution: "form-data@npm:2.5.1"
+"form-data@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "form-data@npm:3.0.1"
   dependencies:
     asynckit: ^0.4.0
-    combined-stream: ^1.0.6
+    combined-stream: ^1.0.8
     mime-types: ^2.1.12
-  checksum: 5134ada56cc246b293a1ac7678dba6830000603a3979cf83ff7b2f21f2e3725202237cfb89e32bcb38a1d35727efbd3c3a22e65b42321e8ade8eec01ce755d08
+  checksum: b019e8d35c8afc14a2bd8a7a92fa4f525a4726b6d5a9740e8d2623c30e308fbb58dc8469f90415a856698933c8479b01646a9dff33c87cc4e76d72aedbbf860d
   languageName: node
   linkType: hard
 
@@ -11578,7 +11580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formidable@npm:^1.2.0":
+"formidable@npm:^1.2.2":
   version: 1.2.2
   resolution: "formidable@npm:1.2.2"
   checksum: 43b3ec9a8f8055112e1a9a40eb748cdcd86cb9076dc9a17b0caa2bc26908eeae865dbee62d7c4bc26681fb75c2f42d60323af9c9d06c843e94f51f9b46954a0a
@@ -14765,15 +14767,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"kapellmeister@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "kapellmeister@npm:3.0.1"
-  dependencies:
-    d3-timer: ^1.0.9
-  checksum: 297e9838537f039a47d8dab3dc77f58fa076ca522159c4c6d14c4c42fb2e881b1887455473437b1b0e7e0aa24f5611f4ffbce69e0e27dc5ee41c3aa42c00ff54
-  languageName: node
-  linkType: hard
-
 "keycode@npm:^2.2.0":
   version: 2.2.0
   resolution: "keycode@npm:2.2.0"
@@ -15062,7 +15055,7 @@ fsevents@~2.3.2:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -15889,7 +15882,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"methods@npm:^1.1.1, methods@npm:~1.1.2":
+"methods@npm:^1.1.2, methods@npm:~1.1.2":
   version: 1.1.2
   resolution: "methods@npm:1.1.2"
   checksum: 0917ff4041fa8e2f2fda5425a955fe16ca411591fbd123c0d722fcf02b73971ed6f764d85f0a6f547ce49ee0221ce2c19a5fa692157931cecb422984f1dcd13a
@@ -15972,7 +15965,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"mime@npm:^2.4.4":
+"mime@npm:^2.4.4, mime@npm:^2.4.6":
   version: 2.5.2
   resolution: "mime@npm:2.5.2"
   bin:
@@ -16888,22 +16881,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"nuka-carousel@npm:4.5.6":
-  version: 4.5.6
-  resolution: "nuka-carousel@npm:4.5.6"
-  dependencies:
-    csstype: ^2.6.3
-    d3-ease: ^1.0.3
-    exenv: ^1.2.0
-    prop-types: ^15.6.0
-    react-move: ^5.0.0
-  peerDependencies:
-    react: ^0.14.9 || ^15.3.0 || ^16.0.0
-    react-dom: ^0.14.9 || ^15.3.0 || ^16.0.0
-  checksum: 57a4ff2e2368b18c3dcf0a6a7e85388e0a84975cc35c794cdc1d0d4056ba5eddbff3ef6727c141f026f6aaacb4f69ec89302224b0e56107b4b8be781bb8470d3
-  languageName: node
-  linkType: hard
-
 "num2fraction@npm:^1.2.2":
   version: 1.2.2
   resolution: "num2fraction@npm:1.2.2"
@@ -17541,7 +17518,7 @@ fsevents@~2.3.2:
     "@babel/plugin-proposal-object-rest-spread": ^7.0.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     "@types/knockout": ^3.4.66
     "@types/redux": 3.6.31
     babel-eslint: ^10.0.1
@@ -18749,7 +18726,7 @@ fsevents@~2.3.2:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-eslint: ^10.0.1
@@ -19039,7 +19016,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.0, qs@npm:^6.5.1":
+"qs@npm:^6.10.0, qs@npm:^6.9.4":
   version: 6.10.1
   resolution: "qs@npm:6.10.1"
   dependencies:
@@ -19659,20 +19636,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"react-move@npm:^5.0.0":
-  version: 5.2.1
-  resolution: "react-move@npm:5.2.1"
-  dependencies:
-    "@babel/runtime": ^7.3.4
-    kapellmeister: ^3.0.1
-    prop-types: ^15.7.2
-    react-lifecycles-compat: ^3.0.4
-  peerDependencies:
-    react: ^0.14.9 || ^15.3.0 || ^16.0.0
-  checksum: 7835abd6771ee4290f1f07402b9cfd102f6f8100e5480d313b1707a6bcf48fa395c6ff5a3430269bb3714bbfc44230ea03a4bded4f0d39659de0dcab2850947b
-  languageName: node
-  linkType: hard
-
 "react-popper-tooltip@npm:^2.8.0":
   version: 2.8.2
   resolution: "react-popper-tooltip@npm:2.8.2"
@@ -20219,21 +20182,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^2.3.5":
-  version: 2.3.7
-  resolution: "readable-stream@npm:2.3.7"
-  dependencies:
-    core-util-is: ~1.0.0
-    inherits: ~2.0.3
-    isarray: ~1.0.0
-    process-nextick-args: ~2.0.0
-    safe-buffer: ~5.1.1
-    string_decoder: ~1.1.1
-    util-deprecate: ~1.0.1
-  checksum: e4920cf7549a60f8aaf694d483a0e61b2a878b969d224f89b3bc788b8d920075132c4b55a7494ee944c7b6a9a0eada28a7f6220d80b0312ece70bbf08eeca755
-  languageName: node
-  linkType: hard
-
 "readable-stream@npm:^3.0.6, readable-stream@npm:^3.1.1":
   version: 3.3.0
   resolution: "readable-stream@npm:3.3.0"
@@ -20242,6 +20190,17 @@ fsevents@~2.3.2:
     string_decoder: ^1.1.1
     util-deprecate: ^1.0.1
   checksum: ec22a82269c97467b37917a21f69904834323ad484aa603208688edbd169635906b528b0a783cb7cb2e41aa2cb1a8d1036f5d248baaea078ad16f5174dafe324
+  languageName: node
+  linkType: hard
+
+"readable-stream@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "readable-stream@npm:3.6.0"
+  dependencies:
+    inherits: ^2.0.3
+    string_decoder: ^1.1.1
+    util-deprecate: ^1.0.1
+  checksum: d4ea81502d3799439bb955a3a5d1d808592cf3133350ed352aeaa499647858b27b1c4013984900238b0873ec8d0d8defce72469fb7a83e61d53f5ad61cb80dc8
   languageName: node
   linkType: hard
 
@@ -21028,7 +20987,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-arrow-functions": ^7.10.4
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-eslint: ^10.1.0
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
@@ -21069,7 +21028,7 @@ resolve@^1.4.0:
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
     style-loader: 0.23.1
-    superagent: ^3.2.1
+    superagent: ^6.1.0
     url-loader: 1.1.2
     webpack: 4.43.0
     webpack-bundle-size-analyzer: 3.1.0
@@ -21182,7 +21141,7 @@ resolve@^1.4.0:
     "@babel/core": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: ^2.0.0
     array.prototype.findindex: ^2.0.0
     babel-loader: ^8.0.6
@@ -21431,7 +21390,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     create-react-class: ^15.6.3
@@ -21513,7 +21472,7 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.2.1, semver@npm:^7.3.5":
+"semver@npm:^7.2.1, semver@npm:^7.3.2, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
   dependencies:
@@ -21583,7 +21542,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -21693,7 +21652,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     "@types/redux": ^3.6.31
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
@@ -21952,7 +21911,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-eslint: ^10.0.1
     babel-loader: 8.0.6
     babel-plugin-transform-class-properties: ^6.22.0
@@ -22007,7 +21966,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -22055,7 +22014,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-object-assign": 7.12.13
     "@babel/preset-env": 7.1.6
     "@babel/preset-react": 7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.6
     babel-plugin-transform-react-remove-prop-types: 0.4.24
     babel-polyfill: 6.26.0
@@ -22918,21 +22877,22 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"superagent@npm:^3.2.1":
-  version: 3.8.3
-  resolution: "superagent@npm:3.8.3"
+"superagent@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "superagent@npm:6.1.0"
   dependencies:
-    component-emitter: ^1.2.0
-    cookiejar: ^2.1.0
-    debug: ^3.1.0
-    extend: ^3.0.0
-    form-data: ^2.3.1
-    formidable: ^1.2.0
-    methods: ^1.1.1
-    mime: ^1.4.1
-    qs: ^6.5.1
-    readable-stream: ^2.3.5
-  checksum: b13d0303259d76c9180bd40d97d9f0713760f5ced1aef089bdb2fcdf69cfaef89004cd6e986416d59bd9a2f0f9933d72521b5171fa26f89b781a2c3460c516fe
+    component-emitter: ^1.3.0
+    cookiejar: ^2.1.2
+    debug: ^4.1.1
+    fast-safe-stringify: ^2.0.7
+    form-data: ^3.0.0
+    formidable: ^1.2.2
+    methods: ^1.1.2
+    mime: ^2.4.6
+    qs: ^6.9.4
+    readable-stream: ^3.6.0
+    semver: ^7.3.2
+  checksum: 32ca1bc9805679cddeffdf5cf369da47359a0d38ee45ea668bba4116e17c247739e4084db9cc88217dd594a816e766a3dbf2431de017fbac0bc80efd6af30c1d
   languageName: node
   linkType: hard
 
@@ -23131,7 +23091,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: 8.0.6
@@ -23173,7 +23133,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     array.prototype.find: 2.0.4
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
@@ -23192,7 +23152,6 @@ resolve@^1.4.0:
     jwt-decode: 2.2.0
     less: 3.9.0
     less-loader: 5.0.0
-    nuka-carousel: 4.5.6
     object-path: 0.11.4
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -23367,7 +23326,7 @@ resolve@^1.4.0:
     "@babel/plugin-proposal-object-rest-spread": ^7.2.0
     "@babel/preset-env": ^7.2.0
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: 8.0.6
     babel-plugin-transform-object-assign: 6.22.0
     babel-plugin-transform-object-rest-spread: 6.26.0
@@ -24172,7 +24131,7 @@ resolve@^1.4.0:
     "@babel/plugin-transform-react-jsx": ^7.1.6
     "@babel/preset-env": ^7.1.6
     "@babel/preset-react": ^7.0.0
-    "@dnnsoftware/dnn-react-common": 9.10.1
+    "@dnnsoftware/dnn-react-common": 9.10.2
     babel-loader: ^8.0.6
     create-react-class: ^15.6.3
     css-loader: 2.1.1

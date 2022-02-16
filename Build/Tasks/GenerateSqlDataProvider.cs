@@ -10,7 +10,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to generate a SQL Data Provider script if it doesn't exist.</summary>
-    [Dependency(typeof(SetVersion))]
+    [IsDependentOn(typeof(SetVersion))]
     public sealed class GenerateSqlDataProvider : FrostingTask<Context>
     {
         /// <inheritdoc/>
