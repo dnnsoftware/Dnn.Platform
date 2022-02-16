@@ -679,6 +679,7 @@
     <Compile Include="Security\Cookies\AuthCookieController.cs" />
     <Compile Include="Security\Cookies\IAuthCookieController.cs" />
     <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />
+    <Compile Include="Security\Cookies\PurgeAuthCookiesTask.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />

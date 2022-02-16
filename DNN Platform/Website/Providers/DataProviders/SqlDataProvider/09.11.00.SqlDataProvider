@@ -24,6 +24,35 @@ WHERE SettingName = 'SSLSetup'
  AND SettingValue = 'True'
 GO
 
+
+/*    Add scheduled task to delete expired auth cookies       */
+/************************************************************/
+
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Security.Cookies.PurgeAuthCookiesTask, DOTNETNUKE')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
+	VALUES ('DotNetNuke.Security.Cookies.PurgeAuthCookiesTask, DOTNETNUKE', 1, 'h', 30, 'm', 10, '', 0, 1, '', NULL, NULL, GETDATE(), NULL, GETDATE(), N'Purge Expired Authentication Cookies')
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+/*    Ensure that the AuthCookies doesn't time out          */
+/************************************************************/
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+	@CutoffDate   datetime -- in UTC
+AS
+BEGIN
+	DELETE TOP(10000) FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE ExpiresOn < @CutoffDate
+END
+GO
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
