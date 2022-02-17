@@ -18,7 +18,7 @@
     <ItemGroup>
         <Scripts Include="$(MSBuildProjectDirectory)\Scripts\**\*.*" />
     </ItemGroup>
-    <Target Name="BeforeBuild">
+    <Target Name="UpdateFiles">
         <PropertyGroup>
             <ComponentsDestinationFolder>$(MSBuildProjectDirectory)\Scripts\dnn-resource-manager</ComponentsDestinationFolder>
         </PropertyGroup>
@@ -27,8 +27,6 @@
         </ItemGroup>
         <RemoveDir Directories="$(ComponentsDestinationFolder)" />
         <Copy SourceFiles="@(ComponentsSource)" DestinationFolder="$(ComponentsDestinationFolder)" />
-    </Target>
-    <Target Name="UpdateFiles">
         <ItemGroup>
             <Resources Remove="web.config" />
             <Resources Remove="web.Debug.config" />
