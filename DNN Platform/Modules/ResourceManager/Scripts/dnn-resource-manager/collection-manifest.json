@@ -1,0 +1,12 @@
+{
+  "entries": [
+    "./components/dnn-resource-manager/dnn-resource-manager.js"
+  ],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.14.0",
+    "typescriptVersion": "4.5.4"
+  },
+  "collections": [],
+  "bundles": []
+}

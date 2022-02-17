@@ -52,7 +52,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey/>
-                    <controlSrc>DesktopModules/ResourceManager/View.ascx</controlSrc>
+                    <controlSrc>DesktopModules/ResourceManager/View.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle/>
                     <controlType>View</controlType>
