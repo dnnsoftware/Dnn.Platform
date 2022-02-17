@@ -21,5 +21,6 @@ export const config: Config = {
   ],
   plugins: [
     sass(),
-  ]
+  ],
+  sourceMap: true,
 };
