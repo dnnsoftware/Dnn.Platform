@@ -52,7 +52,8 @@
     "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/Newtonsoft.Json.dll",
     "/Config/DotNetNuke.config",
-    "/Install/InstallWizard.aspx"
+    "/Install/InstallWizard.aspx",
+    "/bin/WebFormsMvp.dll"
   ],
   "symbolsInclude": [
     "/bin/*.pdb",
