@@ -1,2 +1,0 @@
-import{r,h as s,H as o}from"./p-de30d5d0.js";const t=":host{display:block}";let e=class{constructor(s){r(this,s)}render(){return s(o,null,s("slot",null))}};e.style=t;export{e as dnn_resource_manager};
-//# sourceMappingURL=p-773b8db5.entry.js.map

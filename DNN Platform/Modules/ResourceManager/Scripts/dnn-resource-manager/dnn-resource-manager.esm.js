@@ -1,2 +1,0 @@
-import{p as n,b as r}from"./p-de30d5d0.js";const o=()=>{const r=import.meta.url;const o={};if(r!==""){o.resourcesUrl=new URL(".",r).href}return n(o)};o().then((n=>r([["p-773b8db5",[[1,"dnn-resource-manager"]]]],n)));
-//# sourceMappingURL=dnn-resource-manager.esm.js.map
