@@ -1,6 +1,6 @@
 {
   "name": "dnn-resource-manager",
-  "version": "0.0.1",
+  "version": "9.10.2",
   "description": "Stencil Component Starter",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -29,6 +29,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@dnncommunity/dnn-elements": "^0.14.0-beta.1",
     "@stencil/sass": "^1.5.2"
   }
 }

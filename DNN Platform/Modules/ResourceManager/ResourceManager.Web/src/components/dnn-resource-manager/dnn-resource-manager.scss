@@ -1,3 +1,47 @@
 :host {
   display: block;
+
+  --top-bar-background-color: var(--dnn-color-)
+}
+
+.container{
+  border: 1px solid lightgray;
+  display:flex;
+  flex-direction: column;
+  dnn-vertical-splitview{
+    width: 100%;
+  }
+  dnn-vertical-splitview{
+    min-height: 400px;
+    .splitter{
+      display: flex;
+      align-items: center;
+      box-shadow: inset 8px 0 8px -8px grey;
+      height: 100%;
+      button{
+        margin: 0;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        border: 1px solid lightgray;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        left: -12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        svg{
+          transition: all 300ms ease-in-out;
+        }
+        &.expanded{
+          svg{
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+  }
 }
