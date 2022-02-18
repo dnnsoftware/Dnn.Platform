@@ -96,5 +96,36 @@
         </component>
       </components>
     </package>
+    <package name="PersonaBar.ResourceManager" type="PersonaBar" version="09.10.02">
+      <description>This module allows you to manage files on the server</description>
+      <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">09.02.00</dependency>
+        <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
+      </dependencies>
+      <components>
+        <component type="PersonaBarMenu">
+          <menu>
+            <identifier>Dnn.Files</identifier>
+            <moduleName>Files</moduleName>
+            <controller>Dnn.Modules.ResourceManager.Components.PersonaBarMenuController, Dnn.Modules.ResourceManager</controller>
+            <resourceKey>nav_ResourceManager</resourceKey>
+            <path>~/DesktopModules/ResourceManager/ResourceManager</path>
+            <mobileSupport>true</mobileSupport>
+            <parent>Content</parent>
+            <order>2</order>
+            <defaultPermissions>Administrators</defaultPermissions>
+          </menu>
+        </component>
+      </components>
+    </package>
   </packages>
 </dotnetnuke>
