@@ -107,6 +107,7 @@
     <Compile Include="Components\Models\ThumbnailContent.cs" />
     <Compile Include="Components\PermissionHelper.cs" />
     <Compile Include="Components\PermissionsManager.cs" />
+    <Compile Include="Components\PersonaBarMenuController.cs" />
     <Compile Include="Components\SearchController.cs" />
     <Compile Include="Components\SettingsManager.cs" />
     <Compile Include="Components\ThumbnailsManager.cs" />
@@ -207,6 +208,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Dnn.AdminExperience\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+      <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
+      <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
@@ -262,6 +267,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Files.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
