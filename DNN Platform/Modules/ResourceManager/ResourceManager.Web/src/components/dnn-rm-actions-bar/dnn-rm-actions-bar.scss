@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  box-shadow: 0px 4px 8px -4px black;
+}
+dnn-vertical-overflow-menu{
+  button{
+    padding:0;
+    margin:0;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    border:0;
+    padding:0;
+    margin:0;
+    svg{
+      fill: var(--dnn-color-primary);
+    }
+  }
+
+}

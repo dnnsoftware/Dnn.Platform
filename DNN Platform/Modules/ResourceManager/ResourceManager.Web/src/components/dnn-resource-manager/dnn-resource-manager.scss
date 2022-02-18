@@ -1,7 +1,6 @@
 :host {
   display: block;
-
-  --top-bar-background-color: var(--dnn-color-)
+  width:100%;
 }
 
 .container{
@@ -10,9 +9,9 @@
   flex-direction: column;
   dnn-vertical-splitview{
     width: 100%;
-  }
-  dnn-vertical-splitview{
     min-height: 400px;
+    --left-pane-background-color: lightgray;
+    --right-pane-background-color: white;
     .splitter{
       display: flex;
       align-items: center;

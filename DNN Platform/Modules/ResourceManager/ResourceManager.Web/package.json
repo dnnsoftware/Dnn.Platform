@@ -29,7 +29,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.14.0-beta.1",
+    "@dnncommunity/dnn-elements": "0.14.0-beta.6",
     "@stencil/sass": "^1.5.2"
   }
 }

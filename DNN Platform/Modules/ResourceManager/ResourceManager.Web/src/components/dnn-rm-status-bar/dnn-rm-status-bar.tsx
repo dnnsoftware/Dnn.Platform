@@ -2,7 +2,7 @@ import { Component, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'dnn-rm-status-bar',
-  styleUrl: 'dnn-rm-status-bar.css',
+  styleUrl: 'dnn-rm-status-bar.scss',
   shadow: true,
 })
 export class DnnRmStatusBar {
@@ -10,7 +10,7 @@ export class DnnRmStatusBar {
   render() {
     return (
       <Host>
-        <slot></slot>
+        I am the status bar
       </Host>
     );
   }

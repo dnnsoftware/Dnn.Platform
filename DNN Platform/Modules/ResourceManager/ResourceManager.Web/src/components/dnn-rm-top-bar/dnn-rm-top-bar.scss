@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--dnn-color-primary);
+  color: var(--dnn-color-primary-contrast);
+  padding: 0.5em 1em;
+  gap: 1em;
+}
+
+button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  cursor: pointer;
+  svg{
+    fill: var(--dnn-color-primary-contrast);
+  }
+}
