@@ -117,11 +117,10 @@
             <identifier>Dnn.Files</identifier>
             <moduleName>Files</moduleName>
             <controller>Dnn.Modules.ResourceManager.Components.PersonaBarMenuController, Dnn.Modules.ResourceManager</controller>
-            <resourceKey>nav_ResourceManager</resourceKey>
-            <path>~/DesktopModules/ResourceManager/ResourceManager</path>
+            <resourceKey>nav_Files</resourceKey>
             <mobileSupport>true</mobileSupport>
-            <parent>Content</parent>
-            <order>2</order>
+            <parent>Manage</parent>
+            <order>25</order>
             <defaultPermissions>Administrators</defaultPermissions>
           </menu>
         </component>
