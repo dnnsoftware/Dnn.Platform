@@ -54,7 +54,7 @@ export class ItemsClient{
         })
         .then(response => {
             if (response.status == 200){
-                response.json().then(data => resolve(data.url))
+                response.json().then(data => resolve(data.url));
             }
             else{
                 response.json().then(error => reject(error));

@@ -38,6 +38,7 @@ graph TD;
   dnn-rm-right-pane --> dnn-rm-files-pane
   dnn-rm-right-pane --> dnn-rm-status-bar
   dnn-rm-actions-bar --> dnn-vertical-overflow-menu
+  dnn-rm-files-pane --> dnn-rm-items-listview
   style dnn-resource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

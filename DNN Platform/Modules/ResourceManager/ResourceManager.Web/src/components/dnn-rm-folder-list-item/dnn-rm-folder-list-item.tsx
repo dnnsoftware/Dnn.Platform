@@ -52,6 +52,12 @@ export class DnnRmFolderListItem {
     .catch(error => console.error(error));
   };
 
+  private handleFolderClicked(): void {
+    this.itemsClient.getFolderContent(Number.parseInt(this.folder.data.key))
+    .then(data => state.currentItems = data)
+    .catch(error => console.error(error));
+  }
+
   render() {
     return (
       <Host>
@@ -59,7 +65,10 @@ export class DnnRmFolderListItem {
           <dnn-treeview-item
             expanded={this.expanded}
             onUserExpanded={() => this.handleUserExpanded()}>
-            <button title={`${this.folder.data.value} (ID: ${this.folder.data.key})`}>
+            <button
+              title={`${this.folder.data.value} (ID: ${this.folder.data.key})`}
+              onClick={() => this.handleFolderClicked()}
+            >
               {this.folderIconUrl
               ?
                 <img src={this.folderIconUrl} alt={this.folder.data.value} />
@@ -84,5 +93,4 @@ export class DnnRmFolderListItem {
       </Host>
     );
   }
-
 }
