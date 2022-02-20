@@ -2980,6 +2980,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stencil/store@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@stencil/store@npm:1.5.0"
+  peerDependencies:
+    "@stencil/core": ">=1.9.0"
+  checksum: c529061b4582514160a7b38185381571399a9dd62b4a67ad3b78aafff3a1d318895aa89de277897bb3d418b865b82dce01499a46625ea2fad2db33a2995c8d2a
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-actions@npm:^6.3.9":
   version: 6.3.9
   resolution: "@storybook/addon-actions@npm:6.3.9"
@@ -8713,6 +8722,7 @@ __metadata:
     "@dnncommunity/dnn-elements": 0.14.0-beta.6
     "@stencil/core": ^2.13.0
     "@stencil/sass": ^1.5.2
+    "@stencil/store": ^1.5.0
   languageName: unknown
   linkType: soft
 

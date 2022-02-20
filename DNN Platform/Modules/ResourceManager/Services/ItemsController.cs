@@ -16,7 +16,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
-
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
@@ -48,7 +48,8 @@ namespace Dnn.Modules.ResourceManager.Services
         /// An instance of an <see cref="IModuleControlPipeline"/> used to hook into the
         /// EditUrl of the webforms folders provider settings UI.
         /// </param>
-        public ItemsController(IModuleControlPipeline modulePipeline)
+        public ItemsController(
+            IModuleControlPipeline modulePipeline)
         {
             this.modulePipeline = modulePipeline;
         }
@@ -505,6 +506,20 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
+        /// <summary>
+        /// Gets the relevant icon for this requested folder.
+        /// </summary>
+        /// <param name="folderId">The ID of the folder for which to get the image for.</param>
+        /// <returns>A string representing the full url  to the folder icon.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetFolderIconUrl(int folderId)
+        {
+            var folderMappingId = FolderManager.Instance.GetFolder(folderId).FolderMappingID;
+            var url = GetFolderIconUrl(this.PortalSettings.PortalId, folderMappingId);
+            return this.Ok(new { url });
+        }
+
         private static string GetFileIconUrl(string extension)
         {
             if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
@@ -517,7 +532,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private static string GetFolderIconUrl(int portalId, int folderMappingId)
         {
-            var url = Globals.ApplicationPath + "/" + Constants.ModulePath + "images/icon-asset-manager-{0}-folder.png";
+            var url = Globals.ApplicationPath + "/" + Constants.ModulePath + "images/icon-asset-manager-{0}-folder.svg";
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingId);
             var name = folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl))

@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+button{
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  gap: 0.5em;
+  cursor: pointer;
+}

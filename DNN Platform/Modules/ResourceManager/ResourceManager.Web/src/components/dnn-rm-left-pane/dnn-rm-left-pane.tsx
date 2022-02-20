@@ -10,13 +10,7 @@ export class DnnRmLeftPane {
   render() {
     return (
       <Host>
-        <ul>
-          <li>Folders</li>
-          <li>will</li>
-          <li>go</li>
-          <li>over</li>
-          <li>here</li>
-        </ul>
+        <dnn-rm-folder-list></dnn-rm-folder-list>
       </Host>
     );
   }

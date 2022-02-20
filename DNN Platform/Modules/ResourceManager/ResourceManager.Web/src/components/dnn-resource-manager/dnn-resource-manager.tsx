@@ -1,5 +1,5 @@
-import { Component, Host, h, State, Watch } from '@stencil/core';
-
+import { Component, Host, h, State, Watch, Prop } from '@stencil/core';
+import state from "../../store/store";
 const localStorageSplitWidthKey = "dnn-resource-manager-last-folders-width";
 @Component({
   tag: 'dnn-resource-manager',
@@ -7,6 +7,12 @@ const localStorageSplitWidthKey = "dnn-resource-manager-last-folders-width";
   shadow: true,
 })
 export class DnnResourceManager {
+
+  @Prop() moduleId!: number;
+
+  constructor() {
+    state.moduleId = this.moduleId;
+  }
 
   @State() foldersExpanded = true;
   @Watch("foldersExpanded") async foldersExpandedChanged(expanded: boolean){

@@ -1,4 +1,4 @@
-# dnn-rm-left-pane
+# dnn-rm-folder-list
 
 
 
@@ -9,22 +9,21 @@
 
 ### Used by
 
- - [dnn-resource-manager](../dnn-resource-manager)
+ - [dnn-rm-left-pane](../dnn-rm-left-pane)
 
 ### Depends on
 
-- [dnn-rm-folder-list](../dnn-rm-folder-list)
+- [dnn-rm-folder-list-item](../dnn-rm-folder-list-item)
 
 ### Graph
 ```mermaid
 graph TD;
-  dnn-rm-left-pane --> dnn-rm-folder-list
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-treeview-item
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-treeview-item --> dnn-collapsible
-  dnn-resource-manager --> dnn-rm-left-pane
-  style dnn-rm-left-pane fill:#f9f,stroke:#333,stroke-width:4px
+  dnn-rm-left-pane --> dnn-rm-folder-list
+  style dnn-rm-folder-list fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
