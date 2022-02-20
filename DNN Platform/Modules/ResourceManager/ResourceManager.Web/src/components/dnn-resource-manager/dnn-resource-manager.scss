@@ -9,7 +9,7 @@
   flex-direction: column;
   dnn-vertical-splitview{
     width: 100%;
-    min-height: 400px;
+    height: 400px;
     --left-pane-background-color: lightgray;
     --right-pane-background-color: white;
     .splitter{

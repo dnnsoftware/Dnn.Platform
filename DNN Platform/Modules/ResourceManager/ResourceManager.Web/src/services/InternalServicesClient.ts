@@ -30,7 +30,36 @@ export class InternalServicesClient{
             .catch(error => reject(error));
         });
     }
+
+    public getFolderDescendants(
+        parentId?: string,
+        sortOrder = 0,
+        searchText = "",
+        permission = "",
+        portalId = -1)
+    {
+        return new Promise<GetFolderDescendantsResponse>((resolve, reject) => {
+            let url = `${this.requestUrl}GetFolderDescendants?parentId=${parentId}&sortOrder=${sortOrder}&searchText=${searchText}&permission=${permission}`;
+            if (portalId > -1){
+                url += "&portalId=${portalId}";
+            }
+
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
 }
+
 
 export interface GetFoldersResponse{
     IgnoreRoot: boolean;
@@ -48,4 +77,9 @@ export interface FolderTreeData{
     key: string;
     selectable: boolean;
     value?: string;
+}
+
+export interface GetFolderDescendantsResponse{
+    Items: FolderTreeData[];
+    Success: boolean;
 }

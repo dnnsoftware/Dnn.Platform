@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, State } from '@stencil/core';
-import { FolderTreeItem } from '../../services/InternalServicesClient';
+import { InternalServicesClient, FolderTreeItem } from '../../services/InternalServicesClient';
 import { ItemsClient } from "../../services/ItemsClient";
 import state from "../../store/store";
 
@@ -11,32 +11,55 @@ import state from "../../store/store";
 export class DnnRmFolderListItem {
 
   /** The basic information about the folder */
-  @Prop() folder!: FolderTreeItem;
+  @Prop({mutable: true}) folder!: FolderTreeItem;
 
   /** If true, this node will be expanded on load. */
-  @Prop() expanded = false;
+  @Prop({mutable: true}) expanded = false;
 
   @State() folderIconUrl: string;
 
   private itemsClient: ItemsClient;
-
+  private internalServicesClient: InternalServicesClient;
+  
   constructor(){
-    this.itemsClient = new ItemsClient(state.moduleId)
+    this.itemsClient = new ItemsClient(state.moduleId);
+    this.internalServicesClient = new InternalServicesClient(state.moduleId);
   }
-
+  
   componentWillLoad() {
     this.itemsClient.getFolderIconUrl(Number.parseInt(this.folder.data.key))
     .then(data => this.folderIconUrl = data)
     .catch(error => console.error(error));
   }
+  
+  private handleUserExpanded() {
+    this.internalServicesClient.getFolderDescendants(this.folder.data.key)
+    .then(data => {
+      this.folder = {
+        ...this.folder,
+        children: data.Items.map(item => {
+          return {
+            data: {
+              hasChildren : item.hasChildren,
+              key: item.key,
+              selectable: item.selectable,
+              value: item.value
+            },
+          };
+        }),
+      };
+    })
+    .catch(error => console.error(error));
+  };
 
   render() {
-    console.log(this.folder)
     return (
       <Host>
         {this.folder &&
-          <dnn-treeview-item expanded={this.expanded}>
-            <button title={this.folder.data.value}>
+          <dnn-treeview-item
+            expanded={this.expanded}
+            onUserExpanded={() => this.handleUserExpanded()}>
+            <button title={`${this.folder.data.value} (ID: ${this.folder.data.key})`}>
               {this.folderIconUrl
               ?
                 <img src={this.folderIconUrl} alt={this.folder.data.value} />
@@ -48,12 +71,14 @@ export class DnnRmFolderListItem {
               </span>
             </button>
             {this.folder.data.hasChildren &&
-              <div slot="children">
-                {this.folder.children && this.folder.children.length > 0 && this.folder.children.map(child =>
-                  <dnn-rm-folder-list-item folder={child}></dnn-rm-folder-list-item>
-                )}
-              </div>
-            }
+              [
+                <div slot="children">
+                </div>
+              ,
+                this.folder.children && this.folder.children.length > 0 && this.folder.children.map(child =>
+                <dnn-rm-folder-list-item slot="children" folder={child}></dnn-rm-folder-list-item>
+                )
+              ]}
           </dnn-treeview-item>
         }
       </Host>
