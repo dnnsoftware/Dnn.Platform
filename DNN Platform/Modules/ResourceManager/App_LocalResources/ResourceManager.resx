@@ -142,13 +142,13 @@
     <value>Confirm delete</value>
   </data>
   <data name="DeleteFileDialogMessage.Text" xml:space="preserve">
-    <value>Are you sure to delete the file?</value>
+    <value>Are you sure you want to delete the file?</value>
   </data>
   <data name="DeleteFolderDialogHeader.Text" xml:space="preserve">
     <value>Confirm delete</value>
   </data>
   <data name="DeleteFolderDialogMessage.Text" xml:space="preserve">
-    <value>Are you sure to delete the folder?</value>
+    <value>Are you sure you want to delete the folder?</value>
   </data>
   <data name="FileAlreadyExistsMessage.Text" xml:space="preserve">
     <value>The file you want to upload already exists in this folder.</value>

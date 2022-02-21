@@ -14,7 +14,7 @@ export class ItemsClient{
     }
 
     /**
-     * 
+     * Gets a specific folder contents.
      * @param folderId Gets the content of a folder.
      * @param startIndex Which item to start at in the paging mechanism.
      * @param numItems How many items to return.

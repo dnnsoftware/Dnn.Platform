@@ -16,7 +16,7 @@ export class DnnRmItemsListview {
             <thead>
               <tr>
                 <td></td>
-                <td>[L] Name</td>
+                <td>{state.localization?.Name}</td>
               </tr>
             </thead>
             <tbody>

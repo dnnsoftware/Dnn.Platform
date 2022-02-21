@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
+import { Component, Host, h, Prop, State, Element } from '@stencil/core';
 import { InternalServicesClient, FolderTreeItem } from '../../services/InternalServicesClient';
 import { ItemsClient } from "../../services/ItemsClient";
 import state from "../../store/store";
@@ -18,6 +18,8 @@ export class DnnRmFolderListItem {
 
   @State() folderIconUrl: string;
 
+  @Element() el!: HTMLDnnRmFolderListItemElement;
+
   private itemsClient: ItemsClient;
   private internalServicesClient: InternalServicesClient;
   
@@ -33,6 +35,13 @@ export class DnnRmFolderListItem {
   }
   
   private handleUserExpanded() {
+    // const slot = this.el.shadowRoot.querySelector("slot[name='children'") as HTMLSlotElement;
+    // const elements = Array.from(slot.assignedElements());
+    // elements.forEach(element => {
+    //   if (element instanceof HTMLDnnRmFolderListItemElement){
+    //     element.expanded = false;
+    //   }
+    // });
     this.internalServicesClient.getFolderDescendants(this.folder.data.key)
     .then(data => {
       this.folder = {
