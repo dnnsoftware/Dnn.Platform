@@ -6,8 +6,10 @@ const { state } = createStore<{
     moduleId: number;
     rootFolders?: GetFoldersResponse;
     currentItems?: GetFolderContentResponse;
+    layout: "list" | "card";
 }>({
     moduleId: -1,
+    layout: "list",
 });
 
 export default state;
