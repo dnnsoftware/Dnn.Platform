@@ -98,4 +98,10 @@ export interface Item{
     thumbnailAvailable?: boolean | undefined;
     /** The relative url to the item thumbnail. */
     thumbnailUrl?: string;
+    /** And ISO 8601 string representing the created date of the item. */
+    createdOn: string;
+    /** And ISO 8601 string representing the last modified date of the item. */
+    modifiedOn: string;
+    /** The size of the file (only available for file Items) */
+    fileSize?: number,
 }
