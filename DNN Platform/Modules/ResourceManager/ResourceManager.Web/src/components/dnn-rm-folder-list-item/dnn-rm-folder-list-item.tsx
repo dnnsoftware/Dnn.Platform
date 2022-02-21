@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Component, Host, h, Prop, State, Element } from '@stencil/core';
-=======
-import { Component, Host, h, Prop, Element, State } from '@stencil/core';
->>>>>>> 1e1702738189fb18e2708b5638def25f4d7825f8
 import { InternalServicesClient, FolderTreeItem } from '../../services/InternalServicesClient';
 import { ItemsClient } from "../../services/ItemsClient";
 import state from "../../store/store";
@@ -19,8 +15,6 @@ export class DnnRmFolderListItem {
 
   /** If true, this node will be expanded on load. */
   @Prop({mutable: true}) expanded = false;
-
-  @Element() el!: HTMLDnnRmFolderListItemElement;
 
   @State() folderIconUrl: string;
 
