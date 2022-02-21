@@ -16,7 +16,7 @@ export class DnnRmItemsCardview {
             {state.currentItems.items?.map(item =>
               <button class="card">
                   <img
-                    src={item.iconUrl}
+                    src={item.thumbnailAvailable ? item.thumbnailUrl : item.iconUrl}
                     alt={`${item.itemName} (ID: ${item.itemId})`}
                   />
                   <span>

@@ -1,5 +1,6 @@
 :host {
   display: block;
+  padding-right: 2em
 }
 .container{
   display: flex;
@@ -15,13 +16,15 @@
     border: none;
     background-color: transparent;
     transition: all 150ms ease-in-out;
-    max-width: 110px;
+    width: calc(110px + 2em);
+    justify-content: flex-end;
     &:hover, &:focus{
-      transform: scale(1.05);
+      transform: scale3d(1.1, 1.1, 1.1);
     }
     img{
       width: 110px;
       max-height: 110px;
+      margin: auto;
     }
   }
 }
