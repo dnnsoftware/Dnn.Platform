@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, Host, h, Prop, State, Element } from '@stencil/core';
+=======
+import { Component, Host, h, Prop, Element, State } from '@stencil/core';
+>>>>>>> 1e1702738189fb18e2708b5638def25f4d7825f8
 import { InternalServicesClient, FolderTreeItem } from '../../services/InternalServicesClient';
 import { ItemsClient } from "../../services/ItemsClient";
 import state from "../../store/store";
@@ -15,6 +19,8 @@ export class DnnRmFolderListItem {
 
   /** If true, this node will be expanded on load. */
   @Prop({mutable: true}) expanded = false;
+
+  @Element() el!: HTMLDnnRmFolderListItemElement;
 
   @State() folderIconUrl: string;
 
@@ -35,13 +41,11 @@ export class DnnRmFolderListItem {
   }
   
   private handleUserExpanded() {
-    // const slot = this.el.shadowRoot.querySelector("slot[name='children'") as HTMLSlotElement;
-    // const elements = Array.from(slot.assignedElements());
-    // elements.forEach(element => {
-    //   if (element instanceof HTMLDnnRmFolderListItemElement){
-    //     element.expanded = false;
-    //   }
-    // });
+    const children = Array.from(this.el.shadowRoot.querySelectorAll('dnn-rm-folder-list-item'));
+    children.forEach(element => {
+      element.shadowRoot.querySelectorAll("dnn-treeview-item")
+        .forEach(t => t.removeAttribute("expanded"));
+    });
     this.internalServicesClient.getFolderDescendants(this.folder.data.key)
     .then(data => {
       this.folder = {
