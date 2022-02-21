@@ -26,6 +26,8 @@ export namespace Components {
          */
         "folder": FolderTreeItem;
     }
+    interface DnnRmItemsCardview {
+    }
     interface DnnRmItemsListview {
     }
     interface DnnRmLeftPane {
@@ -68,6 +70,12 @@ declare global {
         prototype: HTMLDnnRmFolderListItemElement;
         new (): HTMLDnnRmFolderListItemElement;
     };
+    interface HTMLDnnRmItemsCardviewElement extends Components.DnnRmItemsCardview, HTMLStencilElement {
+    }
+    var HTMLDnnRmItemsCardviewElement: {
+        prototype: HTMLDnnRmItemsCardviewElement;
+        new (): HTMLDnnRmItemsCardviewElement;
+    };
     interface HTMLDnnRmItemsListviewElement extends Components.DnnRmItemsListview, HTMLStencilElement {
     }
     var HTMLDnnRmItemsListviewElement: {
@@ -104,6 +112,7 @@ declare global {
         "dnn-rm-files-pane": HTMLDnnRmFilesPaneElement;
         "dnn-rm-folder-list": HTMLDnnRmFolderListElement;
         "dnn-rm-folder-list-item": HTMLDnnRmFolderListItemElement;
+        "dnn-rm-items-cardview": HTMLDnnRmItemsCardviewElement;
         "dnn-rm-items-listview": HTMLDnnRmItemsListviewElement;
         "dnn-rm-left-pane": HTMLDnnRmLeftPaneElement;
         "dnn-rm-right-pane": HTMLDnnRmRightPaneElement;
@@ -131,6 +140,8 @@ declare namespace LocalJSX {
          */
         "folder": FolderTreeItem;
     }
+    interface DnnRmItemsCardview {
+    }
     interface DnnRmItemsListview {
     }
     interface DnnRmLeftPane {
@@ -147,6 +158,7 @@ declare namespace LocalJSX {
         "dnn-rm-files-pane": DnnRmFilesPane;
         "dnn-rm-folder-list": DnnRmFolderList;
         "dnn-rm-folder-list-item": DnnRmFolderListItem;
+        "dnn-rm-items-cardview": DnnRmItemsCardview;
         "dnn-rm-items-listview": DnnRmItemsListview;
         "dnn-rm-left-pane": DnnRmLeftPane;
         "dnn-rm-right-pane": DnnRmRightPane;
@@ -163,6 +175,7 @@ declare module "@stencil/core" {
             "dnn-rm-files-pane": LocalJSX.DnnRmFilesPane & JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
             "dnn-rm-folder-list": LocalJSX.DnnRmFolderList & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
             "dnn-rm-folder-list-item": LocalJSX.DnnRmFolderListItem & JSXBase.HTMLAttributes<HTMLDnnRmFolderListItemElement>;
+            "dnn-rm-items-cardview": LocalJSX.DnnRmItemsCardview & JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
             "dnn-rm-items-listview": LocalJSX.DnnRmItemsListview & JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
             "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
             "dnn-rm-right-pane": LocalJSX.DnnRmRightPane & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;

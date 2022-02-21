@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+.container{
+  display: flex;
+  gap: 1em;
+  margin-top: 1em;
+  flex-wrap: wrap;
+  .card{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25em;
+    border: none;
+    background-color: transparent;
+    transition: all 150ms ease-in-out;
+    max-width: 110px;
+    &:hover, &:focus{
+      transform: scale(1.05);
+    }
+    img{
+      width: 110px;
+      max-height: 110px;
+    }
+  }
+}

@@ -84,8 +84,18 @@ export interface FolderInfo{
 }
 
 export interface Item{
+    /** The file icon (not the image thumbnail) */
     iconUrl: string;
+    /** If true, the item is a folder and the itemId represents a folderId, if false then the item is a file and the id is the fileId. */
     isFolder: boolean;
+    /** The folder or file id. */
     itemId: number;
+    /** The folder or file name. */
     itemName: string;
+    /** The relative url to the file (no present on folders) */
+    path?: string;
+    /** If true, a thumbnail is available for this item. */
+    thumbnailAvailable?: boolean | undefined;
+    /** The relative url to the item thumbnail. */
+    thumbnailUrl?: string;
 }
