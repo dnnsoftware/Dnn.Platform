@@ -561,6 +561,8 @@ namespace Dnn.Modules.ResourceManager.Services
                     itemId = folder.FolderID,
                     itemName = folder.FolderName,
                     iconUrl = GetFolderIconUrl(this.PortalSettings.PortalId, folder.FolderMappingID),
+                    createdOn = folder.CreatedOnDate,
+                    modifiedOn = folder.LastModifiedOnDate,
                 };
             }
 
@@ -575,6 +577,9 @@ namespace Dnn.Modules.ResourceManager.Services
                 iconUrl = GetFileIconUrl(file.Extension),
                 thumbnailAvailable = thumbnailsManager.ThumbnailAvailable(file.FileName),
                 thumbnailUrl = thumbnailsManager.ThumbnailUrl(this.ActiveModule.ModuleID, file.FileId, 110, 110),
+                createdOn = file.CreatedOnDate,
+                modifiedOn = file.LastModifiedOnDate,
+                fileSize = file.Size,
             };
         }
 

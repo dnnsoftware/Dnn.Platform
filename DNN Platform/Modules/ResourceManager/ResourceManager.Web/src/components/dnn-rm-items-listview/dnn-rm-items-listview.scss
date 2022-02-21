@@ -3,16 +3,31 @@
 }
 
 table{
+  width: 100%;
+  border-collapse: collapse;
   thead{
     font-weight: bold;
+    tr{
+      border-bottom: 2px solid lightgray;
+    }
   }
   tbody{
-    td{
-      &:first-child{
-        img{
-          height: 2.5em;
-          display: block;
-          margin: 0 auto;
+    tr{
+      border-bottom: 1px solid lightgray;
+      td{
+        &:first-child{
+          img{
+            height: 2.5em;
+            display: block;
+            margin: 0 auto;
+          }
+        }
+        .date{
+          display: flex;
+          flex-direction: column;
+        }
+        &.size{
+          text-align: right;
         }
       }
     }
