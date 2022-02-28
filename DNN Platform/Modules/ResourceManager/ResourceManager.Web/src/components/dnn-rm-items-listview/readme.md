@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property                    | Attribute | Description | Type                       | Default     |
+| --------------------------- | --------- | ----------- | -------------------------- | ----------- |
+| `currentItems` _(required)_ | --        |             | `GetFolderContentResponse` | `undefined` |
+
+
 ## Dependencies
 
 ### Used by

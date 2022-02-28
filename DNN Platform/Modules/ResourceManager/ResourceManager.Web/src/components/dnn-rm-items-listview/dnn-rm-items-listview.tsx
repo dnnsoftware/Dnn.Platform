@@ -1,5 +1,6 @@
-import { Component, Host, h } from '@stencil/core';
-import state from "../../store/store";
+import { Component, Host, h, Prop } from '@stencil/core';
+import { GetFolderContentResponse } from '../../services/ItemsClient';
+import state from '../../store/store';
 
 @Component({
   tag: 'dnn-rm-items-listview',
@@ -7,6 +8,8 @@ import state from "../../store/store";
   shadow: true,
 })
 export class DnnRmItemsListview {
+
+  @Prop() currentItems!: GetFolderContentResponse;
 
   private getLocalDateString(dateString: string) {
     const date = new Date(dateString);
@@ -35,7 +38,7 @@ export class DnnRmItemsListview {
   render() {
     return (
       <Host>
-        {state.currentItems &&
+        {this.currentItems &&
           <table>
             <thead>
               <tr>
@@ -47,7 +50,7 @@ export class DnnRmItemsListview {
               </tr>
             </thead>
             <tbody>
-              {state.currentItems.items?.map(item =>
+              {this.currentItems.items?.map(item =>
                 <tr>
                   <td><img src={item.iconUrl} /></td>
                   <td>{item.itemName}</td>

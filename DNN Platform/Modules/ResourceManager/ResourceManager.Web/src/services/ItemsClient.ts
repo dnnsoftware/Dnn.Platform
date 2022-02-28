@@ -3,6 +3,7 @@ import { DnnServicesFramework } from "@dnncommunity/dnn-elements";
 export class ItemsClient{
     private sf: DnnServicesFramework;
     private requestUrl: string;
+    private abortController: AbortController;
 
     /**
      * Initializes the api client.
@@ -31,8 +32,11 @@ export class ItemsClient{
             const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sorting}`;
             const headers = this.sf.getModuleHeaders();
             headers.append("groupId", groupId.toString());
+            this.abortController?.abort();
+            this.abortController = new AbortController();
             fetch(url, {
-                headers
+                headers,
+                signal: this.abortController.signal,
             })
             .then(response => {
                 if (response.status == 200){

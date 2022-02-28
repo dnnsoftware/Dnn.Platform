@@ -6,6 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { FolderTreeItem } from "./services/InternalServicesClient";
+import { GetFolderContentResponse } from "./services/ItemsClient";
 export namespace Components {
     interface DnnResourceManager {
         "moduleId": number;
@@ -13,6 +14,7 @@ export namespace Components {
     interface DnnRmActionsBar {
     }
     interface DnnRmFilesPane {
+        "preloadOffset": number;
     }
     interface DnnRmFolderList {
     }
@@ -27,8 +29,10 @@ export namespace Components {
         "folder": FolderTreeItem;
     }
     interface DnnRmItemsCardview {
+        "currentItems": GetFolderContentResponse;
     }
     interface DnnRmItemsListview {
+        "currentItems": GetFolderContentResponse;
     }
     interface DnnRmLeftPane {
     }
@@ -127,6 +131,7 @@ declare namespace LocalJSX {
     interface DnnRmActionsBar {
     }
     interface DnnRmFilesPane {
+        "preloadOffset"?: number;
     }
     interface DnnRmFolderList {
     }
@@ -141,8 +146,10 @@ declare namespace LocalJSX {
         "folder": FolderTreeItem;
     }
     interface DnnRmItemsCardview {
+        "currentItems": GetFolderContentResponse;
     }
     interface DnnRmItemsListview {
+        "currentItems": GetFolderContentResponse;
     }
     interface DnnRmLeftPane {
     }
