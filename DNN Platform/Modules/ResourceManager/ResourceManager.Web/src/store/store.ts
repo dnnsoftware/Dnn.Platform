@@ -9,9 +9,14 @@ const { state } = createStore<{
     currentItems?: GetFolderContentResponse;
     layout: "list" | "card";
     localization?: LocalizedStrings;
+    itemsSearchTerm?: string;
+    pageSize: number;
+    lastSearchRequestedPage: number;
 }>({
     moduleId: -1,
     layout: "list",
+    pageSize: 20,
+    lastSearchRequestedPage: 1,
 });
 
 export default state;

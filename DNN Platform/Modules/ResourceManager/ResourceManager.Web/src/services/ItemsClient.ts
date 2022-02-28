@@ -67,6 +67,37 @@ export class ItemsClient{
         .catch(error => reject(error));
       });
     }
+
+    public search(
+        folderId: number,
+        search: string,
+        pageIndex: number,
+        pageSize = 20,
+        sorting: "ItemName" | "LastModifiedOnDate" | "Size" | "ParentFolder" | "CreatedOnDate" = "ItemName",
+        culture = "",
+        groupId = -1)
+    {
+        return new Promise<SearchResponse>((resolve, reject) => {
+            const url = `${this.requestUrl}Search?folderId=${folderId}&search=${search}&pageIndex=${pageIndex}&pageSize=${pageSize}&sorting=${sorting}&culture=${culture}`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("groupId", groupId.toString());
+            this.abortController?.abort();
+            this.abortController = new AbortController();
+            fetch(url, {
+                headers,
+                signal: this.abortController.signal,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
 }
 
 export interface GetFolderContentResponse{
@@ -108,4 +139,9 @@ export interface Item{
     modifiedOn: string;
     /** The size of the file (only available for file Items) */
     fileSize?: number,
+}
+
+export interface SearchResponse{
+    items: Item[],
+    totalCount: number,
 }

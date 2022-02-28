@@ -52,14 +52,29 @@ export class DnnRmFilesPane {
       return;
     }
 
-    this.itemsClient.getFolderContent(
-      state.currentItems.folder.folderId,
-      state.currentItems.items.length)
-    .then(data => state.currentItems = {
-      ...state.currentItems,
-      items: [...state.currentItems.items, ...data.items],
-    });
-    console.log(state.currentItems);
+    if (state.itemsSearchTerm){
+      this.itemsClient.search(
+        state.currentItems.folder.folderId,
+        state.itemsSearchTerm,
+        state.lastSearchRequestedPage + 1)
+      .then(data => {
+        state.lastSearchRequestedPage += 1;
+        state.currentItems = {
+          ...state.currentItems,
+          totalCount: data.totalCount,
+          items: [...state.currentItems.items, ...data.items],
+        }
+      })
+    }
+    else{
+      this.itemsClient.getFolderContent(
+        state.currentItems.folder.folderId,
+        state.currentItems.items.length)
+      .then(data => state.currentItems = {
+        ...state.currentItems,
+        items: [...state.currentItems.items, ...data.items],
+      });
+    }
   }
 
   render() {
