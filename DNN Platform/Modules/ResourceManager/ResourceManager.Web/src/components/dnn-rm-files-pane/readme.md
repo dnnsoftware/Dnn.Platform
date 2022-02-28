@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property        | Attribute        | Description | Type     | Default |
+| --------------- | ---------------- | ----------- | -------- | ------- |
+| `preloadOffset` | `preload-offset` |             | `number` | `1000`  |
+
+
 ## Dependencies
 
 ### Used by
