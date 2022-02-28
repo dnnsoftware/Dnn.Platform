@@ -74,7 +74,6 @@ export class DnnRmFilesPane {
         ...state.currentItems,
         items: [...state.currentItems.items, ...data.items],
       });
-      console.log(state.currentItems);
     }
   }
 
