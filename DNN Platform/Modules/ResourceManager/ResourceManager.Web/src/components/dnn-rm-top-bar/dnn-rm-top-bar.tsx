@@ -17,7 +17,11 @@ export class DnnRmTopBar {
   private handleSearchChanged(e: CustomEvent<any>): void {
     if (e.detail != ""){
       state.itemsSearchTerm = e.detail;
-      this.itemsClient.search(state.currentItems.folder.folderId, e.detail, 0)
+      this.itemsClient.search(
+        state.currentItems.folder.folderId, e.detail,
+        0,
+        state.pageSize,
+        state.sortField)
       .then(data =>{
         state.currentItems = {
           ...state.currentItems,
@@ -30,7 +34,11 @@ export class DnnRmTopBar {
     }
     else
     {
-      this.itemsClient.getFolderContent(state.currentItems.folder.folderId, 0)
+      this.itemsClient.getFolderContent(
+        state.currentItems.folder.folderId,
+        0,
+        state.pageSize,
+        state.sortField)
       .then(data => {
         state.lastSearchRequestedPage = 1;
         state.itemsSearchTerm = undefined;

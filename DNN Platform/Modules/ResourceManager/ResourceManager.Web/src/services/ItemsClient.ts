@@ -1,4 +1,5 @@
 import { DnnServicesFramework } from "@dnncommunity/dnn-elements";
+import { SortFieldInfo } from "../enums/SortField";
 
 export class ItemsClient{
     private sf: DnnServicesFramework;
@@ -26,10 +27,10 @@ export class ItemsClient{
         folderId: number,
         startIndex = 0,
         numItems = 20,
-        sorting: "ItemName" | "LastModifiedOnDate" | "Size" | "ParentFolder" | "CreatedOnDate" = "ItemName",
+        sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
         groupId = -1){
         return new Promise<GetFolderContentResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sorting}`;
+            const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sorting.sortKey}`;
             const headers = this.sf.getModuleHeaders();
             headers.append("groupId", groupId.toString());
             this.abortController?.abort();
@@ -73,12 +74,12 @@ export class ItemsClient{
         search: string,
         pageIndex: number,
         pageSize = 20,
-        sorting: "ItemName" | "LastModifiedOnDate" | "Size" | "ParentFolder" | "CreatedOnDate" = "ItemName",
+        sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
         culture = "",
         groupId = -1)
     {
         return new Promise<SearchResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}Search?folderId=${folderId}&search=${search}&pageIndex=${pageIndex}&pageSize=${pageSize}&sorting=${sorting}&culture=${culture}`;
+            const url = `${this.requestUrl}Search?folderId=${folderId}&search=${search}&pageIndex=${pageIndex}&pageSize=${pageSize}&sorting=${sorting.sortKey}&culture=${culture}`;
             const headers = this.sf.getModuleHeaders();
             headers.append("groupId", groupId.toString());
             this.abortController?.abort();

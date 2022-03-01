@@ -1,6 +1,7 @@
 import { Component, Element, Host, h, Prop, Listen } from '@stencil/core';
 import state from '../../store/store';
 import { ItemsClient } from "../../services/ItemsClient";
+import { Debounce } from '@dnncommunity/dnn-elements';
 @Component({
   tag: 'dnn-rm-files-pane',
   styleUrl: 'dnn-rm-files-pane.scss',
@@ -8,8 +9,9 @@ import { ItemsClient } from "../../services/ItemsClient";
 })
 export class DnnRmFilesPane {
 
-  @Prop() preloadOffset: number = 1000;
-  
+  /** Defines how much more pixels to load under the fold. */
+  @Prop() preloadOffset: number = 5000;
+
   @Element() el: HTMLDnnRmFilesPaneElement;
 
   private readonly itemsClient: ItemsClient;
@@ -47,6 +49,7 @@ export class DnnRmFilesPane {
     }
   }
 
+  @Debounce(50)
   loadMore() {
     if (state.currentItems.items.length >= state.currentItems.totalCount){
       return;
@@ -56,7 +59,9 @@ export class DnnRmFilesPane {
       this.itemsClient.search(
         state.currentItems.folder.folderId,
         state.itemsSearchTerm,
-        state.lastSearchRequestedPage + 1)
+        state.lastSearchRequestedPage + 1,
+        state.pageSize,
+        state.sortField)
       .then(data => {
         state.lastSearchRequestedPage += 1;
         state.currentItems = {
@@ -69,11 +74,14 @@ export class DnnRmFilesPane {
     else{
       this.itemsClient.getFolderContent(
         state.currentItems.folder.folderId,
-        state.currentItems.items.length)
+        state.currentItems.items.length,
+        state.pageSize,
+        state.sortField)
       .then(data => state.currentItems = {
         ...state.currentItems,
         items: [...state.currentItems.items, ...data.items],
-      });
+      })
+      .catch(() => {}); // On purpose, we want to ignore aborted requests.
     }
   }
 
