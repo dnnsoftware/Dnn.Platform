@@ -318,4 +318,22 @@
   <data name="NewLocation.Text" xml:space="preserve">
     <value>New Location</value>
   </data>
+  <data name="SortField_ItemName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SortField_LastModifiedOnDate.Text" xml:space="preserve">
+    <value>Last Modified</value>
+  </data>
+  <data name="SortField_Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="SortField_ParentFolder.Text" xml:space="preserve">
+    <value>Parent Folder</value>
+  </data>
+  <data name="SortField_CreatedOnDate.Text" xml:space="preserve">
+    <value>Date Created</value>
+  </data>
+  <data name="Sort.Text" xml:space="preserve">
+    <value>Sort</value>
+  </data>
 </root>

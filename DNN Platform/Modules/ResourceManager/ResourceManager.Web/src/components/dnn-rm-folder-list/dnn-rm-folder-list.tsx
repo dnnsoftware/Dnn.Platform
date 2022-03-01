@@ -26,7 +26,11 @@ export class DnnRmFolderList {
     .then(data =>
     {
       state.rootFolders = data;
-      this.itemsClient.getFolderContent(Number.parseInt(data.Tree.children[0].data.key))
+      this.itemsClient.getFolderContent(
+        Number.parseInt(data.Tree.children[0].data.key),
+        0,
+        state.pageSize,
+        state.sortField)
       .then(data => state.currentItems = data)
       .catch(error => console.error(error));
     })

@@ -60,7 +60,11 @@ export class DnnRmFolderListItem {
   };
 
   private handleFolderClicked(): void {
-    this.itemsClient.getFolderContent(Number.parseInt(this.folder.data.key))
+    this.itemsClient.getFolderContent(
+      Number.parseInt(this.folder.data.key),
+      0,
+      state.pageSize,
+      state.sortField)
     .then(data => state.currentItems = data)
     .catch(error => console.error(error));
   }

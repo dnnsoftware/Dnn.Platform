@@ -1,6 +1,7 @@
 import { Component, Host, h, State, Watch, Prop } from '@stencil/core';
 import state from "../../store/store";
 import { LocalizationClient } from "../../services/LocalizationClient";
+import { sortField } from '../../enums/SortField';
 
 const localStorageSplitWidthKey = "dnn-resource-manager-last-folders-width";
 @Component({
@@ -30,9 +31,19 @@ export class DnnResourceManager {
   }
 
   componentWillLoad() {
-    this.localizationClient.getResources()
-    .then(resources => state.localization = resources)
-    .catch(error => console.error(error));
+    return new Promise<void>((resolve, reject) => {
+      this.localizationClient.getResources()
+      .then(resources =>
+      {
+        state.localization = resources;
+        state.sortField = sortField.itemName; 
+        resolve();
+      })
+      .catch(error => {
+        console.error(error);
+        reject();
+      });
+    })
   }
   
   private splitView: HTMLDnnVerticalSplitviewElement;

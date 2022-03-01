@@ -111,4 +111,10 @@ export interface LocalizedStrings {
     RemoveFolderTypeDialogHeader: String;
     MoveItem: String;
     NewLocation: String;
+    SortField_ItemName: String;
+    SortField_LastModifiedOnDate: String;
+    SortField_Size: String;
+    SortField_ParentFolder: String;
+    SortField_CreatedOnDate: String;
+    Sort: String;
   };

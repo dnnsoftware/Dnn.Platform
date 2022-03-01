@@ -1,5 +1,6 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, State } from '@stencil/core';
 import state from '../../store/store';
+import { sortField, SortFieldInfo } from "../../enums/SortField";
 
 @Component({
   tag: 'dnn-rm-actions-bar',
@@ -7,6 +8,8 @@ import state from '../../store/store';
   shadow: true,
 })
 export class DnnRmActionsBar {
+  
+  @State() sortDropdownExpanded: boolean = false;
 
   private changeLayout(): void {
     if (state.layout == "card"){
@@ -15,6 +18,31 @@ export class DnnRmActionsBar {
     }
 
     state.layout = "card";
+  }
+
+  private renderSortButton(sortOption: SortFieldInfo){
+    return(
+      <button
+        onClick={() =>
+        {
+            state.sortField = sortOption;
+            state.currentItems = {...state.currentItems, items: []};
+            this.sortDropdownExpanded = !this.sortDropdownExpanded;
+        }}
+      >
+        {this.renderRadioButton(state.sortField == sortOption)}
+        <span>{sortOption.localizedName}</span>
+      </button>
+    );
+  }
+
+  private renderRadioButton(checked = false){
+    if (checked){
+      return <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+    }
+    else{
+      return <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+    }
   }
 
   render() {
@@ -39,6 +67,23 @@ export class DnnRmActionsBar {
           </button>
         </dnn-vertical-overflow-menu>
         <div class="right-controls">
+          <div class="sort">
+            <button
+              onClick={() => this.sortDropdownExpanded = !this.sortDropdownExpanded}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
+              <span>{state.localization.Sort}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <dnn-collapsible expanded={this.sortDropdownExpanded}>
+              <div class="dropdown">
+                {this.renderSortButton(sortField.itemName)}
+                {this.renderSortButton(sortField.createdOnDate)}
+                {this.renderSortButton(sortField.lastModifiedOnDate)}
+                {this.renderSortButton(sortField.size)}
+              </div>
+            </dnn-collapsible>
+          </div>
           <button
             onClick={() => this.changeLayout()}
           >

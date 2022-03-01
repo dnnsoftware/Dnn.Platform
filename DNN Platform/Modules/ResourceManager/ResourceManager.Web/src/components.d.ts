@@ -14,6 +14,9 @@ export namespace Components {
     interface DnnRmActionsBar {
     }
     interface DnnRmFilesPane {
+        /**
+          * Defines how much more pixels to load under the fold.
+         */
         "preloadOffset": number;
     }
     interface DnnRmFolderList {
@@ -131,6 +134,9 @@ declare namespace LocalJSX {
     interface DnnRmActionsBar {
     }
     interface DnnRmFilesPane {
+        /**
+          * Defines how much more pixels to load under the fold.
+         */
         "preloadOffset"?: number;
     }
     interface DnnRmFolderList {

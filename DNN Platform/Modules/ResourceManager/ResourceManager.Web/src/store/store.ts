@@ -1,4 +1,5 @@
 import { createStore } from "@stencil/store";
+import { SortFieldInfo } from "../enums/SortField";
 import { GetFoldersResponse } from "../services/InternalServicesClient";
 import { GetFolderContentResponse } from "../services/ItemsClient";
 import { LocalizedStrings } from "../services/LocalizationClient";
@@ -12,10 +13,11 @@ const { state } = createStore<{
     itemsSearchTerm?: string;
     pageSize: number;
     lastSearchRequestedPage: number;
+    sortField?: SortFieldInfo;
 }>({
     moduleId: -1,
     layout: "list",
-    pageSize: 20,
+    pageSize: 50,
     lastSearchRequestedPage: 1,
 });
 
