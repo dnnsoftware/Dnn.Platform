@@ -24,6 +24,7 @@ graph TD;
   dnn-rm-right-pane --> dnn-rm-files-pane
   dnn-rm-right-pane --> dnn-rm-status-bar
   dnn-rm-actions-bar --> dnn-vertical-overflow-menu
+  dnn-rm-actions-bar --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
   dnn-resource-manager --> dnn-rm-right-pane

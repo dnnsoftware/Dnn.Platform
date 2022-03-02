@@ -336,4 +336,7 @@
   <data name="Sort.Text" xml:space="preserve">
     <value>Sort</value>
   </data>
+  <data name="Items.Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
 </root>

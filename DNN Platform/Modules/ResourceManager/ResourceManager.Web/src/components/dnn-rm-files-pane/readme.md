@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type     | Default |
-| --------------- | ---------------- | ----------- | -------- | ------- |
-| `preloadOffset` | `preload-offset` |             | `number` | `1000`  |
+| Property        | Attribute        | Description                                          | Type     | Default |
+| --------------- | ---------------- | ---------------------------------------------------- | -------- | ------- |
+| `preloadOffset` | `preload-offset` | Defines how much more pixels to load under the fold. | `number` | `5000`  |
 
 
 ## Dependencies
