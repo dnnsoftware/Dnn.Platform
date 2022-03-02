@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { GetFolderContentResponse } from '../../services/ItemsClient';
+import { GetFolderContentResponse, Item } from '../../services/ItemsClient'
 import state from '../../store/store';
+import {isItemSelected, toggleItemSelected} from "../../utilities/selection-utilities";
 
 @Component({
   tag: 'dnn-rm-items-listview',
@@ -35,6 +36,26 @@ export class DnnRmItemsListview {
     return Math.round(fileSize / 3221225472).toString() + " MB";
   }
 
+  private handleRowKeyDown(e: KeyboardEvent, item: Item): void {
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        ((e.target as HTMLTableRowElement).nextElementSibling as HTMLTableRowElement)?.focus();
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        ((e.target as HTMLTableRowElement).previousElementSibling as HTMLTableRowElement)?.focus();
+        break;
+      case " ":
+      case "Enter":
+        e.preventDefault();
+        toggleItemSelected(item);
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     return (
       <Host>
@@ -42,6 +63,7 @@ export class DnnRmItemsListview {
           <table>
             <thead>
               <tr>
+                <td></td>
                 <td></td>
                 <td>{state.localization?.Name}</td>
                 <td>{state.localization?.Created}</td>
@@ -51,7 +73,20 @@ export class DnnRmItemsListview {
             </thead>
             <tbody>
               {this.currentItems.items?.map(item =>
-                <tr>
+                <tr
+                  class={isItemSelected(item) ? "selected" : ""}
+                  tabIndex={0}
+                  onKeyDown={e => this.handleRowKeyDown(e, item)}
+                  onClick={() => toggleItemSelected(item)}
+                >
+                  <td class="radio">
+                    {isItemSelected(item) &&
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+                    }
+                    {!isItemSelected(item) &&
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+                    }
+                  </td>
                   <td><img src={item.iconUrl} /></td>
                   <td>{item.itemName}</td>
                   <td>{this.getLocalDateString(item.createdOn)}</td>

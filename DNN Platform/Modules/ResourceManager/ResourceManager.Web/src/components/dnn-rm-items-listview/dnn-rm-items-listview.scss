@@ -15,13 +15,19 @@ table{
   tbody{
     tr{
       border-bottom: 1px solid lightgray;
+      transition: all 100ms ease-in-out;
+      &:hover, &:focus{
+        background-color: #eee;
+      }
       td{
-        &:first-child{
-          img{
-            height: 2.5em;
-            display: block;
-            margin: 0 auto;
-          }
+        &.radio{
+          opacity: 0;
+          transition: all 100ms ease-in-out;
+        }
+        img{
+          height: 2.5em;
+          display: block;
+          margin: 0 auto;
         }
         .date{
           display: flex;
@@ -29,6 +35,11 @@ table{
         }
         &.size{
           text-align: right;
+        }
+      }
+      &:hover, &:focus, &.selected{
+        td.radio{
+          opacity: 1;
         }
       }
     }

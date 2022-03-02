@@ -83,6 +83,7 @@ export interface LocalizedStrings {
     ItemNameRequiredMessage: String;
     "UserHasNoPermissionToReadFileProperties.Error": String;
     GenericErrorMessage: String;
+    Items: String;
     ItemSavedMessage: String;
     FolderType: String;
     CreatedOnDate: String;

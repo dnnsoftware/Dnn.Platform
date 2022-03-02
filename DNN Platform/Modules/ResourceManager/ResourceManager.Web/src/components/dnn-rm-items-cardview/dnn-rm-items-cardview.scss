@@ -15,11 +15,25 @@
     gap: 0.25em;
     border: none;
     background-color: transparent;
-    transition: all 150ms ease-in-out;
+    transition: all 100ms ease-in-out;
     width: calc(110px + 2em);
     justify-content: flex-end;
+    position: relative;
     &:hover, &:focus{
       transform: scale3d(1.1, 1.1, 1.1);
+      .radio{
+        opacity: 1;
+      }
+    }
+    .radio{
+      position: absolute;
+      top:0;
+      left:-16px;
+      opacity: 0;
+      transition: all 100ms ease-in-out;
+      &.selected{
+        opacity: 1;
+      }
     }
     img{
       width: 110px;
