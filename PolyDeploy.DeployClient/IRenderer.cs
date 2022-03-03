@@ -8,5 +8,6 @@ namespace PolyDeploy.DeployClient
         void Welcome();
         void RenderListOfFiles(IEnumerable<string> files);
         Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads);
+        void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles);
     }
 }

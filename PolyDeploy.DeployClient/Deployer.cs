@@ -35,14 +35,21 @@ namespace PolyDeploy.DeployClient
 
             _ = this.installer.InstallPackagesAsync(options, sessionId);
 
+            var hasRenderedOverview = false;
             while (true)
             {
                 var session = await this.installer.GetSessionAsync(options, sessionId);
+                if (session?.Responses != null && !hasRenderedOverview)
+                {
+                    this.renderer.RenderInstallationOverview(session.Responses);
+                    hasRenderedOverview = true;
+                }
+
                 if (session?.Status == SessionStatus.Complete)
                 {
                     break;
                 }
-
+                
                 await this.delayer.Delay(TimeSpan.FromSeconds(1));
             }
         }

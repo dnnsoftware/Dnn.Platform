@@ -35,6 +35,50 @@ namespace PolyDeploy.DeployClient
                 });
         }
 
+        public void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles)
+        {
+            var tree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
+            foreach (var packageFile in packageFiles.Values)
+            {
+                if (packageFile == null)
+                {
+                    continue;
+                }
+
+                var fileNode = tree.AddNode(new Markup($":page_facing_up: [aqua]{packageFile.Name}[/]"));
+                if (packageFile.Packages == null)
+                {
+                    continue;
+                }
+
+                foreach (var package in packageFile.Packages)
+                {
+                    if (package == null)
+                    {
+                        continue;
+                    }
+
+                    var packageNode = fileNode.AddNode(new Markup($":wrapped_gift: [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
+                    if (package.Dependencies == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (var dependency in package.Dependencies)
+                    {
+                        if (dependency == null)
+                        {
+                            continue;
+                        }
+
+                        packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
+                    }
+                }
+            }
+
+            this.console.Write(tree);
+        }
+
         public void RenderListOfFiles(IEnumerable<string> files)
         {
             var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));

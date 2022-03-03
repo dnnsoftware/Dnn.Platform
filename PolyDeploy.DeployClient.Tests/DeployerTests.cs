@@ -210,11 +210,65 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => installer.GetSessionAsync(options, sessionId)).MustHaveHappened(4, Times.Exactly);
         }
 
+        [Fact]
+        public async Task StartAsync_RendersSessionOverview()
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.StartSessionAsync(options))
+             .Returns(sessionId);
+            A.CallTo(() => installer.GetSessionAsync(options, sessionId))
+             .ReturnsNextFromSequence(
+                new Session { Status = SessionStatus.NotStarted, Responses = null, },
+                new Session { Status = SessionStatus.InProgess, Responses = null, },
+                new Session
+                {
+                    Status = SessionStatus.InProgess,
+                    Responses = new SortedList<int, SessionResponse?>
+                    {
+                        { 0, new SessionResponse { Name = "Package 1.zip", Attempted = true, CanInstall = true, Success = true, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 1", VersionStr = "1.10.1", }, } } },
+                        { 1, new SessionResponse { Name = "Package 2.zip", Attempted = false, CanInstall = true, Success = false, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 2", VersionStr = "2.20.2", }, } } },
+                    },
+                },
+                new Session
+                {
+                    Status = SessionStatus.Complete,
+                    Responses = new SortedList<int, SessionResponse?>
+                    {
+                        { 0, new SessionResponse { Name = "Package 1.zip", Attempted = true, CanInstall = true, Success = true, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 1", VersionStr = "1.10.1", }, } } },
+                        { 1, new SessionResponse { Name = "Package 2.zip", Attempted = true, CanInstall = true, Success = true, Failures = null, Packages = new List<PackageResponse?> { new PackageResponse { CanInstall = true, Dependencies = new List<DependencyResponse?>(0), Name = "Package 2", VersionStr = "2.20.2", }, } } },
+                    },
+                }
+            );
+
+            var fakeRenderer = new FakeRenderer();
+            var deployer = new Deployer(fakeRenderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
+            await deployer.StartAsync(options);
+
+            var overview = fakeRenderer.InstallationOverview.ShouldNotBeNull();
+            overview.Count.ShouldBe(2);
+            var package1 = overview[0].ShouldNotBeNull();
+            package1.Name.ShouldBe("Package 1.zip");
+            var package2 = overview[1].ShouldNotBeNull();
+            package2.Attempted.ShouldBeFalse();
+        }
+
         private class FakeRenderer : IRenderer
         {
+            public SortedList<int, SessionResponse?>? InstallationOverview { get; private set; }
+
             public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
             {
                 await Task.WhenAll(uploads.Select(u => u.uploadTask));
+            }
+
+            public void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles)
+            {
+                this.InstallationOverview = packageFiles;
             }
 
             public void Welcome()
