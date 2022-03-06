@@ -22,6 +22,8 @@ graph TD;
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-treeview-item
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
+  dnn-rm-folder-list-item --> dnn-collapsible
+  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-treeview-item --> dnn-collapsible
   dnn-resource-manager --> dnn-rm-left-pane
   style dnn-rm-left-pane fill:#f9f,stroke:#333,stroke-width:4px

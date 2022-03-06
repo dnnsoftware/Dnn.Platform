@@ -13,6 +13,13 @@
 | `folder` _(required)_ | --         | The basic information about the folder       | `FolderTreeItem` | `undefined` |
 
 
+## Events
+
+| Event                    | Description                                                             | Type                  |
+| ------------------------ | ----------------------------------------------------------------------- | --------------------- |
+| `dnnRmcontextMenuOpened` | Fires when a context menu is opened for this item. Emits the folder ID. | `CustomEvent<number>` |
+
+
 ## Dependencies
 
 ### Used by
@@ -24,6 +31,8 @@
 
 - dnn-treeview-item
 - [dnn-rm-folder-list-item](.)
+- dnn-collapsible
+- [dnn-rm-folder-context-menu](../context-menus/dnn-rm-folder-context-menu)
 
 ### Graph
 ```mermaid

@@ -40,6 +40,9 @@ export namespace Components {
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmItemsListview {
+        /**
+          * The list of current items.
+         */
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmLeftPane {
@@ -183,6 +186,9 @@ declare namespace LocalJSX {
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmItemsListview {
+        /**
+          * The list of current items.
+         */
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmLeftPane {

@@ -28,6 +28,8 @@ graph TD;
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
+  dnn-rm-items-listview --> dnn-collapsible
+  dnn-rm-items-listview --> dnn-rm-folder-context-menu
   dnn-resource-manager --> dnn-rm-right-pane
   style dnn-rm-right-pane fill:#f9f,stroke:#333,stroke-width:4px
 ```
