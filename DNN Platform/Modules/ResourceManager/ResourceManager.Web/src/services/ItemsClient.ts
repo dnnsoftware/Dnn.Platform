@@ -134,7 +134,7 @@ export class ItemsClient{
                     response.json().then(data => resolve(data));
                 }
                 else{
-                    response.json().then(error => reject(error.ExceptionMessage));
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
                 }
             })
             .catch(reason => reject(reason));

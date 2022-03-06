@@ -48,7 +48,7 @@ export class DnnRmActionsBar {
     return (
       <Host>
         <dnn-vertical-overflow-menu>
-          {state.selectedItems.length == 0 &&
+          {state.selectedItems && state.selectedItems.length == 0 && state.currentItems && state.currentItems.hasAddFilesPermission &&
             <dnn-action-create-folder />
           }
         </dnn-vertical-overflow-menu>
