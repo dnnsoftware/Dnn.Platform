@@ -1,5 +1,6 @@
-import { Component, Host, h, Prop } from '@stencil/core';
-import { GetFolderContentResponse } from '../../services/ItemsClient';
+import { Component, Host, h, Prop, Element } from '@stencil/core';
+import { GetFolderContentResponse, Item } from '../../services/ItemsClient';
+import state from '../../store/store';
 import { selectionUtilities } from '../../utilities/selection-utilities';
 
 @Component({
@@ -9,7 +10,43 @@ import { selectionUtilities } from '../../utilities/selection-utilities';
 })
 export class DnnRmItemsCardview {
 
+  /** The list of current items. */
   @Prop() currentItems!: GetFolderContentResponse;
+
+  @Element() el: HTMLDnnRmItemsCardviewElement;
+
+  componentWillLoad() {
+    document.addEventListener("click", this.dismissContextMenu.bind(this));
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener("click", this.disconnectedCallback.bind(this));
+  }
+
+  private dismissContextMenu() {
+    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
+    existingMenus?.forEach(existingMenu => this.el.shadowRoot.removeChild(existingMenu));
+  }
+
+  private handleContextMenu(e: MouseEvent, item: Item): void {
+    e.preventDefault();
+    state.selectedItems = [];
+    this.dismissContextMenu();
+    if (item.isFolder){
+      const collapsible = document.createElement("dnn-collapsible");
+      const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
+      folderContextMenu.folderId = item.itemId;
+      collapsible.appendChild(folderContextMenu);
+      collapsible.style.left = `${e.pageX}px`;
+      collapsible.style.top = `${e.pageY}px`;
+      collapsible.style.display = "block";
+      this.el.shadowRoot.appendChild(collapsible);
+      setTimeout(() => {
+        collapsible.expanded = true;
+      }, 100);
+      return;
+    }
+  }
 
   render() {
     return (
@@ -20,6 +57,7 @@ export class DnnRmItemsCardview {
               <button
                 class="card"
                 onClick={() => selectionUtilities.toggleItemSelected(item)}
+                onContextMenu={e => this.handleContextMenu(e, item)}
               >
                   <div class={selectionUtilities.isItemSelected(item) ? "radio selected" : "radio"}>
                     {selectionUtilities.isItemSelected(item) &&

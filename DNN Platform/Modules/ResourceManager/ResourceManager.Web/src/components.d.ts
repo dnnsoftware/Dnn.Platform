@@ -37,6 +37,9 @@ export namespace Components {
         "folder": FolderTreeItem;
     }
     interface DnnRmItemsCardview {
+        /**
+          * The list of current items.
+         */
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmItemsListview {
@@ -183,6 +186,9 @@ declare namespace LocalJSX {
         "onDnnRmcontextMenuOpened"?: (event: CustomEvent<number>) => void;
     }
     interface DnnRmItemsCardview {
+        /**
+          * The list of current items.
+         */
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmItemsListview {
