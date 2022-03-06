@@ -36,6 +36,7 @@ graph TD;
   dnn-rm-folder-list-item --> dnn-collapsible
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-treeview-item --> dnn-collapsible
+  dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-right-pane --> dnn-rm-actions-bar
   dnn-rm-right-pane --> dnn-rm-files-pane
   dnn-rm-right-pane --> dnn-rm-status-bar
@@ -46,6 +47,8 @@ graph TD;
   dnn-rm-files-pane --> dnn-rm-items-cardview
   dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-items-listview --> dnn-rm-folder-context-menu
+  dnn-rm-items-cardview --> dnn-collapsible
+  dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   style dnn-resource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

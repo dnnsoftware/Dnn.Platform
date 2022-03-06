@@ -49,7 +49,7 @@ export class DnnRmActionsBar {
       <Host>
         <dnn-vertical-overflow-menu>
           {state.selectedItems.length == 0 &&
-            <dnn-action-create-folder />
+            <dnn-action-create-folder parentFolderId={state.currentItems?.folder?.folderId} />
           }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">

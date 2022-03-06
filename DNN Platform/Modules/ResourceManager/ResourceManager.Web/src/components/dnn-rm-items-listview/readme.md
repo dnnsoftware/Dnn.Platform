@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property                    | Attribute | Description | Type                       | Default     |
-| --------------------------- | --------- | ----------- | -------------------------- | ----------- |
-| `currentItems` _(required)_ | --        |             | `GetFolderContentResponse` | `undefined` |
+| Property                    | Attribute | Description                | Type                       | Default     |
+| --------------------------- | --------- | -------------------------- | -------------------------- | ----------- |
+| `currentItems` _(required)_ | --        | The list of current items. | `GetFolderContentResponse` | `undefined` |
 
 
 ## Dependencies
@@ -28,6 +28,7 @@
 graph TD;
   dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-items-listview --> dnn-rm-folder-context-menu
+  dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-files-pane --> dnn-rm-items-listview
   style dnn-rm-items-listview fill:#f9f,stroke:#333,stroke-width:4px
 ```

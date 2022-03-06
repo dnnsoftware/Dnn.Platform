@@ -11,8 +11,7 @@ export class DnnRmFolderContextMenu {
   render() {
     return (
       <Host>
-        <p>I am the folders context menu.</p>
-        <p>Bla bla bla {this.folderId}</p>
+        <dnn-action-create-folder parentFolderId={this.folderId}></dnn-action-create-folder>
       </Host>
     );
   }

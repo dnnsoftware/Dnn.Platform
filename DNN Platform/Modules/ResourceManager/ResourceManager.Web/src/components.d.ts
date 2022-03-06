@@ -9,11 +9,18 @@ import { FolderTreeItem } from "./services/InternalServicesClient";
 import { GetFolderContentResponse } from "./services/ItemsClient";
 export namespace Components {
     interface DnnActionCreateFolder {
+        /**
+          * The ID of the parent folder into which to create a new folder.
+         */
+        "parentFolderId": number;
     }
     interface DnnResourceManager {
         "moduleId": number;
     }
     interface DnnRmActionsBar {
+    }
+    interface DnnRmEditFolder {
+        "parentFolderId": number;
     }
     interface DnnRmFilesPane {
         /**
@@ -75,6 +82,12 @@ declare global {
     var HTMLDnnRmActionsBarElement: {
         prototype: HTMLDnnRmActionsBarElement;
         new (): HTMLDnnRmActionsBarElement;
+    };
+    interface HTMLDnnRmEditFolderElement extends Components.DnnRmEditFolder, HTMLStencilElement {
+    }
+    var HTMLDnnRmEditFolderElement: {
+        prototype: HTMLDnnRmEditFolderElement;
+        new (): HTMLDnnRmEditFolderElement;
     };
     interface HTMLDnnRmFilesPaneElement extends Components.DnnRmFilesPane, HTMLStencilElement {
     }
@@ -140,6 +153,7 @@ declare global {
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
         "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
+        "dnn-rm-edit-folder": HTMLDnnRmEditFolderElement;
         "dnn-rm-files-pane": HTMLDnnRmFilesPaneElement;
         "dnn-rm-folder-context-menu": HTMLDnnRmFolderContextMenuElement;
         "dnn-rm-folder-list": HTMLDnnRmFolderListElement;
@@ -154,11 +168,18 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DnnActionCreateFolder {
+        /**
+          * The ID of the parent folder into which to create a new folder.
+         */
+        "parentFolderId": number;
     }
     interface DnnResourceManager {
         "moduleId": number;
     }
     interface DnnRmActionsBar {
+    }
+    interface DnnRmEditFolder {
+        "parentFolderId": number;
     }
     interface DnnRmFilesPane {
         /**
@@ -209,6 +230,7 @@ declare namespace LocalJSX {
         "dnn-action-create-folder": DnnActionCreateFolder;
         "dnn-resource-manager": DnnResourceManager;
         "dnn-rm-actions-bar": DnnRmActionsBar;
+        "dnn-rm-edit-folder": DnnRmEditFolder;
         "dnn-rm-files-pane": DnnRmFilesPane;
         "dnn-rm-folder-context-menu": DnnRmFolderContextMenu;
         "dnn-rm-folder-list": DnnRmFolderList;
@@ -228,6 +250,7 @@ declare module "@stencil/core" {
             "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
             "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
+            "dnn-rm-edit-folder": LocalJSX.DnnRmEditFolder & JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
             "dnn-rm-files-pane": LocalJSX.DnnRmFilesPane & JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
             "dnn-rm-folder-context-menu": LocalJSX.DnnRmFolderContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
             "dnn-rm-folder-list": LocalJSX.DnnRmFolderList & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
