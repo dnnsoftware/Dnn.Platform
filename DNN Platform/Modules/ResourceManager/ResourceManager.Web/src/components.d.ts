@@ -15,11 +15,17 @@ export namespace Components {
         "parentFolderId": number;
     }
     interface DnnResourceManager {
+        /**
+          * The ID of the module.
+         */
         "moduleId": number;
     }
     interface DnnRmActionsBar {
     }
     interface DnnRmEditFolder {
+        /**
+          * The ID of the parent folder of the one being edited.
+         */
         "parentFolderId": number;
     }
     interface DnnRmFilesPane {
@@ -174,11 +180,21 @@ declare namespace LocalJSX {
         "parentFolderId": number;
     }
     interface DnnResourceManager {
+        /**
+          * The ID of the module.
+         */
         "moduleId": number;
     }
     interface DnnRmActionsBar {
     }
     interface DnnRmEditFolder {
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        /**
+          * The ID of the parent folder of the one being edited.
+         */
         "parentFolderId": number;
     }
     interface DnnRmFilesPane {

@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Event, EventEmitter } from '@stencil/core';
 import { CreateNewFolderRequest, FolderMappingInfo, ItemsClient } from '../../services/ItemsClient';
 import state from '../../store/store';
 
@@ -8,10 +8,16 @@ import state from '../../store/store';
   shadow: true,
 })
 export class DnnRmEditFolder {
-
-  @Element() el : HTMLDnnRmEditFolderElement
-
+  /** The ID of the parent folder of the one being edited. */
   @Prop() parentFolderId!: number;
+
+  /**
+   * Fires when there is a possibility that some folders have changed.
+   * Can be used to force parts of the UI to refresh.
+   */
+  @Event() dnnRmFoldersChanged: EventEmitter<void>;
+  
+  @Element() el : HTMLDnnRmEditFolderElement
   
   @State() folderMappings: FolderMappingInfo[];
   
@@ -22,6 +28,7 @@ export class DnnRmEditFolder {
   }
 
   private readonly itemsClient: ItemsClient;
+  private nameField: HTMLInputElement;
 
   constructor(){
     this.itemsClient = new ItemsClient(state.moduleId);
@@ -38,6 +45,12 @@ export class DnnRmEditFolder {
       };
     })
     .catch(reason => console.error(reason));
+  }
+
+  componentDidLoad() {
+    setTimeout(() => {
+      this.nameField.focus();
+    }, 350);
   }
 
   private handleCancel(): void {
@@ -61,7 +74,19 @@ export class DnnRmEditFolder {
 
   private handleSave(): void {
     this.itemsClient.createNewFolder(this.newFolderRequest)
-    .then(data => console.log(data))
+    .then(() => {
+      this.dnnRmFoldersChanged.emit();
+      state.currentItems = {
+        ...state.currentItems,
+        items: [],
+      };
+      const modal = this.el.parentElement as HTMLDnnModalElement;
+      modal.hide().then(() => {
+        setTimeout(() => {
+          document.body.removeChild(modal);
+        }, 300);
+      });
+    })
     .catch(error => alert(error));
   }
 
@@ -73,6 +98,7 @@ export class DnnRmEditFolder {
           <label>{state.localization.Name}</label>
           <input
             type="text" required
+            ref={el => this.nameField = el}
             value={this.newFolderRequest.FolderName}
             onInput={e => this.newFolderRequest = {
               ...this.newFolderRequest,

@@ -1,4 +1,4 @@
-import { Component, Host, h, State, Watch, Prop } from '@stencil/core';
+import { Component, Element, Host, h, State, Watch, Prop } from '@stencil/core';
 import state from "../../store/store";
 import { LocalizationClient } from "../../services/LocalizationClient";
 import { sortField } from '../../enums/SortField';
@@ -11,12 +11,15 @@ const localStorageSplitWidthKey = "dnn-resource-manager-last-folders-width";
 })
 export class DnnResourceManager {
 
+  /** The ID of the module. */
   @Prop() moduleId!: number;
 
   constructor() {
     state.moduleId = this.moduleId;
     this.localizationClient = new LocalizationClient(this.moduleId);
   }
+
+  @Element() el: HTMLDnnResourceManagerElement;
 
   @State() foldersExpanded = true;
 
