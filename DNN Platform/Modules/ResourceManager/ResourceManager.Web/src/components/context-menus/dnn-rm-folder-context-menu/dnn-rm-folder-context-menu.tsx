@@ -6,12 +6,14 @@ import { Component, Host, h, Prop } from '@stencil/core';
   shadow: true,
 })
 export class DnnRmFolderContextMenu {
-  @Prop() folderId!: number;
+  
+  /** The ID of the folder onto which the context menu was triggered on. */
+  @Prop() clickedFolderId!: number;
 
   render() {
     return (
       <Host>
-        <dnn-action-create-folder parentFolderId={this.folderId}></dnn-action-create-folder>
+        <dnn-action-create-folder parentFolderId={this.clickedFolderId} />
       </Host>
     );
   }

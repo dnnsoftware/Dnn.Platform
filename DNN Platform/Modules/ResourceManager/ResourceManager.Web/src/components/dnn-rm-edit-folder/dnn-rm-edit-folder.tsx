@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, Host, h, Element, State, Event, EventEmitter } from '@stencil/core';
 import { CreateNewFolderRequest, FolderMappingInfo, ItemsClient } from '../../services/ItemsClient';
 import state from '../../store/store';
 
@@ -8,8 +8,6 @@ import state from '../../store/store';
   shadow: true,
 })
 export class DnnRmEditFolder {
-  /** The ID of the parent folder of the one being edited. */
-  @Prop() parentFolderId!: number;
 
   /**
    * Fires when there is a possibility that some folders have changed.
@@ -24,7 +22,7 @@ export class DnnRmEditFolder {
   @State() newFolderRequest: CreateNewFolderRequest = {
     FolderMappingId: -1,
     FolderName: "",
-    ParentFolderId: this.parentFolderId,
+    ParentFolderId: state.currentItems.folder.folderId,
   }
 
   private readonly itemsClient: ItemsClient;
@@ -41,7 +39,7 @@ export class DnnRmEditFolder {
       this.newFolderRequest = {
         ...this.newFolderRequest,
         FolderMappingId: this.folderMappings[0].FolderMappingID,
-        ParentFolderId: this.parentFolderId,
+        ParentFolderId: state.currentItems.folder.folderId,
       };
     })
     .catch(reason => console.error(reason));
@@ -51,6 +49,7 @@ export class DnnRmEditFolder {
     setTimeout(() => {
       this.nameField.focus();
     }, 350);
+    console.log({...state});
   }
 
   private handleCancel(): void {
@@ -95,6 +94,10 @@ export class DnnRmEditFolder {
       <Host>
         <h2>{state.localization.AddFolder}</h2>
         <div class="form">
+          {state.currentItems.folder.folderName.length > 0 &&[
+            <label>{state.localization.FolderParent}</label>,
+            <span>{state.currentItems.folder.folderName}</span>
+          ]}
           <label>{state.localization.Name}</label>
           <input
             type="text" required

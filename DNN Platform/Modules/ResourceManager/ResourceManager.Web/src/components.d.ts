@@ -9,9 +9,6 @@ import { FolderTreeItem } from "./services/InternalServicesClient";
 import { GetFolderContentResponse } from "./services/ItemsClient";
 export namespace Components {
     interface DnnActionCreateFolder {
-        /**
-          * The ID of the parent folder into which to create a new folder.
-         */
         "parentFolderId": number;
     }
     interface DnnResourceManager {
@@ -23,10 +20,6 @@ export namespace Components {
     interface DnnRmActionsBar {
     }
     interface DnnRmEditFolder {
-        /**
-          * The ID of the parent folder of the one being edited.
-         */
-        "parentFolderId": number;
     }
     interface DnnRmFilesPane {
         /**
@@ -35,7 +28,10 @@ export namespace Components {
         "preloadOffset": number;
     }
     interface DnnRmFolderContextMenu {
-        "folderId": number;
+        /**
+          * The ID of the folder onto which the context menu was triggered on.
+         */
+        "clickedFolderId": number;
     }
     interface DnnRmFolderList {
     }
@@ -174,10 +170,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DnnActionCreateFolder {
-        /**
-          * The ID of the parent folder into which to create a new folder.
-         */
-        "parentFolderId": number;
+        "parentFolderId"?: number;
     }
     interface DnnResourceManager {
         /**
@@ -192,10 +185,6 @@ declare namespace LocalJSX {
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
         "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
-        /**
-          * The ID of the parent folder of the one being edited.
-         */
-        "parentFolderId": number;
     }
     interface DnnRmFilesPane {
         /**
@@ -204,7 +193,10 @@ declare namespace LocalJSX {
         "preloadOffset"?: number;
     }
     interface DnnRmFolderContextMenu {
-        "folderId": number;
+        /**
+          * The ID of the folder onto which the context menu was triggered on.
+         */
+        "clickedFolderId": number;
     }
     interface DnnRmFolderList {
     }

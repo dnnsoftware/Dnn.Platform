@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
+import { ItemsClient } from '../../../services/ItemsClient';
 import state from "../../../store/store";
 
 @Component({
@@ -7,15 +8,34 @@ import state from "../../../store/store";
   shadow: true,
 })
 export class DnnActionCreateFolder {
-  /** The ID of the parent folder into which to create a new folder. */
-  @Prop() parentFolderId!: number;
+
+  @Prop() parentFolderId: number;
+
+  private readonly itemsClient: ItemsClient;
+
+  constructor(){
+    this.itemsClient = new ItemsClient(state.moduleId);
+  }
 
   private handleClick(): void {
+    if (this.parentFolderId){
+      this.itemsClient.getFolderContent(this.parentFolderId, 0, 0)
+      .then(data => {
+        state.currentItems = data;
+        this.showModal();
+      })
+      .catch(error => alert(error));
+      return;
+    }
+
+    this.showModal();
+  }
+
+  private showModal(){
     const modal = document.createElement("dnn-modal");
     modal.backdropDismiss = false;
     modal.showCloseButton = false;
     const editor = document.createElement("dnn-rm-edit-folder");
-    editor.parentFolderId = this.parentFolderId;
     modal.appendChild(editor);
     document.body.appendChild(modal);
     modal.show();

@@ -136,9 +136,7 @@ export class DnnRmFolderListItem {
             ]}
         </dnn-treeview-item>
         <dnn-collapsible ref={el => this.contextMenu = el}>
-          <dnn-rm-folder-context-menu
-            folderId={Number.parseInt(this.folder.data.key)}
-          />
+          <dnn-rm-folder-context-menu clickedFolderId={Number.parseInt(this.folder.data.key)} />
         </dnn-collapsible>
       </Host>
     );
