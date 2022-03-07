@@ -339,4 +339,7 @@
   <data name="Items.Text" xml:space="preserve">
     <value>Items</value>
   </data>
+  <data name="MappedPath.Text" xml:space="preserve">
+    <value>Mapped Path</value>
+  </data>
 </root>

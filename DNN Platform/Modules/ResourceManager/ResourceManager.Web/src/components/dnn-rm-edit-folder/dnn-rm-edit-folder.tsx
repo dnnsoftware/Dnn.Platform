@@ -89,6 +89,11 @@ export class DnnRmEditFolder {
     .catch(error => alert(error));
   }
 
+  private canChooseFolderProvider() {
+    return this.folderMappings &&
+      this.folderMappings.find(f => f.FolderMappingID == state.currentItems.folder.folderMappingId).IsDefault;
+  }
+
   render() {
     return (
       <Host>
@@ -111,16 +116,31 @@ export class DnnRmEditFolder {
           {!this.newFolderRequest.FolderName &&
             <span>{state.localization.FolderNameRequiredMessage}</span>
           }
-          <label>{state.localization.Type}</label>
-          <select onChange={e => this.handleTypeChanged(e)}>
-            {this.folderMappings?.map((folderMapping, index) => 
-              <option
-                value={folderMapping.FolderMappingID}
-                selected={index == 0}>
-                {folderMapping.MappingName}
-              </option>
-            )}
-          </select>
+          {this.canChooseFolderProvider() &&
+            [
+              <label>{state.localization.Type}</label>,
+              <select onChange={e => this.handleTypeChanged(e)}>
+                {this.folderMappings?.map((folderMapping, index) => 
+                  <option
+                    value={folderMapping.FolderMappingID}
+                    selected={index == 0}>
+                    {folderMapping.MappingName}
+                  </option>
+                )}
+              </select>
+            ]
+          }
+          {this.canChooseFolderProvider() && this.folderMappings.find(m => m.FolderMappingID == this.newFolderRequest.FolderMappingId).IsDefault == false &&[
+            <label>{state.localization.MappedPath}</label>,
+            <input 
+              type="text"
+              value={this.newFolderRequest.MappedName}
+              onInput={e => this.newFolderRequest = {
+                ...this.newFolderRequest,
+                MappedName: (e.target as HTMLInputElement).value,
+              }}
+            />
+          ]}
         </div>
         <div class="controls">
           <dnn-button

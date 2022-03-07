@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property                | Attribute   | Description | Type     | Default     |
-| ----------------------- | ----------- | ----------- | -------- | ----------- |
-| `moduleId` _(required)_ | `module-id` |             | `number` | `undefined` |
+| Property                | Attribute   | Description           | Type     | Default     |
+| ----------------------- | ----------- | --------------------- | -------- | ----------- |
+| `moduleId` _(required)_ | `module-id` | The ID of the module. | `number` | `undefined` |
 
 
 ## Dependencies
@@ -37,6 +37,11 @@ graph TD;
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-folder-context-menu --> dnn-action-create-folder
+  dnn-action-create-folder --> dnn-modal
+  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-button
+  dnn-button --> dnn-modal
+  dnn-button --> dnn-button
   dnn-rm-right-pane --> dnn-rm-actions-bar
   dnn-rm-right-pane --> dnn-rm-files-pane
   dnn-rm-right-pane --> dnn-rm-status-bar

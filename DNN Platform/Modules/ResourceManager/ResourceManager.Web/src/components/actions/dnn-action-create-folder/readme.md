@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property                      | Attribute          | Description                                                    | Type     | Default     |
-| ----------------------------- | ------------------ | -------------------------------------------------------------- | -------- | ----------- |
-| `parentFolderId` _(required)_ | `parent-folder-id` | The ID of the parent folder into which to create a new folder. | `number` | `undefined` |
+| Property         | Attribute          | Description | Type     | Default     |
+| ---------------- | ------------------ | ----------- | -------- | ----------- |
+| `parentFolderId` | `parent-folder-id` |             | `number` | `undefined` |
 
 
 ## Dependencies
@@ -19,9 +19,19 @@
  - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
  - [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
 
+### Depends on
+
+- dnn-modal
+- [dnn-rm-edit-folder](../../dnn-rm-edit-folder)
+
 ### Graph
 ```mermaid
 graph TD;
+  dnn-action-create-folder --> dnn-modal
+  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-button
+  dnn-button --> dnn-modal
+  dnn-button --> dnn-button
   dnn-rm-actions-bar --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   style dnn-action-create-folder fill:#f9f,stroke:#333,stroke-width:4px

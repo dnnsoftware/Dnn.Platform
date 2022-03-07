@@ -23,6 +23,11 @@ graph TD;
   dnn-rm-actions-bar --> dnn-vertical-overflow-menu
   dnn-rm-actions-bar --> dnn-action-create-folder
   dnn-rm-actions-bar --> dnn-collapsible
+  dnn-action-create-folder --> dnn-modal
+  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-button
+  dnn-button --> dnn-modal
+  dnn-button --> dnn-button
   dnn-rm-right-pane --> dnn-rm-actions-bar
   style dnn-rm-actions-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```

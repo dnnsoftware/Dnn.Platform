@@ -25,6 +25,11 @@ graph TD;
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-folder-context-menu --> dnn-action-create-folder
+  dnn-action-create-folder --> dnn-modal
+  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-button
+  dnn-button --> dnn-modal
+  dnn-button --> dnn-button
   dnn-rm-left-pane --> dnn-rm-folder-list
   style dnn-rm-folder-list fill:#f9f,stroke:#333,stroke-width:4px
 ```
