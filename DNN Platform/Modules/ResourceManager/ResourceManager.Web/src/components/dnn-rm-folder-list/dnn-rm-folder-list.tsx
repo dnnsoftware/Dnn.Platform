@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Host, h, State, Listen } from '@stencil/core';
 import { InternalServicesClient } from "../../services/InternalServicesClient";
 import { ItemsClient } from "../../services/ItemsClient";
 import { GetFolderContentResponse } from "../../services/ItemsClient";
@@ -21,13 +21,27 @@ export class DnnRmFolderList {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
+  @Listen("dnnRmFoldersChanged", {target: "document"})
+  handleFoldersChanged(){
+    this.getFolders();
+  }
+
+  private getFolders() {
+    return new Promise((resolve, reject) => {
+      this.internalServicesClient.getFolders()
+      .then(data => {
+        state.rootFolders = data;
+        resolve(data);
+      })
+      .catch(reason => reject(reason));
+    });
+  }
+
   componentWillLoad() {
-    this.internalServicesClient.getFolders()
-    .then(data =>
-    {
-      state.rootFolders = data;
+    this.getFolders()
+    .then(() => {
       this.itemsClient.getFolderContent(
-        Number.parseInt(data.Tree.children[0].data.key),
+        Number.parseInt(state.rootFolders.Tree.children[0].data.key),
         0,
         state.pageSize,
         state.sortField)
@@ -36,7 +50,6 @@ export class DnnRmFolderList {
     })
     .catch(error => alert(error.Message));
   }
-
 
   render() {
     return (

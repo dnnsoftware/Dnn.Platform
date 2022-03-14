@@ -28,6 +28,16 @@
 graph TD;
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
+  dnn-rm-items-listview --> dnn-collapsible
+  dnn-rm-items-listview --> dnn-rm-folder-context-menu
+  dnn-rm-folder-context-menu --> dnn-action-create-folder
+  dnn-action-create-folder --> dnn-modal
+  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-button
+  dnn-button --> dnn-modal
+  dnn-button --> dnn-button
+  dnn-rm-items-cardview --> dnn-collapsible
+  dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-right-pane --> dnn-rm-files-pane
   style dnn-rm-files-pane fill:#f9f,stroke:#333,stroke-width:4px
 ```

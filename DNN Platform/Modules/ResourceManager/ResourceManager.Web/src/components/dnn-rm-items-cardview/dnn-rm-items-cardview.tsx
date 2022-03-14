@@ -1,6 +1,7 @@
-import { Component, Host, h, Prop } from '@stencil/core';
-import { GetFolderContentResponse } from '../../services/ItemsClient';
-import { isItemSelected, toggleItemSelected } from '../../utilities/selection-utilities';
+import { Component, Host, h, Prop, Element } from '@stencil/core';
+import { GetFolderContentResponse, Item } from '../../services/ItemsClient';
+import state from '../../store/store';
+import { selectionUtilities } from '../../utilities/selection-utilities';
 
 @Component({
   tag: 'dnn-rm-items-cardview',
@@ -9,7 +10,43 @@ import { isItemSelected, toggleItemSelected } from '../../utilities/selection-ut
 })
 export class DnnRmItemsCardview {
 
+  /** The list of current items. */
   @Prop() currentItems!: GetFolderContentResponse;
+
+  @Element() el: HTMLDnnRmItemsCardviewElement;
+
+  componentWillLoad() {
+    document.addEventListener("click", this.dismissContextMenu.bind(this));
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener("click", this.disconnectedCallback.bind(this));
+  }
+
+  private dismissContextMenu() {
+    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
+    existingMenus?.forEach(existingMenu => this.el.shadowRoot.removeChild(existingMenu));
+  }
+
+  private handleContextMenu(e: MouseEvent, item: Item): void {
+    e.preventDefault();
+    state.selectedItems = [];
+    this.dismissContextMenu();
+    if (item.isFolder){
+      const collapsible = document.createElement("dnn-collapsible");
+      const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
+      collapsible.appendChild(folderContextMenu);
+      folderContextMenu.clickedFolderId = item.itemId;
+      collapsible.style.left = `${e.pageX}px`;
+      collapsible.style.top = `${e.pageY}px`;
+      collapsible.style.display = "block";
+      this.el.shadowRoot.appendChild(collapsible);
+      setTimeout(() => {
+        collapsible.expanded = true;
+      }, 100);
+      return;
+    }
+  }
 
   render() {
     return (
@@ -19,13 +56,14 @@ export class DnnRmItemsCardview {
             {this.currentItems.items?.map(item =>
               <button
                 class="card"
-                onClick={() => toggleItemSelected(item)}
+                onClick={() => selectionUtilities.toggleItemSelected(item)}
+                onContextMenu={e => this.handleContextMenu(e, item)}
               >
-                  <div class={isItemSelected(item) ? "radio selected" : "radio"}>
-                    {isItemSelected(item) &&
+                  <div class={selectionUtilities.isItemSelected(item) ? "radio selected" : "radio"}>
+                    {selectionUtilities.isItemSelected(item) &&
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
                     }
-                    {!isItemSelected(item) &&
+                    {!selectionUtilities.isItemSelected(item) &&
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
                     }
                   </div>

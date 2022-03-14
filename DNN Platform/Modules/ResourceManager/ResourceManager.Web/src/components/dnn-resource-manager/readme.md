@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property                | Attribute   | Description | Type     | Default     |
-| ----------------------- | ----------- | ----------- | -------- | ----------- |
-| `moduleId` _(required)_ | `module-id` |             | `number` | `undefined` |
+| Property                | Attribute   | Description           | Type     | Default     |
+| ----------------------- | ----------- | --------------------- | -------- | ----------- |
+| `moduleId` _(required)_ | `module-id` | The ID of the module. | `number` | `undefined` |
 
 
 ## Dependencies
@@ -33,14 +33,27 @@ graph TD;
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-treeview-item
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
+  dnn-rm-folder-list-item --> dnn-collapsible
+  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-treeview-item --> dnn-collapsible
+  dnn-rm-folder-context-menu --> dnn-action-create-folder
+  dnn-action-create-folder --> dnn-modal
+  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-button
+  dnn-button --> dnn-modal
+  dnn-button --> dnn-button
   dnn-rm-right-pane --> dnn-rm-actions-bar
   dnn-rm-right-pane --> dnn-rm-files-pane
   dnn-rm-right-pane --> dnn-rm-status-bar
   dnn-rm-actions-bar --> dnn-vertical-overflow-menu
+  dnn-rm-actions-bar --> dnn-action-create-folder
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
+  dnn-rm-items-listview --> dnn-collapsible
+  dnn-rm-items-listview --> dnn-rm-folder-context-menu
+  dnn-rm-items-cardview --> dnn-collapsible
+  dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   style dnn-resource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

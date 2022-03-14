@@ -110,6 +110,7 @@ export interface LocalizedStrings {
     RemoveFolderType: String;
     RemoveFolderTypeDialogBody: String;
     RemoveFolderTypeDialogHeader: String;
+    MappedPath: String;
     MoveItem: String;
     NewLocation: String;
     SortField_ItemName: String;

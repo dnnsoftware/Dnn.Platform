@@ -99,6 +99,48 @@ export class ItemsClient{
             .catch(error => reject(error));
         });
     }
+
+    public getFolderMappings(){
+        return new Promise<FolderMappingInfo[]>((resolve, reject) => {
+            const url = `${this.requestUrl}GetFolderMappings`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
+
+    public createNewFolder(request: CreateNewFolderRequest, groupId = 1){
+        return new Promise<CreateNewFolderResponse>((resolve, reject) => {
+            const url = `${this.requestUrl}CreateNewFolder`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("groupId", groupId.toString());
+            headers.append("Content-Type", "application/json");
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+
+        });
+    }
 }
 
 export interface GetFolderContentResponse{
@@ -145,4 +187,45 @@ export interface Item{
 export interface SearchResponse{
     items: Item[],
     totalCount: number,
+}
+
+export interface FolderMappingInfo{
+    /** The ID of the folder mapping. */
+    FolderMappingID: number;
+    /** The provider type name such as "AzureFolderProvider" */
+    FolderProviderType: string;
+    /** True if this is the default provider type. */
+    IsDefault: boolean;
+    /** A friendly name for this mapping type. */
+    MappingName: string;
+    /** A url that allows editing this folder mapping. */
+    editUrl: string;
+}
+
+export interface CreateNewFolderRequest{
+    /** Gets or sets the new folder name. */
+    FolderName: string;
+
+    /** Gets or sets he parent folder id for the new folder. */
+    ParentFolderId: number;
+
+    /** Gets or sets the folder mapping id. */
+    FolderMappingId: number;
+
+    /** Gets or sets the optional mapped path. */
+    MappedName?: string;
+}
+
+export interface CreateNewFolderResponse{
+    /** The ID of the recently created folder. */
+    FolderID: number;
+
+    /** The created folder name. */
+    FolderName: string,
+
+    /** The url to the folder icon. */
+    IconUrl: string;
+
+    /** The ID of the folder mapping. */
+    FolderMappingID: number,
 }
