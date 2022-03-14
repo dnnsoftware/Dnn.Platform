@@ -1393,10 +1393,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnncommunity/dnn-elements@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "@dnncommunity/dnn-elements@npm:0.14.0"
-  checksum: 2b5850efe4344f2962eb93196abdbebe2f335d71c641a99ba3f6ca71f9d02c8c5cf562bf82ce08b5c73efac0062790e39d23bb961b2ac612db15b8c5b5092e4e
+"@dnncommunity/dnn-elements@npm:0.14.1":
+  version: 0.14.1
+  resolution: "@dnncommunity/dnn-elements@npm:0.14.1"
+  checksum: 3b7d816930bf17c3e45cee4ab680875eb6d5343b42cfa602872b1e229a5dca76ad02fa0e5b7311dd033cffd4bec947a101f70833bed684f0a2ee5e0e3277144a
   languageName: node
   linkType: hard
 
@@ -8719,7 +8719,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-resource-manager@workspace:DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   dependencies:
-    "@dnncommunity/dnn-elements": ^0.14.0
+    "@dnncommunity/dnn-elements": 0.14.1
     "@stencil/core": ^2.13.0
     "@stencil/sass": ^1.5.2
     "@stencil/store": ^1.5.0
