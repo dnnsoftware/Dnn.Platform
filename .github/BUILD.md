@@ -11,11 +11,10 @@ When contributing to DNN, you'd typically go through steps 2 and 3 at least and 
 
 ## External sources
 
-There are two projects not included in this repository that are distributed with DNN:
-* [CKEditorProvider](https://github.com/DNN-Connect/CKEditorProvider) - The default HTML Editor Provider
+There is one project not included in this repository that are distributed with DNN:
 * [CDF](https://github.com/dnnsoftware/ClientDependency) - The Dnn Client Dependency Framework
 
-If you wish to make changes to those, please keep this in mind.
+If you wish to make changes to that project, please keep this in mind.
 
 ## Used Build Technologies
 

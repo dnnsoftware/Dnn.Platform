@@ -4,7 +4,7 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
-    using System.Collections.Generic;
+    using System.Linq;
 
     using Cake.Common.Build;
     using Cake.Common.Build.AzurePipelines.Data;
@@ -41,18 +41,12 @@ namespace DotNetNuke.Build.Tasks
             }
             finally
             {
-                var issues = context.ReadIssues(
-                    new List<IIssueProvider>
-                    {
-                        new MsBuildIssuesProvider(
-                            context.Log,
-                            new MsBuildIssuesSettings(cleanLog, context.MsBuildBinaryLogFileFormat())),
-                        new MsBuildIssuesProvider(
-                            context.Log,
-                            new MsBuildIssuesSettings(buildLog, context.MsBuildBinaryLogFileFormat())),
-                    },
-                    context.Directory("."));
-
+                var issueProviders =
+                    from logFilePath in new[] { cleanLog, buildLog, }
+                    where context.FileExists(logFilePath)
+                    let settings = new MsBuildIssuesSettings(cleanLog, context.MsBuildBinaryLogFileFormat())
+                    select new MsBuildIssuesProvider(context.Log, settings);
+                var issues = context.ReadIssues(issueProviders, context.Directory("."));
                 foreach (var issue in issues)
                 {
                     var messageData = new AzurePipelinesMessageData
