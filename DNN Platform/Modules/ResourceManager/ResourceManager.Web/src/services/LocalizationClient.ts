@@ -55,6 +55,7 @@ export interface LocalizedStrings {
     DeleteFileDialogMessage: String;
     DeleteFolderDialogHeader: String;
     DeleteFolderDialogMessage: String;
+    Edit: String;
     FileAlreadyExistsMessage: String;
     FileUploadedMessage: String;
     FileUploadStoppedMessage: String;

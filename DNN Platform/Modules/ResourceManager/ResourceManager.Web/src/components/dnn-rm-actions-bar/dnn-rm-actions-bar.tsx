@@ -51,6 +51,11 @@ export class DnnRmActionsBar {
           {state.selectedItems && state.selectedItems.length == 0 && state.currentItems && state.currentItems.hasAddFilesPermission &&
             <dnn-action-create-folder />
           }
+          {
+            state.selectedItems.length == 1 &&
+            state.currentItems.hasManagePermission &&
+            <dnn-action-edit-item item={state.selectedItems[0]}/>
+          }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">
           {state.selectedItems.length > 0 &&

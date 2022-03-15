@@ -31,11 +31,14 @@ graph TD;
   dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-items-listview --> dnn-rm-folder-context-menu
   dnn-rm-folder-context-menu --> dnn-action-create-folder
+  dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-action-create-folder --> dnn-modal
-  dnn-action-create-folder --> dnn-rm-edit-folder
-  dnn-rm-edit-folder --> dnn-button
+  dnn-action-create-folder --> dnn-rm-create-folder
+  dnn-rm-create-folder --> dnn-button
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
+  dnn-action-edit-item --> dnn-modal
+  dnn-action-edit-item --> dnn-rm-create-folder
   dnn-rm-items-cardview --> dnn-collapsible
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-right-pane --> dnn-rm-files-pane

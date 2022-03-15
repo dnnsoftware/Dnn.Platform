@@ -35,7 +35,7 @@ export class DnnActionCreateFolder {
     const modal = document.createElement("dnn-modal");
     modal.backdropDismiss = false;
     modal.showCloseButton = false;
-    const editor = document.createElement("dnn-rm-edit-folder");
+    const editor = document.createElement("dnn-rm-create-folder");
     modal.appendChild(editor);
     document.body.appendChild(modal);
     modal.show();

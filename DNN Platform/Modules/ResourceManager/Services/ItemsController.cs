@@ -95,6 +95,19 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         /// <summary>
+        /// Gets an item representation for a provided folder ID.
+        /// </summary>
+        /// <param name="folderId">The ID of the folder to get.</param>
+        /// <returns>An Item viewmodel.</returns>
+        [HttpGet]
+        public IHttpActionResult GetFolderItem(int folderId)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            var item = this.GetItemViewModel(folder);
+            return this.Ok(item);
+        }
+
+        /// <summary>
         /// Syncs the folder content.
         /// </summary>
         /// <param name="folderId">The folder id.</param>

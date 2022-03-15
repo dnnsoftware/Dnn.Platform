@@ -80,7 +80,7 @@ export class DnnRmItemsListview {
     if (item.isFolder){
       const collapsible = document.createElement("dnn-collapsible");
       const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
-      folderContextMenu.clickedFolderId = item.itemId;
+      folderContextMenu.item = item;
       collapsible.appendChild(folderContextMenu);
       collapsible.style.left = `${e.pageX}px`;
       collapsible.style.top = `${e.pageY}px`;

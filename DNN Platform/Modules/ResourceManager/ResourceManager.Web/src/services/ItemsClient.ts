@@ -118,7 +118,7 @@ export class ItemsClient{
         });
     }
 
-    public createNewFolder(request: CreateNewFolderRequest, groupId = 1){
+    public createNewFolder(request: CreateNewFolderRequest, groupId = 0){
         return new Promise<CreateNewFolderResponse>((resolve, reject) => {
             const url = `${this.requestUrl}CreateNewFolder`;
             const headers = this.sf.getModuleHeaders();
@@ -139,6 +139,26 @@ export class ItemsClient{
             })
             .catch(reason => reject(reason));
 
+        });
+    }
+
+    public getFolderItem(folderId: number, groupId = 0){
+        return new Promise<Item>((resolve, reject) => {
+            const url = `${this.requestUrl}GetFolderItem?folderId=${folderId}`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("groupId", groupId.toString());
+            fetch(url, {
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
         });
     }
 }

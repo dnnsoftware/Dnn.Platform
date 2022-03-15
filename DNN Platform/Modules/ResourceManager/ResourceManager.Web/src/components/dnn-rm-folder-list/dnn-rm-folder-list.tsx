@@ -57,6 +57,7 @@ export class DnnRmFolderList {
         {state.rootFolders && state.rootFolders.Tree.children.map(item =>
             <dnn-rm-folder-list-item
               folder={item}
+              parentFolderId={Number.parseInt(state.rootFolders.Tree.data.key)}
               expanded
             >
             </dnn-rm-folder-list-item>

@@ -36,7 +36,7 @@ export class DnnRmItemsCardview {
       const collapsible = document.createElement("dnn-collapsible");
       const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
       collapsible.appendChild(folderContextMenu);
-      folderContextMenu.clickedFolderId = item.itemId;
+      folderContextMenu.item = item;
       collapsible.style.left = `${e.pageX}px`;
       collapsible.style.top = `${e.pageY}px`;
       collapsible.style.display = "block";

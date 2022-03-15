@@ -1,4 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
+import { Item } from '../../../services/ItemsClient';
 import state from '../../../store/store';
 
 @Component({
@@ -8,14 +9,17 @@ import state from '../../../store/store';
 })
 export class DnnRmFolderContextMenu {
   
-  /** The ID of the folder onto which the context menu was triggered on. */
-  @Prop() clickedFolderId!: number;
+  /** The item that triggered this menu. */
+  @Prop() item!: Item;
 
   render() {
     return (
       <Host>
         {state.currentItems?.hasAddFoldersPermission &&
-          <dnn-action-create-folder parentFolderId={this.clickedFolderId} />
+          <dnn-action-create-folder parentFolderId={this.item.itemId} />
+        }
+        {state.currentItems?.hasManagePermission &&
+          <dnn-action-edit-item item={this.item} />
         }
       </Host>
     );
