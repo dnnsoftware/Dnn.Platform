@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -89,7 +90,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 var index = 0;
                 TabController.Instance.PopulateBreadCrumbs(ref tab);
-                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
+                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.IsSuperTab ? Host.HostPortalID : tab.PortalID)
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
                 var portalSettings = new PortalSettings(tab.PortalID)
