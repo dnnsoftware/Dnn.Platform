@@ -44,7 +44,7 @@ namespace DotNetNuke.Build.Tasks
                 var issueProviders =
                     from logFilePath in new[] { cleanLog, buildLog, }
                     where context.FileExists(logFilePath)
-                    let settings = new MsBuildIssuesSettings(cleanLog, context.MsBuildBinaryLogFileFormat())
+                    let settings = new MsBuildIssuesSettings(logFilePath, context.MsBuildBinaryLogFileFormat())
                     select new MsBuildIssuesProvider(context.Log, settings);
                 var issues = context.ReadIssues(issueProviders, context.Directory("."));
                 foreach (var issue in issues)
