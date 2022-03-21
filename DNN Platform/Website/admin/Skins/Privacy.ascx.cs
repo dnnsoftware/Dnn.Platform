@@ -61,7 +61,10 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 this.hypPrivacy.NavigateUrl = this.PortalSettings.PrivacyTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Privacy") : this._navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
                 if (!string.IsNullOrWhiteSpace(this.Rel))
+                {
                     this.hypPrivacy.Attributes["rel"] = this.Rel;
+                }
+
             }
             catch (Exception exc)
             {
