@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 this.hypTerms.NavigateUrl = this.PortalSettings.TermsTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Terms") : this._navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
-                this.hypPrivacy.Attributes["rel"] = this.Rel;
+                this.hypTerms.Attributes["rel"] = this.Rel;
             }
             catch (Exception exc)
             {
