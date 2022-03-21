@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string CssClass { get; set; }
 
-        public string Rel { get; set; } = "nofollow"
+        public string Rel { get; set; } = "nofollow";
 
         protected override void OnInit(EventArgs e)
         {
