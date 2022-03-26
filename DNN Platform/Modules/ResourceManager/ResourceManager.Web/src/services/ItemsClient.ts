@@ -1,4 +1,5 @@
 import { DnnServicesFramework } from "@dnncommunity/dnn-elements";
+import { IPermissions } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface";
 import { SortFieldInfo } from "../enums/SortField";
 
 export class ItemsClient{
@@ -161,6 +162,24 @@ export class ItemsClient{
             .catch(reason => reject(reason));
         });
     }
+
+    public getFolderDetails(folderId: number){
+        return new Promise<FolderDetails>((resolve, reject) => {
+            const url = `${this.requestUrl}GetFolderDetails?folderId=${folderId}`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
 }
 
 export interface GetFolderContentResponse{
@@ -248,4 +267,16 @@ export interface CreateNewFolderResponse{
 
     /** The ID of the folder mapping. */
     FolderMappingID: number,
+}
+
+export interface FolderDetails{
+    folderId: number;
+    folderName: string;
+    createdOnDate: string;
+    createdBy: string;
+    lastModifiedOnDate: string;
+    lastModifiedBy: string;
+    type: string;
+    isVersioned: boolean;
+    permissions: IPermissions;
 }

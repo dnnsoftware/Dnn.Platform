@@ -31,11 +31,10 @@ graph TD;
   dnn-rm-top-bar --> dnn-searchbox
   dnn-rm-left-pane --> dnn-rm-folder-list
   dnn-rm-folder-list --> dnn-rm-folder-list-item
-  dnn-rm-folder-list-item --> dnn-treeview-item
-  dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-collapsible
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
-  dnn-treeview-item --> dnn-collapsible
+  dnn-rm-folder-list-item --> dnn-treeview-item
+  dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-action-create-folder --> dnn-modal
@@ -45,6 +44,7 @@ graph TD;
   dnn-button --> dnn-button
   dnn-action-edit-item --> dnn-modal
   dnn-action-edit-item --> dnn-rm-create-folder
+  dnn-treeview-item --> dnn-collapsible
   dnn-rm-right-pane --> dnn-rm-actions-bar
   dnn-rm-right-pane --> dnn-rm-files-pane
   dnn-rm-right-pane --> dnn-rm-status-bar

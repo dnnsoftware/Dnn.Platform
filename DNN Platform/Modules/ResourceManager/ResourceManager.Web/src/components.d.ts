@@ -24,6 +24,9 @@ export namespace Components {
     }
     interface DnnRmCreateFolder {
     }
+    interface DnnRmEditFolder {
+        "folderId": number;
+    }
     interface DnnRmFilesPane {
         /**
           * Defines how much more pixels to load under the fold.
@@ -104,6 +107,12 @@ declare global {
         prototype: HTMLDnnRmCreateFolderElement;
         new (): HTMLDnnRmCreateFolderElement;
     };
+    interface HTMLDnnRmEditFolderElement extends Components.DnnRmEditFolder, HTMLStencilElement {
+    }
+    var HTMLDnnRmEditFolderElement: {
+        prototype: HTMLDnnRmEditFolderElement;
+        new (): HTMLDnnRmEditFolderElement;
+    };
     interface HTMLDnnRmFilesPaneElement extends Components.DnnRmFilesPane, HTMLStencilElement {
     }
     var HTMLDnnRmFilesPaneElement: {
@@ -170,6 +179,7 @@ declare global {
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
         "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
         "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
+        "dnn-rm-edit-folder": HTMLDnnRmEditFolderElement;
         "dnn-rm-files-pane": HTMLDnnRmFilesPaneElement;
         "dnn-rm-folder-context-menu": HTMLDnnRmFolderContextMenuElement;
         "dnn-rm-folder-list": HTMLDnnRmFolderListElement;
@@ -202,6 +212,9 @@ declare namespace LocalJSX {
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
         "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+    }
+    interface DnnRmEditFolder {
+        "folderId": number;
     }
     interface DnnRmFilesPane {
         /**
@@ -261,6 +274,7 @@ declare namespace LocalJSX {
         "dnn-resource-manager": DnnResourceManager;
         "dnn-rm-actions-bar": DnnRmActionsBar;
         "dnn-rm-create-folder": DnnRmCreateFolder;
+        "dnn-rm-edit-folder": DnnRmEditFolder;
         "dnn-rm-files-pane": DnnRmFilesPane;
         "dnn-rm-folder-context-menu": DnnRmFolderContextMenu;
         "dnn-rm-folder-list": DnnRmFolderList;
@@ -282,6 +296,7 @@ declare module "@stencil/core" {
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
             "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
             "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
+            "dnn-rm-edit-folder": LocalJSX.DnnRmEditFolder & JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
             "dnn-rm-files-pane": LocalJSX.DnnRmFilesPane & JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
             "dnn-rm-folder-context-menu": LocalJSX.DnnRmFolderContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
             "dnn-rm-folder-list": LocalJSX.DnnRmFolderList & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;

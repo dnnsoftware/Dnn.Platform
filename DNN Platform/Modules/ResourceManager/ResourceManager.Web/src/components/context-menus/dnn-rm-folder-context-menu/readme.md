@@ -7,10 +7,9 @@
 
 ## Properties
 
-| Property                       | Attribute           | Description                                                        | Type     | Default     |
-| ------------------------------ | ------------------- | ------------------------------------------------------------------ | -------- | ----------- |
-| `clickedFolderId` _(required)_ | `clicked-folder-id` | The ID of the folder onto which the context menu was triggered on. | `number` | `undefined` |
-| `clickedItem`                  | --                  |                                                                    | `Item`   | `undefined` |
+| Property            | Attribute | Description                        | Type   | Default     |
+| ------------------- | --------- | ---------------------------------- | ------ | ----------- |
+| `item` _(required)_ | --        | The item that triggered this menu. | `Item` | `undefined` |
 
 
 ## Dependencies
