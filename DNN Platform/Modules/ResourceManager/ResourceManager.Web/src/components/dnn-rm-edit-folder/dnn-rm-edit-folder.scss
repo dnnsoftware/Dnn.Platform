@@ -3,7 +3,6 @@
 }
 .general{
   display: flex;
-  flex-wrap: wrap;
   .left{
     max-width: 256px;
     border-right: 1px solid lightgray;
@@ -20,6 +19,7 @@
 .form{
   display: grid;
   grid-template-columns: 1fr 2fr;
+  align-items: flex-end;
   label{
     font-weight: bold;
     text-align: right;

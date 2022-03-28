@@ -3,6 +3,7 @@ import { IRole } from '@dnncommunity/dnn-elements/dist/types/components/dnn-perm
 import { Component, Element, Host, h, State, Prop } from '@stencil/core';
 import state from '../../store/store';
 import { FolderDetails, ItemsClient } from '../../services/ItemsClient';
+import { IPermissions, IRolePermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
 @Component({
   tag: 'dnn-rm-edit-folder',
   styleUrl: 'dnn-rm-edit-folder.scss',
@@ -26,7 +27,60 @@ export class DnnRmEditFolder {
 
   componentWillLoad() {
     this.itemsClient.getFolderDetails(this.folderId)
-      .then(data => this.folderDetails = data)
+      .then(data => {
+        this.folderDetails = {
+          ...data,
+          permissions: {
+            ...data.permissions,
+            permissionDefinitions: data.permissions.permissionDefinitions.sort(a => {
+              switch (a.permissionName) {
+                case "View Folder":
+                  return -1;
+                case "Browse Folder":
+                  return 0;
+                case "Write to Folder":
+                  return 1;
+                default:
+                  break;
+              }
+            }),
+            rolePermissions: [
+              ...data.permissions.rolePermissions.map(rp => {
+                return {
+                  ...rp,
+                  permissions: rp.permissions.sort(a => {
+                    switch (a.permissionName) {
+                      case "View Folder":
+                        return -1;
+                      case "Browse Folder":
+                        return 0;
+                      case "Write to Folder":
+                        return 1;
+                    }
+                  }),
+                };
+              }),
+            ],
+            userPermissions: [
+              ...data.permissions.userPermissions.map(up => {
+                return {
+                  ...up,
+                  permissions: up.permissions.sort(a => {
+                    switch (a.permissionName) {
+                      case "View Folder":
+                        return -1;
+                      case "Browse Folder":
+                        return 0;
+                      case "Write to Folder":
+                        return 1;
+                    }
+                  }),
+                };
+              }),
+            ],
+          },
+        };
+      })
       .catch(error => alert(error));
     this.itemsClient.getFolderIconUrl(this.folderId)
       .then(data => this.folderIconUrl = data)
@@ -44,6 +98,126 @@ export class DnnRmEditFolder {
 
   private handleSave(): void {
     console.log(this.folderDetails);
+  }
+
+  private handlePermissionsChanged(newPermissions: IPermissions): void {
+    newPermissions.rolePermissions.forEach(rolePermission => this.adjustRelatedPermissions(rolePermission));
+    // do the same for users
+    // apply it to the actual folder
+  }
+  
+  private adjustRelatedPermissions(rolePermission: IRolePermission): void {
+    const permissionId =
+    {
+      view: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'View Folder').permissionId,
+      browse: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Browse Folder').permissionId,
+      write: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Write to Folder').permissionId,
+    };
+
+    const viewPermission = rolePermission.permissions.find(p => p.permissionId == permissionId.view);
+    // If view permission is denied, then deny all other permissions
+    if (viewPermission && viewPermission.allowAccess == false){
+      // Deny all permissions
+      rolePermission.permissions = [
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.view,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "View Folder",
+          view: false,
+        },
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.browse,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Browse Folder",
+          view: false,
+        },
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.write,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Write to Folder",
+          view: false,
+        },
+      ]
+    }
+
+    // If browse was denied, then deny write
+    const browsePermission = rolePermission.permissions.find(p => p.permissionId == permissionId.browse);
+    if (browsePermission && browsePermission.allowAccess == false){
+      // Deny write
+      rolePermission.permissions = [
+        ...rolePermission.permissions.filter(p => p.permissionId != permissionId.write),
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.write,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Write to Folder",
+          view: false,
+        }
+      ]
+    }
+
+    // If browse was allowed, then allow view
+    if (browsePermission && browsePermission.allowAccess == true){
+      // Allow browse
+      rolePermission.permissions = [
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.view,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Browse Folder",
+          view: false,
+        },
+        ...rolePermission.permissions.filter(p => p.permissionId != permissionId.view),
+      ];
+    }
+
+    // If write was allowed, then allow all other permissions
+    const writePermission = rolePermission.permissions.find(p => p.permissionId == permissionId.write);
+    if (writePermission && writePermission.allowAccess == true){
+      // Allow all permissions
+      rolePermission.permissions = [
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.view,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "View Folder",
+          view: false,
+        },
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.browse,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Browse Folder",
+          view: false,
+        },
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.write,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Write to Folder",
+          view: false,
+        },
+      ]
+    }
   }
 
   render() {
@@ -97,7 +271,9 @@ export class DnnRmEditFolder {
               <dnn-permissions-grid
                 permissions={this.folderDetails.permissions}
                 roleGroups={this.roleGroups}
-                roles={this.roles}/>
+                roles={this.roles}
+                onPermissionsChanged={e => this.handlePermissionsChanged(e.detail)}
+              />
             }
           </dnn-tab>
         </dnn-tabs>
