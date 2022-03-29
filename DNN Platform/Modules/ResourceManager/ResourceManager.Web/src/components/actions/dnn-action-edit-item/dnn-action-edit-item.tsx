@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { Item, ItemsClient } from '../../../services/ItemsClient';
+import { Item } from '../../../services/ItemsClient';
 import state from "../../../store/store";
 
 @Component({
@@ -11,26 +11,7 @@ export class DnnActionEditItem {
 
   @Prop() item!: Item;
 
-  private readonly itemsClient: ItemsClient;
-
-  constructor(){
-    this.itemsClient = new ItemsClient(state.moduleId);
-  }
-
   private handleClick(): void {
-    console.log(this.itemsClient);
-    
-    // if (this.parentFolderId){
-    //   // Here we need the item details (folder or file) and react accordingly.
-    //   // this.itemsClient.getFolderContent(this.parentFolderId, 0, 0)
-    //   // .then(data => {
-    //   //   state.currentItems = data;
-    //   //   this.showModal();
-    //   // })
-    //   // .catch(error => alert(error));
-    //   // return;
-    // }
-
     this.showModal();
   }
 

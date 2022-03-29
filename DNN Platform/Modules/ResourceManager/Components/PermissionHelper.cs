@@ -229,7 +229,7 @@ namespace Dnn.Modules.ResourceManager.Components
                         AllowAccess = p.AllowAccess,
                         FolderID = folderId,
                         PermissionID = p.PermissionId,
-                        RoleID = Null.NullInteger,
+                        RoleID = int.Parse(Globals.glbRoleNothing),
                         UserID = permission.UserId,
                     });
                 }

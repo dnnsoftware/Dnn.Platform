@@ -27,6 +27,12 @@ export class DnnRmFilesPane {
     this.checkIfMoreItemsNeeded();
   }
 
+  @Listen("dnnRmFoldersChanged", {target: "document"})
+  handleFoldersChanged(){
+    state.currentItems.items = [];
+    this.checkIfMoreItemsNeeded();
+  }
+
   componentDidUpdate() {
     const loadedFilesHeight = this.loadedFilesArea.getBoundingClientRect().height;
     const heightPerItem = loadedFilesHeight / state.currentItems.items.length;

@@ -4,6 +4,7 @@
 namespace Dnn.Modules.ResourceManager.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -16,12 +17,13 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Assets;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.UI.Modules;
@@ -531,6 +533,103 @@ namespace Dnn.Modules.ResourceManager.Services
             var folderMappingId = FolderManager.Instance.GetFolder(folderId).FolderMappingID;
             var url = GetFolderIconUrl(this.PortalSettings.PortalId, folderMappingId);
             return this.Ok(new { url });
+        }
+
+        /// <summary>
+        /// Gets a list of role groups.
+        /// </summary>
+        /// <returns>A collection of role groups.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetRoleGroups()
+        {
+            if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+            {
+                return this.Unauthorized();
+            }
+
+            var groups = RoleController.GetRoleGroups(this.PortalSettings.PortalId)
+                            .Cast<RoleGroupInfo>()
+                            .Select(RoleGroupDto.FromRoleGroupInfo);
+
+            return this.Ok(groups);
+        }
+
+        /// <summary>
+        /// Gets the roles for a rolegroup.
+        /// </summary>
+        /// <returns>A collection of roles.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetRoles()
+        {
+            var matchedRoles = RoleController.Instance.GetRoles(this.PortalSettings.PortalId)
+                .Where(r => r.Status == RoleStatus.Approved)
+                .OrderBy(r => r.RoleName)
+                .Select(r => new
+                {
+                    IsSystemRole = r.IsSystemRole,
+                    RoleGroupId = r.RoleGroupID,
+                    RoleId = r.RoleID,
+                    RoleName = r.RoleName,
+                })
+                .ToList();
+
+            return this.Ok(matchedRoles);
+        }
+
+        /// <summary>
+        /// Gets a list of users that match the search keyword.
+        /// </summary>
+        /// <param name="keyword">The keyword to search for.</param>
+        /// <param name="count">The amount of results to return.</param>
+        /// <returns>A collection of users.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetSuggestionUsers(string keyword, int count)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    return this.Ok(new List<string>());
+                }
+
+                var displayMatch = keyword + "%";
+                var totalRecords = 0;
+                var totalRecords2 = 0;
+                var matchedUsers = UserController.GetUsersByDisplayName(
+                    this.PortalSettings.PortalId,
+                    displayMatch,
+                    0,
+                    count,
+                    ref totalRecords,
+                    false,
+                    false);
+                matchedUsers.AddRange(
+                    UserController.GetUsersByUserName(
+                        this.PortalSettings.PortalId,
+                        displayMatch,
+                        0,
+                        count,
+                        ref totalRecords2,
+                        false,
+                        false));
+                var finalUsers = matchedUsers
+                    .Cast<UserInfo>()
+                    .Where(x => x.Membership.Approved)
+                    .Select(u => new
+                    {
+                        userId = u.UserID,
+                        displayName = $"{u.DisplayName}",
+                    });
+
+                return this.Ok(finalUsers.ToList().GroupBy(x => x.userId).Select(group => group.First()));
+            }
+            catch (Exception ex)
+            {
+                return this.InternalServerError(new Exception(ex.Message));
+            }
         }
 
         private static string GetFileIconUrl(string extension)

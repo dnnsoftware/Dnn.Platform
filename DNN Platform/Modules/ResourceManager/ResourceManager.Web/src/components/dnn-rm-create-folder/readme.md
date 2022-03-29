@@ -17,7 +17,6 @@
 ### Used by
 
  - [dnn-action-create-folder](../actions/dnn-action-create-folder)
- - [dnn-action-edit-item](../actions/dnn-action-edit-item)
 
 ### Depends on
 
@@ -30,7 +29,6 @@ graph TD;
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-action-create-folder --> dnn-rm-create-folder
-  dnn-action-edit-item --> dnn-rm-create-folder
   style dnn-rm-create-folder fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

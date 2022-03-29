@@ -33,7 +33,15 @@ graph TD;
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-action-edit-item --> dnn-modal
-  dnn-action-edit-item --> dnn-rm-create-folder
+  dnn-action-edit-item --> dnn-rm-edit-folder
+  dnn-rm-edit-folder --> dnn-tabs
+  dnn-rm-edit-folder --> dnn-tab
+  dnn-rm-edit-folder --> dnn-permissions-grid
+  dnn-rm-edit-folder --> dnn-button
+  dnn-permissions-grid --> dnn-checkbox
+  dnn-permissions-grid --> dnn-button
+  dnn-permissions-grid --> dnn-searchbox
+  dnn-permissions-grid --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
   dnn-rm-items-listview --> dnn-collapsible

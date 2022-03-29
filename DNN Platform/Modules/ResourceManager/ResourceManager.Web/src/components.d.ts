@@ -25,6 +25,9 @@ export namespace Components {
     interface DnnRmCreateFolder {
     }
     interface DnnRmEditFolder {
+        /**
+          * The ID of the folder to edit.
+         */
         "folderId": number;
     }
     interface DnnRmFilesPane {
@@ -214,7 +217,14 @@ declare namespace LocalJSX {
         "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
     }
     interface DnnRmEditFolder {
+        /**
+          * The ID of the folder to edit.
+         */
         "folderId": number;
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
     }
     interface DnnRmFilesPane {
         /**

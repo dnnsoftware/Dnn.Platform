@@ -1,23 +1,33 @@
 import { IRoleGroup } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-group-interface';
 import { IRole } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-interface';
-import { Component, Element, Host, h, State, Prop } from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, State, Prop } from '@stencil/core';
 import state from '../../store/store';
-import { FolderDetails, ItemsClient } from '../../services/ItemsClient';
-import { IPermissions, IRolePermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
+import { FolderDetails, ItemsClient, SaveFolderDetailsRequest } from '../../services/ItemsClient';
+import { IPermissions, IRolePermission, IUserPermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
+import { ISearchedUser } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/searched-user-interface';
 @Component({
   tag: 'dnn-rm-edit-folder',
   styleUrl: 'dnn-rm-edit-folder.scss',
   shadow: true,
 })
 export class DnnRmEditFolder {
+  
+  /** The ID of the folder to edit. */
   @Prop() folderId!: number;
+
+  /**
+   * Fires when there is a possibility that some folders have changed.
+   * Can be used to force parts of the UI to refresh.
+   */
+   @Event() dnnRmFoldersChanged: EventEmitter<void>;
 
   @Element() el: HTMLDnnRmEditFolderElement;
 
   @State() roleGroups: IRoleGroup[] = [];
   @State() roles: IRole[] = [];
   @State() folderIconUrl: string;
-  @State() private folderDetails: FolderDetails;
+  @State() folderDetails: FolderDetails;
+  @State() foundUsers: ISearchedUser[];
 
   private itemsClient: ItemsClient;
 
@@ -82,12 +92,21 @@ export class DnnRmEditFolder {
         };
       })
       .catch(error => alert(error));
+    
     this.itemsClient.getFolderIconUrl(this.folderId)
       .then(data => this.folderIconUrl = data)
       .catch(error => alert(error));
+
+    this.itemsClient.getRoleGroups()
+      .then(data => this.roleGroups = data)
+      .catch(error => alert(error));
+    
+    this.itemsClient.getRoles()
+      .then(data => this.roles = data)
+      .catch(error => alert(error));
   }
 
-  private handleCancel(): void {
+  private closeModal(): void {
     const modal = this.el.parentElement as HTMLDnnModalElement;
     modal.hide().then(() => {
       setTimeout(() => {
@@ -97,16 +116,29 @@ export class DnnRmEditFolder {
   }
 
   private handleSave(): void {
-    console.log(this.folderDetails);
+    const folderDetails: SaveFolderDetailsRequest = {
+      folderId: this.folderId,
+      folderName: this.folderDetails.folderName,
+      permissions: this.folderDetails.permissions,
+    };
+    this.itemsClient.saveFolderDetails(folderDetails)
+      .then(() => {
+        this.dnnRmFoldersChanged.emit();
+        this.closeModal();
+      })
+      .catch(error => alert(error));
   }
 
   private handlePermissionsChanged(newPermissions: IPermissions): void {
     newPermissions.rolePermissions.forEach(rolePermission => this.adjustRelatedPermissions(rolePermission));
-    // do the same for users
-    // apply it to the actual folder
+    newPermissions.userPermissions.forEach(userPermission => this.adjustRelatedPermissions(userPermission));
+    this.folderDetails = {
+      ...this.folderDetails,
+      permissions: newPermissions,
+    };
   }
   
-  private adjustRelatedPermissions(rolePermission: IRolePermission): void {
+  private adjustRelatedPermissions(permission: IRolePermission | IUserPermission): void {
     const permissionId =
     {
       view: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'View Folder').permissionId,
@@ -114,11 +146,11 @@ export class DnnRmEditFolder {
       write: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Write to Folder').permissionId,
     };
 
-    const viewPermission = rolePermission.permissions.find(p => p.permissionId == permissionId.view);
+    const viewPermission = permission.permissions.find(p => p.permissionId == permissionId.view);
     // If view permission is denied, then deny all other permissions
     if (viewPermission && viewPermission.allowAccess == false){
       // Deny all permissions
-      rolePermission.permissions = [
+      permission.permissions = [
         {
           allowAccess: false,
           fullControl: false,
@@ -150,11 +182,11 @@ export class DnnRmEditFolder {
     }
 
     // If browse was denied, then deny write
-    const browsePermission = rolePermission.permissions.find(p => p.permissionId == permissionId.browse);
+    const browsePermission = permission.permissions.find(p => p.permissionId == permissionId.browse);
     if (browsePermission && browsePermission.allowAccess == false){
       // Deny write
-      rolePermission.permissions = [
-        ...rolePermission.permissions.filter(p => p.permissionId != permissionId.write),
+      permission.permissions = [
+        ...permission.permissions.filter(p => p.permissionId != permissionId.write),
         {
           allowAccess: false,
           fullControl: false,
@@ -170,7 +202,7 @@ export class DnnRmEditFolder {
     // If browse was allowed, then allow view
     if (browsePermission && browsePermission.allowAccess == true){
       // Allow browse
-      rolePermission.permissions = [
+      permission.permissions = [
         {
           allowAccess: true,
           fullControl: false,
@@ -180,15 +212,15 @@ export class DnnRmEditFolder {
           permissionName: "Browse Folder",
           view: false,
         },
-        ...rolePermission.permissions.filter(p => p.permissionId != permissionId.view),
+        ...permission.permissions.filter(p => p.permissionId != permissionId.view),
       ];
     }
 
     // If write was allowed, then allow all other permissions
-    const writePermission = rolePermission.permissions.find(p => p.permissionId == permissionId.write);
+    const writePermission = permission.permissions.find(p => p.permissionId == permissionId.write);
     if (writePermission && writePermission.allowAccess == true){
       // Allow all permissions
-      rolePermission.permissions = [
+      permission.permissions = [
         {
           allowAccess: true,
           fullControl: false,
@@ -218,6 +250,12 @@ export class DnnRmEditFolder {
         },
       ]
     }
+  }
+
+  private handleUserSearchQueryChanged(detail: string): void {
+    this.itemsClient.searchUsers(detail)
+      .then(data => this.foundUsers = data)
+      .catch(error => alert(error));
   }
 
   render() {
@@ -272,7 +310,9 @@ export class DnnRmEditFolder {
                 permissions={this.folderDetails.permissions}
                 roleGroups={this.roleGroups}
                 roles={this.roles}
+                foundUsers={this.foundUsers}
                 onPermissionsChanged={e => this.handlePermissionsChanged(e.detail)}
+                onUserSearchQueryChanged={e => this.handleUserSearchQueryChanged(e.detail)}
               />
             }
           </dnn-tab>
@@ -281,7 +321,7 @@ export class DnnRmEditFolder {
           <dnn-button
             type="primary"
             reversed
-            onClick={() => this.handleCancel()}
+            onClick={() => this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>

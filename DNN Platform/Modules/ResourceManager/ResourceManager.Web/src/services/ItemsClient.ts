@@ -1,5 +1,8 @@
 import { DnnServicesFramework } from "@dnncommunity/dnn-elements";
 import { IPermissions } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface";
+import { IRoleGroup } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-group-interface";
+import { IRole } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-interface";
+import { ISearchedUser } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/searched-user-interface";
 import { SortFieldInfo } from "../enums/SortField";
 
 export class ItemsClient{
@@ -180,6 +183,82 @@ export class ItemsClient{
             .catch(reason => reject(reason));
         });
     }
+
+    public getRoleGroups(){
+        return new Promise<IRoleGroup[]>((resolve, reject) => {
+            const url = `${this.requestUrl}GetRoleGroups`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+                })
+                .then(response => {
+                    if (response.status == 200){
+                        response.json().then(data => resolve(data));
+                    }
+                    else{
+                        response.json().then(error => reject(error.ExceptionMessage || error.message));
+                    }
+                })
+                .catch(reason => reject(reason));
+        });
+    }
+
+    public getRoles(){
+        return new Promise<IRole[]>((resolve, reject) => {
+            const url = `${this.requestUrl}GetRoles`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
+
+    public searchUsers(query: string) {
+        return new Promise<ISearchedUser[]>((resolve, reject) => {
+            const url = `${this.requestUrl}GetSuggestionUsers?keyword=${query}&count=50`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
+
+    public saveFolderDetails(request: SaveFolderDetailsRequest){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}SaveFolderDetails`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("Content-Type", "application/json");
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resolve();
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
 }
 
 export interface GetFolderContentResponse{
@@ -278,5 +357,11 @@ export interface FolderDetails{
     lastModifiedBy: string;
     type: string;
     isVersioned: boolean;
+    permissions: IPermissions;
+}
+
+export interface SaveFolderDetailsRequest{
+    folderId: number;
+    folderName: string;
     permissions: IPermissions;
 }
