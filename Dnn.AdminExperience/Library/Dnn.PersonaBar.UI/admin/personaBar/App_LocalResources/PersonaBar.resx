@@ -291,9 +291,6 @@
   <data name="ServerName.Text" xml:space="preserve">
     <value>Server Name</value>
   </data>
-  <data name="UpgradeLicense.Text" xml:space="preserve">
-    <value>[ Upgrade to Evoq ]</value>
-  </data>
   <data name="btn_CloseDialog.Text" xml:space="preserve">
     <value>OK</value>
   </data>
