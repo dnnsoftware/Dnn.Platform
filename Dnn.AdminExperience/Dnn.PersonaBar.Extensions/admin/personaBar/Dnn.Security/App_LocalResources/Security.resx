@@ -878,7 +878,7 @@
     <value>Check if default.aspx or default.aspx.cs files have been modified</value>
   </data>
   <data name="CheckDefaultPageFailure.Text" xml:space="preserve">
-    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN or Evoq version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
+    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
   </data>
   <data name="CheckDefaultPageReason.Text" xml:space="preserve">
     <value>DNN use default.aspx to load everything, so all requests will load this file when user browse the site, if someone modify this file, it may cause huge risk.</value>
