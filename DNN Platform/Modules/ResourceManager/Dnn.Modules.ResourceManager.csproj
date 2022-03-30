@@ -133,6 +133,7 @@
     <Compile Include="Services\Dto\MoveFolderRequest.cs" />
     <Compile Include="Services\Dto\Permission.cs" />
     <Compile Include="Services\Dto\Permissions.cs" />
+    <Compile Include="Services\Dto\RoleGroupDto.cs" />
     <Compile Include="Services\Dto\RolePermission.cs" />
     <Compile Include="Services\Dto\ThumbnailDownloadRequest.cs" />
     <Compile Include="Services\Dto\UserPermission.cs" />

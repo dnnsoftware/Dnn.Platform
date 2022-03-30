@@ -15,6 +15,9 @@ export class DnnRmFolderListItem {
 
   /** If true, this node will be expanded on load. */
   @Prop({mutable: true}) expanded = false;
+  
+  /** The ID of the parent folder. */
+  @Prop() parentFolderId!: number;
 
   /** Fires when a context menu is opened for this item. Emits the folder ID. */
   @Event() dnnRmcontextMenuOpened: EventEmitter<number>;
@@ -26,22 +29,12 @@ export class DnnRmFolderListItem {
     }
   }
 
-  private dismissContextMenu() {
-    if (this.contextMenu && this.contextMenu.expanded){
-      this.contextMenu.expanded = false;
-      requestAnimationFrame(() => {
-        this.contextMenu.style.display = "none";
-      });
-    }
-  }
-
   @State() folderIconUrl: string;
 
   @Element() el!: HTMLDnnRmFolderListItemElement;
 
   private itemsClient: ItemsClient;
   private internalServicesClient: InternalServicesClient;
-  private contextMenu: HTMLDnnCollapsibleElement;
   
   constructor(){
     this.itemsClient = new ItemsClient(state.moduleId);
@@ -96,11 +89,27 @@ export class DnnRmFolderListItem {
 
   private handleContextMenu(e: MouseEvent): void {
     e.preventDefault();
-    this.contextMenu.style.display = "block";
-    this.contextMenu.style.left = `${e.pageX}px`;
-    this.contextMenu.style.top = `${e.pageY}px`;
-    this.contextMenu.expanded = true;
-    this.dnnRmcontextMenuOpened.emit(Number.parseInt(this.folder.data.key));
+    this.itemsClient.getFolderItem(Number.parseInt(this.folder.data.key))
+    .then(item => {
+      const collapsible = document.createElement("dnn-collapsible");
+      const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
+      collapsible.appendChild(folderContextMenu);
+      folderContextMenu.item = item;
+      collapsible.style.left = `${e.pageX}px`;
+      collapsible.style.top = `${e.pageY}px`;
+      collapsible.style.display = "block";
+      this.el.shadowRoot.appendChild(collapsible);
+      setTimeout(() => {
+        collapsible.expanded = true;
+      }, 100);
+      this.dnnRmcontextMenuOpened.emit(Number.parseInt(this.folder.data.key));
+    })
+    .catch(reason => console.error(reason));
+  }
+
+  private dismissContextMenu() {
+    const existingMenus = this.el.shadowRoot.querySelectorAll(".contextMenu");
+    existingMenus?.forEach(contextMenu => this.el.shadowRoot.removeChild(contextMenu));
   }
 
   render() {
@@ -131,13 +140,14 @@ export class DnnRmFolderListItem {
               </div>
             ,
               this.folder.children && this.folder.children.length > 0 && this.folder.children.map(child =>
-              <dnn-rm-folder-list-item slot="children" folder={child}></dnn-rm-folder-list-item>
+              <dnn-rm-folder-list-item
+                slot="children"
+                parentFolderId={Number.parseInt(this.folder.data.key)}
+                folder={child}>
+              </dnn-rm-folder-list-item>
               )
             ]}
         </dnn-treeview-item>
-        <dnn-collapsible ref={el => this.contextMenu = el}>
-          <dnn-rm-folder-context-menu clickedFolderId={Number.parseInt(this.folder.data.key)} />
-        </dnn-collapsible>
       </Host>
     );
   }

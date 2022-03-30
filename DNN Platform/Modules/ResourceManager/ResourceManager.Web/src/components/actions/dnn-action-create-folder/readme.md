@@ -22,14 +22,14 @@
 ### Depends on
 
 - dnn-modal
-- [dnn-rm-edit-folder](../../dnn-rm-edit-folder)
+- [dnn-rm-create-folder](../../dnn-rm-create-folder)
 
 ### Graph
 ```mermaid
 graph TD;
   dnn-action-create-folder --> dnn-modal
-  dnn-action-create-folder --> dnn-rm-edit-folder
-  dnn-rm-edit-folder --> dnn-button
+  dnn-action-create-folder --> dnn-rm-create-folder
+  dnn-rm-create-folder --> dnn-button
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-rm-actions-bar --> dnn-action-create-folder

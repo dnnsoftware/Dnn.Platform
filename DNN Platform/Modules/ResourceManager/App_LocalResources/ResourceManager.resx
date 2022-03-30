@@ -342,4 +342,22 @@
   <data name="MappedPath.Text" xml:space="preserve">
     <value>Mapped Path</value>
   </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="RolePermissions.Text" xml:space="preserve">
+    <value>Role Permissions</value>
+  </data>
+  <data name="UserPermissions.Text" xml:space="preserve">
+    <value>User Permissions</value>
+  </data>
+  <data name="FolderId.Text" xml:space="preserve">
+    <value>Folder ID</value>
+  </data>
+  <data name="General.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
 </root>

@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property                | Attribute   | Description                   | Type     | Default     |
+| ----------------------- | ----------- | ----------------------------- | -------- | ----------- |
+| `folderId` _(required)_ | `folder-id` | The ID of the folder to edit. | `number` | `undefined` |
+
+
 ## Events
 
 | Event                 | Description                                                                                                        | Type                |
@@ -16,19 +23,29 @@
 
 ### Used by
 
- - [dnn-action-create-folder](../actions/dnn-action-create-folder)
+ - [dnn-action-edit-item](../actions/dnn-action-edit-item)
 
 ### Depends on
 
+- dnn-tabs
+- dnn-tab
+- dnn-permissions-grid
 - dnn-button
 
 ### Graph
 ```mermaid
 graph TD;
+  dnn-rm-edit-folder --> dnn-tabs
+  dnn-rm-edit-folder --> dnn-tab
+  dnn-rm-edit-folder --> dnn-permissions-grid
   dnn-rm-edit-folder --> dnn-button
+  dnn-permissions-grid --> dnn-checkbox
+  dnn-permissions-grid --> dnn-button
+  dnn-permissions-grid --> dnn-searchbox
+  dnn-permissions-grid --> dnn-collapsible
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
-  dnn-action-create-folder --> dnn-rm-edit-folder
+  dnn-action-edit-item --> dnn-rm-edit-folder
   style dnn-rm-edit-folder fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

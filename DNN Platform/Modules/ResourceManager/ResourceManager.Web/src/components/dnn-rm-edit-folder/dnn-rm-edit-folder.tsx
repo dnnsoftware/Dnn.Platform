@@ -1,58 +1,112 @@
-import { Component, Host, h, Element, State, Event, EventEmitter } from '@stencil/core';
-import { CreateNewFolderRequest, FolderMappingInfo, ItemsClient } from '../../services/ItemsClient';
+import { IRoleGroup } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-group-interface';
+import { IRole } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-interface';
+import { Component, Element, Event, EventEmitter, Host, h, State, Prop } from '@stencil/core';
 import state from '../../store/store';
-
+import { FolderDetails, ItemsClient, SaveFolderDetailsRequest } from '../../services/ItemsClient';
+import { IPermissions, IRolePermission, IUserPermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
+import { ISearchedUser } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/searched-user-interface';
 @Component({
   tag: 'dnn-rm-edit-folder',
   styleUrl: 'dnn-rm-edit-folder.scss',
   shadow: true,
 })
 export class DnnRmEditFolder {
+  
+  /** The ID of the folder to edit. */
+  @Prop() folderId!: number;
 
   /**
    * Fires when there is a possibility that some folders have changed.
    * Can be used to force parts of the UI to refresh.
    */
-  @Event() dnnRmFoldersChanged: EventEmitter<void>;
-  
-  @Element() el : HTMLDnnRmEditFolderElement
-  
-  @State() folderMappings: FolderMappingInfo[];
-  
-  @State() newFolderRequest: CreateNewFolderRequest = {
-    FolderMappingId: -1,
-    FolderName: "",
-    ParentFolderId: state.currentItems.folder.folderId,
-  }
+   @Event() dnnRmFoldersChanged: EventEmitter<void>;
 
-  private readonly itemsClient: ItemsClient;
-  private nameField: HTMLInputElement;
+  @Element() el: HTMLDnnRmEditFolderElement;
 
-  constructor(){
+  @State() roleGroups: IRoleGroup[] = [];
+  @State() roles: IRole[] = [];
+  @State() folderIconUrl: string;
+  @State() folderDetails: FolderDetails;
+  @State() foundUsers: ISearchedUser[];
+
+  private itemsClient: ItemsClient;
+
+  constructor() {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
   componentWillLoad() {
-    this.itemsClient.getFolderMappings()
-    .then(data => {
-      this.folderMappings = data.sort((a, b) => a.FolderMappingID - b.FolderMappingID);
-      this.newFolderRequest = {
-        ...this.newFolderRequest,
-        FolderMappingId: this.folderMappings[0].FolderMappingID,
-        ParentFolderId: state.currentItems.folder.folderId,
-      };
-    })
-    .catch(reason => console.error(reason));
+    this.itemsClient.getFolderDetails(this.folderId)
+      .then(data => {
+        this.folderDetails = {
+          ...data,
+          permissions: {
+            ...data.permissions,
+            permissionDefinitions: data.permissions.permissionDefinitions.sort(a => {
+              switch (a.permissionName) {
+                case "View Folder":
+                  return -1;
+                case "Browse Folder":
+                  return 0;
+                case "Write to Folder":
+                  return 1;
+                default:
+                  break;
+              }
+            }),
+            rolePermissions: [
+              ...data.permissions.rolePermissions.map(rp => {
+                return {
+                  ...rp,
+                  permissions: rp.permissions.sort(a => {
+                    switch (a.permissionName) {
+                      case "View Folder":
+                        return -1;
+                      case "Browse Folder":
+                        return 0;
+                      case "Write to Folder":
+                        return 1;
+                    }
+                  }),
+                };
+              }),
+            ],
+            userPermissions: [
+              ...data.permissions.userPermissions.map(up => {
+                return {
+                  ...up,
+                  permissions: up.permissions.sort(a => {
+                    switch (a.permissionName) {
+                      case "View Folder":
+                        return -1;
+                      case "Browse Folder":
+                        return 0;
+                      case "Write to Folder":
+                        return 1;
+                    }
+                  }),
+                };
+              }),
+            ],
+          },
+        };
+      })
+      .catch(error => alert(error));
+    
+    this.itemsClient.getFolderIconUrl(this.folderId)
+      .then(data => this.folderIconUrl = data)
+      .catch(error => alert(error));
+
+    this.itemsClient.getRoleGroups()
+      .then(data => this.roleGroups = data)
+      .catch(error => alert(error));
+    
+    this.itemsClient.getRoles()
+      .then(data => this.roles = data)
+      .catch(error => alert(error));
   }
 
-  componentDidLoad() {
-    setTimeout(() => {
-      this.nameField.focus();
-    }, 350);
-    console.log({...state});
-  }
-
-  private handleCancel(): void {
+  private closeModal(): void {
     const modal = this.el.parentElement as HTMLDnnModalElement;
     modal.hide().then(() => {
       setTimeout(() => {
@@ -61,101 +115,218 @@ export class DnnRmEditFolder {
     });
   }
 
-  private handleTypeChanged(e: Event): void {
-    const select = e.target as HTMLSelectElement;
-    const option = select.options[select.selectedIndex] as HTMLOptionElement;
-    const newValue = Number.parseInt(option.value);
-    this.newFolderRequest = {
-      ...this.newFolderRequest,
-      FolderMappingId: newValue,
+  private handleSave(): void {
+    const folderDetails: SaveFolderDetailsRequest = {
+      folderId: this.folderId,
+      folderName: this.folderDetails.folderName,
+      permissions: this.folderDetails.permissions,
+    };
+    this.itemsClient.saveFolderDetails(folderDetails)
+      .then(() => {
+        this.dnnRmFoldersChanged.emit();
+        this.closeModal();
+      })
+      .catch(error => alert(error));
+  }
+
+  private handlePermissionsChanged(newPermissions: IPermissions): void {
+    newPermissions.rolePermissions.forEach(rolePermission => this.adjustRelatedPermissions(rolePermission));
+    newPermissions.userPermissions.forEach(userPermission => this.adjustRelatedPermissions(userPermission));
+    this.folderDetails = {
+      ...this.folderDetails,
+      permissions: newPermissions,
     };
   }
+  
+  private adjustRelatedPermissions(permission: IRolePermission | IUserPermission): void {
+    const permissionId =
+    {
+      view: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'View Folder').permissionId,
+      browse: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Browse Folder').permissionId,
+      write: this.folderDetails.permissions.permissionDefinitions.find(p => p.permissionName === 'Write to Folder').permissionId,
+    };
 
-  private handleSave(): void {
-    this.itemsClient.createNewFolder(this.newFolderRequest)
-    .then(() => {
-      this.dnnRmFoldersChanged.emit();
-      state.currentItems = {
-        ...state.currentItems,
-        items: [],
-      };
-      const modal = this.el.parentElement as HTMLDnnModalElement;
-      modal.hide().then(() => {
-        setTimeout(() => {
-          document.body.removeChild(modal);
-        }, 300);
-      });
-    })
-    .catch(error => alert(error));
+    const viewPermission = permission.permissions.find(p => p.permissionId == permissionId.view);
+    // If view permission is denied, then deny all other permissions
+    if (viewPermission && viewPermission.allowAccess == false){
+      // Deny all permissions
+      permission.permissions = [
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.view,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "View Folder",
+          view: false,
+        },
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.browse,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Browse Folder",
+          view: false,
+        },
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.write,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Write to Folder",
+          view: false,
+        },
+      ]
+    }
+
+    // If browse was denied, then deny write
+    const browsePermission = permission.permissions.find(p => p.permissionId == permissionId.browse);
+    if (browsePermission && browsePermission.allowAccess == false){
+      // Deny write
+      permission.permissions = [
+        ...permission.permissions.filter(p => p.permissionId != permissionId.write),
+        {
+          allowAccess: false,
+          fullControl: false,
+          permissionId: permissionId.write,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Write to Folder",
+          view: false,
+        }
+      ]
+    }
+
+    // If browse was allowed, then allow view
+    if (browsePermission && browsePermission.allowAccess == true){
+      // Allow browse
+      permission.permissions = [
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.view,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Browse Folder",
+          view: false,
+        },
+        ...permission.permissions.filter(p => p.permissionId != permissionId.view),
+      ];
+    }
+
+    // If write was allowed, then allow all other permissions
+    const writePermission = permission.permissions.find(p => p.permissionId == permissionId.write);
+    if (writePermission && writePermission.allowAccess == true){
+      // Allow all permissions
+      permission.permissions = [
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.view,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "View Folder",
+          view: false,
+        },
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.browse,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Browse Folder",
+          view: false,
+        },
+        {
+          allowAccess: true,
+          fullControl: false,
+          permissionId: permissionId.write,
+          permissionCode: null,
+          permissionKey: null,
+          permissionName: "Write to Folder",
+          view: false,
+        },
+      ]
+    }
   }
 
-  private canChooseFolderProvider() {
-    return this.folderMappings &&
-      this.folderMappings.find(f => f.FolderMappingID == state.currentItems.folder.folderMappingId).IsDefault;
+  private handleUserSearchQueryChanged(detail: string): void {
+    this.itemsClient.searchUsers(detail)
+      .then(data => this.foundUsers = data)
+      .catch(error => alert(error));
   }
 
   render() {
     return (
       <Host>
-        <h2>{state.localization.AddFolder}</h2>
-        <div class="form">
-          {state.currentItems.folder.folderName.length > 0 &&[
-            <label>{state.localization.FolderParent}</label>,
-            <span>{state.currentItems.folder.folderName}</span>
-          ]}
-          <label>{state.localization.Name}</label>
-          <input
-            type="text" required
-            ref={el => this.nameField = el}
-            value={this.newFolderRequest.FolderName}
-            onInput={e => this.newFolderRequest = {
-              ...this.newFolderRequest,
-              FolderName: (e.target as HTMLInputElement).value,
-            }}
-          />
-          {!this.newFolderRequest.FolderName &&
-            <span>{state.localization.FolderNameRequiredMessage}</span>
-          }
-          {this.canChooseFolderProvider() &&
-            [
-              <label>{state.localization.Type}</label>,
-              <select onChange={e => this.handleTypeChanged(e)}>
-                {this.folderMappings?.map((folderMapping, index) => 
-                  <option
-                    value={folderMapping.FolderMappingID}
-                    selected={index == 0}>
-                    {folderMapping.MappingName}
-                  </option>
-                )}
-              </select>
-            ]
-          }
-          {this.canChooseFolderProvider() && this.folderMappings.find(m => m.FolderMappingID == this.newFolderRequest.FolderMappingId).IsDefault == false &&[
-            <label>{state.localization.MappedPath}</label>,
-            <input 
-              type="text"
-              value={this.newFolderRequest.MappedName}
-              onInput={e => this.newFolderRequest = {
-                ...this.newFolderRequest,
-                MappedName: (e.target as HTMLInputElement).value,
-              }}
-            />
-          ]}
-        </div>
+        <h2>{state.localization?.Edit}</h2>
+        <dnn-tabs>
+          <dnn-tab tabTitle={state.localization?.General}>
+            <div class="general">
+              <div class="left">
+                {this.folderIconUrl &&
+                  <img src={this.folderIconUrl} />
+                }
+                {this.folderDetails &&
+                  <div class="form">
+                    <label>{state.localization?.FolderId}</label>
+                    <span>{this.folderDetails.folderId}</span>
+
+                    <label>{state.localization?.Created}</label>
+                    <span>{this.folderDetails.createdBy}</span>
+
+                    <label>{state.localization?.CreatedOnDate}</label>
+                    <span>{this.folderDetails.createdOnDate}</span>
+
+                    <label>{state.localization?.LastModified}</label>
+                    <span>{this.folderDetails.lastModifiedBy}</span>
+
+                    <label>{state.localization?.LastModifiedOnDate}</label>
+                    <span>{this.folderDetails.lastModifiedOnDate}</span>
+                  </div>
+                }
+              </div>
+              <div class="right">
+                <div class="form">
+                  <label>{state.localization?.Name}</label>
+                  <input type="text"
+                    value={this.folderDetails?.folderName}
+                    onInput={e =>
+                      this.folderDetails = {
+                        ...this.folderDetails,
+                        folderName: (e.target as HTMLInputElement).value,
+                      }
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </dnn-tab>
+          <dnn-tab tabTitle={state.localization?.Permissions}>
+            {this.folderDetails && this.folderDetails.permissions && this.roleGroups && this.roles && 
+              <dnn-permissions-grid
+                permissions={this.folderDetails.permissions}
+                roleGroups={this.roleGroups}
+                roles={this.roles}
+                foundUsers={this.foundUsers}
+                onPermissionsChanged={e => this.handlePermissionsChanged(e.detail)}
+                onUserSearchQueryChanged={e => this.handleUserSearchQueryChanged(e.detail)}
+              />
+            }
+          </dnn-tab>
+        </dnn-tabs>
         <div class="controls">
           <dnn-button
             type="primary"
             reversed
-            onClick={() => this.handleCancel()}
+            onClick={() => this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             type="primary"
-            disabled={
-              this.newFolderRequest.FolderMappingId < 0 ||
-              this.newFolderRequest.FolderName.length < 1
-            }
             onClick={() => this.handleSave()}
           >
             {state.localization.Save}
