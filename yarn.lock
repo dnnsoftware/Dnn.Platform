@@ -1618,7 +1618,7 @@ __metadata:
     file-loader: 3.0.1
     interact.js: ^1.2.8
     jest: ^24.8.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -4706,7 +4706,7 @@ __metadata:
     file-loader: 3.0.1
     i18n-webpack-plugin: 1.0.0
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: 15.6.2
     raw-loader: 2.0.0
@@ -7724,7 +7724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clone@npm:^2.1.1, clone@npm:^2.1.2":
+"clone@npm:^2.1.1":
   version: 2.1.2
   resolution: "clone@npm:2.1.2"
   checksum: aaf106e9bc025b21333e2f4c12da539b568db4925c0501a1bf4070836c9e848c892fa22c35548ce0d1132b08bbbfa17a00144fe58fccdab6fa900fec4250f67d
@@ -8204,6 +8204,15 @@ __metadata:
   version: 2.1.3
   resolution: "cookiejar@npm:2.1.3"
   checksum: 88259983ebc52ceb23cdacfa48762b6a518a57872eff1c7ed01d214fff5cf492e2660d7d5c04700a28f1787a76811df39e8639f8e17670b3cf94ecd86e161f07
+  languageName: node
+  linkType: hard
+
+"copy-anything@npm:^2.0.1":
+  version: 2.0.3
+  resolution: "copy-anything@npm:2.0.3"
+  dependencies:
+    is-what: ^3.12.0
+  checksum: 50f6423fa7e346416c18658fd253bfbe8783ff51c4f244a3c18c39693369cc7cb84cc9e4a4e109c0ab2f81e44eb345ce9ca8f0fb4b48f4aae3a396423912d60f
   languageName: node
   linkType: hard
 
@@ -9327,7 +9336,7 @@ __metadata:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -9366,7 +9375,7 @@ __metadata:
     eslint-plugin-import: ^2.24.0
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
-    less: 3.8.1
+    less: 4.1.2
     less-loader: 4.1.0
     prop-types: ^15.6.2
     react: ^16.6.3
@@ -9400,7 +9409,7 @@ __metadata:
     eslint-plugin-import: ^2.24.0
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     localization: ^1.0.2
     prop-types: 15.6.2
@@ -10795,7 +10804,7 @@ __metadata:
     file-loader: 3.0.1
     json-loader: ^0.5.7
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     moment: ^2.22.1
     pikaday: 1.8.0
@@ -10968,7 +10977,7 @@ __metadata:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -13917,6 +13926,13 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"is-what@npm:^3.12.0":
+  version: 3.14.1
+  resolution: "is-what@npm:3.14.1"
+  checksum: a9a6ce92d33799f1ae0916c7afb6f8128a23ce9d28bd69d9ec3ec88910e7a1f68432e6236c3c8a4d544cf0b864675e5d828437efde60ee0cf8102061d395c1df
+  languageName: node
+  linkType: hard
+
 "is-window@npm:^1.0.2":
   version: 1.0.2
   resolution: "is-window@npm:1.0.2"
@@ -14949,19 +14965,20 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"less@npm:3.8.1":
-  version: 3.8.1
-  resolution: "less@npm:3.8.1"
+"less@npm:4.1.2":
+  version: 4.1.2
+  resolution: "less@npm:4.1.2"
   dependencies:
-    clone: ^2.1.2
+    copy-anything: ^2.0.1
     errno: ^0.1.1
     graceful-fs: ^4.1.2
     image-size: ~0.5.0
+    make-dir: ^2.1.0
     mime: ^1.4.1
-    mkdirp: ^0.5.0
-    promise: ^7.1.1
-    request: ^2.83.0
+    needle: ^2.5.2
+    parse-node-version: ^1.0.1
     source-map: ~0.6.0
+    tslib: ^2.3.0
   dependenciesMeta:
     errno:
       optional: true
@@ -14969,55 +14986,17 @@ fsevents@~2.3.2:
       optional: true
     image-size:
       optional: true
+    make-dir:
+      optional: true
     mime:
       optional: true
-    mkdirp:
-      optional: true
-    promise:
-      optional: true
-    request:
+    needle:
       optional: true
     source-map:
       optional: true
   bin:
-    lessc: ./bin/lessc
-  checksum: 47ec6052b96bf7af73c00adbda10a4be9f75ce7ccfeaad01db2f842e081caa6b0a7cb0664237fd8c9b20ed85b18b759c742fa043f5c4f7e010daf4683ef80722
-  languageName: node
-  linkType: hard
-
-"less@npm:3.9.0":
-  version: 3.9.0
-  resolution: "less@npm:3.9.0"
-  dependencies:
-    clone: ^2.1.2
-    errno: ^0.1.1
-    graceful-fs: ^4.1.2
-    image-size: ~0.5.0
-    mime: ^1.4.1
-    mkdirp: ^0.5.0
-    promise: ^7.1.1
-    request: ^2.83.0
-    source-map: ~0.6.0
-  dependenciesMeta:
-    errno:
-      optional: true
-    graceful-fs:
-      optional: true
-    image-size:
-      optional: true
-    mime:
-      optional: true
-    mkdirp:
-      optional: true
-    promise:
-      optional: true
-    request:
-      optional: true
-    source-map:
-      optional: true
-  bin:
-    lessc: ./bin/lessc
-  checksum: 15664e1ef9574a01ebb06c184194f87db5406005ec60744cd11390d407e320a914cc83c08685369074a58b7f37d18f71309284aaeecf812eca2731ad4b3c8ec0
+    lessc: bin/lessc
+  checksum: d3cbc3e18a8313e44f7feaf5fce1728b25911e116a8b9f7206e1f7bf5660902ddaf470b58e68a52288488c8a337433b7de686a3d2405ce49155c2280191983de
   languageName: node
   linkType: hard
 
@@ -15071,7 +15050,7 @@ fsevents@~2.3.2:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -16425,6 +16404,19 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"needle@npm:^2.5.2":
+  version: 2.9.1
+  resolution: "needle@npm:2.9.1"
+  dependencies:
+    debug: ^3.2.6
+    iconv-lite: ^0.4.4
+    sax: ^1.2.4
+  bin:
+    needle: ./bin/needle
+  checksum: 746ae3a3782f0a057ff304a98843cc6f2009f978a0fad0c3e641a9d46d0b5702bb3e197ba08aecd48678067874a991c4f5fc320c7e51a4c041d9dd3441146cf0
+  languageName: node
+  linkType: hard
+
 "negotiator@npm:0.6.2":
   version: 0.6.2
   resolution: "negotiator@npm:0.6.2"
@@ -17542,7 +17534,7 @@ fsevents@~2.3.2:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jest: ^24.8.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     lodash: 4.17.11
     promise: ^8.0.2
@@ -17678,6 +17670,13 @@ fsevents@~2.3.2:
   version: 0.2.1
   resolution: "parse-key@npm:0.2.1"
   checksum: f36d545c8bf0ab599096c04b6d9c426ab019e555f7da11b4721a143fa145be61c847a100bef6a50e78d06bf2369a9076ed6d488743d8e273f59d4bfc0e0c3ca9
+  languageName: node
+  linkType: hard
+
+"parse-node-version@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "parse-node-version@npm:1.0.1"
+  checksum: c192393b6a978092c1ef8df2c42c0a02e4534b96543e23d335f1b9b5b913ac75473d18fe6050b58d6995c57fb383ee71a5cb8397e363caaf38a6df8215cc52fd
   languageName: node
   linkType: hard
 
@@ -18755,7 +18754,7 @@ fsevents@~2.3.2:
     i18n-webpack-plugin: 1.0.0
     jest: ^24.8.0
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     localization: ^1.0.2
     object-assign: "*"
@@ -20767,7 +20766,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"request@npm:^2.83.0, request@npm:^2.87.0":
+"request@npm:^2.87.0":
   version: 2.88.0
   resolution: "request@npm:2.88.0"
   dependencies:
@@ -21006,7 +21005,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     fetch-ie8: 1.4.2
     file-loader: 3.0.1
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     lodash: ^4.17.4
     prop-types: ^15.7.2
@@ -21159,7 +21158,7 @@ resolve@^1.4.0:
     file-loader: 3.0.1
     i18n-webpack-plugin: 1.0.0
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -21401,7 +21400,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -21559,7 +21558,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -21667,7 +21666,7 @@ resolve@^1.4.0:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -21927,7 +21926,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     i18n-webpack-plugin: 1.0.0
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     localization: ^1.0.2
     prop-types: ^15.6.2
@@ -21982,7 +21981,7 @@ resolve@^1.4.0:
     file-loader: 3.0.1
     jest: ^24.8.0
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -22025,7 +22024,7 @@ resolve@^1.4.0:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -23108,7 +23107,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -23150,7 +23149,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jwt-decode: 2.2.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     object-path: 0.11.4
     prop-types: ^15.6.2
@@ -23339,7 +23338,7 @@ resolve@^1.4.0:
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -23673,6 +23672,13 @@ resolve@^1.4.0:
   version: 1.9.3
   resolution: "tslib@npm:1.9.3"
   checksum: 56ef6325adb72c6477fb48256304507a2c475d69d7ead4644d61f5685fac2a275a38cf217c556e63fc3c177e729426d730e2c2e71c8042dc6cc57338a849edb2
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.3.0":
+  version: 2.3.1
+  resolution: "tslib@npm:2.3.1"
+  checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
   languageName: node
   linkType: hard
 
@@ -24141,7 +24147,7 @@ resolve@^1.4.0:
     eslint-plugin-spellcheck: 0.0.11
     file-loader: 3.0.1
     jest: ^24.8.0
-    less: 3.9.0
+    less: 4.1.2
     less-loader: 5.0.0
     localization: ^1.0.2
     prop-types: ^15.6.2

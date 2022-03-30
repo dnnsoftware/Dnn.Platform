@@ -33,7 +33,7 @@
     "file-loader": "3.0.1",
     "json-loader": "^0.5.7",
     "jwt-decode": "2.2.0",
-    "less": "3.9.0",
+    "less": "4.1.2",
     "less-loader": "5.0.0",
     "moment": "^2.22.1",
     "pikaday": "1.8.0",
