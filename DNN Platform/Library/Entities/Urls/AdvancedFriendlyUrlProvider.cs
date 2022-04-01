@@ -1405,9 +1405,9 @@ namespace DotNetNuke.Entities.Urls
             var localSettings = new FriendlyUrlSettings(portalId);
 
             // Call GetFriendlyAlias to get the Alias part of the url
-            if (string.IsNullOrEmpty(portalAlias) && portalSettings != null)
+            if (string.IsNullOrEmpty(portalAlias) && portalSettings?.PortalAlias is IPortalAliasInfo portalSettingsAlias)
             {
-                portalAlias = portalSettings.PortalAlias.HTTPAlias;
+                portalAlias = portalSettingsAlias.HttpAlias;
             }
 
             string friendlyPath = GetFriendlyAlias(
