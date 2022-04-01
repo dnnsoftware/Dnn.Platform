@@ -5476,12 +5476,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"attr-accept@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "attr-accept@npm:1.1.3"
-  dependencies:
-    core-js: ^2.5.0
-  checksum: 836c0e863719c0355e8ad4214e4c81f24dd9e724233153200189732da691f73e6f13316b8ac456d75749a89780f0da67e44387e46dfc3fd9a517a84a0e45acbc
+"attr-accept@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "attr-accept@npm:2.2.2"
+  checksum: 496f7249354ab53e522510c1dc8f67a1887382187adde4dc205507d2f014836a247073b05e9d9ea51e2e9c7f71b0d2aa21730af80efa9af2d68303e5f0565c4d
   languageName: node
   linkType: hard
 
@@ -11293,6 +11291,15 @@ __metadata:
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
   checksum: faf43eecf233f4897b0150aaa874eeeac214e4f9de49738a9e0ef734a30b5260059e85b7edadf852b98e415f875bd5f12587768a93fd52aaf2e479ecf95fab20
+  languageName: node
+  linkType: hard
+
+"file-selector@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "file-selector@npm:0.4.0"
+  dependencies:
+    tslib: ^2.0.3
+  checksum: 1c9986e94bd033442cb4299d10d73d98fbc0b5f1af5b47d7a27b39f1e6bbd8d677f66c2628167da387166c652ad3c2429875042b453ba62f14945d903adf88d5
   languageName: node
   linkType: hard
 
@@ -18854,6 +18861,17 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"prop-types@npm:^15.8.1":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: ^1.4.0
+    object-assign: ^4.1.1
+    react-is: ^16.13.1
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
 "property-information@npm:^5.0.0, property-information@npm:^5.0.1":
   version: 5.0.1
   resolution: "property-information@npm:5.0.1"
@@ -19417,15 +19435,16 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:6.2.4":
-  version: 6.2.4
-  resolution: "react-dropzone@npm:6.2.4"
+"react-dropzone@npm:12.0.4":
+  version: 12.0.4
+  resolution: "react-dropzone@npm:12.0.4"
   dependencies:
-    attr-accept: ^1.1.3
-    prop-types: ^15.6.2
+    attr-accept: ^2.2.2
+    file-selector: ^0.4.0
+    prop-types: ^15.8.1
   peerDependencies:
-    react: ">=0.14.0"
-  checksum: b86dff439a22b9f8384a96ceeeb9d8b8e1fff645257477aabd63079fdc123200ddd4c42050feb621b2863c5d884525272e0f7ae0d9508cc8029085fb21da5380
+    react: ">= 16.8"
+  checksum: cc8c2036c72cbe02ddea1e141de45aeee7b399321b5791174d04fb8c1f52eb2ee3ae2d3fb1240fc23008a435c4ceb437e85831f0388a6b34be2bc39417701096
   languageName: node
   linkType: hard
 
@@ -19570,7 +19589,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0, react-is@npm:^16.3.2, react-is@npm:^16.6.0, react-is@npm:^16.7.0, react-is@npm:^16.8.1, react-is@npm:^16.8.2, react-is@npm:^16.8.4, react-is@npm:^16.8.6":
+"react-is@npm:^16.12.0, react-is@npm:^16.13.1, react-is@npm:^16.3.2, react-is@npm:^16.6.0, react-is@npm:^16.7.0, react-is@npm:^16.8.1, react-is@npm:^16.8.2, react-is@npm:^16.8.4, react-is@npm:^16.8.6":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -21002,7 +21021,7 @@ resolve@^1.4.0:
     raw-loader: 2.0.0
     react: ^16.6.3
     react-dom: ^16.6.3
-    react-dropzone: 6.2.4
+    react-dropzone: 12.0.4
     react-height: ^3.0.1
     react-hot-loader: 4.8.5
     react-modal: ^3.5.1
@@ -23665,7 +23684,7 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.3.0":
+"tslib@npm:^2.0.3, tslib@npm:^2.3.0":
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
