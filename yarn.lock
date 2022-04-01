@@ -4556,6 +4556,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"abab@npm:^2.0.5":
+  version: 2.0.6
+  resolution: "abab@npm:2.0.6"
+  checksum: 6ffc1af4ff315066c62600123990d87551ceb0aafa01e6539da77b0f5987ac7019466780bf480f1787576d4385e3690c81ccc37cfda12819bf510b8ab47e5a3e
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:1":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
@@ -5435,7 +5442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^2.1.4, async@npm:^2.4.1, async@npm:^2.5.0":
+"async@npm:^2.1.4, async@npm:^2.4.1":
   version: 2.6.2
   resolution: "async@npm:2.6.2"
   dependencies:
@@ -10831,7 +10838,7 @@ __metadata:
     redux-devtools-log-monitor: 1.4.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
-    source-map-loader: ^0.2.3
+    source-map-loader: ^3.0.1
     style-loader: 0.23.1
     throttle-debounce: 3.0.1
     url-loader: 1.1.2
@@ -12899,7 +12906,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:^0.6.2":
+"iconv-lite@npm:^0.6.2, iconv-lite@npm:^0.6.3":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -21984,7 +21991,7 @@ resolve@^1.4.0:
     redux: ^4.0.1
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
-    source-map-loader: ^0.2.3
+    source-map-loader: ^3.0.1
     style-loader: ^0.23.1
     url-loader: 1.1.2
     webpack: 4.31.0
@@ -22229,13 +22236,23 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"source-map-loader@npm:^0.2.3":
-  version: 0.2.4
-  resolution: "source-map-loader@npm:0.2.4"
+"source-map-js@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "source-map-js@npm:1.0.2"
+  checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
+  languageName: node
+  linkType: hard
+
+"source-map-loader@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "source-map-loader@npm:3.0.1"
   dependencies:
-    async: ^2.5.0
-    loader-utils: ^1.1.0
-  checksum: ec67c402ba4559641af01bdf351816ae2fcfee2e0b5948477f86bc59dbc06d791eaca64e34428469b2c8a88e6ea7ec14c540daee706925a75a0b7ba2152e984c
+    abab: ^2.0.5
+    iconv-lite: ^0.6.3
+    source-map-js: ^1.0.1
+  peerDependencies:
+    webpack: ^5.0.0
+  checksum: 6ff27ba9335307e64edaab8fb8f87aa82a88d7efb12260732f7e3649c3fffe8bd3f77b6970c39c0bdd5e3a9b2a5ed8f11ac805bea90a6c99f186aa52033e53e0
   languageName: node
   linkType: hard
 
