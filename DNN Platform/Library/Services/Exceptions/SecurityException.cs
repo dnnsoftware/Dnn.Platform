@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Exceptions
     using System.Xml.Serialization;
 
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.UserRequest;
 
     public class SecurityException : BasePortalException
     {
@@ -83,7 +84,10 @@ namespace DotNetNuke.Services.Exceptions
             // Try and get the Portal settings from httpcontext
             try
             {
-                if (HttpContext.Current.Request.UserHostAddress != null)
+                var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(request));
+
+                if (ipAddress != null)
                 {
                     this.m_IP = HttpContext.Current.Request.UserHostAddress;
                 }
