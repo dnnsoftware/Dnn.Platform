@@ -10580,7 +10580,7 @@ __metadata:
   bin:
     esparse: ./bin/esparse.js
     esvalidate: ./bin/esvalidate.js
-  checksum: a74ad68004d500fe41d56ea1bc52d7d86f95c3fbc695913b7ecd283792161bf6f6254c73c58b5c35d75be76d674be308226579828aebb4c4b8eb1ea1edc0ac44
+  checksum: 0cf2d38148e1ab0afc03aee03f8fd66a3560325c901f2b89188e32c759a1895d448db88772291847ecf0c3ccb4e6a1d02539d35f442b8c479520f63dd9408c09
   languageName: node
   linkType: hard
 
