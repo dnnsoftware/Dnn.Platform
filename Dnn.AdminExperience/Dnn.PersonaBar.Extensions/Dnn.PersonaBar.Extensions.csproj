@@ -229,11 +229,13 @@
     <Compile Include="Components\Security\Checks\CheckSiteRegistration.cs" />
     <Compile Include="Components\Security\Checks\CheckSqlRisk.cs" />
     <Compile Include="Components\Security\Checks\CheckSuperuserOldPassword.cs" />
-    <Compile Include="Components\Security\Checks\CheckTelerikVulnerability.cs" />
+    <Compile Include="Components\Security\Checks\CheckTelerikPresence.cs" />
     <Compile Include="Components\Security\Checks\CheckTracing.cs" />
     <Compile Include="Components\Security\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckViewstatemac.cs" />
     <Compile Include="Components\Security\Constants.cs" />
+    <Compile Include="Components\Security\Helper\FileHelper.cs" />
+    <Compile Include="Components\Security\Helper\IFileHelper.cs" />
     <Compile Include="Components\Security\Helper\RegistrationSettingsHelper.cs" />
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />
