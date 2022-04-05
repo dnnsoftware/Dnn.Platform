@@ -7388,13 +7388,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chain-function@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "chain-function@npm:1.0.1"
-  checksum: 4394113afe36bab29a28144da7af5657bc5c34722bb2fb65f80497cf2d96961094c087144e870b1ffadd5574356d95599265189179d43dadfd024099955b5b84
-  languageName: node
-  linkType: hard
-
 "chalk@npm:2.4.2, chalk@npm:^2.0.0, chalk@npm:^2.0.1, chalk@npm:^2.1.0, chalk@npm:^2.3.1, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -9502,7 +9495,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dom-helpers@npm:^3.2.0, dom-helpers@npm:^3.3.1, dom-helpers@npm:^3.4.0":
+"dom-helpers@npm:^3.3.1, dom-helpers@npm:^3.4.0":
   version: 3.4.0
   resolution: "dom-helpers@npm:3.4.0"
   dependencies:
@@ -18850,7 +18843,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.6, prop-types@npm:^15.5.7, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.7, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -19930,22 +19923,6 @@ fsevents@~2.3.2:
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   checksum: dd145ae90768a8af5518672bfd91b985a57ff021b50a60044caedd872b457ea5134793cf8d5426bd45587fa6f722320936009f5c6533a4f94d665c0a23589222
-  languageName: node
-  linkType: hard
-
-"react-transition-group@npm:^1.2.0":
-  version: 1.2.1
-  resolution: "react-transition-group@npm:1.2.1"
-  dependencies:
-    chain-function: ^1.0.0
-    dom-helpers: ^3.2.0
-    loose-envify: ^1.3.1
-    prop-types: ^15.5.6
-    warning: ^3.0.0
-  peerDependencies:
-    react: ^15.0.0 || ^16.0.0
-    react-dom: ^15.0.0 || ^16.0.0
-  checksum: a0b98d07b7295f07464a75ee2ead944efdf37e1b74638528b2af26045f345a6c334afb93f42cb7aa262c0b36c7a74777632467e49eebc4fd771be7c2eec4a462
   languageName: node
   linkType: hard
 
@@ -21032,7 +21009,7 @@ resolve@^1.4.0:
     react-motion: ^0.5.2
     react-redux: ^5.1.1
     react-tooltip: ^4.2.6
-    react-transition-group: ^1.2.0
+    react-transition-group: ^2.4.0
     redux: ^4.0.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: ^1.1.3
