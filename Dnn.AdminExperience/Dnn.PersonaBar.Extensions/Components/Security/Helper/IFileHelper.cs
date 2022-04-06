@@ -29,6 +29,6 @@
         bool FileExists(string path);
 
         /// <inheritdoc cref="Directory.GetFiles(string, string, SearchOption)"/>
-        string[] DirectoryGetFiles(string binPath, string v, SearchOption allDirectories);
+        string[] DirectoryGetFiles(string path, string searchPattern, SearchOption searchOption);
     }
 }
