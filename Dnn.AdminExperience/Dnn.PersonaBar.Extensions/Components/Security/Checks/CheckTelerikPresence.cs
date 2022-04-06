@@ -23,7 +23,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     /// </summary>
     public class CheckTelerikPresence : IAuditCheck
     {
-        private const string TelerikWebUIFileName = "Telerik.Web.UI.dll";
+        /// <summary>
+        /// The file name of the Telerik Web UI assembly.
+        /// </summary>
+        public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CheckTelerikPresence));
 
