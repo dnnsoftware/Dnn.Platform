@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     using Dnn.PersonaBar.Extensions.Components.Security.Helper;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
     /// <summary>
@@ -23,6 +24,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     public class CheckTelerikPresence : IAuditCheck
     {
         private const string TelerikWebUIFileName = "Telerik.Web.UI.dll";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CheckTelerikPresence));
 
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly IFileHelper fileHelper;
@@ -78,6 +81,19 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         /// <inheritdoc cref="IAuditCheck.Execute" />
         public CheckResult Execute()
         {
+            try
+            {
+                return this.ExecuteInternal();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"{this.Id} failed.", ex);
+                return this.Unverified("An internal error occurred. See logs for details.");
+            }
+        }
+
+        private CheckResult ExecuteInternal()
+        {
             if (this.TelerikIsInstalled())
             {
                 var files = this.GetAssembliesThatDependOnTelerik();
@@ -120,6 +136,14 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private CheckResult NotInstalled()
         {
             return new CheckResult(SeverityEnum.Pass, this.Id);
+        }
+
+        private CheckResult Unverified(string reason)
+        {
+            return new CheckResult(SeverityEnum.Unverified, this.Id)
+            {
+                Notes = { reason },
+            };
         }
 
         private bool TelerikIsInstalled()

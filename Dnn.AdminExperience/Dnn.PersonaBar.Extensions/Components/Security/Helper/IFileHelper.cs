@@ -22,13 +22,13 @@
         /// </returns>
         IEnumerable<string> GetReferencedAssemblyNames(string assemblyFilePath);
 
+        /// <inheritdoc cref="Assembly.LoadFile(string)"/>
+        Assembly LoadAssembly(string assemblyFilePath);
+
         /// <inheritdoc cref="File.Exists(string)" />
         bool FileExists(string path);
 
         /// <inheritdoc cref="Directory.GetFiles(string, string, SearchOption)"/>
         string[] DirectoryGetFiles(string binPath, string v, SearchOption allDirectories);
-
-        /// <inheritdoc cref="File.ReadAllBytes(string)"/>
-        byte[] ReadAllBytes(string file);
     }
 }
