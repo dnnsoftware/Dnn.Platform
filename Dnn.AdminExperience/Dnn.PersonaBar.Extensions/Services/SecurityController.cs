@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.Security.Services
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Security.Helper;
     using Dnn.PersonaBar.Security.Services.Dto;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -44,21 +45,25 @@ namespace Dnn.PersonaBar.Security.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController _controller;
         private readonly IPortalAliasController _portalAliasController;
+        private readonly IApplicationStatusInfo applicationStatusInfo;
         private const string BULLETIN_XMLNODE_PATH = "//channel/item";
 
-        public SecurityController()
+        public SecurityController(IApplicationStatusInfo applicationStatusInfo)
             : this(
                 new Components.SecurityController(),
+                applicationStatusInfo,
                 PortalAliasController.Instance)
         {
         }
 
         internal SecurityController(
             Components.SecurityController controller,
+            IApplicationStatusInfo applicationStatusInfo,
             IPortalAliasController portalAliasController)
         {
             this._controller = controller;
             this._portalAliasController = portalAliasController;
+            this.applicationStatusInfo = applicationStatusInfo;
         }
 
         #region Login Settings
@@ -789,7 +794,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.applicationStatusInfo);
                 var results = audit.DoChecks(checkAll);
                 var response = new
                 {
@@ -817,7 +822,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.applicationStatusInfo);
                 var result = audit.DoCheck(id);
                 var response = new
                 {
