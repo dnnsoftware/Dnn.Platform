@@ -1109,7 +1109,7 @@
     <value>Check if Telerik is installed.</value>
   </data>
   <data name="CheckTelerikPresenceReason.Text" xml:space="preserve">
-    <value>Third party components referenced in core may have vulnerability in old versions and need to be patched.</value>
+    <value>In DNN 10.x, Telerik removal will be forced, and no longer optional.</value>
   </data>
   <data name="CheckTelerikPresenceSuccess.Text" xml:space="preserve">
     <value>Telerik component is not installed.</value>
