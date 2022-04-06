@@ -154,7 +154,7 @@ If a build fails midway and you have tracked artifacts, you can simply run:
 
 ### Troubleshooting
 
-If you encounter PowerShell security issues, please read [Cake - PowerShell Security](https://cakebuild.net/docs/tutorials/powershell-security).
+If you encounter PowerShell security issues, please read [Cake - PowerShell Security](http://cakebuildbotdevelop.azurewebsites.net/docs/tutorials/powershell-security).
 
 If you encouter Yarn issues, please [update Yarn to the lastest version](https://yarnpkg.com/getting-started/install).
 
