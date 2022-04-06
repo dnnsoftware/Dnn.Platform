@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         }
 
         /// <inheritdoc cref="IAuditCheck.Id" />
-        public string Id => "CheckTelerikVulnerability";
+        public string Id => nameof(CheckTelerikPresence);
 
         /// <inheritdoc cref="IAuditCheck.LazyLoad" />
         public bool LazyLoad => false;
