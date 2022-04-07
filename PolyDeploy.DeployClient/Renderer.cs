@@ -71,7 +71,14 @@ namespace PolyDeploy.DeployClient
                             continue;
                         }
 
-                        packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
+                        if (string.IsNullOrEmpty(dependency.PackageName))
+                        {
+                            packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]Platform Version[/] [grey]{dependency.DependencyVersion}[/]"));
+                        }
+                        else
+                        {
+                            packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
+                        }
                     }
                 }
             }

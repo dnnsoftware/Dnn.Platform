@@ -112,5 +112,31 @@
                     "1.0.0"
                 });
         }
+
+        [Fact]
+        public void RenderInstallationOverview_DisplaysDnnPlatformVersionDependency()
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+            var sessionResponse = new SessionResponse
+            {
+                Packages = new List<PackageResponse?>
+                {
+                    new()
+                    {
+                        Name = "Jamestown.zip",
+                        Dependencies = new List<DependencyResponse?>
+                        {
+                            new() { PackageName = null, DependencyVersion = "9.1.2" },
+                            new() { PackageName = null, DependencyVersion = "9.1.2" },
+                        }
+                    }
+                },
+            };
+            
+            renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse },  });
+            console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "Platform Version", "9.1.2" });
+        }
     }
 }
