@@ -217,6 +217,7 @@
     <Compile Include="Components\Security\Attributes\UserRegistrationOptionAttribute.cs" />
     <Compile Include="Components\Security\AuditChecks.cs" />
     <Compile Include="Components\Security\CheckResult.cs" />
+    <Compile Include="Components\Security\Checks\BaseCheck.cs" />
     <Compile Include="Components\Security\Checks\CheckAllowableFileExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckBiography.cs" />
     <Compile Include="Components\Security\Checks\CheckDebug.cs" />
