@@ -226,6 +226,7 @@
     <Compile Include="Components\Security\Checks\CheckHiddenSystemFiles.cs" />
     <Compile Include="Components\Security\Checks\CheckModuleHeaderAndFooter.cs" />
     <Compile Include="Components\Security\Checks\CheckPasswordFormat.cs" />
+    <Compile Include="Components\Security\Checks\CheckUserProfilePage.cs" />
     <Compile Include="Components\Security\Checks\CheckRarelyUsedSuperuser.cs" />
     <Compile Include="Components\Security\Checks\CheckSiteRegistration.cs" />
     <Compile Include="Components\Security\Checks\CheckSqlRisk.cs" />
