@@ -10,11 +10,19 @@
     using DotNetNuke.Entities.Tabs;
 
     /// <summary>
-    /// A security check for permissions on the User Profile page
-    /// (by detault the "Activity Feed" page and the companion "My Profile" page).
-    /// If User Registration = None or Private and either of these pages are visible to all users,
-    /// it issues a warning that user profile information is displayed publicly.
-    /// For all other user registration values, shows an informational message if user profiles are public.
+    /// A security check for permissions on the User Profile page defined in
+    /// Site Settings > Site Behavior > Default Pages > User Profile Page,
+    /// according to the following criteria:
+    /// Case 1: the selected user profile page is "Activity Feed"
+    /// * If the Activity Feed page cannot be found, or is deleted, it returns PASS.
+    /// * Otherwise, if the Activity Feed page is public, it returns ALERT.
+    /// * Otherwise, if My Profile page cannot be found or is deleted, it returns PASS.
+    /// * Otherwise, if My Profile page is public, it returns ALERT.
+    /// * Otherwise, it returns PASS.
+    /// Case 2: the selected user profile page is not "Activity Feed"
+    /// * If the selected user profile page cannot be found, or is deleted, it returns PASS.
+    /// * Otherwise, if the selected user profile page is public, it returns ALERT.
+    /// * Otherwise, it returns PASS.
     /// </summary>
     public class CheckUserProfilePage : BaseCheck
     {
