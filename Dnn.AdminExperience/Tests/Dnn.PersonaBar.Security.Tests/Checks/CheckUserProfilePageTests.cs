@@ -175,18 +175,9 @@
             RegisterTestablePermissionProvider();
 
             var portalControllerMock = SetupPortalControllerMock(PortalId, userTabId: 1);
-
             var activityFeedPage = BuildActivityFeedTabInfo();
-
-            var myProfilePage = new TabInfo
-            {
-                TabID = 2,
-                IsDeleted = true,
-                PortalID = PortalId,
-            };
-
+            var myProfilePage = BuildMyProfileTabInfo(deleted: true);
             var tabControllerMock = SetupTabControllerMock(activityFeedPage, myProfilePage);
-
             var pagesControllerMock = SetupPagesControllerMock(userProfilePageIsPublic: false);
 
             var sut = new CheckUserProfilePage(
