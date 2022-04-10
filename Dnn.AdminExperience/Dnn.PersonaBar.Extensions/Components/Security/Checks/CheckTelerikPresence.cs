@@ -11,8 +11,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     using Dnn.PersonaBar.Extensions.Components.Security.Helper;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// Check for Telerik presence in the site.
@@ -21,14 +19,12 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     /// If installed and used, it warns about 10.x upgrade issue.
     /// If installed and not used, it provides information about removal steps.
     /// </summary>
-    public class CheckTelerikPresence : IAuditCheck
+    public class CheckTelerikPresence : BaseCheck
     {
         /// <summary>
         /// The file name of the Telerik Web UI assembly.
         /// </summary>
         public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CheckTelerikPresence));
 
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly IFileHelper fileHelper;
@@ -62,6 +58,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         /// An instance of the <see cref="IFileHelper"/> class.
         /// </param>
         internal CheckTelerikPresence(IApplicationStatusInfo applicationStatusInfo, IFileHelper fileHelper)
+            : base()
         {
             this.applicationStatusInfo = applicationStatusInfo ??
                 throw new ArgumentNullException(nameof(applicationStatusInfo));
@@ -70,32 +67,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 throw new ArgumentNullException(nameof(fileHelper));
         }
 
-        /// <inheritdoc cref="IAuditCheck.Id" />
-        public string Id => nameof(CheckTelerikPresence);
-
-        /// <inheritdoc cref="IAuditCheck.LazyLoad" />
-        public bool LazyLoad => false;
-
         private string BinPath => Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "bin");
 
-        private string LocalResourceFile =>
-            "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
-
-        /// <inheritdoc cref="IAuditCheck.Execute" />
-        public CheckResult Execute()
-        {
-            try
-            {
-                return this.ExecuteInternal();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"{this.Id} failed.", ex);
-                return this.Unverified("An internal error occurred. See logs for details.");
-            }
-        }
-
-        private CheckResult ExecuteInternal()
+        /// <inheritdoc />
+        protected override CheckResult ExecuteInternal()
         {
             if (this.TelerikIsInstalled())
             {
@@ -115,7 +90,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         private CheckResult InstalledButNotUsed()
         {
-            var note = Localization.GetString($"{this.Id}InstalledButNotUsed", this.LocalResourceFile);
+            var note = this.GetLocalizedString("InstalledButNotUsed");
 
             return new CheckResult(SeverityEnum.Failure, this.Id)
             {
@@ -125,7 +100,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         private CheckResult InstalledAndUsed(IEnumerable<string> files)
         {
-            var caption = Localization.GetString($"{this.Id}InstalledAndUsed", this.LocalResourceFile);
+            var caption = this.GetLocalizedString("InstalledAndUsed");
             var relativeFiles = files.Select(path => path.Substring(this.BinPath.Length + 1));
             var fileList = string.Join("<br/>", relativeFiles.Select(path => $"* {path}"));
             var note = string.Join("<br/>", new[] { caption, string.Empty, fileList });
@@ -139,14 +114,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private CheckResult NotInstalled()
         {
             return new CheckResult(SeverityEnum.Pass, this.Id);
-        }
-
-        private CheckResult Unverified(string reason)
-        {
-            return new CheckResult(SeverityEnum.Unverified, this.Id)
-            {
-                Notes = { reason },
-            };
         }
 
         private bool TelerikIsInstalled()

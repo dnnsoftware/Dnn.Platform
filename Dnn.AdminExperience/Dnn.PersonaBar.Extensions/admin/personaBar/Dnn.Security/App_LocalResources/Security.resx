@@ -1120,6 +1120,18 @@
   <data name="CheckTelerikPresenceInstalledAndUsed.Text" xml:space="preserve">
     <value>Dependencies on Telerik were discovered in assemblies that will NOT be addressed by un-installing per the instructions with 9.8.0. The list below includes all:</value>
   </data>
+  <data name="CheckUserProfilePageFailure.Text" xml:space="preserve">
+    <value>The User Profile page is public.</value>
+  </data>
+  <data name="CheckUserProfilePageName.Text" xml:space="preserve">
+    <value>Check access to the User Profile page</value>
+  </data>
+  <data name="CheckUserProfilePageReason.Text" xml:space="preserve">
+    <value>The User Profile page might be visible to all users unintentionally.</value>
+  </data>
+  <data name="CheckUserProfilePageSuccess.Text" xml:space="preserve">
+    <value>The User Profile page is not public.</value>
+  </data>
   <data name="UserNotMemberOfRole.Text" xml:space="preserve">
     <value>User not member of {0} role.</value>
   </data>
