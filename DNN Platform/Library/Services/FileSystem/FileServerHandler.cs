@@ -187,7 +187,9 @@ namespace DotNetNuke.Services.FileSystem
                                     }
                                     else
                                     {
-                                        context.Response.Redirect(directUrl, /*endResponse*/ true);
+                                        var appUrl = new UriBuilder(Globals.AddHTTP(_portalSettings.PortalAlias.HTTPAlias));
+                                        appUrl.Path = appUrl.Path.TrimEnd('/').Append(directUrl, string.Empty);
+                                        context.Response.Redirect(appUrl.Uri.AbsoluteUri, /*endResponse*/ true);
                                     }
                                 }
                                 catch (PermissionsNotMetException)
