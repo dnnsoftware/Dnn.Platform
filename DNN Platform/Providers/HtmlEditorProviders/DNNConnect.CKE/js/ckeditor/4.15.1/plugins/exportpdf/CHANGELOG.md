@@ -1,10 +1,40 @@
 # CKEditor 4 Export to PDF Plugin Changelog
 
+## ckeditor4-plugin-exportpdf 1.0.6
+
+Other Changes:
+
+*   Updated changelog.
+
+## ckeditor4-plugin-exportpdf 1.0.5
+
+Other Changes:
+
+*   Updated year and company name in license headers.
+
+## ckeditor4-plugin-exportpdf 1.0.4
+
+Other Changes:
+
+*   Updated test files.
+
+## ckeditor4-plugin-exportpdf 1.0.3
+
+Other Changes:
+
+*   Updated test files.
+
+## ckeditor4-plugin-exportpdf 1.0.2
+
+Other Changes:
+
+*   Updated year in license headers.
+
 ## ckeditor4-plugin-exportpdf 1.0.1
 
 Other Changes:
 
-*    Improved external CSS support for [Classic Editor](https://ckeditor.com/docs/ckeditor4/latest/examples/classic.html) by handling exceptions and displaying convenient [error messages](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_errors.html#exportpdf-stylesheets-incaccessible).
+*   Improved external CSS support for [Classic Editor](https://ckeditor.com/docs/ckeditor4/latest/examples/classic.html) by handling exceptions and displaying convenient [error messages](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_errors.html#exportpdf-stylesheets-incaccessible).
 
 ## ckeditor4-plugin-exportpdf 1.0.0
 
