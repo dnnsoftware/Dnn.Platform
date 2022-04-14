@@ -1195,7 +1195,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.ddlSkin.Items.Clear();
 
-            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/skins");
+            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/skins");
 
             foreach (ListItem skinItem in
                 objDir.GetDirectories().Select(
@@ -1209,9 +1209,9 @@ namespace DNNConnect.CKEditorProvider
             // CodeMirror Themes
             this.CodeMirrorTheme.Items.Clear();
 
-            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/plugins/codemirror/theme"))
+            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme"))
             {
-                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/plugins/codemirror/theme");
+                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme");
 
                 // add default theme
                 this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
