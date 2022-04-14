@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// -----------------------------------------------------------------------------
     internal class InternalSearchControllerImpl : IInternalSearchController
     {
-        private const string SearchableModuleDefsKey = "{0}-{1}";
+        private const string SearchableModuleDefsKey = "{0}-{1}-{2}";
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Search.Internals
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
-                    string.Format(SearchableModuleDefsKey, SearchableModuleDefsCacheKey, portalId),
+                    string.Format(SearchableModuleDefsKey, SearchableModuleDefsCacheKey, portalId, Thread.CurrentThread.CurrentCulture),
                     120, CacheItemPriority.Default);
 
             var list = CBO.GetCachedObject<IList<SearchContentSource>>(
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Search.Internals
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
-            var key = string.Format("{0}-{1}", searchResult.SearchTypeId, searchResult.ModuleDefId);
+            var key = string.Format("{0}-{1}-{2}", searchResult.SearchTypeId, searchResult.ModuleDefId, Thread.CurrentThread.CurrentCulture);
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
                             new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
 
@@ -340,7 +340,7 @@ namespace DotNetNuke.Services.Search.Internals
                 var searchContentSources = this.GetSearchContentSourceList(portal.PortalID);
                 foreach (var searchContentSource in searchContentSources)
                 {
-                    var key = string.Format("{0}-{1}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId);
+                    var key = string.Format("{0}-{1}-{2}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId, Thread.CurrentThread.CurrentCulture);
                     if (!data.ContainsKey(key))
                     {
                         data.Add(key, searchContentSource.LocalizedName);

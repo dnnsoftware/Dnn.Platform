@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/') }}
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
 
       - name: Get the release branch version
         uses: valadas/get-release-branch-version@v1.0.1
@@ -28,7 +28,7 @@ jobs:
         run: yarn install --mode=update-lockfile --no-immutable
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3.14.0
+        uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Updates versions as per release candidate creation
           title: Updates versions as per release candidate creation

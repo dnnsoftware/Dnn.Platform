@@ -884,7 +884,7 @@
     <value>Check if default.aspx or default.aspx.cs files have been modified</value>
   </data>
   <data name="CheckDefaultPageFailure.Text" xml:space="preserve">
-    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN or Evoq version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
+    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
   </data>
   <data name="CheckDefaultPageReason.Text" xml:space="preserve">
     <value>DNN use default.aspx to load everything, so all requests will load this file when user browse the site, if someone modify this file, it may cause huge risk.</value>
@@ -1102,17 +1102,35 @@
   <data name="CheckHiddenSystemFilesSuccess.Text" xml:space="preserve">
     <value>There are no files marked as system file or hidden in the website folder.</value>
   </data>
-  <data name="CheckTelerikVulnerabilityFailure.Text" xml:space="preserve">
-    <value>The Telerik component vulnerability has not been patched, please go to http://www.dnnsoftware.com/community-blog/cid/155449/critical-security-update--september2017 for detailed information and to download the patch.</value>
+  <data name="CheckTelerikPresenceFailure.Text" xml:space="preserve">
+    <value>The Telerik component was found in the site.</value>
   </data>
-  <data name="CheckTelerikVulnerabilityName.Text" xml:space="preserve">
-    <value>Check if Telerik component has vulnerability.</value>
+  <data name="CheckTelerikPresenceName.Text" xml:space="preserve">
+    <value>Check if Telerik is installed.</value>
   </data>
-  <data name="CheckTelerikVulnerabilityReason.Text" xml:space="preserve">
-    <value>Third party components referenced in core may have vulnerability in old versions and need to be patched.</value>
+  <data name="CheckTelerikPresenceReason.Text" xml:space="preserve">
+    <value>In DNN 10.x, Telerik removal will be forced, and no longer optional.</value>
   </data>
-  <data name="CheckTelerikVulnerabilitySuccess.Text" xml:space="preserve">
-    <value>Telerik Component already patched.</value>
+  <data name="CheckTelerikPresenceSuccess.Text" xml:space="preserve">
+    <value>Telerik component is not installed.</value>
+  </data>
+  <data name="CheckTelerikPresenceInstalledButNotUsed.Text" xml:space="preserve">
+    <value>Telerik was found in this site, but no dependencies on Telerik were discovered. You should have a reasonable expectation of being safe to uninstall Telerik per the 9.8.0 instructions.</value>
+  </data>
+  <data name="CheckTelerikPresenceInstalledAndUsed.Text" xml:space="preserve">
+    <value>Dependencies on Telerik were discovered in assemblies that will NOT be addressed by un-installing per the instructions with 9.8.0. The list below includes all:</value>
+  </data>
+  <data name="CheckUserProfilePageFailure.Text" xml:space="preserve">
+    <value>The User Profile page is public.</value>
+  </data>
+  <data name="CheckUserProfilePageName.Text" xml:space="preserve">
+    <value>Check access to the User Profile page</value>
+  </data>
+  <data name="CheckUserProfilePageReason.Text" xml:space="preserve">
+    <value>The User Profile page might be visible to all users unintentionally.</value>
+  </data>
+  <data name="CheckUserProfilePageSuccess.Text" xml:space="preserve">
+    <value>The User Profile page is not public.</value>
   </data>
   <data name="UserNotMemberOfRole.Text" xml:space="preserve">
     <value>User not member of {0} role.</value>

@@ -29,7 +29,7 @@
     "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-spellcheck": "0.0.11",
-    "less": "3.8.1",
+    "less": "4.1.2",
     "less-loader": "4.1.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",

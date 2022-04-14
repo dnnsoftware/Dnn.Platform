@@ -136,7 +136,16 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bSuccess = true;
             if (file.Action == "UnRegister")
             {
-                this.DeleteFile(file);
+                var prevDeleteFiles = this.DeleteFiles;
+                try
+                {
+                    this.DeleteFiles = true;
+                    this.DeleteFile(file);
+                }
+                finally
+                {
+                    this.DeleteFiles = prevDeleteFiles;
+                }
             }
             else
             {
