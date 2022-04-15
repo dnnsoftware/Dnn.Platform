@@ -25,6 +25,11 @@ export class DnnActionEditItem {
       editor.folderId = this.item.itemId;
       modal.appendChild(editor);
     }
+    else {
+      const editor = document.createElement("dnn-rm-edit-file") as HTMLDnnRmEditFileElement;
+      editor.fileId = this.item.itemId;
+      modal.appendChild(editor);
+    }
     document.body.appendChild(modal);
     modal.show();
   }

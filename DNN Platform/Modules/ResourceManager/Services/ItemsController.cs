@@ -379,6 +379,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 lastModifiedOnDate = file.LastModifiedOnDate.ToShortDateString(),
                 lastModifiedBy = lastModifiedBy != null ? lastModifiedBy.Username : string.Empty,
                 url = FileManager.Instance.GetUrl(file),
+                iconUrl = GetFileIconUrl(file.Extension),
             });
         }
 

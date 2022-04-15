@@ -360,4 +360,7 @@
   <data name="Permissions.Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
+  <data name="FileId.Text" xml:space="preserve">
+    <value>File ID</value>
+  </data>
 </root>
