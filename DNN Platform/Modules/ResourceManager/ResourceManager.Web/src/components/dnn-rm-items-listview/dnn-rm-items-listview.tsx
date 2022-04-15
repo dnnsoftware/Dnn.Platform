@@ -77,20 +77,22 @@ export class DnnRmItemsListview {
     e.preventDefault();
     state.selectedItems = [];
     this.dismissContextMenu();
-    if (item.isFolder){
-      const collapsible = document.createElement("dnn-collapsible");
-      const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
-      folderContextMenu.item = item;
-      collapsible.appendChild(folderContextMenu);
-      collapsible.style.left = `${e.pageX}px`;
-      collapsible.style.top = `${e.pageY}px`;
-      collapsible.style.display = "block";
-      this.el.shadowRoot.appendChild(collapsible);
-      setTimeout(() => {
-        collapsible.expanded = true;
-      }, 100);
-      return;
-    }
+    
+    let contextMenu: HTMLDnnRmFolderContextMenuElement | HTMLDnnRmFileContextMenuElement;
+    contextMenu = item.isFolder
+      ? document.createElement("dnn-rm-folder-context-menu")
+      : document.createElement("dnn-rm-file-context-menu");
+    const collapsible = document.createElement("dnn-collapsible");
+    contextMenu.item = item;
+    collapsible.appendChild(contextMenu);
+    collapsible.style.left = `${e.pageX}px`;
+    collapsible.style.top = `${e.pageY}px`;
+    collapsible.style.display = "block";
+    this.el.shadowRoot.appendChild(collapsible);
+    setTimeout(() => {
+      collapsible.expanded = true;
+    }, 100);
+    return;
   }
 
   render() {

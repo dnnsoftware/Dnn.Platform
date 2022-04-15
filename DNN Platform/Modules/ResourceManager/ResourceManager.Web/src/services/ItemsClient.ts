@@ -184,6 +184,24 @@ export class ItemsClient{
         });
     }
 
+    public getFileDetails(fileId: number){
+        return new Promise<FileDetails>((resolve, reject) => {
+            const url = `${this.requestUrl}GetFileDetails?fileId=${fileId}`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
+
     public getRoleGroups(){
         return new Promise<IRoleGroup[]>((resolve, reject) => {
             const url = `${this.requestUrl}GetRoleGroups`;
@@ -241,6 +259,28 @@ export class ItemsClient{
     public saveFolderDetails(request: SaveFolderDetailsRequest){
         return new Promise<void>((resolve, reject) => {
             const url = `${this.requestUrl}SaveFolderDetails`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("Content-Type", "application/json");
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resolve();
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
+
+    public saveFileDetails(request: SaveFileDetailsRequest){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}SaveFileDetails`;
             const headers = this.sf.getModuleHeaders();
             headers.append("Content-Type", "application/json");
             fetch(url, {
@@ -364,4 +404,25 @@ export interface SaveFolderDetailsRequest{
     folderId: number;
     folderName: string;
     permissions: IPermissions;
+}
+
+export interface FileDetails{
+    fileId: number;
+    fileName: string;
+    title: string;
+    description: string;
+    size: string;
+    createdOnDate: string;
+    createdBy: string;
+    lastModifiedOnDate: string;
+    lastModifiedBy: string;
+    url: string;
+    iconUrl: string;
+}
+
+export interface SaveFileDetailsRequest{
+    fileId: number;
+    fileName: string;
+    title: string;
+    description: string;
 }

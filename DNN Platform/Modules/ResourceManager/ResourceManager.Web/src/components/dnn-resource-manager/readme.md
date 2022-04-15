@@ -44,6 +44,7 @@ graph TD;
   dnn-button --> dnn-button
   dnn-action-edit-item --> dnn-modal
   dnn-action-edit-item --> dnn-rm-edit-folder
+  dnn-action-edit-item --> dnn-rm-edit-file
   dnn-rm-edit-folder --> dnn-tabs
   dnn-rm-edit-folder --> dnn-tab
   dnn-rm-edit-folder --> dnn-permissions-grid
@@ -52,6 +53,9 @@ graph TD;
   dnn-permissions-grid --> dnn-button
   dnn-permissions-grid --> dnn-searchbox
   dnn-permissions-grid --> dnn-collapsible
+  dnn-rm-edit-file --> dnn-tabs
+  dnn-rm-edit-file --> dnn-tab
+  dnn-rm-edit-file --> dnn-button
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-right-pane --> dnn-rm-actions-bar
   dnn-rm-right-pane --> dnn-rm-files-pane
@@ -62,10 +66,13 @@ graph TD;
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
-  dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-items-listview --> dnn-rm-folder-context-menu
+  dnn-rm-items-listview --> dnn-rm-file-context-menu
+  dnn-rm-items-listview --> dnn-collapsible
+  dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-items-cardview --> dnn-collapsible
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
+  dnn-rm-items-cardview --> dnn-rm-file-context-menu
   style dnn-resource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

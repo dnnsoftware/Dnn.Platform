@@ -57,6 +57,7 @@ export interface LocalizedStrings {
     DeleteFolderDialogMessage: string;
     Edit: string;
     FileAlreadyExistsMessage: string;
+    FileId: string;
     FileUploadedMessage: string;
     FileUploadStoppedMessage: string;
     FolderNamePlaceholder: string;
