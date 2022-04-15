@@ -1,24 +1,42 @@
-# dnn-rm-left-pane
+# dnn-rm-edit-file
 
 
 
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property             | Attribute | Description                  | Type     | Default     |
+| -------------------- | --------- | ---------------------------- | -------- | ----------- |
+| `items` _(required)_ | --        | The list of items to delete. | `Item[]` | `undefined` |
+
+
+## Events
+
+| Event                 | Description                                                                                                        | Type                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
+
+
 ## Dependencies
 
 ### Used by
 
- - [dnn-resource-manager](../dnn-resource-manager)
+ - [dnn-action-move-items](../actions/dnn-action-move-items)
 
 ### Depends on
 
 - [dnn-rm-folder-list](../dnn-rm-folder-list)
+- [dnn-rm-progress-bar](../dnn-rm-progress-bar)
+- dnn-button
 
 ### Graph
 ```mermaid
 graph TD;
-  dnn-rm-left-pane --> dnn-rm-folder-list
+  dnn-rm-move-items --> dnn-rm-folder-list
+  dnn-rm-move-items --> dnn-rm-progress-bar
+  dnn-rm-move-items --> dnn-button
   dnn-rm-folder-list --> dnn-rm-folder-list-item
   dnn-rm-folder-list-item --> dnn-collapsible
   dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
@@ -46,14 +64,9 @@ graph TD;
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
   dnn-rm-edit-file --> dnn-button
-  dnn-action-move-items --> dnn-modal
   dnn-action-move-items --> dnn-rm-move-items
-  dnn-rm-move-items --> dnn-rm-folder-list
-  dnn-rm-move-items --> dnn-rm-progress-bar
-  dnn-rm-move-items --> dnn-button
   dnn-treeview-item --> dnn-collapsible
-  dnn-resource-manager --> dnn-rm-left-pane
-  style dnn-rm-left-pane fill:#f9f,stroke:#333,stroke-width:4px
+  style dnn-rm-move-items fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

@@ -32,6 +32,7 @@ graph TD;
   dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
+  dnn-rm-folder-context-menu --> dnn-action-move-items
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
   dnn-rm-create-folder --> dnn-button
@@ -51,7 +52,19 @@ graph TD;
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
   dnn-rm-edit-file --> dnn-button
+  dnn-action-move-items --> dnn-modal
+  dnn-action-move-items --> dnn-rm-move-items
+  dnn-rm-move-items --> dnn-rm-folder-list
+  dnn-rm-move-items --> dnn-rm-progress-bar
+  dnn-rm-move-items --> dnn-button
+  dnn-rm-folder-list --> dnn-rm-folder-list-item
+  dnn-rm-folder-list-item --> dnn-collapsible
+  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
+  dnn-rm-folder-list-item --> dnn-treeview-item
+  dnn-rm-folder-list-item --> dnn-rm-folder-list-item
+  dnn-treeview-item --> dnn-collapsible
   dnn-rm-file-context-menu --> dnn-action-edit-item
+  dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-files-pane --> dnn-rm-items-listview
   style dnn-rm-items-listview fill:#f9f,stroke:#333,stroke-width:4px
 ```

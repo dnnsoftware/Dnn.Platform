@@ -138,18 +138,6 @@
   <data name="Database.Text" xml:space="preserve">
     <value>Database</value>
   </data>
-  <data name="DeleteFileDialogHeader.Text" xml:space="preserve">
-    <value>Confirm delete</value>
-  </data>
-  <data name="DeleteFileDialogMessage.Text" xml:space="preserve">
-    <value>Are you sure you want to delete the file?</value>
-  </data>
-  <data name="DeleteFolderDialogHeader.Text" xml:space="preserve">
-    <value>Confirm delete</value>
-  </data>
-  <data name="DeleteFolderDialogMessage.Text" xml:space="preserve">
-    <value>Are you sure you want to delete the folder?</value>
-  </data>
   <data name="FileAlreadyExistsMessage.Text" xml:space="preserve">
     <value>The file you want to upload already exists in this folder.</value>
   </data>
@@ -312,8 +300,8 @@
   <data name="RemoveFolderTypeDialogHeader.Text" xml:space="preserve">
     <value>Remove Folder Type</value>
   </data>
-  <data name="MoveItem.Text" xml:space="preserve">
-    <value>Move Item</value>
+  <data name="MoveItems.Text" xml:space="preserve">
+    <value>Move Item(s)</value>
   </data>
   <data name="NewLocation.Text" xml:space="preserve">
     <value>New Location</value>
@@ -362,5 +350,38 @@
   </data>
   <data name="FileId.Text" xml:space="preserve">
     <value>File ID</value>
+  </data>
+  <data name="ConfirmDeleteMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to delete the selected items?</value>
+  </data>
+  <data name="ConfirmMoveMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to move the selected items?</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteItems.Text" xml:space="preserve">
+    <value>Delete Items</value>
+  </data>
+  <data name="Files.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="Folders.Text" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="Move.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="MovingItems.Text" xml:space="preserve">
+    <value>Moving Items</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="SelectDestinationFolder.Text" xml:space="preserve">
+    <value>Select the destination folder.</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

@@ -49,12 +49,18 @@ export class DnnRmActionsBar {
       <Host>
         <dnn-vertical-overflow-menu>
           {state.selectedItems && state.selectedItems.length == 0 && state.currentItems && state.currentItems.hasAddFilesPermission &&
+            // No items are currently selected
             <dnn-action-create-folder />
           }
-          {
-            state.selectedItems.length == 1 &&
+          {state.selectedItems.length == 1 &&
+            // A single item is currently selected
             state.currentItems.hasManagePermission &&
             <dnn-action-edit-item item={state.selectedItems[0]}/>
+          }
+          {state.selectedItems.length > 0 &&
+            // One or multiple items are currently selected
+            state.currentItems.hasDeletePermission &&
+            <dnn-action-move-items items={state.selectedItems}/>
           }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">

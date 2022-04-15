@@ -14,6 +14,9 @@ export namespace Components {
     interface DnnActionEditItem {
         "item": Item;
     }
+    interface DnnActionMoveItems {
+        "items": Item[];
+    }
     interface DnnResourceManager {
         /**
           * The ID of the module.
@@ -69,6 +72,10 @@ export namespace Components {
           * The ID of the parent folder.
          */
         "parentFolderId": number;
+        /**
+          * Indicates if this item is the currently selected one.
+         */
+        "selectedFolder": FolderTreeItem;
     }
     interface DnnRmItemsCardview {
         /**
@@ -83,6 +90,22 @@ export namespace Components {
         "currentItems": GetFolderContentResponse;
     }
     interface DnnRmLeftPane {
+    }
+    interface DnnRmMoveItems {
+        /**
+          * The list of items to delete.
+         */
+        "items": Item[];
+    }
+    interface DnnRmProgressBar {
+        /**
+          * Defines the max progress value.
+         */
+        "max": number;
+        /**
+          * Defines the current progress value.
+         */
+        "value": number;
     }
     interface DnnRmRightPane {
     }
@@ -103,6 +126,12 @@ declare global {
     var HTMLDnnActionEditItemElement: {
         prototype: HTMLDnnActionEditItemElement;
         new (): HTMLDnnActionEditItemElement;
+    };
+    interface HTMLDnnActionMoveItemsElement extends Components.DnnActionMoveItems, HTMLStencilElement {
+    }
+    var HTMLDnnActionMoveItemsElement: {
+        prototype: HTMLDnnActionMoveItemsElement;
+        new (): HTMLDnnActionMoveItemsElement;
     };
     interface HTMLDnnResourceManagerElement extends Components.DnnResourceManager, HTMLStencilElement {
     }
@@ -182,6 +211,18 @@ declare global {
         prototype: HTMLDnnRmLeftPaneElement;
         new (): HTMLDnnRmLeftPaneElement;
     };
+    interface HTMLDnnRmMoveItemsElement extends Components.DnnRmMoveItems, HTMLStencilElement {
+    }
+    var HTMLDnnRmMoveItemsElement: {
+        prototype: HTMLDnnRmMoveItemsElement;
+        new (): HTMLDnnRmMoveItemsElement;
+    };
+    interface HTMLDnnRmProgressBarElement extends Components.DnnRmProgressBar, HTMLStencilElement {
+    }
+    var HTMLDnnRmProgressBarElement: {
+        prototype: HTMLDnnRmProgressBarElement;
+        new (): HTMLDnnRmProgressBarElement;
+    };
     interface HTMLDnnRmRightPaneElement extends Components.DnnRmRightPane, HTMLStencilElement {
     }
     var HTMLDnnRmRightPaneElement: {
@@ -203,6 +244,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
+        "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
         "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
         "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
@@ -216,6 +258,8 @@ declare global {
         "dnn-rm-items-cardview": HTMLDnnRmItemsCardviewElement;
         "dnn-rm-items-listview": HTMLDnnRmItemsListviewElement;
         "dnn-rm-left-pane": HTMLDnnRmLeftPaneElement;
+        "dnn-rm-move-items": HTMLDnnRmMoveItemsElement;
+        "dnn-rm-progress-bar": HTMLDnnRmProgressBarElement;
         "dnn-rm-right-pane": HTMLDnnRmRightPaneElement;
         "dnn-rm-status-bar": HTMLDnnRmStatusBarElement;
         "dnn-rm-top-bar": HTMLDnnRmTopBarElement;
@@ -227,6 +271,9 @@ declare namespace LocalJSX {
     }
     interface DnnActionEditItem {
         "item": Item;
+    }
+    interface DnnActionMoveItems {
+        "items": Item[];
     }
     interface DnnResourceManager {
         /**
@@ -281,6 +328,10 @@ declare namespace LocalJSX {
         "item": Item;
     }
     interface DnnRmFolderList {
+        /**
+          * Fires when a folder is picked.
+         */
+        "onDnnRmFolderListFolderPicked"?: (event: CustomEvent<FolderTreeItem>) => void;
     }
     interface DnnRmFolderListItem {
         /**
@@ -292,6 +343,10 @@ declare namespace LocalJSX {
          */
         "folder": FolderTreeItem;
         /**
+          * Fires when a folder is clicked.
+         */
+        "onDnnRmFolderListItemClicked"?: (event: CustomEvent<FolderTreeItem>) => void;
+        /**
           * Fires when a context menu is opened for this item. Emits the folder ID.
          */
         "onDnnRmcontextMenuOpened"?: (event: CustomEvent<number>) => void;
@@ -299,6 +354,10 @@ declare namespace LocalJSX {
           * The ID of the parent folder.
          */
         "parentFolderId": number;
+        /**
+          * Indicates if this item is the currently selected one.
+         */
+        "selectedFolder"?: FolderTreeItem;
     }
     interface DnnRmItemsCardview {
         /**
@@ -314,6 +373,26 @@ declare namespace LocalJSX {
     }
     interface DnnRmLeftPane {
     }
+    interface DnnRmMoveItems {
+        /**
+          * The list of items to delete.
+         */
+        "items": Item[];
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+    }
+    interface DnnRmProgressBar {
+        /**
+          * Defines the max progress value.
+         */
+        "max"?: number;
+        /**
+          * Defines the current progress value.
+         */
+        "value"?: number;
+    }
     interface DnnRmRightPane {
     }
     interface DnnRmStatusBar {
@@ -323,6 +402,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "dnn-action-create-folder": DnnActionCreateFolder;
         "dnn-action-edit-item": DnnActionEditItem;
+        "dnn-action-move-items": DnnActionMoveItems;
         "dnn-resource-manager": DnnResourceManager;
         "dnn-rm-actions-bar": DnnRmActionsBar;
         "dnn-rm-create-folder": DnnRmCreateFolder;
@@ -336,6 +416,8 @@ declare namespace LocalJSX {
         "dnn-rm-items-cardview": DnnRmItemsCardview;
         "dnn-rm-items-listview": DnnRmItemsListview;
         "dnn-rm-left-pane": DnnRmLeftPane;
+        "dnn-rm-move-items": DnnRmMoveItems;
+        "dnn-rm-progress-bar": DnnRmProgressBar;
         "dnn-rm-right-pane": DnnRmRightPane;
         "dnn-rm-status-bar": DnnRmStatusBar;
         "dnn-rm-top-bar": DnnRmTopBar;
@@ -347,6 +429,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
+            "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
             "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
             "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
@@ -360,6 +443,8 @@ declare module "@stencil/core" {
             "dnn-rm-items-cardview": LocalJSX.DnnRmItemsCardview & JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
             "dnn-rm-items-listview": LocalJSX.DnnRmItemsListview & JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
             "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
+            "dnn-rm-move-items": LocalJSX.DnnRmMoveItems & JSXBase.HTMLAttributes<HTMLDnnRmMoveItemsElement>;
+            "dnn-rm-progress-bar": LocalJSX.DnnRmProgressBar & JSXBase.HTMLAttributes<HTMLDnnRmProgressBarElement>;
             "dnn-rm-right-pane": LocalJSX.DnnRmRightPane & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
             "dnn-rm-status-bar": LocalJSX.DnnRmStatusBar & JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
             "dnn-rm-top-bar": LocalJSX.DnnRmTopBar & JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
