@@ -19,6 +19,9 @@ export class DnnRmFolderListItem {
   /** The ID of the parent folder. */
   @Prop() parentFolderId!: number;
 
+  /** Indicates if this item is the currently selected one.*/
+  @Prop() selectedFolder: FolderTreeItem;
+
   /** Fires when a context menu is opened for this item. Emits the folder ID. */
   @Event() dnnRmcontextMenuOpened: EventEmitter<number>;
 
@@ -32,6 +35,9 @@ export class DnnRmFolderListItem {
   @State() folderIconUrl: string;
 
   @Element() el!: HTMLDnnRmFolderListItemElement;
+
+  /** Fires when a folder is clicked. */
+  @Event() dnnRmFolderListItemClicked: EventEmitter<FolderTreeItem>;
 
   private itemsClient: ItemsClient;
   private internalServicesClient: InternalServicesClient;
@@ -77,16 +83,6 @@ export class DnnRmFolderListItem {
     .catch(error => console.error(error));
   };
 
-  private handleFolderClicked(): void {
-    this.itemsClient.getFolderContent(
-      Number.parseInt(this.folder.data.key),
-      0,
-      state.pageSize,
-      state.sortField)
-    .then(data => state.currentItems = data)
-    .catch(error => console.error(error));
-  }
-
   private handleContextMenu(e: MouseEvent): void {
     e.preventDefault();
     this.itemsClient.getFolderItem(Number.parseInt(this.folder.data.key))
@@ -112,16 +108,24 @@ export class DnnRmFolderListItem {
     existingMenus?.forEach(contextMenu => this.el.shadowRoot.removeChild(contextMenu));
   }
 
+  private getItemClasses(): string {
+    if (this.selectedFolder?.data?.key == this.folder.data.key) {
+      return "selected";
+    }
+
+    return "";
+  }
+
   render() {
     return (
-      <Host>
+      <Host class={this.getItemClasses()}>
         <dnn-treeview-item
           expanded={this.expanded}
           onUserExpanded={() => this.handleUserExpanded()}
         >
           <button
             title={`${this.folder.data.value} (ID: ${this.folder.data.key})`}
-            onClick={() => this.handleFolderClicked()}
+            onClick={() => this.dnnRmFolderListItemClicked.emit(this.folder)}
             onContextMenu={e => this.handleContextMenu(e)}
           >
             {this.folderIconUrl
@@ -130,7 +134,7 @@ export class DnnRmFolderListItem {
             :
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"></path><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>
             }
-            <span>
+            <span class="item-name">
               {this.folder.data.value}
             </span>
           </button>
@@ -143,7 +147,8 @@ export class DnnRmFolderListItem {
               <dnn-rm-folder-list-item
                 slot="children"
                 parentFolderId={Number.parseInt(this.folder.data.key)}
-                folder={child}>
+                folder={child}
+                selectedFolder={this.selectedFolder}>
               </dnn-rm-folder-list-item>
               )
             ]}

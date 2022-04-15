@@ -21,6 +21,9 @@ export class DnnRmFolderContextMenu {
         {state.currentItems?.hasManagePermission &&
           <dnn-action-edit-item item={this.item} />
         }
+        {state.currentItems?.hasDeletePermission &&
+          <dnn-action-move-items items={[this.item]} />
+        }
       </Host>
     );
   }

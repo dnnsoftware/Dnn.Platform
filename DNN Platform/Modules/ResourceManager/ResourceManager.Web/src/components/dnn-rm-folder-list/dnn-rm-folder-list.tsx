@@ -1,5 +1,5 @@
-import { Component, Host, h, State, Listen } from '@stencil/core';
-import { InternalServicesClient } from "../../services/InternalServicesClient";
+import { Component, Host, h, State, Listen, Event, EventEmitter } from '@stencil/core';
+import { FolderTreeItem, InternalServicesClient } from "../../services/InternalServicesClient";
 import { ItemsClient } from "../../services/ItemsClient";
 import { GetFolderContentResponse } from "../../services/ItemsClient";
 import state from "../../store/store";
@@ -11,7 +11,11 @@ import state from "../../store/store";
 })
 export class DnnRmFolderList {
 
+  /** Fires when a folder is picked. */
+  @Event() dnnRmFolderListFolderPicked: EventEmitter<FolderTreeItem>;
+
   @State() folderContents: GetFolderContentResponse;
+  @State() selectedFolder: FolderTreeItem;
   
   private internalServicesClient: InternalServicesClient;
   private itemsClient: ItemsClient;
@@ -24,17 +28,6 @@ export class DnnRmFolderList {
   @Listen("dnnRmFoldersChanged", {target: "document"})
   handleFoldersChanged(){
     this.getFolders();
-  }
-
-  private getFolders() {
-    return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders()
-      .then(data => {
-        state.rootFolders = data;
-        resolve(data);
-      })
-      .catch(reason => reject(reason));
-    });
   }
 
   componentWillLoad() {
@@ -51,6 +44,22 @@ export class DnnRmFolderList {
     .catch(error => alert(error.Message));
   }
 
+  private getFolders() {
+    return new Promise((resolve, reject) => {
+      this.internalServicesClient.getFolders()
+      .then(data => {
+        state.rootFolders = data;
+        resolve(data);
+      })
+      .catch(reason => reject(reason));
+    });
+  }
+
+  private handleFolderPicked(e: CustomEvent<FolderTreeItem>): void {
+    this.selectedFolder = e.detail;
+    this.dnnRmFolderListFolderPicked.emit(e.detail)
+  }
+
   render() {
     return (
       <Host>
@@ -59,11 +68,12 @@ export class DnnRmFolderList {
               folder={item}
               parentFolderId={Number.parseInt(state.rootFolders.Tree.data.key)}
               expanded
+              onDnnRmFolderListItemClicked={e => this.handleFolderPicked(e)}
+              selectedFolder={this.selectedFolder}
             >
             </dnn-rm-folder-list-item>
         )}
       </Host>
     );
   }
-
 }

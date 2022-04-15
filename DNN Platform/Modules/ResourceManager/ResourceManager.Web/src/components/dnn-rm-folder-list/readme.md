@@ -5,11 +5,19 @@
 <!-- Auto Generated Below -->
 
 
+## Events
+
+| Event                         | Description                    | Type                          |
+| ----------------------------- | ------------------------------ | ----------------------------- |
+| `dnnRmFolderListFolderPicked` | Fires when a folder is picked. | `CustomEvent<FolderTreeItem>` |
+
+
 ## Dependencies
 
 ### Used by
 
  - [dnn-rm-left-pane](../dnn-rm-left-pane)
+ - [dnn-rm-move-items](../dnn-rm-move-items)
 
 ### Depends on
 
@@ -25,6 +33,7 @@ graph TD;
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
+  dnn-rm-folder-context-menu --> dnn-action-move-items
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
   dnn-rm-create-folder --> dnn-button
@@ -44,6 +53,9 @@ graph TD;
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
   dnn-rm-edit-file --> dnn-button
+  dnn-action-move-items --> dnn-modal
+  dnn-action-move-items --> dnn-rm-move-items
+  dnn-rm-move-items --> dnn-rm-folder-list
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-left-pane --> dnn-rm-folder-list
   style dnn-rm-folder-list fill:#f9f,stroke:#333,stroke-width:4px

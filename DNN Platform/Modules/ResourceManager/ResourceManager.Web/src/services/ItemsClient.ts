@@ -299,6 +299,52 @@ export class ItemsClient{
             .catch(reason => reject(reason));
         });
     }
+
+    public moveFile(request: MoveFileRequest, groupId = -1){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}MoveFile`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("Content-Type", "application/json");
+            headers.append("groupId", groupId.toString());
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resolve();
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
+
+    public moveFolder(request: MoveFolderRequest, groupId = -1){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}MoveFolder`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("Content-Type", "application/json");
+            headers.append("groupId", groupId.toString());
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resolve();
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
 }
 
 export interface GetFolderContentResponse{
@@ -425,4 +471,14 @@ export interface SaveFileDetailsRequest{
     fileName: string;
     title: string;
     description: string;
+}
+
+export interface MoveFileRequest{
+    SourceFileId: number;
+    DestinationFolderId: number;
+}
+
+export interface MoveFolderRequest{
+    SourceFolderId: number;
+    DestinationFolderId: number;
 }

@@ -30,7 +30,7 @@ export class DnnRmItemsCardview {
 
   private handleContextMenu(e: MouseEvent, item: Item): void {
     e.preventDefault();
-    state.selectedItems = [];
+    state.selectedItems = [item];
     this.dismissContextMenu();
     const collapsible = document.createElement("dnn-collapsible");
     const contextMenu = item.isFolder

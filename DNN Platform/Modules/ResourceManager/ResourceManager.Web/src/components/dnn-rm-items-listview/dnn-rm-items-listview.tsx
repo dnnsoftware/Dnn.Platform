@@ -75,7 +75,7 @@ export class DnnRmItemsListview {
 
   private handleContextMenu(e: MouseEvent, item: Item): void {
     e.preventDefault();
-    state.selectedItems = [];
+    state.selectedItems = [item];
     this.dismissContextMenu();
     
     let contextMenu: HTMLDnnRmFolderContextMenuElement | HTMLDnnRmFileContextMenuElement;
