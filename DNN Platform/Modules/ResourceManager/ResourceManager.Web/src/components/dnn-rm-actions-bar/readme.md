@@ -17,6 +17,7 @@
 - [dnn-action-create-folder](../actions/dnn-action-create-folder)
 - [dnn-action-edit-item](../actions/dnn-action-edit-item)
 - [dnn-action-move-items](../actions/dnn-action-move-items)
+- [dnn-action-delete-items](../actions/dnn-action-delete-items)
 - dnn-collapsible
 
 ### Graph
@@ -26,6 +27,7 @@ graph TD;
   dnn-rm-actions-bar --> dnn-action-create-folder
   dnn-rm-actions-bar --> dnn-action-edit-item
   dnn-rm-actions-bar --> dnn-action-move-items
+  dnn-rm-actions-bar --> dnn-action-delete-items
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
@@ -59,6 +61,11 @@ graph TD;
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-rm-folder-context-menu --> dnn-action-move-items
+  dnn-rm-folder-context-menu --> dnn-action-delete-items
+  dnn-action-delete-items --> dnn-modal
+  dnn-action-delete-items --> dnn-rm-delete-items
+  dnn-rm-delete-items --> dnn-rm-progress-bar
+  dnn-rm-delete-items --> dnn-button
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-right-pane --> dnn-rm-actions-bar
   style dnn-rm-actions-bar fill:#f9f,stroke:#333,stroke-width:4px

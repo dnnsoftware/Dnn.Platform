@@ -17,7 +17,7 @@
 ### Used by
 
  - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
- - [dnn-rm-file-context-menu](../../context-menus/dnn-rm-folder-context-menu)
+ - [dnn-rm-file-context-menu](../../context-menus/dnn-rm-file-context-menu)
  - [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
 
 ### Depends on

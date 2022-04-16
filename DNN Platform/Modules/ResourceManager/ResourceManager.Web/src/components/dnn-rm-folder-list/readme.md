@@ -34,6 +34,7 @@ graph TD;
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-rm-folder-context-menu --> dnn-action-move-items
+  dnn-rm-folder-context-menu --> dnn-action-delete-items
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
   dnn-rm-create-folder --> dnn-button
@@ -56,6 +57,10 @@ graph TD;
   dnn-action-move-items --> dnn-modal
   dnn-action-move-items --> dnn-rm-move-items
   dnn-rm-move-items --> dnn-rm-folder-list
+  dnn-action-delete-items --> dnn-modal
+  dnn-action-delete-items --> dnn-rm-delete-items
+  dnn-rm-delete-items --> dnn-rm-progress-bar
+  dnn-rm-delete-items --> dnn-button
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-left-pane --> dnn-rm-folder-list
   style dnn-rm-folder-list fill:#f9f,stroke:#333,stroke-width:4px

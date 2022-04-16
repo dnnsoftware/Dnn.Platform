@@ -11,6 +11,9 @@ export namespace Components {
     interface DnnActionCreateFolder {
         "parentFolderId": number;
     }
+    interface DnnActionDeleteItems {
+        "items": Item[];
+    }
     interface DnnActionEditItem {
         "item": Item;
     }
@@ -26,6 +29,12 @@ export namespace Components {
     interface DnnRmActionsBar {
     }
     interface DnnRmCreateFolder {
+    }
+    interface DnnRmDeleteItems {
+        /**
+          * The list of items to delete.
+         */
+        "items": Item[];
     }
     interface DnnRmEditFile {
         /**
@@ -121,6 +130,12 @@ declare global {
         prototype: HTMLDnnActionCreateFolderElement;
         new (): HTMLDnnActionCreateFolderElement;
     };
+    interface HTMLDnnActionDeleteItemsElement extends Components.DnnActionDeleteItems, HTMLStencilElement {
+    }
+    var HTMLDnnActionDeleteItemsElement: {
+        prototype: HTMLDnnActionDeleteItemsElement;
+        new (): HTMLDnnActionDeleteItemsElement;
+    };
     interface HTMLDnnActionEditItemElement extends Components.DnnActionEditItem, HTMLStencilElement {
     }
     var HTMLDnnActionEditItemElement: {
@@ -150,6 +165,12 @@ declare global {
     var HTMLDnnRmCreateFolderElement: {
         prototype: HTMLDnnRmCreateFolderElement;
         new (): HTMLDnnRmCreateFolderElement;
+    };
+    interface HTMLDnnRmDeleteItemsElement extends Components.DnnRmDeleteItems, HTMLStencilElement {
+    }
+    var HTMLDnnRmDeleteItemsElement: {
+        prototype: HTMLDnnRmDeleteItemsElement;
+        new (): HTMLDnnRmDeleteItemsElement;
     };
     interface HTMLDnnRmEditFileElement extends Components.DnnRmEditFile, HTMLStencilElement {
     }
@@ -243,11 +264,13 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
+        "dnn-action-delete-items": HTMLDnnActionDeleteItemsElement;
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
         "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
         "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
         "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
+        "dnn-rm-delete-items": HTMLDnnRmDeleteItemsElement;
         "dnn-rm-edit-file": HTMLDnnRmEditFileElement;
         "dnn-rm-edit-folder": HTMLDnnRmEditFolderElement;
         "dnn-rm-file-context-menu": HTMLDnnRmFileContextMenuElement;
@@ -269,6 +292,9 @@ declare namespace LocalJSX {
     interface DnnActionCreateFolder {
         "parentFolderId"?: number;
     }
+    interface DnnActionDeleteItems {
+        "items": Item[];
+    }
     interface DnnActionEditItem {
         "item": Item;
     }
@@ -284,6 +310,16 @@ declare namespace LocalJSX {
     interface DnnRmActionsBar {
     }
     interface DnnRmCreateFolder {
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+    }
+    interface DnnRmDeleteItems {
+        /**
+          * The list of items to delete.
+         */
+        "items": Item[];
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
@@ -401,11 +437,13 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "dnn-action-create-folder": DnnActionCreateFolder;
+        "dnn-action-delete-items": DnnActionDeleteItems;
         "dnn-action-edit-item": DnnActionEditItem;
         "dnn-action-move-items": DnnActionMoveItems;
         "dnn-resource-manager": DnnResourceManager;
         "dnn-rm-actions-bar": DnnRmActionsBar;
         "dnn-rm-create-folder": DnnRmCreateFolder;
+        "dnn-rm-delete-items": DnnRmDeleteItems;
         "dnn-rm-edit-file": DnnRmEditFile;
         "dnn-rm-edit-folder": DnnRmEditFolder;
         "dnn-rm-file-context-menu": DnnRmFileContextMenu;
@@ -428,11 +466,13 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
+            "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
             "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
             "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
             "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
+            "dnn-rm-delete-items": LocalJSX.DnnRmDeleteItems & JSXBase.HTMLAttributes<HTMLDnnRmDeleteItemsElement>;
             "dnn-rm-edit-file": LocalJSX.DnnRmEditFile & JSXBase.HTMLAttributes<HTMLDnnRmEditFileElement>;
             "dnn-rm-edit-folder": LocalJSX.DnnRmEditFolder & JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
             "dnn-rm-file-context-menu": LocalJSX.DnnRmFileContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFileContextMenuElement>;

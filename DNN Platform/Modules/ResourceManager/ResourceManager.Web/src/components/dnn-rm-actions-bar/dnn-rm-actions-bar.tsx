@@ -60,7 +60,11 @@ export class DnnRmActionsBar {
           {state.selectedItems.length > 0 &&
             // One or multiple items are currently selected
             state.currentItems.hasDeletePermission &&
-            <dnn-action-move-items items={state.selectedItems}/>
+            [
+              <dnn-action-move-items items={state.selectedItems}/>
+            ,
+              <dnn-action-delete-items items={state.selectedItems}/>
+            ]
           }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">
