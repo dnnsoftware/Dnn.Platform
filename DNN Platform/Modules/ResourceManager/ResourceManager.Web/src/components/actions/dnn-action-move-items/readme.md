@@ -17,7 +17,7 @@
 ### Used by
 
  - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
- - [dnn-rm-file-context-menu](../../context-menus/dnn-rm-folder-context-menu)
+ - [dnn-rm-file-context-menu](../../context-menus/dnn-rm-file-context-menu)
  - [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
 
 ### Depends on
@@ -58,6 +58,10 @@ graph TD;
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
   dnn-rm-edit-file --> dnn-button
+  dnn-action-delete-items --> dnn-modal
+  dnn-action-delete-items --> dnn-rm-delete-items
+  dnn-rm-delete-items --> dnn-rm-progress-bar
+  dnn-rm-delete-items --> dnn-button
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-actions-bar --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-move-items

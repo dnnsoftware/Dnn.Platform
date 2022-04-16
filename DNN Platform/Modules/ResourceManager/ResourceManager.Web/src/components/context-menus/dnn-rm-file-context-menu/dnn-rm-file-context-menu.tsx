@@ -19,7 +19,11 @@ export class DnnRmFileContextMenu {
           <dnn-action-edit-item item={this.item} />
         }
         {state.currentItems?.hasDeletePermission &&
+        [
           <dnn-action-move-items items={[this.item]} />
+        ,
+          <dnn-action-delete-items items={[this.item]} />
+        ]
         }
       </Host>
     );

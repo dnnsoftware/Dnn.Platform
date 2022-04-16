@@ -345,6 +345,52 @@ export class ItemsClient{
             .catch(reason => reject(reason));
         });
     }
+
+    public deleteFolder(request: DeleteFolderRequest, groupId = -1){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}DeleteFolder`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("Content-Type", "application/json");
+            headers.append("groupId", groupId.toString());
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resolve();
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
+
+    public deleteFile(request: DeleteFileRequest, groupId = -1){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}DeleteFile`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("Content-Type", "application/json");
+            headers.append("groupId", groupId.toString());
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(request),
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    resolve();
+                }
+                else{
+                    response.json().then(error => reject(error.ExceptionMessage || error.message));
+                }
+            })
+            .catch(reason => reject(reason));
+        });
+    }
 }
 
 export interface GetFolderContentResponse{
@@ -481,4 +527,13 @@ export interface MoveFileRequest{
 export interface MoveFolderRequest{
     SourceFolderId: number;
     DestinationFolderId: number;
+}
+
+export interface DeleteFolderRequest{
+    FolderId: number;
+    UnlinkAllowedStatus: boolean;
+}
+
+export interface DeleteFileRequest{
+    FileId: number;
 }

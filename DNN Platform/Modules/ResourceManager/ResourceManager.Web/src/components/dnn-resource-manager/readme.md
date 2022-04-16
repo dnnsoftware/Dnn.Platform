@@ -38,6 +38,7 @@ graph TD;
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-rm-folder-context-menu --> dnn-action-move-items
+  dnn-rm-folder-context-menu --> dnn-action-delete-items
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
   dnn-rm-create-folder --> dnn-button
@@ -62,6 +63,10 @@ graph TD;
   dnn-rm-move-items --> dnn-rm-folder-list
   dnn-rm-move-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-button
+  dnn-action-delete-items --> dnn-modal
+  dnn-action-delete-items --> dnn-rm-delete-items
+  dnn-rm-delete-items --> dnn-rm-progress-bar
+  dnn-rm-delete-items --> dnn-button
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-right-pane --> dnn-rm-actions-bar
   dnn-rm-right-pane --> dnn-rm-files-pane
@@ -70,6 +75,7 @@ graph TD;
   dnn-rm-actions-bar --> dnn-action-create-folder
   dnn-rm-actions-bar --> dnn-action-edit-item
   dnn-rm-actions-bar --> dnn-action-move-items
+  dnn-rm-actions-bar --> dnn-action-delete-items
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
@@ -78,6 +84,7 @@ graph TD;
   dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
+  dnn-rm-file-context-menu --> dnn-action-delete-items
   dnn-rm-items-cardview --> dnn-collapsible
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-items-cardview --> dnn-rm-file-context-menu

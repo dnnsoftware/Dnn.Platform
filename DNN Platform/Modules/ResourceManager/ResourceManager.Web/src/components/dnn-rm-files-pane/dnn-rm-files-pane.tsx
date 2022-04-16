@@ -29,7 +29,11 @@ export class DnnRmFilesPane {
 
   @Listen("dnnRmFoldersChanged", {target: "document"})
   handleFoldersChanged(){
-    state.currentItems.items = [];
+    state.currentItems = {
+      ...state.currentItems,
+      items: [],
+    };
+    state.selectedItems = [];
     this.checkIfMoreItemsNeeded();
   }
 
