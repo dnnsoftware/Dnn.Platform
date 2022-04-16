@@ -28,12 +28,14 @@
 
  - [dnn-rm-delete-items](../dnn-rm-delete-items)
  - [dnn-rm-move-items](../dnn-rm-move-items)
+ - [dnn-rm-unlink-items](../dnn-rm-unlink-items)
 
 ### Graph
 ```mermaid
 graph TD;
   dnn-rm-delete-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-rm-progress-bar
+  dnn-rm-unlink-items --> dnn-rm-progress-bar
   style dnn-rm-progress-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -3,11 +3,11 @@ import { Item, ItemsClient } from '../../services/ItemsClient';
 import state from '../../store/store';
 
 @Component({
-  tag: 'dnn-rm-delete-items',
-  styleUrl: 'dnn-rm-delete-items.scss',
+  tag: 'dnn-rm-unlink-items',
+  styleUrl: 'dnn-rm-unlink-items.scss',
   shadow: true,
 })
-export class DnnRmDeleteItems {
+export class DnnRmUnlinkItems {
 
   /** The list of items to delete. */
   @Prop() items!: Item[];
@@ -18,10 +18,10 @@ export class DnnRmDeleteItems {
   */
   @Event() dnnRmFoldersChanged: EventEmitter<void>;
   
-  @Element() el: HTMLDnnRmDeleteItemsElement;
+  @Element() el: HTMLDnnRmUnlinkItemsElement;
   
-  @State() deleting: boolean;
-  @State() deletedCount: number = 0;
+  @State() unlinking: boolean;
+  @State() unlinkedCount: number = 0;
   @State() currentItemName: string;
   
   private itemsClient: ItemsClient;
@@ -39,36 +39,25 @@ export class DnnRmDeleteItems {
     });
   }
 
-  private handleDelete(): void {
-    this.deleting = true;
+  private handleUnlink(): void {
+    this.unlinking = true;
     this.items.forEach(item => {
-      if (item.isFolder){
-        this.itemsClient.deleteFolder({
-          FolderId: item.itemId,
-          UnlinkAllowedStatus: false,
-        })
-        .then(() => {
-          this.handleItemDeleted(item);
-        })
-        .catch(reason => alert(reason));
-      }
-      else {
-        this.itemsClient.deleteFile({
-          FileId: item.itemId,
-        })
-        .then(() => {
-          this.handleItemDeleted(item);
-        })
-        .catch(reason => alert(reason));
-      }
+      this.itemsClient.deleteFolder({
+        FolderId: item.itemId,
+        UnlinkAllowedStatus: true,
+      })
+      .then(() => {
+        this.handleItemUnlinked(item);
+      })
+      .catch(reason => alert(reason));
     });
   }
   
-  handleItemDeleted(item: Item) {
-    this.deletedCount++;
+  handleItemUnlinked(item: Item) {
+    this.unlinkedCount++;
     this.currentItemName = item.itemName;
-    if (this.deletedCount == this.items.length) {
-      this.deleting = false;
+    if (this.unlinkedCount == this.items.length) {
+      this.unlinking = false;
       this.dnnRmFoldersChanged.emit();
       this.closeModal();
     }
@@ -77,19 +66,19 @@ export class DnnRmDeleteItems {
   render() {
     return (
       <Host>
-        <h2>{state.localization?.DeleteItems}</h2>
-        <p>{state.localization?.ConfirmDeleteMessage}</p>
+        <h2>{state.localization?.UnlinkFolders}</h2>
+        <p>{state.localization?.ConfirmUnlinkMessage}</p>
         <ul>
           {this.items.map(item => (
             <li>{item.itemName}</li>
           ))}
         </ul>
-        {this.deleting &&
+        {this.unlinking &&
           <div>
-            <p>{state.localization?.DeletingItems} {this.deletedCount+1}/{state.selectedItems.length} ({this.currentItemName})</p>
+            <p>{state.localization?.UnlinkFolders} {this.unlinkedCount+1}/{state.selectedItems.length} ({this.currentItemName})</p>
             <dnn-rm-progress-bar
               max={state.selectedItems.length}
-              value={this.deletedCount}
+              value={this.unlinkedCount}
             />
           </div>
         }
@@ -97,17 +86,17 @@ export class DnnRmDeleteItems {
           <dnn-button
             type="primary"
             reversed
-            disabled={this.deleting}
+            disabled={this.unlinking}
             onClick={() => this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             type="primary"
-            onClick={() =>this.handleDelete()}
-            disabled={this.deleting}
+            onClick={() =>this.handleUnlink()}
+            disabled={this.unlinking}
           >
-            {state.localization?.Delete}
+            {state.localization?.Unlink}
           </dnn-button>
         </div>
       </Host>

@@ -28,6 +28,9 @@ export class DnnRmFolderContextMenu {
           <dnn-action-delete-items items={[this.item]} />
         ]
         }
+        {state.currentItems.hasDeletePermission && this.item.unlinkAllowedStatus != "false" &&
+          <dnn-action-unlink-items items={[this.item]} />
+        }
       </Host>
     );
   }

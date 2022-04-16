@@ -357,11 +357,17 @@
   <data name="ConfirmMoveMessage.Text" xml:space="preserve">
     <value>Are you sure you want to move the selected items?</value>
   </data>
+  <data name="ConfirmUnlinkMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to unlink the following folders?</value>
+  </data>
   <data name="Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="DeleteItems.Text" xml:space="preserve">
     <value>Delete Items</value>
+  </data>
+  <data name="DeletingItems.Text" xml:space="preserve">
+    <value>Deleting Items</value>
   </data>
   <data name="Files.Text" xml:space="preserve">
     <value>Files</value>
@@ -380,6 +386,15 @@
   </data>
   <data name="SelectDestinationFolder.Text" xml:space="preserve">
     <value>Select the destination folder.</value>
+  </data>
+  <data name="Unlink.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkFolders.Text" xml:space="preserve">
+    <value>Unlink Folder(s)</value>
+  </data>
+  <data name="UnlinkingFolders.Text" xml:space="preserve">
+    <value>Unlinking Folders</value>
   </data>
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>

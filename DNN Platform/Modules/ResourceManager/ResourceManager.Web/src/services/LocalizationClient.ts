@@ -131,4 +131,9 @@ export interface LocalizedStrings {
     ConfirmMoveMessage: string;
     SelectDestinationFolder: string;
     MovingItems: string;
+    DeletingItems: string;
+    UnlinkFolders: string;
+    ConfirmUnlinkMessage: string;
+    UnlinkingFolders: string;
+    Unlink: string;
   };
