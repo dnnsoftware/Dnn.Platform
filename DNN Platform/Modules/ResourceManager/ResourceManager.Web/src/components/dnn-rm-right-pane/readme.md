@@ -29,6 +29,7 @@ graph TD;
   dnn-rm-actions-bar --> dnn-action-move-items
   dnn-rm-actions-bar --> dnn-action-delete-items
   dnn-rm-actions-bar --> dnn-action-unlink-items
+  dnn-rm-actions-bar --> dnn-action-copy-url
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder
@@ -81,6 +82,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-delete-items
+  dnn-rm-file-context-menu --> dnn-action-copy-url
   dnn-rm-items-cardview --> dnn-collapsible
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-items-cardview --> dnn-rm-file-context-menu

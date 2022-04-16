@@ -136,4 +136,5 @@ export interface LocalizedStrings {
     ConfirmUnlinkMessage: string;
     UnlinkingFolders: string;
     Unlink: string;
+    CopyUrl: string;
   };

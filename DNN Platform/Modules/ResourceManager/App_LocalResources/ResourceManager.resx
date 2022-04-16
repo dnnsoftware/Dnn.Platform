@@ -399,4 +399,7 @@
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="CopyUrl.Text" xml:space="preserve">
+    <value>Copy URL</value>
+  </data>
 </root>

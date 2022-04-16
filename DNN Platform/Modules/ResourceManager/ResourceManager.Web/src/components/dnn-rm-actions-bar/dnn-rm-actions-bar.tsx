@@ -69,6 +69,9 @@ export class DnnRmActionsBar {
           {state.selectedItems.length > 0 && state.selectedItems.every(i => i.isFolder && i.unlinkAllowedStatus && i.unlinkAllowedStatus != "false") &&
             <dnn-action-unlink-items items={state.selectedItems}/>
           }
+          {state.selectedItems.length == 1 && !state.selectedItems[0].isFolder && location.protocol == "https:" &&
+            <dnn-action-copy-url items={state.selectedItems}/>
+          }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">
           {state.selectedItems.length > 0 &&
