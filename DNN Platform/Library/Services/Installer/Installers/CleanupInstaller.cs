@@ -4,13 +4,16 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Utilities;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileSystemGlobbing;
 
     /// -----------------------------------------------------------------------------
@@ -23,8 +26,39 @@ namespace DotNetNuke.Services.Installer.Installers
     public class CleanupInstaller : FileInstaller
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
+
+        private readonly IList<string> folders = new List<string>();
+        private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly IFileSystemUtils fileSystemUtils;
+
         private string _fileName;
         private string _glob;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
+        /// </summary>
+        public CleanupInstaller()
+            : this(
+                Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>(),
+                Globals.DependencyProvider.GetRequiredService<IFileSystemUtils>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
+        /// </summary>
+        /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
+        /// <param name="fileSystemUtils">An instance of <see cref="IFileSystemUtils"/>.</param>
+        internal CleanupInstaller(
+            IApplicationStatusInfo applicationStatusInfo,
+            IFileSystemUtils fileSystemUtils)
+        {
+            this.applicationStatusInfo = applicationStatusInfo
+                ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
+
+            this.fileSystemUtils = fileSystemUtils
+                ?? throw new ArgumentNullException(nameof(fileSystemUtils));
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -33,6 +67,11 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles => "*";
+
+        /// <summary>
+        /// Gets the list of folders to clean up.
+        /// </summary>
+        protected IList<string> Folders => this.folders;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,6 +105,11 @@ namespace DotNetNuke.Services.Installer.Installers
                             break;
                         }
                     }
+
+                    foreach (string folder in this.Folders)
+                    {
+                        this.CleanupFolder(folder);
+                    }
                 }
                 else if (!string.IsNullOrEmpty(this._fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
                 {
@@ -89,6 +133,12 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this._fileName = Util.ReadAttribute(manifestNav, "fileName");
             this._glob = Util.ReadAttribute(manifestNav, "glob");
+
+            foreach (XPathNavigator nav in manifestNav.Select("folder"))
+            {
+                this.ProcessFolder(nav);
+            }
+
             base.ReadManifest(manifestNav);
         }
 
@@ -100,6 +150,47 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
+        }
+
+        /// <summary>
+        /// Adds a folder path to the list.
+        /// </summary>
+        /// <param name="path">The folder path.</param>
+        internal void ProcessFolder(string path)
+        {
+            this.Folders.Add(path);
+        }
+
+        /// <summary>
+        /// Validates a folder path for cleanup.
+        /// </summary>
+        /// <param name="path">The folder oath to validate.</param>
+        /// <returns>Whether or not the folder path is valid.</returns>
+        internal bool IsValidFolderPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            string normalized;
+            try
+            {
+                normalized = Path.GetFullPath(path);
+            }
+            catch
+            {
+                return false;
+            }
+
+            var appPath = this.applicationStatusInfo.ApplicationMapPath;
+            var fullPath = Path.Combine(appPath, normalized);
+            if (!normalized.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) || fullPath == appPath)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// -----------------------------------------------------------------------------
@@ -131,6 +222,29 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        /// <summary>
+        /// Deletes a folder and all subfolders from disk.
+        /// </summary>
+        /// <param name="path">The folder path to delete.</param>
+        protected virtual void CleanupFolder(string path)
+        {
+            try
+            {
+                if (this.IsValidFolderPath(path))
+                {
+                    this.fileSystemUtils.DeleteFolderRecursive(path);
+                }
+                else
+                {
+                    Logger.Warn($"Ignoring invalid cleanup folder path '{path}' in package '{this.Package?.Name}'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ProcessFile method determines what to do with parsed "file" node.
@@ -143,6 +257,20 @@ namespace DotNetNuke.Services.Installer.Installers
             if (file != null)
             {
                 this.Files.Add(file);
+            }
+        }
+
+        /// <summary>
+        /// Determines what to do with the parsed "folder" node.
+        /// </summary>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        protected virtual void ProcessFolder(XPathNavigator nav)
+        {
+            var pathNav = nav.SelectSingleNode("path");
+
+            if (pathNav != null)
+            {
+                this.ProcessFolder(pathNav.Value);
             }
         }
 
@@ -174,7 +302,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 var strListFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._fileName);
                 if (File.Exists(strListFile))
                 {
-                    FileSystemUtils.DeleteFiles(File.ReadAllLines(strListFile));
+                    this.fileSystemUtils.DeleteFiles(File.ReadAllLines(strListFile));
                 }
             }
             catch (Exception ex)
@@ -202,8 +330,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     var globs = new Matcher(StringComparison.InvariantCultureIgnoreCase);
                     globs.AddIncludePatterns(this._glob.Split(';'));
-                    var files = globs.GetResultsInFullPath(Globals.ApplicationMapPath).ToArray();
-                    FileSystemUtils.DeleteFiles(files);
+                    var files = globs.GetResultsInFullPath(this.applicationStatusInfo.ApplicationMapPath).ToArray();
+                    this.fileSystemUtils.DeleteFiles(files);
                 }
             }
             catch (Exception ex)
