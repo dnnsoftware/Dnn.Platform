@@ -19,6 +19,7 @@
 - [dnn-action-move-items](../actions/dnn-action-move-items)
 - [dnn-action-delete-items](../actions/dnn-action-delete-items)
 - [dnn-action-unlink-items](../actions/dnn-action-unlink-items)
+- [dnn-action-copy-url](../actions/dnn-action-copy-url)
 - dnn-collapsible
 
 ### Graph
@@ -30,6 +31,7 @@ graph TD;
   dnn-rm-actions-bar --> dnn-action-move-items
   dnn-rm-actions-bar --> dnn-action-delete-items
   dnn-rm-actions-bar --> dnn-action-unlink-items
+  dnn-rm-actions-bar --> dnn-action-copy-url
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-action-create-folder --> dnn-modal
   dnn-action-create-folder --> dnn-rm-create-folder

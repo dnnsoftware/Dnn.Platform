@@ -8,6 +8,9 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { GetFolderContentResponse, Item } from "./services/ItemsClient";
 import { FolderTreeItem } from "./services/InternalServicesClient";
 export namespace Components {
+    interface DnnActionCopyUrl {
+        "items": Item[];
+    }
     interface DnnActionCreateFolder {
         "parentFolderId": number;
     }
@@ -133,6 +136,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLDnnActionCopyUrlElement extends Components.DnnActionCopyUrl, HTMLStencilElement {
+    }
+    var HTMLDnnActionCopyUrlElement: {
+        prototype: HTMLDnnActionCopyUrlElement;
+        new (): HTMLDnnActionCopyUrlElement;
+    };
     interface HTMLDnnActionCreateFolderElement extends Components.DnnActionCreateFolder, HTMLStencilElement {
     }
     var HTMLDnnActionCreateFolderElement: {
@@ -284,6 +293,7 @@ declare global {
         new (): HTMLDnnRmUnlinkItemsElement;
     };
     interface HTMLElementTagNameMap {
+        "dnn-action-copy-url": HTMLDnnActionCopyUrlElement;
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
         "dnn-action-delete-items": HTMLDnnActionDeleteItemsElement;
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
@@ -312,6 +322,9 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface DnnActionCopyUrl {
+        "items": Item[];
+    }
     interface DnnActionCreateFolder {
         "parentFolderId"?: number;
     }
@@ -472,6 +485,7 @@ declare namespace LocalJSX {
         "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
     }
     interface IntrinsicElements {
+        "dnn-action-copy-url": DnnActionCopyUrl;
         "dnn-action-create-folder": DnnActionCreateFolder;
         "dnn-action-delete-items": DnnActionDeleteItems;
         "dnn-action-edit-item": DnnActionEditItem;
@@ -503,6 +517,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "dnn-action-copy-url": LocalJSX.DnnActionCopyUrl & JSXBase.HTMLAttributes<HTMLDnnActionCopyUrlElement>;
             "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
             "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
