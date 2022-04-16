@@ -20,6 +20,9 @@ export namespace Components {
     interface DnnActionMoveItems {
         "items": Item[];
     }
+    interface DnnActionUnlinkItems {
+        "items": Item[];
+    }
     interface DnnResourceManager {
         /**
           * The ID of the module.
@@ -122,6 +125,12 @@ export namespace Components {
     }
     interface DnnRmTopBar {
     }
+    interface DnnRmUnlinkItems {
+        /**
+          * The list of items to delete.
+         */
+        "items": Item[];
+    }
 }
 declare global {
     interface HTMLDnnActionCreateFolderElement extends Components.DnnActionCreateFolder, HTMLStencilElement {
@@ -147,6 +156,12 @@ declare global {
     var HTMLDnnActionMoveItemsElement: {
         prototype: HTMLDnnActionMoveItemsElement;
         new (): HTMLDnnActionMoveItemsElement;
+    };
+    interface HTMLDnnActionUnlinkItemsElement extends Components.DnnActionUnlinkItems, HTMLStencilElement {
+    }
+    var HTMLDnnActionUnlinkItemsElement: {
+        prototype: HTMLDnnActionUnlinkItemsElement;
+        new (): HTMLDnnActionUnlinkItemsElement;
     };
     interface HTMLDnnResourceManagerElement extends Components.DnnResourceManager, HTMLStencilElement {
     }
@@ -262,11 +277,18 @@ declare global {
         prototype: HTMLDnnRmTopBarElement;
         new (): HTMLDnnRmTopBarElement;
     };
+    interface HTMLDnnRmUnlinkItemsElement extends Components.DnnRmUnlinkItems, HTMLStencilElement {
+    }
+    var HTMLDnnRmUnlinkItemsElement: {
+        prototype: HTMLDnnRmUnlinkItemsElement;
+        new (): HTMLDnnRmUnlinkItemsElement;
+    };
     interface HTMLElementTagNameMap {
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
         "dnn-action-delete-items": HTMLDnnActionDeleteItemsElement;
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
         "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
+        "dnn-action-unlink-items": HTMLDnnActionUnlinkItemsElement;
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
         "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
         "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
@@ -286,6 +308,7 @@ declare global {
         "dnn-rm-right-pane": HTMLDnnRmRightPaneElement;
         "dnn-rm-status-bar": HTMLDnnRmStatusBarElement;
         "dnn-rm-top-bar": HTMLDnnRmTopBarElement;
+        "dnn-rm-unlink-items": HTMLDnnRmUnlinkItemsElement;
     }
 }
 declare namespace LocalJSX {
@@ -299,6 +322,9 @@ declare namespace LocalJSX {
         "item": Item;
     }
     interface DnnActionMoveItems {
+        "items": Item[];
+    }
+    interface DnnActionUnlinkItems {
         "items": Item[];
     }
     interface DnnResourceManager {
@@ -435,11 +461,22 @@ declare namespace LocalJSX {
     }
     interface DnnRmTopBar {
     }
+    interface DnnRmUnlinkItems {
+        /**
+          * The list of items to delete.
+         */
+        "items": Item[];
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+    }
     interface IntrinsicElements {
         "dnn-action-create-folder": DnnActionCreateFolder;
         "dnn-action-delete-items": DnnActionDeleteItems;
         "dnn-action-edit-item": DnnActionEditItem;
         "dnn-action-move-items": DnnActionMoveItems;
+        "dnn-action-unlink-items": DnnActionUnlinkItems;
         "dnn-resource-manager": DnnResourceManager;
         "dnn-rm-actions-bar": DnnRmActionsBar;
         "dnn-rm-create-folder": DnnRmCreateFolder;
@@ -459,6 +496,7 @@ declare namespace LocalJSX {
         "dnn-rm-right-pane": DnnRmRightPane;
         "dnn-rm-status-bar": DnnRmStatusBar;
         "dnn-rm-top-bar": DnnRmTopBar;
+        "dnn-rm-unlink-items": DnnRmUnlinkItems;
     }
 }
 export { LocalJSX as JSX };
@@ -469,6 +507,7 @@ declare module "@stencil/core" {
             "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
             "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
+            "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
             "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
             "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
@@ -488,6 +527,7 @@ declare module "@stencil/core" {
             "dnn-rm-right-pane": LocalJSX.DnnRmRightPane & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
             "dnn-rm-status-bar": LocalJSX.DnnRmStatusBar & JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
             "dnn-rm-top-bar": LocalJSX.DnnRmTopBar & JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
+            "dnn-rm-unlink-items": LocalJSX.DnnRmUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnRmUnlinkItemsElement>;
         }
     }
 }

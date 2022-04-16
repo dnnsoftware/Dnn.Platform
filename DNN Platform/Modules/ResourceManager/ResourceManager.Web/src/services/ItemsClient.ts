@@ -432,6 +432,8 @@ export interface Item{
     modifiedOn: string;
     /** The size of the file (only available for file Items) */
     fileSize?: number,
+    /** Defines if a folder has the possibility of being unlinked instead of deleted. */
+    unlinkAllowedStatus?: "true" | "false" | "unlinkOnly",
 }
 
 export interface SearchResponse{

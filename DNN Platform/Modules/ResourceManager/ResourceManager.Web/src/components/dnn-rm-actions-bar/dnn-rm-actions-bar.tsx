@@ -66,6 +66,9 @@ export class DnnRmActionsBar {
               <dnn-action-delete-items items={state.selectedItems}/>
             ]
           }
+          {state.selectedItems.length > 0 && state.selectedItems.every(i => i.isFolder && i.unlinkAllowedStatus && i.unlinkAllowedStatus != "false") &&
+            <dnn-action-unlink-items items={state.selectedItems}/>
+          }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">
           {state.selectedItems.length > 0 &&

@@ -4,6 +4,7 @@
 namespace Dnn.Modules.ResourceManager.Services
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -42,6 +43,7 @@ namespace Dnn.Modules.ResourceManager.Services
     {
         private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
         private readonly IModuleControlPipeline modulePipeline;
+        private readonly Hashtable mappedPathsSupported = new Hashtable();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsController"/> class.
@@ -676,6 +678,7 @@ namespace Dnn.Modules.ResourceManager.Services
                     iconUrl = GetFolderIconUrl(this.PortalSettings.PortalId, folder.FolderMappingID),
                     createdOn = folder.CreatedOnDate,
                     modifiedOn = folder.LastModifiedOnDate,
+                    unlinkAllowedStatus = this.GetUnlinkAllowedStatus(folder),
                 };
             }
 
@@ -694,6 +697,35 @@ namespace Dnn.Modules.ResourceManager.Services
                 modifiedOn = file.LastModifiedOnDate,
                 fileSize = file.Size,
             };
+        }
+
+        private string GetUnlinkAllowedStatus(IFolderInfo folder)
+        {
+            if (this.AreMappedPathsSupported(folder.FolderMappingID) && folder.ParentID > 0 && FolderManager.Instance.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
+            {
+                return "onlyUnlink";
+            }
+
+            if (this.AreMappedPathsSupported(folder.FolderMappingID))
+            {
+                return "true";
+            }
+
+            return "false";
+        }
+
+        private bool AreMappedPathsSupported(int folderMappingId)
+        {
+            if (this.mappedPathsSupported.ContainsKey(folderMappingId))
+            {
+                return (bool)this.mappedPathsSupported[folderMappingId];
+            }
+
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
+            var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
+            var result = folderProvider.SupportsMappedPaths;
+            this.mappedPathsSupported[folderMappingId] = result;
+            return result;
         }
 
         private ModuleInstanceContext GetModuleContext()
