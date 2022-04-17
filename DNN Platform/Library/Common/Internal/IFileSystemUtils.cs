@@ -9,7 +9,7 @@ namespace DotNetNuke.Common.Internal
     /// <summary>
     /// An abstraction of <see cref="FileSystemUtils"/> to enable unit testing.
     /// </summary>
-    public interface IFileSystemUtils
+    internal interface IFileSystemUtils
     {
         /// <summary>
         /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
