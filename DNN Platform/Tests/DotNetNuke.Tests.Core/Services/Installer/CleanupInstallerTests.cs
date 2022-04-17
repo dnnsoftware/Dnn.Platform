@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Tests.Core.Services.Installer
 {
+    using System.Collections.Generic;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Utilities;
     using DotNetNuke.Services.Installer;
@@ -15,24 +17,10 @@ namespace DotNetNuke.Tests.Core.Services.Installer
     [TestFixture]
     public class CleanupInstallerTests
     {
-        private const string wwwroot = @"D:\inetpub\wwwroot";
+        private const string wwwroot = "D:/inetpub/wwwroot";
 
         [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase(" ")]
-        [TestCase(@"C:\")]
-        [TestCase(wwwroot)]
-        [TestCase(@"\")]
-        [TestCase(@"\\")]
-        [TestCase(@"\\fileshare")]
-        [TestCase(@"C:/")]
-        [TestCase(@"D:/inetpub/wwwroot")]
-        [TestCase(@"/")]
-        [TestCase(@"//")]
-        [TestCase(@"//fileshare")]
-        [TestCase(@"file://C:/Windows")]
-        [TestCase(@"http://dnndev.me")]
+        [TestCaseSource(nameof(InvalidPathsTestCaseSource))]
         public void Install_WhenFolderInvalid_DoesNotCallFileSystem(string path)
         {
             // arrange
@@ -55,8 +43,7 @@ namespace DotNetNuke.Tests.Core.Services.Installer
         }
 
         [Test]
-        [TestCase(wwwroot + @"\dir")]
-        [TestCase(wwwroot + @"/dir")]
+        [TestCaseSource(nameof(ValidPathsTestCaseSource))]
         public void Install_WhenFolderValid_CallsFileSystem(string path)
         {
             // arrange
@@ -80,6 +67,85 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             // assert
             Assert.IsTrue(sut.Completed);
             fileSystemUtilsMock.Verify();
+        }
+
+        private static IEnumerable<string> InvalidPathsTestCaseSource()
+        {
+            yield return null;
+            yield return string.Empty;
+            yield return " ";
+            yield return ".";
+            yield return "..";
+            yield return "...";
+
+            var relativeSlashedPaths = new[]
+            {
+                "../",
+                "../wwwroot",
+                "../wwwroot/",
+                "../wwwroot/..",
+                "../wwwroot/../",
+                "../wwwroot/dir",
+                "Providers/../..",
+                "Providers/../../",
+                "dir/../dir",
+                "dir/../dir/",
+                "dir/../../wwwroot/dir",
+                "dir/../../wwwroot/dir/",
+            };
+
+            foreach (var path in relativeSlashedPaths)
+            {
+                yield return path;
+                yield return Alternate(path);
+                yield return MakeAbsolute(path);
+                yield return Alternate(MakeAbsolute(path));
+            }
+
+            var absoluteSlashedPaths = new[]
+            {
+                "C:/",
+                wwwroot,
+                wwwroot + "../wwwroot/dir",
+                "/",
+                "//",
+                "///",
+                "//fileshare",
+                "file://C:/Windows",
+                "http://dnndev.me",
+            };
+
+            foreach (var path in absoluteSlashedPaths)
+            {
+                yield return path;
+                yield return Alternate(path);
+            }
+        }
+
+        private static IEnumerable<string> ValidPathsTestCaseSource()
+        {
+            yield return "dir";
+
+            var relativeSlashedPaths = new[]
+            {
+                "./dir",
+            };
+
+            foreach (var path in relativeSlashedPaths)
+            {
+                yield return path;
+                yield return Alternate(path);
+            }
+        }
+
+        private static string MakeAbsolute(string relative)
+        {
+            return string.Concat(wwwroot, "/", relative);
+        }
+
+        private static string Alternate(string path)
+        {
+            return path.Replace('/', '\\');
         }
 
         private static Mock<IApplicationStatusInfo> SetupApplicationStatusInfoMock()
