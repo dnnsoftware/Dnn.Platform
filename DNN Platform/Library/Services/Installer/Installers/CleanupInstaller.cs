@@ -173,21 +173,41 @@ namespace DotNetNuke.Services.Installer.Installers
                 return false;
             }
 
+            if (Path.IsPathRooted(path))
+            {
+                return false; // no rooted paths
+            }
+
+            if (path.StartsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                return false; // no absolute paths
+            }
+
+            if (path.IndexOf("..", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            {
+                return false; // no relative paths outside the app root
+            }
+
+            // normalize slashes
+            var appPath = Path.GetFullPath(this.applicationStatusInfo.ApplicationMapPath);
+
+            // ensure trailing slash
+            appPath = appPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
             string normalized;
             try
             {
-                normalized = Path.GetFullPath(path);
+                normalized = Path.GetFullPath(Path.Combine(appPath, path));
             }
             catch
             {
-                return false;
+                return false; // no malformed paths
             }
 
-            var appPath = this.applicationStatusInfo.ApplicationMapPath;
-            var fullPath = Path.Combine(appPath, normalized);
-            if (!normalized.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) || fullPath == appPath)
+            if (!normalized.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) ||
+                string.Equals(normalized, appPath, StringComparison.InvariantCultureIgnoreCase))
             {
-                return false;
+                return false; // not the app root or paths outside the app root
             }
 
             return true;
