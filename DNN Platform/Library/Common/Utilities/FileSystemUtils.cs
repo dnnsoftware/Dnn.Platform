@@ -373,6 +373,42 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <summary>
+        /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
+        /// </summary>
+        /// <param name="path">The root folder path.</param>
+        public static void DeleteEmptyFoldersRecursive(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+            {
+                Logger.Info(path + " does not exist.");
+                return;
+            }
+
+            // first take care of folders
+            foreach (var folder in Directory.EnumerateDirectoryPaths(path))
+            {
+                DeleteEmptyFoldersRecursive(folder);
+            }
+
+            // if any files or folders left, return
+            if (Directory.EnumerateFileSystemEntries(path).Any())
+            {
+                return;
+            }
+
+            try
+            {
+                // delete this empty folder
+                Directory.SetAttributes(path, FileAttributes.Normal);
+                Directory.Delete(path);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
         public static string FixPath(string input)
         {
             if (string.IsNullOrEmpty(input))
