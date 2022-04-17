@@ -195,6 +195,8 @@
     <Compile Include="Collections\PageSelector{T}.cs" />
     <Compile Include="Common\Controls\Form.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
+    <Compile Include="Common\Internal\FileSystemUtilsProvider.cs" />
+    <Compile Include="Common\Internal\IFileSystemUtils.cs" />
     <Compile Include="Common\Lists\ListEntryInfoCollection.cs" />
     <Compile Include="Common\NavigationManager.cs" />
     <Compile Include="Common\ServiceScopeContainer.cs" />

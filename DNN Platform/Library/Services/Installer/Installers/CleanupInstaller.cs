@@ -9,9 +9,12 @@ namespace DotNetNuke.Services.Installer.Installers
     using System.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileSystemGlobbing;
 
     /// -----------------------------------------------------------------------------
@@ -26,9 +29,37 @@ namespace DotNetNuke.Services.Installer.Installers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
 
         private readonly IList<string> folders = new List<string>();
+        private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly IFileSystemUtils fileSystemUtils;
 
         private string _fileName;
         private string _glob;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
+        /// </summary>
+        public CleanupInstaller()
+            : this(
+                Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>(),
+                Globals.DependencyProvider.GetRequiredService<IFileSystemUtils>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
+        /// </summary>
+        /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
+        /// <param name="fileSystemUtils">An instance of <see cref="IFileSystemUtils"/>.</param>
+        internal CleanupInstaller(
+            IApplicationStatusInfo applicationStatusInfo,
+            IFileSystemUtils fileSystemUtils)
+        {
+            this.applicationStatusInfo = applicationStatusInfo
+                ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
+
+            this.fileSystemUtils = fileSystemUtils
+                ?? throw new ArgumentNullException(nameof(fileSystemUtils));
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -123,6 +154,15 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <summary>
+        /// Adds a folder path to the list.
+        /// </summary>
+        /// <param name="path">The folder path.</param>
+        internal void ProcessFolder(string path)
+        {
+            this.Folders.Add(path);
+        }
+
+        /// <summary>
         /// Validates a folder path for cleanup.
         /// </summary>
         /// <param name="path">The folder oath to validate.</param>
@@ -152,7 +192,7 @@ namespace DotNetNuke.Services.Installer.Installers
             path = path.Trim();
 
             // normalize slashes
-            var appPath = Path.GetFullPath(Globals.ApplicationMapPath);
+            var appPath = Path.GetFullPath(this.applicationStatusInfo.ApplicationMapPath);
 
             // ensure trailing slash
             appPath = appPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
@@ -215,7 +255,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (this.IsValidFolderPath(path))
                 {
-                    FileSystemUtils.DeleteEmptyFoldersRecursive(path);
+                    this.fileSystemUtils.DeleteEmptyFoldersRecursive(path);
                 }
                 else
                 {
@@ -253,7 +293,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             if (pathNav != null)
             {
-                this.Folders.Add(pathNav.Value);
+                this.ProcessFolder(pathNav.Value);
             }
         }
 
