@@ -7,10 +7,8 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Abstractions.Utilities;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
@@ -31,7 +29,6 @@ namespace DotNetNuke
             services.AddSingleton<Html5ModuleControlFactory>();
             services.AddSingleton<ReflectedModuleControlFactory>();
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
-            services.AddSingleton<IFileSystemUtils, FileSystemUtilsProvider>();
 
             services.AddScoped<IEventLogger, EventLogController>();
             services.AddScoped<IEventLogConfigService, EventLogController>();
