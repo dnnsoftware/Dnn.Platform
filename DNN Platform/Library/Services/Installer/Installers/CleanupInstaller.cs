@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.XPath;
@@ -23,6 +24,9 @@ namespace DotNetNuke.Services.Installer.Installers
     public class CleanupInstaller : FileInstaller
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
+
+        private readonly IList<string> folders = new List<string>();
+
         private string _fileName;
         private string _glob;
 
@@ -33,6 +37,11 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles => "*";
+
+        /// <summary>
+        /// Gets the list of folders to clean up.
+        /// </summary>
+        protected IList<string> Folders => this.folders;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,6 +75,11 @@ namespace DotNetNuke.Services.Installer.Installers
                             break;
                         }
                     }
+
+                    foreach (string folder in this.Folders)
+                    {
+                        this.CleanupFolder(folder);
+                    }
                 }
                 else if (!string.IsNullOrEmpty(this._fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
                 {
@@ -89,6 +103,12 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this._fileName = Util.ReadAttribute(manifestNav, "fileName");
             this._glob = Util.ReadAttribute(manifestNav, "glob");
+
+            foreach (XPathNavigator nav in manifestNav.Select("folder"))
+            {
+                this.ProcessFolder(nav);
+            }
+
             base.ReadManifest(manifestNav);
         }
 
@@ -100,6 +120,60 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
+        }
+
+        /// <summary>
+        /// Validates a folder path for cleanup.
+        /// </summary>
+        /// <param name="path">The folder oath to validate.</param>
+        /// <returns>Whether or not the folder path is valid.</returns>
+        internal bool IsValidFolderPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            if (Path.IsPathRooted(path))
+            {
+                return false; // no rooted paths
+            }
+
+            if (path.StartsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                return false; // no absolute paths
+            }
+
+            if (path.IndexOf("..", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            {
+                return false; // no relative paths outside the app root
+            }
+
+            path = path.Trim();
+
+            // normalize slashes
+            var appPath = Path.GetFullPath(Globals.ApplicationMapPath);
+
+            // ensure trailing slash
+            appPath = appPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
+            string normalized;
+            try
+            {
+                normalized = Path.GetFullPath(Path.Combine(appPath, path));
+            }
+            catch
+            {
+                return false; // no malformed paths
+            }
+
+            if (!normalized.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) ||
+                string.Equals(normalized, appPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false; // not the app root or paths outside the app root
+            }
+
+            return true;
         }
 
         /// -----------------------------------------------------------------------------
@@ -131,6 +205,29 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        /// <summary>
+        /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
+        /// </summary>
+        /// <param name="path">The root folder path.</param>
+        protected virtual void CleanupFolder(string path)
+        {
+            try
+            {
+                if (this.IsValidFolderPath(path))
+                {
+                    FileSystemUtils.DeleteEmptyFoldersRecursive(path);
+                }
+                else
+                {
+                    Logger.Warn($"Ignoring invalid cleanup folder path '{path}' in package '{this.Package?.Name}'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ProcessFile method determines what to do with parsed "file" node.
@@ -143,6 +240,20 @@ namespace DotNetNuke.Services.Installer.Installers
             if (file != null)
             {
                 this.Files.Add(file);
+            }
+        }
+
+        /// <summary>
+        /// Determines what to do with the parsed "folder" node.
+        /// </summary>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        protected virtual void ProcessFolder(XPathNavigator nav)
+        {
+            var pathNav = nav.SelectSingleNode("path");
+
+            if (pathNav != null)
+            {
+                this.Folders.Add(pathNav.Value);
             }
         }
 
