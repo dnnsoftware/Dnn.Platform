@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Core.Services.Installer
 
         [Test]
         [TestCaseSource(nameof(ValidPathsTestCaseSource))]
-        public void Install_WhenFolderValid_CallsFileSystem(Tuple<string, string> paths)
+        public void Install_WhenFolderValid_CallsFileSystem(string path, string expectedPath)
         {
             // arrange
             var actualPath = default(string);
@@ -68,13 +68,13 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             };
 
             // act
-            sut.ProcessFolder(paths.Item1);
+            sut.ProcessFolder(path);
             sut.Install();
 
             // assert
             Assert.IsTrue(sut.Completed);
             fileSystemUtilsMock.Verify();
-            Assert.AreEqual(paths.Item2, actualPath);
+            Assert.AreEqual(expectedPath, actualPath);
         }
 
         private static IEnumerable<string> InvalidPathsTestCaseSource()
@@ -139,13 +139,13 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             }
         }
 
-        private static IEnumerable<Tuple<string, string>> ValidPathsTestCaseSource()
+        private static IEnumerable<IEnumerable<string>> ValidPathsTestCaseSource()
         {
             var expectedPath = Alternate(wwwroot + "/dir");
 
-            yield return Tuple.Create("dir", expectedPath);
-            yield return Tuple.Create(AddTrailingSlash("dir"), expectedPath);
-            yield return Tuple.Create(Alternate(AddTrailingSlash("dir")), expectedPath);
+            yield return new[] { "dir", expectedPath };
+            yield return new[] { AddTrailingSlash("dir"), expectedPath };
+            yield return new[] { Alternate(AddTrailingSlash("dir")), expectedPath };
 
             var relativeSlashedPaths = new[]
             {
@@ -154,10 +154,10 @@ namespace DotNetNuke.Tests.Core.Services.Installer
 
             foreach (var path in relativeSlashedPaths)
             {
-                yield return Tuple.Create(path, expectedPath);
-                yield return Tuple.Create(Alternate(path), expectedPath);
-                yield return Tuple.Create(AddTrailingSlash(path), expectedPath);
-                yield return Tuple.Create(Alternate(AddTrailingSlash(path)), expectedPath);
+                yield return new[] { path, expectedPath };
+                yield return new[] { Alternate(path), expectedPath };
+                yield return new[] { AddTrailingSlash(path), expectedPath };
+                yield return new[] { Alternate(AddTrailingSlash(path)), expectedPath };
             }
         }
 
