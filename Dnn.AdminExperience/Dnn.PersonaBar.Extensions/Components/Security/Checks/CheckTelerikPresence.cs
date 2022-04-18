@@ -6,11 +6,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
 
-    using Dnn.PersonaBar.Extensions.Components.Security.Helper;
-    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Check for Telerik presence in the site.
@@ -21,60 +21,35 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     /// </summary>
     public class CheckTelerikPresence : BaseCheck
     {
-        /// <summary>
-        /// The file name of the Telerik Web UI assembly.
-        /// </summary>
-        public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
-
-        private readonly IApplicationStatusInfo applicationStatusInfo;
-        private readonly IFileHelper fileHelper;
-
-        private readonly string[] wellKnownAssemblies = new[]
-        {
-            "Telerik.Web.UI.Skins.dll",
-            "DotNetNuke.Website.Deprecated.dll",
-            "DotNetNuke.Web.Deprecated.dll",
-            "DotNetNuke.Modules.DigitalAssets.dll",
-        };
+        private readonly ITelerikUtils telerikUtils;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.
         /// </summary>
-        /// <param name="applicationStatusInfo">
-        /// An instance of the <see cref="IApplicationStatusInfo"/> class.
-        /// </param>
-        public CheckTelerikPresence(IApplicationStatusInfo applicationStatusInfo)
-            : this(applicationStatusInfo, new FileHelper())
+        public CheckTelerikPresence()
+            : this(Globals.DependencyProvider.GetRequiredService<ITelerikUtils>())
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.
         /// </summary>
-        /// <param name="applicationStatusInfo">
-        /// An instance of the <see cref="IApplicationStatusInfo"/> class.
+        /// <param name="telerikUtils">
+        /// An instance of the <see cref="ITelerikUtils"/> interface.
         /// </param>
-        /// <param name="fileHelper">
-        /// An instance of the <see cref="IFileHelper"/> class.
-        /// </param>
-        internal CheckTelerikPresence(IApplicationStatusInfo applicationStatusInfo, IFileHelper fileHelper)
+        internal CheckTelerikPresence(ITelerikUtils telerikUtils)
             : base()
         {
-            this.applicationStatusInfo = applicationStatusInfo ??
-                throw new ArgumentNullException(nameof(applicationStatusInfo));
-
-            this.fileHelper = fileHelper ??
-                throw new ArgumentNullException(nameof(fileHelper));
+            this.telerikUtils = telerikUtils ??
+                throw new ArgumentNullException(nameof(telerikUtils));
         }
-
-        private string BinPath => Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "bin");
 
         /// <inheritdoc />
         protected override CheckResult ExecuteInternal()
         {
-            if (this.TelerikIsInstalled())
+            if (this.telerikUtils.TelerikIsInstalled())
             {
-                var files = this.GetAssembliesThatDependOnTelerik();
+                var files = this.telerikUtils.GetAssembliesThatDependOnTelerik();
                 var fileList = files as IList<string> ?? files.ToList();
 
                 if (fileList.Any())
@@ -101,7 +76,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private CheckResult InstalledAndUsed(IEnumerable<string> files)
         {
             var caption = this.GetLocalizedString("InstalledAndUsed");
-            var relativeFiles = files.Select(path => path.Substring(this.BinPath.Length + 1));
+            var relativeFiles = files.Select(path => path.Substring(this.telerikUtils.BinPath.Length + 1));
             var fileList = string.Join("<br/>", relativeFiles.Select(path => $"* {path}"));
             var note = string.Join("<br/>", new[] { caption, string.Empty, fileList });
 
@@ -114,30 +89,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         private CheckResult NotInstalled()
         {
             return new CheckResult(SeverityEnum.Pass, this.Id);
-        }
-
-        private bool TelerikIsInstalled()
-        {
-            return this.fileHelper.FileExists(Path.Combine(this.BinPath, TelerikWebUIFileName));
-        }
-
-        private IEnumerable<string> GetAssembliesThatDependOnTelerik()
-        {
-            return this.fileHelper.DirectoryGetFiles(this.BinPath, "*.dll", SearchOption.AllDirectories)
-                .Where(this.IsNotWellKnownAssembly)
-                .Where(this.AssemblyDependsOnTelerik);
-        }
-
-        private bool IsNotWellKnownAssembly(string path)
-        {
-            var fileName = Path.GetFileName(path);
-            return !this.wellKnownAssemblies.Contains(fileName);
-        }
-
-        private bool AssemblyDependsOnTelerik(string path)
-        {
-            return this.fileHelper.GetReferencedAssemblyNames(path)
-                .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
         }
     }
 }

@@ -236,8 +236,6 @@
     <Compile Include="Components\Security\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckViewstatemac.cs" />
     <Compile Include="Components\Security\Constants.cs" />
-    <Compile Include="Components\Security\Helper\FileHelper.cs" />
-    <Compile Include="Components\Security\Helper\IFileHelper.cs" />
     <Compile Include="Components\Security\Helper\RegistrationSettingsHelper.cs" />
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />
