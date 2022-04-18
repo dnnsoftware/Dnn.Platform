@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Tests.Core.Services.Installer
 {
+    using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Abstractions.Application;
@@ -44,15 +45,21 @@ namespace DotNetNuke.Tests.Core.Services.Installer
 
         [Test]
         [TestCaseSource(nameof(ValidPathsTestCaseSource))]
-        public void Install_WhenFolderValid_CallsFileSystem(string path)
+        public void Install_WhenFolderValid_CallsFileSystem(Tuple<string, string> paths)
         {
             // arrange
+            var actualPath = default(string);
+
             var applicationStatusInfoMock = SetupApplicationStatusInfoMock();
 
             var fileSystemUtilsMock = new Mock<IFileSystemUtils>();
 
             fileSystemUtilsMock
                 .Setup(x => x.DeleteEmptyFoldersRecursive(It.IsAny<string>()))
+                .Callback((string fullPath) =>
+                {
+                    actualPath = fullPath;
+                })
                 .Verifiable();
 
             var sut = new CleanupInstaller(applicationStatusInfoMock.Object, fileSystemUtilsMock.Object)
@@ -61,12 +68,13 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             };
 
             // act
-            sut.ProcessFolder(path);
+            sut.ProcessFolder(paths.Item1);
             sut.Install();
 
             // assert
             Assert.IsTrue(sut.Completed);
             fileSystemUtilsMock.Verify();
+            Assert.AreEqual(paths.Item2, actualPath);
         }
 
         private static IEnumerable<string> InvalidPathsTestCaseSource()
@@ -131,11 +139,13 @@ namespace DotNetNuke.Tests.Core.Services.Installer
             }
         }
 
-        private static IEnumerable<string> ValidPathsTestCaseSource()
+        private static IEnumerable<Tuple<string, string>> ValidPathsTestCaseSource()
         {
-            yield return "dir";
-            yield return AddTrailingSlash("dir");
-            yield return Alternate(AddTrailingSlash("dir"));
+            var expectedPath = Alternate(wwwroot + "/dir");
+
+            yield return Tuple.Create("dir", expectedPath);
+            yield return Tuple.Create(AddTrailingSlash("dir"), expectedPath);
+            yield return Tuple.Create(Alternate(AddTrailingSlash("dir")), expectedPath);
 
             var relativeSlashedPaths = new[]
             {
@@ -144,10 +154,10 @@ namespace DotNetNuke.Tests.Core.Services.Installer
 
             foreach (var path in relativeSlashedPaths)
             {
-                yield return path;
-                yield return Alternate(path);
-                yield return AddTrailingSlash(path);
-                yield return Alternate(AddTrailingSlash(path));
+                yield return Tuple.Create(path, expectedPath);
+                yield return Tuple.Create(Alternate(path), expectedPath);
+                yield return Tuple.Create(AddTrailingSlash(path), expectedPath);
+                yield return Tuple.Create(Alternate(AddTrailingSlash(path)), expectedPath);
             }
         }
 

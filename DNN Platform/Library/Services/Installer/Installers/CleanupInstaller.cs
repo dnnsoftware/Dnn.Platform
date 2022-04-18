@@ -165,10 +165,13 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// Validates a folder path for cleanup.
         /// </summary>
-        /// <param name="path">The folder oath to validate.</param>
+        /// <param name="path">The folder path to validate.</param>
+        /// <param name="validPath">The sanitized absolute folder path after validation.</param>
         /// <returns>Whether or not the folder path is valid.</returns>
-        internal bool IsValidFolderPath(string path)
+        internal bool IsValidFolderPath(string path, out string validPath)
         {
+            validPath = null;
+
             if (string.IsNullOrWhiteSpace(path))
             {
                 return false;
@@ -197,19 +200,21 @@ namespace DotNetNuke.Services.Installer.Installers
             // ensure trailing slash
             appPath = appPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
 
-            string normalized;
             try
             {
-                normalized = Path.GetFullPath(Path.Combine(appPath, path));
+                validPath = Path.GetFullPath(Path.Combine(appPath, path));
             }
             catch
             {
                 return false; // no malformed paths
             }
 
-            if (!normalized.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) ||
-                string.Equals(normalized, appPath, StringComparison.InvariantCultureIgnoreCase))
+            validPath = validPath.TrimEnd(Path.DirectorySeparatorChar);
+
+            if (!validPath.StartsWith(appPath, StringComparison.InvariantCultureIgnoreCase) ||
+                string.Equals(validPath, appPath, StringComparison.InvariantCultureIgnoreCase))
             {
+                validPath = null;
                 return false; // not the app root or paths outside the app root
             }
 
@@ -253,9 +258,9 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                if (this.IsValidFolderPath(path))
+                if (this.IsValidFolderPath(path, out string validPath))
                 {
-                    this.fileSystemUtils.DeleteEmptyFoldersRecursive(path);
+                    this.fileSystemUtils.DeleteEmptyFoldersRecursive(validPath);
                 }
                 else
                 {
