@@ -120,12 +120,6 @@
   <data name="nav_Licensing.Text" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="NoLicense.Header" xml:space="preserve">
-    <value>You have no EVOQ licenses ... yet</value>
-  </data>
-  <data name="NoLicense.Text" xml:space="preserve">
-    <value>Upgrade to EVOQ below to gain access to professional features on your sites.</value>
-  </data>
   <data name="LicenseType.Header" xml:space="preserve">
     <value>LICENSE TYPE</value>
   </data>

@@ -12,7 +12,8 @@ import Item from "../containers/ItemContainer";
 import ItemDetailsContainer from "../containers/ItemDetailsContainer";
 import ItemMoveContainer from "../containers/ItemMoveContainer";
 import localizeService from "../services/localizeService.js";
-import ReactCSSTransitionGroup from "react-transition-group/CSSTransitionGroup";
+import TransitionGroup from "react-transition-group/TransitionGroup";
+import CSSTransition from "react-transition-group/CSSTransition";
 
 class AssetsPanelContainer extends React.Component {
     constructor(props) {
@@ -35,29 +36,27 @@ class AssetsPanelContainer extends React.Component {
 
     getDetailsPanel(showPanel, i) {
         return (
-            <ReactCSSTransitionGroup
-                key={"item-details-" + i}
-                transitionName="dnn-slide-in-out"
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}
-                transitionLeave={!showPanel}
-            >
-                {showPanel && <ItemDetailsContainer />}
-            </ReactCSSTransitionGroup>
+            <TransitionGroup key={"item-details-" + i}>
+                <CSSTransition 
+                    classNames="dnn-slide-in-out"
+                    timeout={{enter:500, exit: 300}}
+                    exit={!showPanel}>
+                    {showPanel && <ItemDetailsContainer />}
+                </CSSTransition>
+            </TransitionGroup>
         );
     }
 
     getMovePanel(showPanel, i) {
         return (
-            <ReactCSSTransitionGroup
-                key={"item-move-" + i}
-                transitionName="dnn-slide-in-out"
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}
-                transitionLeave={!showPanel}
-            >
-                {showPanel && <ItemMoveContainer />}
-            </ReactCSSTransitionGroup>
+            <TransitionGroup key={"item-move-" + i}>
+                <CSSTransition
+                    classNames="dnn-slide-in-out"
+                    timeout={{enter:500, exit: 300}}
+                    exit={!showPanel}>
+                    {showPanel && <ItemMoveContainer />}
+                </CSSTransition>
+            </TransitionGroup>
         );
     }
 

@@ -118,18 +118,6 @@ define(['jquery'], function ($) {
                     return trimmed;
                 },
 
-                deserializeCustomDate: function (str) {
-                    if (this.moment) {
-                        return this.moment(str, 'YYYY-MM-DD').toDate();
-                    }
-                },
-                
-                serializeCustomDate: function (dateObj) {
-                    if (this.moment) {
-                        return this.moment(dateObj).format('YYYY-MM-DD');
-                    }
-                },
-
                 getApplicationRootPath: function getApplicationRootPath() {
                     var rootPath = location.protocol + '//' + location.host + (location.port ? (':' + location.port) : '');
                     if (rootPath.substr(rootPath.length - 1, 1) === '/') {

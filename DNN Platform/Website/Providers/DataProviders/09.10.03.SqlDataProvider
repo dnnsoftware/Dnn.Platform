@@ -1,0 +1,29 @@
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}OutputCacheAddItem') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}OutputCacheAddItem]
+  @ItemId     Int,
+	@CacheKey   VarChar ( 36),
+	@Data	    nVarChar(Max),
+	@Expiration DateTime
+AS
+BEGIN
+	IF NOT EXISTS (SELECT CacheKey from {databaseOwner}{objectQualifier}OutputCache where CacheKey = @CacheKey)
+		begin
+		    INSERT INTO dbo.OutputCache
+				(ItemId, 
+				CacheKey, 
+				Data, 
+				Expiration
+				) VALUES 
+				(@ItemId, 
+				@CacheKey, 
+				@Data, 
+				@Expiration
+				)
+		end
+	ELSE UPDATE {databaseOwner}{objectQualifier}OutputCache Set Data = @Data, Expiration = @Expiration Where CacheKey = @CacheKey
+END
+
+GO

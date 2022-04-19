@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props')" />
   <Import Project="..\..\..\packages\NUnit.3.13.2\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.3.13.2\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,7 +14,6 @@
     <AssemblyName>DotNetNuke.Tests.Web</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\Evoq.Content\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NuGetPackageImportStamp>
@@ -85,8 +84,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebFormsMvp">
-      <HintPath>..\..\..\packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
+    <Reference Include="WebFormsMvp, Version=1.4.5.0, Culture=neutral, PublicKeyToken=537f18701145dff0">
+      <HintPath>..\..\..\packages\WebFormsMvp.1.4.5.0\lib\WebFormsMvp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -181,7 +181,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
     <Error Condition="!Exists('..\..\..\packages\NUnit.3.13.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit.3.13.2\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props'))" />
   </Target>
   <!-- <Target Name="AfterBuild">
   </Target> -->

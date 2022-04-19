@@ -16,7 +16,7 @@ namespace DotNetNuke.Build.Tasks
     using DotNetNuke.Build;
 
     /// <summary>A cake task to create the platform's NuGet packages.</summary>
-    [Dependency(typeof(PreparePackaging))]
+    [IsDependentOn(typeof(PreparePackaging))]
     public sealed class CreateNugetPackages : FrostingTask<Context>
     {
         /// <inheritdoc/>

@@ -11,7 +11,7 @@ namespace DotNetNuke.Build.Tasks
 
     /// <summary>A cake task to run NUnit 3 tests.</summary>
     /// <remarks>This task is not used (NUnit 3 is not used by DNN), you probably want <see cref="UnitTests"/>.</remarks>
-    [Dependency(typeof(Build))]
+    [IsDependentOn(typeof(Build))]
     public sealed class RunUnitTests : FrostingTask<Context>
     {
         /// <inheritdoc/>

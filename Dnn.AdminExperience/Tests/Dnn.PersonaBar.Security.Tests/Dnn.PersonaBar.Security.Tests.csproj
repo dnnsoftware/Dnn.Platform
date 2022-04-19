@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props')" />
   <Import Project="..\..\..\packages\NUnit.3.13.2\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.3.13.2\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -62,10 +62,16 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Checks\CheckTelerikPresenceTests.cs" />
+    <Compile Include="Checks\CheckUserProfilePageTests.cs" />
     <Compile Include="Services\SecurityControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
@@ -107,6 +113,6 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\packages\NUnit.3.13.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit.3.13.2\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.4.0.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.4.2.0\build\net35\NUnit3TestAdapter.props'))" />
   </Target>
 </Project>

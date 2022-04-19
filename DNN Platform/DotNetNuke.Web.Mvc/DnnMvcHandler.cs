@@ -10,7 +10,9 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.SessionState;
 
     using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.HttpModules.Membership;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvc.Common;
     using DotNetNuke.Web.Mvc.Framework.Modules;
@@ -66,6 +68,7 @@ namespace DotNetNuke.Web.Mvc
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
+            this.SetThreadCulture();
             MembershipModule.AuthenticateRequest(this.RequestContext.HttpContext, allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
         }
@@ -91,6 +94,23 @@ namespace DotNetNuke.Web.Mvc
         {
             HttpContextBase httpContextBase = new HttpContextWrapper(httpContext);
             this.ProcessRequest(httpContextBase);
+        }
+
+        private void SetThreadCulture()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            if (portalSettings is null)
+            {
+                return;
+            }
+
+            var pageLocale = Localization.GetPageLocale(portalSettings);
+            if (pageLocale is null)
+            {
+                return;
+            }
+
+            Localization.SetThreadCultures(pageLocale, portalSettings);
         }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()

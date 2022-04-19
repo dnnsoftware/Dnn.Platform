@@ -13,8 +13,8 @@ namespace DotNetNuke.Build.Tasks
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to crete the Deploy package.</summary>
-    [Dependency(typeof(PreparePackaging))]
-    [Dependency(typeof(OtherPackages))]
+    [IsDependentOn(typeof(PreparePackaging))]
+    [IsDependentOn(typeof(OtherPackages))]
     public sealed class CreateDeploy : FrostingTask<Context>
     {
         /// <inheritdoc/>

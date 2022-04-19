@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Security.Tests.Services
 {
     using Dnn.PersonaBar.Security.Services;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Portals;
     using Moq;
     using NUnit.Framework;
@@ -22,7 +23,11 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             // arrange
             var controllerMock = new Mock<Components.SecurityController>();
             var portalAliasControllerMock = new Mock<IPortalAliasController>();
-            var sut = new SecurityController(controllerMock.Object, portalAliasControllerMock.Object);
+            var applicationStatusInfoMock = new Mock<IApplicationStatusInfo>();
+            var sut = new SecurityController(
+                controllerMock.Object,
+                applicationStatusInfoMock.Object,
+                portalAliasControllerMock.Object);
 
             // act
             var alias = sut.AddPortalAlias(SslUrl, PortalId);
@@ -37,6 +42,7 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             // arrange
             var controllerMock = new Mock<Components.SecurityController>();
             var portalAliasControllerMock = new Mock<IPortalAliasController>();
+            var applicationStatusInfoMock = new Mock<IApplicationStatusInfo>();
             var portalAliasInfo = new PortalAliasInfo
             {
                 HTTPAlias = SomeAlias,
@@ -45,7 +51,10 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             portalAliasControllerMock
                 .Setup(c => c.GetPortalAlias(SomeAlias, PortalId))
                 .Returns(() => portalAliasInfo);
-            var sut = new SecurityController(controllerMock.Object, portalAliasControllerMock.Object);
+            var sut = new SecurityController(
+                controllerMock.Object,
+                applicationStatusInfoMock.Object,
+                portalAliasControllerMock.Object);
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);
@@ -63,10 +72,14 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             // arrange
             var controllerMock = new Mock<Components.SecurityController>();
             var portalAliasControllerMock = new Mock<IPortalAliasController>();
+            var applicationStatusInfoMock = new Mock<IApplicationStatusInfo>();
             portalAliasControllerMock
                 .Setup(c => c.GetPortalAlias(SomeAlias, PortalId))
                 .Returns(() => null);
-            var sut = new SecurityController(controllerMock.Object, portalAliasControllerMock.Object);
+            var sut = new SecurityController(
+                controllerMock.Object,
+                applicationStatusInfoMock.Object,
+                portalAliasControllerMock.Object);
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);
