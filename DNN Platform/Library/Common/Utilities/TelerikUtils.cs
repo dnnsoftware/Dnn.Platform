@@ -21,6 +21,12 @@ namespace DotNetNuke.Common.Internal
         /// </summary>
         public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
 
+        private static readonly string[] Vendors = new[]
+        {
+            "Microsoft",
+            "System",
+        };
+
         private static readonly string[] WellKnownAssemblies = new[]
         {
             "Telerik.Web.UI.Skins.dll",
@@ -106,7 +112,8 @@ namespace DotNetNuke.Common.Internal
         private bool IsNotWellKnownAssembly(string path)
         {
             var fileName = Path.GetFileName(path);
-            return !WellKnownAssemblies.Contains(fileName);
+            return !WellKnownAssemblies.Contains(fileName) &&
+                !Vendors.Any(vendor => fileName.StartsWith($"{vendor}."));
         }
     }
 }
