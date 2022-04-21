@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Install
     public partial class UpgradeWizard : PageBase
     {
         /// <summary>
-        /// Client ID of the hidden input containing the Telerik checked token.
+        /// Client ID of the hidden input containing the Telerik anti-forgery token.
         /// </summary>
         protected static readonly string TelerikAntiForgeryTokenClientID = "telerikAntiForgeryToken";
 
@@ -327,7 +327,7 @@ namespace DotNetNuke.Services.Install
             {
                 CanProceed = true,
                 View = RenderControls(
-                    CreateTelerikCheckedTokenField(),
+                    CreateTelerikAntiForgeryTokenField(),
                     CreateHeading("TelerikNotInstalledHeading"),
                     CreateParagraph("TelerikNotInstalledInfo")),
             };
@@ -342,7 +342,7 @@ namespace DotNetNuke.Services.Install
             {
                 CanProceed = false,
                 View = RenderControls(
-                    CreateTelerikCheckedTokenField(),
+                    CreateTelerikAntiForgeryTokenField(),
                     CreateTelerikInstalledHeader(),
                     CreateParagraph("TelerikInstalledButNotUsedInfo"),
                     CreateParagraph("TelerikUninstallInfo"),
@@ -360,7 +360,7 @@ namespace DotNetNuke.Services.Install
             {
                 CanProceed = true,
                 View = RenderControls(
-                    CreateTelerikCheckedTokenField(),
+                    CreateTelerikAntiForgeryTokenField(),
                     CreateTelerikInstalledHeader(),
                     CreateParagraph("TelerikInstalledAndUsedInfo"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
@@ -368,7 +368,7 @@ namespace DotNetNuke.Services.Install
             };
         }
 
-        private static Control CreateTelerikCheckedTokenField()
+        private static Control CreateTelerikAntiForgeryTokenField()
         {
             return new HiddenField
             {
