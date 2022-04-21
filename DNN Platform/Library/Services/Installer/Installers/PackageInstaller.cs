@@ -14,6 +14,8 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Services.Installer.Dependencies;
     using DotNetNuke.Services.Installer.Packages;
 
+    using SchwabenCode.QuickIO;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PackageInstaller class is an Installer for Packages.
@@ -375,6 +377,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     this.Package.License = this.ReadTextFromFile(licenseSrc);
+                    if (this.Package.License == null)
+                    {
+                        // failure reading file
+                        return;
+                    }
                 }
             }
 
@@ -397,6 +404,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     this.Package.ReleaseNotes = this.ReadTextFromFile(relNotesSrc);
+                    if (this.Package.ReleaseNotes == null)
+                    {
+                        // failure reading file
+                        return;
+                    }
                 }
             }
 
@@ -571,14 +583,20 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private string ReadTextFromFile(string source)
         {
-            string strText = Null.NullString;
-            if (this.Package.InstallerInfo.InstallMode != InstallMode.ManifestOnly)
+            if (this.Package.InstallerInfo.InstallMode == InstallMode.ManifestOnly)
             {
-                // Load from file
-                strText = FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+                return Null.NullString;
             }
 
-            return strText;
+            try
+            {
+                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+            }
+            catch (PathNotFoundException)
+            {
+                this.Log.AddFailure($"Unable to read {source}, file not found");
+                return null;
+            }
         }
     }
 }
