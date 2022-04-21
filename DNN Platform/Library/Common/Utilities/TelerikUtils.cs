@@ -8,7 +8,6 @@ namespace DotNetNuke.Common.Internal
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -58,9 +57,19 @@ namespace DotNetNuke.Common.Internal
         /// <inheritdoc/>
         public IEnumerable<string> GetAssembliesThatDependOnTelerik()
         {
-            return this.DirectoryGetFiles(this.BinPath, "*.dll", SearchOption.AllDirectories)
-                .Where(this.IsNotWellKnownAssembly)
-                .Where(this.AssemblyDependsOnTelerik);
+            // use a temp AppDomain to avoid locking files in the bin folder
+            var domain = AppDomain.CreateDomain(nameof(TelerikUtils));
+            try
+            {
+                return this.DirectoryGetFiles(this.BinPath, "*.dll", SearchOption.AllDirectories)
+                    .Where(this.IsNotWellKnownAssembly)
+                    .Where(path => this.AssemblyDependsOnTelerik(path, domain))
+                    .ToList();
+            }
+            finally
+            {
+                AppDomain.Unload(domain);
+            }
         }
 
         /// <inheritdoc />
@@ -69,9 +78,9 @@ namespace DotNetNuke.Common.Internal
             return this.FileExists(Path.Combine(this.BinPath, TelerikWebUIFileName));
         }
 
-        private bool AssemblyDependsOnTelerik(string path)
+        private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
         {
-            return this.GetReferencedAssemblyNames(path)
+            return this.GetReferencedAssemblyNames(path, domain)
                 .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
         }
 
@@ -80,27 +89,24 @@ namespace DotNetNuke.Common.Internal
 
         private bool FileExists(string path) => File.Exists(path);
 
-        private IEnumerable<string> GetReferencedAssemblyNames(string assemblyFilePath) =>
-            this.LoadAssembly(assemblyFilePath)
-                .GetReferencedAssemblies()
-                .Select(assembly => assembly.FullName);
-
-        private bool IsNotWellKnownAssembly(string path)
-        {
-            var fileName = Path.GetFileName(path);
-            return !WellKnownAssemblies.Contains(fileName);
-        }
-
-        private Assembly LoadAssembly(string assemblyFilePath)
+        private IEnumerable<string> GetReferencedAssemblyNames(string assemblyFilePath, AppDomain domain)
         {
             try
             {
-                return Assembly.LoadFile(assemblyFilePath);
+                return domain.Load(File.ReadAllBytes(assemblyFilePath))
+                    .GetReferencedAssemblies()
+                    .Select(assembly => assembly.FullName);
             }
             catch (Exception ex)
             {
                 throw new IOException($"Could not load assembly '{assemblyFilePath}'", ex);
             }
+        }
+
+        private bool IsNotWellKnownAssembly(string path)
+        {
+            var fileName = Path.GetFileName(path);
+            return !WellKnownAssemblies.Contains(fileName);
         }
     }
 }
