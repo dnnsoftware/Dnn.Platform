@@ -1,0 +1,21 @@
+﻿#telerikRemoval input[type=checkbox] {
+    margin-right: 12px;
+}
+
+#telerikRemoval table {
+    width: 100%;
+}
+
+#telerikRemoval td, #telerikRemoval th {
+    padding: 12px;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+#uninstallReport th {
+    font-size: initial;
+}
+
+#telerikRemoval td:nth-child(2), #telerikRemoval th:nth-child(2) {
+    text-align: center;
+}
