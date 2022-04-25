@@ -119,7 +119,17 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
 
         private IStep RemoveSystemAttributeFromPackage(string packageName)
         {
-            return this.NullStep($"Remove the 'System' attribute from package '{packageName}'");
+            var commandFormat = string.Join(
+                Environment.NewLine,
+                "UPDATE {{databaseOwner}}{{objectQualifier}}Packages",
+                "SET IsSystemPackage = 0",
+                "WHERE [Name] = '{0}'");
+
+            var step = this.GetService<IExecuteSqlStep>();
+            step.InternalName = $"Remove the 'System' attribute from package '{packageName}'";
+            step.CommandText = string.Format(commandFormat, packageName);
+
+            return step;
         }
 
         private IStep ClearCache()
