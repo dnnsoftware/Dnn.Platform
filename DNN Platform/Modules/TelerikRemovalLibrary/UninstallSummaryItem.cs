@@ -50,7 +50,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// </returns>
         internal static IEnumerable<UninstallSummaryItem> FromStep(IStep step)
         {
-            return step is IStepArray stepArray
+            return step is IStepArray stepArray && stepArray.Steps.Any()
                 ? stepArray.Steps.SelectMany(s => FromStep(s)).ToArray()
                 : new[] { new UninstallSummaryItem(step) };
         }
