@@ -2465,7 +2465,18 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 var currentFolderInfo = this.GetCurrentFolder();
 
-                if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
+                if (command == "ImageUpload" && !this.currentSettings.UploadDirForImgId.Equals(-1) && !this.currentSettings.SubDirs)
+                {
+                    var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirForImgId);
+
+                    if (uploadFolder != null)
+                    {
+                        uploadPhysicalPath = uploadFolder.PhysicalPath;
+
+                        currentFolderInfo = uploadFolder;
+                    }
+                }
+                else if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
                 {
                     var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirId);
 
