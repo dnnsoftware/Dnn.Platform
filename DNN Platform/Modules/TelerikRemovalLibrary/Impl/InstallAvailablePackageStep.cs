@@ -157,11 +157,11 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
 
         private bool PackageIsAlreadyInstalled()
         {
-            Func<PackageInfo, bool> predicate = p =>
+            bool WithMatchingPackageName(PackageInfo p) =>
                 "Module".Equals(p.PackageType, StringComparison.OrdinalIgnoreCase) &&
                 this.PackageName.Equals(p.Name, StringComparison.OrdinalIgnoreCase);
 
-            return this.packageController.GetExtensionPackages(Null.NullInteger, predicate).Any();
+            return this.packageController.GetExtensionPackages(Null.NullInteger, WithMatchingPackageName).Any();
         }
     }
 }
