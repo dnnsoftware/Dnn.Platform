@@ -134,7 +134,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
 
         private IStep ClearCache()
         {
-            return this.NullStep("Clear the cache");
+            return this.GetService<IClearCacheStep>();
         }
 
         private IStep UninstallExtension(string packageName)

@@ -53,23 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Impl\ClearCacheStep.cs" />
     <Compile Include="Impl\ExecuteSqlStep.cs" />
     <Compile Include="Impl\FileSystemProvider.cs" />
+    <Compile Include="Impl\IClearCacheStep.cs" />
+    <Compile Include="Impl\IDataCache.cs" />
     <Compile Include="Impl\IDataProvider.cs" />
     <Compile Include="Impl\IDesktopModuleController.cs" />
     <Compile Include="Impl\IExecuteSqlStep.cs" />
     <Compile Include="Impl\IFileSystemProvider.cs" />
     <Compile Include="Impl\IInstallAvailablePackageStep.cs" />
     <Compile Include="Impl\IModuleDefinitionController.cs" />
+    <Compile Include="Impl\InstallAvailablePackageStep.cs" />
+    <Compile Include="Impl\InternalDataCache.cs" />
+    <Compile Include="Impl\InternalDataProvider.cs" />
+    <Compile Include="Impl\InternalDesktopModuleController.cs" />
+    <Compile Include="Impl\InternalModuleDefinitionController.cs" />
     <Compile Include="Impl\INullStep.cs" />
     <Compile Include="Impl\IReplacePortalTabModuleStep.cs" />
     <Compile Include="Impl\IReplaceTabModuleStep.cs" />
     <Compile Include="Impl\IStep.cs" />
     <Compile Include="Impl\IStepArray.cs" />
-    <Compile Include="Impl\InstallAvailablePackageStep.cs" />
-    <Compile Include="Impl\InternalDataProvider.cs" />
-    <Compile Include="Impl\InternalDesktopModuleController.cs" />
-    <Compile Include="Impl\InternalModuleDefinitionController.cs" />
     <Compile Include="Impl\NullStep.cs" />
     <Compile Include="Impl\ReplacePortalTabModuleStep.cs" />
     <Compile Include="Impl\ReplaceTabModuleStep.cs" />

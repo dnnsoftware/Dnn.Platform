@@ -25,6 +25,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             services.AddTransient(provider => TabController.Instance);
 
             // local
+            services.AddTransient<IClearCacheStep, ClearCacheStep>();
+            services.AddTransient<IDataCache, InternalDataCache>();
             services.AddTransient<IDataProvider, InternalDataProvider>();
             services.AddTransient<IDesktopModuleController, InternalDesktopModuleController>();
             services.AddTransient<IExecuteSqlStep, ExecuteSqlStep>();
