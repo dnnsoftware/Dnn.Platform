@@ -92,6 +92,16 @@ namespace DNNConnect.CKEditorProvider.Objects
         public int UploadDirForImgId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating the Resize Image Height On Upload.
+        /// </summary>
+        public int iResizeHeightUpload { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Resize Image Width On Upload.
+        /// </summary>
+        public int iResizeWidthUpload { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether Default Resize Image Height.
         /// </summary>
         public int iResizeHeight { get; set; }

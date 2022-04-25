@@ -806,6 +806,48 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.ResizeWidthUpload = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.ResizeWidthUpload = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.ResizeHeightUpload = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.ResizeHeightUpload = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTH))))
             {
                 var settingValue =
@@ -1296,6 +1338,30 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD)]))
+            {
+                try
+                {
+                    currentSettings.ResizeWidthUpload = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTHUPLOAD)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.ResizeWidthUpload = -1;
+                }
+            }
+
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD)]))
+            {
+                try
+                {
+                    currentSettings.ResizeHeightUpload = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHTUPLOAD)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.ResizeHeightUpload = -1;
+                }
+            }
+
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTH)]))
             {
                 try
@@ -1572,6 +1638,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 BrowserRootDirForImgId = oldDefaultSettings.BrowserRootDirForImgId,
                 UploadDirId = oldDefaultSettings.UploadDirId,
                 UploadDirForImgId = oldDefaultSettings.UploadDirForImgId,
+                ResizeHeightUpload = oldDefaultSettings.iResizeHeightUpload,
+                ResizeWidthUpload = oldDefaultSettings.iResizeWidthUpload,
                 ResizeHeight = oldDefaultSettings.iResizeHeight,
                 ResizeWidth = oldDefaultSettings.iResizeWidth,
                 ToolBarRoles = oldDefaultSettings.listToolbRoles,

@@ -866,7 +866,11 @@ namespace DNNConnect.CKEditorProvider
                     break;
             }
 
-            this.txtResizeHeight.Text = importedSettings.ResizeWidth.ToString();
+            this.txtResizeWidthUpload.Text = importedSettings.ResizeWidthUpload.ToString();
+
+            this.txtResizeHeightUpload.Text = importedSettings.ResizeHeightUpload.ToString();
+
+            this.txtResizeWidth.Text = importedSettings.ResizeWidth.ToString();
 
             this.txtResizeHeight.Text = importedSettings.ResizeHeight.ToString();
 
@@ -1021,6 +1025,8 @@ namespace DNNConnect.CKEditorProvider
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHTUPLOAD}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTHUPLOAD}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
 
@@ -2475,6 +2481,16 @@ namespace DNNConnect.CKEditorProvider
                 moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
             }
 
+            if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
+            {
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
+            {
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
+            }
+
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
                 moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
@@ -2731,6 +2747,16 @@ namespace DNNConnect.CKEditorProvider
                 EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
             }
 
+            if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
+            {
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
+            {
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
+            }
+
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
                 EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEWIDTH}", this.txtResizeWidth.Text);
@@ -2903,6 +2929,8 @@ namespace DNNConnect.CKEditorProvider
             this.lblToolbarList.Text = Localization.GetString("lblToolbarList.Text", this.ResXFile, this.LangCode);
             this.lblToolbName.Text = Localization.GetString("lblToolbName.Text", this.ResXFile, this.LangCode);
             this.lblToolbSet.Text = Localization.GetString("lblToolbSet.Text", this.ResXFile, this.LangCode);
+            this.lblResizeWidthUpload.Text = Localization.GetString("lblResizeWidthUpload.Text", this.ResXFile, this.LangCode);
+            this.lblResizeHeightUpload.Text = Localization.GetString("lblResizeHeightUpload.Text", this.ResXFile, this.LangCode);
             this.lblResizeWidth.Text = Localization.GetString("lblResizeWidth.Text", this.ResXFile, this.LangCode);
             this.lblResizeHeight.Text = Localization.GetString("lblResizeHeight.Text", this.ResXFile, this.LangCode);
             this.lblImport.Text = Localization.GetString("lnkImport.Text", this.ResXFile, this.LangCode);
@@ -3367,6 +3395,16 @@ namespace DNNConnect.CKEditorProvider
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
                 exportSettings.FileListPageSize = int.Parse(this.FileListPageSize.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
+            {
+                exportSettings.ResizeWidthUpload = int.Parse(this.txtResizeWidthUpload.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
+            {
+                exportSettings.ResizeHeightUpload = int.Parse(this.txtResizeHeightUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
