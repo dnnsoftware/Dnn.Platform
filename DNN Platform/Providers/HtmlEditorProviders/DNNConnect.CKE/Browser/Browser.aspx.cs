@@ -1685,7 +1685,16 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             IFolderInfo startingFolderInfo = null;
 
-            if (!this.currentSettings.BrowserRootDirId.Equals(-1))
+            if (this.browserModus == "Image" && !this.currentSettings.BrowserRootDirForImgId.Equals(-1))
+            {
+                var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirForImgId);
+
+                if (rootFolder != null)
+                {
+                    startingFolderInfo = rootFolder;
+                }
+            }
+            else if (!this.currentSettings.BrowserRootDirId.Equals(-1))
             {
                 // var rootFolder = new FolderController().GetFolderInfo(this.portalSettings.PortalId, this.currentSettings.BrowserRootDirId);
                 var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirId);

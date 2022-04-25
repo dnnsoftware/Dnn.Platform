@@ -393,6 +393,24 @@ namespace DNNConnect.CKEditorProvider
         protected global::System.Web.UI.WebControls.DropDownList BrowserRootDir;
 
         /// <summary>
+        /// BrowserRootFolderForImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label BrowserRootFolderForImg;
+
+        /// <summary>
+        /// BrowserRootDirForImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList BrowserRootDirForImg;
+
+        /// <summary>
         /// lblBrowserDirs control.
         /// </summary>
         /// <remarks>
@@ -427,6 +445,24 @@ namespace DNNConnect.CKEditorProvider
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList UploadDir;
+
+        /// <summary>
+        /// UploadFolderLabelForImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label UploadFolderLabelForImg;
+
+        /// <summary>
+        /// UploadDirForImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList UploadDirForImg;
 
         /// <summary>
         /// OverrideFileOnUploadLabel control.

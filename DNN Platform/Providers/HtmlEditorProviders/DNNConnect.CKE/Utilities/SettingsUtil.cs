@@ -743,6 +743,27 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.BrowserRootDirForImgId = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.BrowserRootDirForImgId = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID))))
             {
                 var settingValue =
@@ -758,6 +779,27 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     catch (Exception)
                     {
                         currentSettings.UploadDirId = -1;
+                    }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    try
+                    {
+                        currentSettings.UploadDirForImgId = int.Parse(settingValue);
+                    }
+                    catch (Exception)
+                    {
+                        currentSettings.UploadDirForImgId = -1;
                     }
                 }
             }
@@ -1218,6 +1260,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID)]))
+            {
+                try
+                {
+                    currentSettings.BrowserRootDirForImgId = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRFORIMGID)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.BrowserRootDirForImgId = -1;
+                }
+            }
+
             if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID)]))
             {
                 try
@@ -1227,6 +1281,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 catch (Exception)
                 {
                     currentSettings.UploadDirId = -1;
+                }
+            }
+
+            if (!string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID)]))
+            {
+                try
+                {
+                    currentSettings.UploadDirForImgId = int.Parse((string)hshModSet[string.Format("{0}{1}", key, SettingConstants.UPLOADDIRFORIMGID)]);
+                }
+                catch (Exception)
+                {
+                    currentSettings.UploadDirForImgId = -1;
                 }
             }
 
@@ -1503,7 +1569,9 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 SubDirs = oldDefaultSettings.bSubDirs,
                 InjectSyntaxJs = oldDefaultSettings.injectSyntaxJs,
                 BrowserRootDirId = oldDefaultSettings.BrowserRootDirId,
+                BrowserRootDirForImgId = oldDefaultSettings.BrowserRootDirForImgId,
                 UploadDirId = oldDefaultSettings.UploadDirId,
+                UploadDirForImgId = oldDefaultSettings.UploadDirForImgId,
                 ResizeHeight = oldDefaultSettings.iResizeHeight,
                 ResizeWidth = oldDefaultSettings.iResizeWidth,
                 ToolBarRoles = oldDefaultSettings.listToolbRoles,

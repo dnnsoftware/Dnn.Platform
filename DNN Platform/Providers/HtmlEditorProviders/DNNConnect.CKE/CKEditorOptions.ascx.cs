@@ -818,9 +818,19 @@ namespace DNNConnect.CKEditorProvider
                      ? importedSettings.BrowserRootDirId.ToString()
                      : "-1";
 
+            this.BrowserRootDirForImg.SelectedValue =
+                 this.BrowserRootDirForImg.Items.FindByValue(importedSettings.BrowserRootDirForImgId.ToString()) != null
+                     ? importedSettings.BrowserRootDirForImgId.ToString()
+                     : "-1";
+
             this.UploadDir.SelectedValue = this.UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
                                            != null
                                                ? importedSettings.UploadDirId.ToString()
+                                               : "-1";
+
+            this.UploadDirForImg.SelectedValue = this.UploadDirForImg.Items.FindByValue(importedSettings.UploadDirForImgId.ToString())
+                                           != null
+                                               ? importedSettings.UploadDirForImgId.ToString()
                                                : "-1";
 
             var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
@@ -999,7 +1009,9 @@ namespace DNNConnect.CKEditorProvider
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRFORIMGID}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRFORIMGID}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
@@ -1216,7 +1228,9 @@ namespace DNNConnect.CKEditorProvider
         private void FillFolders()
         {
             this.UploadDir.Items.Clear();
+            this.UploadDirForImg.Items.Clear();
             this.BrowserRootDir.Items.Clear();
+            this.BrowserRootDirForImg.Items.Clear();
             this.ExportDir.Items.Clear();
 
             var portalId = this.portalSettings?.PortalId ?? Null.NullInteger;
@@ -1241,12 +1255,16 @@ namespace DNNConnect.CKEditorProvider
                 }
 
                 this.UploadDir.Items.Add(new ListItem(text, value));
+                this.UploadDirForImg.Items.Add(new ListItem(text, value));
                 this.BrowserRootDir.Items.Add(new ListItem(text, value));
+                this.BrowserRootDirForImg.Items.Add(new ListItem(text, value));
                 this.ExportDir.Items.Add(new ListItem(text, value));
             }
 
             this.UploadDir.SelectedValue = "-1";
+            this.UploadDirForImg.SelectedValue = "-1";
             this.BrowserRootDir.SelectedValue = "-1";
+            this.BrowserRootDirForImg.SelectedValue = "-1";
             this.ExportDir.SelectedValue = "-1";
         }
 
@@ -2448,7 +2466,9 @@ namespace DNNConnect.CKEditorProvider
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
@@ -2702,7 +2722,9 @@ namespace DNNConnect.CKEditorProvider
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
@@ -3338,7 +3360,9 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.OverrideFileOnUpload = this.OverrideFileOnUpload.Checked;
             exportSettings.SubDirs = this.cbBrowserDirs.Checked;
             exportSettings.BrowserRootDirId = int.Parse(this.BrowserRootDir.SelectedValue);
+            exportSettings.BrowserRootDirForImgId = int.Parse(this.BrowserRootDirForImg.SelectedValue);
             exportSettings.UploadDirId = int.Parse(this.UploadDir.SelectedValue);
+            exportSettings.UploadDirForImgId = int.Parse(this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {

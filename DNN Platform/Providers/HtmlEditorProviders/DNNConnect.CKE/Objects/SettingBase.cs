@@ -72,14 +72,24 @@ namespace DNNConnect.CKEditorProvider.Objects
         public bool injectSyntaxJs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Browser Root Dir Id.
+        /// Gets or sets a value indicating the Browser Root Dir Id.
         /// </summary>
         public int BrowserRootDirId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Upload Dir Folder Id.
+        /// Gets or sets a value indicating the Browser Root Dir Id.
+        /// </summary>
+        public int BrowserRootDirForImgId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Upload Dir Folder Id.
         /// </summary>
         public int UploadDirId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Upload Dir Folder Id.
+        /// </summary>
+        public int UploadDirForImgId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Default Resize Image Height.
