@@ -175,5 +175,15 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// The resize height setting name.
         /// </summary>
         public const string RESIZEHEIGHT = "resizeheight";
+
+        /// <summary>
+        /// The Resize Upload width setting name.
+        /// </summary>
+        public const string RESIZEWIDTHUPLOAD = "resizewidthupload";
+
+        /// <summary>
+        /// The resize Upload height setting name.
+        /// </summary>
+        public const string RESIZEHEIGHTUPLOAD = "resizeheightupload";
     }
 }
