@@ -25,6 +25,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             services.AddTransient(provider => TabController.Instance);
 
             // local
+            services.AddTransient<IDesktopModuleController, InternalDesktopModuleController>();
+            services.AddTransient<IModuleDefinitionController, InternalModuleDefinitionController>();
             services.AddTransient<ITelerikUninstaller, TelerikUninstaller>();
             services.AddTransient<IFileSystemProvider, FileSystemProvider>();
             services.AddTransient<IInstallAvailablePackageStep, InstallAvailablePackageStep>();
