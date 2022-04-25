@@ -45,32 +45,20 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         public override string Name => $"Install package '{this.PackageName}'";
 
         /// <inheritdoc/>
+        [Required]
         public string PackageFileNamePattern { get; set; }
 
         /// <inheritdoc/>
+        [Required]
         public string PackageName { get; set; }
 
         /// <inheritdoc/>
+        [Required]
         public string PackageType { get; set; }
 
         /// <inheritdoc/>
         protected override void ExecuteInternal()
         {
-            if (this.PackageName is null)
-            {
-                throw new ArgumentNullException(nameof(this.PackageName));
-            }
-
-            if (this.PackageFileNamePattern is null)
-            {
-                throw new ArgumentNullException(nameof(this.PackageFileNamePattern));
-            }
-
-            if (this.PackageType is null)
-            {
-                throw new ArgumentNullException(nameof(this.PackageType));
-            }
-
             if (this.PackageIsAlreadyInstalled())
             {
                 this.Success = true;

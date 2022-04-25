@@ -5,6 +5,7 @@
 namespace Dnn.Modules.TelerikRemovalLibrary.Impl
 {
     using System;
+    using System.Linq;
 
     /// <summary>
     /// A base class that implements <see cref="IStep"/>.
@@ -25,6 +26,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         {
             try
             {
+                this.CheckRequired();
                 this.ExecuteInternal();
             }
             catch
@@ -39,5 +41,21 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         /// Performs the actual step execution.
         /// </summary>
         protected abstract void ExecuteInternal();
+
+        private void CheckRequired()
+        {
+            var nullProperties = this.GetType().GetProperties()
+                .Where(p => p.GetCustomAttributes(typeof(RequiredAttribute), true).Any())
+                .Where(p => string.IsNullOrEmpty($"{p.GetValue(this)}"))
+                .Select(p => p.Name)
+                .ToArray();
+
+            if (nullProperties.Length > 0)
+            {
+                throw new InvalidOperationException(string.Format(
+                    "Following required properties are not set: {0}",
+                    string.Join(", ", nullProperties)));
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         }
 
         /// <inheritdoc/>
+        [Required]
         public string CommandText { get; set; }
 
         /// <inheritdoc/>
@@ -37,11 +38,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         /// <inheritdoc/>
         protected override void ExecuteInternal()
         {
-            if (this.CommandText is null)
-            {
-                throw new ArgumentNullException(nameof(this.CommandText));
-            }
-
             this.Result = this.dataProvider.ExecuteSQL(this.CommandText);
             this.Success = true;
         }

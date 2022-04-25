@@ -54,9 +54,11 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
             this.PortalId);
 
         /// <inheritdoc />
+        [Required]
         public IReplaceTabModuleStep ParentStep { get; set; }
 
         /// <inheritdoc />
+        [Required]
         public int PortalId { get; set; }
 
         private string OldModuleName => this.ParentStep?.OldModuleName;
@@ -68,11 +70,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         /// <inheritdoc />
         protected override void ExecuteInternal()
         {
-            if (this.ParentStep == null)
-            {
-                throw new InvalidOperationException("Parent step not set.");
-            }
-
             var tab = this.tabController.GetTabByName(this.PageName, this.PortalId);
 
             if (tab is null)

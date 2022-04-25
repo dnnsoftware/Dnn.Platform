@@ -73,6 +73,7 @@
     <Compile Include="Impl\NullStep.cs" />
     <Compile Include="Impl\ReplacePortalTabModuleStep.cs" />
     <Compile Include="Impl\ReplaceTabModuleStep.cs" />
+    <Compile Include="Impl\RequiredAttribute.cs" />
     <Compile Include="Impl\StepBase.cs" />
     <Compile Include="Impl\TelerikUninstaller.cs" />
     <Compile Include="ITelerikUninstaller.cs" />

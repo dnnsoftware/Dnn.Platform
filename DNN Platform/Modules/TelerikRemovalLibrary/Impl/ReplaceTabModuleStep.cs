@@ -37,12 +37,15 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
             this.PageName);
 
         /// <inheritdoc />
+        [Required]
         public string PageName { get; set; }
 
         /// <inheritdoc />
+        [Required]
         public string OldModuleName { get; set; }
 
         /// <inheritdoc />
+        [Required]
         public string NewModuleName { get; set; }
 
         /// <inheritdoc/>
@@ -51,21 +54,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary.Impl
         /// <inheritdoc />
         protected override void ExecuteInternal()
         {
-            if (this.PageName is null)
-            {
-                throw new InvalidOperationException("Page name not set.");
-            }
-
-            if (this.OldModuleName is null)
-            {
-                throw new InvalidOperationException("Old module name not set.");
-            }
-
-            if (this.NewModuleName is null)
-            {
-                throw new InvalidOperationException("New module name not set.");
-            }
-
             var portalController = this.GetService<IPortalController>();
 
             var steps = portalController.GetPortals()
