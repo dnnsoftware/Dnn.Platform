@@ -43,6 +43,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         protected override void ExecuteInternal()
         {
             this.Result = this.dataProvider.ExecuteSQL(this.CommandText);
+            this.Notes = $"{this.Result.RecordsAffected} records affected.";
             this.Success = true;
         }
     }
