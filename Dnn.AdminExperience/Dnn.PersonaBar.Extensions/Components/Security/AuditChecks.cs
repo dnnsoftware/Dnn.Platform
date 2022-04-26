@@ -10,14 +10,13 @@ namespace Dnn.PersonaBar.Security.Components
     using System.Web;
 
     using Dnn.PersonaBar.Security.Components.Checks;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
 
     public class AuditChecks
     {
         private readonly IEnumerable<IAuditCheck> _auditChecks;
 
-        public AuditChecks(IApplicationStatusInfo applicationStatusInfo)
+        public AuditChecks()
         {
             var checks = new List<IAuditCheck>
             {
@@ -35,7 +34,7 @@ namespace Dnn.PersonaBar.Security.Components
                 new CheckSqlRisk(),
                 new CheckAllowableFileExtensions(),
                 new CheckHiddenSystemFiles(),
-                new CheckTelerikPresence(applicationStatusInfo),
+                new CheckTelerikPresence(),
                 new CheckUserProfilePage(),
             };
 

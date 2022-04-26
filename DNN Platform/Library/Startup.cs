@@ -45,7 +45,7 @@ namespace DotNetNuke
 
             services.AddScoped<IPortalAliasService, PortalAliasController>();
 
-            services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
+            services.AddTransient<ITelerikUtils, TelerikUtils>();
         }
     }
 }
