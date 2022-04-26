@@ -41,19 +41,13 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                     "Module"),
                 this.ReplaceModuleInPage("File Management", "Digital Asset Management", "ResourceManager"),
                 this.ReplaceModuleInHostPage("File Management", "Digital Asset Management", "ResourceManager"),
-                this.RemoveSystemAttributeFromPackage("DigitalAssetsManagement"),
-                this.RemoveSystemAttributeFromPackage("DotNetNuke.Telerik.Web"),
-                this.RemoveSystemAttributeFromPackage("DotNetNuke.Web.Deprecated"),
-                this.RemoveSystemAttributeFromPackage("DotNetNuke.Website.Deprecated"),
-                this.RemoveSystemAttributeFromPackage("Admin.Messaging"),
-                this.ClearCache(),
-                this.UninstallExtension("Digital Assets Management"),
-                this.UninstallExtension("Messaging"),
-                this.UninstallExtension("DotNetNuke Telerik Web Components"),
-                this.UninstallExtension("DNN Deprecated Web Controls Library"),
-                this.UninstallExtension("DotNetNuke Deprecated Website Codebehind files"),
-                this.UninstallExtension("DNN Security HotFix 2017.1"),
-                this.UninstallExtension("RadEditor Manager"),
+                this.RemoveExtension("DigitalAssetsManagement"),
+                this.RemoveExtension("DotNetNuke.Telerik.Web"),
+                this.RemoveExtension("DotNetNuke.Web.Deprecated"),
+                this.RemoveExtension("DotNetNuke.Website.Deprecated"),
+                this.RemoveExtension("Admin.Messaging"),
+                this.RemoveExtension("DNN Security HotFix 2017.1"),
+                this.RemoveExtension("RadEditor Manager"),
                 this.UpdateSiteUrlsConfig(),
                 this.UpdateWebConfig(),
                 this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Telerik_*"),
@@ -113,29 +107,11 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             return step;
         }
 
-        private IStep RemoveSystemAttributeFromPackage(string packageName)
+        private IStep RemoveExtension(string packageName)
         {
-            var commandFormat = string.Join(
-                Environment.NewLine,
-                "UPDATE {{databaseOwner}}{{objectQualifier}}Packages",
-                "SET IsSystemPackage = 0",
-                "WHERE [Name] = '{0}'");
-
-            var step = this.GetService<IExecuteSqlStep>();
-            step.InternalName = $"Remove the 'System' attribute from package '{packageName}'";
-            step.CommandText = string.Format(commandFormat, packageName);
-
+            var step = this.GetService<IRemoveExtensionStep>();
+            step.PackageName = packageName;
             return step;
-        }
-
-        private IStep ClearCache()
-        {
-            return this.GetService<IClearCacheStep>();
-        }
-
-        private IStep UninstallExtension(string packageName)
-        {
-            return this.NullStep($"Uninstall the '{packageName}' extension");
         }
 
         private IStep UpdateSiteUrlsConfig()

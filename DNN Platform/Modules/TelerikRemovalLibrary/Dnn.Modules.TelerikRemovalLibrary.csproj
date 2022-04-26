@@ -63,7 +63,9 @@
     <Compile Include="Shims\IDataProvider.cs" />
     <Compile Include="Shims\IDesktopModuleController.cs" />
     <Compile Include="Shims\IFileSystemProvider.cs" />
+    <Compile Include="Shims\IInstaller.cs" />
     <Compile Include="Shims\IModuleDefinitionController.cs" />
+    <Compile Include="Shims\InstallerShim.cs" />
     <Compile Include="Shims\ModuleDefinitionControllerShim.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Steps\ClearCacheStep.cs" />
@@ -73,15 +75,20 @@
     <Compile Include="Steps\IInstallAvailablePackageStep.cs" />
     <Compile Include="Steps\InstallAvailablePackageStep.cs" />
     <Compile Include="Steps\INullStep.cs" />
+    <Compile Include="Steps\IRemoveExtensionStep.cs" />
     <Compile Include="Steps\IReplacePortalTabModuleStep.cs" />
     <Compile Include="Steps\IReplaceTabModuleStep.cs" />
     <Compile Include="Steps\IStep.cs" />
     <Compile Include="Steps\IStepArray.cs" />
+    <Compile Include="Steps\IUninstallPackageStep.cs" />
     <Compile Include="Steps\NullStep.cs" />
+    <Compile Include="Steps\RemoveExtensionStep.cs" />
     <Compile Include="Steps\ReplacePortalTabModuleStep.cs" />
     <Compile Include="Steps\ReplaceTabModuleStep.cs" />
     <Compile Include="Steps\RequiredAttribute.cs" />
+    <Compile Include="Steps\StepArrayBase.cs" />
     <Compile Include="Steps\StepBase.cs" />
+    <Compile Include="Steps\UninstallPackageStep.cs" />
     <Compile Include="TelerikUninstaller.cs" />
     <Compile Include="UninstallSummaryItem.cs" />
   </ItemGroup>

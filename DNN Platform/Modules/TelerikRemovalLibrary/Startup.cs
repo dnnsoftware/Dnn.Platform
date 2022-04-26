@@ -4,6 +4,8 @@
 
 namespace Dnn.Modules.TelerikRemovalLibrary
 {
+    using System;
+
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
@@ -31,14 +33,20 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             services.AddTransient<IDesktopModuleController, DesktopModuleControllerShim>();
             services.AddTransient<IModuleDefinitionController, ModuleDefinitionControllerShim>();
             services.AddTransient<IFileSystemProvider, FileSystemProviderShim>();
+            services.AddTransient(this.InstallerFactory);
 
             // steps
             services.AddTransient<IClearCacheStep, ClearCacheStep>();
             services.AddTransient<IExecuteSqlStep, ExecuteSqlStep>();
             services.AddTransient<IInstallAvailablePackageStep, InstallAvailablePackageStep>();
             services.AddTransient<INullStep, NullStep>();
+            services.AddTransient<IRemoveExtensionStep, RemoveExtensionStep>();
             services.AddTransient<IReplacePortalTabModuleStep, ReplacePortalTabModuleStep>();
             services.AddTransient<IReplaceTabModuleStep, ReplaceTabModuleStep>();
+            services.AddTransient<IUninstallPackageStep, UninstallPackageStep>();
         }
+
+        private Func<PackageInfo, string, IInstaller> InstallerFactory(IServiceProvider provider) =>
+            (package, physicalSitePath) => new InstallerShim(package, physicalSitePath);
     }
 }
