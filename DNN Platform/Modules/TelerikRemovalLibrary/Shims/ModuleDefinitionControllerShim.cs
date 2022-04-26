@@ -12,7 +12,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     /// A concrete implementation of the <see cref="IModuleDefinitionController"/> interface
     /// that relies on the <see cref="ModuleDefinitionController"/> class.
     /// </summary>
-    internal class InternalModuleDefinitionController : IModuleDefinitionController
+    internal class ModuleDefinitionControllerShim : IModuleDefinitionController
     {
         /// <inheritdoc/>
         public Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)

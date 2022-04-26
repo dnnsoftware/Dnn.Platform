@@ -12,7 +12,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     /// <summary>
     /// Abstraction on file system utilities to enable unit testing.
     /// </summary>
-    internal class FileSystemProvider : IFileSystemProvider
+    internal class FileSystemProviderShim : IFileSystemProvider
     {
         /// <inheritdoc />
         public Stream CreateFileStream(string path, FileMode mode, FileAccess access)

@@ -17,21 +17,24 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ITelerikUninstaller, TelerikUninstaller>();
+
             // core
             services.AddTransient(provider => LoggerSource.Instance);
             services.AddTransient(provider => ModuleController.Instance);
             services.AddTransient(provider => PackageController.Instance);
             services.AddTransient(provider => TabController.Instance);
 
-            // local
+            // shims
+            services.AddTransient<IDataCache, DataCacheShim>();
+            services.AddTransient<IDataProvider, DataProviderShim>();
+            services.AddTransient<IDesktopModuleController, DesktopModuleControllerShim>();
+            services.AddTransient<IModuleDefinitionController, ModuleDefinitionControllerShim>();
+            services.AddTransient<IFileSystemProvider, FileSystemProviderShim>();
+
+            // steps
             services.AddTransient<IClearCacheStep, ClearCacheStep>();
-            services.AddTransient<IDataCache, InternalDataCache>();
-            services.AddTransient<IDataProvider, InternalDataProvider>();
-            services.AddTransient<IDesktopModuleController, InternalDesktopModuleController>();
             services.AddTransient<IExecuteSqlStep, ExecuteSqlStep>();
-            services.AddTransient<IModuleDefinitionController, InternalModuleDefinitionController>();
-            services.AddTransient<ITelerikUninstaller, TelerikUninstaller>();
-            services.AddTransient<IFileSystemProvider, FileSystemProvider>();
             services.AddTransient<IInstallAvailablePackageStep, InstallAvailablePackageStep>();
             services.AddTransient<INullStep, NullStep>();
             services.AddTransient<IReplacePortalTabModuleStep, ReplacePortalTabModuleStep>();

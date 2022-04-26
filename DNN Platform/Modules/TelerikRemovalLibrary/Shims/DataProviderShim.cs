@@ -4,17 +4,20 @@
 
 namespace Dnn.Modules.TelerikRemovalLibrary
 {
-    using DotNetNuke.Common.Utilities;
+    using System.Data;
+
+    using DotNetNuke.Data;
 
     /// <summary>
-    /// Implementation of <see cref="IDataCache"/> that relies on the <see cref="DataCache"/> class.
+    /// An implementation of <see cref="IDataProvider"/>
+    /// that relies on the <see cref="DataProvider"/> class.
     /// </summary>
-    internal class InternalDataCache : IDataCache
+    internal class DataProviderShim : IDataProvider
     {
         /// <inheritdoc/>
-        public void ClearCache()
+        public IDataReader ExecuteSQL(string sql)
         {
-            DataCache.ClearCache();
+            return DataProvider.Instance().ExecuteSQL(sql);
         }
     }
 }

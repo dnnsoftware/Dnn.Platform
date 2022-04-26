@@ -55,16 +55,16 @@
   <ItemGroup>
     <Compile Include="ITelerikUninstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shims\FileSystemProvider.cs" />
+    <Compile Include="Shims\DataCacheShim.cs" />
+    <Compile Include="Shims\DataProviderShim.cs" />
+    <Compile Include="Shims\DesktopModuleControllerShim.cs" />
+    <Compile Include="Shims\FileSystemProviderShim.cs" />
     <Compile Include="Shims\IDataCache.cs" />
     <Compile Include="Shims\IDataProvider.cs" />
     <Compile Include="Shims\IDesktopModuleController.cs" />
     <Compile Include="Shims\IFileSystemProvider.cs" />
     <Compile Include="Shims\IModuleDefinitionController.cs" />
-    <Compile Include="Shims\InternalDataCache.cs" />
-    <Compile Include="Shims\InternalDataProvider.cs" />
-    <Compile Include="Shims\InternalDesktopModuleController.cs" />
-    <Compile Include="Shims\InternalModuleDefinitionController.cs" />
+    <Compile Include="Shims\ModuleDefinitionControllerShim.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Steps\ClearCacheStep.cs" />
     <Compile Include="Steps\ExecuteSqlStep.cs" />
