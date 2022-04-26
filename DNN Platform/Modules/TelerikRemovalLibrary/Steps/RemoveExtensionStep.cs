@@ -43,6 +43,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 this.RemoveSystemAttributeFromPackage(),
                 this.ClearCache(),
                 this.UninstallExtension(),
+                this.DeleteDependencyRecords(),
+                this.ClearCache(),
             });
 
             base.ExecuteInternal();
@@ -73,6 +75,20 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             var step = this.GetService<IUninstallPackageStep>();
             step.PackageName = this.PackageName;
             step.DeleteFiles = true;
+
+            return step;
+        }
+
+        private IStep DeleteDependencyRecords()
+        {
+            var commandFormat = string.Join(
+                Environment.NewLine,
+                "DELETE FROM {{databaseOwner}}{{objectQualifier}}PackageDependencies",
+                "WHERE PackageName = '{0}'");
+
+            var step = this.GetService<IExecuteSqlStep>();
+            step.InternalName = $"Clean up dependency records for package '{this.PackageName}'";
+            step.CommandText = string.Format(commandFormat, this.PackageName);
 
             return step;
         }
