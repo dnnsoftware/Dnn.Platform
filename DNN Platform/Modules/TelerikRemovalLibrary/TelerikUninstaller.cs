@@ -48,6 +48,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 this.RemoveExtension("Admin.Messaging"),
                 this.RemoveExtension("DNN Security HotFix 2017.1"),
                 this.RemoveExtension("RadEditor Manager"),
+                this.UpdateDataTypeList("Date"),
+                this.UpdateDataTypeList("DateTime"),
                 this.UpdateSiteUrlsConfig(),
                 this.UpdateWebConfig(),
                 this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Telerik_*"),
@@ -111,6 +113,20 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         {
             var step = this.GetService<IRemoveExtensionStep>();
             step.PackageName = packageName;
+            return step;
+        }
+
+        private IStep UpdateDataTypeList(string value)
+        {
+            var commandFormat = string.Join(
+                Environment.NewLine,
+                "UPDATE {{databaseOwner}}[{{objectQualifier}}Lists]",
+                "SET Text = 'DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls.{0}EditControl, DotNetNuke.Web'",
+                "WHERE ListName = 'DataType' AND Value = '{0}'");
+
+            var step = this.GetService<IExecuteSqlStep>();
+            step.InternalName = $"Update provider for '{value}' in DataType list";
+            step.CommandText = string.Format(commandFormat, value);
             return step;
         }
 
