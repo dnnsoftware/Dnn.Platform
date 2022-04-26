@@ -37,6 +37,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <inheritdoc/>
         public string Notes { get; protected set; }
 
+        /// <inheritdoc/>
+        public bool Quiet { get; protected set; }
+
         /// <summary>
         /// Gets an instance of <see cref="ILog"/> specific to steps.
         /// </summary>

@@ -23,6 +23,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         {
             this.dataCache = dataCache ??
                 throw new ArgumentNullException(nameof(dataCache));
+
+            this.Quiet = true;
         }
 
         /// <inheritdoc/>

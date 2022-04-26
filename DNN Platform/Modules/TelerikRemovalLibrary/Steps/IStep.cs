@@ -20,6 +20,12 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         string Notes { get; }
 
         /// <summary>
+        /// Gets a value indicating whether successful executions are logged to the progress report or not.
+        /// </summary>
+        /// <remarks>Failed executions are always logged.</remarks>
+        bool Quiet { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the step succeeded, failed or was not executed.
         /// </summary>
         bool? Success { get; }
