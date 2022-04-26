@@ -4,6 +4,10 @@
 
 namespace Dnn.Modules.TelerikRemovalLibrary
 {
+    using System;
+
+    using DotNetNuke.Instrumentation;
+
     /// <inheritdoc/>
     internal class ClearCacheStep : StepBase, IClearCacheStep
     {
@@ -12,11 +16,13 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <summary>
         /// Initializes a new instance of the <see cref="ClearCacheStep"/> class.
         /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="dataCache">An instance of <see cref="IDataCache"/>.</param>
-        public ClearCacheStep(IDataCache dataCache)
+        public ClearCacheStep(ILoggerSource loggerSource, IDataCache dataCache)
+            : base(loggerSource)
         {
             this.dataCache = dataCache ??
-                throw new System.ArgumentNullException(nameof(dataCache));
+                throw new ArgumentNullException(nameof(dataCache));
         }
 
         /// <inheritdoc/>

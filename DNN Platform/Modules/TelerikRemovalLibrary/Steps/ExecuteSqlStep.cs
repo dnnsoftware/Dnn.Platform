@@ -7,6 +7,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     using System;
     using System.Data;
 
+    using DotNetNuke.Instrumentation;
+
     /// <inheritdoc/>
     internal class ExecuteSqlStep : StepBase, IExecuteSqlStep
     {
@@ -15,8 +17,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <summary>
         /// Initializes a new instance of the <see cref="ExecuteSqlStep"/> class.
         /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="dataProvider">An instance of <see cref="IDataProvider"/>.</param>
-        public ExecuteSqlStep(IDataProvider dataProvider)
+        public ExecuteSqlStep(ILoggerSource loggerSource, IDataProvider dataProvider)
+            : base(loggerSource)
         {
             this.dataProvider = dataProvider ??
                 throw new ArgumentNullException(nameof(dataProvider));

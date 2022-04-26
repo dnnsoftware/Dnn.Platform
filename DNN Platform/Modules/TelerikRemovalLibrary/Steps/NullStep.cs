@@ -4,9 +4,20 @@
 
 namespace Dnn.Modules.TelerikRemovalLibrary
 {
+    using DotNetNuke.Instrumentation;
+
     /// <inheritdoc />
     internal class NullStep : StepBase, INullStep
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NullStep"/> class.
+        /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        public NullStep(ILoggerSource loggerSource)
+            : base(loggerSource)
+        {
+        }
+
         /// <inheritdoc/>
         public override string Name => this.InternalName;
 

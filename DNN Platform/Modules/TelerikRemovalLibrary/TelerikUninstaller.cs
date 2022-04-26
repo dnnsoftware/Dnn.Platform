@@ -8,12 +8,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     using System.Collections.Generic;
 
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
 
     /// <inheritdoc />
     internal class TelerikUninstaller : ITelerikUninstaller
     {
-        private readonly ILog log;
         private readonly IServiceProvider serviceProvider;
         private readonly List<UninstallSummaryItem> progress;
 
@@ -25,8 +23,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         {
             this.serviceProvider = serviceProvider ??
                 throw new ArgumentNullException(nameof(serviceProvider));
-
-            this.log = this.GetService<ILoggerSource>().GetLogger(typeof(TelerikUninstaller));
 
             this.progress = new List<UninstallSummaryItem>();
         }

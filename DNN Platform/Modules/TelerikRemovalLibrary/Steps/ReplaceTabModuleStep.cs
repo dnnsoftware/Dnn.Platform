@@ -10,6 +10,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
 
     /// <inheritdoc />
     internal partial class ReplaceTabModuleStep : StepBase, IReplaceTabModuleStep, IStepArray
@@ -20,8 +21,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplaceTabModuleStep"/> class.
         /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
-        public ReplaceTabModuleStep(IServiceProvider serviceProvider)
+        public ReplaceTabModuleStep(ILoggerSource loggerSource, IServiceProvider serviceProvider)
+            : base(loggerSource)
         {
             this.serviceProvider = serviceProvider ??
                 throw new ArgumentNullException(nameof(serviceProvider));

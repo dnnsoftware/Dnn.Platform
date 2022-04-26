@@ -10,6 +10,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
 
@@ -23,13 +24,16 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallAvailablePackageStep"/> class.
         /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="appStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         /// <param name="fsProvider">An instance of <see cref="IFileSystemProvider"/>.</param>
         /// <param name="packageController">An instance of <see cref="IPackageController"/>.</param>
         public InstallAvailablePackageStep(
+            ILoggerSource loggerSource,
             IApplicationStatusInfo appStatusInfo,
             IFileSystemProvider fsProvider,
             IPackageController packageController)
+            : base(loggerSource)
         {
             this.appStatusInfo = appStatusInfo ??
                 throw new ArgumentNullException(nameof(appStatusInfo));

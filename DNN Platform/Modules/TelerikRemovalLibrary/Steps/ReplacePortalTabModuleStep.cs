@@ -10,6 +10,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
 
     /// <inheritdoc />
     internal class ReplacePortalTabModuleStep : StepBase, IReplacePortalTabModuleStep
@@ -22,15 +23,18 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <summary>
         /// Initializes a new instance of the <see cref="ReplacePortalTabModuleStep"/> class.
         /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="moduleController">An instance of <see cref="IModuleController"/>.</param>
         /// <param name="tabController">An instance of <see cref="ITabController"/>.</param>
         /// <param name="desktopModuleController">An instance of <see cref="IDesktopModuleController"/>.</param>
         /// <param name="moduleDefinitionController">An instance of <see cref="IModuleDefinitionController"/>.</param>
         public ReplacePortalTabModuleStep(
+            ILoggerSource loggerSource,
             IModuleController moduleController,
             ITabController tabController,
             IDesktopModuleController desktopModuleController,
             IModuleDefinitionController moduleDefinitionController)
+            : base(loggerSource)
         {
             this.moduleController = moduleController ??
                 throw new ArgumentNullException(nameof(moduleController));

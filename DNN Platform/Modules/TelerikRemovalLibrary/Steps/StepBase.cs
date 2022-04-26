@@ -7,11 +7,27 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     using System;
     using System.Linq;
 
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
     /// A base class that implements <see cref="IStep"/>.
     /// </summary>
     internal abstract class StepBase : IStep
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StepBase"/> class.
+        /// </summary>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        public StepBase(ILoggerSource loggerSource)
+        {
+            if (loggerSource is null)
+            {
+                throw new ArgumentNullException(nameof(loggerSource));
+            }
+
+            this.Log = loggerSource.GetLogger(this.GetType());
+        }
+
         /// <inheritdoc/>
         public abstract string Name { get; }
 
@@ -21,6 +37,11 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// <inheritdoc/>
         public string Notes { get; protected set; }
 
+        /// <summary>
+        /// Gets an instance of <see cref="ILog"/> specific to steps.
+        /// </summary>
+        protected ILog Log { get; private set; }
+
         /// <inheritdoc/>
         public void Execute()
         {
@@ -29,9 +50,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 this.CheckRequired();
                 this.ExecuteInternal();
             }
-            catch
+            catch (Exception ex)
             {
-                // this.log.Error(ex);
+                this.Log.Error(ex);
                 this.Success = false;
                 this.Notes = "Internal error.";
             }
