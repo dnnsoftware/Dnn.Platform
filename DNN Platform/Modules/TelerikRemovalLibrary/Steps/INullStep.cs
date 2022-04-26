@@ -2,18 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.Modules.TelerikRemovalLibrary.Impl
+namespace Dnn.Modules.TelerikRemovalLibrary
 {
-    using DotNetNuke.Common.Utilities;
-
     /// <summary>
-    /// Abstraction of the <see cref="DataCache"/> class to enable DI and unit testing.
+    /// A placeholder step.
     /// </summary>
-    internal interface IDataCache
+    internal interface INullStep : IStep
     {
         /// <summary>
-        /// Clears the cache.
+        /// Gets or sets the internal step name.
         /// </summary>
-        void ClearCache();
+        string InternalName { get; set; }
     }
 }

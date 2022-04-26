@@ -2,16 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.Modules.TelerikRemovalLibrary.Impl
+namespace Dnn.Modules.TelerikRemovalLibrary
 {
     /// <summary>
-    /// A placeholder step.
+    /// Clears the cache.
     /// </summary>
-    internal interface INullStep : IStep
+    internal interface IClearCacheStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the internal step name.
-        /// </summary>
-        string InternalName { get; set; }
     }
 }

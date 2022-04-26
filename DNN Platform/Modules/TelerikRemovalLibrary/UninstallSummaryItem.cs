@@ -7,8 +7,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     using System.Collections.Generic;
     using System.Linq;
 
-    using Dnn.Modules.TelerikRemovalLibrary.Impl;
-
     /// <summary>
     /// A data transfer object with an uninstallation summary item.
     /// </summary>

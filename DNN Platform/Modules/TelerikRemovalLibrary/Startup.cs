@@ -4,7 +4,6 @@
 
 namespace Dnn.Modules.TelerikRemovalLibrary
 {
-    using Dnn.Modules.TelerikRemovalLibrary.Impl;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
