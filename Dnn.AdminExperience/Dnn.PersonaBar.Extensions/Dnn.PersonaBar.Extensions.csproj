@@ -217,6 +217,7 @@
     <Compile Include="Components\Security\Attributes\UserRegistrationOptionAttribute.cs" />
     <Compile Include="Components\Security\AuditChecks.cs" />
     <Compile Include="Components\Security\CheckResult.cs" />
+    <Compile Include="Components\Security\Checks\BaseCheck.cs" />
     <Compile Include="Components\Security\Checks\CheckAllowableFileExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckBiography.cs" />
     <Compile Include="Components\Security\Checks\CheckDebug.cs" />
@@ -225,15 +226,18 @@
     <Compile Include="Components\Security\Checks\CheckHiddenSystemFiles.cs" />
     <Compile Include="Components\Security\Checks\CheckModuleHeaderAndFooter.cs" />
     <Compile Include="Components\Security\Checks\CheckPasswordFormat.cs" />
+    <Compile Include="Components\Security\Checks\CheckUserProfilePage.cs" />
     <Compile Include="Components\Security\Checks\CheckRarelyUsedSuperuser.cs" />
     <Compile Include="Components\Security\Checks\CheckSiteRegistration.cs" />
     <Compile Include="Components\Security\Checks\CheckSqlRisk.cs" />
     <Compile Include="Components\Security\Checks\CheckSuperuserOldPassword.cs" />
-    <Compile Include="Components\Security\Checks\CheckTelerikVulnerability.cs" />
+    <Compile Include="Components\Security\Checks\CheckTelerikPresence.cs" />
     <Compile Include="Components\Security\Checks\CheckTracing.cs" />
     <Compile Include="Components\Security\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckViewstatemac.cs" />
     <Compile Include="Components\Security\Constants.cs" />
+    <Compile Include="Components\Security\Helper\FileHelper.cs" />
+    <Compile Include="Components\Security\Helper\IFileHelper.cs" />
     <Compile Include="Components\Security\Helper\RegistrationSettingsHelper.cs" />
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />

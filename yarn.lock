@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 4
+  version: 6
   cacheKey: 8
 
 "@babel/code-frame@npm:7.0.0":
@@ -1607,7 +1607,7 @@ __metadata:
     enzyme-to-json: ^3.3.4
     eslint: ^7.32.0
     eslint-import-resolver-node: ^0.3.2
-    eslint-import-resolver-webpack: ^0.11.1
+    eslint-import-resolver-webpack: ^0.13.2
     eslint-loader: ^4.0.2
     eslint-plugin-babel: ^5.2.1
     eslint-plugin-filenames: ^1.3.2
@@ -4660,6 +4660,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn@npm:^8.5.0":
+  version: 8.7.0
+  resolution: "acorn@npm:8.7.0"
+  bin:
+    acorn: bin/acorn
+  checksum: e0f79409d68923fbf1aa6d4166f3eedc47955320d25c89a20cc822e6ba7c48c5963d5bc657bc242d68f7a4ac9faf96eef033e8f73656da6c640d4219935fdfd0
+  languageName: node
+  linkType: hard
+
 "add-px-to-style@npm:1.0.0":
   version: 1.0.0
   resolution: "add-px-to-style@npm:1.0.0"
@@ -7379,13 +7388,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chain-function@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "chain-function@npm:1.0.1"
-  checksum: 4394113afe36bab29a28144da7af5657bc5c34722bb2fb65f80497cf2d96961094c087144e870b1ffadd5574356d95599265189179d43dadfd024099955b5b84
-  languageName: node
-  linkType: hard
-
 "chalk@npm:2.4.2, chalk@npm:^2.0.0, chalk@npm:^2.0.1, chalk@npm:^2.1.0, chalk@npm:^2.3.1, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -9051,6 +9053,7 @@ __metadata:
     execa: ^0.10.0
     ip-regex: ^2.1.0
   checksum: 4d1d05a2fb28b03415809b79d828d9981b5b06de583a9c63315ec6fa732d566f01c470f1bcee38fc4cb7eab6d422712ae176a6d9d53f1f265e7aa5ed0b93a8b6
+  conditions: (os=android | os=darwin | os=freebsd | os=linux | os=openbsd | os=sunos | os=win32)
   languageName: node
   linkType: hard
 
@@ -9369,7 +9372,7 @@ __metadata:
     css-loader: 1.0.1
     dayjs: ^1.10.4
     eslint: 7.32.0
-    eslint-import-resolver-webpack: ^0.10.1
+    eslint-import-resolver-webpack: ^0.13.2
     eslint-loader: 4.0.2
     eslint-plugin-filenames: ^1.3.2
     eslint-plugin-import: ^2.24.0
@@ -9403,7 +9406,7 @@ __metadata:
     css-loader: 2.1.1
     dayjs: ^1.8.36
     eslint: 7.32.0
-    eslint-import-resolver-webpack: ^0.11.1
+    eslint-import-resolver-webpack: ^0.13.2
     eslint-loader: 4.0.2
     eslint-plugin-filenames: ^1.0.0
     eslint-plugin-import: ^2.24.0
@@ -9492,7 +9495,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dom-helpers@npm:^3.2.0, dom-helpers@npm:^3.3.1, dom-helpers@npm:^3.4.0":
+"dom-helpers@npm:^3.3.1, dom-helpers@npm:^3.4.0":
   version: 3.4.0
   resolution: "dom-helpers@npm:3.4.0"
   dependencies:
@@ -9824,7 +9827,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:~0.9.0":
+"enhanced-resolve@npm:^0.9.1":
   version: 0.9.1
   resolution: "enhanced-resolve@npm:0.9.1"
   dependencies:
@@ -10166,45 +10169,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-webpack@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "eslint-import-resolver-webpack@npm:0.10.1"
+"eslint-import-resolver-webpack@npm:^0.13.2":
+  version: 0.13.2
+  resolution: "eslint-import-resolver-webpack@npm:0.13.2"
   dependencies:
     array-find: ^1.0.0
-    debug: ^2.6.8
-    enhanced-resolve: ~0.9.0
+    debug: ^3.2.7
+    enhanced-resolve: ^0.9.1
     find-root: ^1.1.0
-    has: ^1.0.1
-    interpret: ^1.0.0
-    lodash: ^4.17.4
-    node-libs-browser: ^1.0.0 || ^2.0.0
-    resolve: ^1.4.0
-    semver: ^5.3.0
+    has: ^1.0.3
+    interpret: ^1.4.0
+    is-core-module: ^2.7.0
+    is-regex: ^1.1.4
+    lodash: ^4.17.21
+    resolve: ^1.20.0
+    semver: ^5.7.1
   peerDependencies:
     eslint-plugin-import: ">=1.4.0"
     webpack: ">=1.11.0"
-  checksum: 651c669da63b45293c747049401f7b07e60abcedda3651c33e31b446f8d5b4df54495c713f1d49904222679f878c51bb94703cafacc0c34ee31f7bbba97e078c
-  languageName: node
-  linkType: hard
-
-"eslint-import-resolver-webpack@npm:^0.11.1":
-  version: 0.11.1
-  resolution: "eslint-import-resolver-webpack@npm:0.11.1"
-  dependencies:
-    array-find: ^1.0.0
-    debug: ^2.6.8
-    enhanced-resolve: ~0.9.0
-    find-root: ^1.1.0
-    has: ^1.0.1
-    interpret: ^1.0.0
-    lodash: ^4.17.4
-    node-libs-browser: ^1.0.0 || ^2.0.0
-    resolve: ^1.10.0
-    semver: ^5.3.0
-  peerDependencies:
-    eslint-plugin-import: ">=1.4.0"
-    webpack: ">=1.11.0"
-  checksum: 477ca5e1ce6ffa968062a2e7a4853ec71b5dfa048701f30f41b679d0fa5c546e2d4f02afb337bed9a13c84d1a87ea4e2980da47f5a9ea4844eb7457e7cccdc12
+  checksum: 6c40164747bf894a0e34cbc9626566193471062e8809cef7aa8be74e0346c962d03aa7b8f3579a3d348245269860c1f241eba5379ec04acc89daffa4fb6b5f17
   languageName: node
   linkType: hard
 
@@ -10806,7 +10789,7 @@ __metadata:
     jwt-decode: 2.2.0
     less: 4.1.2
     less-loader: 5.0.0
-    moment: ^2.22.1
+    moment: ^2.29.2
     pikaday: 1.8.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
@@ -11715,25 +11698,26 @@ fsevents@^1.2.7:
     nan: ^2.12.1
     node-pre-gyp: ^0.12.0
   checksum: a00be937d11f59936eaa7bc296a2635d4f14d79fa9015acdb0b4ae439da37dbe7e8cc857616655f860c747d3fb988e2ecd913f6cafcd5488fa241f42e237b5ba
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
 "fsevents@patch:fsevents@^1.2.7#~builtin<compat/fsevents>":
   version: 1.2.9
-  resolution: "fsevents@patch:fsevents@npm%3A1.2.9#~builtin<compat/fsevents>::version=1.2.9&hash=1cc4b2"
+  resolution: "fsevents@patch:fsevents@npm%3A1.2.9#~builtin<compat/fsevents>::version=1.2.9&hash=18f3a7"
   dependencies:
     nan: ^2.12.1
     node-pre-gyp: ^0.12.0
-  checksum: 8a3f26aba0d53bba34f3820a1fdf455e72bef46f3e85cf5af9ca63f08f744e34f1957b0e061509b77529288205979069e4b371c7412f71e003f296e46a5f19a9
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
 "fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=1cc4b2"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
   dependencies:
     node-gyp: latest
-  checksum: 78db9daf1f6526a49cefee3917cc988f62dc7f25b5dd80ad6de4ffc4af7f0cab7491ac737626ff53e482a111bc53aac9e411fe3602458eca36f6a003ecf69c16
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -11743,6 +11727,7 @@ fsevents@~2.3.2:
   dependencies:
     node-gyp: latest
   checksum: 97ade64e75091afee5265e6956cb72ba34db7819b4c3e94c431d4be2b19b8bb7a2d4116da417950c3425f17c8fe693d25e20212cac583ac1521ad066b77ae31f
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -12307,6 +12292,15 @@ fsevents@~2.3.2:
   version: 1.0.2
   resolution: "has-symbols@npm:1.0.2"
   checksum: 2309c426071731be792b5be43b3da6fb4ed7cbe8a9a6bcfca1862587709f01b33d575ce8f5c264c1eaad09fca2f9a8208c0a2be156232629daa2dd0c0740976b
+  languageName: node
+  linkType: hard
+
+"has-tostringtag@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "has-tostringtag@npm:1.0.0"
+  dependencies:
+    has-symbols: ^1.0.2
+  checksum: cc12eb28cb6ae22369ebaad3a8ab0799ed61270991be88f208d508076a1e99abe4198c965935ce85ea90b60c94ddda73693b0920b58e7ead048b4a391b502c1c
   languageName: node
   linkType: hard
 
@@ -13220,6 +13214,7 @@ fsevents@~2.3.2:
     default-gateway: ^2.6.0
     ipaddr.js: ^1.5.2
   checksum: 36e4d7a8791cad43a7acc3bc38c54943278744bf55b2ac3c6834ee4919bf51521c33b59a9715faf92ed813657147feeb5f069af9e852b58dbe4352ee4a725945
+  conditions: (os=android | os=darwin | os=freebsd | os=linux | os=openbsd | os=sunos | os=win32)
   languageName: node
   linkType: hard
 
@@ -13248,6 +13243,13 @@ fsevents@~2.3.2:
   version: 1.2.0
   resolution: "interpret@npm:1.2.0"
   checksum: 85d5db9a4579f296ec9e63d38b38c768dc33db7ea0c63d5312131b23ffeee9fb8c6021db22dd0b2827030f6214a512e658a319a56ad446f487c6b1fce8b67edd
+  languageName: node
+  linkType: hard
+
+"interpret@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "interpret@npm:1.4.0"
+  checksum: 2e5f51268b5941e4a17e4ef0575bc91ed0ab5f8515e3cf77486f7c14d13f3010df9c0959f37063dcc96e78d12dc6b0bb1b9e111cdfe69771f4656d2993d36155
   languageName: node
   linkType: hard
 
@@ -13458,6 +13460,15 @@ fsevents@~2.3.2:
   dependencies:
     has: ^1.0.3
   checksum: e007de6ca5c391f8a669b9335192967d8815f9119f97d81fc4cde07febe09143263bc0146e86e813120223ea9a034cf0608d15b53b0269e19b4dc0a220ce0b4f
+  languageName: node
+  linkType: hard
+
+"is-core-module@npm:^2.7.0":
+  version: 2.9.0
+  resolution: "is-core-module@npm:2.9.0"
+  dependencies:
+    has: ^1.0.3
+  checksum: b27034318b4b462f1c8f1dfb1b32baecd651d891a4e2d1922135daeff4141dfced2b82b07aef83ef54275c4a3526aa38da859223664d0868ca24182badb784ce
   languageName: node
   linkType: hard
 
@@ -13815,6 +13826,16 @@ fsevents@~2.3.2:
     call-bind: ^1.0.2
     has-symbols: ^1.0.2
   checksum: 19a831a1ba88d09bb43ab30194672e6ae1461caff27254d2c160ed63c95015155ad8784e80995e46a637d0880da8f4ed63b5c3242af1b49c0b5c4666a7a2d3d8
+  languageName: node
+  linkType: hard
+
+"is-regex@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "is-regex@npm:1.1.4"
+  dependencies:
+    call-bind: ^1.0.2
+    has-tostringtag: ^1.0.0
+  checksum: 362399b33535bc8f386d96c45c9feb04cf7f8b41c182f54174c1a45c9abbbe5e31290bbad09a458583ff6bf3b2048672cdb1881b13289569a7c548370856a652
   languageName: node
   linkType: hard
 
@@ -14320,7 +14341,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"jest-resolve@npm:24.8.0, jest-resolve@npm:^24.8.0":
+"jest-resolve@npm:^24.8.0":
   version: 24.8.0
   resolution: "jest-resolve@npm:24.8.0"
   dependencies:
@@ -16226,10 +16247,10 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.22.1":
-  version: 2.24.0
-  resolution: "moment@npm:2.24.0"
-  checksum: 9cd93a251a2b33cb1b532eade0e496a2a7547faa6cfe37a283ee7bf69e202cd7c8ab0673d66883b5b29aed051353176dc0e6684f04073a75b0a155c500be1580
+"moment@npm:^2.29.2":
+  version: 2.29.2
+  resolution: "moment@npm:2.29.2"
+  checksum: ee850b5776485e2af0775ceb3cfebaa7d7638f0a750fe0678fcae24c310749f96c1938808384bd422a55e5703834a71fcb09c8a1d36d9cf847f6ed0205d7a3e5
   languageName: node
   linkType: hard
 
@@ -16567,7 +16588,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"node-libs-browser@npm:^1.0.0 || ^2.0.0, node-libs-browser@npm:^2.0.0":
+"node-libs-browser@npm:^2.0.0":
   version: 2.2.0
   resolution: "node-libs-browser@npm:2.2.0"
   dependencies:
@@ -17528,7 +17549,7 @@ fsevents@~2.3.2:
     enzyme: ^3.7.0
     enzyme-adapter-react-16: ^1.13.0
     eslint: ^7.32.0
-    eslint-import-resolver-webpack: ^0.11.1
+    eslint-import-resolver-webpack: ^0.13.2
     eslint-loader: 4.0.2
     eslint-plugin-react: 7.11.1
     eslint-plugin-spellcheck: 0.0.11
@@ -18837,7 +18858,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.6, prop-types@npm:^15.5.7, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.7, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -19920,22 +19941,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"react-transition-group@npm:^1.2.0":
-  version: 1.2.1
-  resolution: "react-transition-group@npm:1.2.1"
-  dependencies:
-    chain-function: ^1.0.0
-    dom-helpers: ^3.2.0
-    loose-envify: ^1.3.1
-    prop-types: ^15.5.6
-    warning: ^3.0.0
-  peerDependencies:
-    react: ^15.0.0 || ^16.0.0
-    react-dom: ^15.0.0 || ^16.0.0
-  checksum: a0b98d07b7295f07464a75ee2ead944efdf37e1b74638528b2af26045f345a6c334afb93f42cb7aa262c0b36c7a74777632467e49eebc4fd771be7c2eec4a462
-  languageName: node
-  linkType: hard
-
 "react-transition-group@npm:^2.4.0":
   version: 2.9.0
   resolution: "react-transition-group@npm:2.9.0"
@@ -20933,47 +20938,29 @@ resolve@1.1.7:
   languageName: node
   linkType: hard
 
-resolve@^1.4.0:
-  version: 1.12.0
-  resolution: "resolve@npm:1.12.0"
-  dependencies:
-    path-parse: ^1.0.6
-  checksum: 16582239c4b10b733bbc343b7d80b3438f59566c28d66741d9a92dbcc83a90d847b010ece58b006a5538b2fd23847ff91eb46ee9fccdf236b15b3152461434f4
-  languageName: node
-  linkType: hard
-
 "resolve@patch:resolve@1.1.7#~builtin<compat/resolve>":
   version: 1.1.7
-  resolution: "resolve@patch:resolve@npm%3A1.1.7#~builtin<compat/resolve>::version=1.1.7&hash=00b1ff"
-  checksum: 3477c7e1cb7c0588764f1c2dbdd84d1f4e98d0ad138485ff280c210ddc252c86735f9e6113cbe9491e24cf3205058fce8a7a1dd1f50370707656dbd895bd3826
+  resolution: "resolve@patch:resolve@npm%3A1.1.7#~builtin<compat/resolve>::version=1.1.7&hash=07638b"
+  checksum: e9dbca78600ae56835c43a09f1276876c883e4b4bbd43e2683fa140671519d2bdebeb1c1576ca87c8c508ae2987b3ec481645ac5d3054b0f23254cfc1ce49942
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.5.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.8.1#~builtin<compat/resolve>":
   version: 1.10.1
-  resolution: "resolve@patch:resolve@npm%3A1.10.1#~builtin<compat/resolve>::version=1.10.1&hash=00b1ff"
+  resolution: "resolve@patch:resolve@npm%3A1.10.1#~builtin<compat/resolve>::version=1.10.1&hash=07638b"
   dependencies:
     path-parse: ^1.0.6
-  checksum: beb6187cc545d3c8c7b034324c5e6b76e05a04157ab941f736d274b12498b8441bf934251570f019e5759207cee4a23d1a09e330d6353671274d635a1c270c90
+  checksum: 25257fe4dd14d5930c8f2b47b85983c7563a57a440d1d331bb2ed3daa145a3eb85ededcad34ef4e1c83e4cc975f2194c11e7f1c329c2f2b9cc5db5e7e35ea009
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>":
   version: 1.20.0
-  resolution: "resolve@patch:resolve@npm%3A1.20.0#~builtin<compat/resolve>::version=1.20.0&hash=00b1ff"
+  resolution: "resolve@patch:resolve@npm%3A1.20.0#~builtin<compat/resolve>::version=1.20.0&hash=07638b"
   dependencies:
     is-core-module: ^2.2.0
     path-parse: ^1.0.6
-  checksum: bed00be983cd20a8af0e7840664f655c4b269786dbd9595c5f156cd9d8a0050e65cdbbbdafc30ee9b6245b230c78a2c8ab6447a52545b582f476c29adb188cc5
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@^1.4.0#~builtin<compat/resolve>":
-  version: 1.12.0
-  resolution: "resolve@patch:resolve@npm%3A1.12.0#~builtin<compat/resolve>::version=1.12.0&hash=00b1ff"
-  dependencies:
-    path-parse: ^1.0.6
-  checksum: bbca695c4572d68fce46947ba2e3730bfac3bdd88409bdb0d07a104d59f6847a4f73b6265c0234b0e1345e6648a3cf42869fb19f2f1e1c613bc9ab1d593a9810
+  checksum: a0dd7d16a8e47af23afa9386df2dff10e3e0debb2c7299a42e581d9d9b04d7ad5d2c53f24f1e043f7b3c250cbdc71150063e53d0b6559683d37f790b7c8c3cd5
   languageName: node
   linkType: hard
 
@@ -21019,7 +21006,7 @@ resolve@^1.4.0:
     react-motion: ^0.5.2
     react-redux: ^5.1.1
     react-tooltip: ^4.2.6
-    react-transition-group: ^1.2.0
+    react-transition-group: ^2.4.0
     redux: ^4.0.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: ^1.1.3
@@ -21453,7 +21440,7 @@ resolve@^1.4.0:
   languageName: node
   linkType: hard
 
-"semver@npm:2 || 3 || 4 || 5, semver@npm:2.x || 3.x || 4 || 5, semver@npm:^5.3.0, semver@npm:^5.4.1, semver@npm:^5.5.0, semver@npm:^5.5.1, semver@npm:^5.6.0, semver@npm:^5.7.0":
+"semver@npm:2 || 3 || 4 || 5, semver@npm:2.x || 3.x || 4 || 5, semver@npm:^5.3.0, semver@npm:^5.4.1, semver@npm:^5.5.0, semver@npm:^5.5.1, semver@npm:^5.6.0, semver@npm:^5.7.0, semver@npm:^5.7.1":
   version: 5.7.1
   resolution: "semver@npm:5.7.1"
   bin:

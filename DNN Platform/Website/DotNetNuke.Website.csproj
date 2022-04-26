@@ -3175,10 +3175,8 @@
     <Content Include="Install\Config\RemoveBindingRedirect.config" />
     <Content Include="Install\Config\09.07.03.config" />
     <Content Include="Install\Config\09.08.00.config" />
-    <Content Include="Install\Config\BindingRedirect.config" />
     <Content Include="Install\Config\Net35.config" />
     <Content Include="Install\Config\Net40.config" />
-    <Content Include="Install\Config\RemoveBindingRedirect.config" />
     <None Include="Install\Template\UserProfile.page.template" />
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />

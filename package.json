@@ -38,5 +38,5 @@
     "lint": "lerna run lint",
     "test": "lerna run test"
   },
-  "packageManager": "yarn@3.0.2"
+  "packageManager": "yarn@3.2.0"
 }
