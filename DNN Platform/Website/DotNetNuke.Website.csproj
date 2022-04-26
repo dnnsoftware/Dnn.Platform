@@ -766,6 +766,7 @@
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Install\SecurityTabResult.cs" />
     <Compile Include="Install\UpgradeWizard.aspx.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

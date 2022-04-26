@@ -200,7 +200,9 @@
     <Compile Include="Common\ServiceScopeContainer.cs" />
     <Compile Include="Common\Utilities\CryptographyUtils.cs" />
     <Compile Include="Common\Utilities\FileSystemExtensions.cs" />
+    <Compile Include="Common\Utilities\ITelerikUtils.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
+    <Compile Include="Common\Utilities\TelerikUtils.cs" />
     <Compile Include="Common\Utilities\ValidationUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Data\DatabaseConnectionProvider.cs" />

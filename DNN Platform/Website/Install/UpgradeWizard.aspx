@@ -1,7 +1,7 @@
 <%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.UpgradeWizard" Codebehind="UpgradeWizard.aspx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head runat="server">
@@ -57,15 +57,23 @@
                         </div>
                         </a>
                     </li>
+                    <li><a href="#upgradeSecurity">
+                        <div class="dnnWizardStep">
+                            <span class="dnnWizardStepNumber">2</span>
+                            <span class="dnnWizardStepTitle"><%= LocalizeString("Security")%></span>
+                            <span class="dnnWizardStepArrow"></span>
+                        </div>
+                        </a>
+                    </li>
                     <li><a href="#upgradeInstallation">
                          <div class="dnnWizardStep">
-                            <span class="dnnWizardStepNumber">2</span>
+                            <span class="dnnWizardStepNumber">3</span>
                             <span class="dnnWizardStepTitle"><%= LocalizeString("Upgrade")%></span>
                             <span class="dnnWizardStepArrow"></span>
                         </div>
                         </a>
                      </li>
-                    <li><a href="#upgradeViewWebsite">
+                    <li><a href="#upgradeInstallation">
                          <div class="dnnWizardStep">
                             <span><img id="finishImage" src="../images/finishflag.png" alt="" /></span>
                             <span class="dnnWizardStepTitle"><%= LocalizeString("ViewWebsite")%></span>
@@ -86,12 +94,22 @@
                     <hr />
                     <ul class="dnnForm dnnActions dnnClear">
                         <li>
-                            <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="Next" />
+                            <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="NextStep" />
                         </li>
                         <li id="pnlAcceptTerms" runat="server" class="accept-terms">
                         <asp:CheckBox ID="chkAcceptTerms" runat="server" />
                         <asp:Label runat="server" ResourceKey="AcceptTerms" />
                     </li>
+                    </ul>
+                </div>
+                <div class="upgradeSecurity dnnClear" id="upgradeSecurity">
+                    <asp:Label ID="lblSecurityError" runat="server" CssClass="NormalRed"/>
+                    <div id="upgradeSecurityView"></div>
+                    <hr />
+                    <ul class="dnnForm dnnActions dnnClear">
+                        <li>
+                            <asp:LinkButton ID="UpgradeNowButton" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="Next" />
+                        </li>
                     </ul>
                 </div>
                 <div class="upgradeInstallation dnnClear" id="upgradeInstallation">
@@ -121,7 +139,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="upgradeViewWebsite dnnClear" id="upgradeViewWebsite"></div>
             </div>
         </div>
 
@@ -139,24 +156,44 @@
                 $("#PageLocale")[0].value = locale;
             };
             this.showInstallationTab = function () {
-                $("#tabs").tabs('enable', 1);
-                $("#tabs").tabs('option', 'active', 1);
+                $("#tabs").tabs('disable', 1);
+                $("#tabs").tabs('enable', 2);
+                $("#tabs").tabs('option', 'active', 2);
+            };
+            this.showSecurityTab = function () {
                 $("#tabs").tabs('disable', 0);
                 $("#languageFlags").hide();
                 $('#<%= dnnInstall.ClientID %>').css('display', 'none');
+                $("#tabs").tabs('enable', 1);
+                $("#tabs").tabs('option', 'active', 1);
+
+                PageMethods.GetSecurityTab(upgradeWizard.accountInfo, function (result) {
+                    if (result.Item1) {
+                        $('#<%= lblSecurityError.ClientID %>').text('');
+                        $('#upgradeSecurityView').html(result.Item3.View);
+                        $('input[name="<%= TelerikUninstallOptionClientID %>"').click(function () {
+                            upgradeWizard.accountInfo["<%= TelerikUninstallOptionClientID %>"] = $(this).val();
+                            enable("#<%= UpgradeNowButton.ClientID %>");
+                        });
+                        if (result.Item3.CanProceed) {
+                            enable("#<%= UpgradeNowButton.ClientID %>");
+                        }
+                    } else {
+                        $('#<%= lblSecurityError.ClientID %>').text(result.Item2);
+                        $('#<%= lblSecurityError.ClientID %>').css('display', 'block');
+                        setTimeout(function () { $('#<%= lblSecurityError.ClientID %>').css('display', 'none') }, 3000);
+                    }
+                });
             };
             this.finishInstall = function () {
                 upgradeWizard.stopProgressBar();
-                $('#seeLogs, #visitSite').removeClass('dnnDisabledAction');
+                $("#tabs").tabs('enable', 3);
+                $("#tabs").tabs('option', 'active', 3);
+                $("#tabs").tabs('disable', 2);
+                $('#tabs ul').css('background-position', '0 -100px');
+                enable('#seeLogs, #visitSite');
                 $('#visitSite').attr("href", location.pathname + "?complete");
                 $('#installation-steps > p').attr('class', 'step-done');
-                $('#tabs ul li a[href="#upgradeInstallation"]').parent().removeClass('ui-tabs-active ui-state-active');
-                $('#tabs ul li a[href="#upgradeInstallation"]').parent().addClass('ui-state-disabled');
-                $('#tabs ul li a[href="#upgradeViewWebsite"]').parent().addClass('ui-tabs-active ui-state-active');
-                $('.dnnWizardStepArrow', $('#tabs ul li a[href="#upgradeAccountInfo"]')).css('background-position', '0 -401px');
-                $('.dnnWizardStepArrow', $('#tabs ul li a[href="#upgradeInstallation"]')).css('background-position', '0 -401px');
-                $('.dnnWizardStepArrow', $('#tabs ul li a[href="#upgradeInstallation"]')).css('background-position', '0 -201px');
-                $('#tabs ul').css('background-position', '0 -100px');
             };
             this.progressBarIntervalId = {};
             this.timerIntervalId = {};
@@ -185,19 +222,30 @@
                 clearInterval(upgradeWizard.progressBarIntervalId);
             };
             this.upgrade = function () {
+                var token = $('#<%= TelerikAntiForgeryTokenClientID %>').val();
+                upgradeWizard.accountInfo["<%= TelerikAntiForgeryTokenClientID %>"] = token;
+
                 $.startProgressbar();
                 //Call PageMethod which triggers long running operation
                 PageMethods.RunUpgrade(upgradeWizard.accountInfo, function () {
                 }, function(err) {
                     $.stopProgressbarOnError();
                 });
-                $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
+                disable('#seeLogs, #visitSite, #retry');
                 //Making sure that progress indicate 0
                 $("#progressbar").progressbar('value', 0);
                 $("#percentage").text('0% ');
                 $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
             };
         }
+
+        function enable(selector) {
+            $(selector).removeClass('dnnDisabledAction');
+        };
+
+        function disable(selector) {
+            $(selector).addClass('dnnDisabledAction');
+        };
 
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
@@ -228,7 +276,7 @@
                     }
                 });
                 $("#tabs").tabs();
-                $("#tabs").tabs({ disabled: [1, 2] });
+                $("#tabs").tabs({ disabled: [1, 2, 3] });
                 $('.dnnFormMessage.dnnFormError').each(function () {
                     if ($(this).html().length)
                         $(this).css('display', 'block');
@@ -244,13 +292,13 @@
             if ($acceptTerms.length) {
                 $acceptTerms.click(function() {
                     if (!$(this).is(':checked')) {
-                        $("#<%= continueLink.ClientID %>").addClass('dnnDisabledAction');
+                        disable("#<%= continueLink.ClientID %>");
                     } else {
-                        $("#<%= continueLink.ClientID %>").removeClass('dnnDisabledAction');
+                        enable("#<%= continueLink.ClientID %>");
                     }
                 });
             } else {
-                $("#<%= continueLink.ClientID %>").removeClass('dnnDisabledAction');
+                enable("#<%= continueLink.ClientID %>");
             }
             //Next Step
             $('#<%= continueLink.ClientID %>').click(function () {
@@ -259,22 +307,32 @@
                     upgradeWizard.accountInfo = {
                         username: $('#<%= txtUsername.ClientID %>')[0].value,
                         password: $('#<%= txtPassword.ClientID %>')[0].value,
-                        acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
+                        acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "<%= OptionYes %>" : "<%= OptionNo %>"
                     };
 
-                    $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
+                    disable("#<%= continueLink.ClientID %>");
+                    disable('#seeLogs, #visitSite, #retry');
 
                     PageMethods.ValidateInput(upgradeWizard.accountInfo, function(result) {
                         if (result.Item1) {
                             $('#<%= lblAccountInfoError.ClientID %>').text('');
-                            upgradeWizard.showInstallationTab();
-                            upgradeWizard.upgrade();
+                            upgradeWizard.showSecurityTab();
                         } else {
                             $('#<%= lblAccountInfoError.ClientID %>').text(result.Item2);
                             $('#<%= lblAccountInfoError.ClientID %>').css('display', 'block');
                             setTimeout(function() { $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none') }, 3000);
+                            enable("#<%= continueLink.ClientID %>");
                         }
                     });
+                }
+
+                return false;
+            });
+            $('#<%= UpgradeNowButton.ClientID %>').click(function () {
+
+                if (!$(this).hasClass('dnnDisabledAction')) {
+                    upgradeWizard.showInstallationTab();
+                    upgradeWizard.upgrade();
                 }
 
                 return false;
@@ -329,7 +387,7 @@
                 if (result.progress >= 100 || result.details == '<%= Localization.GetSafeJSString(LocalizeString("UpgradeDone"))%>') {
                     upgradeWizard.finishInstall();
                     //Enable button
-                    $('#seeLogs, #visitSite').removeClass('dnnDisabledAction');
+                    enable('#seeLogs, #visitSite');
                     $('#visitSite').attr("href", location.pathname + "?complete");
                     $('#installation-steps > p').attr('class', 'step-done');
                 }
@@ -363,7 +421,7 @@
         //Start progress bar
         $.startProgressbar = function () {
             //Disabling button
-            $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
+            disable('#seeLogs, #visitSite, #retry');
             //Making sure that progress indicate 0
             $("#progressbar").progressbar().progressbar('value', 0);
             $("#percentage").text('0%');
@@ -374,7 +432,7 @@
 
         //Stop update progress bar on errors
         $.stopProgressbarOnError = function () {
-            $("#seeLogs, #retry").removeClass('dnnDisabledAction');
+            enable("#seeLogs, #retry");
             if ($.updateProgressbarTimeId) {
                 clearTimeout($.updateProgressbarTimeId);
                 $.updateProgressbarTimeId = null;
@@ -392,12 +450,12 @@
 
             //Progressbar and button initialization
             $("#progressbar").progressbar({ value: 0 });
-            $('#visitSite, #seeLogs, #retry').addClass('dnnDisabledAction');
+            disable('#visitSite, #seeLogs, #retry');
 
             $("#retry").click(function (e) {
                 e.preventDefault();
                 if (!$(this).hasClass('dnnDisabledAction')){
-                    $('#retry').addClass('dnnDisabledAction');
+                    disable('#retry');
                     $('#installation-log-container').hide();
                     $.startProgressbar();
                     //Call PageMethod which triggers long running operation
@@ -431,7 +489,7 @@
             $('#seeLogs').click(function (e) {
                 e.preventDefault();
                 if (!$(this).hasClass('dnnDisabledAction')){
-                    $(this).addClass('dnnDisabledAction');
+                    disable(this);
                     $('#installation-log-container').show();
                     getInstallationLog();
                 }
@@ -441,7 +499,7 @@
                 if ($(this).hasClass('dnnDisabledAction')) {
                     e.preventDefault();
                 } else {
-                    $(this).addClass('dnnDisabledAction');
+                    disable(this);
                 }
             });
         });
