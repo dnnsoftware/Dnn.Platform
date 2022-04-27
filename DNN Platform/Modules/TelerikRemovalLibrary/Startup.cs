@@ -43,6 +43,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             services.AddTransient<IRemoveExtensionStep, RemoveExtensionStep>();
             services.AddTransient<IReplacePortalTabModuleStep, ReplacePortalTabModuleStep>();
             services.AddTransient<IReplaceTabModuleStep, ReplaceTabModuleStep>();
+            services.AddTransient<IReplaceTextInFileStep, ReplaceTextInFileStep>();
             services.AddTransient<IUninstallPackageStep, UninstallPackageStep>();
         }
 

@@ -132,7 +132,12 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 
         private IStep UpdateSiteUrlsConfig()
         {
-            return this.NullStep("Remove all Telerik rewrite rules from the SiteUrls.config file");
+            var step = this.GetService<IReplaceTextInFileStep>();
+            step.Name = "Remove all Telerik rewrite rules from the SiteUrls.config file";
+            step.RelativeFilePath = "Config/SiteUrls.config";
+            step.SearchPattern = @"<RewriterRule>\s*<LookFor>[^<]*Telerik[^<]*</LookFor>.*?</RewriterRule>\s*";
+            step.Replacement = string.Empty;
+            return step;
         }
 
         private IStep UpdateWebConfig()
