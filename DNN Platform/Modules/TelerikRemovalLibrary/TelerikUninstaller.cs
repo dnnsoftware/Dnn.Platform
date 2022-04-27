@@ -47,7 +47,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 this.RemoveExtension("DotNetNuke.Website.Deprecated"),
                 this.RemoveExtension("Admin.Messaging"),
                 this.RemoveExtension("DNNSecurityHotFix20171"),
-                this.RemoveExtension("RadEditor Manager"),
+                this.RemoveExtension("DotNetNuke.RadEditorProvider"),
                 this.UpdateDataTypeList("Date"),
                 this.UpdateDataTypeList("DateTime"),
                 this.UpdateSiteUrlsConfig(),
