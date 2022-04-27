@@ -39,7 +39,7 @@
                         <cc2:DnnCheckBox ID="BackupConfirmationCheckBox" runat="server" AutoPostBack="True" OnCheckedChanged="BackupConfirmationCheckBox_CheckedChanged" Text="BackupConfirmation" />
                     </p>
                     <div>
-                        <cc2:DnnTextButton ID="RemoveTelerikButton" runat="server" CssClass="dnnPrimaryAction" DisabledCssClass="dnnPrimaryAction dnnDisabledAction" OnClick="RemoveTelerikButton_Click" Text="RemoveTelerik" />
+                        <cc2:DnnTextButton ID="RemoveTelerikButton" runat="server" CssClass="dnnPrimaryAction" DisabledCssClass="dnnPrimaryAction dnnDisabledAction" OnClick="RemoveTelerikButton_Click" Text="RemoveTelerik" OnClientClick="this.disabled = true;" UseSubmitBehavior="False" />
                     </div>
                 </asp:View>
                 <asp:View ID="InstalledAndUsedView" runat="server">
