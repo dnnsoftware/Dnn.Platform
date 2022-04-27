@@ -37,6 +37,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 
             // steps
             services.AddTransient<IClearCacheStep, ClearCacheStep>();
+            services.AddTransient<IDeleteFilesStep, DeleteFilesStep>();
             services.AddTransient<IExecuteSqlStep, ExecuteSqlStep>();
             services.AddTransient<IInstallAvailablePackageStep, InstallAvailablePackageStep>();
             services.AddTransient<INullStep, NullStep>();

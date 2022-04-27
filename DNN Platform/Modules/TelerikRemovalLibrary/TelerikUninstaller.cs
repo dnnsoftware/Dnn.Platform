@@ -6,6 +6,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     using DotNetNuke.Common.Utilities;
 
@@ -55,10 +56,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 this.UpdateWebConfig("/configuration/system.webServer/handlers", "name, type"),
                 this.UpdateWebConfig("/configuration/system.webServer/modules", "name, type"),
                 this.RemoveTelerikBindingRedirects(),
-                this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Telerik_*"),
-                this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Web.Deprecated_*"),
-                this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Website.Deprecated_*"),
-                this.RemoveUninstalledExtensionFiles("DNNSecurityHotFix*"),
+                this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Library_DotNetNuke.Telerik.Web_*"),
+                this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Library_DotNetNuke.Web.Deprecated_*"),
+                this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Library_DotNetNuke.Website.Deprecated_*"),
+                this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Module_DNNSecurityHotFix*"),
             };
 
             var skip = false;
@@ -154,9 +155,14 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             return this.GetService<IRemoveTelerikBindingRedirectsStep>();
         }
 
-        private IStep RemoveUninstalledExtensionFiles(string packageName)
+        private IStep RemoveUninstalledExtensionFiles(string relativePath, string searchPattern, bool recurse = false)
         {
-            return this.NullStep($"Remove extension files '{packageName}'");
+            var step = this.GetService<IDeleteFilesStep>();
+            step.Name = $"Delete files '{relativePath}/{searchPattern}'";
+            step.RelativePath = relativePath;
+            step.SearchPattern = searchPattern;
+            step.SearchOption = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            return step;
         }
 
         private IStep NullStep(string name)

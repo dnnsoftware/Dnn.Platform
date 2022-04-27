@@ -69,8 +69,10 @@
     <Compile Include="Shims\ModuleDefinitionControllerShim.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Steps\ClearCacheStep.cs" />
+    <Compile Include="Steps\DeleteFilesStep.cs" />
     <Compile Include="Steps\ExecuteSqlStep.cs" />
     <Compile Include="Steps\IClearCacheStep.cs" />
+    <Compile Include="Steps\IDeleteFilesStep.cs" />
     <Compile Include="Steps\IExecuteSqlStep.cs" />
     <Compile Include="Steps\IInstallAvailablePackageStep.cs" />
     <Compile Include="Steps\InstallAvailablePackageStep.cs" />
