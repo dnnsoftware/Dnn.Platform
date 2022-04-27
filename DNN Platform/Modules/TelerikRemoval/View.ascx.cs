@@ -6,6 +6,7 @@ namespace Dnn.Modules.TelerikRemoval
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -181,7 +182,8 @@ namespace Dnn.Modules.TelerikRemoval
                 return;
             }
 
-            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik();
+            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                .Select(a => Path.GetFileName(a));
 
             if (!assemblies.Any())
             {
