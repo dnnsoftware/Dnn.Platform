@@ -76,7 +76,6 @@
     <Compile Include="Steps\IExecuteSqlStep.cs" />
     <Compile Include="Steps\IInstallAvailablePackageStep.cs" />
     <Compile Include="Steps\InstallAvailablePackageStep.cs" />
-    <Compile Include="Steps\INullStep.cs" />
     <Compile Include="Steps\IRemoveExtensionStep.cs" />
     <Compile Include="Steps\IRemoveItemFromCollectionStep.cs" />
     <Compile Include="Steps\IRemoveTelerikBindingRedirectsStep.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Steps\IStepArray.cs" />
     <Compile Include="Steps\IUninstallPackageStep.cs" />
     <Compile Include="Steps\IXmlStep.cs" />
-    <Compile Include="Steps\NullStep.cs" />
     <Compile Include="Steps\RemoveExtensionStep.cs" />
     <Compile Include="Steps\RemoveItemFromCollectionStep.cs" />
     <Compile Include="Steps\RemoveTelerikBindingRedirectsStep.cs" />

@@ -165,13 +165,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             return step;
         }
 
-        private IStep NullStep(string name)
-        {
-            var step = this.GetService<INullStep>();
-            step.Name = name;
-            return step;
-        }
-
         private T GetService<T>()
             where T : class
         {

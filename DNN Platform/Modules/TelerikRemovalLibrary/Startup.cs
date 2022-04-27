@@ -40,7 +40,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             services.AddTransient<IDeleteFilesStep, DeleteFilesStep>();
             services.AddTransient<IExecuteSqlStep, ExecuteSqlStep>();
             services.AddTransient<IInstallAvailablePackageStep, InstallAvailablePackageStep>();
-            services.AddTransient<INullStep, NullStep>();
             services.AddTransient<IRemoveExtensionStep, RemoveExtensionStep>();
             services.AddTransient<IRemoveItemFromCollectionStep, RemoveItemFromCollectionStep>();
             services.AddTransient<IRemoveTelerikBindingRedirectsStep, RemoveTelerikBindingRedirectsStep>();
