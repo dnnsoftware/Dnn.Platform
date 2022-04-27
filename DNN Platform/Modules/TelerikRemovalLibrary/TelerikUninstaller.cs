@@ -51,7 +51,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 this.UpdateDataTypeList("Date"),
                 this.UpdateDataTypeList("DateTime"),
                 this.UpdateSiteUrlsConfig(),
-                this.UpdateWebConfig(),
+                this.UpdateWebConfig("/configuration/appSettings", "key"),
+                this.UpdateWebConfig("/configuration/system.webServer/handlers", "name, type"),
+                this.UpdateWebConfig("/configuration/system.webServer/modules", "name, type"),
+                this.RemoveTelerikBindingRedirects(),
                 this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Telerik_*"),
                 this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Web.Deprecated_*"),
                 this.RemoveUninstalledExtensionFiles("Library_DotNetNuke.Website.Deprecated_*"),
@@ -132,17 +135,23 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 
         private IStep UpdateSiteUrlsConfig()
         {
-            var step = this.GetService<IReplaceTextInFileStep>();
-            step.Name = "Remove all Telerik rewrite rules from the SiteUrls.config file";
-            step.RelativeFilePath = "Config/SiteUrls.config";
-            step.SearchPattern = @"<RewriterRule>\s*<LookFor>[^<]*Telerik[^<]*</LookFor>.*?</RewriterRule>\s*";
-            step.Replacement = string.Empty;
+            return this.GetService<IRemoveTelerikRewriterRulesStep>();
+        }
+
+        private IStep UpdateWebConfig(string collectionPath, string attributeNames)
+        {
+            var step = this.GetService<IRemoveItemFromCollectionStep>();
+            step.Name = $"Web.config: remove Telerik from {collectionPath}";
+            step.RelativeFilePath = "Web.config";
+            step.CollectionPath = collectionPath;
+            step.AttributeNamesToIncludeInSearch = attributeNames;
+            step.SearchTerm = "telerik";
             return step;
         }
 
-        private IStep UpdateWebConfig()
+        private IStep RemoveTelerikBindingRedirects()
         {
-            return this.NullStep("Remove all Telerik references from the Web.config file");
+            return this.GetService<IRemoveTelerikBindingRedirectsStep>();
         }
 
         private IStep RemoveUninstalledExtensionFiles(string packageName)
