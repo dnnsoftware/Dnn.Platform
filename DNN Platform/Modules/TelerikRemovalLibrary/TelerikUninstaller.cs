@@ -125,7 +125,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 "WHERE ListName = 'DataType' AND Value = '{0}'");
 
             var step = this.GetService<IExecuteSqlStep>();
-            step.InternalName = $"Update provider for '{value}' in DataType list";
+            step.Name = $"Update provider for '{value}' in DataType list";
             step.CommandText = string.Format(commandFormat, value);
             return step;
         }
@@ -148,7 +148,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         private IStep NullStep(string name)
         {
             var step = this.GetService<INullStep>();
-            step.InternalName = name;
+            step.Name = name;
             return step;
         }
 

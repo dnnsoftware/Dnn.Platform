@@ -17,11 +17,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         string CommandText { get; set; }
 
         /// <summary>
-        /// Gets or sets the step's internal name.
-        /// </summary>
-        string InternalName { get; set; }
-
-        /// <summary>
         /// Gets an instance of <see cref="IDataReader"/> with the results of the command execution.
         /// </summary>
         IDataReader Result { get; }

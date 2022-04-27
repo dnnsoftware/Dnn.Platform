@@ -31,12 +31,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         public string CommandText { get; set; }
 
         /// <inheritdoc/>
-        public string InternalName { get; set; }
-
-        /// <inheritdoc/>
-        public override string Name => this.InternalName;
-
-        /// <inheritdoc/>
         public IDataReader Result { get; private set; }
 
         /// <inheritdoc/>

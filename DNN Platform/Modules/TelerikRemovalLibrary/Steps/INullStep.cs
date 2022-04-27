@@ -9,9 +9,5 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     /// </summary>
     internal interface INullStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the internal step name.
-        /// </summary>
-        string InternalName { get; set; }
     }
 }

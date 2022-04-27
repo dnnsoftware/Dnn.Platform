@@ -19,14 +19,6 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc/>
-        public override string Name => this.InternalName;
-
-        /// <summary>
-        /// Gets or sets the step's internal name.
-        /// </summary>
-        public string InternalName { get; set; }
-
-        /// <inheritdoc/>
         protected override void ExecuteInternal()
         {
             this.Success = false;

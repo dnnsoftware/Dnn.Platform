@@ -59,7 +59,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 "WHERE [Name] = '{0}'");
 
             var step = this.GetService<IExecuteSqlStep>();
-            step.InternalName = $"Remove the 'System' attribute from package '{this.PackageName}'";
+            step.Name = $"Remove the 'System' attribute from package '{this.PackageName}'";
             step.CommandText = string.Format(commandFormat, this.PackageName);
 
             return step;
@@ -87,7 +87,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 "WHERE PackageName = '{0}'");
 
             var step = this.GetService<IExecuteSqlStep>();
-            step.InternalName = $"Clean up dependency records for package '{this.PackageName}'";
+            step.Name = $"Clean up dependency records for package '{this.PackageName}'";
             step.CommandText = string.Format(commandFormat, this.PackageName);
 
             return step;

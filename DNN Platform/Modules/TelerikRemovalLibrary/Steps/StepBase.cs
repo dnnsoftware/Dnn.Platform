@@ -29,7 +29,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc/>
-        public abstract string Name { get; }
+        public virtual string Name { get; set; }
 
         /// <inheritdoc/>
         public bool? Success { get; protected set; }

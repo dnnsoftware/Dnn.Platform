@@ -10,9 +10,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     internal interface IStep
     {
         /// <summary>
-        /// Gets the step name.
+        /// Gets or sets the step name.
         /// </summary>
-        string Name { get; }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets the remarks collected during step execution.
