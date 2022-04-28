@@ -61,6 +61,7 @@ namespace Dnn.Modules.TelerikRemoval
             {
                 this.InitMainMultiView();
                 this.InitRemoveTelerikButton();
+                this.RegisterClientScripts();
             }
         }
 
@@ -200,6 +201,14 @@ namespace Dnn.Modules.TelerikRemoval
         private void InitRemoveTelerikButton()
         {
             this.RemoveTelerikButton.Enabled = false;
+        }
+
+        private void RegisterClientScripts()
+        {
+            this.Page.ClientScript.RegisterOnSubmitStatement(
+                typeof(View),
+                nameof(View),
+                "$('#telerikRemoval').addClass('running');");
         }
 
         private T GetService<T>()

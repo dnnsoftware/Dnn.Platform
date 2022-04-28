@@ -5,6 +5,7 @@
 <asp:UpdatePanel ID="MainUpdatePanel" runat="server">
     <ContentTemplate>
         <div id="telerikRemoval">
+            <div class="loading" style="font-size:3em;color:#21a3da"></div>
             <asp:MultiView ID="MainMultiView" runat="server">
                 <asp:View ID="RegularUserView" runat="server">
                     <h1>
