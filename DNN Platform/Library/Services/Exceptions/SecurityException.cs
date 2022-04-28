@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Exceptions
 
                 if (ipAddress != null)
                 {
-                    this.m_IP = HttpContext.Current.Request.UserHostAddress;
+                    this.m_IP = ipAddress;
                 }
 
                 this.m_Querystring = HttpContext.Current.Request.MapPath(this.Querystring, HttpContext.Current.Request.ApplicationPath, false);
