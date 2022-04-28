@@ -2,9 +2,7 @@
     <packages>
         <package name="TelerikRemoval" type="Module" version="09.10.02">
             <friendlyName>Telerik Removal</friendlyName>
-            <description>
-                This module allows you to remove the DotNetNuke Telerik Web Components library from your site.
-            </description>
+            <description>This module allows you to remove the DotNetNuke Telerik Web Components library from your site.</description>
             <owner>
                 <name>.NET Foundation and Contributors</name>
                 <organization>DNN Community</organization>
@@ -63,6 +61,14 @@
                     </assemblies>
                 </component>
             </components>
+            <eventMessage>
+                <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+                <processorCommand>UpgradeModule</processorCommand>
+                <attributes>
+                    <businessControllerClass>Dnn.Modules.TelerikRemoval.UpgradeController, Dnn.Modules.TelerikRemoval</businessControllerClass>
+                    <upgradeVersionsList>upgrade</upgradeVersionsList>
+                </attributes>
+            </eventMessage>
         </package>
     </packages>
 </dotnetnuke>

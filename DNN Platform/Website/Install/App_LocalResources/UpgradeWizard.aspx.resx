@@ -258,4 +258,7 @@
   <data name="TelerikInvalidAntiForgeryToken.Text" xml:space="preserve">
     <value>Invalid Telerik anti-forgery token.</value>
   </data>
+  <data name="TelerikUnintallOptionMissing" xml:space="preserve">
+    <value>Telerik uninstall option is missing.</value>
+  </data>
 </root>

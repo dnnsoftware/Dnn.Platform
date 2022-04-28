@@ -51,6 +51,17 @@ BEGIN
 END
 GO
 
+/*    Install the Telerik Removal extension                 */
+/************************************************************/
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}Packages] WHERE [Name] = 'TelerikRemoval')
+	INSERT INTO {databaseOwner}[{objectQualifier}Packages] (
+		[PortalID], [Name], [FriendlyName], [PackageType], [Version], [CreatedByUserID], [CreatedOnDate]
+	)
+	VALUES (
+		NULL, 'TelerikRemoval', 'Telerik Removal', 'Module', '9.11.0', -1, GETDATE()
+	)
+GO
 
 
 /************************************************************/

@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Application;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -185,16 +186,23 @@ namespace DotNetNuke.Services.Install
         [WebMethod]
         public static void RunUpgrade(Dictionary<string, string> accountInfo)
         {
-            if (!TelerikAntiForgeryTokenIsValid(accountInfo))
-            {
-                throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
-            }
-
             string errorMsg;
             var result = VerifyHostUser(accountInfo, out errorMsg);
 
             if (result == true)
             {
+                if (!TelerikAntiForgeryTokenIsValid(accountInfo))
+                {
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
+                }
+
+                if (!accountInfo.ContainsKey(TelerikUninstallOptionClientID))
+                {
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikUnintallOptionMissing"));
+                }
+
+                SetHostSetting(TelerikUninstallOptionClientID, accountInfo[TelerikUninstallOptionClientID]);
+
                 _upgradeRunning = false;
                 LaunchUpgrade();
 
@@ -531,6 +539,20 @@ namespace DotNetNuke.Services.Install
             return Globals.DependencyProvider
                 .GetRequiredService<IHostSettingsService>()
                 .GetSettingsDictionary()[key];
+        }
+
+        private static void SetHostSetting(string key, string value, bool isSecure = false)
+        {
+            var setting = new ConfigurationSetting
+            {
+                IsSecure = isSecure,
+                Key = key,
+                Value = value,
+            };
+
+            Globals.DependencyProvider
+                .GetRequiredService<IHostSettingsService>()
+                .Update(setting);
         }
 
         private static void GetInstallerLocales()
