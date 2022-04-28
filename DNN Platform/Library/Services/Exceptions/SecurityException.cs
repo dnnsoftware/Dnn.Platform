@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Exceptions
             try
             {
                 var userRequestIpAddressController = UserRequestIPAddressController.Instance;
-                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(request));
+                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
 
                 if (ipAddress != null)
                 {
