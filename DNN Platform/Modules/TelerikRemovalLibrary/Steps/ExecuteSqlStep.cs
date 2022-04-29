@@ -18,9 +18,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="ExecuteSqlStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="dataProvider">An instance of <see cref="IDataProvider"/>.</param>
-        public ExecuteSqlStep(ILoggerSource loggerSource, IDataProvider dataProvider)
-            : base(loggerSource)
+        public ExecuteSqlStep(ILoggerSource loggerSource, ILocalizer localizer, IDataProvider dataProvider)
+            : base(loggerSource, localizer)
         {
             this.dataProvider = dataProvider ??
                 throw new ArgumentNullException(nameof(dataProvider));
@@ -37,7 +38,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         protected override void ExecuteInternal()
         {
             this.Result = this.dataProvider.ExecuteSQL(this.CommandText);
-            this.Notes = $"{this.Result.RecordsAffected} records affected.";
+            this.Notes = this.LocalizeFormat("UninstallStepCountOfRecordsAffected", this.Result.RecordsAffected);
             this.Success = true;
         }
     }

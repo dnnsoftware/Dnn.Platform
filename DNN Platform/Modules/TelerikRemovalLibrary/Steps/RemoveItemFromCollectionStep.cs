@@ -18,9 +18,13 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="RemoveItemFromCollectionStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
-        public RemoveItemFromCollectionStep(ILoggerSource loggerSource, IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, applicationStatusInfo)
+        public RemoveItemFromCollectionStep(
+            ILoggerSource loggerSource,
+            ILocalizer localizer,
+            IApplicationStatusInfo applicationStatusInfo)
+            : base(loggerSource, localizer, applicationStatusInfo)
         {
         }
 
@@ -44,7 +48,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             var collection = doc.SelectSingleNode(this.CollectionPath);
             if (collection is null)
             {
-                this.Notes = $"{this.CollectionPath} section not found.";
+                this.Notes = this.LocalizeFormat("UninstallStepSectionNotFound", this.CollectionPath);
                 return;
             }
 
@@ -62,7 +66,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                     matchCount++;
                 });
 
-            this.Notes = matchCount > 0 ? $"{matchCount} matches found." : "No matches found.";
+            this.Notes = matchCount > 0
+                ? this.LocalizeFormat("UninstallStepCountOfMatchesFound", matchCount)
+                : this.Localize("UninstallStepNoMatchesFound");
         }
 
         private string JoinAttributesToIncludeInSearch(XmlElement element)

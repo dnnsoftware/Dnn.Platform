@@ -25,15 +25,17 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="InstallAvailablePackageStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="appStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         /// <param name="fsProvider">An instance of <see cref="IFileSystemProvider"/>.</param>
         /// <param name="packageController">An instance of <see cref="IPackageController"/>.</param>
         public InstallAvailablePackageStep(
             ILoggerSource loggerSource,
+            ILocalizer localizer,
             IApplicationStatusInfo appStatusInfo,
             IFileSystemProvider fsProvider,
             IPackageController packageController)
-            : base(loggerSource)
+            : base(loggerSource, localizer)
         {
             this.appStatusInfo = appStatusInfo ??
                 throw new ArgumentNullException(nameof(appStatusInfo));
@@ -46,7 +48,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc/>
-        public override string Name => $"Install package '{this.PackageName}'";
+        public override string Name => this.LocalizeFormat("UninstallStepInstallPackage", this.PackageName);
 
         /// <inheritdoc/>
         [Required]
@@ -66,7 +68,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             if (this.PackageIsAlreadyInstalled())
             {
                 this.Success = true;
-                this.Notes = $"Package '{this.PackageName}' was already installed.";
+                this.Notes = this.LocalizeFormat("UninstallStepPackageAlreadyInstalled", this.PackageName);
                 return;
             }
 
@@ -82,7 +84,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             if (filePath is null)
             {
                 this.Success = false;
-                this.Notes = $"Package file '{this.PackageFileNamePattern}' was not found.";
+                this.Notes = this.LocalizeFormat("UninstallStepPackageNotFound", this.PackageFileNamePattern);
                 return;
             }
 

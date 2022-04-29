@@ -22,9 +22,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="ReplaceTabModuleStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
-        public ReplaceTabModuleStep(ILoggerSource loggerSource, IServiceProvider serviceProvider)
-            : base(loggerSource)
+        public ReplaceTabModuleStep(ILoggerSource loggerSource, ILocalizer localizer, IServiceProvider serviceProvider)
+            : base(loggerSource, localizer)
         {
             this.serviceProvider = serviceProvider ??
                 throw new ArgumentNullException(nameof(serviceProvider));
@@ -33,8 +34,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc />
-        public override string Name => string.Format(
-            "Replace '{0}' with '{1}' in page '{2}'",
+        public override string Name => this.LocalizeFormat(
+            "UninstallStepReplacePageModule",
             this.OldModuleName,
             this.NewModuleName,
             this.PageName);

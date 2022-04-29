@@ -5,6 +5,7 @@
 namespace Dnn.Modules.TelerikRemovalLibrary
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Instrumentation;
@@ -14,11 +15,14 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     /// </summary>
     internal abstract class StepBase : IStep
     {
+        private readonly ILocalizer localizer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StepBase"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
-        public StepBase(ILoggerSource loggerSource)
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
+        public StepBase(ILoggerSource loggerSource, ILocalizer localizer)
         {
             if (loggerSource is null)
             {
@@ -26,6 +30,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             }
 
             this.Log = loggerSource.GetLogger(this.GetType());
+
+            this.localizer = localizer ??
+                throw new ArgumentNullException(nameof(localizer));
         }
 
         /// <inheritdoc/>
@@ -57,7 +64,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             {
                 this.Log.Error(ex);
                 this.Success = false;
-                this.Notes = "Internal error.";
+                this.Notes = this.Localize("UninstallStepInternalError");
             }
         }
 
@@ -65,6 +72,21 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Performs the actual step execution.
         /// </summary>
         protected abstract void ExecuteInternal();
+
+        /// <inheritdoc cref="ILocalizer.Localize(string)"/>
+        protected virtual string Localize(string key)
+        {
+            return this.localizer.Localize(key);
+        }
+
+        /// <inheritdoc cref="ILocalizer.LocalizeFormat(string, object[])"/>
+        protected virtual string LocalizeFormat(string key, params object[] args)
+        {
+            return string.Format(
+                CultureInfo.CurrentCulture,
+                this.Localize(key),
+                args);
+        }
 
         private void CheckRequired()
         {
@@ -76,8 +98,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
 
             if (nullProperties.Length > 0)
             {
-                throw new InvalidOperationException(string.Format(
-                    "Following required properties are not set: {0}",
+                throw new InvalidOperationException(this.LocalizeFormat(
+                    "UninstallStepRequiredPropertiesNotSet",
                     string.Join(", ", nullProperties)));
             }
         }

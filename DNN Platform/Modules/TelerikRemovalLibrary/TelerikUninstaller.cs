@@ -14,16 +14,21 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     internal class TelerikUninstaller : ITelerikUninstaller
     {
         private readonly IServiceProvider serviceProvider;
+        private readonly ILocalizer localizer;
         private readonly List<UninstallSummaryItem> progress;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TelerikUninstaller"/> class.
         /// </summary>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
-        public TelerikUninstaller(IServiceProvider serviceProvider)
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
+        public TelerikUninstaller(IServiceProvider serviceProvider, ILocalizer localizer)
         {
             this.serviceProvider = serviceProvider ??
                 throw new ArgumentNullException(nameof(serviceProvider));
+
+            this.localizer = localizer ??
+                throw new ArgumentNullException(nameof(localizer));
 
             this.progress = new List<UninstallSummaryItem>();
         }
@@ -129,7 +134,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 "WHERE ListName = 'DataType' AND Value = '{0}'");
 
             var step = this.GetService<IExecuteSqlStep>();
-            step.Name = $"Update provider for '{value}' in DataType list";
+            step.Name = this.localizer.LocalizeFormat("UninstallStepUpdateDataTypeListFormat", value);
             step.CommandText = string.Format(commandFormat, value);
             return step;
         }
@@ -142,7 +147,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         private IStep UpdateWebConfig(string collectionPath, string attributeNames)
         {
             var step = this.GetService<IRemoveItemFromCollectionStep>();
-            step.Name = $"Web.config: remove Telerik from {collectionPath}";
+            step.Name = this.localizer.LocalizeFormat("UninstallStepUpdateWebConfigFormat", collectionPath);
             step.RelativeFilePath = "Web.config";
             step.CollectionPath = collectionPath;
             step.AttributeNamesToIncludeInSearch = attributeNames;
@@ -158,7 +163,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         private IStep RemoveUninstalledExtensionFiles(string relativePath, string searchPattern, bool recurse = false)
         {
             var step = this.GetService<IDeleteFilesStep>();
-            step.Name = $"Delete files '{relativePath}/{searchPattern}'";
+            step.Name = this.localizer.LocalizeFormat(
+                "UninstallStepCleanupExtensionFilesFormat", $"{relativePath}/{searchPattern}");
             step.RelativePath = relativePath;
             step.SearchPattern = searchPattern;
             step.SearchOption = recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;

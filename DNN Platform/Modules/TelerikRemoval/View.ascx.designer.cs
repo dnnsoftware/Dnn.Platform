@@ -240,6 +240,33 @@ namespace Dnn.Modules.TelerikRemoval
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportDetailLabel;
 
         /// <summary>
+        /// UninstallReportStepColumnLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportStepColumnLabel;
+
+        /// <summary>
+        /// UninstallReportResultColumnLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportResultColumnLabel;
+
+        /// <summary>
+        /// UninstallReportNotesColumnLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportNotesColumnLabel;
+
+        /// <summary>
         /// UninstallReportRepeater control.
         /// </summary>
         /// <remarks>

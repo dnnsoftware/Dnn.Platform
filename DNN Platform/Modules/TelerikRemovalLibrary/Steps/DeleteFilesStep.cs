@@ -22,13 +22,15 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="DeleteFilesStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="fileSystemProvider">An instance of <see cref="IFileSystemProvider"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         public DeleteFilesStep(
             ILoggerSource loggerSource,
+            ILocalizer localizer,
             IFileSystemProvider fileSystemProvider,
             IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource)
+            : base(loggerSource, localizer)
         {
             this.fileSystemProvider = fileSystemProvider ??
                 throw new ArgumentNullException(nameof(fileSystemProvider));
@@ -64,7 +66,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             }
 
             this.Success = true;
-            this.Notes = $"{count} files deleted.";
+            this.Notes = this.LocalizeFormat("UninstallStepCountOfFilesDeleted", count);
         }
     }
 }

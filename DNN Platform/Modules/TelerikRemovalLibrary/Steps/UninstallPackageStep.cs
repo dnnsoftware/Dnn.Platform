@@ -23,15 +23,17 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="UninstallPackageStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="packageController">An instance of <see cref="IPackageController"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         /// <param name="installerFactory">A function that returns an instance of <see cref="IInstaller"/>.</param>
         public UninstallPackageStep(
             ILoggerSource loggerSource,
+            ILocalizer localizer,
             IPackageController packageController,
             IApplicationStatusInfo applicationStatusInfo,
             Func<PackageInfo, string, IInstaller> installerFactory)
-            : base(loggerSource)
+            : base(loggerSource, localizer)
         {
             this.packageController = packageController ??
                 throw new ArgumentNullException(nameof(packageController));
@@ -44,7 +46,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc/>
-        public override string Name => $"Uninstall the '{this.PackageName}' extension";
+        public override string Name => this.LocalizeFormat("UninstallStepUninstallExtension", this.PackageName);
 
         /// <inheritdoc/>
         public bool DeleteFiles { get; set; }
@@ -66,7 +68,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             if (packageInfo == default)
             {
                 this.Success = true;
-                this.Notes = $"Package '{this.PackageName}' was already uninstalled.";
+                this.Notes = this.LocalizeFormat("UninstallStepPackageAlreadyUninstalled", this.PackageName);
                 return;
             }
 

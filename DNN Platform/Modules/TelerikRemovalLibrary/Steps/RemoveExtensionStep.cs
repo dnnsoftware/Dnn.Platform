@@ -20,16 +20,17 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="RemoveExtensionStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
-        public RemoveExtensionStep(ILoggerSource loggerSource, IServiceProvider serviceProvider)
-            : base(loggerSource)
+        public RemoveExtensionStep(ILoggerSource loggerSource, ILocalizer localizer, IServiceProvider serviceProvider)
+            : base(loggerSource, localizer)
         {
             this.serviceProvider = serviceProvider ??
                 throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <inheritdoc/>
-        public override string Name => $"Remove extension '{this.PackageName}'";
+        public override string Name => this.LocalizeFormat("UninstallStepRemoveExtension", this.PackageName);
 
         /// <inheritdoc/>
         [Required]
@@ -59,7 +60,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 "WHERE [Name] = '{0}'");
 
             var step = this.GetService<IExecuteSqlStep>();
-            step.Name = $"Remove the 'System' attribute from package '{this.PackageName}'";
+            step.Name = this.LocalizeFormat("UninstallStepRemoveSystemAttribute", this.PackageName);
             step.CommandText = string.Format(commandFormat, this.PackageName);
 
             return step;
@@ -87,7 +88,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                 "WHERE PackageName = '{0}'");
 
             var step = this.GetService<IExecuteSqlStep>();
-            step.Name = $"Clean up dependency records for package '{this.PackageName}'";
+            step.Name = this.LocalizeFormat("UninstallStepCleanupDependencyRecords", this.PackageName);
             step.CommandText = string.Format(commandFormat, this.PackageName);
 
             return step;

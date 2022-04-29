@@ -17,8 +17,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="StepArrayBase"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
-        public StepArrayBase(ILoggerSource loggerSource)
-            : base(loggerSource)
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
+        public StepArrayBase(ILoggerSource loggerSource, ILocalizer localizer)
+            : base(loggerSource, localizer)
         {
         }
 

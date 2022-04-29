@@ -18,14 +18,18 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="RemoveTelerikRewriterRulesStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
-        public RemoveTelerikRewriterRulesStep(ILoggerSource loggerSource, IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, applicationStatusInfo)
+        public RemoveTelerikRewriterRulesStep(
+            ILoggerSource loggerSource,
+            ILocalizer localizer,
+            IApplicationStatusInfo applicationStatusInfo)
+            : base(loggerSource, localizer, applicationStatusInfo)
         {
         }
 
         /// <inheritdoc/>
-        public override string Name => "Remove Telerik URL rewrite rules";
+        public override string Name => this.Localize("UninstallStepRemoveRewriteRules");
 
         /// <inheritdoc/>
         [Required]
@@ -41,7 +45,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             var rules = doc.SelectSingleNode(RulesPath);
             if (rules is null)
             {
-                this.Notes = $"{RulesPath} section not found.";
+                this.Notes = this.LocalizeFormat("UninstallStepSectionNotFound", RulesPath);
                 return;
             }
 
@@ -60,7 +64,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                     matchCount++;
                 });
 
-            this.Notes = matchCount > 0 ? $"{matchCount} matches found." : "No matches found.";
+            this.Notes = matchCount > 0
+                ? this.LocalizeFormat("UninstallStepCountOfMatchesFound", matchCount)
+                : this.Localize("UninstallStepNoMatchesFound");
         }
     }
 }

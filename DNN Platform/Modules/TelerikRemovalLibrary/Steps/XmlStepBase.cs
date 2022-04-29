@@ -20,11 +20,13 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="XmlStepBase"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         public XmlStepBase(
             ILoggerSource loggerSource,
+            ILocalizer localizer,
             IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource)
+            : base(loggerSource, localizer)
         {
             this.applicationStatusInfo = applicationStatusInfo ??
                 throw new ArgumentNullException(nameof(applicationStatusInfo));

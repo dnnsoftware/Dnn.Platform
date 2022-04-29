@@ -168,4 +168,88 @@
   <data name="RemoveTelerik.Text" xml:space="preserve">
     <value>Remove Telerik Now</value>
   </data>
+  <data name="UninstallReportNotesColumn.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="UninstallReportResultColumn.Text" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="UninstallReportStepColumn.Text" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="UninstallStepCleanupExtensionFilesFormat.Text" xml:space="preserve">
+    <value>Delete files '{0}'</value>
+  </data>
+  <data name="UninstallStepUpdateDataTypeListFormat.Text" xml:space="preserve">
+    <value>Update provider for '{0}' in DataType list</value>
+  </data>
+  <data name="UninstallStepUpdateWebConfigFormat.Text" xml:space="preserve">
+    <value>Web.config: remove Telerik from {0}</value>
+  </data>
+  <data name="UninstallStepCleanupDependencyRecords.Text" xml:space="preserve">
+    <value>Clean up dependency records for package '{0}'</value>
+  </data>
+  <data name="UninstallStepClearCache.Text" xml:space="preserve">
+    <value>Clear cache</value>
+  </data>
+  <data name="UninstallStepCountOfFilesDeleted.Text" xml:space="preserve">
+    <value>{0} files deleted.</value>
+  </data>
+  <data name="UninstallStepCountOfMatchesFound.Text" xml:space="preserve">
+    <value>{0} matches found.</value>
+  </data>
+  <data name="UninstallStepCountOfRecordsAffected.Text" xml:space="preserve">
+    <value>{0} records affected.</value>
+  </data>
+  <data name="UninstallStepInstallPackage.Text" xml:space="preserve">
+    <value>Install package '{0}'</value>
+  </data>
+  <data name="UninstallStepInternalError.Text" xml:space="preserve">
+    <value>Internal error.</value>
+  </data>
+  <data name="UninstallStepModuleNotFoundInPage.Text" xml:space="preserve">
+    <value>'{0}' module not found in '{1}' page.</value>
+  </data>
+  <data name="UninstallStepNoMatchesFound.Text" xml:space="preserve">
+    <value>No matches found.</value>
+  </data>
+  <data name="UninstallStepPackageAlreadyInstalled.Text" xml:space="preserve">
+    <value>Package '{0}' was already installed.</value>
+  </data>
+  <data name="UninstallStepPackageAlreadyUninstalled.Text" xml:space="preserve">
+    <value>Package '{0}' was already uninstalled.</value>
+  </data>
+  <data name="UninstallStepPackageNotFound.Text" xml:space="preserve">
+    <value>Package file '{0}' was not found.</value>
+  </data>
+  <data name="UninstallStepPageNotFoundInPortal.Text" xml:space="preserve">
+    <value>Page '{0}' not found in portal '{1}'.</value>
+  </data>
+  <data name="UninstallStepRemoveBindingRedirects.Text" xml:space="preserve">
+    <value>Remove Telerik assembly binding redirects</value>
+  </data>
+  <data name="UninstallStepRemoveExtension.Text" xml:space="preserve">
+    <value>Remove extension '{0}'</value>
+  </data>
+  <data name="UninstallStepRemoveRewriteRules.Text" xml:space="preserve">
+    <value>Remove Telerik URL rewrite rules</value>
+  </data>
+  <data name="UninstallStepRemoveSystemAttribute.Text" xml:space="preserve">
+    <value>Remove the 'System' attribute from package '{0}'</value>
+  </data>
+  <data name="UninstallStepReplacePageModule.Text" xml:space="preserve">
+    <value>Replace '{0}' with '{1}' in page '{2}'</value>
+  </data>
+  <data name="UninstallStepReplacePortalPageModule.Text" xml:space="preserve">
+    <value>Replace '{0}' with '{1}' in page '{2}', portal ID '{3}'</value>
+  </data>
+  <data name="UninstallStepRequiredPropertiesNotSet.Text" xml:space="preserve">
+    <value>Following required properties are not set: {0}</value>
+  </data>
+  <data name="UninstallStepSectionNotFound.Text" xml:space="preserve">
+    <value>{0} section not found.</value>
+  </data>
+  <data name="UninstallStepUninstallExtension.Text" xml:space="preserve">
+    <value>Uninstall the '{0}' extension</value>
+  </data>
 </root>

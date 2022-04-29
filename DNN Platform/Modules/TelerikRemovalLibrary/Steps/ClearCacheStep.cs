@@ -17,9 +17,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="ClearCacheStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="dataCache">An instance of <see cref="IDataCache"/>.</param>
-        public ClearCacheStep(ILoggerSource loggerSource, IDataCache dataCache)
-            : base(loggerSource)
+        public ClearCacheStep(ILoggerSource loggerSource, ILocalizer localizer, IDataCache dataCache)
+            : base(loggerSource, localizer)
         {
             this.dataCache = dataCache ??
                 throw new ArgumentNullException(nameof(dataCache));
@@ -28,7 +29,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc/>
-        public override string Name => "Clear cache";
+        public override string Name => this.Localize("UninstallStepClearCache");
 
         /// <inheritdoc/>
         protected override void ExecuteInternal()

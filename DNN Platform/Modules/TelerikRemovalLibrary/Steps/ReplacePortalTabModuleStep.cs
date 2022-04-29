@@ -24,17 +24,19 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="ReplacePortalTabModuleStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="moduleController">An instance of <see cref="IModuleController"/>.</param>
         /// <param name="tabController">An instance of <see cref="ITabController"/>.</param>
         /// <param name="desktopModuleController">An instance of <see cref="IDesktopModuleController"/>.</param>
         /// <param name="moduleDefinitionController">An instance of <see cref="IModuleDefinitionController"/>.</param>
         public ReplacePortalTabModuleStep(
             ILoggerSource loggerSource,
+            ILocalizer localizer,
             IModuleController moduleController,
             ITabController tabController,
             IDesktopModuleController desktopModuleController,
             IModuleDefinitionController moduleDefinitionController)
-            : base(loggerSource)
+            : base(loggerSource, localizer)
         {
             this.moduleController = moduleController ??
                 throw new ArgumentNullException(nameof(moduleController));
@@ -50,8 +52,8 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         }
 
         /// <inheritdoc />
-        public override string Name => string.Format(
-            "Replace '{0}' with '{1}' in page '{2}', portal ID '{3}'",
+        public override string Name => this.LocalizeFormat(
+            "UninstallStepReplacePortalPageModule",
             this.OldModuleName,
             this.NewModuleName,
             this.PageName,
@@ -79,7 +81,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             if (tab is null)
             {
                 this.Success = true;
-                this.Notes = $"Page '{this.PageName}' not found in portal '{this.PortalId}'.";
+                this.Notes = this.LocalizeFormat("UninstallStepPageNotFoundInPortal", this.PageName, this.PortalId);
                 return;
             }
 
@@ -90,7 +92,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             if (!modules.Any())
             {
                 this.Success = true;
-                this.Notes = $"'{this.OldModuleName}' module not found in '{this.PageName}' page.";
+                this.Notes = this.LocalizeFormat("UninstallStepModuleNotFoundInPage", this.OldModuleName, this.PageName);
             }
 
             foreach (var module in modules)

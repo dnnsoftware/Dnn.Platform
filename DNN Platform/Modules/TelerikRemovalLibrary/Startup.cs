@@ -11,6 +11,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
@@ -20,8 +21,10 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ITelerikUninstaller, TelerikUninstaller>();
+            services.AddTransient<ILocalizer, Localizer>();
 
             // core
+            services.AddTransient(provider => LocalizationProvider.Instance);
             services.AddTransient(provider => LoggerSource.Instance);
             services.AddTransient(provider => ModuleController.Instance);
             services.AddTransient(provider => PackageController.Instance);

@@ -18,14 +18,18 @@ namespace Dnn.Modules.TelerikRemovalLibrary
         /// Initializes a new instance of the <see cref="RemoveTelerikBindingRedirectsStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
-        public RemoveTelerikBindingRedirectsStep(ILoggerSource loggerSource, IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, applicationStatusInfo)
+        public RemoveTelerikBindingRedirectsStep(
+            ILoggerSource loggerSource,
+            ILocalizer localizer,
+            IApplicationStatusInfo applicationStatusInfo)
+            : base(loggerSource, localizer, applicationStatusInfo)
         {
         }
 
         /// <inheritdoc/>
-        public override string Name => "Remove Telerik assembly binding redirects";
+        public override string Name => this.Localize("UninstallStepRemoveBindingRedirects");
 
         /// <inheritdoc/>
         [Required]
@@ -47,7 +51,7 @@ namespace Dnn.Modules.TelerikRemovalLibrary
             var assemblyBinding = doc.SelectSingleNode(AssemblyBindingPath, this.NamespaceManager);
             if (assemblyBinding is null)
             {
-                this.Notes = $"{AssemblyBindingPath} section not found.";
+                this.Notes = this.LocalizeFormat("UninstallStepSectionNotFound", AssemblyBindingPath);
                 return;
             }
 
@@ -71,7 +75,9 @@ namespace Dnn.Modules.TelerikRemovalLibrary
                     matchCount++;
                 });
 
-            this.Notes = matchCount > 0 ? $"{matchCount} matches found." : "No matches found.";
+            this.Notes = matchCount > 0
+                ? this.LocalizeFormat("UninstallStepCountOfMatchesFound", matchCount)
+                : this.Localize("UninstallStepNoMatchesFound");
         }
     }
 }
