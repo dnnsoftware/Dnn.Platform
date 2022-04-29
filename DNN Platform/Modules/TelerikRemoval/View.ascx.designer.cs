@@ -114,6 +114,15 @@ namespace Dnn.Modules.TelerikRemoval
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledButNotUsedDetectedLabel;
 
         /// <summary>
+        /// TelerikInstalledButNotUsedVersionLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledButNotUsedVersionLabel;
+
+        /// <summary>
         /// TelerikInstalledButNotUsedBulletinLabel control.
         /// </summary>
         /// <remarks>
@@ -175,6 +184,15 @@ namespace Dnn.Modules.TelerikRemoval
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledAndUsedDetectedLabel;
+
+        /// <summary>
+        /// TelerikInstalledAndUsedVersionLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledAndUsedVersionLabel;
 
         /// <summary>
         /// TelerikInstalledAndUsedBulletinLabel control.

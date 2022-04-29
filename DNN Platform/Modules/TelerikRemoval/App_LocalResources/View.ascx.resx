@@ -130,7 +130,7 @@
     <value>Security Alert</value>
   </data>
   <data name="TelerikInstalledDetected.Text" xml:space="preserve">
-    <value>We have detected the presence of the previously distributed Telerik developer components.</value>
+    <value>We have detected the presence of the previously distributed Telerik developer components. Detected Telerik version is:</value>
   </data>
   <data name="TelerikInstalledBulletin.Text" xml:space="preserve">
     <value>A Security Bulletin was released in August of 2021 that recommends immediate removal of this component due to the high-level security vulnerabilities present. You can read more about this on the &lt;a href="https://dnncommunity.org/security" target="_blank"&gt;DNN Security Center&lt;/a&gt;.</value>

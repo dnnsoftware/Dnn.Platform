@@ -183,15 +183,19 @@ namespace Dnn.Modules.TelerikRemoval
                 return;
             }
 
+            var version = telerikUtils.GetTelerikVersion().ToString();
+
             var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
                 .Select(a => Path.GetFileName(a));
 
             if (!assemblies.Any())
             {
+                this.TelerikInstalledButNotUsedVersionLabel.Text = version;
                 this.MainMultiView.ActiveViewIndex = 2; // InstalledButNotUsedView
                 return;
             }
 
+            this.TelerikInstalledAndUsedVersionLabel.Text = version;
             this.MainMultiView.ActiveViewIndex = 3; // InstalledAndUsedView
 
             var table = CreateTable(assemblies, maxRows: 3, maxColumns: 3);

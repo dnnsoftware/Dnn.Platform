@@ -4,7 +4,9 @@
 
 namespace DotNetNuke.Common.Internal
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// Abstraction of Telerik related utilities.
@@ -27,5 +29,16 @@ namespace DotNetNuke.Common.Internal
         /// </summary>
         /// <returns><c>True</c> if Telerik is found in this site, or <c>False</c> otherwise.</returns>
         bool TelerikIsInstalled();
+
+        /// <summary>
+        /// Loads the Telerik assembly and returns its version number.
+        /// </summary>
+        /// <returns>The Telerik version number.</returns>
+        /// <exception cref="IOException">
+        /// An error occurred while loading the Telerik assembly.
+        /// The file may not exist, or it may be locked by another process.
+        /// The <see cref="Exception.InnerException"/> property contains the cause of the error.
+        /// </exception>
+        Version GetTelerikVersion();
     }
 }

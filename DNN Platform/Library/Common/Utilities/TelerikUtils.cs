@@ -84,6 +84,25 @@ namespace DotNetNuke.Common.Internal
             return this.FileExists(Path.Combine(this.BinPath, TelerikWebUIFileName));
         }
 
+        /// <inheritdoc />
+        public Version GetTelerikVersion()
+        {
+            var domain = AppDomain.CreateDomain(nameof(TelerikUtils));
+            try
+            {
+                var path = Path.Combine(this.BinPath, TelerikWebUIFileName);
+                return domain.Load(File.ReadAllBytes(path)).GetName().Version;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("Could not get Telerik version number.", ex);
+            }
+            finally
+            {
+                AppDomain.Unload(domain);
+            }
+        }
+
         private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
         {
             return this.GetReferencedAssemblyNames(path, domain)

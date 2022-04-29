@@ -12,6 +12,11 @@
     border-bottom: 1px solid lightgray;
 }
 
+#telerikRemoval .telerikVersion {
+    font-weight: bold;
+    color: #ec3d46;
+}
+
 #uninstallReport th {
     font-size: initial;
 }

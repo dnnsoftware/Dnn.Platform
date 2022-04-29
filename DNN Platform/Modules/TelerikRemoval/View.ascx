@@ -29,6 +29,7 @@
                     </h1>
                     <p>
                         <cc1:DnnLabel ID="TelerikInstalledButNotUsedDetectedLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledDetected</cc1:DnnLabel>
+                        <cc1:DnnLabel ID="TelerikInstalledButNotUsedVersionLabel" runat="server" CssClass="dnnFormLabel telerikVersion" Localize="False"></cc1:DnnLabel>
                     </p>
                     <p>
                         <cc1:DnnLabel ID="TelerikInstalledButNotUsedBulletinLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledBulletin</cc1:DnnLabel>
@@ -49,6 +50,7 @@
                     </h1>
                     <p>
                         <cc1:DnnLabel ID="TelerikInstalledAndUsedDetectedLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledDetected</cc1:DnnLabel>
+                        <cc1:DnnLabel ID="TelerikInstalledAndUsedVersionLabel" runat="server" CssClass="dnnFormLabel telerikVersion" Localize="False"></cc1:DnnLabel>
                     </p>
                     <p>
                         <cc1:DnnLabel ID="TelerikInstalledAndUsedBulletinLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledBulletin</cc1:DnnLabel>
