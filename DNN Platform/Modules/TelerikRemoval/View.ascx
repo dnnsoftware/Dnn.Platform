@@ -76,9 +76,12 @@
                         <table id="uninstallReport">
                             <thead>
                                 <tr>
-                                    <th><cc1:DnnLabel ID="UninstallReportStepColumnLabel" runat="server" CssClass="dnnFormLabel">UninstallReportStepColumn</cc1:DnnLabel></th>
-                                    <th><cc1:DnnLabel ID="UninstallReportResultColumnLabel" runat="server" CssClass="dnnFormLabel">UninstallReportResultColumn</cc1:DnnLabel></th>
-                                    <th><cc1:DnnLabel ID="UninstallReportNotesColumnLabel" runat="server" CssClass="dnnFormLabel">UninstallReportNotesColumn</cc1:DnnLabel></th>
+                                    <th>
+                                        <cc1:DnnLabel ID="UninstallReportStepColumnLabel" runat="server" CssClass="dnnFormLabel">UninstallReportStepColumn</cc1:DnnLabel></th>
+                                    <th>
+                                        <cc1:DnnLabel ID="UninstallReportResultColumnLabel" runat="server" CssClass="dnnFormLabel">UninstallReportResultColumn</cc1:DnnLabel></th>
+                                    <th>
+                                        <cc1:DnnLabel ID="UninstallReportNotesColumnLabel" runat="server" CssClass="dnnFormLabel">UninstallReportNotesColumn</cc1:DnnLabel></th>
                                 </tr>
                             </thead>
                             <tbody>

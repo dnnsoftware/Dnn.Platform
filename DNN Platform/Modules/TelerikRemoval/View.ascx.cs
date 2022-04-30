@@ -33,7 +33,7 @@ namespace Dnn.Modules.TelerikRemoval
         /// <summary>
         /// Initializes a new instance of the <see cref="View"/> class.
         /// </summary>
-        /// <param name="serviceProvider">An instance of <see cref="ITelerikUninstaller"/>.</param>
+        /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
         internal View(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider ??
