@@ -48,7 +48,9 @@
 #telerikRemoval .loading {
     animation: ld-spin 1s infinite linear;
     box-sizing: content-box;
+    color: #21a3da;
     display: inline-block;
+    font-size: 3em;
     height: 1em;
     left: 50%;
     margin: -0.5em;
