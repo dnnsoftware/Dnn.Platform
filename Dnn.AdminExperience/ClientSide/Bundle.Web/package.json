@@ -51,7 +51,7 @@
     "react-tabs": "3.0.0",
     "react-tooltip": "4.2.21",
     "react-widgets": "4.4.6",
-    "redux": "4.1.1",
+    "redux": "4.2.0",
     "redux-devtools": "3.5.0",
     "redux-devtools-dock-monitor": "1.2.0",
     "redux-devtools-log-monitor": "1.4.0",
