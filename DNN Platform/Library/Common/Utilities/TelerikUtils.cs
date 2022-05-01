@@ -21,6 +21,11 @@ namespace DotNetNuke.Common.Internal
         /// </summary>
         public static readonly string TelerikWebUIFileName = "Telerik.Web.UI.dll";
 
+        /// <summary>
+        /// The file name of the Digital Asset Management assembly.
+        /// </summary>
+        public static readonly string DigitalAssetsFileName = "DotNetNuke.Modules.DigitalAssets.dll";
+
         private static readonly string[] Vendors = new[]
         {
             "Microsoft",
@@ -59,6 +64,12 @@ namespace DotNetNuke.Common.Internal
 
         /// <inheritdoc />
         public string BinPath => Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "bin");
+
+        /// <inheritdoc/>
+        public bool DigitalAssetsIsInstalled()
+        {
+            return this.FileExists(Path.Combine(this.BinPath, DigitalAssetsFileName));
+        }
 
         /// <inheritdoc/>
         public IEnumerable<string> GetAssembliesThatDependOnTelerik()

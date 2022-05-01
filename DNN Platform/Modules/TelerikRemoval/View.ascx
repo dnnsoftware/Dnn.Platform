@@ -23,47 +23,41 @@
                         <cc1:DnnLabel ID="TelerikNotInstalledInfoLabel" runat="server" CssClass="dnnFormLabel">TelerikNotInstalledInfo</cc1:DnnLabel>
                     </p>
                 </asp:View>
-                <asp:View ID="InstalledButNotUsedView" runat="server">
+                <asp:View ID="InstalledView" runat="server">
                     <h1>
                         <cc1:DnnLabel ID="TelerikInstalledButNotUsedHeadingLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledHeading</cc1:DnnLabel>
                     </h1>
                     <p>
-                        <cc1:DnnLabel ID="TelerikInstalledButNotUsedDetectedLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledDetected</cc1:DnnLabel>
-                        <cc1:DnnLabel ID="TelerikInstalledButNotUsedVersionLabel" runat="server" CssClass="dnnFormLabel telerikVersion" Localize="False"></cc1:DnnLabel>
+                        <cc1:DnnLabel ID="TelerikInstalledDetectedLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledDetected</cc1:DnnLabel>
+                        <cc1:DnnLabel ID="TelerikInstalledVersionLabel" runat="server" CssClass="dnnFormLabel telerikVersion" Localize="False"></cc1:DnnLabel>
                     </p>
                     <p>
                         <cc1:DnnLabel ID="TelerikInstalledButNotUsedBulletinLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledBulletin</cc1:DnnLabel>
                     </p>
-                    <p>
-                        <cc1:DnnLabel ID="TelerikInstalledButNotUsedInfoLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledButNotUsedInfo</cc1:DnnLabel>
-                    </p>
-                    <p>
-                        <cc2:DnnCheckBox ID="BackupConfirmationCheckBox" runat="server" AutoPostBack="True" OnCheckedChanged="BackupConfirmationCheckBox_CheckedChanged" Text="BackupConfirmation" />
-                    </p>
-                    <div>
-                        <cc2:DnnTextButton ID="RemoveTelerikButton" runat="server" CssClass="dnnPrimaryAction" DisabledCssClass="dnnPrimaryAction dnnDisabledAction" OnClick="RemoveTelerikButton_Click" Text="RemoveTelerik" OnClientClick="this.disabled = true;" UseSubmitBehavior="False" />
-                    </div>
-                </asp:View>
-                <asp:View ID="InstalledAndUsedView" runat="server">
-                    <h1>
-                        <cc1:DnnLabel ID="TelerikInstalledAndUsedHeadingLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledHeading</cc1:DnnLabel>
-                    </h1>
-                    <p>
-                        <cc1:DnnLabel ID="TelerikInstalledAndUsedDetectedLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledDetected</cc1:DnnLabel>
-                        <cc1:DnnLabel ID="TelerikInstalledAndUsedVersionLabel" runat="server" CssClass="dnnFormLabel telerikVersion" Localize="False"></cc1:DnnLabel>
-                    </p>
-                    <p>
-                        <cc1:DnnLabel ID="TelerikInstalledAndUsedBulletinLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledBulletin</cc1:DnnLabel>
-                    </p>
-                    <p>
-                        <cc1:DnnLabel ID="TelerikInstalledAndUsedInfoLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledAndUsedInfo</cc1:DnnLabel>
-                    </p>
-                    <div>
-                        <asp:PlaceHolder ID="AssemblyListPlaceHolder" runat="server" />
-                    </div>
-                    <p>
-                        <cc1:DnnLabel ID="TelerikInstalledAndUsedWarningLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledAndUsedWarning</cc1:DnnLabel>
-                    </p>
+                    <asp:MultiView ID="InstalledMultiView" runat="server">
+                        <asp:View ID="InstalledButNotUsedView" runat="server">
+                            <p>
+                                <cc1:DnnLabel ID="TelerikInstalledButNotUsedInfoLabel" runat="server" CssClass="dnnFormLabel">TelerikInstalledButNotUsedInfo</cc1:DnnLabel>
+                            </p>
+                            <p>
+                                <cc2:DnnCheckBox ID="BackupConfirmationCheckBox" runat="server" AutoPostBack="True" OnCheckedChanged="BackupConfirmationCheckBox_CheckedChanged" Text="BackupConfirmation" />
+                            </p>
+                            <div>
+                                <cc2:DnnTextButton ID="RemoveTelerikButton" runat="server" CssClass="dnnPrimaryAction" DisabledCssClass="dnnPrimaryAction dnnDisabledAction" OnClick="RemoveTelerikButton_Click" Text="RemoveTelerik" OnClientClick="this.disabled = true;" UseSubmitBehavior="False" />
+                            </div>
+                        </asp:View>
+                        <asp:View ID="InstalledAndUsedView" runat="server">
+                            <p>
+                                <cc1:DnnLabel ID="TelerikInstalledAndUsedInfoLabel" runat="server" CssClass="dnnFormLabel"></cc1:DnnLabel>
+                            </p>
+                            <div>
+                                <asp:PlaceHolder ID="AssemblyListPlaceHolder" runat="server" />
+                            </div>
+                            <p>
+                                <cc1:DnnLabel ID="TelerikInstalledAndUsedWarningLabel" runat="server" CssClass="dnnFormLabel"></cc1:DnnLabel>
+                            </p>
+                        </asp:View>
+                    </asp:MultiView>
                 </asp:View>
                 <asp:View ID="UninstallReportView" runat="server">
                     <h1>

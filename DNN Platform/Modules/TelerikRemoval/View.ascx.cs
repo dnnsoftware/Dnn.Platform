@@ -83,7 +83,7 @@ namespace Dnn.Modules.TelerikRemoval
 
             this.UninstallReportRepeater.DataSource = uninstaller.Progress;
 
-            this.MainMultiView.ActiveViewIndex = 4; // UninstallReportView
+            this.MainMultiView.ActiveViewIndex = 3; // UninstallReportView
 
             this.DataBind();
         }
@@ -183,20 +183,25 @@ namespace Dnn.Modules.TelerikRemoval
                 return;
             }
 
+            this.MainMultiView.ActiveViewIndex = 2; // InstalledView
+
             var version = telerikUtils.GetTelerikVersion().ToString();
+            this.TelerikInstalledVersionLabel.Text = version;
 
             var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
                 .Select(a => Path.GetFileName(a));
 
             if (!assemblies.Any())
             {
-                this.TelerikInstalledButNotUsedVersionLabel.Text = version;
-                this.MainMultiView.ActiveViewIndex = 2; // InstalledButNotUsedView
+                this.InstalledMultiView.ActiveViewIndex = 0; // InstalledButNotUsedView
                 return;
             }
 
-            this.TelerikInstalledAndUsedVersionLabel.Text = version;
-            this.MainMultiView.ActiveViewIndex = 3; // InstalledAndUsedView
+            this.InstalledMultiView.ActiveViewIndex = 1; // InstalledAndUsedView
+
+            var damPresentOrRemoved = telerikUtils.DigitalAssetsIsInstalled() ? "DamPresent" : "DamRemoved";
+            this.TelerikInstalledAndUsedInfoLabel.Text = $"TelerikInstalledAndUsed{damPresentOrRemoved}Info";
+            this.TelerikInstalledAndUsedWarningLabel.Text = $"TelerikInstalledAndUsed{damPresentOrRemoved}Warning";
 
             var table = CreateTable(assemblies, maxRows: 3, maxColumns: 3);
             this.AssemblyListPlaceHolder.Controls.Add(table);

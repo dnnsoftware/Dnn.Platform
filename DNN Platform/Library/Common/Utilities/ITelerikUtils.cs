@@ -19,6 +19,12 @@ namespace DotNetNuke.Common.Internal
         string BinPath { get; }
 
         /// <summary>
+        /// Checks whether the Digital Asset Management extension is installed on this site.
+        /// </summary>
+        /// <returns><c>True</c> if Digital Asset Management is found, or <c>False</c> otherwise.</returns>
+        bool DigitalAssetsIsInstalled();
+
+        /// <summary>
         /// Gets an <see cref="IEnumerable{T}"/> containing all assemblies that depend on Telerik.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}"/> containing all assemblies that depend on Telerik.</returns>
