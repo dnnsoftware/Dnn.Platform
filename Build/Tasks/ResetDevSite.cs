@@ -9,9 +9,9 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to reset a local dev site.</summary>
-    [Dependency(typeof(BuildToTempFolder))]
-    [Dependency(typeof(CopyToDevSite))]
-    [Dependency(typeof(CopyWebConfigToDevSite))]
+    [IsDependentOn(typeof(BuildToTempFolder))]
+    [IsDependentOn(typeof(CopyToDevSite))]
+    [IsDependentOn(typeof(CopyWebConfigToDevSite))]
     public sealed class ResetDevSite : FrostingTask<Context>
     {
     }

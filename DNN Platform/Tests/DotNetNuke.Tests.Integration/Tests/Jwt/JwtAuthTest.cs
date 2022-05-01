@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();

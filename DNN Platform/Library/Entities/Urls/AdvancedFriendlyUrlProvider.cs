@@ -230,11 +230,11 @@ namespace DotNetNuke.Entities.Urls
         private static string AddPage(string path, string pageName)
         {
             string friendlyPath = path;
-            if (friendlyPath.EndsWith(pageName + "/"))
+            if (friendlyPath.EndsWith(pageName + "/", StringComparison.OrdinalIgnoreCase))
             {
                 friendlyPath = friendlyPath.TrimEnd('/');
             }
-            else if (friendlyPath.EndsWith(pageName) == false)
+            else if (!friendlyPath.EndsWith(pageName, StringComparison.OrdinalIgnoreCase))
             {
                 if (friendlyPath.EndsWith("/"))
                 {
@@ -1405,9 +1405,9 @@ namespace DotNetNuke.Entities.Urls
             var localSettings = new FriendlyUrlSettings(portalId);
 
             // Call GetFriendlyAlias to get the Alias part of the url
-            if (string.IsNullOrEmpty(portalAlias) && portalSettings != null)
+            if (string.IsNullOrEmpty(portalAlias) && portalSettings?.PortalAlias is IPortalAliasInfo portalSettingsAlias)
             {
-                portalAlias = portalSettings.PortalAlias.HTTPAlias;
+                portalAlias = portalSettingsAlias.HttpAlias;
             }
 
             string friendlyPath = GetFriendlyAlias(

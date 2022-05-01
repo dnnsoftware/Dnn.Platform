@@ -4,7 +4,7 @@ import Promise from "es6-promise";
 function serializeQueryStringParameters(obj) {
     const s = [];
     for (let p in obj) {
-        if (obj.hasOwnProperty(p)) {
+        if (Object.prototype.hasOwnProperty.call(obj, p)) {
             s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
         }
     }

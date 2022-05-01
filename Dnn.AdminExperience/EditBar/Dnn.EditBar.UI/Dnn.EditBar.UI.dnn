@@ -1,12 +1,12 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.EditBar.UI" type="Library" version="09.09.00">
+        <package name="Dnn.EditBar.UI" type="Library" version="09.10.02">
             <friendlyName>Dnn.EditBar.UI</friendlyName>
             <description></description>
             <dependencies/>
             <owner>
-                <name>DNN</name>
-                <organization>.NET Foundation</organization>
+                <name>.NET Foundation and Contributors</name>
+                <organization>DNN Community</organization>
                 <url>https://dnncommunity.org</url>
                 <email>info@dnncommunity.org</email>
             </owner>

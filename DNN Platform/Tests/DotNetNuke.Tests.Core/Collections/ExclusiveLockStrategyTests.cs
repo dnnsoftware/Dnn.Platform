@@ -13,14 +13,21 @@ namespace DotNetNuke.Tests.Core.Collections
     [TestFixture]
     public class ExclusiveLockStrategyTests : LockStrategyTests
     {
+        [Test]
+        [TestCaseSource(nameof(GetExclusiveLockStrategyObjectDisposedExceptionMethods))]
+        public override void MethodsThrowAfterDisposed(Action<ILockStrategy> methodCall)
+        {
+            base.MethodsThrowAfterDisposed(methodCall);
+        }
+
         internal override ILockStrategy GetLockStrategy()
         {
             return new ExclusiveLockStrategy();
         }
 
-        protected override IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
+        protected static IEnumerable<Action<ILockStrategy>> GetExclusiveLockStrategyObjectDisposedExceptionMethods()
         {
-            var l = (List<Action<ILockStrategy>>)base.GetObjectDisposedExceptionMethods();
+            var l = (List<Action<ILockStrategy>>)LockStrategyTests.GetObjectDisposedExceptionMethods();
 
             l.Add((ILockStrategy strategy) =>
                       {

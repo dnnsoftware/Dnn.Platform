@@ -157,7 +157,7 @@ class App extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.error && this.props.error && this.props.error !== prevProps.error){
+        if (this.props.error && this.props.error && this.props.error !== prevProps.error) {
             const errorMessage = (this.props.error && this.props.error.message) || Localization.get("AnErrorOccurred");
             utils.notifyError(errorMessage);
         }
@@ -259,19 +259,19 @@ class App extends Component {
                                     }
                                     break;
                                 case Array.isArray(item.childListItems) === true: {
-                                        const lastIndex = item.childListItems.length - 1;
-                                        if (item.childListItems[lastIndex].name === page.name) {
-                                            item.childListItems.pop();
-                                        }
-                                        item.childListItems.push(page);
-                                        item.childCount = item.childListItems.length;
-                                        if (page.canAddContentToPage)
-                                            this.onLoadPage(page.id);
-                                        else {
-                                            this.onNoPermissionSelection(page.id);
-                                        }
-                                        break;
+                                    const lastIndex = item.childListItems.length - 1;
+                                    if (item.childListItems[lastIndex].name === page.name) {
+                                        item.childListItems.pop();
                                     }
+                                    item.childListItems.push(page);
+                                    item.childCount = item.childListItems.length;
+                                    if (page.canAddContentToPage)
+                                        this.onLoadPage(page.id);
+                                    else {
+                                        this.onNoPermissionSelection(page.id);
+                                    }
+                                    break;
+                                }
                             }
                             item.isOpen = true;
                             updateStore(list);
@@ -426,7 +426,7 @@ class App extends Component {
         let runUpdateStore = null;
         let pageList = null;
         
-        if(parentId !== null && parentId !== -1) {
+        if (parentId !== null && parentId !== -1) {
             this._traverse((item, list, updateStore) => {
                 if (item.id === parentId) {
                     item.isOpen = true;
@@ -531,18 +531,18 @@ class App extends Component {
                 this.props.getNewPage(parentPage).then(()=>{
                     if (parentPage && parentPage.id) {
                         this.props.getChildPageList(parentPage.id)
-                        .then(pageChildItems => {
-                            this._traverse((item, list, update) => {
-                                const updateChildItems = () => {
-                                    const newPageChildItems = pageChildItems.concat(this.props.selectedPage);
-                                    item.childListItems = newPageChildItems;
-                                    item.isOpen = true;
-                                    item.hasChildren = true;
-                                    update(list);
-                                };
-                                (item.id === parentPage.id) ? updateChildItems() : null;
+                            .then(pageChildItems => {
+                                this._traverse((item, list, update) => {
+                                    const updateChildItems = () => {
+                                        const newPageChildItems = pageChildItems.concat(this.props.selectedPage);
+                                        item.childListItems = newPageChildItems;
+                                        item.isOpen = true;
+                                        item.hasChildren = true;
+                                        update(list);
+                                    };
+                                    (item.id === parentPage.id) ? updateChildItems() : null;
+                                });
                             });
-                        });
                     } else {
                         this._traverse((item, list, updateStore) => {
                             pageList = list;
@@ -782,19 +782,19 @@ class App extends Component {
         this.props.selectPageSettingTab(index);
     }
 
-    onSaveMultiplePages(){    
+    onSaveMultiplePages() {    
         return this.props.onSaveMultiplePages(()=>{
             this.props.getPageList();
         });
     }
     
-    onValidateMultiplePages(){    
+    onValidateMultiplePages() {    
         return this.props.onValidateMultiplePages(()=>{
             // stay on same page
         });
     }
     
-    onCancelAddMultiplePages(){
+    onCancelAddMultiplePages() {
         const { props } = this;
         
         if (props.dirtyBulkPage) {
@@ -815,13 +815,13 @@ class App extends Component {
     getAddPages() {
         const { props } = this;
         return (
-                <AddPages
-                    bulkPage={props.bulkPage}
-                    onCancel={this.onCancelAddMultiplePages.bind(this)}
-                    onValidate={this.onValidateMultiplePages.bind(this)}
-                    onSave={this.onSaveMultiplePages.bind(this)}
-                    onChangeField={props.onChangeAddMultiplePagesField}
-                    components={props.multiplePagesComponents} />);
+            <AddPages
+                bulkPage={props.bulkPage}
+                onCancel={this.onCancelAddMultiplePages.bind(this)}
+                onValidate={this.onValidateMultiplePages.bind(this)}
+                onSave={this.onSaveMultiplePages.bind(this)}
+                onChangeField={props.onChangeAddMultiplePagesField}
+                components={props.multiplePagesComponents} />);
     }
 
     onCancelSaveCustomDetail(onCancelSave) {
@@ -867,8 +867,8 @@ class App extends Component {
     getSaveAsTemplatePage() {
         
         return (
-                <SaveAsTemplate
-                    onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
+            <SaveAsTemplate
+                onCancel={this.onCancelSavePageAsTemplate.bind(this)} />);
     }
 
 
@@ -1210,7 +1210,7 @@ class App extends Component {
         },()=>this.onSearch(this.state.searchTerm));
     }
 
-    clearAdvancedSearchDateInterval(){
+    clearAdvancedSearchDateInterval() {
         let date = new Date();
         this.setState({
             startDate:date,
@@ -1554,7 +1554,7 @@ class App extends Component {
         const { inSearch } = this.state;
         const isListPagesAllowed = securityService.canSeePagesList();
        
-         /* eslint-disable react/no-danger */
+        /* eslint-disable react/no-danger */
         return (
 
             <div ref={node => this.node = node} className="pages-app personaBar-mainContainer">

@@ -229,24 +229,24 @@ class CreateUserBox extends Component {
                     {!state.UserDetails.randomPassword && <GridSystem>
 
 
-                            <Password 
-                                error={state.errors} 
-                                onChangePassword={this.onChangePassword.bind(this)} 
-                                style={inputStyle} 
-                                inputStyle={!requiresQuestionAndAnswer ? { marginBottom: 15 } : { marginBottom: 0 }}
-                                UserDetails={this.state.UserDetails}
-                            />
+                        <Password 
+                            error={state.errors} 
+                            onChangePassword={this.onChangePassword.bind(this)} 
+                            style={inputStyle} 
+                            inputStyle={!requiresQuestionAndAnswer ? { marginBottom: 15 } : { marginBottom: 0 }}
+                            UserDetails={this.state.UserDetails}
+                        />
                            
-                            <SingleLineInputWithError label={Localization.get("Confirm") }
-                                error={state.errors.confirmPassword || state.errors.passwordsMatch}
-                                onChange={this.onChange.bind(this,"confirmPassword") }
-                                tooltipMessage={Localization.get("Confirm.Help")}
-                                errorMessage={state.errors.confirmPassword ? Localization.get("Confirm.Required") : Localization.get("ConfirmMismatch.ErrorMessage") }
-                                style={inputStyle}
-                                type="password"
-                                autoComplete="off"
-                                inputStyle={!requiresQuestionAndAnswer ? { marginBottom: 15 } : { marginBottom: 0 }}
-                                value={state.confirmPassword}  tabIndex={8}/>
+                        <SingleLineInputWithError label={Localization.get("Confirm") }
+                            error={state.errors.confirmPassword || state.errors.passwordsMatch}
+                            onChange={this.onChange.bind(this,"confirmPassword") }
+                            tooltipMessage={Localization.get("Confirm.Help")}
+                            errorMessage={state.errors.confirmPassword ? Localization.get("Confirm.Required") : Localization.get("ConfirmMismatch.ErrorMessage") }
+                            style={inputStyle}
+                            type="password"
+                            autoComplete="off"
+                            inputStyle={!requiresQuestionAndAnswer ? { marginBottom: 15 } : { marginBottom: 0 }}
+                            value={state.confirmPassword}  tabIndex={8}/>
 
                     </GridSystem>
                     }

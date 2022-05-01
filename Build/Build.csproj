@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net4.8</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <!-- Make sure start same folder .NET Core CLI and Visual Studio -->
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
@@ -14,21 +14,20 @@
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.BuildSystems.Module" Version="3.0.1" />
-    <PackageReference Include="Cake.FileHelpers" Version="4.0.0" />
-    <PackageReference Include="Cake.Frosting" Version="1.1.0" />
-    <PackageReference Include="Cake.Git" Version="1.0.1" />
-    <PackageReference Include="Cake.Issues" Version="0.9.1" />
-    <PackageReference Include="Cake.Issues.MsBuild" Version="0.9.1" />
-    <PackageReference Include="Cake.Issues.Recipe" Version="0.4.4" />
-    <PackageReference Include="Cake.Json" Version="6.0.1" />
-    <PackageReference Include="Cake.XdtTransform" Version="1.0.0" />
-    <PackageReference Include="Dnn.CakeUtils" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Cake.BuildSystems.Module" Version="4.1.0" />
+    <PackageReference Include="Cake.FileHelpers" Version="5.0.0" />
+    <PackageReference Include="Cake.Frosting" Version="2.0.0" />
+    <PackageReference Include="Cake.Git" Version="2.0.0" />
+    <PackageReference Include="Cake.Issues" Version="2.0.0-beta0001" />
+    <PackageReference Include="Cake.Issues.MsBuild" Version="1.0.0" />
+    <PackageReference Include="Cake.Json" Version="7.0.1" />
+    <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
+    <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 </Project>

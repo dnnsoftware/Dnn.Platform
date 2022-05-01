@@ -27,7 +27,21 @@
     "/bin/MailKit.dll",
     "/bin/MimeKit.dll",
     "/bin/System.Buffers.dll",
-    "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip"
+    "/bin/System.Net.Http.Formatting.dll",
+    "/bin/System.Web.Http.dll",
+    "/bin/System.Web.Http.WebHost.dll",
+    "/bin/DotNetNuke.Web.Mvc.dll",
+    "/bin/System.Web.Mvc.dll",
+    "/bin/System.Web.Helpers.dll",
+    "/bin/Microsoft.Web.Helpers.dll",
+    "/bin/System.Web.Razor.dll",
+    "/bin/System.Web.WebPages.dll",
+    "/bin/System.Web.WebPages.Deployment.dll",
+    "/bin/System.Web.WebPages.Razor.dll",
+    "/bin/WebMatrix.Data.dll",
+    "/bin/WebMatrix.WebData.dll",
+    "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
+    "/bin/WebFormsMvp.dll"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],
   "upgradeExclude": [
@@ -39,7 +53,8 @@
     "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/Newtonsoft.Json.dll",
     "/Config/DotNetNuke.config",
-    "/Install/InstallWizard.aspx"
+    "/Install/InstallWizard.aspx",
+    "/bin/WebFormsMvp.dll"
   ],
   "symbolsInclude": [
     "/bin/*.pdb",
@@ -54,6 +69,7 @@
     "/bin/Newtonsoft*",
     "/bin/SchwabenCode*",
     "/bin/System*",
-    "/bin/WebFormsMvp*"
+    "/bin/WebFormsMvp*",
+    "/bin/Microsoft.Extensions.FileSystemGlobbing*"
   ]
 }

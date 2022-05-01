@@ -42,39 +42,39 @@ class DropdownDayPicker extends Component  {
                     </GridCell>
                     <GridCell columnSize={10}>
                         <div    id="calendar-icon"
-                                className="calendar-icon"
-                                dangerouslySetInnerHTML={{__html:CalendarIcon}}
-                                onClick={()=>toggleDropdownCalendar() }/>
+                            className="calendar-icon"
+                            dangerouslySetInnerHTML={{__html:CalendarIcon}}
+                            onClick={()=>toggleDropdownCalendar() }/>
                     </GridCell>
-                        <div
-                            id="calendar-dropdown"
-                            className={dropdownIsActive ? "calendar-dropdown expand-down" : `calendar-dropdown ${dropdownIsActive !== null ? 'expand-up' : ''} ` } >
-                            <GridCell columnSize={100} style={{padding:"20px"}}>
-                                <GridCell columnSize={50}  className="calendar">
-                                        <DayPicker
-                                            id="try-this"
-                                            month={startDate}
-                                            selectedDays={startDate}
-                                            onDayClick={(data) => onDayClick(data, false) }/>
-                                </GridCell>
-                                <GridCell columnSize={50} className="calendar">
-                                        <DayPicker
-                                            month={endDate}
-                                            selectedDays={endDate}
-                                            fromMonth={startDate}
-                                            onDayClick={(data) => onDayClick(data, true) }/>
-                                </GridCell>
-                                <GridCell columnSize={100}>
-                                    <div className="calendar-dropdown-action-buttons">
-                                        <Button type="secondary" style={{marginRight:"5px"}} onClick={()=>clearChanges()}>{Localization.get("Clear")}</Button>
-                                        <Button type="primary" onClick={()=>applyChanges()}>{Localization.get("Apply")}</Button>
-                                    </div>
-                                </GridCell>
+                    <div
+                        id="calendar-dropdown"
+                        className={dropdownIsActive ? "calendar-dropdown expand-down" : `calendar-dropdown ${dropdownIsActive !== null ? 'expand-up' : ''} ` } >
+                        <GridCell columnSize={100} style={{padding:"20px"}}>
+                            <GridCell columnSize={50}  className="calendar">
+                                <DayPicker
+                                    id="try-this"
+                                    month={startDate}
+                                    selectedDays={startDate}
+                                    onDayClick={(data) => onDayClick(data, false) }/>
                             </GridCell>
-                        </div>
-                    </GridCell>
-                </div>
-            );
+                            <GridCell columnSize={50} className="calendar">
+                                <DayPicker
+                                    month={endDate}
+                                    selectedDays={endDate}
+                                    fromMonth={startDate}
+                                    onDayClick={(data) => onDayClick(data, true) }/>
+                            </GridCell>
+                            <GridCell columnSize={100}>
+                                <div className="calendar-dropdown-action-buttons">
+                                    <Button type="secondary" style={{marginRight:"5px"}} onClick={()=>clearChanges()}>{Localization.get("Clear")}</Button>
+                                    <Button type="primary" onClick={()=>applyChanges()}>{Localization.get("Apply")}</Button>
+                                </div>
+                            </GridCell>
+                        </GridCell>
+                    </div>
+                </GridCell>
+            </div>
+        );
     }
 
 }

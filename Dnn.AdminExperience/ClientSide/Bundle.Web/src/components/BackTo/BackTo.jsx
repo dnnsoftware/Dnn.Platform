@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React from "react";
 import styles from "./style.less";
 import { ArrowBack } from "@dnnsoftware/dnn-react-common";

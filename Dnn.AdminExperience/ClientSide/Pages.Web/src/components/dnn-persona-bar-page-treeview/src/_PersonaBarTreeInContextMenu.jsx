@@ -56,7 +56,7 @@ export class PersonaBarTreeInContextMenu extends Component {
 
         const editable = item.canAddContentToPage && (item.pageType !== "tab" && item.pageType !== "url" && item.pageType !== "file");
 
-        if(item.canAddPage) {
+        if (item.canAddPage) {
             visibleMenus.push({
                 key: "Add",
                 title: Localization.get("AddPage"),
@@ -65,7 +65,7 @@ export class PersonaBarTreeInContextMenu extends Component {
                 onClick: this.onItemClick
             });
         }
-        if(item.canViewPage) {
+        if (item.canViewPage) {
             visibleMenus.push({
                 key: "View",
                 title: Localization.get("View"),
@@ -75,7 +75,7 @@ export class PersonaBarTreeInContextMenu extends Component {
             });
         }
 
-        if(editable) {
+        if (editable) {
             visibleMenus.push({
                 key: "Edit",
                 title: Localization.get("Edit"),

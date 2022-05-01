@@ -1,0 +1,63 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.AspNetWebPages" type="Library" version="3.2.7">
+      <friendlyName>ASP.NET Web Pages Components</friendlyName>
+      <description>Libraries required for ASP.NET Web Pages (i.e. Razor and helpers).</description>
+      <dependencies/>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>https://github.com/aspnet/AspNetWebStack/releases</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.Helpers.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Web.Helpers.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.Razor.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.WebPages.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.WebPages.Deployment.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.WebPages.Razor.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>WebMatrix.Data.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>WebMatrix.WebData.dll</name>
+              <version>3.2.7</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

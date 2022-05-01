@@ -112,14 +112,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteRelationshipType_Throws_On_Null_RelationshipType()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteRelationshipType(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteRelationshipType(null));
         }
 
         [Test]
@@ -239,14 +238,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveRelationshipType_Throws_On_Null_RelationshipType()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveRelationshipType(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveRelationshipType(null));
         }
 
         [Test]
@@ -309,14 +307,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteRelationship_Throws_On_Null_Relationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteRelationship(null));
         }
 
         [Test]
@@ -541,14 +538,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveRelationship_Throws_On_Null_Relationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveRelationship(null));
         }
 
         [Test]
@@ -611,14 +607,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteUserRelationship_Throws_On_Null_UserRelationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteUserRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteUserRelationship(null));
         }
 
         [Test]
@@ -742,14 +737,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveUserRelationship_Throws_On_Null_UserRelationship()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveUserRelationship(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveUserRelationship(null));
         }
 
         [Test]
@@ -798,14 +792,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteUserRelationshipPreference_Throws_On_Null_UserRelationshipPreference()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.DeleteUserRelationshipPreference(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.DeleteUserRelationshipPreference(null));
         }
 
         [Test]
@@ -883,14 +876,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveUserRelationshipPreference_Throws_On_Null_UserRelationshipPreference()
         {
             // Arrange
             var relationshipController = this.CreateRelationshipController();
 
             // Act, Assert
-            relationshipController.SaveUserRelationshipPreference(null);
+            Assert.Throws<ArgumentNullException>(() => relationshipController.SaveUserRelationshipPreference(null));
         }
 
         [Test]
@@ -941,7 +933,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void RelationshipController_InitiateUserRelationship_Throws_On_Negative_RelationshipID()
         {
             // Arrange
@@ -951,7 +942,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationship = new Relationship();
 
             // Act, Assert
-            relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
+            Assert.Throws<ArgumentOutOfRangeException>(() => relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship));
         }
 
         [Test]
@@ -1061,7 +1052,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        [ExpectedException(typeof(UserRelationshipDoesNotExistException))]
         public void RelationshipController_RemoveUserRelationship_Throws_On_NonExistent_Relationship()
         {
             // Arrange
@@ -1076,11 +1066,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             // Act, Assert
-            relationshipController.RemoveUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11);
+            Assert.Throws<UserRelationshipDoesNotExistException>(() => relationshipController.RemoveUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11));
         }
 
         [Test]
-        [ExpectedException(typeof(UserRelationshipDoesNotExistException))]
         public void RelationshipController_AcceptRelationship_Throws_On_NonExistent_Relationship()
         {
             // Arrange
@@ -1095,7 +1084,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             // Act, Assert
-            relationshipController.AcceptUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11);
+            Assert.Throws<UserRelationshipDoesNotExistException>(() => relationshipController.AcceptUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11));
         }
 
         [Test]

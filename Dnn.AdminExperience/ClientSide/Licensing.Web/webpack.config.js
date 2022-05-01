@@ -27,8 +27,10 @@ module.exports = {
             __dirname,
             "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Licensing/scripts/bundles/"
           )
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Licensing\\scripts\\bundles\\",
+        : path.join(
+            settings.WebsitePath,
+            "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Licensing\\scripts\\bundles\\"
+          ),
     publicPath: isProduction ? "" : "http://localhost:8080/dist/",
     filename: "licensing-bundle.js"
   },

@@ -1,0 +1,30 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Microsoft.Extensions.FileSystemGlobbing" type="Library" version="05.00.00" isSystem="true">
+      <friendlyName>Microsoft.Extensions.FileSystemGlobbing Components</friendlyName>
+      <description>Provides file globbing support for DotNetNuke.</description>
+      <dependencies/>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license>License.txt</license>
+      <releaseNotes>
+        This package includes Microsoft.Extensions.FileSystemGlobbing assembly version 5.0.0.
+        Please go to https://github.com/dotnet/runtime to view release notes on this particular version.</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Extensions.FileSystemGlobbing.dll</name>
+              <version>5.0.0</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

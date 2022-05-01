@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class NullableSettingsTests : BaseSettingsTests
     {
-        public readonly object[] NullableCases =
+        public static readonly object[] NullableCases =
         {
             new object[] { null, null, null, null, },
             new object[] { string.Empty, -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },

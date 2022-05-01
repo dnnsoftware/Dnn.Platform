@@ -1,15 +1,15 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="09.09.00">
+  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="09.10.02">
 
-  <friendlyName>DNN Connect CKEditor Provider</friendlyName>
-  <description>CKEditor Provider by DNN Connect for DNN</description>
+  <friendlyName>CKEditor Provider</friendlyName>
+  <description>CKEditor Provider for DNN</description>
   <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
   <azureCompatible>true</azureCompatible>
   <owner>
-    <name></name>
-    <organization>DNN Connect</organization>
-    <url>http://dnn-connect.org/</url>
-    <email></email>
+    <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
   </owner>
   <license src="license.txt" />
   <releaseNotes src="releaseNotes.txt" />

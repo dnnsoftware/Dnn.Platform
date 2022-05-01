@@ -22,7 +22,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
         private int[] _userIds = new int[MaxUsers];
         private string[] _userNames = new string[MaxUsers];
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public override void TestFixtureSetUp()
         {
             // clear all existing users except the HOST superuser

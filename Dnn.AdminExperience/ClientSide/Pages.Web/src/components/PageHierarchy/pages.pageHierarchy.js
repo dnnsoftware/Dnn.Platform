@@ -1,5 +1,5 @@
 /* eslint-disable no-var, id-match, quotes, no-mixed-spaces-and-tabs, comma-dangle */ // errors
-/* eslint-disable spellcheck/spell-checker, no-unused-vars, space-before-function-paren, indent, eqeqeq */ // warnings
+/* eslint-disable no-unused-vars, space-before-function-paren, indent, eqeqeq */ // warnings
 /* global $, jQuery, ko */
 
 window.dnn.pages = window.dnn.pages || {};

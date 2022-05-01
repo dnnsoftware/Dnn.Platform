@@ -5,30 +5,30 @@ import PersonaBarExpandCollapseIcon from "./_PersonaBarExpandCollapseIcon";
 
 export class PersonaBarPageTreeParentExpand extends Component {
 
-    constructor(){
+    constructor() {
         super();
         this.state = {};
     }
 
 
-    render_tree(childListItems){
+    render_tree(childListItems) {
         const {getChildListItems} = this.props;
         return (
-             <PersonaBarPageTreeParentExpand listItems={childListItems} getChildListItems={getChildListItems} />
+            <PersonaBarPageTreeParentExpand listItems={childListItems} getChildListItems={getChildListItems} />
         );
     }
 
-    render_parentExpandIcon(item){
+    render_parentExpandIcon(item) {
         return (
             <PersonaBarExpandCollapseIcon isOpen={item.isOpen} item={item}/>
         );
     }
 
-    render_parentExpandButton(item){
+    render_parentExpandButton(item) {
         const {getChildListItems}  = this.props;
         return (
             <div className="parent-expand-button" onClick={()=>{getChildListItems(item.id);}} >
-             { item.childCount > 0  ? this.render_parentExpandIcon(item) : <div className="parent-expand-icon"></div> }
+                { item.childCount > 0  ? this.render_parentExpandIcon(item) : <div className="parent-expand-icon"></div> }
             </div>
         );
     }
@@ -47,7 +47,7 @@ export class PersonaBarPageTreeParentExpand extends Component {
                             style={{height:"28px"}}>
 
                             <div className="draft-pencil">
-                            {this.render_parentExpandButton(item)}
+                                {this.render_parentExpandButton(item)}
                             </div>
                         </div>
                         { item.childListItems && item.isOpen ? this.render_tree(item.childListItems) : null }

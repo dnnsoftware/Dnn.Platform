@@ -7,8 +7,8 @@ export default class PersonaBarPageIcon extends Component {
     /* eslint-disable react/no-danger */
     selectIcon(number) {
 
-         /*eslint-disable react/no-danger*/
-        switch(number) {
+        /*eslint-disable react/no-danger*/
+        switch (number) {
             case "normal":
                 return (<div dangerouslySetInnerHTML={{ __html: SvgIcons.PagesIcon }} />);
 

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc
 {
     using System;
@@ -11,11 +10,11 @@ namespace DotNetNuke.Web.Mvc
     using System.Web.SessionState;
 
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.HttpModules.Membership;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvc.Common;
-    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
 
@@ -23,7 +22,7 @@ namespace DotNetNuke.Web.Mvc
     {
         public static readonly string MvcVersionHeaderName = "X-AspNetMvc-Version";
 
-        private ControllerBuilder _controllerBuilder;
+        private ControllerBuilder controllerBuilder;
 
         public DnnMvcHandler(RequestContext requestContext)
         {
@@ -48,15 +47,18 @@ namespace DotNetNuke.Web.Mvc
         {
             get
             {
-                if (this._controllerBuilder == null)
+                if (this.controllerBuilder == null)
                 {
-                    this._controllerBuilder = ControllerBuilder.Current;
+                    this.controllerBuilder = ControllerBuilder.Current;
                 }
 
-                return this._controllerBuilder;
+                return this.controllerBuilder;
             }
 
-            set { this._controllerBuilder = value; }
+            set
+            {
+                this.controllerBuilder = value;
+            }
         }
 
         protected virtual bool IsReusable
@@ -66,6 +68,7 @@ namespace DotNetNuke.Web.Mvc
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
+            this.SetThreadCulture();
             MembershipModule.AuthenticateRequest(this.RequestContext.HttpContext, allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
         }
@@ -91,6 +94,23 @@ namespace DotNetNuke.Web.Mvc
         {
             HttpContextBase httpContextBase = new HttpContextWrapper(httpContext);
             this.ProcessRequest(httpContextBase);
+        }
+
+        private void SetThreadCulture()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            if (portalSettings is null)
+            {
+                return;
+            }
+
+            var pageLocale = Localization.GetPageLocale(portalSettings);
+            if (pageLocale is null)
+            {
+                return;
+            }
+
+            Localization.SetThreadCultures(pageLocale, portalSettings);
         }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()

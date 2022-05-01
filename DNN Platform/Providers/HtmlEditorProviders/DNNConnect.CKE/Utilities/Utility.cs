@@ -133,10 +133,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         public static bool IsNumeric(object valueToCheck)
         {
-            double dummy;
+            double resultValue;
             string inputValue = Convert.ToString(valueToCheck);
 
-            bool numeric = double.TryParse(inputValue, NumberStyles.Any, null, out dummy);
+            bool numeric = double.TryParse(inputValue, NumberStyles.Any, null, out resultValue);
 
             return numeric;
         }

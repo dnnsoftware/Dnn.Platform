@@ -5,6 +5,7 @@ namespace DotNetNuke.Modules.Admin.Security
 {
     using System;
     using System.Collections;
+    using System.Net;
     using System.Web;
 
     using DotNetNuke.Abstractions;
@@ -198,8 +199,9 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         protected void OnSendPasswordClick(object sender, EventArgs e)
         {
-            // pretty much alwasy display the same message to avoid hinting on the existance of a user name
-            var message = Localization.GetString("PasswordSent", this.LocalResourceFile);
+            // pretty much always display the same message to avoid hinting on the existance of a user name
+            var input = string.IsNullOrEmpty(this.txtUsername.Text) ? this.txtEmail.Text : this.txtUsername.Text;
+            var message = string.Format(Localization.GetString("PasswordSent", this.LocalResourceFile), WebUtility.HtmlEncode(input));
             var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
             var canSend = true;
 

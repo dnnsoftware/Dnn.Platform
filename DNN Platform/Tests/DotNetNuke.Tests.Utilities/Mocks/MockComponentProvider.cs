@@ -103,6 +103,11 @@ namespace DotNetNuke.Tests.Utilities.Mocks
             return CreateNew<RoleProvider>();
         }
 
+        public static Mock<IPortalController> CreatePortalController()
+        {
+            return CreateNew<IPortalController>();
+        }
+
         public static void ResetContainer()
         {
             ComponentFactory.Container = new SimpleContainer();

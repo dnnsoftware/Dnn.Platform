@@ -217,6 +217,7 @@
     <Compile Include="Components\Security\Attributes\UserRegistrationOptionAttribute.cs" />
     <Compile Include="Components\Security\AuditChecks.cs" />
     <Compile Include="Components\Security\CheckResult.cs" />
+    <Compile Include="Components\Security\Checks\BaseCheck.cs" />
     <Compile Include="Components\Security\Checks\CheckAllowableFileExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckBiography.cs" />
     <Compile Include="Components\Security\Checks\CheckDebug.cs" />
@@ -225,15 +226,18 @@
     <Compile Include="Components\Security\Checks\CheckHiddenSystemFiles.cs" />
     <Compile Include="Components\Security\Checks\CheckModuleHeaderAndFooter.cs" />
     <Compile Include="Components\Security\Checks\CheckPasswordFormat.cs" />
+    <Compile Include="Components\Security\Checks\CheckUserProfilePage.cs" />
     <Compile Include="Components\Security\Checks\CheckRarelyUsedSuperuser.cs" />
     <Compile Include="Components\Security\Checks\CheckSiteRegistration.cs" />
     <Compile Include="Components\Security\Checks\CheckSqlRisk.cs" />
     <Compile Include="Components\Security\Checks\CheckSuperuserOldPassword.cs" />
-    <Compile Include="Components\Security\Checks\CheckTelerikVulnerability.cs" />
+    <Compile Include="Components\Security\Checks\CheckTelerikPresence.cs" />
     <Compile Include="Components\Security\Checks\CheckTracing.cs" />
     <Compile Include="Components\Security\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Security\Checks\CheckViewstatemac.cs" />
     <Compile Include="Components\Security\Constants.cs" />
+    <Compile Include="Components\Security\Helper\FileHelper.cs" />
+    <Compile Include="Components\Security\Helper\IFileHelper.cs" />
     <Compile Include="Components\Security\Helper\RegistrationSettingsHelper.cs" />
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />
@@ -692,8 +696,8 @@
     <Content Include="SqlDataProvider\09.04.01.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\Packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -703,9 +707,8 @@
       <HintPath>..\..\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -714,21 +717,18 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -737,6 +737,9 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <EmbeddedResource Include="Components\ConfigConsole\Schemas\DotNetConfig.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">

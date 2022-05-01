@@ -14,8 +14,7 @@ module.exports = {
     path:
       isProduction || settings.WebsitePath == ""
         ? path.resolve("../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/")
-        : settings.WebsitePath +
-          "\\DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Roles\\scripts\\bundles\\",
+        : path.join(settings.WebsitePath, "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Roles\\scripts\\bundles\\"),
     filename: "roles-bundle.js",
     publicPath: isProduction ? "" : "http://localhost:8080/dist/"
   },

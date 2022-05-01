@@ -7,7 +7,6 @@ import utils from "../../../../utils";
 import Localization from "../../../../localization";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
-/* eslint-disable spellcheck/spell-checker */
 const PageToTestParameters = {
     portalId: -2,
     cultureCode: "",
@@ -17,7 +16,6 @@ const PageToTestParameters = {
     roles: "",
     sortOrder: 0
 };
-/* eslint-enable spellcheck/spell-checker */
 
 class PageExisting extends Component {
 

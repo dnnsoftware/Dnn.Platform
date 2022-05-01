@@ -8,17 +8,17 @@ namespace DotNetNuke.Build.Tasks
 
     using Cake.Common.Build;
     using Cake.Common.Build.AzurePipelines.Data;
+    using Cake.Common.IO;
     using Cake.Common.Tools.MSBuild;
     using Cake.Core.IO;
     using Cake.Frosting;
     using Cake.Issues;
     using Cake.Issues.MsBuild;
-
     using DotNetNuke.Build;
 
     /// <summary>A cake task to compile the platform.</summary>
-    [Dependency(typeof(CleanWebsite))]
-    [Dependency(typeof(RestoreNuGetPackages))]
+    [IsDependentOn(typeof(CleanWebsite))]
+    [IsDependentOn(typeof(RestoreNuGetPackages))]
     public sealed class Build : FrostingTask<Context>
     {
         /// <inheritdoc/>
@@ -41,7 +41,29 @@ namespace DotNetNuke.Build.Tasks
             }
             finally
             {
-                ReportBuildIssues(context, cleanLog, buildLog);
+                var issueProviders =
+                    from logFilePath in new[] { cleanLog, buildLog, }
+                    where context.FileExists(logFilePath)
+                    let settings = new MsBuildIssuesSettings(logFilePath, context.MsBuildBinaryLogFileFormat())
+                    select new MsBuildIssuesProvider(context.Log, settings);
+                var issues = context.ReadIssues(issueProviders, context.Directory("."));
+                foreach (var issue in issues)
+                {
+                    var messageData = new AzurePipelinesMessageData
+                    {
+                        SourcePath = issue.AffectedFileRelativePath?.FullPath,
+                        LineNumber = issue.Line,
+                    };
+
+                    if (string.Equals(issue.PriorityName, "Error", StringComparison.Ordinal))
+                    {
+                        context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
+                    }
+                    else
+                    {
+                        context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
+                    }
+                }
             }
         }
 
@@ -51,33 +73,6 @@ namespace DotNetNuke.Build.Tasks
                 .SetMaxCpuCount(0)
                 .WithLogger(context.Tools.Resolve("Cake.Issues.MsBuild*/**/StructuredLogger.dll").FullPath, "BinaryLogger", binLogPath.FullPath)
                 .SetNoConsoleLogger(context.IsRunningInCI);
-        }
-
-        private static void ReportBuildIssues(Context context, params FilePath[] logFilePaths)
-        {
-            if (!context.IsRunningInCI)
-            {
-                return;
-            }
-
-            // TODO: when Cake.Issues.Recipe is updated to support Frosting, we can switch to their more robust issue processing and reporting features
-            var issueProviders = logFilePaths.Select(logFilePath => context.MsBuildIssuesFromFilePath(logFilePath, context.MsBuildBinaryLogFileFormat()));
-            foreach (var issue in context.ReadIssues(issueProviders, context.Environment.WorkingDirectory))
-            {
-                var messageData = new AzurePipelinesMessageData
-                                  {
-                                      SourcePath = issue.AffectedFileRelativePath?.FullPath,
-                                      LineNumber = issue.Line,
-                                  };
-                if (issue.Priority == (int)IssuePriority.Error)
-                {
-                    context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
-                }
-                else
-                {
-                    context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
-                }
-            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         {
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             var services = new ServiceCollection();
@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             this._dependencyResolver = new DnnDependencyResolver(this._serviceProvider);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             this._dependencyResolver = null;

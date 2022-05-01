@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
@@ -6,7 +6,7 @@ import {
 } from "../../actions";
 import LogItemRow from "./LogItemRow";
 import EmailPanel from "./EmailPanel";
-import { Checkbox, Dropdown, Pager, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common"
+import { Checkbox, Dropdown, Pager, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import Localization from "localization";
@@ -272,7 +272,7 @@ class AdminLogPanelBody extends Component {
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
                     culture={util.utilities.getCulture() }
-                    />
+                />
             </div>
         );
     }
@@ -319,7 +319,7 @@ class AdminLogPanelBody extends Component {
                                 options={portalOptions}
                                 withBorder={false}
                                 onSelect={this.onSelectPortal.bind(this) }
-                                />
+                            />
                         </div>
                     }
                     {state.logTypeList.length > 0 &&
@@ -330,7 +330,7 @@ class AdminLogPanelBody extends Component {
                                 options={logTypeOptions}
                                 withBorder={false}
                                 onSelect={this.onSelectLogType.bind(this) }
-                                />
+                            />
                         </div>
                     }
                     {(canEdit || util.settings.isAdmin) &&
@@ -340,7 +340,7 @@ class AdminLogPanelBody extends Component {
                                     text={Localization.get("btnEmail") }
                                     maxWidth={100}
                                     enabled={canEdit || util.settings.isAdmin}
-                                    />
+                                />
                             </div>
                             <div className="collapsible-content">
                                 <EmailPanel
@@ -356,14 +356,14 @@ class AdminLogPanelBody extends Component {
                         <TextOverflowWrapper
                             text={Localization.get("btnDelete") }
                             maxWidth={115}
-                            />
+                        />
                     </div>
                     }
                     {isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) } style={{ borderLeft: "none", width: "15%" }}>
                         <TextOverflowWrapper
                             text={Localization.get("btnClear") }
                             maxWidth={90}
-                            />
+                        />
                     </div>
                     }
                 </div>

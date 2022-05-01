@@ -43,10 +43,10 @@ class SearchAdvancedDetails extends Component {
     getPageStatusLabel() {
         return (
             this.props.filterByPublishStatus ? 
-            this.props.getFilterByPageStatusOptions().find(
-                x => x.value === this.props.filterByPublishStatus.toLowerCase()
-            ).label : 
-            Localization.get("FilterbyPublishStatusText"));
+                this.props.getFilterByPageStatusOptions().find(
+                    x => x.value === this.props.filterByPublishStatus.toLowerCase()
+                ).label : 
+                Localization.get("FilterbyPublishStatusText"));
     }
 
     onClear() {

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Build.Tasks
 {
     using System;
@@ -27,7 +26,7 @@ namespace DotNetNuke.Build.Tasks
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
 
-            var vsTestPath = context.GetFiles("tools/Microsoft.TestPlatform.16.8.0/tools/**/vstest.console.exe")
+            var vsTestPath = context.GetFiles($"tools/Microsoft.TestPlatform.{Program.MicrosoftTestPlatformVersion}/tools/**/vstest.console.exe")
                 .First();
             context.VSTest(
                 testAssemblies,
@@ -37,7 +36,7 @@ namespace DotNetNuke.Build.Tasks
                     Logger = "trx",
                     Parallel = true,
                     EnableCodeCoverage = true,
-                    TestAdapterPath = @"tools\NUnitTestAdapter.2.3.0\build",
+                    TestAdapterPath = $@"tools\NUnit3TestAdapter.{Program.NUnit3TestAdapterVersion}\build",
                 });
         }
     }

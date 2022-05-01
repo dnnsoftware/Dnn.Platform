@@ -4,6 +4,7 @@
 namespace DotNetNuke.Build
 {
     using System;
+    using System.Reflection;
 
     using Cake.AzurePipelines.Module;
     using Cake.Frosting;
@@ -11,6 +12,12 @@ namespace DotNetNuke.Build
     /// <summary>Runs the build process.</summary>
     public class Program
     {
+        /// <summary>The version of the Microsoft.TestPlatform NuGet package.</summary>
+        internal const string MicrosoftTestPlatformVersion = "16.11.0";
+
+        /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
+        internal const string NUnit3TestAdapterVersion = "4.0.0";
+
         /// <summary>Runs the build process.</summary>
         /// <param name="args">The arguments from the command line.</param>
         /// <returns>A status code.</returns>
@@ -21,11 +28,11 @@ namespace DotNetNuke.Build
                 .UseLifetime<Lifetime>()
                 .UseWorkingDirectory("..")
                 .UseModule<AzurePipelinesModule>()
-                .InstallTool(new Uri("nuget:?package=GitVersion.CommandLine&version=5.0.1"))
-                .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=16.8.0"))
-                .InstallTool(new Uri("nuget:?package=NUnitTestAdapter&version=2.3.0"))
-                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.0"))
-                .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=0.9.1"))
+                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=5.7.0"))
+                .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
+                .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
+                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.10.0"))
+                .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=1.0.0"))
                 .Run(args);
         }
     }

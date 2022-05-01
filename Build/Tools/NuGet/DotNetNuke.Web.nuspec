@@ -16,6 +16,7 @@
     <copyright>Copyright (c) .NET Foundation and Contributors, All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="DotNetNuke.Core" version="$version$" />
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.7" />
     </dependencies>
   </metadata>
   <files>

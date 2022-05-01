@@ -12,7 +12,7 @@ class Notify extends Component {
                 value={this.props.notifyMessage}
                 onChange={this.props.onUpdateMessage}
                 aria-label="Message"
-                />
+            />
             <div className="buttons-container">
                 <Button
                     type="secondary"

@@ -64,7 +64,7 @@ class More extends Component {
                             labelType="inline"
                             tooltipMessage={Localization.get("SecureConnection_tooltip") }
                             label={Localization.get("SecureConnection") }
-                            />
+                        />
                         <Switch
                             labelHidden={false}
                             onText={Localization.get("On") }
@@ -77,9 +77,9 @@ class More extends Component {
                             labelType="inline"
                             tooltipMessage={Localization.get("DisableLink_tooltip") }
                             label={Localization.get("DisableLink") }
-                            />
+                        />
                         <Switch
-                                   labelHidden={false}
+                            labelHidden={false}
                             onText={Localization.get("On") }
                             offText={Localization.get("Off") }
                             value={page.disableLink}
@@ -97,7 +97,7 @@ class More extends Component {
                             labelType="block"
                             tooltipMessage={Localization.get("OutputCacheProvider_tooltip") }
                             label={Localization.get("OutputCacheProvider") }
-                            />
+                        />
                         {cacheProviderOptions &&
                             <Dropdown options={cacheProviderOptions}
                                 value={page.cacheProvider}
@@ -117,7 +117,7 @@ class More extends Component {
                                 <Label
                                     labelType="block"
                                     label={Localization.get("lblCachedItemCount").replace("{0}", this.props.cachedPageCount) }
-                                    />
+                                />
                                 <Button
                                     disabled={this.props.cachedPageCount === 0}
                                     type="secondary"

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Mvc.Common
 {
     using System;
@@ -17,14 +16,16 @@ namespace DotNetNuke.Web.Mvc.Common
         private static readonly MethodInfo CallPropertyGetterByReferenceOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetterByReference", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly MethodInfo CallPropertyGetterOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetter", BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly ConcurrentDictionary<Type, PropertyHelper[]> ReflectionCache = new ConcurrentDictionary<Type, PropertyHelper[]>();
-        private readonly Func<object, object> _valueGetter;
+        private readonly Func<object, object> valueGetter;
 
+        /// <summary>Initializes a new instance of the <see cref="PropertyHelper"/> class.</summary>
+        /// <param name="property">The property.</param>
         public PropertyHelper(PropertyInfo property)
         {
             Requires.NotNull("property", property);
 
             this.Name = property.Name;
-            this._valueGetter = MakeFastPropertyGetter(property);
+            this.valueGetter = MakeFastPropertyGetter(property);
         }
 
         // Implementation of the fast getter.
@@ -84,8 +85,8 @@ namespace DotNetNuke.Web.Mvc.Common
 
         public object GetValue(object instance)
         {
-            // Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
-            return this._valueGetter(instance);
+            // Contract.Assert(valueGetter != null, "Must call Initialize before using this object");
+            return this.valueGetter(instance);
         }
 
         protected static PropertyHelper[] GetProperties(

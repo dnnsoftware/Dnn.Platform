@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     using System;
@@ -40,7 +39,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class LuceneControllerTests
     {
-        private const string SearchIndexFolder = @"App_Data\LuceneTests";
         private const string WriteLockFile = "write.lock";
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
@@ -66,6 +64,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<CachingProvider> cachingProvider;
         private Mock<ISearchHelper> mockSearchHelper;
         private Mock<SearchQuery> mockSearchQuery;
+
+        private string SearchIndexFolder => this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, string.Empty);
 
         [SetUp]
         public void SetUp()
@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this.mockHostController = new Mock<IHostController>();
 
-            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(@"App_Data\LuceneTests" + DateTime.UtcNow.Ticks);
             this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this.readerStaleTimeSpan);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
             this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
@@ -125,9 +125,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_SearchFolderIsAsExpected()
         {
-            var inf1 = new DirectoryInfo(SearchIndexFolder);
+            var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
+            var inf1 = new DirectoryInfo(searchIndexFolder);
             var inf2 = new DirectoryInfo(this.luceneController.IndexFolder);
-            Assert.AreEqual(inf1.FullName, inf2.FullName);
+            Assert.AreEqual(inf1.Name, inf2.Name);
         }
 
         [Test]
@@ -622,10 +623,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // Arrange
             const string fieldName = "content";
-            var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
-            if (!Directory.Exists(SearchIndexFolder))
+            var searchIndexFolder = this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, this.SearchIndexFolder);
+            var lockFile = Path.Combine(searchIndexFolder, WriteLockFile);
+            if (!Directory.Exists(searchIndexFolder))
             {
-                Directory.CreateDirectory(SearchIndexFolder);
+                Directory.CreateDirectory(searchIndexFolder);
             }
 
             if (!File.Exists(lockFile))
@@ -647,7 +649,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // Arrange
             const string fieldName = "content";
-            var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
+            var lockFile = Path.Combine(this.luceneController.IndexFolder, WriteLockFile);
 
             // Act
             var doc1 = new Document();
@@ -747,9 +749,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             try
             {
-                if (Directory.Exists(SearchIndexFolder))
+                if (Directory.Exists(this.SearchIndexFolder))
                 {
-                    Directory.Delete(SearchIndexFolder, true);
+                    Directory.Delete(this.SearchIndexFolder, true);
                 }
             }
             catch (Exception ex)

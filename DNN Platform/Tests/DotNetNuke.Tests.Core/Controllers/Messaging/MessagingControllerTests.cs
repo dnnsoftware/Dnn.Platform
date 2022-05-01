@@ -298,56 +298,50 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Null_Message()
         {
             // Act, Assert
-            this._messagingController.SendMessage(null, new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(null, new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Null_Body_And_Subject()
         {
             // Act, Assert
-            this._messagingController.SendMessage(new Message(), new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(new Message(), new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Null_Roles_And_Users()
         {
             // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
 
             // Act, Assert
-            this._messagingController.SendMessage(message, null, null, null, this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, null, null, null, this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Empty_Roles_And_Users_Lists()
         {
             // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
 
             // Act, Assert
-            this._messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo>(), null, this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo>(), null, this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Roles_And_Users_With_No_DisplayNames()
         {
             // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
 
             // Act, Assert
-            this._messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Large_Subject()
         {
             // Arrange
@@ -361,11 +355,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var message = new Message { Subject = subject.ToString(), Body = "body" };
 
             // Act, Assert
-            this._messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Large_To()
         {
             // Arrange
@@ -380,11 +373,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             }
 
             // Act, Assert
-            this._messagingController.SendMessage(message, roles, users, null, this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, roles, users, null, this._user12UserInfo));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Null_Sender()
         {
             // Arrange
@@ -393,11 +385,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var role = new RoleInfo { RoleName = "role1" };
 
             // Act
-            this._messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, null);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Negative_SenderID()
         {
             // Arrange
@@ -407,11 +398,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = "user11" };
 
             // Act
-            this._messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, sender);
+            Assert.Throws<ArgumentException>(() => this._messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, sender));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_SendingToRole_ByNonAdmin()
         {
             // Arrange
@@ -426,11 +416,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
             // Act
-            messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._user12UserInfo);
+            Assert.Throws<ArgumentException>(() => messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._user12UserInfo));
         }
 
         // [Test]
-        [ExpectedException(typeof(AttachmentsNotAllowed))]
         public void MessagingController_CreateMessage_Throws_On_Passing_Attachments_When_Its_Not_Enabled()
         {
             // Arrange
@@ -451,7 +440,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
             // Act
-            messagingController.SendMessage(message, null, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._user12UserInfo);
+            Assert.Throws<AttachmentsNotAllowed>(() => messagingController.SendMessage(message, null, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._user12UserInfo));
         }
 
         [Test]
@@ -964,50 +953,45 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_ReplyMessage_Throws_On_Null_Sender()
         {
             // Arrange
 
             // Act
-            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, null);
+            Assert.Throws<ArgumentException>(() => this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, null));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_ReplyMessage_Throws_On_Negative_SenderID()
         {
             // Arrange
             var sender = new UserInfo { DisplayName = "user11" };
 
             // Act
-            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, sender);
+            Assert.Throws<ArgumentException>(() => this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, sender));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_ReplyMessage_Throws_On_Null_Subject()
         {
             // Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId };
 
             // Act, Assert
-            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, null, null, sender);
+            Assert.Throws<ArgumentException>(() => this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, null, null, sender));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_ReplyMessage_Throws_On_Empty_Subject()
         {
             // Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId };
 
             // Act, Assert
-            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, string.Empty, null, sender);
+            Assert.Throws<ArgumentException>(() => this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, string.Empty, null, sender));
         }
 
         [Test]
-        [ExpectedException(typeof(AttachmentsNotAllowed))]
         public void MessagingController_ReplyMessage_Throws_On_Passing_Attachments_When_Its_Not_Enabled()
         {
             // Arrange
@@ -1017,7 +1001,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Setup(imc => imc.AttachmentsAllowed(Constants.PORTAL_Zero)).Returns(false);
 
             // Act, Assert
-            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", new List<int> { Constants.FOLDER_ValidFileId }, sender);
+            Assert.Throws<AttachmentsNotAllowed>(() => this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", new List<int> { Constants.FOLDER_ValidFileId }, sender));
         }
 
         [Test]
@@ -1043,7 +1027,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(MessageOrRecipientNotFoundException))]
         public void MessagingController_ReplyMessage_Throws_When_Message_Or_Recipient_Are_Not_Found()
         {
             // Arrange
@@ -1060,7 +1043,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockDataService.Setup(ds => ds.CreateMessageReply(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).Returns(-1);
 
-            this._mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
+            Assert.Throws<MessageOrRecipientNotFoundException>(() => this._mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender));
         }
 
         [Test]
@@ -1178,10 +1161,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void WaitTimeForNextMessage_Throws_On_Null_Sender()
         {
-            this._internalMessagingController.WaitTimeForNextMessage(null);
+            Assert.Throws<ArgumentNullException>(() => this._internalMessagingController.WaitTimeForNextMessage(null));
         }
 
         [Test]

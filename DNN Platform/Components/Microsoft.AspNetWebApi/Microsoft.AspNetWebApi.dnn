@@ -1,0 +1,38 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="DotNetNuke.AspNetWebApi" type="Library" version="5.2.7">
+      <friendlyName>ASP.NET Web API Components</friendlyName>
+      <description>Libraries required for ASP.NET Web API.</description>
+      <dependencies/>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"/>
+      <releaseNotes>See https://github.com/aspnet/AspNetWebStack/releases.</releaseNotes>
+      <components>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>System.Net.Http.Formatting.dll</name>
+              <version>5.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.Http.dll</name>
+              <version>5.2.7</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Web.Http.WebHost.dll</name>
+              <version>5.2.7</version>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

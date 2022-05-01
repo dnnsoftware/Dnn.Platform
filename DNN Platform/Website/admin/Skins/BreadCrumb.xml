@@ -23,4 +23,10 @@
     <Help>Defines whether to use the page Name or the page Title</Help>
     <Value>True,False</Value>
   </Setting>
+  <Setting>
+    <Name>CleanerMarkup</Name>
+    <Type>Boolean</Type>
+    <Help>Defines whether to take advantage of the enhanced markup (remove extra wrapping elements).)</Help>
+    <Value>True,False</Value>
+  </Setting>
 </Settings>

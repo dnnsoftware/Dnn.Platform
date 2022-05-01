@@ -177,7 +177,7 @@ class UsersInRole extends Component {
                 totalRecords={this.props.totalRecords}
                 onPageChanged={this.onPageChanged.bind(this) }
                 culture={util.utilities.getCulture()}
-                />;
+            />;
     }
     render() {
         const {state} = this;

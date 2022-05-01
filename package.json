@@ -1,6 +1,6 @@
 {
   "name": "dnn-platform",
-  "version": "9.9.0",
+  "version": "9.10.2",
   "private": true,
   "workspaces": [
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
@@ -24,7 +24,7 @@
     "Dnn.AdminExperience/ClientSide/Users.Web",
     "Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables",
     "Dnn.AdminExperience/ClientSide/Vocabularies.Web",
-    "Dnn Platform/Modules/ResourceManager/ResourceManager.Web"
+    "DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   ],
   "devDependencies": {
     "lerna": "^3.16.4"
@@ -37,5 +37,6 @@
     "clean": "lerna run clean",
     "lint": "lerna run lint",
     "test": "lerna run test"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }

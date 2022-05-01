@@ -1,12 +1,12 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNJWT" type="Provider" version="09.09.00">
+    <package name="DNNJWT" type="Provider" version="09.10.02">
       <friendlyName>DNN JWT Auth Handler</friendlyName>
       <description>DNN Json Web Token Authentication (JWT) library for cookie-less Mobile authentication clients</description>
       <dependencies/>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

@@ -273,25 +273,23 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        [ExpectedException(typeof(ArgumentException))]
         public void GetRouteNameThrowsOnEmptyModuleFolderName(string moduleFolderName)
         {
             // Arrange
 
             // Act
-            new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0);
+            Assert.Throws<ArgumentException>(() => new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0));
 
             // Assert
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void GetRouteNameThrowsOnCountLessThan0()
         {
             // Arrange
 
             // Act
-            new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1));
 
             // Assert
         }

@@ -58,8 +58,8 @@ class PageTypeSelector extends Component {
     render() {
         const { page, onChangePageType } = this.props;
         const createdDate = Localization.get("CreatedValue")
-                                .replace("[CREATEDDATE]", utils.formatDateNoTime(page.createdOnDate))
-                                .replace("[CREATEDUSER]", page.created || "System");
+            .replace("[CREATEDDATE]", utils.formatDateNoTime(page.createdOnDate))
+            .replace("[CREATEDUSER]", page.created || "System");
         
         const hierarchy = this._getHierarchyLabel();        
         const components = this.getComponents();
@@ -87,7 +87,7 @@ class PageTypeSelector extends Component {
                                 {Localization.get("PageParent") + ": "}
                             </span>
                             <span id="pageParentContent" className={this.pageParentLarge ? "page-info-item-value parent-page-name parent-page-style-content-large" : "page-info-item-value parent-page-name"}>
-                                 <span id="parentPageValue" ref={(parentPageRef)=>this._calculateParentPageSize(parentPageRef)} >
+                                <span id="parentPageValue" ref={(parentPageRef)=>this._calculateParentPageSize(parentPageRef)} >
                                     {hierarchy}
                                 </span>
                             </span>
@@ -102,7 +102,7 @@ class PageTypeSelector extends Component {
                         </div>
                         <div className="page-info-item">
                             <span className="page-info-item-label">
-                            {Localization.get("PageId") + ": "}
+                                {Localization.get("PageId") + ": "}
                             </span>
                             <span className="page-info-item-value">
                                 {page.tabId}
@@ -117,9 +117,9 @@ class PageTypeSelector extends Component {
                             <span className="page-info-item-value">
                                 <RadioButtons
                                     options={[{value: "normal", label: Localization.get("Standard")},
-                                            {value: "tab", label: Localization.get("Existing")},
-                                            {value: "url", label: Localization.get("Url")},
-                                            {value: "file", label: Localization.get("File")}]}
+                                        {value: "tab", label: Localization.get("Existing")},
+                                        {value: "url", label: Localization.get("Url")},
+                                        {value: "file", label: Localization.get("File")}]}
                                     onChange={onChangePageType}
                                     value={page.pageType}/>
                             </span>

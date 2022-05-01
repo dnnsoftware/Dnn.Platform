@@ -136,7 +136,16 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bSuccess = true;
             if (file.Action == "UnRegister")
             {
-                this.DeleteFile(file);
+                var prevDeleteFiles = this.DeleteFiles;
+                try
+                {
+                    this.DeleteFiles = true;
+                    this.DeleteFile(file);
+                }
+                finally
+                {
+                    this.DeleteFiles = prevDeleteFiles;
+                }
             }
             else
             {
@@ -308,7 +317,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
             var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, this.Package.Version.ToString(), this.Package.Name);
             xmlMerge.UpdateConfigs();
 
             return true;

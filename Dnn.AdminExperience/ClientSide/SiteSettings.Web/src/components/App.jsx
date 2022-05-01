@@ -95,7 +95,7 @@ class App extends Component {
                     bodyShowing: true,
                     portalId,
                     cultureCode
-                    }, () => props.dispatch(siteInfo.updatePortalId(portalId))
+                }, () => props.dispatch(siteInfo.updatePortalId(portalId))
                 );
             });
         }
