@@ -222,11 +222,17 @@
   <data name="Security.Text" xml:space="preserve">
     <value>Security</value>
   </data>
-  <data name="TelerikInstalledAndUsedInfo.Text" xml:space="preserve">
-    <value>It is not possible to automatically remove Telerik on your installation due to the following extensions:</value>
+  <data name="TelerikInstalledAndUsedDamPresentInfo.Text" xml:space="preserve">
+    <value>Your installation is utilizing Telerik in the following assemblies (including the &lt;strong&gt;Digital Asset Management&lt;/strong&gt; module):</value>
   </data>
-  <data name="TelerikInstalledAndUsedWarning.Text" xml:space="preserve">
-    <value>Starting with DNN 10.0.0, it will be mandatory to remove Telerik. Please update or replace the above extensions ASAP and then follow the &lt;a href="https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html" target="_blank"&gt;manual Telerik removal steps&lt;/a&gt;.</value>
+  <data name="TelerikInstalledAndUsedDamRemovedInfo.Text" xml:space="preserve">
+    <value>Your installation is utilizing Telerik in the following assemblies:</value>
+  </data>
+  <data name="TelerikInstalledAndUsedDamPresentWarning.Text" xml:space="preserve">
+    <value>There are known security issues with the DNN Distributed version of Telerik and the usage of Telerik by DNN modules, such as &lt;strong&gt;Digital Asset Management&lt;/strong&gt;. If you have otherwise complied with Telerik security patching via other means, you should at a minimum uninstall Digital Asset Management and replace it with the newer &lt;strong&gt;Resource Manager&lt;/strong&gt; module. However, if you have not made any security adjustments, the modules listed above should be updated/replaced and then Telerik removed to ensure proper security of your installation.</value>
+  </data>
+  <data name="TelerikInstalledAndUsedDamRemovedWarning.Text" xml:space="preserve">
+    <value>It appears that you have removed a portion of the DNN Platform extensions that depended on Telerik, but we are unable to remove the dependencies listed above for you. However, please ensure that you have in fact properly patched Telerik and removed all DNN Platform distributed Telerik components per the guidance found &lt;a href="https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html" target="_blank"&gt;here&lt;/a&gt;.</value>
   </data>
   <data name="TelerikInstalledButNotUsedInfo.Text" xml:space="preserve">
     <value>Since your installation does NOT appear to be utilizing any of these components, you may elect to have them removed as part of this upgrade to improve the security of your application.</value>
@@ -235,7 +241,7 @@
     <value>Security Alert</value>
   </data>
   <data name="TelerikInstalledDetected.Text" xml:space="preserve">
-    <value>We have detected the presence of the previously distributed Telerik developer components.</value>
+    <value>We have detected the presence of the previously distributed Telerik developer components. Detected Telerik version is:</value>
   </data>
   <data name="TelerikInstalledBulletin.Text" xml:space="preserve">
     <value>A Security Bulletin was released in August of 2021 that recommends immediate removal of this component due to the high-level security vulnerabilities present. You can read more about this on the &lt;a href="https://dnncommunity.org/security" target="_blank"&gt;DNN Security Center&lt;/a&gt;.</value>

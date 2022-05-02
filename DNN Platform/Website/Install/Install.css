@@ -332,3 +332,7 @@ a.videoLink:hover {
     border-right: 7px solid transparent;
     border-top: 7px solid red;
 }
+
+.telerikVersion {
+    font-weight: bold;
+}

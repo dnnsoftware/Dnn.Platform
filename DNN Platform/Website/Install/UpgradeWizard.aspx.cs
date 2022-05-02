@@ -167,20 +167,25 @@ namespace DotNetNuke.Services.Install
                     GetTelerikNotInstalledResult());
             }
 
-            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik();
+            var version = telerikUtils.GetTelerikVersion().ToString();
 
-            if (assemblies.Any())
+            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                .Select(a => Path.GetFileName(a));
+
+            if (!assemblies.Any())
             {
                 return Tuple.Create(
                     true,
                     default(string),
-                    GetTelerikInstalledAndUsedResult(assemblies));
+                    GetTelerikInstalledButNotUsedResult(version));
             }
+
+            var damPresent = telerikUtils.DigitalAssetsIsInstalled();
 
             return Tuple.Create(
                 true,
                 default(string),
-                GetTelerikInstalledButNotUsedResult());
+                GetTelerikInstalledAndUsedResult(assemblies, version, damPresent));
         }
 
         [WebMethod]
@@ -341,7 +346,7 @@ namespace DotNetNuke.Services.Install
             };
         }
 
-        private static SecurityTabResult GetTelerikInstalledButNotUsedResult()
+        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(string version)
         {
             var yesButton = new ListItem(LocalizeStringStatic("TelerikUninstallYes"), OptionYes);
             var noButton = new ListItem(LocalizeStringStatic("TelerikUninstallNo"), OptionNo);
@@ -351,7 +356,7 @@ namespace DotNetNuke.Services.Install
                 CanProceed = false,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
-                    CreateTelerikInstalledHeader(),
+                    CreateTelerikInstalledHeader(version),
                     CreateParagraph("TelerikInstalledButNotUsedInfo"),
                     CreateParagraph("TelerikUninstallInfo"),
                     new RadioButtonList
@@ -362,17 +367,20 @@ namespace DotNetNuke.Services.Install
             };
         }
 
-        private static SecurityTabResult GetTelerikInstalledAndUsedResult(IEnumerable<string> assemblies)
+        private static SecurityTabResult GetTelerikInstalledAndUsedResult(
+            IEnumerable<string> assemblies, string version, bool damPresent)
         {
+            var damPresentOrRemoved = damPresent ? "DamPresent" : "DamRemoved";
+
             return new SecurityTabResult
             {
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
-                    CreateTelerikInstalledHeader(),
-                    CreateParagraph("TelerikInstalledAndUsedInfo"),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph($"TelerikInstalledAndUsed{damPresentOrRemoved}Info"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
-                    CreateParagraph("TelerikInstalledAndUsedWarning")),
+                    CreateParagraph($"TelerikInstalledAndUsed{damPresentOrRemoved}Warning")),
             };
         }
 
@@ -385,12 +393,25 @@ namespace DotNetNuke.Services.Install
             };
         }
 
-        private static Control CreateTelerikInstalledHeader()
+        private static Control CreateTelerikInstalledHeader(string version)
         {
             return CreateBundle(
                 CreateHeading("TelerikInstalledHeading"),
-                CreateParagraph("TelerikInstalledDetected"),
+                CreateTelerikInstalledDetectedParagraph(version),
                 CreateParagraph("TelerikInstalledBulletin"));
+        }
+
+        private static Control CreateTelerikInstalledDetectedParagraph(string version)
+        {
+            return new HtmlGenericControl("p")
+            {
+                Controls =
+                {
+                    new Label { Text = LocalizeStringStatic("TelerikInstalledDetected") },
+                    new Literal { Text = " " },
+                    new Label { Text = version, CssClass = "telerikVersion" },
+                },
+            };
         }
 
         private static Control CreateBundle(params Control[] controls)
