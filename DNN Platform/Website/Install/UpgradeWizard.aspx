@@ -172,7 +172,6 @@
                         $('#<%= lblSecurityError.ClientID %>').text('');
                         $('#upgradeSecurityView').html(result.Item3.View);
                         $('input[name="<%= TelerikUninstallOptionClientID %>"').click(function () {
-                            upgradeWizard.accountInfo["<%= TelerikUninstallOptionClientID %>"] = $(this).val();
                             enable("#<%= UpgradeNowButton.ClientID %>");
                         });
                         if (result.Item3.CanProceed) {
@@ -331,6 +330,8 @@
             $('#<%= UpgradeNowButton.ClientID %>').click(function () {
 
                 if (!$(this).hasClass('dnnDisabledAction')) {
+                    var option = $('input[name="<%= TelerikUninstallOptionClientID %>"').val();
+                    upgradeWizard.accountInfo["<%= TelerikUninstallOptionClientID %>"] = option;
                     upgradeWizard.showInstallationTab();
                     upgradeWizard.upgrade();
                 }

@@ -341,6 +341,7 @@ namespace DotNetNuke.Services.Install
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
                     CreateHeading("TelerikNotInstalledHeading"),
                     CreateParagraph("TelerikNotInstalledInfo")),
             };
@@ -377,6 +378,7 @@ namespace DotNetNuke.Services.Install
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
                     CreateTelerikInstalledHeader(version),
                     CreateParagraph($"TelerikInstalledAndUsed{damPresentOrRemoved}Info"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
@@ -384,14 +386,8 @@ namespace DotNetNuke.Services.Install
             };
         }
 
-        private static Control CreateTelerikAntiForgeryTokenField()
-        {
-            return new HiddenField
-            {
-                ID = TelerikAntiForgeryTokenClientID,
-                Value = CreateTelerikAntiForgeryToken(),
-            };
-        }
+        private static Control CreateTelerikAntiForgeryTokenField() =>
+            CreateHiddenField(TelerikAntiForgeryTokenClientID, CreateTelerikAntiForgeryToken());
 
         private static Control CreateTelerikInstalledHeader(string version)
         {
@@ -440,6 +436,15 @@ namespace DotNetNuke.Services.Install
             });
 
             return control;
+        }
+
+        private static Control CreateHiddenField(string id, string value)
+        {
+            return new HiddenField
+            {
+                ID = id,
+                Value = value,
+            };
         }
 
         private static Table CreateTable(IEnumerable<string> items, int maxRows, int maxColumns)
