@@ -819,7 +819,9 @@ namespace DotNetNuke.Security
                         }
                     }
                 }
-                else // Grant permission
+
+                // Grant permission
+                else
                 {
                     if (roleName == Globals.glbRoleAllUsersName || user.IsInRole(roleName))
                     {

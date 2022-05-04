@@ -70,7 +70,18 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAddPage(TabInfo tab)
         {
-            return _provider.CanAddPage(tab);
+            if (_provider.CanAddPage(tab))
+            {
+                return true;
+            }
+
+            if (tab.TabID == Null.NullInteger)
+            {
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
+                return _provider.CanAddPage(TabController.Instance.GetTab(portalSettings.HomeTabId, portalSettings.PortalId));
+            }
+
+            return false;
         }
 
         /// <summary>
