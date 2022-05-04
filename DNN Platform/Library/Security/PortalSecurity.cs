@@ -35,6 +35,8 @@ namespace DotNetNuke.Security
 
         private static readonly DateTime OldExpiryTime = new DateTime(1999, 1, 1);
 
+        private static readonly string[] HtmlTagStrings = new[] { "&gt;", "&lt;", "&#60", "&#x3C;", "<", "&#62;", "&#x3E;", ">" };
+
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -893,7 +895,18 @@ namespace DotNetNuke.Security
             }
 
             // check if text contains encoded angle brackets, if it does it we decode it to check the plain text
-            if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
+            var isTagInput = false;
+
+            foreach (var tagItem in HtmlTagStrings)
+            {
+                if (tempInput.Contains(tagItem))
+                {
+                    isTagInput = true;
+                    break;
+                }
+            }
+
+            if (isTagInput)
             {
                 // text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);
