@@ -93,5 +93,9 @@ namespace PolyDeploy.DeployClient
 
             this.console.Write(fileTree);
         }
+        public void RenderInstallationStatus(SortedList<int, SessionResponse?> packageFiles)
+        {
+            // TO DO
+        }
     }
 }

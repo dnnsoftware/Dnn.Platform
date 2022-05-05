@@ -39,10 +39,15 @@ namespace PolyDeploy.DeployClient
             while (true)
             {
                 var session = await this.installer.GetSessionAsync(options, sessionId);
-                if (session?.Responses != null && !hasRenderedOverview)
+                if (session?.Responses != null)
                 {
-                    this.renderer.RenderInstallationOverview(session.Responses);
-                    hasRenderedOverview = true;
+                    if (!hasRenderedOverview)
+                    {
+                        this.renderer.RenderInstallationOverview(session.Responses);
+                        hasRenderedOverview = true;
+                    }
+
+                    this.renderer.RenderInstallationStatus(session.Responses);
                 }
 
                 if (session?.Status == SessionStatus.Complete)
@@ -56,8 +61,8 @@ namespace PolyDeploy.DeployClient
 
         private async Task UploadPackage(string sessionId, string packageFile, DeployInput options)
         {
-            using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
-            using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
+            await using var packageFileStream = this.packageFileSource.GetFileStream(packageFile);
+            await using var encryptedPackageStream = await this.encryptor.GetEncryptedStream(options, packageFileStream);
 
             await this.installer.UploadPackageAsync(options, sessionId, encryptedPackageStream, packageFile);
         }
