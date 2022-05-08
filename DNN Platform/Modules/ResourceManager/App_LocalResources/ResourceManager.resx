@@ -402,4 +402,7 @@
   <data name="CopyUrl.Text" xml:space="preserve">
     <value>Copy URL</value>
   </data>
+  <data name="StatusBarMessage.Text" xml:space="preserve">
+    <value>Showing {0} of {1} items</value>
+  </data>
 </root>
