@@ -16,6 +16,7 @@
         <dependency type="CoreVersion">09.02.00</dependency>
       </dependencies>
       <components>
+        <component type="Cleanup" version="09.11.00" glob="DesktopModules/ResourceManager/**/*" />
         <component type="Script">
           <scripts>
             <basePath>DesktopModules\ResourceManager</basePath>
@@ -31,7 +32,6 @@
             </script>
           </scripts>
         </component>
-
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/ResourceManager</basePath>
