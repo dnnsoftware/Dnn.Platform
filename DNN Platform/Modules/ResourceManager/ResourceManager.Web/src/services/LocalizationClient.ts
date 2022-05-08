@@ -137,4 +137,5 @@ export interface LocalizedStrings {
     UnlinkingFolders: string;
     Unlink: string;
     CopyUrl: string;
+    StatusBarMessage: string;
   };

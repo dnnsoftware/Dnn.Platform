@@ -7,11 +7,17 @@ import state from '../../store/store';
 })
 export class DnnRmStatusBar {
 
+  private getLocalizedStatusBarMessage(): string {
+    return state.localization.StatusBarMessage
+      .replace('{0}', state.currentItems?.items.length.toString())
+      .replace('{1}', state.currentItems?.totalCount.toString());
+  }
+
   render() {
     return (
       <Host>
         <div class="status-bar">
-          Showing {state.currentItems?.items.length} of {state.currentItems?.totalCount} items
+          {this.getLocalizedStatusBarMessage()}
         </div>
       </Host>
     );
