@@ -139,4 +139,5 @@ export interface LocalizedStrings {
     Unlink: string;
     CopyUrl: string;
     StatusBarMessage: string;
+    Download: string;
   };
