@@ -14,14 +14,14 @@
       <releaseNotes src="releaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-      	<dependency type="managedPackage" version="1.6.4">jQuery</dependency>
+      	<dependency type="managedPackage" version="1.8.0">jQuery</dependency>
       </dependencies>
       <components>
         <component type="JavaScript_Library">
           <javaScriptLibrary>
             <libraryName>jQuery-UI</libraryName>
             <fileName>jquery-ui.js</fileName>
-            <CDNPath>//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js</CDNPath>
+            <CDNPath>//ajax.googleapis.com/ajax/libs/jqueryui/1.13.1/jquery-ui.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
@@ -34,6 +34,7 @@
         </component>        
         <component type="Cleanup" version="01.10.03" fileName="01.10.03.txt" />
         <component type="Cleanup" version="01.11.03" fileName="01.11.03.txt" />
+        <component type="Cleanup" version="01.12.01" fileName="01.12.01.txt" />
       </components>
     </package>
   </packages>
