@@ -408,4 +408,7 @@
   <data name="StatusBarMessage.Text" xml:space="preserve">
     <value>Showing {0} of {1} items</value>
   </data>
+  <data name="Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
 </root>

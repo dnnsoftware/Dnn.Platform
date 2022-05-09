@@ -111,6 +111,48 @@ export class ItemsClient{
         });
     }
 
+    /**
+     * Downloads a file.
+     * @param fileId The id of the file to download.
+     * @param forceDownload A value indicating whether to force the download. 
+     *                      When true, will download the file as an attachment and ensures the browser won't just render the file if supported.
+     *                      When false, the browser may render the file instead of downloading it for some formats like pdf or images.
+     * @returns The actual requested file.
+     */
+     public download(
+        fileId: number,
+        forceDownload = true){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}Download?fileId=${fileId}&forceDownload=${forceDownload}`;
+            const headers = this.sf.getModuleHeaders();
+            this.abortController?.abort();
+            this.abortController = new AbortController();
+            fetch(url, {
+                headers,
+                signal: this.abortController.signal,
+            })
+            .then(response => {
+                if (response.status == 200) {
+                    var filename = response.headers.get("Content-Disposition").split("filename=")[1];
+                    response.blob().then(blob => {
+                        var oldDownloadLink = document.querySelector("#downloadLink");
+                        if (oldDownloadLink) {
+                            oldDownloadLink.remove();
+                        }
+                        var downloadLink = document.createElement('a');
+                        downloadLink.id = "downloadLink";
+                        downloadLink.href = window.URL.createObjectURL(blob);
+                        downloadLink.download = filename;
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        resolve();
+                    });
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
+    
     public search(
         folderId: number,
         search: string,

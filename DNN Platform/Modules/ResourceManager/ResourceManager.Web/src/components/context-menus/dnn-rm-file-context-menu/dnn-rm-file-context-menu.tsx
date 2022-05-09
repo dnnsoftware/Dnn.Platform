@@ -23,6 +23,8 @@ export class DnnRmFileContextMenu {
             <dnn-action-move-items items={[this.item]} />
           ,
             <dnn-action-delete-items items={[this.item]} />
+          ,
+            <dnn-action-download-item item={this.item}/>
           ]
         }
         {location.protocol == "https:" &&

@@ -17,6 +17,9 @@ export namespace Components {
     interface DnnActionDeleteItems {
         "items": Item[];
     }
+    interface DnnActionDownloadItem {
+        "item": Item;
+    }
     interface DnnActionEditItem {
         "item": Item;
     }
@@ -153,6 +156,12 @@ declare global {
     var HTMLDnnActionDeleteItemsElement: {
         prototype: HTMLDnnActionDeleteItemsElement;
         new (): HTMLDnnActionDeleteItemsElement;
+    };
+    interface HTMLDnnActionDownloadItemElement extends Components.DnnActionDownloadItem, HTMLStencilElement {
+    }
+    var HTMLDnnActionDownloadItemElement: {
+        prototype: HTMLDnnActionDownloadItemElement;
+        new (): HTMLDnnActionDownloadItemElement;
     };
     interface HTMLDnnActionEditItemElement extends Components.DnnActionEditItem, HTMLStencilElement {
     }
@@ -296,6 +305,7 @@ declare global {
         "dnn-action-copy-url": HTMLDnnActionCopyUrlElement;
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
         "dnn-action-delete-items": HTMLDnnActionDeleteItemsElement;
+        "dnn-action-download-item": HTMLDnnActionDownloadItemElement;
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
         "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
         "dnn-action-unlink-items": HTMLDnnActionUnlinkItemsElement;
@@ -330,6 +340,9 @@ declare namespace LocalJSX {
     }
     interface DnnActionDeleteItems {
         "items": Item[];
+    }
+    interface DnnActionDownloadItem {
+        "item": Item;
     }
     interface DnnActionEditItem {
         "item": Item;
@@ -488,6 +501,7 @@ declare namespace LocalJSX {
         "dnn-action-copy-url": DnnActionCopyUrl;
         "dnn-action-create-folder": DnnActionCreateFolder;
         "dnn-action-delete-items": DnnActionDeleteItems;
+        "dnn-action-download-item": DnnActionDownloadItem;
         "dnn-action-edit-item": DnnActionEditItem;
         "dnn-action-move-items": DnnActionMoveItems;
         "dnn-action-unlink-items": DnnActionUnlinkItems;
@@ -520,6 +534,7 @@ declare module "@stencil/core" {
             "dnn-action-copy-url": LocalJSX.DnnActionCopyUrl & JSXBase.HTMLAttributes<HTMLDnnActionCopyUrlElement>;
             "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
             "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
+            "dnn-action-download-item": LocalJSX.DnnActionDownloadItem & JSXBase.HTMLAttributes<HTMLDnnActionDownloadItemElement>;
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
             "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
             "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;

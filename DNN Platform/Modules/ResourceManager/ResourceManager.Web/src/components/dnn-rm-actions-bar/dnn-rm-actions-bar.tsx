@@ -121,6 +121,9 @@ export class DnnRmActionsBar {
           {state.selectedItems.length == 1 && !state.selectedItems[0].isFolder && location.protocol == "https:" &&
             <dnn-action-copy-url items={state.selectedItems}/>
           }
+          {state.selectedItems.length == 1 && !state.selectedItems[0].isFolder &&
+            <dnn-action-download-item item={state.selectedItems[0]}/>
+          }
         </dnn-vertical-overflow-menu>
         <div class="right-controls">
           {state.selectedItems.length > 0 &&
