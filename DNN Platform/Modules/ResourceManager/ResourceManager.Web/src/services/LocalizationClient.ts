@@ -105,6 +105,7 @@ export interface LocalizedStrings {
     "GroupIconCantBeDeleted.Error": string;
     InvalidExtensionMessage: string;
     Refresh: string;
+    Sync: string;
     SyncThisFolder: string;
     SyncThisFolderAndSubfolders: string;
     ManageFolderTypes: string;
