@@ -21,7 +21,7 @@ button{
   display: flex;
   margin: 0 1em;
   gap: 1em;
-  .sort{
+  .sort,.sync{
     position: relative;
     dnn-collapsible{
       position: absolute;

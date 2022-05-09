@@ -73,6 +73,42 @@ export class ItemsClient{
       });
     }
 
+    /**
+     * Syncs the folder content.
+     * @param folderId The folder id.
+     * @param numItems The number of items.
+     * @param sorting The sorting.
+     * @param recursive If true sync recursively.
+     * @returns 
+     */
+     public syncFolderContent(
+        folderId: number,
+        numItems = 20,
+        sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
+        recursive = false,
+        groupId = -1){
+        return new Promise<void>((resolve, reject) => {
+            const url = `${this.requestUrl}SyncFolderContent?folderId=${folderId}&numItems=${numItems}&sorting=${sorting.sortKey}&recursive=${recursive}`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("groupId", groupId.toString());
+            this.abortController?.abort();
+            this.abortController = new AbortController();
+            fetch(url, {
+                headers,
+                signal: this.abortController.signal,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
+
     public search(
         folderId: number,
         search: string,
