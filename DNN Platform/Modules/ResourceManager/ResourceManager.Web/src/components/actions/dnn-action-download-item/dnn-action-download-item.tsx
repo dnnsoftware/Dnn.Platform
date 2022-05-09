@@ -18,14 +18,7 @@ export class DnnActionDownloadItem {
   }
 
   private handleClick(): void {
-    this.itemsClient.download(
-      this.item.itemId,
-      true)
-      // .then(() => {
-      //   window.open()
-      //   document.getElementById('iFrameDownload')
-      // })
-      // .catch(error => console.log(error));
+    this.itemsClient.download(this.item.itemId, true);
   }
 
   render() {
