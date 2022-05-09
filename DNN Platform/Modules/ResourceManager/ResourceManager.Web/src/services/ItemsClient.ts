@@ -25,6 +25,7 @@ export class ItemsClient{
      * @param startIndex Which item to start at in the paging mechanism.
      * @param numItems How many items to return.
      * @param sorting How to sort the items returned.
+     * @param groupId The group id to filter the items by.
      * @returns 
      */
     public getFolderContent(
@@ -79,6 +80,7 @@ export class ItemsClient{
      * @param numItems The number of items.
      * @param sorting The sorting.
      * @param recursive If true sync recursively.
+     * @param groupId The group id to filter the items by.
      * @returns 
      */
      public syncFolderContent(
