@@ -15,4 +15,4 @@ using System.Reflection;
 [assembly: AssemblyTrademark("DNN")]
 [assembly: AssemblyVersion("9.10.2.0")]
 [assembly: AssemblyFileVersion("9.10.2.0")]
-[assembly: AssemblyInformationalVersion("9.10.2.0")]
+[assembly: AssemblyInformationalVersion("9.10.2.0 Custom build")]
