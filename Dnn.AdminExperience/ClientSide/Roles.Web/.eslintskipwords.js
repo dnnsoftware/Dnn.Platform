@@ -94,7 +94,6 @@ module.exports = [
     "localizations",
     "javascript",
     "ie",
-    "pikaday",
     "na",
     "searchable",
     "clearable",

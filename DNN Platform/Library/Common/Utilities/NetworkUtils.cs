@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Common.Utils
 {
     using System;
@@ -8,6 +9,8 @@ namespace DotNetNuke.Common.Utils
     using System.Net;
     using System.Net.Sockets;
     using System.Web;
+
+    using DotNetNuke.Services.UserRequest;
 
     /// <summary>
     /// Enumeration of IP address types.
@@ -267,7 +270,8 @@ namespace DotNetNuke.Common.Utils
         /// <returns>The current client ip address.</returns>
         public static string GetClientIpAddress(HttpRequest request)
         {
-            var ipAddress = request.ServerVariables["HTTP_X_FORWARDED_FOR"]?.Split(',').FirstOrDefault();
+            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(request));
 
             // If there is no proxy, get the standard remote address
             if (string.IsNullOrWhiteSpace(ipAddress) || ipAddress.Equals("unknown", StringComparison.OrdinalIgnoreCase))
