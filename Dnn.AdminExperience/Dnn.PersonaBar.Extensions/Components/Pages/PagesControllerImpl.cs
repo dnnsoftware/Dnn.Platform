@@ -912,10 +912,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
                 }
             }
-            else if (pageId == 0)
-            {
-                return this.GetPermissionsData(PortalController.Instance.GetCurrentSettings().HomeTabId);
-            }
 
             return permissions;
         }
