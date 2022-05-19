@@ -67,6 +67,104 @@ SET IsSecure=@Secure
 WHERE PortalId=@PortalId
 GO
 
+/*    Add PortalPermissions table and procedures            */
+/************************************************************/
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PortalPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}PortalPermission](
+	    	[PermissionId] [INT] IDENTITY(1,1) NOT NULL,
+			[PortalId] [INT] NOT NULL,
+	        [PermissionKey] [VARCHAR](50) NOT NULL,
+	        [PermissionName] [VARCHAR](50) NOT NULL,
+			[ViewOrder] [INT] NOT NULL DEFAULT ((9999)),
+	        [CreatedByUserID] [INT] NULL,
+	        [CreatedOnDate] [DATETIME] NULL,
+	        [LastModifiedByUserID] [INT] NULL,
+	        [LastModifiedOnDate] [DATETIME] NULL,
+        CONSTRAINT [PK_{objectQualifier}PortalPermission] PRIMARY KEY CLUSTERED ([PermissionId] ASC),
+        CONSTRAINT [FK_{objectQualifier}PortalPermission_MenuId] FOREIGN KEY([PortalId]) REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalId]),
+        CONSTRAINT [IX_{objectQualifier}PortalPermissionScope] UNIQUE NONCLUSTERED ([PortalId] ASC, [PermissionKey] ASC)
+    )
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Portal_GetPortalPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Portal_GetPortalPermissions
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Portal_GetPortalPermissions]
+AS
+	SELECT 
+        [PermissionId],
+	    [PortalId],
+	    [PermissionKey],
+	    [PermissionName],
+	    [ViewOrder],
+	    [CreatedByUserID],
+	    [CreatedOnDate],
+	    [LastModifiedByUserID],
+	    [LastModifiedOnDate]
+    FROM {databaseOwner}[{objectQualifier}PortalPermission] ORDER BY ViewOrder ASC
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Portal_SavePortalPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Portal_SavePortalPermission
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Portal_SavePortalPermission
+	@PortalId		    INT,
+	@PermissionKey		VARCHAR(50),
+	@PermissionName		VARCHAR(50),
+	@CurrentUserId	    INT
+AS
+    IF EXISTS(SELECT PermissionId FROM {databaseOwner}[{objectQualifier}PortalPermission]
+                WHERE ((@PortalId IS NULL AND PortalId IS NULL) OR PortalId = @PortalId) AND PermissionKey = @PermissionKey)
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}PortalPermission]  SET
+	        [PortalId] = @PortalId,
+	        [PermissionName] = @PermissionName,
+	        [LastModifiedByUserID] = @CurrentUserId,
+	        [LastModifiedOnDate] = GETDATE()
+        WHERE ((@PortalId IS NULL AND PortalId IS NULL) OR PortalId = @PortalId) AND PermissionKey = @PermissionKey
+
+        SELECT PermissionId FROM {databaseOwner}[{objectQualifier}PortalPermission]
+                WHERE ((@PortalId IS NULL AND PortalId IS NULL) OR PortalId = @PortalId) AND PermissionKey = @PermissionKey
+    END
+    ELSE
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}PortalPermission] (
+	        [PortalId],
+	        [PermissionKey],
+	        [PermissionName],
+	        [CreatedByUserID],
+	        [CreatedOnDate],
+	        [LastModifiedByUserID],
+	        [LastModifiedOnDate]
+        ) VALUES (
+	        @PortalId,
+	        @PermissionKey,
+	        @PermissionName,
+	        @CurrentUserId,
+	        GETDATE(),
+	        @CurrentUserId,
+	        GETDATE()
+        )
+
+        SELECT SCOPE_IDENTITY()
+    END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Portal_DeletePortalPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}Portal_DeletePortalPermission
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Portal_DeletePortalPermission]
+    @PermissionId           INT
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalPermission] 
+        WHERE PermissionId = @PermissionId
+GO
 
 
 /************************************************************/
