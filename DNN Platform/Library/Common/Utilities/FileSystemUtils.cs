@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Threading;
     using System.Web;
@@ -14,7 +15,6 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using ICSharpCode.SharpZipLib.Zip;
 
     using Directory = SchwabenCode.QuickIO.QuickIODirectory;
     using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
@@ -30,7 +30,8 @@ namespace DotNetNuke.Common.Utilities
         /// Adds a File to a Zip File.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
+        [Obsolete("Deprecated in 9.11.0. Scheduled for removal in v11.0.0, use overload taking System.IO.Compression.ZipArchive.")]
+        public static void AddToZip(ref ICSharpCode.SharpZipLib.Zip.ZipOutputStream ZipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
             try
@@ -50,7 +51,7 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 // Create Zip Entry
-                var entry = new ZipEntry(Path.Combine(folder, fileName));
+                var entry = new ICSharpCode.SharpZipLib.Zip.ZipEntry(Path.Combine(folder, fileName));
                 entry.DateTime = DateTime.Now;
                 entry.Size = fs.Length;
                 fs.Close();
@@ -65,6 +66,34 @@ namespace DotNetNuke.Common.Utilities
                 {
                     fs.Close();
                     fs.Dispose();
+                }
+            }
+        }
+
+        public static void AddToZip(ZipArchive zipArchive, string filePath, string fileName, string folder)
+        {
+            // Open File Stream
+            using (var fs = File.OpenRead(FixPath(filePath)))
+            {
+                // Read file into byte array buffer
+                var buffer = new byte[fs.Length];
+
+                var len = fs.Read(buffer, 0, buffer.Length);
+                if (len != fs.Length)
+                {
+                    Logger.ErrorFormat(
+                        "Reading from {0} didn't read all data in buffer. " +
+                                      "Requested to read {1} bytes, but was read {2} bytes", filePath, fs.Length, len);
+                }
+
+                // Create Zip Entry
+                var entry = zipArchive.CreateEntry(Path.Combine(folder, fileName));
+                entry.LastWriteTime = DateTimeOffset.Now;
+
+                // Compress file and add to Zip file
+                using (var entryStream = entry.Open())
+                {
+                    entryStream.Write(buffer, 0, buffer.Length);
                 }
             }
         }
@@ -177,7 +206,52 @@ namespace DotNetNuke.Common.Utilities
             return fileContent;
         }
 
-        public static void UnzipResources(ZipInputStream zipStream, string destPath)
+        public static void UnzipResources(ZipArchive zipArchive, string destPath)
+        {
+            foreach (var zipEntry in zipArchive.Entries)
+            {
+                zipEntry.CheckZipEntry();
+                HtmlUtils.WriteKeepAlive();
+                var localFileName = zipEntry.Name;
+                var relativeDir = Path.GetDirectoryName(zipEntry.Name);
+                if (!string.IsNullOrEmpty(relativeDir) && (!Directory.Exists(Path.Combine(destPath, relativeDir))))
+                {
+                    Directory.Create(Path.Combine(destPath, relativeDir), true);
+                }
+
+                if (!string.IsNullOrEmpty(localFileName))
+                {
+                    var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
+                    try
+                    {
+                        if (File.Exists(fileNamePath))
+                        {
+                            File.SetAttributes(fileNamePath, FileAttributes.Normal);
+                            File.Delete(fileNamePath);
+                        }
+
+                        using (var objFileStream = File.OpenWrite(fileNamePath))
+                        using (var zipEntryStream = zipEntry.Open())
+                        {
+                            var arrData = new byte[2048];
+                            var intSize = zipEntryStream.Read(arrData, 0, arrData.Length);
+                            while (intSize > 0)
+                            {
+                                objFileStream.Write(arrData, 0, intSize);
+                                intSize = zipEntryStream.Read(arrData, 0, arrData.Length);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                }
+            }
+        }
+
+        [Obsolete("Deprecated in 9.11.0. Scheduled for removal in v11.0.0, use overload taking System.IO.Compression.ZipArchive.")]
+        public static void UnzipResources(ICSharpCode.SharpZipLib.Zip.ZipInputStream zipStream, string destPath)
         {
             try
             {
