@@ -6,9 +6,8 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.ComponentModel;
     using System.IO;
-    using System.Text.RegularExpressions;
-
-    using ICSharpCode.SharpZipLib.Zip;
+  using System.IO.Compression;
+  using System.Text.RegularExpressions;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -33,11 +32,11 @@ namespace DotNetNuke.Services.Installer
         /// <param name="entry">The ZipEntry.</param>
         /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
-        public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+        public InstallFile(ZipArchiveEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
             this.InstallerInfo = info;
-            this.ReadZip(zip, entry);
+            this.ReadZip(entry);
         }
 
         /// -----------------------------------------------------------------------------
@@ -340,11 +339,11 @@ namespace DotNetNuke.Services.Installer
         /// <param name="unzip">A ZipStream containing the file content.</param>
         /// <param name="entry">A ZipEntry containing the file metadata.</param>
         /// -----------------------------------------------------------------------------
-        private void ReadZip(ZipInputStream unzip, ZipEntry entry)
+        private void ReadZip(ZipArchiveEntry entry)
         {
             this.ParseFileName(entry.Name);
-            Util.WriteStream(unzip, this.TempFileName);
-            File.SetLastWriteTime(this.TempFileName, entry.DateTime);
+            Util.WriteStream(entry.Open(), this.TempFileName);
+            File.SetLastWriteTime(this.TempFileName, entry.LastWriteTime.LocalDateTime);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.Skins
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Common;
@@ -19,7 +20,6 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -339,9 +339,8 @@ namespace DotNetNuke.UI.Skins
 
         public static string UploadLegacySkin(string rootPath, string skinRoot, string skinName, Stream inputStream)
         {
-            var objZipInputStream = new ZipInputStream(inputStream);
+            var objZipInputStream = new ZipArchive(inputStream, ZipArchiveMode.Read);
 
-            ZipEntry objZipEntry;
             string strExtension;
             string strFileName;
             FileStream objFileStream;
@@ -361,109 +360,85 @@ namespace DotNetNuke.UI.Skins
 
             strMessage += FormatMessage(BEGIN_MESSAGE, skinName, -1, false);
 
-            objZipEntry = objZipInputStream.GetNextEntry();
-            while (objZipEntry != null)
+            foreach (var objZipEntry in objZipInputStream.Entries)
             {
                 objZipEntry.CheckZipEntry();
-                if (!objZipEntry.IsDirectory)
+                // validate file extension
+                strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
+                var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
+                if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                 {
-                    // validate file extension
-                    strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
-                    var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
-                    if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
+                    // process embedded zip files
+                    if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        // process embedded zip files
-                        if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                        using (var objMemoryStream = new MemoryStream())
                         {
-                            using (var objMemoryStream = new MemoryStream())
-                            {
-                                intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objMemoryStream.Write(arrData, 0, intSize);
-                                    intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                }
-
-                                objMemoryStream.Seek(0, SeekOrigin.Begin);
-                                strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
-                            }
+                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                            objMemoryStream.Seek(0, SeekOrigin.Begin);
+                            strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                         }
-                        else if (objZipEntry.Name.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    }
+                    else if (objZipEntry.Name.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        using (var objMemoryStream = new MemoryStream())
                         {
-                            using (var objMemoryStream = new MemoryStream())
-                            {
-                                intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                while (intSize > 0)
-                                {
-                                    objMemoryStream.Write(arrData, 0, intSize);
-                                    intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                                }
-
-                                objMemoryStream.Seek(0, SeekOrigin.Begin);
-                                strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
-                            }
-                        }
-                        else
-                        {
-                            strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.Name;
-
-                            // create the directory if it does not exist
-                            if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
-                            {
-                                strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
-                                Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
-                            }
-
-                            // remove the old file
-                            if (File.Exists(strFileName))
-                            {
-                                File.SetAttributes(strFileName, FileAttributes.Normal);
-                                File.Delete(strFileName);
-                            }
-
-                            // create the new file
-                            objFileStream = File.Create(strFileName);
-
-                            // unzip the file
-                            strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
-                            intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                            while (intSize > 0)
-                            {
-                                objFileStream.Write(arrData, 0, intSize);
-                                intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
-                            }
-
-                            objFileStream.Close();
-
-                            // save the skin file
-                            switch (Path.GetExtension(strFileName))
-                            {
-                                case ".htm":
-                                case ".html":
-                                case ".ascx":
-                                case ".css":
-                                    if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
-                                    {
-                                        arrSkinFiles.Add(strFileName);
-                                    }
-
-                                    break;
-                            }
-
-                            break;
+                            objZipEntry.Open().CopyToStream(objMemoryStream, 25000);
+                            objMemoryStream.Seek(0, SeekOrigin.Begin);
+                            strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                         }
                     }
                     else
                     {
-                        strMessage += string.Format(FILE_RESTICTED, objZipEntry.Name, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                        strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.Name;
+
+                        // create the directory if it does not exist
+                        if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
+                        {
+                            strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
+                            Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
+                        }
+
+                        // remove the old file
+                        if (File.Exists(strFileName))
+                        {
+                            File.SetAttributes(strFileName, FileAttributes.Normal);
+                            File.Delete(strFileName);
+                        }
+
+                        // create the new file
+                        objFileStream = File.Create(strFileName);
+
+                        // unzip the file
+                        strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
+                        objZipEntry.Open().CopyToStream(objFileStream, 25000);
+                        objFileStream.Close();
+
+                        // save the skin file
+                        switch (Path.GetExtension(strFileName))
+                        {
+                            case ".htm":
+                            case ".html":
+                            case ".ascx":
+                            case ".css":
+                                if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
+                                {
+                                    arrSkinFiles.Add(strFileName);
+                                }
+
+                                break;
+                        }
+
+                        break;
                     }
                 }
-
-                objZipEntry = objZipInputStream.GetNextEntry();
+                else
+                {
+                    strMessage += string.Format(FILE_RESTICTED, objZipEntry.Name, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                }
             }
 
             strMessage += FormatMessage(END_MESSAGE, skinName + ".zip", 1, false);
-            objZipInputStream.Close();
+            objZipInputStream.Dispose();
 
             // process the list of skin files
             var NewSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);

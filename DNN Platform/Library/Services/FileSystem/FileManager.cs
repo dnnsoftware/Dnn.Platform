@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Drawing.Imaging;
     using System.Globalization;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -34,7 +35,6 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Log.EventLog;
-    using ICSharpCode.SharpZipLib.Zip;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -1295,7 +1295,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var folderManager = FolderManager.Instance;
 
-            ZipInputStream zipInputStream = null;
+            ZipArchive zipInputStream = null;
 
             if (invalidFiles == null)
             {
@@ -1308,55 +1308,48 @@ namespace DotNetNuke.Services.FileSystem
             {
                 using (var fileContent = this.GetFileContent(file))
                 {
-                    zipInputStream = new ZipInputStream(fileContent);
+                    zipInputStream = new ZipArchive(fileContent);
 
-                    var zipEntry = zipInputStream.GetNextEntry();
-
-                    while (zipEntry != null)
+                    foreach (var zipEntry in zipInputStream.Entries)
                     {
                         zipEntry.CheckZipEntry();
-                        if (!zipEntry.IsDirectory)
+                        exactFilesCount++;
+                        var fileName = Path.GetFileName(zipEntry.Name);
+
+                        this.EnsureZipFolder(zipEntry.Name, destinationFolder);
+
+                        IFolderInfo parentFolder;
+                        if (zipEntry.Name.IndexOf("/") == -1)
                         {
-                            exactFilesCount++;
-                            var fileName = Path.GetFileName(zipEntry.Name);
-
-                            this.EnsureZipFolder(zipEntry.Name, destinationFolder);
-
-                            IFolderInfo parentFolder;
-                            if (zipEntry.Name.IndexOf("/") == -1)
-                            {
-                                parentFolder = destinationFolder;
-                            }
-                            else
-                            {
-                                var folderPath = destinationFolder.FolderPath + zipEntry.Name.Substring(0, zipEntry.Name.LastIndexOf("/") + 1);
-                                parentFolder = folderManager.GetFolder(file.PortalId, folderPath);
-                            }
-
-                            try
-                            {
-                                this.AddFile(parentFolder, fileName, zipInputStream, true);
-                            }
-                            catch (PermissionsNotMetException exc)
-                            {
-                                Logger.Warn(exc);
-                            }
-                            catch (NoSpaceAvailableException exc)
-                            {
-                                Logger.Warn(exc);
-                            }
-                            catch (InvalidFileExtensionException exc)
-                            {
-                                invalidFiles.Add(zipEntry.Name);
-                                Logger.Warn(exc);
-                            }
-                            catch (Exception exc)
-                            {
-                                Logger.Error(exc);
-                            }
+                            parentFolder = destinationFolder;
+                        }
+                        else
+                        {
+                            var folderPath = destinationFolder.FolderPath + zipEntry.Name.Substring(0, zipEntry.Name.LastIndexOf("/") + 1);
+                            parentFolder = folderManager.GetFolder(file.PortalId, folderPath);
                         }
 
-                        zipEntry = zipInputStream.GetNextEntry();
+                        try
+                        {
+                            this.AddFile(parentFolder, fileName, zipEntry.Open(), true);
+                        }
+                        catch (PermissionsNotMetException exc)
+                        {
+                            Logger.Warn(exc);
+                        }
+                        catch (NoSpaceAvailableException exc)
+                        {
+                            Logger.Warn(exc);
+                        }
+                        catch (InvalidFileExtensionException exc)
+                        {
+                            invalidFiles.Add(zipEntry.Name);
+                            Logger.Warn(exc);
+                        }
+                        catch (Exception exc)
+                        {
+                            Logger.Error(exc);
+                        }
                     }
                 }
             }
@@ -1364,7 +1357,6 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (zipInputStream != null)
                 {
-                    zipInputStream.Close();
                     zipInputStream.Dispose();
                 }
             }

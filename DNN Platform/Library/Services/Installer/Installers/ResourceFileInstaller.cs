@@ -5,12 +5,12 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Xml;
     using System.Xml.XPath;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     Directory.CreateDirectory(this.PhysicalBasePath);
                 }
 
-                using (var unzip = new ZipInputStream(new FileStream(insFile.TempFileName, FileMode.Open)))
+                using (var unzip = new ZipArchive(new FileStream(insFile.TempFileName, FileMode.Open)))
                 using (var manifestStream = new FileStream(Path.Combine(this.PhysicalBasePath, this.Manifest), FileMode.Create, FileAccess.Write))
                 {
                     var settings = new XmlWriterSettings();
@@ -134,43 +134,37 @@ namespace DotNetNuke.Services.Installer.Installers
                         // Start files Element
                         writer.WriteStartElement("files");
 
-                        ZipEntry entry = unzip.GetNextEntry();
-                        while (entry != null)
+                        foreach (var entry in unzip.Entries)
                         {
                             entry.CheckZipEntry();
-                            if (!entry.IsDirectory)
+                            string fileName = Path.GetFileName(entry.Name);
+
+                            // Start file Element
+                            writer.WriteStartElement("file");
+
+                            // Write path
+                            writer.WriteElementString(
+                                "path",
+                                entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
+
+                            // Write name
+                            writer.WriteElementString("name", fileName);
+
+                            var physicalPath = Path.Combine(this.PhysicalBasePath, entry.Name);
+                            if (File.Exists(physicalPath))
                             {
-                                string fileName = Path.GetFileName(entry.Name);
-
-                                // Start file Element
-                                writer.WriteStartElement("file");
-
-                                // Write path
-                                writer.WriteElementString(
-                                    "path",
-                                    entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
-
-                                // Write name
-                                writer.WriteElementString("name", fileName);
-
-                                var physicalPath = Path.Combine(this.PhysicalBasePath, entry.Name);
-                                if (File.Exists(physicalPath))
-                                {
-                                    Util.BackupFile(
-                                        new InstallFile(entry.Name, this.Package.InstallerInfo),
-                                        this.PhysicalBasePath,
-                                        this.Log);
-                                }
-
-                                Util.WriteStream(unzip, physicalPath);
-
-                                // Close files Element
-                                writer.WriteEndElement();
-
-                                this.Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
+                                Util.BackupFile(
+                                    new InstallFile(entry.Name, this.Package.InstallerInfo),
+                                    this.PhysicalBasePath,
+                                    this.Log);
                             }
 
-                            entry = unzip.GetNextEntry();
+                            entry.ExtractToFile(physicalPath, true);
+
+                            // Close files Element
+                            writer.WriteEndElement();
+
+                            this.Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
                         }
 
                         // Close files Element
@@ -235,28 +229,22 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile insFile)
         {
-            using (var unzip = new ZipInputStream(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
+            using (var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
             {
-                ZipEntry entry = unzip.GetNextEntry();
-                while (entry != null)
+                foreach (var entry in unzip.Entries)
                 {
                     entry.CheckZipEntry();
-                    if (!entry.IsDirectory)
+                    // Check for Backups
+                    if (File.Exists(insFile.BackupPath + entry.Name))
                     {
-                        // Check for Backups
-                        if (File.Exists(insFile.BackupPath + entry.Name))
-                        {
-                            // Restore File
-                            Util.RestoreFile(new InstallFile(unzip, entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
-                        }
-                        else
-                        {
-                            // Delete File
-                            Util.DeleteFile(entry.Name, this.PhysicalBasePath, this.Log);
-                        }
+                        // Restore File
+                        Util.RestoreFile(new InstallFile(entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
                     }
-
-                    entry = unzip.GetNextEntry();
+                    else
+                    {
+                        // Delete File
+                        Util.DeleteFile(entry.Name, this.PhysicalBasePath, this.Log);
+                    }
                 }
             }
         }

@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -13,7 +14,6 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -312,72 +312,66 @@ namespace DotNetNuke.Services.Installer
                 inputStream.Seek(0, SeekOrigin.Begin);
             }
 
-            var unzip = new ZipInputStream(inputStream);
-            ZipEntry entry = unzip.GetNextEntry();
-            while (entry != null)
+            var unzip = new ZipArchive(inputStream);
+            foreach (var entry in unzip.Entries)
             {
                 entry.CheckZipEntry();
-                if (!entry.IsDirectory)
+                // Add file to list
+                var file = new InstallFile(entry, this);
+                if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    // Add file to list
-                    var file = new InstallFile(unzip, entry, this);
-                    if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
+                    // Temporarily save the TempInstallFolder
+                    string tmpInstallFolder = this.TempInstallFolder;
+
+                    // Create Zip Stream from File
+                    using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
                     {
-                        // Temporarily save the TempInstallFolder
-                        string tmpInstallFolder = this.TempInstallFolder;
+                        // Set TempInstallFolder
+                        this.TempInstallFolder = Path.Combine(this.TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
 
-                        // Create Zip Stream from File
-                        using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
-                        {
-                            // Set TempInstallFolder
-                            this.TempInstallFolder = Path.Combine(this.TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
-
-                            // Extract files from zip
-                            this.ReadZipStream(zipStream, true);
-                        }
-
-                        // Restore TempInstallFolder
-                        this.TempInstallFolder = tmpInstallFolder;
-
-                        // Delete zip file
-                        var zipFile = new FileInfo(file.TempFileName);
-                        zipFile.Delete();
+                        // Extract files from zip
+                        this.ReadZipStream(zipStream, true);
                     }
-                    else
+
+                    // Restore TempInstallFolder
+                    this.TempInstallFolder = tmpInstallFolder;
+
+                    // Delete zip file
+                    var zipFile = new FileInfo(file.TempFileName);
+                    zipFile.Delete();
+                }
+                else
+                {
+                    this.Files[file.FullName.ToLowerInvariant()] = file;
+                    if (file.Type == InstallFileType.Manifest && !isEmbeddedZip)
                     {
-                        this.Files[file.FullName.ToLowerInvariant()] = file;
-                        if (file.Type == InstallFileType.Manifest && !isEmbeddedZip)
+                        if (this.ManifestFile == null)
                         {
-                            if (this.ManifestFile == null)
+                            this.ManifestFile = file;
+                        }
+                        else
+                        {
+                            if (file.Extension == "dnn7" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5" || this.ManifestFile.Extension == "dnn6"))
                             {
                                 this.ManifestFile = file;
                             }
-                            else
+                            else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
                             {
-                                if (file.Extension == "dnn7" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5" || this.ManifestFile.Extension == "dnn6"))
-                                {
-                                    this.ManifestFile = file;
-                                }
-                                else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
-                                {
-                                    this.ManifestFile = file;
-                                }
-                                else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
-                                {
-                                    this.ManifestFile = file;
-                                }
-                                else if (file.Extension == this.ManifestFile.Extension)
-                                {
-                                    this.Log.AddFailure(Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name);
-                                }
+                                this.ManifestFile = file;
+                            }
+                            else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
+                            {
+                                this.ManifestFile = file;
+                            }
+                            else if (file.Extension == this.ManifestFile.Extension)
+                            {
+                                this.Log.AddFailure(Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name);
                             }
                         }
                     }
-
-                    this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
                 }
 
-                entry = unzip.GetNextEntry();
+                this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
             }
 
             if (this.ManifestFile == null)

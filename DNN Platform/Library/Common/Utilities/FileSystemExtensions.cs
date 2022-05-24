@@ -5,15 +5,38 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.IO;
+    using System.IO.Compression;
 
     public static class FileSystemExtensions
     {
-        public static void CheckZipEntry(this ICSharpCode.SharpZipLib.Zip.ZipEntry input)
+        public static void CheckZipEntry(this ZipArchiveEntry input)
         {
             var fullName = input.Name.Replace('\\', '/');
             if (fullName.StartsWith("..") || fullName.Contains("/../"))
             {
                 throw new Exception("Illegal Zip File");
+            }
+        }
+        
+        public static string ReadTextFile(this ZipArchiveEntry input)
+        {
+            var text = string.Empty;
+            using (var reader = new StreamReader(input.Open()))
+            {
+                text = reader.ReadToEnd();
+            }
+            
+            return text;
+        }
+
+        public static void CopyToStream(this Stream strIn, Stream strOut, int bufferSize)
+        {
+            var buffer = new byte[bufferSize];
+            int bytesRead;
+            while ((bytesRead = strIn.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                strOut.Write(buffer, 0, bytesRead);
             }
         }
     }
