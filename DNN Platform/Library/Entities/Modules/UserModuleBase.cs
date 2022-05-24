@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Web;
     using System.Web.Caching;
 
     using DotNetNuke.Common;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.WebControls;
 
@@ -438,7 +440,9 @@ namespace DotNetNuke.Entities.Modules
             bool _CacheGeoIPData = true;
             string _GeoIPFile;
             _GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
-            if (this.Page.Request.UserHostAddress == "127.0.0.1")
+            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+            if (ipAddress == "127.0.0.1")
             {
                 // 'The country cannot be detected because the user is local.
                 IsLocal = true;

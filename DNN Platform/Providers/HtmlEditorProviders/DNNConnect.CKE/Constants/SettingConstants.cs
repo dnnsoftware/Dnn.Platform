@@ -57,6 +57,11 @@ namespace DNNConnect.CKEditorProvider.Constants
         public const string BROWSERROOTDIRID = "browserRootDirId";
 
         /// <summary>
+        /// The browser root folder for images id setting name.
+        /// </summary>
+        public const string BROWSERROOTDIRFORIMGID = "browserRootDirForImgId";
+
+        /// <summary>
         /// The config setting name.
         /// </summary>
         public const string CONFIG = "config";
@@ -145,6 +150,11 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// The upload folder id setting name.
         /// </summary>
         public const string UPLOADDIRID = "uploadDirId";
+
+        /// <summary>
+        /// The upload folder for images id setting name.
+        /// </summary>
+        public const string UPLOADDIRFORIMGID = "uploadDirForImgId";
 
         /// <summary>
         /// The use anchor selector setting name.

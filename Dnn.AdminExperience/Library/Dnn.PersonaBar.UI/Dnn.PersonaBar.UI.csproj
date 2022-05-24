@@ -165,7 +165,6 @@
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
     <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx" />
-    <Content Include="admin\personaBar\css\pikaday.css" />
     <Content Include="admin\personaBar\css\tokenInput.css" />
     <Content Include="admin\personaBar\index.html" />
     <Content Include="admin\personaBar\scripts\codeEditor.js" />
@@ -179,8 +178,6 @@
     <Content Include="admin\personaBar\scripts\koBindingHandlers\tabs.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\toggle.js" />
     <Content Include="admin\personaBar\scripts\extension.js" />
-    <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.html" />
-    <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.js" />
     <Content Include="admin\personaBar\scripts\loader.js" />
     <Content Include="admin\personaBar\scripts\gateway.js" />
     <AdditionalFiles Include="..\..\..\stylecop.json">
@@ -226,7 +223,6 @@
     <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.carousel.min.js" />
     <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.theme.css" />
     <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.transitions.css" />
-    <Content Include="admin\personaBar\scripts\contrib\pikaday.js" />
     <Content Include="admin\personaBar\scripts\contrib\require.js" />
     <Content Include="admin\personaBar\scripts\contrib\text.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\folderPicker.js" />

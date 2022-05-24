@@ -137,12 +137,20 @@
                         <asp:DropDownList ID="BrowserRootDir" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
 				    <div class="dnnFormItem">
+                        <asp:label id="BrowserRootFolderForImg" runat="server" CssClass="dnnLabel">Browser Root Folder for images</asp:label>
+                        <asp:DropDownList ID="BrowserRootDirForImg" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
+				    </div>
+				    <div class="dnnFormItem">
                         <asp:label id="lblBrowserDirs" runat="server" CssClass="dnnLabel">Use Subdirs for non Admins?</asp:label>
                         <asp:CheckBox ID="cbBrowserDirs" runat="server"></asp:CheckBox>
 				    </div>
 				    <div class="dnnFormItem">
                         <asp:label id="UploadFolderLabel" runat="server" CssClass="dnnLabel">Default Upload Folder</asp:label>
                         <asp:DropDownList ID="UploadDir" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
+				    </div>
+				    <div class="dnnFormItem">
+                        <asp:label id="UploadFolderLabelForImg" runat="server" CssClass="dnnLabel">Default Upload Folder for images</asp:label>
+                        <asp:DropDownList ID="UploadDirForImg" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
 				    <div class="dnnFormItem">
                         <asp:label id="OverrideFileOnUploadLabel" runat="server" CssClass="dnnLabel">Override File on Upload?</asp:label>

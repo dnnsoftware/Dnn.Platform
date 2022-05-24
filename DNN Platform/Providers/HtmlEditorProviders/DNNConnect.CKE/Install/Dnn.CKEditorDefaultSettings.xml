@@ -8,7 +8,9 @@
   <SubDirs>false</SubDirs>
   <InjectSyntaxJs>true</InjectSyntaxJs>
   <BrowserRootDirId>-1</BrowserRootDirId>
+  <BrowserRootDirForImgId>-1</BrowserRootDirForImgId>
   <UploadDirId>-1</UploadDirId>
+  <UploadDirForImgId>-1</UploadDirForImgId>
   <ResizeHeight>-1</ResizeHeight>
   <ResizeWidth>-1</ResizeWidth>
   <ToolBarRoles>

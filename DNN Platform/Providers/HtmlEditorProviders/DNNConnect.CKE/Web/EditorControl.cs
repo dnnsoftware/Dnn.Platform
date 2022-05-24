@@ -588,7 +588,9 @@ namespace DNNConnect.CKEditorProvider.Web
                             HttpContext.Current.Session["CKDNNSubDirs"] = this.currentEditorSettings.SubDirs;
 
                             HttpContext.Current.Session["CKDNNRootDirId"] = this.currentEditorSettings.BrowserRootDirId;
+                            HttpContext.Current.Session["CKDNNRootDirForImgId"] = this.currentEditorSettings.BrowserRootDirId;
                             HttpContext.Current.Session["CKDNNUpDirId"] = this.currentEditorSettings.UploadDirId;
+                            HttpContext.Current.Session["CKDNNUpDirForImgId"] = this.currentEditorSettings.UploadDirId;
 
                             // Set Browser Authorize
                             const bool isAuthorized = true;

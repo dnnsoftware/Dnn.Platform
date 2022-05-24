@@ -1685,7 +1685,16 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             IFolderInfo startingFolderInfo = null;
 
-            if (!this.currentSettings.BrowserRootDirId.Equals(-1))
+            if (this.browserModus == "Image" && !this.currentSettings.BrowserRootDirForImgId.Equals(-1))
+            {
+                var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirForImgId);
+
+                if (rootFolder != null)
+                {
+                    startingFolderInfo = rootFolder;
+                }
+            }
+            else if (!this.currentSettings.BrowserRootDirId.Equals(-1))
             {
                 // var rootFolder = new FolderController().GetFolderInfo(this.portalSettings.PortalId, this.currentSettings.BrowserRootDirId);
                 var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirId);
@@ -2456,7 +2465,18 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 var currentFolderInfo = this.GetCurrentFolder();
 
-                if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
+                if (command == "ImageUpload" && !this.currentSettings.UploadDirForImgId.Equals(-1) && !this.currentSettings.SubDirs)
+                {
+                    var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirForImgId);
+
+                    if (uploadFolder != null)
+                    {
+                        uploadPhysicalPath = uploadFolder.PhysicalPath;
+
+                        currentFolderInfo = uploadFolder;
+                    }
+                }
+                else if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
                 {
                     var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirId);
 

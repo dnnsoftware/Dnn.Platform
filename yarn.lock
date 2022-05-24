@@ -8900,6 +8900,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.1":
+  version: 1.11.1
+  resolution: "dayjs@npm:1.11.1"
+  checksum: d5fefd79935f64a3c262e67af7ebeca180bc402b3e99be4e12d20b6d438af3f86d507ba1cbaff95dc0b4e67f1067cea3eaf37b6b74f5494fdd4a6a2909514cd1
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.8.36":
   version: 1.8.36
   resolution: "dayjs@npm:1.8.36"
@@ -10778,6 +10785,7 @@ __metadata:
     babel-polyfill: 6.26.0
     create-react-class: ^15.6.3
     css-loader: 2.1.1
+    dayjs: ^1.11.1
     es6-object-assign: 1.1.0
     es6-promise: 4.2.6
     eslint: 7.32.0
@@ -10790,7 +10798,6 @@ __metadata:
     less: 4.1.2
     less-loader: 5.0.0
     moment: ^2.29.2
-    pikaday: 1.8.0
     prop-types: ^15.6.2
     raw-loader: 2.0.0
     react: ^16.6.3
@@ -17932,13 +17939,6 @@ fsevents@~2.3.2:
   version: 4.0.1
   resolution: "pify@npm:4.0.1"
   checksum: 9c4e34278cb09987685fa5ef81499c82546c033713518f6441778fbec623fc708777fe8ac633097c72d88470d5963094076c7305cafc7ad340aae27cfacd856b
-  languageName: node
-  linkType: hard
-
-"pikaday@npm:1.8.0":
-  version: 1.8.0
-  resolution: "pikaday@npm:1.8.0"
-  checksum: 24ccacade714468741bcf71cd6eb5c300b047265ce9cdb7bd73910abf6acc62ffe14eafd9e25e6307cfd897603ab252ba8f6326f5911e45d2a9a3ec7bfd51765
   languageName: node
   linkType: hard
 

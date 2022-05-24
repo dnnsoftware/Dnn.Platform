@@ -27,7 +27,9 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.DefaultLinkProtocol = LinkProtocol.Https;
             this.InjectSyntaxJs = true;
             this.BrowserRootDirId = -1;
+            this.BrowserRootDirForImgId = -1;
             this.UploadDirId = -1;
+            this.UploadDirForImgId = -1;
             this.ResizeHeight = -1;
             this.ResizeWidth = -1;
             this.BrowserRoles = "0;Administrators;";
@@ -110,14 +112,24 @@ namespace DNNConnect.CKEditorProvider.Objects
         public bool InjectSyntaxJs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Browser Root Directory Id.
+        /// Gets or sets a value indicating the Browser Root Directory Id.
         /// </summary>
         public int BrowserRootDirId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether The Upload Directory Id.
+        /// Gets or sets a value indicating the Browser Root Directory Id for images.
+        /// </summary>
+        public int BrowserRootDirForImgId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Upload Directory Id.
         /// </summary>
         public int UploadDirId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Upload Directory Id for images.
+        /// </summary>
+        public int UploadDirForImgId { get; set; }
 
         /// <summary>
         /// Gets or sets the custom JS file.
