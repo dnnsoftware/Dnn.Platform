@@ -1,22 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core
 {
     using System;
     using System.IO;
-    using System.Linq;
-    using System.Reflection;
+    using System.IO.Compression;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Tests.Utilities.Mocks;
-    using ICSharpCode.SharpZipLib.Zip;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using NUnit.Framework;
@@ -78,17 +72,14 @@ namespace DotNetNuke.Tests.Core
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
             {
-                var zipStream = new ZipOutputStream(stream);
-                zipStream.SetLevel(9);
-
-                foreach (var file in files)
+                using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Update))
                 {
-                    var fileName = Path.GetFileName(file);
-                    FileSystemUtils.AddToZip(ref zipStream, file, fileName, string.Empty);
+                    foreach (var file in files)
+                    {
+                        var fileName = Path.GetFileName(file);
+                        FileSystemUtils.AddToZip(zipArchive, file, fileName, string.Empty);
+                    }
                 }
-
-                zipStream.Finish();
-                zipStream.Close();
             }
 
             // Assert

@@ -8,8 +8,6 @@ namespace DotNetNuke.Services.Installer
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using ICSharpCode.SharpZipLib.Zip;
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallFile class represents a single file in an Installer Package.

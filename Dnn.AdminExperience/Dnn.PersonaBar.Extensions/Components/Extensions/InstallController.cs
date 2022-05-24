@@ -20,7 +20,6 @@ namespace Dnn.PersonaBar.Extensions.Components
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
-    using ICSharpCode.SharpZipLib;
 
     public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
     {

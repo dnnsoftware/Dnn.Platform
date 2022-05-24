@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

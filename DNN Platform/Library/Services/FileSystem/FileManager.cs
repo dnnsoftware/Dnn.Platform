@@ -34,7 +34,6 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Log.EventLog;
-    using ICSharpCode.SharpZipLib.Zip;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 

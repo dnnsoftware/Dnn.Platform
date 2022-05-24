@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Xml;
@@ -15,7 +16,6 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -625,7 +625,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        private void AddFilesToZip(ZipOutputStream stream, IDictionary<string, InstallFile> files, string basePath)
+        private void AddFilesToZip(ZipArchive zipArchive, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
             {
@@ -647,7 +647,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         packageFilePath = packageFilePath.Replace(basePath + "\\", string.Empty);
                     }
 
-                    FileSystemUtils.AddToZip(ref stream, filepath, packageFile.Name, packageFilePath);
+                    FileSystemUtils.AddToZip(zipArchive, filepath, packageFile.Name, packageFilePath);
                     this.Log.AddInfo(string.Format(Util.WRITER_SavedFile, packageFile.FullName));
                 }
             }

@@ -10,7 +10,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
