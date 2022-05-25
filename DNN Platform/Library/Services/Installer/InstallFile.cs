@@ -6,8 +6,10 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.ComponentModel;
     using System.IO;
-  using System.IO.Compression;
-  using System.Text.RegularExpressions;
+    using System.IO.Compression;
+    using System.Text.RegularExpressions;
+
+    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -344,6 +346,22 @@ namespace DotNetNuke.Services.Installer
             this.ParseFileName(entry.FullName);
             Util.WriteStream(entry.Open(), this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.LastWriteTime.LocalDateTime);
+        }
+
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+        {
+            this.Encoding = TextEncoding.UTF8;
+            this.InstallerInfo = info;
+            this.ReadZip(zip, entry);
+        }
+
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0.")]
+        private void ReadZip(ZipInputStream unzip, ZipEntry entry)
+        {
+            this.ParseFileName(entry.Name);
+            Util.WriteStream(unzip, this.TempFileName);
+            File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
     }
 }
