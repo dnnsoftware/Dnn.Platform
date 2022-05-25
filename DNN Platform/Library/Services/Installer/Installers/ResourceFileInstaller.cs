@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         foreach (var entry in unzip.Entries)
                         {
                             entry.CheckZipEntry();
-                            string fileName = Path.GetFileName(entry.Name);
+                            string fileName = Path.GetFileName(entry.FullName);
 
                             // Start file Element
                             writer.WriteStartElement("file");
@@ -145,26 +145,26 @@ namespace DotNetNuke.Services.Installer.Installers
                             // Write path
                             writer.WriteElementString(
                                 "path",
-                                entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
+                                entry.FullName.Substring(0, entry.FullName.IndexOf(fileName)));
 
                             // Write name
                             writer.WriteElementString("name", fileName);
 
-                            var physicalPath = Path.Combine(this.PhysicalBasePath, entry.Name);
+                            var physicalPath = Path.Combine(this.PhysicalBasePath, entry.FullName);
                             if (File.Exists(physicalPath))
                             {
                                 Util.BackupFile(
-                                    new InstallFile(entry.Name, this.Package.InstallerInfo),
+                                    new InstallFile(entry.FullName, this.Package.InstallerInfo),
                                     this.PhysicalBasePath,
                                     this.Log);
                             }
 
-                            entry.ExtractToFile(physicalPath, true);
+                            Util.WriteStream(entry.Open(), physicalPath);
 
                             // Close files Element
                             writer.WriteEndElement();
 
-                            this.Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
+                            this.Log.AddInfo(string.Format(Util.FILE_Created, entry.FullName));
                         }
 
                         // Close files Element
@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     entry.CheckZipEntry();
                     // Check for Backups
-                    if (File.Exists(insFile.BackupPath + entry.Name))
+                    if (File.Exists(insFile.BackupPath + entry.FullName))
                     {
                         // Restore File
                         Util.RestoreFile(new InstallFile(entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
@@ -243,7 +243,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     else
                     {
                         // Delete File
-                        Util.DeleteFile(entry.Name, this.PhysicalBasePath, this.Log);
+                        Util.DeleteFile(entry.FullName, this.PhysicalBasePath, this.Log);
                     }
                 }
             }

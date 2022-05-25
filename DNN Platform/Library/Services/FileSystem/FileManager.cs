@@ -1314,18 +1314,18 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         zipEntry.CheckZipEntry();
                         exactFilesCount++;
-                        var fileName = Path.GetFileName(zipEntry.Name);
+                        var fileName = Path.GetFileName(zipEntry.FullName);
 
-                        this.EnsureZipFolder(zipEntry.Name, destinationFolder);
+                        this.EnsureZipFolder(zipEntry.FullName, destinationFolder);
 
                         IFolderInfo parentFolder;
-                        if (zipEntry.Name.IndexOf("/") == -1)
+                        if (zipEntry.FullName.IndexOf("/") == -1)
                         {
                             parentFolder = destinationFolder;
                         }
                         else
                         {
-                            var folderPath = destinationFolder.FolderPath + zipEntry.Name.Substring(0, zipEntry.Name.LastIndexOf("/") + 1);
+                            var folderPath = destinationFolder.FolderPath + zipEntry.FullName.Substring(0, zipEntry.FullName.LastIndexOf("/") + 1);
                             parentFolder = folderManager.GetFolder(file.PortalId, folderPath);
                         }
 
@@ -1343,7 +1343,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                         catch (InvalidFileExtensionException exc)
                         {
-                            invalidFiles.Add(zipEntry.Name);
+                            invalidFiles.Add(zipEntry.FullName);
                             Logger.Warn(exc);
                         }
                         catch (Exception exc)

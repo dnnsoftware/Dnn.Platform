@@ -12,13 +12,13 @@ namespace DotNetNuke.Common.Utilities
     {
         public static void CheckZipEntry(this ZipArchiveEntry input)
         {
-            var fullName = input.Name.Replace('\\', '/');
+            var fullName = input.FullName.Replace('\\', '/');
             if (fullName.StartsWith("..") || fullName.Contains("/../"))
             {
                 throw new Exception("Illegal Zip File");
             }
         }
-        
+
         public static string ReadTextFile(this ZipArchiveEntry input)
         {
             var text = string.Empty;
@@ -26,7 +26,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 text = reader.ReadToEnd();
             }
-            
+
             return text;
         }
 

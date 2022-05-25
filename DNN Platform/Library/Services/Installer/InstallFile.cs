@@ -341,7 +341,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         private void ReadZip(ZipArchiveEntry entry)
         {
-            this.ParseFileName(entry.Name);
+            this.ParseFileName(entry.FullName);
             Util.WriteStream(entry.Open(), this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.LastWriteTime.LocalDateTime);
         }

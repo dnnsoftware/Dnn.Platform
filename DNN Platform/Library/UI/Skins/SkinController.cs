@@ -364,12 +364,12 @@ namespace DotNetNuke.UI.Skins
             {
                 objZipEntry.CheckZipEntry();
                 // validate file extension
-                strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
+                strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".") + 1);
                 var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
                 if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                 {
                     // process embedded zip files
-                    if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                     {
                         using (var objMemoryStream = new MemoryStream())
                         {
@@ -378,7 +378,7 @@ namespace DotNetNuke.UI.Skins
                             strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                         }
                     }
-                    else if (objZipEntry.Name.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                     {
                         using (var objMemoryStream = new MemoryStream())
                         {
@@ -389,7 +389,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.Name;
+                        strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.FullName;
 
                         // create the directory if it does not exist
                         if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
@@ -433,7 +433,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    strMessage += string.Format(FILE_RESTICTED, objZipEntry.Name, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                    strMessage += string.Format(FILE_RESTICTED, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
                 }
             }
 

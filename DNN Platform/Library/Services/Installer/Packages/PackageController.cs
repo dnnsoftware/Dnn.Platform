@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 foreach (var entry in unzip.Entries)
                 {
                     entry.CheckZipEntry();
-                    var fileName = entry.Name;
+                    var fileName = entry.FullName;
                     string extension = Path.GetExtension(fileName);
                     if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))
                     {

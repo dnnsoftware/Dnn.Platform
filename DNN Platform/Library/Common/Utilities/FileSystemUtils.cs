@@ -185,8 +185,8 @@ namespace DotNetNuke.Common.Utilities
                 {
                     zipEntry.CheckZipEntry();
                     HtmlUtils.WriteKeepAlive();
-                    var localFileName = zipEntry.Name;
-                    var relativeDir = Path.GetDirectoryName(zipEntry.Name);
+                    var localFileName = zipEntry.FullName;
+                    var relativeDir = Path.GetDirectoryName(zipEntry.FullName);
                     if (!string.IsNullOrEmpty(relativeDir) && (!Directory.Exists(Path.Combine(destPath, relativeDir))))
                     {
                         Directory.Create(Path.Combine(destPath, relativeDir), true);
