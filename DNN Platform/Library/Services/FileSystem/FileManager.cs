@@ -1310,9 +1310,8 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     zipInputStream = new ZipArchive(fileContent);
 
-                    foreach (var zipEntry in zipInputStream.Entries)
+                    foreach (var zipEntry in zipInputStream.FileEntries())
                     {
-                        zipEntry.CheckZipEntry();
                         exactFilesCount++;
                         var fileName = Path.GetFileName(zipEntry.FullName);
 

@@ -181,9 +181,8 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                foreach (var zipEntry in zipStream.Entries)
+                foreach (var zipEntry in zipStream.FileEntries())
                 {
-                    zipEntry.CheckZipEntry();
                     HtmlUtils.WriteKeepAlive();
                     var localFileName = zipEntry.FullName;
                     var relativeDir = Path.GetDirectoryName(zipEntry.FullName);

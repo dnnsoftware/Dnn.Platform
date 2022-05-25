@@ -119,9 +119,8 @@ namespace DotNetNuke.Services.Installer.Packages
             var unzip = new ZipArchive(new FileStream(file, FileMode.Open, FileAccess.Read));
             try
             {
-                foreach (var entry in unzip.Entries)
+                foreach (var entry in unzip.FileEntries())
                 {
-                    entry.CheckZipEntry();
                     var fileName = entry.FullName;
                     string extension = Path.GetExtension(fileName);
                     if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))

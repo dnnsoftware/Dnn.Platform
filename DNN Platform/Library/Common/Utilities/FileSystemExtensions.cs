@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
 
@@ -37,6 +38,18 @@ namespace DotNetNuke.Common.Utilities
             while ((bytesRead = strIn.Read(buffer, 0, buffer.Length)) > 0)
             {
                 strOut.Write(buffer, 0, bytesRead);
+            }
+        }
+
+        public static IEnumerable<ZipArchiveEntry> FileEntries(this ZipArchive zip)
+        {
+            foreach (var entry in zip.Entries)
+            {
+                entry.CheckZipEntry();
+                if (!string.IsNullOrEmpty(entry.Name))
+                {
+                    yield return entry;
+                }
             }
         }
     }

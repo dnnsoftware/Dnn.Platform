@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         // Start files Element
                         writer.WriteStartElement("files");
 
-                        foreach (var entry in unzip.Entries)
+                        foreach (var entry in unzip.FileEntries())
                         {
                             entry.CheckZipEntry();
                             string fileName = Path.GetFileName(entry.FullName);
@@ -231,9 +231,8 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             using (var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
             {
-                foreach (var entry in unzip.Entries)
+                foreach (var entry in unzip.FileEntries())
                 {
-                    entry.CheckZipEntry();
                     // Check for Backups
                     if (File.Exists(insFile.BackupPath + entry.FullName))
                     {

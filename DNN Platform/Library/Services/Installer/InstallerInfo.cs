@@ -313,9 +313,8 @@ namespace DotNetNuke.Services.Installer
             }
 
             var unzip = new ZipArchive(inputStream);
-            foreach (var entry in unzip.Entries)
+            foreach (var entry in unzip.FileEntries())
             {
-                entry.CheckZipEntry();
                 // Add file to list
                 var file = new InstallFile(entry, this);
                 if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))

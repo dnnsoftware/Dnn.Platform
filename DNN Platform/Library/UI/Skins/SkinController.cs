@@ -360,9 +360,8 @@ namespace DotNetNuke.UI.Skins
 
             strMessage += FormatMessage(BEGIN_MESSAGE, skinName, -1, false);
 
-            foreach (var objZipEntry in objZipInputStream.Entries)
+            foreach (var objZipEntry in objZipInputStream.FileEntries())
             {
-                objZipEntry.CheckZipEntry();
                 // validate file extension
                 strExtension = objZipEntry.FullName.Substring(objZipEntry.FullName.LastIndexOf(".") + 1);
                 var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
