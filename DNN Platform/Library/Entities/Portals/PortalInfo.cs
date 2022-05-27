@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using Newtonsoft.Json;
 
@@ -56,6 +57,7 @@ namespace DotNetNuke.Entities.Portals
         private string _administratorRoleName;
         private int _pages = Null.NullInteger;
         private string _registeredRoleName;
+        private PortalPermissionCollection permissions;
 
         private int _users;
 
@@ -228,6 +230,17 @@ namespace DotNetNuke.Entities.Portals
         {
             get => this.ThisAsInterface.PortalId;
             set => this.ThisAsInterface.PortalId = value;
+        }
+
+        /// <summary>Gets the permissions collection for the portal.</summary>
+        [XmlArray("portalpermissions")]
+        [XmlArrayItem("permission")]
+        public PortalPermissionCollection PortalPermissions
+        {
+            get
+            {
+                return this.permissions ?? (this.permissions = new PortalPermissionCollection(PortalPermissionController.GetPortalPermissions(this.ThisAsInterface.PortalId)));
+            }
         }
 
         /// <inheritdoc />

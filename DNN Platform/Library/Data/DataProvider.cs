@@ -1845,6 +1845,38 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
+        public virtual IDataReader GetPortalPermissionsByPortal(int portalId)
+        {
+            return this.ExecuteReader("GetPortalPermissionsByPortal", this.GetNull(portalId));
+        }
+
+        public virtual int AddPortalPermission(int portalId, int permissionId, int roleId, bool allowAccess, int userId, int createdByUserId)
+        {
+            return this.ExecuteScalar<int>(
+                "SaveTabPermission",
+                portalId,
+                permissionId,
+                this.GetRoleNull(roleId),
+                allowAccess,
+                this.GetNull(userId),
+                createdByUserId);
+        }
+
+        public virtual void DeletePortalPermission(int portalPermissionId)
+        {
+            this.ExecuteNonQuery("DeletePortalPermission", portalPermissionId);
+        }
+
+        public virtual void DeletePortalPermissionsByPortalID(int portalId)
+        {
+            this.ExecuteNonQuery("DeletePortalPermissionsByPortalID", portalId);
+        }
+
+        public virtual void DeletePortalPermissionsByUserID(int portalId, int userId)
+        {
+            this.ExecuteNonQuery("DeletePortalPermissionsByUserID", portalId, userId);
+        }
+
         public virtual void DeleteFolderPermission(int folderPermissionId)
         {
             this.ExecuteNonQuery("DeleteFolderPermission", folderPermissionId);
