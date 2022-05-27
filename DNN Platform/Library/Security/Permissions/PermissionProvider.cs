@@ -1,6 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
+using System.Linq;
+using DotNetNuke.Abstractions.Portals;
+
 namespace DotNetNuke.Security.Permissions
 {
     using System;
@@ -1262,6 +1266,173 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
         {
             return PortalSecurity.IsInRoles(desktopModulePermissions.ToString(permissionKey));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeletePortalPermissionsByUser deletes a user's Portal Permissions in the Database.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// -----------------------------------------------------------------------------
+        public virtual void DeletePortalPermissionsByUser(UserInfo user)
+        {
+            this.dataProvider.DeletePortalPermissionsByUserID(user.PortalID, user.UserID);
+            DataCache.ClearPortalPermissionsCache(user.PortalID);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetPortalPermissions gets a PortalPermissionCollection.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public virtual PortalPermissionCollection GetPortalPermissions(int portalId)
+        {
+            // Get the Portal PortalPermission Dictionary
+            var dicPortalPermissions = this.GetPortalPermissionsDic(portalId);
+
+            // Get the Collection from the Dictionary
+            var bFound = dicPortalPermissions.TryGetValue(portalId, out PortalPermissionCollection portalPermissions);
+            if (!bFound)
+            {
+                // Return empty collection
+                portalPermissions = new PortalPermissionCollection();
+            }
+
+            return portalPermissions;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetPortalPermissions gets a Dictionary of PortalPermissionCollections by
+        /// PortalId.
+        /// </summary>
+        /// <param name="portalID">The ID of the portal.</param>
+        /// -----------------------------------------------------------------------------
+        private Dictionary<int, PortalPermissionCollection> GetPortalPermissionsDic(int portalID)
+        {
+            string cacheKey = string.Format(DataCache.PortalPermissionCacheKey, portalID);
+            return CBO.GetCachedObject<Dictionary<int, PortalPermissionCollection>>(
+                new CacheItemArgs(cacheKey, DataCache.PortalPermissionCacheTimeOut, DataCache.PortalPermissionCachePriority, portalID),
+                this.GetPortalPermissionsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetPortalPermissionsCallBack gets a Dictionary of PortalPermissionCollections.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private object GetPortalPermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            var dic = new Dictionary<int, PortalPermissionCollection>();
+
+            if (portalID > -1)
+            {
+                var dr = this.dataProvider.GetPortalPermissionsByPortal(portalID);
+                try
+                {
+                    while (dr.Read())
+                    {
+                        // fill business object
+                        var portalPermissionInfo = CBO.FillObject<PortalPermissionInfo>(dr, false);
+
+                        // add Portal Permission to dictionary
+                        if (dic.ContainsKey(portalPermissionInfo.PortalID))
+                        {
+                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[portalPermissionInfo.PortalID].Add(portalPermissionInfo);
+                        }
+                        else
+                        {
+                            // Create new PortalPermission Collection for PortalId
+                            var collection = new PortalPermissionCollection { portalPermissionInfo };
+
+                            // Add Collection to Dictionary
+                            dic.Add(portalPermissionInfo.PortalID, collection);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    // close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+
+            return dic;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// HasPortalPermission checks whether the current user has a specific Portal Permission.
+        /// </summary>
+        /// <param name="portalPermissions">The Permissions for the Portal.</param>
+        /// <param name="permissionKey">The Permission to check.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public virtual bool HasPortalPermission(PortalPermissionCollection portalPermissions, string permissionKey)
+        {
+            bool hasPermission = false;
+            if (permissionKey.Contains(","))
+            {
+                if (permissionKey.Split(',').Any(permission => PortalSecurity.IsInRoles(portalPermissions.ToString(permission))))
+                {
+                    hasPermission = true;
+                }
+            }
+            else
+            {
+                hasPermission = PortalSecurity.IsInRoles(portalPermissions.ToString(permissionKey));
+            }
+
+            return hasPermission;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SavePortalPermissions saves a Portal's permissions.
+        /// </summary>
+        /// <param name="portal">The Portal to update.</param>
+        /// -----------------------------------------------------------------------------
+        public virtual void SavePortalPermissions(PortalInfo portal)
+        {
+            var objCurrentPortalPermissions = this.GetPortalPermissions(portal.PortalID);
+            if (!objCurrentPortalPermissions.CompareTo(portal.PortalPermissions))
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+                if (objCurrentPortalPermissions.Count > 0)
+                {
+                    this.dataProvider.DeletePortalPermissionsByPortalID(portal.PortalID);
+                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
+                }
+
+                if (portal.PortalPermissions != null && portal.PortalPermissions.Count > 0)
+                {
+                    foreach (PortalPermissionInfo objPortalPermission in portal.PortalPermissions)
+                    {
+                        objPortalPermission.PortalPermissionID = this.dataProvider.AddPortalPermission(
+                            portal.PortalID,
+                            objPortalPermission.PermissionID,
+                            objPortalPermission.RoleID,
+                            objPortalPermission.AllowAccess,
+                            objPortalPermission.UserID,
+                            userId);
+                    }
+
+                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_CREATED);
+                }
+            }
         }
     }
 }
