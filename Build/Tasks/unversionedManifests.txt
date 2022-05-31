@@ -1,5 +1,6 @@
 DNN Platform/Components/MailKit/*.dnn
 DNN Platform/Components/Microsoft.*/**/*.dnn
 DNN Platform/Components/Newtonsoft/*.dnn
+DNN Platform/Components/WebFormsMvp/*.dnn
 DNN Platform/JavaScript Libraries/**/*.dnn
 Temp/**/*.dnn
