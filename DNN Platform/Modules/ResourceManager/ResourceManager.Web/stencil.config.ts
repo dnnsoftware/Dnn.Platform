@@ -1,5 +1,6 @@
 import { Config } from '@stencil/core';
 import { sass } from "@stencil/sass";
+import dnnConfig from '../../../../settings.local.json';
 
 export const config: Config = {
   namespace: 'dnn-resource-manager',
@@ -7,6 +8,12 @@ export const config: Config = {
     {
       type: 'dist',
       esmLoaderPath: '../loader',
+    },
+    {
+      // For DNN yarn watch --scope dnn-resource-manager
+      type: 'dist',
+      esmLoaderPath: '../loader',
+      dir: dnnConfig?.WebsitePath ? dnnConfig.WebsitePath : '../Scripts',
     },
     {
       type: 'dist-custom-elements',
