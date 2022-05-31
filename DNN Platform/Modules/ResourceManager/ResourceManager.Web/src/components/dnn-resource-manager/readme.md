@@ -83,6 +83,7 @@ graph TD;
   dnn-rm-actions-bar --> dnn-action-delete-items
   dnn-rm-actions-bar --> dnn-action-unlink-items
   dnn-rm-actions-bar --> dnn-action-copy-url
+  dnn-rm-actions-bar --> dnn-action-download-item
   dnn-rm-actions-bar --> dnn-collapsible
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
@@ -92,6 +93,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-delete-items
+  dnn-rm-file-context-menu --> dnn-action-download-item
   dnn-rm-file-context-menu --> dnn-action-copy-url
   dnn-rm-items-cardview --> dnn-collapsible
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu

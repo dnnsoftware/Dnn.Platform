@@ -76,6 +76,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-move-items
   dnn-rm-file-context-menu --> dnn-action-delete-items
+  dnn-rm-file-context-menu --> dnn-action-download-item
   dnn-rm-file-context-menu --> dnn-action-copy-url
   dnn-rm-files-pane --> dnn-rm-items-cardview
   style dnn-rm-items-cardview fill:#f9f,stroke:#333,stroke-width:4px

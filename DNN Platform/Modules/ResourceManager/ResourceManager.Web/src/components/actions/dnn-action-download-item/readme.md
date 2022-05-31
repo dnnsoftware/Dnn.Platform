@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property             | Attribute | Description | Type     | Default     |
-| -------------------- | --------- | ----------- | -------- | ----------- |
-| `items` _(required)_ | --        |             | `Item[]` | `undefined` |
+| Property            | Attribute | Description | Type   | Default     |
+| ------------------- | --------- | ----------- | ------ | ----------- |
+| `item` _(required)_ | --        |             | `Item` | `undefined` |
 
 
 ## Dependencies
@@ -22,9 +22,9 @@
 ### Graph
 ```mermaid
 graph TD;
-  dnn-rm-actions-bar --> dnn-action-copy-url
-  dnn-rm-file-context-menu --> dnn-action-copy-url
-  style dnn-action-copy-url fill:#f9f,stroke:#333,stroke-width:4px
+  dnn-rm-actions-bar --> dnn-action-download-item
+  dnn-rm-file-context-menu --> dnn-action-download-item
+  style dnn-action-download-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
