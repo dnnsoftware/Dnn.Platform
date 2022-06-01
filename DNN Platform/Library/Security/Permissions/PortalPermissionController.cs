@@ -28,31 +28,41 @@ namespace DotNetNuke.Security.Permissions
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 
         /// <summary>
-        /// Returns a list with all roles with implicit permissions on Portals.
-        /// </summary>
-        /// <param name="portalId">The Portal Id where the Roles are.</param>
-        /// <returns>A List with the implicit roles.</returns>
-        public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
-        {
-            return _provider.ImplicitRolesForPages(portalId);
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can add top level pages.
+        /// Returns a flag indicating whether the current user can add top level pages on the current portal.
         /// </summary>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAddTopLevel()
         {
-            throw new NotImplementedException();
+            return CanAddTopLevel(PortalController.Instance.GetCurrentSettings().PortalId);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user is a page admin.
+        /// Returns a flag indicating whether the current user can add top level pages on a portal.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public static bool CanAddTopLevel(int portalId)
+        {
+            return _provider.CanAddTopLevel(portalId);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user is a page admin for the current portal.
         /// </summary>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAdminPages()
         {
-            throw new NotImplementedException();
+            return CanAdminPages(PortalController.Instance.GetCurrentSettings().PortalId);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user is a page admin for a portal.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public static bool CanAdminPages(int portalId)
+        {
+            return _provider.IsPageAdmin(portalId);
         }
 
         /// -----------------------------------------------------------------------------
