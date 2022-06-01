@@ -58,6 +58,11 @@ namespace DotNetNuke.Security.Permissions
         private const string ManagePagePermissionKey = "EDIT";
         private const string NavigatePagePermissionKey = "VIEW";
         private const string ViewPagePermissionKey = "VIEW";
+
+        // Portal Permission Keys
+        private const string TopPagePermissionKey = "ADDTOPLEVELPAGE";
+        private const string PageAdminPermissionKey = "PAGEADMIN";
+
         private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
@@ -382,6 +387,16 @@ namespace DotNetNuke.Security.Permissions
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
                     && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
+
+        private bool HasSitePermission(PortalInfo portal, string permissionKey)
+        {
+            return (PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(AdminPagePermissionKey)))
+                    && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
 
             // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
             // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
@@ -1018,7 +1033,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddContentToPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ContentPagePermissionKey);
+            return this.HasPagePermission(tab, ContentPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1028,7 +1043,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, AddPagePermissionKey);
+            return this.HasPagePermission(tab, AddPagePermissionKey) || (tab.TabID == Null.NullInteger && this.CanAddTopLevel(tab.PortalID)) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1038,7 +1053,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAdminPage(TabInfo tab)
         {
-            return PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey));
+            return PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1048,7 +1063,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanCopyPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, CopyPagePermissionKey);
+            return this.HasPagePermission(tab, CopyPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1058,7 +1073,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeletePage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, DeletePagePermissionKey);
+            return this.HasPagePermission(tab, DeletePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1068,7 +1083,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanExportPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ExportPagePermissionKey);
+            return this.HasPagePermission(tab, ExportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1078,7 +1093,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanImportPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ImportPagePermissionKey);
+            return this.HasPagePermission(tab, ImportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1088,7 +1103,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManagePage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ManagePagePermissionKey);
+            return this.HasPagePermission(tab, ManagePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1098,7 +1113,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanNavigateToPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, NavigatePagePermissionKey) || this.HasPagePermission(tab, ViewPagePermissionKey);
+            return this.HasPagePermission(tab, NavigatePagePermissionKey) || this.HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1108,7 +1123,39 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ViewPagePermissionKey);
+            return this.HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add top level pages.
+        /// </summary>
+        /// <param name="portalId">The id of the portal.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public virtual bool CanAddTopLevel(int portalId)
+        {
+            var portal = PortalController.Instance.GetPortal(portalId);
+            if (portal == null)
+            {
+                return false;
+            }
+
+            return this.HasPortalPermission(portal.PortalPermissions, TopPagePermissionKey);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user is a page admin.
+        /// </summary>
+        /// <param name="portalId">The id of the portal.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public virtual bool IsPageAdmin(int portalId)
+        {
+            var portal = PortalController.Instance.GetPortal(portalId);
+            if (portal == null)
+            {
+                return false;
+            }
+
+            return this.HasPortalPermission(portal.PortalPermissions, PageAdminPermissionKey);
         }
 
         /// -----------------------------------------------------------------------------

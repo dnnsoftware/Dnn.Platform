@@ -257,8 +257,8 @@ AS
         WHERE PortalId = @PortalId AND UserId = @UserId
 GO
 
-INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES ('SYSTEM_TAB', -1, 'ADDTOPLEVELPAGE', 'Add Top Level Page', 9999, -1, GETDATE(), -1, GETDATE())
-INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES ('SYSTEM_TAB', -1, 'PAGEADMIN', 'Page Admin', 9999, -1, GETDATE(), -1, GETDATE())
+INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES ('SYSTEM_PORTAL', -1, 'ADDTOPLEVELPAGE', 'Add Top Level Page', 9999, -1, GETDATE(), -1, GETDATE())
+INSERT INTO {databaseOwner}[{objectQualifier}Permission] ([PermissionCode], [ModuleDefID], [PermissionKey], [PermissionName], [ViewOrder], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES ('SYSTEM_PORTAL', -1, 'PAGEADMIN', 'Page Admin', 9999, -1, GETDATE(), -1, GETDATE())
 
 GO
 
