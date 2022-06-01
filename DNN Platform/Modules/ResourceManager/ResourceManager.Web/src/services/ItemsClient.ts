@@ -25,19 +25,17 @@ export class ItemsClient{
      * @param startIndex Which item to start at in the paging mechanism.
      * @param numItems How many items to return.
      * @param sorting How to sort the items returned.
-     * @param groupId The group id to filter the items by.
      * @returns 
      */
     public getFolderContent(
         folderId: number,
         startIndex = 0,
         numItems = 20,
-        sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
-        groupId = -1){
+        sorting: SortFieldInfo = new SortFieldInfo("ItemName")){
         return new Promise<GetFolderContentResponse>((resolve, reject) => {
             const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sorting.sortKey}`;
             const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             this.abortController?.abort();
             this.abortController = new AbortController();
             fetch(url, {
@@ -80,19 +78,17 @@ export class ItemsClient{
      * @param numItems The number of items.
      * @param sorting The sorting.
      * @param recursive If true sync recursively.
-     * @param groupId The group id to filter the items by.
      * @returns 
      */
      public syncFolderContent(
         folderId: number,
         numItems = 20,
         sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
-        recursive = false,
-        groupId = -1){
+        recursive = false){
         return new Promise<void>((resolve, reject) => {
             const url = `${this.requestUrl}SyncFolderContent?folderId=${folderId}&numItems=${numItems}&sorting=${sorting.sortKey}&recursive=${recursive}`;
             const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             this.abortController?.abort();
             this.abortController = new AbortController();
             fetch(url, {
@@ -159,13 +155,12 @@ export class ItemsClient{
         pageIndex: number,
         pageSize = 20,
         sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
-        culture = "",
-        groupId = -1)
+        culture = "")
     {
         return new Promise<SearchResponse>((resolve, reject) => {
             const url = `${this.requestUrl}Search?folderId=${folderId}&search=${search}&pageIndex=${pageIndex}&pageSize=${pageSize}&sorting=${sorting.sortKey}&culture=${culture}`;
             const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             this.abortController?.abort();
             this.abortController = new AbortController();
             fetch(url, {
@@ -202,11 +197,11 @@ export class ItemsClient{
         });
     }
 
-    public createNewFolder(request: CreateNewFolderRequest, groupId = 0){
+    public createNewFolder(request: CreateNewFolderRequest){
         return new Promise<CreateNewFolderResponse>((resolve, reject) => {
             const url = `${this.requestUrl}CreateNewFolder`;
             const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             headers.append("Content-Type", "application/json");
             fetch(url, {
                 method: "POST",
@@ -226,11 +221,11 @@ export class ItemsClient{
         });
     }
 
-    public getFolderItem(folderId: number, groupId = 0){
+    public getFolderItem(folderId: number){
         return new Promise<Item>((resolve, reject) => {
             const url = `${this.requestUrl}GetFolderItem?folderId=${folderId}`;
             const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             fetch(url, {
                 headers,
             })
@@ -380,12 +375,12 @@ export class ItemsClient{
         });
     }
 
-    public moveFile(request: MoveFileRequest, groupId = -1){
+    public moveFile(request: MoveFileRequest){
         return new Promise<void>((resolve, reject) => {
             const url = `${this.requestUrl}MoveFile`;
             const headers = this.sf.getModuleHeaders();
             headers.append("Content-Type", "application/json");
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             fetch(url, {
                 method: "POST",
                 body: JSON.stringify(request),
@@ -403,12 +398,12 @@ export class ItemsClient{
         });
     }
 
-    public moveFolder(request: MoveFolderRequest, groupId = -1){
+    public moveFolder(request: MoveFolderRequest){
         return new Promise<void>((resolve, reject) => {
             const url = `${this.requestUrl}MoveFolder`;
             const headers = this.sf.getModuleHeaders();
             headers.append("Content-Type", "application/json");
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             fetch(url, {
                 method: "POST",
                 body: JSON.stringify(request),
@@ -426,12 +421,12 @@ export class ItemsClient{
         });
     }
 
-    public deleteFolder(request: DeleteFolderRequest, groupId = -1){
+    public deleteFolder(request: DeleteFolderRequest){
         return new Promise<void>((resolve, reject) => {
             const url = `${this.requestUrl}DeleteFolder`;
             const headers = this.sf.getModuleHeaders();
             headers.append("Content-Type", "application/json");
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             fetch(url, {
                 method: "POST",
                 body: JSON.stringify(request),
@@ -449,12 +444,12 @@ export class ItemsClient{
         });
     }
 
-    public deleteFile(request: DeleteFileRequest, groupId = -1){
+    public deleteFile(request: DeleteFileRequest){
         return new Promise<void>((resolve, reject) => {
             const url = `${this.requestUrl}DeleteFile`;
             const headers = this.sf.getModuleHeaders();
             headers.append("Content-Type", "application/json");
-            headers.append("groupId", groupId.toString());
+            headers.append("groupId", this.getGroupId());
             fetch(url, {
                 method: "POST",
                 body: JSON.stringify(request),
@@ -470,6 +465,24 @@ export class ItemsClient{
             })
             .catch(reason => reject(reason));
         });
+    }
+
+    private getGroupId(): string {
+        let result = "-1";
+        if (window.location.pathname.indexOf("/groupid/") > -1){
+            const parts = window.location.pathname.split("/");
+            const groupIdIndex = parts.indexOf("groupid");
+            result = parts[groupIdIndex + 1];
+            return result;
+        }
+        
+        const searchParams = new URLSearchParams(window.location.search);
+        const groupId = searchParams.get("groupid");
+        if (groupId){
+            result = groupId;
+        }
+
+        return result;
     }
 }
 

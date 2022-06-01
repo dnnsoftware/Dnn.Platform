@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "stencil build --docs",
-    "watch": "stencil build --config stencil.dnn.config.ts --dev --watch",
+    "watch": "stencil build --config stencil.dnn.config.ts --watch",
     "start": "stencil build --dev --watch --serve",
     "generate": "stencil generate"
   },
