@@ -1,15 +1,20 @@
 import { config as originalConfig } from './stencil.config';
 import dnnConfig from '../../../../settings.local.json';
+import { Config } from '@stencil/core';
 
-export const config = {
+if (!dnnConfig || !dnnConfig.WebsitePath) {
+  console.error("WebsitePath is not defined in settings.local.json");
+}
+const outPath = `${dnnConfig.WebsitePath}\\DesktopModules\\ResourceManager\\Scripts`;
+
+export const config : Config = {
   ...originalConfig,
-  ouputTargets: [
-    ...originalConfig.outputTargets,
+  outputTargets: [
     {
       // For DNN yarn watch --scope dnn-resource-manager
       type: 'dist',
       esmLoaderPath: '../loader',
-      dir: dnnConfig?.WebsitePath ? `${dnnConfig.WebsitePath}\\DesktopModules\\ResourceManager\\Scripts` : '../Scripts',
-    }
-  ]
-}
+      dir: dnnConfig?.WebsitePath ? outPath : '../Scripts',
+    },
+  ],
+};
