@@ -1,6 +1,5 @@
 import { Config } from '@stencil/core';
 import { sass } from "@stencil/sass";
-import dnnConfig from '../../../../settings.local.json';
 
 export const config: Config = {
   namespace: 'dnn-resource-manager',
