@@ -10,12 +10,6 @@ export const config: Config = {
       esmLoaderPath: '../loader',
     },
     {
-      // For DNN yarn watch --scope dnn-resource-manager
-      type: 'dist',
-      esmLoaderPath: '../loader',
-      dir: dnnConfig?.WebsitePath ? dnnConfig.WebsitePath : '../Scripts',
-    },
-    {
       type: 'dist-custom-elements',
     },
     {
