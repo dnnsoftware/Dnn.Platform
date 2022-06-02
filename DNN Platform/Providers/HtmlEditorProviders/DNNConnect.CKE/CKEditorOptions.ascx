@@ -183,6 +183,14 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
+                    <div class="dnnFormItem">
+                        <asp:label id="lblResizeWidthUpload" runat="server" CssClass="dnnLabel">Image Resize Width On Upload:</asp:label>
+                        <asp:TextBox ID="txtResizeWidthUpload" runat="server" CssClass="settingValueInputNumeric" />px
+                    </div>
+                    <div class="dnnFormItem">
+                        <asp:label id="lblResizeHeightUpload" runat="server" CssClass="dnnLabel">Image Resize Height On Upload:</asp:label>
+                        <asp:TextBox ID="txtResizeHeightUpload" runat="server" CssClass="settingValueInputNumeric" />px
+                    </div>
                 </fieldset>
 			    <h2 id="Panel-FileBrowserDefaults" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("FileBrowserDefaults.SeectionName")%>Default Settings</a></h2>
 			    <fieldset>

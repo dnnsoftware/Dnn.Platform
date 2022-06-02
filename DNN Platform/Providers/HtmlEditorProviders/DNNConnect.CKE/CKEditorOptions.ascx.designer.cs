@@ -501,6 +501,42 @@ namespace DNNConnect.CKEditorProvider
         protected global::System.Web.UI.WebControls.GridView UploadFileLimits;
 
         /// <summary>
+        /// lblResizeWidthUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblResizeWidthUpload;
+
+        /// <summary>
+        /// txtResizeWidthUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtResizeWidthUpload;
+
+        /// <summary>
+        /// lblResizeHeightUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblResizeHeightUpload;
+
+        /// <summary>
+        /// txtResizeHeightUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtResizeHeightUpload;
+
+        /// <summary>
         /// lblResizeWidth control.
         /// </summary>
         /// <remarks>

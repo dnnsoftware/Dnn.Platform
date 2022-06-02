@@ -11,6 +11,8 @@
   <BrowserRootDirForImgId>-1</BrowserRootDirForImgId>
   <UploadDirId>-1</UploadDirId>
   <UploadDirForImgId>-1</UploadDirForImgId>
+  <ResizeHeightUpload>-1</ResizeHeightUpload>
+  <ResizeWidthUpload>-1</ResizeWidthUpload>
   <ResizeHeight>-1</ResizeHeight>
   <ResizeWidth>-1</ResizeWidth>
   <ToolBarRoles>

@@ -31,6 +31,8 @@ namespace DNNConnect.CKEditorProvider.Objects
             this.UploadDirId = -1;
             this.UploadDirForImgId = -1;
             this.ResizeHeight = -1;
+            this.ResizeWidthUpload = -1;
+            this.ResizeHeightUpload = -1;
             this.ResizeWidth = -1;
             this.BrowserRoles = "0;Administrators;";
             this.Browser = "standard";
@@ -138,6 +140,16 @@ namespace DNNConnect.CKEditorProvider.Objects
         /// The custom JS file.
         /// </value>
         public string CustomJsFile { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Resize Image Height On Upload.
+        /// </summary>
+        public int ResizeHeightUpload { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Resize Image Width On Upload.
+        /// </summary>
+        public int ResizeWidthUpload { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Default Resize Image Height.
