@@ -81,8 +81,8 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.10.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Portable.BouncyCastle.1.8.10\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
@@ -1779,6 +1779,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
