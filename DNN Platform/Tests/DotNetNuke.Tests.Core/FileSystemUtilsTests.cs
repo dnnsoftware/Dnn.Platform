@@ -78,7 +78,7 @@ namespace DotNetNuke.Tests.Core
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
             {
-                var zipStream = new ZipArchive(stream);
+                var zipStream = new ZipArchive(stream, ZipArchiveMode.Create, true);
 
                 foreach (var file in files)
                 {
@@ -100,7 +100,7 @@ namespace DotNetNuke.Tests.Core
             {
                 using (var stream = File.OpenRead(zipFilePath))
                 {
-                    var zipStream = new ZipArchive(stream);
+                    var zipStream = new ZipArchive(stream, ZipArchiveMode.Read, true);
                     FileSystemUtils.UnzipResources(zipStream, destPath);
                     zipStream.Dispose();
                 }
