@@ -418,7 +418,7 @@
     <value>SMTP Server Mode:</value>
   </data>
   <data name="plSMTPPassword.Help" xml:space="preserve">
-    <value>Enter the password for the SMTP server.</value>
+    <value>Enter the password for the SMTP server. Leave blank to not to change it.</value>
   </data>
   <data name="plSMTPPassword.Text" xml:space="preserve">
     <value>SMTP Password:</value>

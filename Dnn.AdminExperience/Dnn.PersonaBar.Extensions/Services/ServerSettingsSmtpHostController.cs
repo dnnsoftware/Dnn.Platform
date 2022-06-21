@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = HostController.Instance.GetString("SMTPAuthentication"),
                         enableSmtpSsl = HostController.Instance.GetBoolean("SMTPEnableSSL", false),
                         smtpUserName = HostController.Instance.GetString("SMTPUsername"),
-                        smtpPassword = GetSmtpPassword(),
+                        smtpPassword = string.Empty,
                         smtpHostEmail = HostController.Instance.GetString("HostEmail"),
                         messageSchedulerBatchSize = Host.MessageSchedulerBatchSize,
                     },
@@ -81,6 +81,11 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
+
+                if (string.IsNullOrWhiteSpace(request.SmtpPassword))
+                {
+                    request.SmtpPassword = GetSmtpPassword();
+                }
 
                 if (request.SmtpServerMode == "h")
                 {
