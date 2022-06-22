@@ -5,14 +5,22 @@ namespace DNNConnect.CKEditorProvider.Browser
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Drawing.Imaging;
     using System.IO;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Script.Serialization;
 
+    using DNNConnect.CKEditorProvider.Constants;
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
 
     /// <summary>
@@ -155,6 +163,90 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
+        /// The get encoder.
+        /// </summary>
+        /// <param name="format">
+        /// The format.
+        /// </param>
+        /// <returns>
+        /// The Encoder.
+        /// </returns>
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
+        }
+
+        private PortalSettings portalSettings = null;
+
+        private EditorProviderSettings GetCurrentSettings(HttpContext context)
+        {
+            var currentSettings = new EditorProviderSettings();
+            var request = context.Request;
+            int portalId;
+            int.TryParse(request.QueryString["PortalID"], out portalId);
+            this.portalSettings = new PortalSettings(portalId);
+
+            SettingsMode settingMode;
+            if (!Enum.TryParse(request.QueryString["mode"], true, out settingMode))
+            {
+                settingMode = SettingsMode.Default;
+            }
+
+            var providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
+            var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
+            var settingsDictionary = EditorController.GetEditorHostSettings();
+            var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
+
+            switch (settingMode)
+            {
+                case SettingsMode.Default:
+                    // Load Default Settings
+                    currentSettings = SettingsUtil.GetDefaultSettings(
+                        this.portalSettings,
+                        this.portalSettings.HomeDirectoryMapPath,
+                        objProvider.Attributes["ck_configFolder"],
+                        portalRoles);
+                    break;
+                case SettingsMode.Host:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                        this.portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        "DNNCKH#",
+                        portalRoles);
+                    break;
+                case SettingsMode.Portal:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                        this.portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        $"DNNCKP#{portalId}#",
+                        portalRoles);
+                    break;
+                case SettingsMode.Page:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                        this.portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        $"DNNCKT#{request.QueryString["tabid"]}#",
+                        portalRoles);
+                    break;
+                case SettingsMode.ModuleInstance:
+                    currentSettings = SettingsUtil.LoadModuleSettings(
+                        this.portalSettings,
+                        currentSettings,
+                        $"DNNCKMI#{request.QueryString["mid"]}#INS#{request.QueryString["ckId"]}#",
+                        int.Parse(request.QueryString["mid"]),
+                        portalRoles);
+                    break;
+            }
+
+            return currentSettings;
+        }
+
+        /// <summary>
         /// Uploads the whole file.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -211,7 +303,91 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                FileManager.Instance.AddFile(this.StorageFolder, fileName, file.InputStream, this.OverrideFiles, true, contentType, userId);
+
+                if (!contentType.StartsWith("image", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    FileManager.Instance.AddFile(this.StorageFolder, fileName, file.InputStream, this.OverrideFiles, true, contentType, userId);
+                }
+                else
+                {
+                    // it's an image, so we might need to resize
+                    var currentSettings = this.GetCurrentSettings(context);
+
+                    int maxWidth = currentSettings.ResizeWidthUpload;
+                    int maxHeight = currentSettings.ResizeHeightUpload;
+                    if (maxWidth <= 0 && maxHeight <= 0)
+                    {
+                        FileManager.Instance.AddFile(this.StorageFolder, fileName, file.InputStream);
+                    }
+                    else
+                    {
+                        // check if the size of the image is within boundaries
+                        using (var uplImage = Image.FromStream(file.InputStream))
+                        {
+                            if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
+                            {
+                                // it's too big: we need to resize
+                                int newWidth, newHeight;
+
+                                // which determines the max: height or width?
+                                double ratioWidth = (double)maxWidth / (double)uplImage.Width;
+                                double ratioHeight = (double)maxHeight / (double)uplImage.Height;
+                                if (ratioWidth < ratioHeight)
+                                {
+                                    // max width needs to be used
+                                    newWidth = maxWidth;
+                                    newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
+                                }
+                                else
+                                {
+                                    // max height needs to be used
+                                    newHeight = maxHeight;
+                                    newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
+                                }
+
+                                // Add Compression to Jpeg Images
+                                if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
+                                {
+                                    ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
+
+                                    Encoder myEncoder = Encoder.Quality;
+                                    EncoderParameters encodeParams = new EncoderParameters(1);
+                                    EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
+                                    encodeParams.Param[0] = encodeParam;
+
+                                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                                    {
+                                        using (Graphics g = Graphics.FromImage(dst))
+                                        {
+                                            g.SmoothingMode = SmoothingMode.AntiAlias;
+                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                            g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
+                                        }
+
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            dst.Save(stream, jpgEncoder, encodeParams);
+                                            FileManager.Instance.AddFile(this.StorageFolder, fileName, stream);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // Finally Create a new Resized Image
+                                    using (Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
+                                    {
+                                        var imageFormat = uplImage.RawFormat;
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            newImage.Save(stream, imageFormat);
+                                            FileManager.Instance.AddFile(this.StorageFolder, fileName, stream);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
 
                 var fullName = Path.GetFileName(fileName);
                 statuses.Add(new FilesUploadStatus(fullName, file.ContentLength));
