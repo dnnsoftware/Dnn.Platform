@@ -2494,81 +2494,76 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     iCounter++;
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
-
-                    uploadedFile = FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
-                }
-                else
-                {
-                    uploadedFile = FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
                 }
 
                 int maxWidth = this.currentSettings.ResizeWidthUpload;
                 int maxHeight = this.currentSettings.ResizeHeightUpload;
-                if (maxWidth > 0 || maxHeight > 0)
+                if (maxWidth <= 0 && maxHeight <= 0)
+                {
+                    FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                }
+                else
                 {
                     // check if the size of the image is within boundaries
-                    using (var fileStream = FileManager.Instance.GetFileContent(uploadedFile))
+                    using (var uplImage = Image.FromStream(file.InputStream))
                     {
-                        using (var uplImage = Image.FromStream(fileStream))
+                        if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
                         {
-                            if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
+                            // it's too big: we need to resize
+                            int newWidth, newHeight;
+
+                            // which determines the max: height or width?
+                            double ratioWidth = (double)maxWidth / (double)uplImage.Width;
+                            double ratioHeight = (double)maxHeight / (double)uplImage.Height;
+                            if (ratioWidth < ratioHeight)
                             {
-                                // it's too big: we need to resize
-                                int newWidth, newHeight;
+                                // max width needs to be used
+                                newWidth = maxWidth;
+                                newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
+                            }
+                            else
+                            {
+                                // max height needs to be used
+                                newHeight = maxHeight;
+                                newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
+                            }
 
-                                // which determines the max: height or width?
-                                double ratioWidth = (double)maxWidth / (double)uplImage.Width;
-                                double ratioHeight = (double)maxHeight / (double)uplImage.Height;
-                                if (ratioWidth < ratioHeight)
+                            // Add Compression to Jpeg Images
+                            if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
+                            {
+                                ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
+
+                                Encoder myEncoder = Encoder.Quality;
+                                EncoderParameters encodeParams = new EncoderParameters(1);
+                                EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
+                                encodeParams.Param[0] = encodeParam;
+
+                                using (Bitmap dst = new Bitmap(newWidth, newHeight))
                                 {
-                                    // max width needs to be used
-                                    newWidth = maxWidth;
-                                    newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
-                                }
-                                else
-                                {
-                                    // max height needs to be used
-                                    newHeight = maxHeight;
-                                    newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
-                                }
-
-                                // Add Compression to Jpeg Images
-                                if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
-                                {
-                                    ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
-
-                                    Encoder myEncoder = Encoder.Quality;
-                                    EncoderParameters encodeParams = new EncoderParameters(1);
-                                    EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
-                                    encodeParams.Param[0] = encodeParam;
-
-                                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                                    using (Graphics g = Graphics.FromImage(dst))
                                     {
-                                        using (Graphics g = Graphics.FromImage(dst))
-                                        {
-                                            g.SmoothingMode = SmoothingMode.AntiAlias;
-                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                            g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
-                                        }
+                                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                        g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
+                                    }
 
-                                        using (var stream = new MemoryStream())
-                                        {
-                                            dst.Save(stream, jpgEncoder, encodeParams);
-                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
-                                        }
+                                    using (var stream = new MemoryStream())
+                                    {
+                                        dst.Save(stream, jpgEncoder, encodeParams);
+                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
                                     }
                                 }
-                                else
+                            }
+                            else
+                            {
+                                // Finally Create a new Resized Image
+                                using (Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
                                 {
-                                    // Finally Create a new Resized Image
-                                    using (Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
+                                    var imageFormat = uplImage.RawFormat;
+                                    using (var stream = new MemoryStream())
                                     {
-                                        var imageFormat = uplImage.RawFormat;
-                                        using (var stream = new MemoryStream())
-                                        {
-                                            newImage.Save(stream, imageFormat);
-                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
-                                        }
+                                        newImage.Save(stream, imageFormat);
+                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
                                     }
                                 }
                             }
