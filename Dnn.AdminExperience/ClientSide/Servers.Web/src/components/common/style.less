@@ -1,29 +1,43 @@
 .dnn-servers-info-panel-big .serversTabWarningInfo {
+  color: red;
+  margin-bottom: 32px;
+
+  .title label {
+    text-transform: none;
+  }
+
+  .dnn-label {
+    width: 95%;
+    padding: 5px;
+    padding-bottom: 20px;
     color: red;
-    margin-bottom: 32px;
-    
-    .title label {
-        text-transform: none;
+    font-weight: bold;
+  }
+
+  div {
+    float: left;
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: red;
+      margin-top: 4px;
+      :hover {
+        fill: red;
+      }
     }
-    
-    .dnn-label {
-        width: 95%;
-        padding: 5px;
-        padding-bottom: 20px;
-        color: red;
-        font-weight: bold;
-    }
-    
-    div {
-        float: left;
-        svg {
-            width: 20px;
-            height: 20px;
-            fill: red;
-            margin-top:4px;
-            :hover {
-                fill: red;
-            }
-        }
-    }
+  }
+}
+
+.dnn-ui-common-input-group div a {
+  color: #00a0e9;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.dnn-ui-common-input-group .edit-pwd-button {
+  display: block;
+  width: 100%;
+  float: left;
+  height: 62px;
+  padding-top: 4px;
 }
