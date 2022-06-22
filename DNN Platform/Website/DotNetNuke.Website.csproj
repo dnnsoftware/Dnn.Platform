@@ -2853,7 +2853,6 @@
     <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt.resources" />
     <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt.resources" />
     <Content Include="Licenses\Selectize %28Apache%29.txt.resources" />
-    <Content Include="Licenses\SharpZipLib %28MIT%29.txt.resources" />
     <Content Include="Licenses\WatiN %28Apache%29.txt.resources" />
     <Content Include="Licenses\WebFormsMVP %28MsPL%29.txt.resources" />
     <Content Include="Licenses\YUI %28BSD%29.txt.resources" />
