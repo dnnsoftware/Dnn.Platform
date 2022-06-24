@@ -190,7 +190,7 @@
     <value>Update provider for '{0}' in DataType list</value>
   </data>
   <data name="UninstallStepUpdateWebConfigFormat.Text" xml:space="preserve">
-    <value>Web.config: remove Telerik from {0}</value>
+    <value>Web.config: Remove Telerik from {0}</value>
   </data>
   <data name="UninstallStepCleanupDependencyRecords.Text" xml:space="preserve">
     <value>Clean up dependency records for package '{0}'</value>
