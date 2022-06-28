@@ -89,6 +89,7 @@
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <None Include="app.config" />
     <None Include="GoogleTagManagerConnector.dnn" />
     <None Include="Module.build" />
     <None Include="packages.config" />
