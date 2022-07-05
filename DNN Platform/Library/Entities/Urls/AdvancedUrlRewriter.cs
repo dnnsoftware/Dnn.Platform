@@ -1472,6 +1472,11 @@ namespace DotNetNuke.Entities.Urls
                 // mapped virtual url
                 return false;
             }
+            catch (InvalidUriException)
+            {
+                // catch and handle this exception, caused by an invalid hostname in the referrer
+                return false;
+            }
         }
 
         private static bool IgnoreRequest(UrlAction result, string requestedPath, string ignoreRegex, HttpRequest request)
