@@ -31,7 +31,7 @@ namespace DotNetNuke.Common.Utilities
         /// Adds a File to a Zip File.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public static void AddToZip(ref ZipArchive ZipFile, string filePath, string fileName, string folder)
+        public static void AddToZip(ref ZipArchive zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
             try
@@ -51,7 +51,7 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 // Create Zip Entry
-                var entry = ZipFile.CreateEntry(Path.Combine(folder, fileName));
+                var entry = zipFile.CreateEntry(Path.Combine(folder, fileName));
                 entry.LastWriteTime = DateTime.Now;
                 using (var zipStream = entry.Open())
                 {
@@ -536,7 +536,6 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
         }
-
 
         [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
         public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
