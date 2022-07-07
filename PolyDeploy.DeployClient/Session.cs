@@ -15,7 +15,7 @@ namespace PolyDeploy.DeployClient
         public SortedList<int, SessionResponse?>? Responses { get; set; }
     }
 
-    public class SessionResponse
+    public record SessionResponse
     {
         public string? Name { get; init; }
         public List<PackageResponse?>? Packages { get; init; }

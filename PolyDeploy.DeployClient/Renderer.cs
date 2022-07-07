@@ -93,9 +93,38 @@ namespace PolyDeploy.DeployClient
 
             this.console.Write(fileTree);
         }
+
         public void RenderInstallationStatus(SortedList<int, SessionResponse?> packageFiles)
         {
-            // TO DO
+            foreach (var file in packageFiles.Values)
+            {
+                if (file?.Name is null) continue;
+                if (file.Attempted && !StartedPackageFiles.Contains(file.Name))
+                {
+                    this.console.Write(new Markup($"[aqua]{file.Name}[/] Started"));
+                    this.console.WriteLine();
+                    StartedPackageFiles.Add(file.Name);
+                }
+
+                if (file.Success && !SucceededPackageFiles.Contains(file.Name))
+                {
+                    this.console.Write(new Markup($"[aqua]{file.Name}[/] [green]Succeeded[/]"));
+                    this.console.WriteLine();
+                    SucceededPackageFiles.Add(file.Name);
+                }
+
+                if (file.Failures?.Any() == true && !FailedPackageFiles.Contains(file.Name))
+                {
+                    var failureTree = new Tree(new Markup($"[aqua]{file.Name}[/] [red]Failed[/]"));
+                    failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => f!));
+                    this.console.Write(failureTree);
+                    FailedPackageFiles.Add(file.Name);
+                }
+            }
         }
+
+        private readonly HashSet<string> StartedPackageFiles = new HashSet<string>();
+        private readonly HashSet<string> SucceededPackageFiles = new HashSet<string>();
+        private readonly HashSet<string> FailedPackageFiles = new HashSet<string>();
     }
 }

@@ -134,9 +134,164 @@
                     }
                 },
             };
-            
-            renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse },  });
+
+            renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
             console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "Platform Version", "9.1.2" });
+        }
+
+        [Fact]
+        public void RenderInstallationStatus_OutputsSessionResponse()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var sessionResponse = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Success = false
+            };
+
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+            console.Output.ShouldContainStringsInOrder(new[] { "Jimmy", "Started" });
+        }
+
+        [Fact]
+        public void RenderInstallationStatus_OnlyOutputsAttemptedSessionResponses()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Success = false
+            };
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = false,
+                Success = false
+            };
+
+
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            console.Output.ShouldContainStringsInOrder(new[] { "Jimmy", "Started" });
+            console.Output.ShouldNotContain("James");
+        }
+
+        [Fact]
+        public void RenderInstallationStatus_OutputsMultipleResponsesOnDifferentLines()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Success = false
+            };
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = true,
+                Success = false
+            };
+
+
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            console.Output.ShouldContainStringsInOrder("Jimmy", "Started", "\n", "James", "Started", "\n");
+        }
+
+        [Fact]
+        public void RenderInstallationStatus_DoesNotOutputDuplicateInformation()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Success = false
+            };
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = true,
+                Success = false
+            };
+
+            var george = new SessionResponse
+            {
+                Name = "George",
+                Attempted = false,
+                Success = false,
+            };
+
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, { 3, george }, });
+            james = james with { Success = true };
+            george = george with { Attempted = true, Failures = new List<string?> { "He hit the tree 🌴" }, };
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, { 3, george }, });
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, { 3, george }, });
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "Jimmy", "Started", "James", "Started", "James", "Succeeded", "George", "Started", "George", "Failed", "He hit the tree 🌴");
+        }
+
+        [Fact]
+        public void RenderInstallationStatus_OutputsMessageWhenPackageIsSuccessful()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Success = false
+            };
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = true,
+                Success = false
+            };
+
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "Jimmy", "Started", "James", "Started");
+            james = james with { Success = true };
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "Jimmy", "Started", "James", "Started", "James", "Succeeded");
+        }
+
+        [Fact]
+        public void RenderInstallationStatus_RendersFailures()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Failures = new List<string?> { "BAD ZIP", "REALLY FAILED" }
+            };
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = true,
+                Success = false
+            };
+
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            console.Output.ShouldNotContainStringsInOrder("James", "Failed");
+            console.Output.ShouldContainStringsInOrder("Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
         }
     }
 }
