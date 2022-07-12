@@ -125,13 +125,14 @@ namespace DotNetNuke.Modules.Html
                     R = strHTML.IndexOf("\"", S);
 
                     // end of URL
-                    if (R >= 0)
+                    if (R >= 0 && R < strHTML.Length - 2)
                     {
                         strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
                     }
                     else
                     {
-                        strURL = strHTML.Substring(S).ToLowerInvariant();
+                        P = -1;
+                        continue;
                     }
 
                     if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
