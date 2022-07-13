@@ -753,6 +753,8 @@ namespace DotNetNuke.Services.Install
                     }
 
                     this.valEmailValid.ValidationExpression = Globals.glbEmailRegEx;
+
+                    this.chkWebsiteSsl.Checked = this.Request.IsSecureConnection;
                 }
             }
         }

@@ -124,6 +124,10 @@
                             <asp:RequiredFieldValidator ID="valWebsiteName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="WebsiteName.Required" Display="Dynamic" ControlToValidate="txtWebsiteName"  />
                         </div>
                         <div class="dnnFormItem">
+                            <dnn:Label ID="lblWebsiteSsl" runat="server" ControlName="chkWebsiteSsl" ResourceKey="WebsiteSsl" />
+                            <asp:CheckBox ID="chkWebsiteSsl" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
                             <dnn:Label ID="lblTemplate" runat="server" ControlName="templateList" ResourceKey="WebsiteTemplate" />
                             <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
