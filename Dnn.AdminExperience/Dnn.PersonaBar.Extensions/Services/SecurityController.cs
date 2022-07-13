@@ -632,7 +632,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                SslController.Instance.SetAllPortalTabsSecure(this.PortalId, true);
+                DotNetNuke.Data.DataProvider.Instance().SetAllPortalTabsSecure(this.PortalId, true);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)

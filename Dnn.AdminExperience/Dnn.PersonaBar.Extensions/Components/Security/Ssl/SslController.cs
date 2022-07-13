@@ -21,15 +21,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Security.Ssl
             }
         }
 
-        /// <inheritdoc />
-        public void SetAllPortalTabsSecure(int portalId, bool secure)
-        {
-            using (IDataContext context = DataContext.Instance())
-            {
-                context.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}PersonaBar_SetAllPortalTabsSecure", portalId, secure);
-            }
-        }
-
         protected override Func<ISSlController> GetFactory()
         {
             return () => new SslController();
@@ -44,12 +35,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Security.Ssl
         /// <param name="portalId">Portal id of the portal.</param>
         /// <returns>PortalStats object.</returns>
         PortalStats GetPortalStats(int portalId);
-
-        /// <summary>
-        /// Sets all tabs of the portal to the specified secure value.
-        /// </summary>
-        /// <param name="portalId">The portal to update</param>
-        /// <param name="secure">True to set all pages to secure, false to set them all to non secure.</param>
-        void SetAllPortalTabsSecure(int portalId, bool secure);
     }
 }

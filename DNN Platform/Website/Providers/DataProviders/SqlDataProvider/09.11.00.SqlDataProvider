@@ -51,6 +51,22 @@ BEGIN
 END
 GO
 
+/*    Set IsSecure to true for all tabs of a portal         */
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]
+@PortalId INT,
+@Secure BIT
+AS
+UPDATE {databaseOwner}[{objectQualifier}Tabs]
+SET IsSecure=@Secure
+WHERE PortalId=@PortalId
+GO
+
 
 
 /************************************************************/
