@@ -3185,6 +3185,8 @@
     <Content Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
+    <Content Include="Portals\_default\Blank Website.template" />
+    <Content Include="Portals\_default\Default Website.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
       <SubType>Designer</SubType>
@@ -3451,6 +3453,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Licenses\NUnit3TestAdapter %28MIT%29.txt.resources" />
+    <EmbeddedResource Include="Portals\_default\Blank Website.template.en-US.resx" />
+    <EmbeddedResource Include="Portals\_default\Default Website.template.en-US.resx" />
+    <EmbeddedResource Include="Portals\_default\Default Website.template.resources" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
