@@ -537,4 +537,10 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   <data name="WebsiteSsl.Text" xml:space="preserve">
     <value>SSL</value>
   </data>
+  <data name="InstallingSslStep.Text" xml:space="preserve">
+    <value>Checking SSL for site {0}</value>
+  </data>
+  <data name="InstallingSslStepSiteNotFound.Text" xml:space="preserve">
+    <value>Could not find site {0} to set SSL</value>
+  </data>
 </root>

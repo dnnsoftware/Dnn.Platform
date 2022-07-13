@@ -656,6 +656,7 @@
                             confirmPassword: $('#<%= txtConfirmPassword.ClientID %>')[0].value,
                             email: $('#<%= txtEmail.ClientID %>')[0].value,
                             websiteName: $('#<%= txtWebsiteName.ClientID %>')[0].value,
+                            websiteSsl: $('#<%= chkWebsiteSsl.ClientID %>')[0].checked.toString(),
                             template: $('#<%= templateList.ClientID %>').val(),
                             language: $('#<%= languageList.ClientID %>').val(),
                             databaseSetup: $('#<%= databaseSetupType.ClientID %> input:checked').val(),
