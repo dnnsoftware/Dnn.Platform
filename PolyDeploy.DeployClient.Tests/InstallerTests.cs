@@ -20,7 +20,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
@@ -40,9 +40,8 @@ namespace PolyDeploy.DeployClient.Tests
         [Fact]
         public async Task StartSessionAsync_CallsSessionPostApi_NotFound_ThrowsHttpRequestException()
         {
-            var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
@@ -59,7 +58,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
@@ -83,7 +82,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), A.Dummy<string>());
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
 
             var handler = new FakeMessageHandler(
                 new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}"),
@@ -104,7 +103,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
             var targetUri = new Uri("https://polydeploy.example.com/");
-            var options = new DeployInput(targetUri.ToString(), A.Dummy<string>(), A.Dummy<string>());
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString());
 
             var response = @"{
                 ""SessionID"":219,

@@ -8,11 +8,12 @@ namespace PolyDeploy.DeployClient
 
     public class DeployInput : CommandSettings
     {
-        public DeployInput(string targetUri, string apiKey, string encryptionKey)
+        public DeployInput(string targetUri, string apiKey, string encryptionKey, int installationStatusTimeout)
         {
             this.TargetUri = targetUri;
             this.ApiKey = apiKey;
             this.EncryptionKey = encryptionKey;
+            this.InstallationStatusTimeout = installationStatusTimeout;
         }
 
         [CommandOption("-u|--target-uri")]
@@ -27,13 +28,26 @@ namespace PolyDeploy.DeployClient
         [Description("The key used to encrypt the packages before uploading.")]
         public string EncryptionKey { get; init; }
 
+        [CommandOption("-t|--installation-status-timeout")]
+        [Description("The number of seconds to ignore 404 errors when checking installation status.")]
+        [DefaultValue(60)]
+        public int InstallationStatusTimeout { get; init; }
+
         public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
 
         public override ValidationResult Validate()
         {
-            return Uri.TryCreate(this.TargetUri, UriKind.Absolute, out _)
-                ? ValidationResult.Error("--target-uri must be a valid URI")
-                : ValidationResult.Success();
+            if (!Uri.TryCreate(this.TargetUri, UriKind.Absolute, out _))
+            {
+                return ValidationResult.Error("--target-uri must be a valid URI");
+            }
+
+            if (this.InstallationStatusTimeout < 0)
+            {
+                return ValidationResult.Error("--installation-status-timeout must be non-negative");
+            }
+
+            return ValidationResult.Success();
         }
     }
 }
