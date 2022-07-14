@@ -2,15 +2,5 @@
 using PolyDeploy.DeployClient;
 using Spectre.Cli;
 
-try
-{
-    var app = new CommandApp<DeployCommand>();
-    app.Configure(config => config.PropagateExceptions());
-    return app.Run(args);
-}
-catch (Exception exc)
-{
-    Spectre.Console.AnsiConsole.WriteLine();
-    Spectre.Console.AnsiConsole.WriteException(exc);
-    return 1;
-}
+var app = new CommandApp<DeployCommand>();
+return app.Run(args);
