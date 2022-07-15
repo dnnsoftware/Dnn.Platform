@@ -532,15 +532,15 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
     <value>.Net Framework 4.7.2 is required. Check for Windows updates before proceeding.</value>
   </data>
   <data name="WebsiteSsl.Help" xml:space="preserve">
-    <value>Website will be configured to run on SSL</value>
+    <value>Website will be configured to run on HTTPS</value>
   </data>
   <data name="WebsiteSsl.Text" xml:space="preserve">
-    <value>SSL</value>
+    <value>HTTPS</value>
   </data>
   <data name="InstallingSslStep.Text" xml:space="preserve">
-    <value>Checking SSL for site {0}</value>
+    <value>Checking HTTPS for site {0}</value>
   </data>
   <data name="InstallingSslStepSiteNotFound.Text" xml:space="preserve">
-    <value>Could not find site {0} to set SSL</value>
+    <value>Could not find site {0} to set HTTPS</value>
   </data>
 </root>
