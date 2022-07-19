@@ -8,8 +8,8 @@ namespace Dnn.PersonaBar.Sites.Components
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-  using System.IO.Compression;
-  using System.Linq;
+    using System.IO.Compression;
+    using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Web;
@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using Dnn.PersonaBar.Library.DTO.Tabs;
     using Dnn.PersonaBar.Sites.Components.Dto;
     using Dnn.PersonaBar.Sites.Services.Dto;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -939,17 +940,18 @@ namespace Dnn.PersonaBar.Sites.Components
             writer.WriteEndElement();
         }
 
-        private void SerializeFiles(XmlWriter writer, PortalInfo objportal, string folderPath, ref ZipArchive zipFile)
+        private void SerializeFiles(XmlWriter writer, IPortalInfo portal, string folderPath, ref ZipArchive zipFile)
         {
             var folderManager = FolderManager.Instance;
-            var objFolder = folderManager.GetFolder(objportal.PortalID, folderPath);
+            var objFolder = folderManager.GetFolder(portal.PortalId, folderPath);
 
             writer.WriteStartElement("files");
             foreach (var fileInfo in folderManager.GetFiles(objFolder))
             {
                 var objFile = (FileInfo)fileInfo;
+
                 // verify that the file exists on the file system
-                var filePath = objportal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
+                var filePath = portal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
                 if (File.Exists(filePath))
                 {
                     writer.WriteStartElement("file");
@@ -963,9 +965,14 @@ namespace Dnn.PersonaBar.Sites.Components
 
                     writer.WriteEndElement();
 
-                    FileSystemUtils.AddToZip(ref zipFile, filePath, this.GetActualFileName(objFile), folderPath);
+                    FileSystemUtils.AddToZip(
+                        zipFile: ref zipFile,
+                        filePath: filePath,
+                        fileName: this.GetActualFileName(objFile),
+                        folder: folderPath);
                 }
             }
+
             writer.WriteEndElement();
         }
 
