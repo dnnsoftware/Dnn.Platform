@@ -588,7 +588,9 @@ namespace DNNConnect.CKEditorProvider.Web
                             HttpContext.Current.Session["CKDNNSubDirs"] = this.currentEditorSettings.SubDirs;
 
                             HttpContext.Current.Session["CKDNNRootDirId"] = this.currentEditorSettings.BrowserRootDirId;
+                            HttpContext.Current.Session["CKDNNRootDirForImgId"] = this.currentEditorSettings.BrowserRootDirId;
                             HttpContext.Current.Session["CKDNNUpDirId"] = this.currentEditorSettings.UploadDirId;
+                            HttpContext.Current.Session["CKDNNUpDirForImgId"] = this.currentEditorSettings.UploadDirId;
 
                             // Set Browser Authorize
                             const bool isAuthorized = true;
@@ -1187,7 +1189,7 @@ namespace DNNConnect.CKEditorProvider.Web
         {
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
             ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/editor.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css"));
 
             ClientScriptManager cs = this.Page.ClientScript;
 
@@ -1205,11 +1207,11 @@ namespace DNNConnect.CKEditorProvider.Web
                     this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
             }
 
-            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"))
+            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {
                 cs.RegisterClientScriptInclude(
-                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"));
+                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js"));
             }
 
             if (

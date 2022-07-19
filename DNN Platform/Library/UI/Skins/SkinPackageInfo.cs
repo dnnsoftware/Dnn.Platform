@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -86,6 +87,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<int, string> Skins
         {
             get

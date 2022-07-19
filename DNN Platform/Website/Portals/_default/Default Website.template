@@ -3,7 +3,7 @@
   <settings>
     <logofile>Images/Logo.png</logofile>
     <footertext>[Setting.FooterText.Text]</footertext>
-    <userregistration>1</userregistration>
+    <userregistration>0</userregistration>
     <banneradvertising>0</banneradvertising>
     <defaultlanguage>[Setting.DefaultLanguage.Text]</defaultlanguage>
     <skinsrc>[G]Skins/Xcillion/Inner.ascx</skinsrc>
@@ -753,7 +753,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -1097,7 +1097,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1171,7 +1171,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1513,7 +1513,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -1558,7 +1558,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1792,7 +1792,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1860,7 +1860,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -1934,7 +1934,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2031,7 +2031,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -2076,7 +2076,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2310,7 +2310,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2378,7 +2378,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2452,7 +2452,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2548,7 +2548,7 @@
           <permissioncode>SYSTEM_TAB</permissioncode>
           <permissionkey>VIEW</permissionkey>
           <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
+          <rolename>Registered Users</rolename>
         </permission>
         <permission>
           <permissioncode>SYSTEM_TAB</permissioncode>
@@ -2593,7 +2593,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2827,7 +2827,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -2895,7 +2895,7 @@
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
                   <permissionkey>VIEW</permissionkey>
                   <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
+                  <rolename>Registered Users</rolename>
                 </permission>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>

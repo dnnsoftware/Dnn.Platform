@@ -56,7 +56,7 @@ namespace DotNetNuke.Tests.Urls
             this.GetDefaultAlias();
             this.redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", this.PortalId, "CANONICALURL");
             this.sslEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
-            this.sslEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
+            this.sslEnabled = PortalController.GetPortalSettingAsInteger("SSLSetup", this.PortalId, 0) != 0;
             this.primaryAlias = null;
             this.customLocale = null;
             DataCache.ClearCache();
@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Urls
             this.SetDefaultAlias(this.DefaultAlias);
             PortalController.UpdatePortalSetting(this.PortalId, "PortalAliasMapping", this.redirectMode, true, "en-us");
             PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", this.sslEnforced.ToString(), true, "en-us");
-            PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", this.sslEnabled.ToString(), true, "en-us");
+            PortalController.UpdatePortalSetting(this.PortalId, "SSLSetup", this.sslEnabled ? "2" : "0", true, "en-us");
 
             foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(this.PortalId)))
             {
@@ -465,7 +465,7 @@ namespace DotNetNuke.Tests.Urls
             this.securePageName = testFields["Page Name"].Trim();
 
             PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", testFields["Enforced"].Trim(), true, "en-us");
-            PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", testFields["Enabled"].Trim(), true, "en-us");
+            PortalController.UpdatePortalSetting(this.PortalId, "SSLSetup", testFields["Enabled"].Trim(), true, "en-us");
 
             var isSecure = Convert.ToBoolean(testFields["IsSecure"].Trim());
 

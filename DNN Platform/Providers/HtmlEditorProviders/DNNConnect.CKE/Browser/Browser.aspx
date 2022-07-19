@@ -384,7 +384,7 @@
             function setupFileUpload(overrideFile) {
                 var overrideFile = overrideFile;
                 var maxFileSize = <%= this.MaxUploadSize %>;
-                var fileUploaderURL = "FileUploader.ashx?portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>";
+                var fileUploaderURL = "FileUploader.ashx?mode=<%= HttpContext.Current.Request.QueryString["mode"] %>&portalid=<%= HttpContext.Current.Request.QueryString["PortalID"] %>&tabid=<%= HttpContext.Current.Request.QueryString["tabid"] %>&mid=<%= HttpContext.Current.Request.QueryString["mid"] %>&ckId=<%= HttpContext.Current.Request.QueryString["CKEditor"] %>";
 
                 $('#fileupload').fileupload({
                     url: fileUploaderURL,

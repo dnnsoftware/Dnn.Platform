@@ -386,7 +386,16 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valWebsiteName;
-        
+
+        /// <summary>
+        /// chkWebsiteSsl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkWebsiteSsl;
+
         /// <summary>
         /// lblTemplate control.
         /// </summary>

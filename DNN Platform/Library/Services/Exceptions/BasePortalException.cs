@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Exceptions
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Base Portal Exception.
@@ -90,6 +91,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public new MethodBase TargetSite
         {
             get

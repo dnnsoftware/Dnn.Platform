@@ -88,17 +88,13 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PetaPoco">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -766,6 +762,7 @@
     <Compile Include="Install\InstallWizard.aspx.designer.cs">
       <DependentUpon>InstallWizard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Install\SecurityTabResult.cs" />
     <Compile Include="Install\UpgradeWizard.aspx.cs">
       <DependentUpon>UpgradeWizard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2852,7 +2849,6 @@
     <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt.resources" />
     <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt.resources" />
     <Content Include="Licenses\Selectize %28Apache%29.txt.resources" />
-    <Content Include="Licenses\SharpZipLib %28MIT%29.txt.resources" />
     <Content Include="Licenses\WatiN %28Apache%29.txt.resources" />
     <Content Include="Licenses\WebFormsMVP %28MsPL%29.txt.resources" />
     <Content Include="Licenses\YUI %28BSD%29.txt.resources" />
@@ -3185,6 +3181,8 @@
     <Content Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
+    <Content Include="Portals\_default\Blank Website.template" />
+    <Content Include="Portals\_default\Default Website.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
       <SubType>Designer</SubType>
@@ -3364,6 +3362,12 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.07.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.08.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.08.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.09.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.09.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.09.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.10.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.11.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Data.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\DotNetNuke.Schema.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\UnInstall.SqlDataProvider" />
@@ -3445,6 +3449,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Licenses\NUnit3TestAdapter %28MIT%29.txt.resources" />
+    <Content Include="Portals\_default\Blank Website.template.en-US.resx" />
+    <Content Include="Portals\_default\Default Website.template.en-US.resx" />
+    <Content Include="Portals\_default\Default Website.template.resources" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

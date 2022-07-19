@@ -1,0 +1,74 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingName = 'SSLSetup'
+WHERE SettingName = 'SSLEnabled'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingValue = '0'
+WHERE SettingName = 'SSLSetup' AND SettingValue = 'False'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingValue = '2'
+WHERE SettingName = 'SSLSetup'
+ AND SettingValue = 'True'
+GO
+
+
+/*    Add scheduled task to delete expired auth cookies       */
+/************************************************************/
+
+IF NOT EXISTS(SELECT ScheduleID FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Security.Cookies.PurgeAuthCookiesTask, DOTNETNUKE')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule] ([TypeFullName], [TimeLapse], [TimeLapseMeasurement], [RetryTimeLapse], [RetryTimeLapseMeasurement], [RetainHistoryNum], [AttachToEvent], [CatchUpEnabled], [Enabled], [ObjectDependencies], [Servers], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FriendlyName]) 
+	VALUES ('DotNetNuke.Security.Cookies.PurgeAuthCookiesTask, DOTNETNUKE', 1, 'h', 30, 'm', 10, '', 0, 1, '', NULL, NULL, GETDATE(), NULL, GETDATE(), N'Purge Expired Authentication Cookies')
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+GO
+
+/*    Ensure that the AuthCookies doesn't time out          */
+/************************************************************/
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AuthCookies_DeleteOld]
+	@CutoffDate   datetime -- in UTC
+AS
+BEGIN
+	DELETE TOP(10000) FROM {databaseOwner}[{objectQualifier}AuthCookies]
+	WHERE ExpiresOn < @CutoffDate
+END
+GO
+
+/*    Set IsSecure to true for all tabs of a portal         */
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]
+@PortalId INT,
+@Secure BIT
+AS
+UPDATE {databaseOwner}[{objectQualifier}Tabs]
+SET IsSecure=@Secure
+WHERE PortalId=@PortalId
+GO
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

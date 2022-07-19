@@ -292,32 +292,42 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     // request is for a standard page
                     strURL = string.Empty;
 
-                    // if SSL is enabled
-                    if (portalSettings.SSLEnabled)
+                    switch (portalSettings.SSLSetup)
                     {
-                        // if page is secure and connection is not secure orelse ssloffload is enabled and server value exists
-                        if ((portalSettings.ActiveTab.IsSecure && !request.IsSecureConnection) &&
-                            (UrlUtils.IsSslOffloadEnabled(request) == false))
-                        {
-                            // switch to secure connection
-                            strURL = requestedPath.Replace("http://", "https://");
-                            strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
-                        }
-                    }
-
-                    // if SSL is enforced
-                    if (portalSettings.SSLEnforced)
-                    {
-                        // if page is not secure and connection is secure
-                        if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
-                        {
-                            // check if connection has already been forced to secure orelse ssloffload is disabled
-                            if (request.QueryString["ssl"] == null)
+                        case Abstractions.Security.SiteSslSetup.On:
+                            if (!request.IsSecureConnection)
                             {
-                                strURL = requestedPath.Replace("https://", "http://");
-                                strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                // switch to secure connection
+                                strURL = requestedPath.Replace("http://", "https://");
                             }
-                        }
+
+                            break;
+                        case Abstractions.Security.SiteSslSetup.Advanced:
+                            // if site is secure or else page is secure and connection is not secure orelse ssloffload is enabled and server value exists
+                            if (portalSettings.ActiveTab.IsSecure &&
+                                !request.IsSecureConnection &&
+                                (UrlUtils.IsSslOffloadEnabled(request) == false))
+                            {
+                                // switch to secure connection
+                                strURL = requestedPath.Replace("http://", "https://");
+                                strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
+                            }
+
+                            if (portalSettings.SSLEnforced)
+                            {
+                                // if page is not secure and connection is secure
+                                if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
+                                {
+                                    // check if connection has already been forced to secure orelse ssloffload is disabled
+                                    if (request.QueryString["ssl"] == null)
+                                    {
+                                        strURL = requestedPath.Replace("https://", "http://");
+                                        strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                    }
+                                }
+                            }
+
+                            break;
                     }
 
                     // if a protocol switch is necessary

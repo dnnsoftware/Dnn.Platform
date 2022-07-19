@@ -818,9 +818,19 @@ namespace DNNConnect.CKEditorProvider
                      ? importedSettings.BrowserRootDirId.ToString()
                      : "-1";
 
+            this.BrowserRootDirForImg.SelectedValue =
+                 this.BrowserRootDirForImg.Items.FindByValue(importedSettings.BrowserRootDirForImgId.ToString()) != null
+                     ? importedSettings.BrowserRootDirForImgId.ToString()
+                     : "-1";
+
             this.UploadDir.SelectedValue = this.UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
                                            != null
                                                ? importedSettings.UploadDirId.ToString()
+                                               : "-1";
+
+            this.UploadDirForImg.SelectedValue = this.UploadDirForImg.Items.FindByValue(importedSettings.UploadDirForImgId.ToString())
+                                           != null
+                                               ? importedSettings.UploadDirForImgId.ToString()
                                                : "-1";
 
             var homeDirectory = this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
@@ -856,7 +866,11 @@ namespace DNNConnect.CKEditorProvider
                     break;
             }
 
-            this.txtResizeHeight.Text = importedSettings.ResizeWidth.ToString();
+            this.txtResizeWidthUpload.Text = importedSettings.ResizeWidthUpload.ToString();
+
+            this.txtResizeHeightUpload.Text = importedSettings.ResizeHeightUpload.ToString();
+
+            this.txtResizeWidth.Text = importedSettings.ResizeWidth.ToString();
 
             this.txtResizeHeight.Text = importedSettings.ResizeHeight.ToString();
 
@@ -999,7 +1013,9 @@ namespace DNNConnect.CKEditorProvider
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.OVERRIDEFILEONUPLOAD}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.SUBDIRS}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRID}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.BROWSERROOTDIRFORIMGID}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRID}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.UPLOADDIRFORIMGID}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.INJECTJS}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.WIDTH}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.HEIGHT}");
@@ -1009,6 +1025,8 @@ namespace DNNConnect.CKEditorProvider
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CUSTOMJSFILE}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.CONFIG}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.ROLES}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHTUPLOAD}");
+            moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTHUPLOAD}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEHEIGHT}");
             moduleController.DeleteModuleSetting(this.ModuleId, $"{moduleKey}{SettingConstants.RESIZEWIDTH}");
 
@@ -1177,7 +1195,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.ddlSkin.Items.Clear();
 
-            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/skins");
+            DirectoryInfo objDir = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/skins");
 
             foreach (ListItem skinItem in
                 objDir.GetDirectories().Select(
@@ -1191,9 +1209,9 @@ namespace DNNConnect.CKEditorProvider
             // CodeMirror Themes
             this.CodeMirrorTheme.Items.Clear();
 
-            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/plugins/codemirror/theme"))
+            if (Directory.Exists(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme"))
             {
-                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/plugins/codemirror/theme");
+                var themesFolder = new DirectoryInfo(Globals.ApplicationMapPath + "/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/plugins/codemirror/theme");
 
                 // add default theme
                 this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
@@ -1216,7 +1234,9 @@ namespace DNNConnect.CKEditorProvider
         private void FillFolders()
         {
             this.UploadDir.Items.Clear();
+            this.UploadDirForImg.Items.Clear();
             this.BrowserRootDir.Items.Clear();
+            this.BrowserRootDirForImg.Items.Clear();
             this.ExportDir.Items.Clear();
 
             var portalId = this.portalSettings?.PortalId ?? Null.NullInteger;
@@ -1241,12 +1261,16 @@ namespace DNNConnect.CKEditorProvider
                 }
 
                 this.UploadDir.Items.Add(new ListItem(text, value));
+                this.UploadDirForImg.Items.Add(new ListItem(text, value));
                 this.BrowserRootDir.Items.Add(new ListItem(text, value));
+                this.BrowserRootDirForImg.Items.Add(new ListItem(text, value));
                 this.ExportDir.Items.Add(new ListItem(text, value));
             }
 
             this.UploadDir.SelectedValue = "-1";
+            this.UploadDirForImg.SelectedValue = "-1";
             this.BrowserRootDir.SelectedValue = "-1";
+            this.BrowserRootDirForImg.SelectedValue = "-1";
             this.ExportDir.SelectedValue = "-1";
         }
 
@@ -2448,11 +2472,23 @@ namespace DNNConnect.CKEditorProvider
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
             moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
                 moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
+            {
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
+            {
+                moduleController.UpdateModuleSetting(this.ModuleId, $"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
@@ -2702,11 +2738,23 @@ namespace DNNConnect.CKEditorProvider
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
                 EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.FILELISTPAGESIZE}", this.FileListPageSize.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
+            {
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEWIDTHUPLOAD}", this.txtResizeWidthUpload.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
+            {
+                EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.RESIZEHEIGHTUPLOAD}", this.txtResizeHeightUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
@@ -2881,6 +2929,8 @@ namespace DNNConnect.CKEditorProvider
             this.lblToolbarList.Text = Localization.GetString("lblToolbarList.Text", this.ResXFile, this.LangCode);
             this.lblToolbName.Text = Localization.GetString("lblToolbName.Text", this.ResXFile, this.LangCode);
             this.lblToolbSet.Text = Localization.GetString("lblToolbSet.Text", this.ResXFile, this.LangCode);
+            this.lblResizeWidthUpload.Text = Localization.GetString("lblResizeWidthUpload.Text", this.ResXFile, this.LangCode);
+            this.lblResizeHeightUpload.Text = Localization.GetString("lblResizeHeightUpload.Text", this.ResXFile, this.LangCode);
             this.lblResizeWidth.Text = Localization.GetString("lblResizeWidth.Text", this.ResXFile, this.LangCode);
             this.lblResizeHeight.Text = Localization.GetString("lblResizeHeight.Text", this.ResXFile, this.LangCode);
             this.lblImport.Text = Localization.GetString("lnkImport.Text", this.ResXFile, this.LangCode);
@@ -3338,11 +3388,23 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.OverrideFileOnUpload = this.OverrideFileOnUpload.Checked;
             exportSettings.SubDirs = this.cbBrowserDirs.Checked;
             exportSettings.BrowserRootDirId = int.Parse(this.BrowserRootDir.SelectedValue);
+            exportSettings.BrowserRootDirForImgId = int.Parse(this.BrowserRootDirForImg.SelectedValue);
             exportSettings.UploadDirId = int.Parse(this.UploadDir.SelectedValue);
+            exportSettings.UploadDirForImgId = int.Parse(this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
                 exportSettings.FileListPageSize = int.Parse(this.FileListPageSize.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeWidthUpload.Text))
+            {
+                exportSettings.ResizeWidthUpload = int.Parse(this.txtResizeWidthUpload.Text);
+            }
+
+            if (Utility.IsNumeric(this.txtResizeHeightUpload.Text))
+            {
+                exportSettings.ResizeHeightUpload = int.Parse(this.txtResizeHeightUpload.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))

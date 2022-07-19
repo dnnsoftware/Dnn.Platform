@@ -7,7 +7,7 @@
   </PropertyGroup>
   <Import Project="..\..\..\DNN_Platform.build" />
   <PropertyGroup>
-    <Extension>resources</Extension>
+    <Extension>zip</Extension>
     <DNNFileName>ResourceManager</DNNFileName>
     <PackageName>DNNCE_ResourceManager</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\ResourceManager</ModuleFolderName>
