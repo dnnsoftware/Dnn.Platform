@@ -1,36 +1,37 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+#if NET_2_0 // really only because netstandard doesn't understand Assembly.GetCallingAssembly()
+using System;
+using System.Xml;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+
+using log4net.Appender;
+using log4net.Util;
+using log4net.Repository;
 
 namespace log4net.Config
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Reflection;
-    using System.Threading;
-    using System.Xml;
-
-    using log4net.Appender;
-    using log4net.Repository;
-    using log4net.Util;
-
     /// <summary>
     /// Use this class to initialize the log4net environment using an Xml tree.
     /// </summary>
@@ -42,21 +43,20 @@ namespace log4net.Config
     /// Configures a <see cref="ILoggerRepository"/> using an Xml tree.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    [Obsolete("Use XmlConfigurator instead of DOMConfigurator. Scheduled removal in v10.0.0.")]
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    [Obsolete("Use XmlConfigurator instead of DOMConfigurator")]
     public sealed class DOMConfigurator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DOMConfigurator"/> class.
-        /// Private constructor.
+        /// Private constructor
         /// </summary>
-        private DOMConfigurator()
-        {
+        private DOMConfigurator() 
+        { 
         }
 
         /// <summary>
-        /// Automatically configures the log4net system based on the
+        /// Automatically configures the log4net system based on the 
         /// application's configuration settings.
         /// </summary>
         /// <remarks>
@@ -69,8 +69,8 @@ namespace log4net.Config
         /// configurator to look in that file for a section called
         /// <c>log4net</c> that contains the configuration data.
         /// </remarks>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v11.0.0.")]
-        public static void Configure()
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
+        public static void Configure() 
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
         }
@@ -90,14 +90,14 @@ namespace log4net.Config
         /// <c>log4net</c> that contains the configuration data.
         /// </remarks>
         /// <param name="repository">The repository to configure.</param>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        public static void Configure(ILoggerRepository repository)
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
+        public static void Configure(ILoggerRepository repository) 
         {
             XmlConfigurator.Configure(repository);
         }
 
         /// <summary>
-        /// Configures log4net using a <c>log4net</c> element.
+        /// Configures log4net using a <c>log4net</c> element
         /// </summary>
         /// <remarks>
         /// <para>
@@ -107,14 +107,14 @@ namespace log4net.Config
         /// supplied as <paramref name="element"/>.
         /// </remarks>
         /// <param name="element">The element to parse.</param>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        public static void Configure(XmlElement element)
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
+        public static void Configure(XmlElement element) 
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()), element);
         }
 
         /// <summary>
-        /// Configures the <see cref="ILoggerRepository"/> using the specified XML
+        /// Configures the <see cref="ILoggerRepository"/> using the specified XML 
         /// element.
         /// </summary>
         /// <remarks>
@@ -126,8 +126,8 @@ namespace log4net.Config
         /// </remarks>
         /// <param name="repository">The repository to configure.</param>
         /// <param name="element">The element to parse.</param>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        public static void Configure(ILoggerRepository repository, XmlElement element)
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
+        public static void Configure(ILoggerRepository repository, XmlElement element) 
         {
             XmlConfigurator.Configure(repository, element);
         }
@@ -151,16 +151,16 @@ namespace log4net.Config
         /// normal application on <c>Web.config</c> for an ASP.NET application).
         /// </para>
         /// <example>
-        /// The following example configures log4net using a configuration file, of which the
+        /// The following example configures log4net using a configuration file, of which the 
         /// location is stored in the application's configuration file :
         /// </example>
         /// <code lang="C#">
         /// using log4net.Config;
         /// using System.IO;
         /// using System.Configuration;
-        ///
+        /// 
         /// ...
-        ///
+        /// 
         /// DOMConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file"]));
         /// </code>
         /// <para>
@@ -174,7 +174,7 @@ namespace log4net.Config
         ///     </configuration>
         /// </code>
         /// </remarks>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
         public static void Configure(FileInfo configFile)
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()), configFile);
@@ -197,14 +197,14 @@ namespace log4net.Config
         /// Note that this method will NOT close the stream parameter.
         /// </para>
         /// </remarks>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
         public static void Configure(Stream configStream)
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()), configStream);
         }
 
         /// <summary>
-        /// Configures the <see cref="ILoggerRepository"/> using the specified configuration
+        /// Configures the <see cref="ILoggerRepository"/> using the specified configuration 
         /// file.
         /// </summary>
         /// <param name="repository">The repository to configure.</param>
@@ -224,16 +224,16 @@ namespace log4net.Config
         /// normal application on <c>Web.config</c> for an ASP.NET application).
         /// </para>
         /// <example>
-        /// The following example configures log4net using a configuration file, of which the
+        /// The following example configures log4net using a configuration file, of which the 
         /// location is stored in the application's configuration file :
         /// </example>
         /// <code lang="C#">
         /// using log4net.Config;
         /// using System.IO;
         /// using System.Configuration;
-        ///
+        /// 
         /// ...
-        ///
+        /// 
         /// DOMConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file"]));
         /// </code>
         /// <para>
@@ -247,14 +247,15 @@ namespace log4net.Config
         ///     </configuration>
         /// </code>
         /// </remarks>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
         public static void Configure(ILoggerRepository repository, FileInfo configFile)
         {
             XmlConfigurator.Configure(repository, configFile);
         }
 
+
         /// <summary>
-        /// Configures the <see cref="ILoggerRepository"/> using the specified configuration
+        /// Configures the <see cref="ILoggerRepository"/> using the specified configuration 
         /// file.
         /// </summary>
         /// <param name="repository">The repository to configure.</param>
@@ -272,16 +273,16 @@ namespace log4net.Config
         /// Note that this method will NOT close the stream parameter.
         /// </para>
         /// </remarks>
-        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure")]
         public static void Configure(ILoggerRepository repository, Stream configStream)
         {
             XmlConfigurator.Configure(repository, configStream);
         }
 
-#if !NETCF && !SSCLI
+#if (!NETCF && !SSCLI)
 
         /// <summary>
-        /// Configures log4net using the file specified, monitors the file for changes
+        /// Configures log4net using the file specified, monitors the file for changes 
         /// and reloads the configuration if a change is detected.
         /// </summary>
         /// <param name="configFile">The XML file to load the configuration from.</param>
@@ -304,15 +305,15 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         /// <seealso cref="M:Configure(FileInfo)"/>
-        [Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch")]
         public static void ConfigureAndWatch(FileInfo configFile)
         {
             XmlConfigurator.ConfigureAndWatch(LogManager.GetRepository(Assembly.GetCallingAssembly()), configFile);
         }
 
         /// <summary>
-        /// Configures the <see cref="ILoggerRepository"/> using the file specified,
-        /// monitors the file for changes and reloads the configuration if a change
+        /// Configures the <see cref="ILoggerRepository"/> using the file specified, 
+        /// monitors the file for changes and reloads the configuration if a change 
         /// is detected.
         /// </summary>
         /// <param name="repository">The repository to configure.</param>
@@ -336,12 +337,12 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         /// <seealso cref="M:Configure(FileInfo)"/>
-        [Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch. Scheduled removal in v10.0.0.")]
+        [Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch")]
         public static void ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
         {
             XmlConfigurator.ConfigureAndWatch(repository, configFile);
         }
 #endif
-
     }
 }
+#endif // NET_2_0

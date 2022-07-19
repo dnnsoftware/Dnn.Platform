@@ -1,29 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using log4net.Repository;
 
 namespace log4net.Plugin
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using log4net.Repository;
-
     /// <summary>
-    /// Base implementation of <see cref="IPlugin"/>.
+    /// Base implementation of <see cref="IPlugin"/>
     /// </summary>
     /// <remarks>
     /// <para>
@@ -32,15 +32,14 @@ namespace log4net.Plugin
     /// of the <see cref="IPlugin"/> interface.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public abstract class PluginSkeleton : IPlugin
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PluginSkeleton"/> class.
-        /// Constructor.
+        /// Constructor
         /// </summary>
-        /// <param name="name">the name of the plugin.</param>
+        /// <param name="name">the name of the plugin</param>
         /// <remarks>
         /// Initializes a new Plugin with the specified name.
         /// </remarks>
@@ -62,12 +61,12 @@ namespace log4net.Plugin
         /// repository must be a unique name.
         /// </para>
         /// <para>
-        /// The name of the plugin must not change one the
+        /// The name of the plugin must not change one the 
         /// plugin has been attached to a repository.
         /// </para>
         /// </remarks>
-        public virtual string Name
-        {
+        public virtual string Name 
+        { 
             get { return this.m_name; }
             set { this.m_name = value; }
         }
@@ -94,7 +93,7 @@ namespace log4net.Plugin
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This method is called to notify the plugin that
+        /// This method is called to notify the plugin that 
         /// it should stop operating and should detach from
         /// the repository.
         /// </para>
@@ -104,20 +103,20 @@ namespace log4net.Plugin
         }
 
         /// <summary>
-        /// Gets or sets the repository for this plugin.
+        /// The repository for this plugin
         /// </summary>
         /// <value>
         /// The <see cref="ILoggerRepository" /> that this plugin is attached to.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets or sets the <see cref="ILoggerRepository" /> that this plugin is
+        /// Gets or sets the <see cref="ILoggerRepository" /> that this plugin is 
         /// attached to.
         /// </para>
         /// </remarks>
-        protected virtual ILoggerRepository LoggerRepository
+        protected virtual ILoggerRepository LoggerRepository 
         {
-            get { return this.m_repository; }
+            get { return this.m_repository;	}
             set { this.m_repository = value; }
         }
 

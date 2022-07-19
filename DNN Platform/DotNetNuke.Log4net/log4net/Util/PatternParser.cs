@@ -1,32 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+using System.Globalization;
+
+using log4net.Core;
+using log4net.Layout;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.Globalization;
-
-    using log4net.Core;
-    using log4net.Layout;
-
     /// <summary>
     /// Most of the work of the <see cref="PatternLayout"/> class
     /// is delegated to the PatternParser class.
@@ -37,22 +37,21 @@ namespace log4net.Util
     /// returns a chain of <see cref="PatternConverter"/> objects.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public sealed class PatternParser
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatternParser"/> class.
-        /// Constructor.
+        /// Constructor
         /// </summary>
         /// <param name="pattern">The pattern to parse.</param>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="PatternParser" /> class
+        /// Initializes a new instance of the <see cref="PatternParser" /> class 
         /// with the specified pattern string.
         /// </para>
         /// </remarks>
-        public PatternParser(string pattern)
+        public PatternParser(string pattern) 
         {
             this.m_pattern = pattern;
         }
@@ -76,14 +75,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets get the converter registry used by this parser.
+        /// Get the converter registry used by this parser
         /// </summary>
         /// <value>
-        /// The converter registry used by this parser.
+        /// The converter registry used by this parser
         /// </value>
         /// <remarks>
         /// <para>
-        /// Get the converter registry used by this parser.
+        /// Get the converter registry used by this parser
         /// </para>
         /// </remarks>
         public Hashtable PatternConverters
@@ -92,12 +91,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Build the unified cache of converters from the static and instance maps.
+        /// Build the unified cache of converters from the static and instance maps
         /// </summary>
-        /// <returns>the list of all the converter names.</returns>
+        /// <returns>the list of all the converter names</returns>
         /// <remarks>
         /// <para>
-        /// Build the unified cache of converters from the static and instance maps.
+        /// Build the unified cache of converters from the static and instance maps
         /// </para>
         /// </remarks>
         private string[] BuildCache()
@@ -112,12 +111,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Sort strings by length.
+        /// Sort strings by length
         /// </summary>
         /// <remarks>
         /// <para>
         /// <see cref="IComparer" /> that orders strings by string length.
-        /// The longest strings are placed first.
+        /// The longest strings are placed first
         /// </para>
         /// </remarks>
         private sealed class StringLengthComparer : IComparer
@@ -137,12 +136,10 @@ namespace log4net.Util
                 {
                     return 0;
                 }
-
                 if (s1 == null)
                 {
                     return 1;
                 }
-
                 if (s2 == null)
                 {
                     return -1;
@@ -153,10 +150,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Internal method to parse the specified pattern to find specified matches.
+        /// Internal method to parse the specified pattern to find specified matches
         /// </summary>
-        /// <param name="pattern">the pattern to parse.</param>
-        /// <param name="matches">the converter names to match in the pattern.</param>
+        /// <param name="pattern">the pattern to parse</param>
+        /// <param name="matches">the converter names to match in the pattern</param>
         /// <remarks>
         /// <para>
         /// The matches param must be sorted such that longer strings come before shorter ones.
@@ -165,7 +162,7 @@ namespace log4net.Util
         private void ParseInternal(string pattern, string[] matches)
         {
             int offset = 0;
-            while (offset < pattern.Length)
+            while(offset < pattern.Length)
             {
                 int i = pattern.IndexOf('%', offset);
                 if (i < 0 || i == pattern.Length - 1)
@@ -175,7 +172,7 @@ namespace log4net.Util
                 }
                 else
                 {
-                    if (pattern[i + 1] == '%')
+                    if (pattern[i+1] == '%')
                     {
                         // Escaped
                         this.ProcessLiteral(pattern.Substring(offset, i - offset + 1));
@@ -200,7 +197,6 @@ namespace log4net.Util
                                 offset++;
                             }
                         }
-
                         // Look for the minimum length
                         while (offset < pattern.Length && char.IsDigit(pattern[offset]))
                         {
@@ -214,7 +210,6 @@ namespace log4net.Util
 
                             offset++;
                         }
-
                         // Look for the separator between min and max
                         if (offset < pattern.Length)
                         {
@@ -224,7 +219,6 @@ namespace log4net.Util
                                 offset++;
                             }
                         }
-
                         // Look for the maximum length
                         while (offset < pattern.Length && char.IsDigit(pattern[offset]))
                         {
@@ -242,7 +236,7 @@ namespace log4net.Util
                         int remainingStringLength = pattern.Length - offset;
 
                         // Look for pattern
-                        for (int m = 0; m < matches.Length; m++)
+                        for(int m = 0; m<matches.Length; m++)
                         {
                             string key = matches[m];
 
@@ -262,7 +256,7 @@ namespace log4net.Util
                                         {
                                             // Seen option start
                                             offset++;
-
+                                            
                                             int optEnd = pattern.IndexOf('}', offset);
                                             if (optEnd < 0)
                                             {
@@ -287,9 +281,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Process a parsed literal.
+        /// Process a parsed literal
         /// </summary>
-        /// <param name="text">the literal text.</param>
+        /// <param name="text">the literal text</param>
         private void ProcessLiteral(string text)
         {
             if (text.Length > 0)
@@ -300,11 +294,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Process a parsed converter pattern.
+        /// Process a parsed converter pattern
         /// </summary>
-        /// <param name="converterName">the name of the converter.</param>
-        /// <param name="option">the optional option for the converter.</param>
-        /// <param name="formattingInfo">the formatting info for the converter.</param>
+        /// <param name="converterName">the name of the converter</param>
+        /// <param name="option">the optional option for the converter</param>
+        /// <param name="formattingInfo">the formatting info for the converter</param>
         private void ProcessConverter(string converterName, string option, FormattingInfo formattingInfo)
         {
             LogLog.Debug(declaringType, "Converter [" + converterName + "] Option [" + option + "] Format [min=" + formattingInfo.Min + ",max=" + formattingInfo.Max + ",leftAlign=" + formattingInfo.LeftAlign + "]");
@@ -323,12 +317,12 @@ namespace log4net.Util
                 {
                     pc = (PatternConverter)Activator.CreateInstance(converterInfo.Type);
                 }
-                catch (Exception createInstanceEx)
+                catch(Exception createInstanceEx)
                 {
                     LogLog.Error(declaringType, "Failed to create instance of Type [" + converterInfo.Type.FullName + "] using default constructor. Exception: " + createInstanceEx.ToString());
                 }
 
-                // formattingInfo variable is an instance variable, occasionally reset
+                // formattingInfo variable is an instance variable, occasionally reset 
                 // and used over and over again
                 pc.FormattingInfo = formattingInfo;
                 pc.Option = option;
@@ -345,18 +339,19 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Resets the internal state of the parser and adds the specified pattern converter
+        /// Resets the internal state of the parser and adds the specified pattern converter 
         /// to the chain.
         /// </summary>
         /// <param name="pc">The pattern converter to add.</param>
-        private void AddConverter(PatternConverter pc)
+        private void AddConverter(PatternConverter pc) 
         {
             // Add the pattern converter to the list.
-            if (this.m_head == null)
+
+            if (this.m_head == null) 
             {
                 this.m_head = this.m_tail = pc;
             }
-            else
+            else 
             {
                 // Set the next converter on the tail
                 // Update the tail reference
@@ -369,22 +364,22 @@ namespace log4net.Util
         private const char ESCAPE_CHAR = '%';
 
         /// <summary>
-        /// The first pattern converter in the chain.
+        /// The first pattern converter in the chain
         /// </summary>
         private PatternConverter m_head;
 
         /// <summary>
-        ///  the last pattern converter in the chain.
+        ///  the last pattern converter in the chain
         /// </summary>
         private PatternConverter m_tail;
 
         /// <summary>
-        /// The pattern.
+        /// The pattern
         /// </summary>
         private string m_pattern;
 
         /// <summary>
-        /// Internal map of converter identifiers to converter types.
+        /// Internal map of converter identifiers to converter types
         /// </summary>
         /// <remarks>
         /// <para>

@@ -1,23 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 #if !NETCF
@@ -46,15 +45,15 @@ namespace log4net.Config
     /// as many times as necessary to alias all the required domains.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    [AttributeUsage(AttributeTargets.Assembly,AllowMultiple=true)]
     [Serializable]
-    [Obsolete("Use AliasRepositoryAttribute instead of AliasDomainAttribute. Scheduled removal in v10.0.0.")]
+    [Obsolete("Use AliasRepositoryAttribute instead of AliasDomainAttribute")]
     public sealed class AliasDomainAttribute : AliasRepositoryAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AliasDomainAttribute" /> class with
+        /// Initializes a new instance of the <see cref="AliasDomainAttribute" /> class with 
         /// the specified domain to alias to this assembly's repository.
         /// </summary>
         /// <param name="name">The domain to alias to this assembly's repository.</param>
@@ -63,8 +62,7 @@ namespace log4net.Config
         /// Obsolete. Use <see cref="AliasRepositoryAttribute"/> instead of <see cref="AliasDomainAttribute"/>.
         /// </para>
         /// </remarks>
-        public AliasDomainAttribute(string name)
-            : base(name)
+        public AliasDomainAttribute(string name) : base(name)
         {
         }
     }

@@ -1,36 +1,40 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
 // SSCLI 1.0 has no support for ADO.NET
 #if !SSCLI
 
 using System;
 using System.Collections;
+#if !NETSTANDARD1_3
 using System.Configuration;
+#endif
 using System.Data;
 using System.IO;
+#if NETSTANDARD1_3
+using System.Reflection;
+#endif
 
-using log4net.Core;
-using log4net.Layout;
 using log4net.Util;
+using log4net.Layout;
+using log4net.Core;
 
 namespace log4net.Appender
 {
@@ -40,8 +44,8 @@ namespace log4net.Appender
     /// <remarks>
     /// <para>
     /// <see cref="AdoNetAppender"/> appends logging events to a table within a
-    /// database. The appender can be configured to specify the connection
-    /// string by setting the <see cref="ConnectionString"/> property.
+    /// database. The appender can be configured to specify the connection 
+    /// string by setting the <see cref="ConnectionString"/> property. 
     /// The connection type (provider) can be specified by setting the <see cref="ConnectionType"/>
     /// property. For more information on database connection strings for
     /// your specific database see <a href="http://www.connectionstrings.com/">http://www.connectionstrings.com/</a>.
@@ -71,13 +75,13 @@ namespace log4net.Appender
     /// <example>
     /// An example of a SQL Server table that could be logged to:
     /// <code lang="SQL">
-    /// CREATE TABLE [dbo].[Log] (
+    /// CREATE TABLE [dbo].[Log] ( 
     ///   [ID] [int] IDENTITY (1, 1) NOT NULL ,
     ///   [Date] [datetime] NOT NULL ,
     ///   [Thread] [varchar] (255) NOT NULL ,
     ///   [Level] [varchar] (20) NOT NULL ,
     ///   [Logger] [varchar] (255) NOT NULL ,
-    ///   [Message] [varchar] (4000) NOT NULL
+    ///   [Message] [varchar] (4000) NOT NULL 
     /// ) ON [PRIMARY]
     /// </code>
     /// </example>
@@ -120,13 +124,13 @@ namespace log4net.Appender
     /// </appender>
     /// </code>
     /// </example>
-    /// <author>Julian Biddle.</author>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    /// <author>Lance Nehring.</author>
+    /// <author>Julian Biddle</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /// <author>Lance Nehring</author>
     public class AdoNetAppender : BufferingAppenderSkeleton
     {
-        /// <summary>
+        /// <summary> 
         /// Initializes a new instance of the <see cref="AdoNetAppender" /> class.
         /// </summary>
         /// <remarks>
@@ -136,13 +140,13 @@ namespace log4net.Appender
         {
             this.ConnectionType = "System.Data.OleDb.OleDbConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
             this.UseTransactions = true;
-            this.CommandType = System.Data.CommandType.Text;
+            this.CommandType = CommandType.Text;
             this.m_parameters = new ArrayList();
             this.ReconnectOnError = false;
         }
 
         /// <summary>
-        /// Gets or sets the database connection string that is used to connect to
+        /// Gets or sets the database connection string that is used to connect to 
         /// the database.
         /// </summary>
         /// <value>
@@ -170,7 +174,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets the appSettings key from App.Config that contains the connection string.
+        /// The appSettings key from App.Config that contains the connection string.
         /// </summary>
         public string AppSettingsKey
         {
@@ -178,9 +182,8 @@ namespace log4net.Appender
             set { this.m_appSettingsKey = value; }
         }
 
-#if NET_2_0
         /// <summary>
-        /// Gets or sets the connectionStrings key from App.Config that contains the connection string.
+        /// The connectionStrings key from App.Config that contains the connection string.
         /// </summary>
         /// <remarks>
         /// This property requires at least .NET 2.0.
@@ -190,7 +193,6 @@ namespace log4net.Appender
             get { return this.m_connectionStringName; }
             set { this.m_connectionStringName = value; }
         }
-#endif
 
         /// <summary>
         /// Gets or sets the type name of the <see cref="IDbConnection"/> connection
@@ -210,19 +212,19 @@ namespace log4net.Appender
         /// <example>Use the OLE DB Provider. This is the default value.
         /// <code>System.Data.OleDb.OleDbConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</code>
         /// </example>
-        /// <example>Use the MS SQL Server Provider.
+        /// <example>Use the MS SQL Server Provider. 
         /// <code>System.Data.SqlClient.SqlConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</code>
         /// </example>
-        /// <example>Use the ODBC Provider.
+        /// <example>Use the ODBC Provider. 
         /// <code>Microsoft.Data.Odbc.OdbcConnection,Microsoft.Data.Odbc,version=1.0.3300.0,publicKeyToken=b77a5c561934e089,culture=neutral</code>
-        /// This is an optional package that you can download from
-        /// <a href="http://msdn.microsoft.com/downloads">http://msdn.microsoft.com/downloads</a>
+        /// This is an optional package that you can download from 
+        /// <a href="http://msdn.microsoft.com/downloads">http://msdn.microsoft.com/downloads</a> 
         /// search for <b>ODBC .NET Data Provider</b>.
         /// </example>
-        /// <example>Use the Oracle Provider.
+        /// <example>Use the Oracle Provider. 
         /// <code>System.Data.OracleClient.OracleConnection, System.Data.OracleClient, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</code>
-        /// This is an optional package that you can download from
-        /// <a href="http://msdn.microsoft.com/downloads">http://msdn.microsoft.com/downloads</a>
+        /// This is an optional package that you can download from 
+        /// <a href="http://msdn.microsoft.com/downloads">http://msdn.microsoft.com/downloads</a> 
         /// search for <b>.NET Managed Provider for Oracle</b>.
         /// </example>
         public string ConnectionType
@@ -268,7 +270,7 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// This value may be either <see cref="System.Data.CommandType.Text"/> (<c>System.Data.CommandType.Text</c>) to specify
-        /// that the <see cref="CommandText"/> is a prepared statement to execute,
+        /// that the <see cref="CommandText"/> is a prepared statement to execute, 
         /// or <see cref="System.Data.CommandType.StoredProcedure"/> (<c>System.Data.CommandType.StoredProcedure</c>) to specify that the
         /// <see cref="CommandText"/> property is the name of a stored procedure
         /// to execute.
@@ -284,7 +286,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether should transactions be used to insert logging events in the database.
+        /// Should transactions be used to insert logging events in the database.
         /// </summary>
         /// <value>
         /// <c>true</c> if transactions should be used to insert logging events in
@@ -328,11 +330,11 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether should this appender try to reconnect to the database on error.
+        /// Should this appender try to reconnect to the database on error.
         /// </summary>
         /// <value>
         /// <c>true</c> if the appender should try to reconnect to the database after an
-        /// error has occurred, otherwise <c>false</c>. The default value is <c>false</c>,
+        /// error has occurred, otherwise <c>false</c>. The default value is <c>false</c>, 
         /// i.e. not to try to reconnect.
         /// </value>
         /// <remarks>
@@ -347,7 +349,7 @@ namespace log4net.Appender
         /// <note>
         /// When the appender attempts to connect to the database there may be a
         /// delay of up to the connection timeout specified in the connection string.
-        /// This delay will block the calling application's thread.
+        /// This delay will block the calling application's thread. 
         /// Until the connection can be reestablished this potential delay may occur multiple times.
         /// </note>
         /// </remarks>
@@ -364,10 +366,10 @@ namespace log4net.Appender
         /// The underlying <see cref="IDbConnection" />.
         /// </value>
         /// <remarks>
-        /// <see cref="AdoNetAppender" /> creates a <see cref="IDbConnection" /> to insert
-        /// logging events into a database.  Classes deriving from <see cref="AdoNetAppender" />
-        /// can use this property to get or set this <see cref="IDbConnection" />.  Use the
-        /// underlying <see cref="IDbConnection" /> returned from <see cref="Connection" /> if
+        /// <see cref="AdoNetAppender" /> creates a <see cref="IDbConnection" /> to insert 
+        /// logging events into a database.  Classes deriving from <see cref="AdoNetAppender" /> 
+        /// can use this property to get or set this <see cref="IDbConnection" />.  Use the 
+        /// underlying <see cref="IDbConnection" /> returned from <see cref="Connection" /> if 
         /// you require access beyond that which <see cref="AdoNetAppender" /> provides.
         /// </remarks>
         protected IDbConnection Connection
@@ -377,18 +379,18 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the appender based on the options set.
+        /// Initialize the appender based on the options set
         /// </summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must
+        /// activation scheme. The <see cref="ActivateOptions"/> method must 
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used.
+        /// object is in an undefined state and must not be used. 
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then
+        /// If any of the configuration properties are modified then 
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
@@ -405,7 +407,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Override the parent method to close the database.
+        /// Override the parent method to close the database
         /// </summary>
         /// <remarks>
         /// <para>
@@ -492,6 +494,7 @@ namespace log4net.Appender
             this.m_parameters.Add(parameter);
         }
 
+
         /// <summary>
         /// Writes the events to the database using the transaction specified.
         /// </summary>
@@ -516,26 +519,35 @@ namespace log4net.Appender
 
                     // Set the command type
                     dbCmd.CommandType = this.CommandType;
-
                     // Send buffer using the prepared command object
                     if (dbTran != null)
                     {
                         dbCmd.Transaction = dbTran;
                     }
 
-                    // prepare the command, which is significantly faster
-                    dbCmd.Prepare();
+                    try
+                    {
+                        // prepare the command, which is significantly faster
+                        this.Prepare(dbCmd);
+                    }
+                    catch (Exception)
+                    {
+                        if (dbTran != null)
+                        {
+                            // rethrow exception in transaction mode, cuz now transaction is in failed state
+                            throw;
+                        }
+
+                        // ignore prepare exceptions as they can happen without affecting actual logging, eg on npgsql
+                    }
 
                     // run for all events
                     foreach (LoggingEvent e in events)
                     {
-                        // clear parameters that have been set
-                        dbCmd.Parameters.Clear();
-
+                        // No need to clear dbCmd.Parameters, just use existing.
                         // Set the parameter values
                         foreach (AdoNetAppenderParameter param in this.m_parameters)
                         {
-                            param.Prepare(dbCmd);
                             param.FormatValue(dbCmd, e);
                         }
 
@@ -553,7 +565,6 @@ namespace log4net.Appender
                     {
                         dbCmd.Transaction = dbTran;
                     }
-
                     // run for all events
                     foreach (LoggingEvent e in events)
                     {
@@ -570,11 +581,26 @@ namespace log4net.Appender
         }
 
         /// <summary>
+        /// Prepare entire database command object to be executed.
+        /// </summary>
+        /// <param name="dbCmd">The command to prepare.</param>
+        protected virtual void Prepare(IDbCommand dbCmd)
+        {
+            // npgsql require parameters to prepare command
+            foreach (AdoNetAppenderParameter parameter in this.m_parameters)
+            {
+                parameter.Prepare(dbCmd);
+            }
+
+            dbCmd.Prepare();
+        }
+
+        /// <summary>
         /// Formats the log message into database statement text.
         /// </summary>
         /// <param name="logEvent">The event being logged.</param>
         /// <remarks>
-        /// This method can be overridden by subclasses to provide
+        /// This method can be overridden by subclasses to provide 
         /// more control over the format of the database statement.
         /// </remarks>
         /// <returns>
@@ -589,9 +615,11 @@ namespace log4net.Appender
             }
             else
             {
-                StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-                this.Layout.Format(writer, logEvent);
-                return writer.ToString();
+                using (var writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture))
+                {
+                    this.Layout.Format(writer, logEvent);
+                    return writer.ToString();
+                }
             }
         }
 
@@ -628,8 +656,8 @@ namespace log4net.Appender
                 return this.ConnectionString;
             }
 
-#if NET_2_0
-            if (!string.IsNullOrEmpty(this.ConnectionStringName))
+#if !NETSTANDARD1_3
+            if (!String.IsNullOrEmpty(this.ConnectionStringName))
             {
                 ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[this.ConnectionStringName];
                 if (settings != null)
@@ -652,7 +680,6 @@ namespace log4net.Appender
                 {
                     throw new LogException("Unable to find [" + this.AppSettingsKey + "] AppSettings key.");
                 }
-
                 return appSettingsConnectionString;
             }
 
@@ -666,7 +693,7 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// Gets the Type of the ADO.NET provider to use to connect to the
-        /// database. This method resolves the type specified in the
+        /// database. This method resolves the type specified in the 
         /// <see cref="ConnectionType"/> property.
         /// </para>
         /// <para>
@@ -674,12 +701,17 @@ namespace log4net.Appender
         /// if necessary.
         /// </para>
         /// </remarks>
-        /// <returns>The <see cref="Type"/> of the ADO.NET provider.</returns>
+        /// <returns>The <see cref="Type"/> of the ADO.NET provider</returns>
         protected virtual Type ResolveConnectionType()
         {
             try
             {
+#if NETSTANDARD1_3
+                // NETSTANDARD1_3 requires comma separated ConnectionType like `System.Data.SqlClient.SqlConnection, System.Data` to work properly.
+                return SystemInfo.GetTypeFromString((Assembly)null, ConnectionType, true, false);
+#else
                 return SystemInfo.GetTypeFromString(this.ConnectionType, true, false);
+#endif
             }
             catch (Exception ex)
             {
@@ -690,7 +722,7 @@ namespace log4net.Appender
 
         /// <summary>
         /// Connects to the database.
-        /// </summary>
+        /// </summary>		
         private void InitializeDatabaseConnection()
         {
             string connectionStringContext = "Unable to determine connection string context.";
@@ -754,7 +786,7 @@ namespace log4net.Appender
         protected ArrayList m_parameters;
 
         /// <summary>
-        /// The security context to use for privileged calls.
+        /// The security context to use for privileged calls
         /// </summary>
         private SecurityContext m_securityContext;
 
@@ -774,12 +806,10 @@ namespace log4net.Appender
         /// </summary>
         private string m_appSettingsKey;
 
-#if NET_2_0
         /// <summary>
         /// The connectionStrings key from App.Config that contains the connection string.
         /// </summary>
         private string m_connectionStringName;
-#endif
 
         /// <summary>
         /// String type name of the <see cref="IDbConnection"/> type name.
@@ -876,7 +906,7 @@ namespace log4net.Appender
         /// enumeration. See <see cref="IDataParameter.DbType"/>.
         /// </para>
         /// <para>
-        /// This property is optional. If not specified the ADO.NET provider
+        /// This property is optional. If not specified the ADO.NET provider 
         /// will attempt to infer the type from the value.
         /// </para>
         /// </remarks>
@@ -884,7 +914,6 @@ namespace log4net.Appender
         public DbType DbType
         {
             get { return this.m_dbType; }
-
             set
             {
                 this.m_dbType = value;
@@ -903,7 +932,7 @@ namespace log4net.Appender
         /// The maximum number of digits used to represent the Value.
         /// </para>
         /// <para>
-        /// This property is optional. If not specified the ADO.NET provider
+        /// This property is optional. If not specified the ADO.NET provider 
         /// will attempt to infer the precision from the value.
         /// </para>
         /// </remarks>
@@ -925,7 +954,7 @@ namespace log4net.Appender
         /// The number of decimal places to which Value is resolved.
         /// </para>
         /// <para>
-        /// This property is optional. If not specified the ADO.NET provider
+        /// This property is optional. If not specified the ADO.NET provider 
         /// will attempt to infer the scale from the value.
         /// </para>
         /// </remarks>
@@ -947,7 +976,7 @@ namespace log4net.Appender
         /// The maximum size, in bytes, of the data within the column.
         /// </para>
         /// <para>
-        /// This property is optional. If not specified the ADO.NET provider
+        /// This property is optional. If not specified the ADO.NET provider 
         /// will attempt to infer the size from the value.
         /// </para>
         /// <para>
@@ -962,8 +991,8 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="IRawLayout"/> to use to
-        /// render the logging event into an object for this
+        /// Gets or sets the <see cref="IRawLayout"/> to use to 
+        /// render the logging event into an object for this 
         /// parameter.
         /// </summary>
         /// <value>
@@ -1009,17 +1038,14 @@ namespace log4net.Appender
             {
                 param.DbType = this.DbType;
             }
-
             if (this.Precision != 0)
             {
                 param.Precision = this.Precision;
             }
-
             if (this.Scale != 0)
             {
                 param.Scale = this.Scale;
             }
-
             if (this.Size != 0)
             {
                 param.Size = this.Size;
@@ -1068,7 +1094,7 @@ namespace log4net.Appender
         private DbType m_dbType;
 
         /// <summary>
-        /// Flag to infer type rather than use the DbType.
+        /// Flag to infer type rather than use the DbType
         /// </summary>
         private bool m_inferType = true;
 

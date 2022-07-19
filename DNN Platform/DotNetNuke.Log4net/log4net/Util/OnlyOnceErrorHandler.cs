@@ -1,32 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Core;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    using log4net.Core;
-
     /// <summary>
-    /// Implements log4net's default error handling policy which consists
-    /// of emitting a message for the first error in an appender and
+    /// Implements log4net's default error handling policy which consists 
+    /// of emitting a message for the first error in an appender and 
     /// ignoring all subsequent errors.
     /// </summary>
     /// <remarks>
@@ -38,14 +38,13 @@ namespace log4net.Util
     /// from being flooded with error messages when logging fails.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
-    /// <author>Ron Grabowski.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    /// <author>Ron Grabowski</author>
     public class OnlyOnceErrorHandler : IErrorHandler
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OnlyOnceErrorHandler"/> class.
-        /// Default Constructor.
+        /// Default Constructor
         /// </summary>
         /// <remarks>
         /// <para>
@@ -58,8 +57,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OnlyOnceErrorHandler"/> class.
-        /// Constructor.
+        /// Constructor
         /// </summary>
         /// <param name="prefix">The prefix to use for each message.</param>
         /// <remarks>
@@ -86,7 +84,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Log an Error.
+        /// Log an Error
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
@@ -96,7 +94,7 @@ namespace log4net.Util
         /// Invokes <see cref="FirstError"/> if and only if this is the first error or the first error after <see cref="Reset"/> has been called.
         /// </para>
         /// </remarks>
-        public void Error(string message, Exception e, ErrorCode errorCode)
+        public void Error(string message, Exception e, ErrorCode errorCode) 
         {
             if (this.m_firstTime)
             {
@@ -105,7 +103,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Log the very first error.
+        /// Log the very first error
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
@@ -115,22 +113,20 @@ namespace log4net.Util
         /// Sends the error information to <see cref="LogLog"/>'s Error method.
         /// </para>
         /// </remarks>
-        public virtual void FirstError(string message, Exception e, ErrorCode errorCode)
-        {
+        public virtual void FirstError(string message, Exception e, ErrorCode errorCode) {
             this.m_enabledDateUtc = DateTime.UtcNow;
             this.m_errorCode = errorCode;
             this.m_exception = e;
             this.m_message = message;
             this.m_firstTime = false;
 
-            if (LogLog.InternalDebugging && !LogLog.QuietMode)
-            {
+            if (LogLog.InternalDebugging && !LogLog.QuietMode) {
                 LogLog.Error(declaringType, "[" + this.m_prefix + "] ErrorCode: " + errorCode.ToString() + ". " + message, e);
             }
         }
 
         /// <summary>
-        /// Log an Error.
+        /// Log an Error
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
@@ -139,13 +135,13 @@ namespace log4net.Util
         /// Invokes <see cref="FirstError"/> if and only if this is the first error or the first error after <see cref="Reset"/> has been called.
         /// </para>
         /// </remarks>
-        public void Error(string message, Exception e)
+        public void Error(string message, Exception e) 
         {
             this.Error(message, e, ErrorCode.GenericFailure);
         }
 
         /// <summary>
-        /// Log an error.
+        /// Log an error
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <remarks>
@@ -153,13 +149,13 @@ namespace log4net.Util
         /// Invokes <see cref="FirstError"/> if and only if this is the first error or the first error after <see cref="Reset"/> has been called.
         /// </para>
         /// </remarks>
-        public void Error(string message)
+        public void Error(string message) 
         {
             this.Error(message, null, ErrorCode.GenericFailure);
         }
 
         /// <summary>
-        /// Gets a value indicating whether is error logging enabled.
+        /// Is error logging enabled
         /// </summary>
         /// <remarks>
         /// <para>
@@ -173,23 +169,23 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.
+        /// The date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.
         /// </summary>
         public DateTime EnabledDate
         {
-            get
+            get 
             {
                 if (this.m_enabledDateUtc == DateTime.MinValue)
                 {
                     return DateTime.MinValue;
                 }
 
-                return this.m_enabledDateUtc.ToLocalTime();
+                return this.m_enabledDateUtc.ToLocalTime(); 
             }
         }
 
         /// <summary>
-        /// Gets the UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.
+        /// The UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.
         /// </summary>
         public DateTime EnabledDateUtc
         {
@@ -197,7 +193,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the message from the first error that trigged this error handler.
+        /// The message from the first error that trigged this error handler.
         /// </summary>
         public string ErrorMessage
         {
@@ -205,7 +201,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the exception from the first error that trigged this error handler.
+        /// The exception from the first error that trigged this error handler.
         /// </summary>
         /// <remarks>
         /// May be <see langword="null" />.
@@ -216,10 +212,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the error code from the first error that trigged this error handler.
+        /// The error code from the first error that trigged this error handler.
         /// </summary>
         /// <remarks>
-        /// Defaults to <see cref="log4net.Core.ErrorCode.GenericFailure"/>.
+        /// Defaults to <see cref="log4net.Core.ErrorCode.GenericFailure"/>
         /// </remarks>
         public ErrorCode ErrorCode
         {
@@ -232,7 +228,7 @@ namespace log4net.Util
         private DateTime m_enabledDateUtc;
 
         /// <summary>
-        /// Flag to indicate if it is the first error.
+        /// Flag to indicate if it is the first error
         /// </summary>
         private bool m_firstTime = true;
 
@@ -252,7 +248,7 @@ namespace log4net.Util
         private ErrorCode m_errorCode = ErrorCode.GenericFailure;
 
         /// <summary>
-        /// String to prefix each message with.
+        /// String to prefix each message with
         /// </summary>
         private readonly string m_prefix;
 

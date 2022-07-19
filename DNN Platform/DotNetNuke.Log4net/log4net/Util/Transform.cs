@@ -1,30 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Text;
+using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Xml;
-
     /// <summary>
     /// Utility class for transforming strings.
     /// </summary>
@@ -33,12 +33,12 @@ namespace log4net.Util
     /// Utility class for transforming strings.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public sealed class Transform
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Transform" /> class.
+        /// Initializes a new instance of the <see cref="Transform" /> class. 
         /// </summary>
         /// <remarks>
         /// <para>
@@ -50,11 +50,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Write a string to an <see cref="XmlWriter"/>.
+        /// Write a string to an <see cref="XmlWriter"/>
         /// </summary>
-        /// <param name="writer">the writer to write to.</param>
-        /// <param name="textData">the string to write.</param>
-        /// <param name="invalidCharReplacement">The string to replace non XML compliant chars with.</param>
+        /// <param name="writer">the writer to write to</param>
+        /// <param name="textData">the string to write</param>
+        /// <param name="invalidCharReplacement">The string to replace non XML compliant chars with</param>
         /// <remarks>
         /// <para>
         /// The test is escaped either using XML escape entities
@@ -64,10 +64,10 @@ namespace log4net.Util
         public static void WriteEscapedXmlString(XmlWriter writer, string textData, string invalidCharReplacement)
         {
             string stringData = MaskXmlInvalidCharacters(textData, invalidCharReplacement);
-
             // Write either escaped text or CDATA sections
+
             int weightCData = 12 * (1 + CountSubstrings(stringData, CDATA_END));
-            int weightStringEscapes = (3 * (CountSubstrings(stringData, "<") + CountSubstrings(stringData, ">"))) + (4 * CountSubstrings(stringData, "&"));
+            int weightStringEscapes = 3*(CountSubstrings(stringData, "<") + CountSubstrings(stringData, ">")) + 4*CountSubstrings(stringData, "&");
 
             if (weightStringEscapes <= weightCData)
             {
@@ -77,16 +77,17 @@ namespace log4net.Util
             else
             {
                 // Write string using CDATA section
-                int end = stringData.IndexOf(CDATA_END);
 
-                if (end < 0)
+                int end = stringData.IndexOf(CDATA_END);
+    
+                if (end < 0) 
                 {
                     writer.WriteCData(stringData);
                 }
                 else
                 {
                     int start = 0;
-                    while (end > -1)
+                    while (end > -1) 
                     {
                         writer.WriteCData(stringData.Substring(start, end - start));
                         if (end == stringData.Length - 3)
@@ -102,7 +103,7 @@ namespace log4net.Util
                             end = stringData.IndexOf(CDATA_END, start);
                         }
                     }
-
+    
                     if (start < stringData.Length)
                     {
                         writer.WriteCData(stringData.Substring(start));
@@ -112,10 +113,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Replace invalid XML characters in text string.
+        /// Replace invalid XML characters in text string
         /// </summary>
-        /// <param name="textData">the XML text input string.</param>
-        /// <param name="mask">the string to use in place of invalid characters.</param>
+        /// <param name="textData">the XML text input string</param>
+        /// <param name="mask">the string to use in place of invalid characters</param>
         /// <returns>A string that does not contain invalid XML characters.</returns>
         /// <remarks>
         /// <para>
@@ -133,11 +134,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Count the number of times that the substring occurs in the text.
+        /// Count the number of times that the substring occurs in the text
         /// </summary>
-        /// <param name="text">the text to search.</param>
-        /// <param name="substring">the substring to find.</param>
-        /// <returns>the number of times the substring occurs in the text.</returns>
+        /// <param name="text">the text to search</param>
+        /// <param name="substring">the substring to find</param>
+        /// <returns>the number of times the substring occurs in the text</returns>
         /// <remarks>
         /// <para>
         /// The substring is assumed to be non repeating within itself.
@@ -154,13 +155,12 @@ namespace log4net.Util
             {
                 return 0;
             }
-
             if (substringLength == 0)
             {
                 return 0;
             }
 
-            while (offset < length)
+            while(offset < length)
             {
                 int index = text.IndexOf(substring, offset);
 
@@ -172,15 +172,14 @@ namespace log4net.Util
                 count++;
                 offset = index + substringLength;
             }
-
             return count;
         }
 
-        private const string CDATA_END = "]]>";
-        private const string CDATA_UNESCAPABLE_TOKEN = "]]";
+        private const string CDATA_END	= "]]>";
+        private const string CDATA_UNESCAPABLE_TOKEN	= "]]";
 
         /// <summary>
-        /// Characters illegal in XML 1.0.
+        /// Characters illegal in XML 1.0
         /// </summary>
         private static Regex INVALIDCHARS = new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD]", RegexOptions.Compiled);
     }
