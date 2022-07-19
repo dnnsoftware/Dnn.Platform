@@ -46,7 +46,7 @@
               <moduleID>372</moduleID>
               <Terms />
               <KeyID>372</KeyID>
-              <title>File Manager</title>
+              <title>Resource Manager</title>
               <alltabs>false</alltabs>
               <inheritviewpermissions>true</inheritviewpermissions>
               <header />
@@ -82,8 +82,8 @@
                   <settingvalue>True</settingvalue>
                 </tabmodulesetting>
               </tabmodulesettings>
-              <definition>FileManager</definition>
-              <moduledefinition>File Manager</moduledefinition>
+              <definition>ResourceManager</definition>
+              <moduledefinition>ResourceManager</moduledefinition>
             </module>
           </modules>
         </pane>
