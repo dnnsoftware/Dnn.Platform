@@ -1,23 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
+
 #if !NETCF
 using System;
 using System.Collections;
@@ -26,24 +26,25 @@ using log4net.Core;
 
 namespace log4net.Util
 {
+
     /// <summary>
     /// Delegate type used for LogicalThreadContextStack's callbacks.
     /// </summary>
-#if NET_2_0 || MONO_2_0
+    #if NET_2_0 || MONO_2_0 || NETSTANDARD
     public delegate void TwoArgAction<T1, T2>(T1 t1, T2 t2);
-#else
-	public delegate void TwoArgAction(string t1, LogicalThreadContextStack t2);
-#endif
+    #else
+    public delegate void TwoArgAction(string t1, LogicalThreadContextStack t2);
+    #endif
 
-    /// <summary>
-    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>.
+        /// <summary>
+    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>.
+    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Nicko Cadell</author>
     public sealed class LogicalThreadContextStack : IFixingRequired
     {
         /// <summary>
@@ -61,36 +62,35 @@ namespace log4net.Util
         /// The callback used to let the <see cref="log4net.Util.LogicalThreadContextStacks"/> register a
         /// new instance of a <see cref="log4net.Util.LogicalThreadContextStack"/>.
         /// </summary>
-#if NET_2_0 || MONO_2_0
+        #if NET_2_0 || MONO_2_0 || NETSTANDARD
         private TwoArgAction<string, LogicalThreadContextStack> m_registerNew;
-#else
-		private TwoArgAction m_registerNew;
-#endif
+                #else
+        private TwoArgAction m_registerNew;
+        #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogicalThreadContextStack"/> class.
-        /// Internal constructor.
+        /// Internal constructor
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="LogicalThreadContextStack" /> class.
+        /// Initializes a new instance of the <see cref="LogicalThreadContextStack" /> class. 
         /// </para>
         /// </remarks>
-#if NET_2_0 || MONO_2_0
+        #if NET_2_0 || MONO_2_0 || NETSTANDARD
         internal LogicalThreadContextStack(string propertyKey, TwoArgAction<string, LogicalThreadContextStack> registerNew)
-#else
-		internal LogicalThreadContextStack(string propertyKey, TwoArgAction registerNew)
-#endif
+                #else
+        internal LogicalThreadContextStack(string propertyKey, TwoArgAction registerNew)
+        #endif
         {
             this.m_propertyKey = propertyKey;
             this.m_registerNew = registerNew;
         }
 
         /// <summary>
-        /// Gets the number of messages in the stack.
+        /// The number of messages in the stack
         /// </summary>
         /// <value>
-        /// The current number of messages in the stack.
+        /// The current number of messages in the stack
         /// </value>
         /// <remarks>
         /// <para>
@@ -115,7 +115,7 @@ namespace log4net.Util
         /// You do not need to use this method if you always guarantee to call
         /// the <see cref="IDisposable.Dispose"/> method of the <see cref="IDisposable"/>
         /// returned from <see cref="Push"/> even in exceptional circumstances,
-        /// for example by using the <c>using(log4net.LogicalThreadContext.Stacks["NDC"].Push("Stack_Message"))</c>
+        /// for example by using the <c>using(log4net.LogicalThreadContext.Stacks["NDC"].Push("Stack_Message"))</c> 
         /// syntax.
         /// </para>
         /// </remarks>
@@ -142,9 +142,8 @@ namespace log4net.Util
             string result = string.Empty;
             if (stack.Count > 0)
             {
-                result = ((StackFrame)stack.Pop()).Message;
+                result = ((StackFrame)(stack.Pop())).Message;
             }
-
             LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew);
             ltcs.m_stack = stack;
             this.m_registerNew(this.m_propertyKey, ltcs);
@@ -195,19 +194,18 @@ namespace log4net.Util
             Stack stack = this.m_stack;
             if (stack.Count > 0)
             {
-                return ((StackFrame)stack.Peek()).FullMessage;
+                return ((StackFrame)(stack.Peek())).FullMessage;
             }
-
             return null;
         }
 
         /// <summary>
-        /// Gets or sets and sets the internal stack used by this <see cref="LogicalThreadContextStack"/>.
+        /// Gets and sets the internal stack used by this <see cref="LogicalThreadContextStack"/>
         /// </summary>
-        /// <value>The internal storage stack.</value>
+        /// <value>The internal storage stack</value>
         /// <remarks>
         /// <para>
-        /// This property is provided only to support backward compatability
+        /// This property is provided only to support backward compatability 
         /// of the <see cref="NDC"/>. Tytpically the internal stack should not
         /// be modified.
         /// </para>
@@ -221,7 +219,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets the current context information for this stack.
         /// </summary>
-        /// <returns>Gets the current context information.</returns>
+        /// <returns>Gets the current context information</returns>
         /// <remarks>
         /// <para>
         /// Gets the current context information for this stack.
@@ -233,12 +231,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get a portable version of this object.
+        /// Get a portable version of this object
         /// </summary>
-        /// <returns>the portable instance of this object.</returns>
+        /// <returns>the portable instance of this object</returns>
         /// <remarks>
         /// <para>
-        /// Get a cross thread portable version of this object.
+        /// Get a cross thread portable version of this object
         /// </para>
         /// </remarks>
         object IFixingRequired.GetFixedObject()
@@ -261,8 +259,7 @@ namespace log4net.Util
             private string m_fullMessage = null;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="StackFrame"/> class.
-            /// Constructor.
+            /// Constructor
             /// </summary>
             /// <param name="message">The message for this context.</param>
             /// <param name="parent">The parent context in the chain.</param>
@@ -284,7 +281,7 @@ namespace log4net.Util
             }
 
             /// <summary>
-            /// Gets get the message.
+            /// Get the message.
             /// </summary>
             /// <value>The message.</value>
             /// <remarks>
@@ -316,7 +313,6 @@ namespace log4net.Util
                     {
                         this.m_fullMessage = string.Concat(this.m_parent.FullMessage, " ", this.m_message);
                     }
-
                     return this.m_fullMessage;
                 }
             }
@@ -334,7 +330,7 @@ namespace log4net.Util
         private struct AutoPopStackFrame : IDisposable
         {
             /// <summary>
-            /// The depth to trim the stack to when this instance is disposed.
+            /// The depth to trim the stack to when this instance is disposed
             /// </summary>
             private int m_frameDepth;
 
@@ -344,8 +340,7 @@ namespace log4net.Util
             private LogicalThreadContextStack m_logicalThreadContextStack;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="AutoPopStackFrame"/> struct.
-            /// Constructor.
+            /// Constructor
             /// </summary>
             /// <param name="logicalThreadContextStack">The internal stack used by the ThreadContextStack.</param>
             /// <param name="frameDepth">The depth to return the stack to when this object is disposed.</param>
@@ -378,15 +373,14 @@ namespace log4net.Util
                     {
                         stack.Pop();
                     }
-
                     LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_logicalThreadContextStack.m_propertyKey, this.m_logicalThreadContextStack.m_registerNew);
                     ltcs.m_stack = stack;
-                    this.m_logicalThreadContextStack.m_registerNew(
-                        this.m_logicalThreadContextStack.m_propertyKey,
+                    this.m_logicalThreadContextStack.m_registerNew(this.m_logicalThreadContextStack.m_propertyKey,
                         ltcs);
                 }
             }
         }
+
     }
 }
 #endif

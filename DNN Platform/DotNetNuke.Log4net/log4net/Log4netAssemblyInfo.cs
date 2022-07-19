@@ -1,7 +1,3 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
 #region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more 
@@ -29,7 +25,7 @@ namespace log4net {
     /// </summary>
     public sealed class AssemblyInfo {
         /// <summary>Version of the assembly</summary>
-        public const string Version = "2.0.8";
+        public const string Version = "2.0.9";
 
         /// <summary>Version of the framework targeted</summary>
 #if NET_1_1
@@ -63,6 +59,8 @@ namespace log4net {
         public const string TargetFramework = "Mono";
 #elif SSCLI
         public const string TargetFramework = "Shared Source CLI";
+#elif NETSTANDARD1_3
+        public const string TargetFramework = ".NET Core";
 #else
         public const string TargetFramework = "Unknown";
 #endif

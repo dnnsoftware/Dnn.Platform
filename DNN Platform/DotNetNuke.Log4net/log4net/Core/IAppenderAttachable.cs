@@ -1,29 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Appender;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    using log4net.Appender;
-
     /// <summary>
     /// Interface for attaching appenders to objects.
     /// </summary>
@@ -32,8 +32,8 @@ namespace log4net.Core
     /// Interface for attaching, removing and retrieving appenders.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface IAppenderAttachable
     {
         /// <summary>
@@ -58,11 +58,11 @@ namespace log4net.Core
         /// <para>
         /// Gets a collection of attached appenders.
         /// If there are no attached appenders the
-        /// implementation should return an empty
+        /// implementation should return an empty 
         /// collection rather than <c>null</c>.
         /// </para>
         /// </remarks>
-        AppenderCollection Appenders { get; }
+        AppenderCollection Appenders {get;}
 
         /// <summary>
         /// Gets an attached appender with the specified name.
@@ -86,7 +86,7 @@ namespace log4net.Core
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Removes and closes all attached appenders.
+        /// Removes and closes all attached appenders
         /// </para>
         /// </remarks>
         void RemoveAllAppenders();
@@ -95,7 +95,7 @@ namespace log4net.Core
         /// Removes the specified appender from the list of attached appenders.
         /// </summary>
         /// <param name="appender">The appender to remove.</param>
-        /// <returns>The appender removed from the list.</returns>
+        /// <returns>The appender removed from the list</returns>
         /// <remarks>
         /// <para>
         /// The appender removed is not closed.
@@ -109,7 +109,7 @@ namespace log4net.Core
         /// Removes the appender with the specified name from the list of appenders.
         /// </summary>
         /// <param name="name">The name of the appender to remove.</param>
-        /// <returns>The appender removed from the list.</returns>
+        /// <returns>The appender removed from the list</returns>
         /// <remarks>
         /// <para>
         /// The appender removed is not closed.
@@ -117,6 +117,6 @@ namespace log4net.Core
         /// <see cref="IAppender.Close"/> on the appender removed.
         /// </para>
         /// </remarks>
-        IAppender RemoveAppender(string name);
+        IAppender RemoveAppender(string name);   	
     }
 }

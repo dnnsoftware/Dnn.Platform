@@ -1,33 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.IO;
+
+using log4net;
+using log4net.Core;
 
 namespace log4net.Layout
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.IO;
-
-    using log4net;
-    using log4net.Core;
-
     /// <summary>
-    /// Interface implemented by layout objects.
+    /// Interface implemented by layout objects
     /// </summary>
     /// <remarks>
     /// <para>
@@ -40,15 +40,15 @@ namespace log4net.Layout
     /// text that is appender before any events and after all the events respectively.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface ILayout
     {
         /// <summary>
         /// Implement this method to create your own layout format.
         /// </summary>
-        /// <param name="writer">The TextWriter to write the formatted event to.</param>
-        /// <param name="loggingEvent">The event to format.</param>
+        /// <param name="writer">The TextWriter to write the formatted event to</param>
+        /// <param name="loggingEvent">The event to format</param>
         /// <remarks>
         /// <para>
         /// This method is called by an appender to format
@@ -56,7 +56,7 @@ namespace log4net.Layout
         /// </para>
         /// <para>
         /// If the caller does not have a <see cref="TextWriter"/> and prefers the
-        /// event to be formatted as a <see cref="string"/> then the following
+        /// event to be formatted as a <see cref="String"/> then the following
         /// code can be used to format the event into a <see cref="StringWriter"/>.
         /// </para>
         /// <code lang="C#">
@@ -68,9 +68,9 @@ namespace log4net.Layout
         void Format(TextWriter writer, LoggingEvent loggingEvent);
 
         /// <summary>
-        /// Gets the content type output by this layout.
+        /// The content type output by this layout. 
         /// </summary>
-        /// <value>The content type.</value>
+        /// <value>The content type</value>
         /// <remarks>
         /// <para>
         /// The content type output by this layout.
@@ -82,9 +82,9 @@ namespace log4net.Layout
         string ContentType { get; }
 
         /// <summary>
-        /// Gets the header for the layout format.
+        /// The header for the layout format.
         /// </summary>
-        /// <value>the layout header.</value>
+        /// <value>the layout header</value>
         /// <remarks>
         /// <para>
         /// The Header text will be appended before any logging events
@@ -94,9 +94,9 @@ namespace log4net.Layout
         string Header { get; }
 
         /// <summary>
-        /// Gets the footer for the layout format.
+        /// The footer for the layout format.
         /// </summary>
-        /// <value>the layout footer.</value>
+        /// <value>the layout footer</value>
         /// <remarks>
         /// <para>
         /// The Footer text will be appended after all the logging events
@@ -106,9 +106,9 @@ namespace log4net.Layout
         string Footer { get; }
 
         /// <summary>
-        /// Gets a value indicating whether flag indicating if this layout handle exceptions.
+        /// Flag indicating if this layout handle exceptions
         /// </summary>
-        /// <value><c>false</c> if this layout handles exceptions.</value>
+        /// <value><c>false</c> if this layout handles exceptions</value>
         /// <remarks>
         /// <para>
         /// If this layout handles the exception object contained within

@@ -1,44 +1,44 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Text;
+using System.Globalization;
+
+using log4net.Core;
+using log4net.Layout;
+using log4net.Util;
 
 namespace log4net.Appender
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Globalization;
-    using System.Text;
-
-    using log4net.Core;
-    using log4net.Layout;
-    using log4net.Util;
-
     /// <summary>
     /// Appends logging events to the terminal using ANSI color escape sequences.
     /// </summary>
     /// <remarks>
     /// <para>
     /// AnsiColorTerminalAppender appends log events to the standard output stream
-    /// or the error output stream using a layout specified by the
+    /// or the error output stream using a layout specified by the 
     /// user. It also allows the color of a specific level of message to be set.
     /// </para>
     /// <note>
-    /// This appender expects the terminal to understand the VT100 control set
+    /// This appender expects the terminal to understand the VT100 control set 
     /// in order to interpret the color codes. If the terminal or console does not
     /// understand the control codes the behavior is not defined.
     /// </note>
@@ -48,11 +48,11 @@ namespace log4net.Appender
     /// error stream.
     /// </para>
     /// <para>
-    /// NOTE: This appender writes each message to the <c>System.Console.Out</c> or
+    /// NOTE: This appender writes each message to the <c>System.Console.Out</c> or 
     /// <c>System.Console.Error</c> that is set at the time the event is appended.
-    /// Therefore it is possible to programmatically redirect the output of this appender
+    /// Therefore it is possible to programmatically redirect the output of this appender 
     /// (for example NUnit does this to capture program output). While this is the desired
-    /// behavior of this appender it may have security implications in your application.
+    /// behavior of this appender it may have security implications in your application. 
     /// </para>
     /// <para>
     /// When configuring the ANSI colored terminal appender, a mapping should be
@@ -100,12 +100,12 @@ namespace log4net.Appender
     /// no sense.
     /// </para>
     /// </remarks>
-    /// <author>Patrick Wagstrom.</author>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Patrick Wagstrom</author>
+    /// <author>Nicko Cadell</author>
     public class AnsiColorTerminalAppender : AppenderSkeleton
     {
         /// <summary>
-        /// The enum of possible display attributes.
+        /// The enum of possible display attributes
         /// </summary>
         /// <remarks>
         /// <para>
@@ -120,17 +120,16 @@ namespace log4net.Appender
             /// <summary>
             /// text is bright
             /// </summary>
-            Bright = 1,
-
+            Bright			= 1,
             /// <summary>
             /// text is dim
             /// </summary>
-            Dim = 2,
+            Dim				= 2,
 
             /// <summary>
             /// text is underlined
             /// </summary>
-            Underscore = 4,
+            Underscore		= 4,
 
             /// <summary>
             /// text is blinking
@@ -138,32 +137,32 @@ namespace log4net.Appender
             /// <remarks>
             /// Not all terminals support this attribute
             /// </remarks>
-            Blink = 8,
+            Blink			= 8,
 
             /// <summary>
             /// text and background colors are reversed
             /// </summary>
-            Reverse = 16,
+            Reverse			= 16,
 
             /// <summary>
             /// text is hidden
             /// </summary>
-            Hidden = 32,
+            Hidden			= 32,
 
             /// <summary>
             /// text is displayed with a strikethrough
             /// </summary>
-            Strikethrough = 64,
+            Strikethrough		= 64,
 
             /// <summary>
             /// text color is light
             /// </summary>
-            Light = 128,
+            Light			= 128
         }
 
         /// <summary>
-        /// The enum of possible foreground or background color values for
-        /// use with the color mapping method.
+        /// The enum of possible foreground or background color values for 
+        /// use with the color mapping method
         /// </summary>
         /// <remarks>
         /// <para>
@@ -176,57 +175,57 @@ namespace log4net.Appender
             /// <summary>
             /// color is black
             /// </summary>
-            Black = 0,
+            Black	= 0,
 
             /// <summary>
             /// color is red
             /// </summary>
-            Red = 1,
+            Red	= 1,
 
             /// <summary>
             /// color is green
             /// </summary>
-            Green = 2,
+            Green	= 2,
 
             /// <summary>
             /// color is yellow
             /// </summary>
-            Yellow = 3,
+            Yellow	= 3,
 
             /// <summary>
             /// color is blue
             /// </summary>
-            Blue = 4,
+            Blue	= 4,
 
             /// <summary>
             /// color is magenta
             /// </summary>
-            Magenta = 5,
+            Magenta	= 5,
 
             /// <summary>
             /// color is cyan
             /// </summary>
-            Cyan = 6,
+            Cyan	= 6,
 
             /// <summary>
             /// color is white
             /// </summary>
-            White = 7,
+            White	= 7
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnsiColorTerminalAppender" /> class.
         /// </summary>
         /// <remarks>
-        /// The instance of the <see cref="AnsiColorTerminalAppender" /> class is set up to write
+        /// The instance of the <see cref="AnsiColorTerminalAppender" /> class is set up to write 
         /// to the standard output stream.
         /// </remarks>
-        public AnsiColorTerminalAppender()
+        public AnsiColorTerminalAppender() 
         {
         }
 
         /// <summary>
-        /// Gets or sets target is the value of the console output stream.
+        /// Target is the value of the console output stream.
         /// </summary>
         /// <value>
         /// Target is the value of the console output stream.
@@ -241,7 +240,6 @@ namespace log4net.Appender
         public virtual string Target
         {
             get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
-
             set
             {
                 string trimmedTargetName = value.Trim();
@@ -249,8 +247,8 @@ namespace log4net.Appender
                 if (SystemInfo.EqualsIgnoringCase(ConsoleError, trimmedTargetName))
                 {
                     this.m_writeToErrorStream = true;
-                }
-                else
+                } 
+                else 
                 {
                     this.m_writeToErrorStream = false;
                 }
@@ -258,9 +256,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Add a mapping of level to color.
+        /// Add a mapping of level to color
         /// </summary>
-        /// <param name="mapping">The mapping to add.</param>
+        /// <param name="mapping">The mapping to add</param>
         /// <remarks>
         /// <para>
         /// Add a <see cref="LevelColors"/> mapping to this appender.
@@ -285,7 +283,7 @@ namespace log4net.Appender
         /// The format of the output will depend on the appender's layout.
         /// </para>
         /// </remarks>
-        protected override void Append(log4net.Core.LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent) 
         {
             string loggingMessage = this.RenderLoggingEvent(loggingEvent);
 
@@ -303,34 +301,34 @@ namespace log4net.Appender
             // are inserted afterwards.
             if (loggingMessage.Length > 1)
             {
-                if (loggingMessage.EndsWith("\r\n") || loggingMessage.EndsWith("\n\r"))
+                if (loggingMessage.EndsWith("\r\n") || loggingMessage.EndsWith("\n\r")) 
                 {
                     loggingMessage = loggingMessage.Insert(loggingMessage.Length - 2, PostEventCodes);
-                }
-                else if (loggingMessage.EndsWith("\n") || loggingMessage.EndsWith("\r"))
+                } 
+                else if (loggingMessage.EndsWith("\n") || loggingMessage.EndsWith("\r")) 
                 {
                     loggingMessage = loggingMessage.Insert(loggingMessage.Length - 1, PostEventCodes);
-                }
-                else
+                } 
+                else 
                 {
                     loggingMessage = loggingMessage + PostEventCodes;
                 }
             }
             else
             {
-                if (loggingMessage[0] == '\n' || loggingMessage[0] == '\r')
+                if (loggingMessage[0] == '\n' || loggingMessage[0] == '\r') 
                 {
                     loggingMessage = PostEventCodes + loggingMessage;
-                }
-                else
+                } 
+                else 
                 {
                     loggingMessage = loggingMessage + PostEventCodes;
                 }
             }
 
 #if NETCF_1_0
-			// Write to the output stream
-			Console.Write(loggingMessage);
+            // Write to the output stream
+            Console.Write(loggingMessage);
 #else
             if (this.m_writeToErrorStream)
             {
@@ -343,13 +341,13 @@ namespace log4net.Appender
                 Console.Write(loggingMessage);
             }
 #endif
-
+        
         }
 
         /// <summary>
-        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
+        /// This appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c>.</value>
+        /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -361,7 +359,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the options for this appender.
+        /// Initialize the options for this appender
         /// </summary>
         /// <remarks>
         /// <para>
@@ -375,41 +373,41 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console
+        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console 
         /// standard output stream.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console
+        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console 
         /// standard output stream.
         /// </para>
         /// </remarks>
         public const string ConsoleOut = "Console.Out";
 
         /// <summary>
-        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console
+        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console 
         /// standard error output stream.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console
+        /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console 
         /// standard error output stream.
         /// </para>
         /// </remarks>
         public const string ConsoleError = "Console.Error";
 
         /// <summary>
-        /// Flag to write output to the error stream rather than the standard output stream.
+        /// Flag to write output to the error stream rather than the standard output stream
         /// </summary>
         private bool m_writeToErrorStream = false;
 
         /// <summary>
-        /// Mapping from level object to color value.
+        /// Mapping from level object to color value
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
         /// <summary>
-        /// Ansi code to reset terminal.
+        /// Ansi code to reset terminal
         /// </summary>
         private const string PostEventCodes = "\x1b[0m";
 
@@ -430,12 +428,12 @@ namespace log4net.Appender
             private string m_combinedColor = string.Empty;
 
             /// <summary>
-            /// Gets or sets the mapped foreground color for the specified level.
+            /// The mapped foreground color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped foreground color for the specified level.
+            /// The mapped foreground color for the specified level
             /// </para>
             /// </remarks>
             public AnsiColor ForeColor
@@ -445,12 +443,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Gets or sets the mapped background color for the specified level.
+            /// The mapped background color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped background color for the specified level.
+            /// The mapped background color for the specified level
             /// </para>
             /// </remarks>
             public AnsiColor BackColor
@@ -460,12 +458,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Gets or sets the color attributes for the specified level.
+            /// The color attributes for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The color attributes for the specified level.
+            /// The color attributes for the specified level
             /// </para>
             /// </remarks>
             public AnsiAttributes Attributes
@@ -475,7 +473,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Initialize the options for the object.
+            /// Initialize the options for the object
             /// </summary>
             /// <remarks>
             /// <para>
@@ -493,7 +491,7 @@ namespace log4net.Appender
                 buf.Append("\x1b[0;");
 
                 int lightAdjustment = ((this.m_attributes & AnsiAttributes.Light) > 0) ? 60 : 0;
-
+                
                 // set the foreground color
                 buf.Append(30 + lightAdjustment + (int)this.m_foreColor);
                 buf.Append(';');
@@ -506,32 +504,26 @@ namespace log4net.Appender
                 {
                     buf.Append(";1");
                 }
-
                 if ((this.m_attributes & AnsiAttributes.Dim) > 0)
                 {
                     buf.Append(";2");
                 }
-
                 if ((this.m_attributes & AnsiAttributes.Underscore) > 0)
                 {
                     buf.Append(";4");
                 }
-
                 if ((this.m_attributes & AnsiAttributes.Blink) > 0)
                 {
                     buf.Append(";5");
                 }
-
                 if ((this.m_attributes & AnsiAttributes.Reverse) > 0)
                 {
                     buf.Append(";7");
                 }
-
                 if ((this.m_attributes & AnsiAttributes.Hidden) > 0)
                 {
                     buf.Append(";8");
                 }
-
                 if ((this.m_attributes & AnsiAttributes.Strikethrough) > 0)
                 {
                     buf.Append(";9");
@@ -543,7 +535,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Gets the combined <see cref="ForeColor"/>, <see cref="BackColor"/> and
+            /// The combined <see cref="ForeColor"/>, <see cref="BackColor"/> and
             /// <see cref="Attributes"/> suitable for setting the ansi terminal color.
             /// </summary>
             internal string CombinedColor

@@ -1,32 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Reflection;
+
+using log4net.Repository;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Reflection;
-
-    using log4net.Repository;
-
     /// <summary>
-    /// Delegate used to handle logger repository creation event notifications.
+    /// Delegate used to handle logger repository creation event notifications
     /// </summary>
     /// <param name="sender">The <see cref="IRepositorySelector"/> which created the repository.</param>
     /// <param name="e">The <see cref="LoggerRepositoryCreationEventArgs"/> event args
@@ -43,25 +43,24 @@ namespace log4net.Core
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A <see cref="IRepositorySelector.LoggerRepositoryCreatedEvent"/>
+    /// A <see cref="IRepositorySelector.LoggerRepositoryCreatedEvent"/> 
     /// event is raised every time a <see cref="ILoggerRepository"/> is created.
     /// </para>
     /// </remarks>
     public class LoggerRepositoryCreationEventArgs : EventArgs
     {
         /// <summary>
-        /// The <see cref="ILoggerRepository"/> created.
+        /// The <see cref="ILoggerRepository"/> created
         /// </summary>
         private ILoggerRepository m_repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerRepositoryCreationEventArgs"/> class.
-        /// Construct instance using <see cref="ILoggerRepository"/> specified.
+        /// Construct instance using <see cref="ILoggerRepository"/> specified
         /// </summary>
-        /// <param name="repository">the <see cref="ILoggerRepository"/> that has been created.</param>
+        /// <param name="repository">the <see cref="ILoggerRepository"/> that has been created</param>
         /// <remarks>
         /// <para>
-        /// Construct instance using <see cref="ILoggerRepository"/> specified.
+        /// Construct instance using <see cref="ILoggerRepository"/> specified
         /// </para>
         /// </remarks>
         public LoggerRepositoryCreationEventArgs(ILoggerRepository repository)
@@ -70,14 +69,14 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets the <see cref="ILoggerRepository"/> that has been created.
+        /// The <see cref="ILoggerRepository"/> that has been created
         /// </summary>
         /// <value>
-        /// The <see cref="ILoggerRepository"/> that has been created.
+        /// The <see cref="ILoggerRepository"/> that has been created
         /// </value>
         /// <remarks>
         /// <para>
-        /// The <see cref="ILoggerRepository"/> that has been created.
+        /// The <see cref="ILoggerRepository"/> that has been created
         /// </para>
         /// </remarks>
         public ILoggerRepository LoggerRepository
@@ -91,19 +90,19 @@ namespace log4net.Core
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <see cref="LogManager"/> uses a <see cref="IRepositorySelector"/>
-    /// to specify the policy for selecting the correct <see cref="ILoggerRepository"/>
+    /// The <see cref="LogManager"/> uses a <see cref="IRepositorySelector"/> 
+    /// to specify the policy for selecting the correct <see cref="ILoggerRepository"/> 
     /// to return to the caller.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface IRepositorySelector
     {
         /// <summary>
         /// Gets the <see cref="ILoggerRepository"/> for the specified assembly.
         /// </summary>
-        /// <param name="assembly">The assembly to use to lookup to the <see cref="ILoggerRepository"/>.</param>
+        /// <param name="assembly">The assembly to use to lookup to the <see cref="ILoggerRepository"/></param>
         /// <returns>The <see cref="ILoggerRepository"/> for the assembly.</returns>
         /// <remarks>
         /// <para>
@@ -123,7 +122,7 @@ namespace log4net.Core
         /// Gets the named <see cref="ILoggerRepository"/>.
         /// </summary>
         /// <param name="repositoryName">The name to use to lookup to the <see cref="ILoggerRepository"/>.</param>
-        /// <returns>The named <see cref="ILoggerRepository"/>.</returns>
+        /// <returns>The named <see cref="ILoggerRepository"/></returns>
         /// <remarks>
         /// Lookup a named <see cref="ILoggerRepository"/>. This is the repository created by
         /// calling <see cref="M:CreateRepository(string,Type)"/>.
@@ -166,14 +165,14 @@ namespace log4net.Core
         ILoggerRepository CreateRepository(string repositoryName, Type repositoryType);
 
         /// <summary>
-        /// Test if a named repository exists.
+        /// Test if a named repository exists
         /// </summary>
-        /// <param name="repositoryName">the named repository to check.</param>
-        /// <returns><c>true</c> if the repository exists.</returns>
+        /// <param name="repositoryName">the named repository to check</param>
+        /// <returns><c>true</c> if the repository exists</returns>
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(Assembly, Type)"/>
-        /// to create a new repository and <see cref="M:GetRepository(Assembly)"/> to retrieve
+        /// to create a new repository and <see cref="M:GetRepository(Assembly)"/> to retrieve 
         /// a repository.
         /// </para>
         /// </remarks>
@@ -183,7 +182,7 @@ namespace log4net.Core
         /// Gets an array of all currently defined repositories.
         /// </summary>
         /// <returns>
-        /// An array of the <see cref="ILoggerRepository"/> instances created by
+        /// An array of the <see cref="ILoggerRepository"/> instances created by 
         /// this <see cref="IRepositorySelector"/>.</returns>
         /// <remarks>
         /// <para>
