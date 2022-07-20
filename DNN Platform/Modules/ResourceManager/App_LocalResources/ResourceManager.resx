@@ -415,7 +415,7 @@
     <value>Upload</value>
   </data>
   <data name="ExtractUploads.Text" xml:space="preserve">
-    <value>Extract uploaded archives</value>
+    <value>Extract uploaded ZIP files</value>
   </data>
   <data name="Overwrite.Text" xml:space="preserve">
     <value>Overwrite</value>
