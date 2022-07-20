@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, Element } from '@stencil/core';
 import { GetFolderContentResponse, Item } from '../../services/ItemsClient'
 import state from '../../store/store';
 import { selectionUtilities } from "../../utilities/selection-utilities";
-
+import { getFileSize } from '../../utilities/filesize-utilities';
 @Component({
   tag: 'dnn-rm-items-listview',
   styleUrl: 'dnn-rm-items-listview.scss',
@@ -35,22 +35,6 @@ export class DnnRmItemsListview {
       <span>{date.toLocaleDateString()}</span>
       <span>{date.toLocaleTimeString()}</span>
     </div>
-  }
-
-  private getFileSize(fileSize: number) {
-    if (fileSize == undefined || fileSize == undefined){
-      return "";
-    }
-    
-    if (fileSize < 1024){
-      return fileSize.toString() + " B";
-    }
-    
-    if (fileSize < 1048576 ){
-      return Math.round(fileSize / 1024).toString() + " KB";
-    }
-    
-    return Math.round(fileSize / 3221225472).toString() + " MB";
   }
 
   private handleRowKeyDown(e: KeyboardEvent, item: Item): void {
@@ -131,7 +115,7 @@ export class DnnRmItemsListview {
                   <td>{item.itemName}</td>
                   <td>{this.getLocalDateString(item.createdOn)}</td>
                   <td>{this.getLocalDateString(item.modifiedOn)}</td>
-                  <td class="size">{this.getFileSize(item.fileSize)}</td>
+                  <td class="size">{getFileSize(item.fileSize)}</td>
                 </tr>
               )}
             </tbody>

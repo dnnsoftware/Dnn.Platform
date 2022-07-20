@@ -411,4 +411,13 @@
   <data name="Download.Text" xml:space="preserve">
     <value>Download</value>
   </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="ExtractUploads.Text" xml:space="preserve">
+    <value>Extract uploaded archives</value>
+  </data>
+  <data name="Overwrite.Text" xml:space="preserve">
+    <value>Overwrite</value>
+  </data>
 </root>
