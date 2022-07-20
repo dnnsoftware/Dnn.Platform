@@ -97,9 +97,11 @@ export class DnnRmActionsBar {
     return (
       <Host>
         <dnn-vertical-overflow-menu>
+          {state.selectedItems && state.selectedItems.length == 0 && state.currentItems && state.currentItems.hasAddFoldersPermission &&
+              <dnn-action-create-folder />
+          }
           {state.selectedItems && state.selectedItems.length == 0 && state.currentItems && state.currentItems.hasAddFilesPermission &&
-            // No items are currently selected
-            <dnn-action-create-folder />
+              <dnn-action-upload-file />
           }
           {state.selectedItems.length == 1 &&
             // A single item is currently selected

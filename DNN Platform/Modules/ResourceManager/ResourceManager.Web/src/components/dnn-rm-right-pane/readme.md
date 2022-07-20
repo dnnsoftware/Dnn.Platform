@@ -25,6 +25,7 @@ graph TD;
   dnn-rm-right-pane --> dnn-rm-status-bar
   dnn-rm-actions-bar --> dnn-vertical-overflow-menu
   dnn-rm-actions-bar --> dnn-action-create-folder
+  dnn-rm-actions-bar --> dnn-action-upload-file
   dnn-rm-actions-bar --> dnn-action-edit-item
   dnn-rm-actions-bar --> dnn-action-move-items
   dnn-rm-actions-bar --> dnn-action-delete-items
@@ -37,6 +38,12 @@ graph TD;
   dnn-rm-create-folder --> dnn-button
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
+  dnn-action-upload-file --> dnn-modal
+  dnn-action-upload-file --> dnn-rm-upload-file
+  dnn-rm-upload-file --> dnn-checkbox
+  dnn-rm-upload-file --> dnn-dropzone
+  dnn-rm-upload-file --> dnn-rm-queued-file
+  dnn-rm-queued-file --> dnn-button
   dnn-action-edit-item --> dnn-modal
   dnn-action-edit-item --> dnn-rm-edit-folder
   dnn-action-edit-item --> dnn-rm-edit-file

@@ -635,6 +635,27 @@ namespace Dnn.Modules.ResourceManager.Services
             }
         }
 
+        /// <summary>
+        /// Gets the list of possible file extensions as well as the validation code to use for uploads.
+        /// </summary>
+        /// <returns>An object containing the allowed file exteions and the validation code to use for uploads.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetAllowedFileExtensions()
+        {
+            var allowedExtensions = FileManager.Instance.WhiteList.ToStorageString();
+            var parameters = new List<object>() { allowedExtensions.Split(',').Select(i => i.Trim()).OrderBy(a => a).ToList() };
+            parameters.Add(this.PortalSettings.UserInfo.UserID);
+            if (!this.UserInfo.IsSuperUser)
+            {
+                parameters.Add(this.PortalSettings.PortalId);
+            }
+
+            var validationCode = ValidationUtils.ComputeValidationCode(parameters);
+
+            return this.Ok(new { allowedExtensions, validationCode });
+        }
+
         private static string GetFileIconUrl(string extension)
         {
             if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))

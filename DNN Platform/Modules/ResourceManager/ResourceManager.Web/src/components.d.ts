@@ -29,6 +29,9 @@ export namespace Components {
     interface DnnActionUnlinkItems {
         "items": Item[];
     }
+    interface DnnActionUploadFile {
+        "parentFolderId": number;
+    }
     interface DnnResourceManager {
         /**
           * The ID of the module.
@@ -125,6 +128,24 @@ export namespace Components {
          */
         "value": number;
     }
+    interface DnnRmQueuedFile {
+        /**
+          * Whether to extract uploaded zip files.
+         */
+        "extract": boolean;
+        /**
+          * The file to upload.
+         */
+        "file": File;
+        /**
+          * Optionally limit the file types that can be uploaded.
+         */
+        "filter": string;
+        /**
+          * The validation code to use for uploads.
+         */
+        "validationCode": string;
+    }
     interface DnnRmRightPane {
     }
     interface DnnRmStatusBar {
@@ -136,6 +157,8 @@ export namespace Components {
           * The list of items to delete.
          */
         "items": Item[];
+    }
+    interface DnnRmUploadFile {
     }
 }
 declare global {
@@ -180,6 +203,12 @@ declare global {
     var HTMLDnnActionUnlinkItemsElement: {
         prototype: HTMLDnnActionUnlinkItemsElement;
         new (): HTMLDnnActionUnlinkItemsElement;
+    };
+    interface HTMLDnnActionUploadFileElement extends Components.DnnActionUploadFile, HTMLStencilElement {
+    }
+    var HTMLDnnActionUploadFileElement: {
+        prototype: HTMLDnnActionUploadFileElement;
+        new (): HTMLDnnActionUploadFileElement;
     };
     interface HTMLDnnResourceManagerElement extends Components.DnnResourceManager, HTMLStencilElement {
     }
@@ -277,6 +306,12 @@ declare global {
         prototype: HTMLDnnRmProgressBarElement;
         new (): HTMLDnnRmProgressBarElement;
     };
+    interface HTMLDnnRmQueuedFileElement extends Components.DnnRmQueuedFile, HTMLStencilElement {
+    }
+    var HTMLDnnRmQueuedFileElement: {
+        prototype: HTMLDnnRmQueuedFileElement;
+        new (): HTMLDnnRmQueuedFileElement;
+    };
     interface HTMLDnnRmRightPaneElement extends Components.DnnRmRightPane, HTMLStencilElement {
     }
     var HTMLDnnRmRightPaneElement: {
@@ -301,6 +336,12 @@ declare global {
         prototype: HTMLDnnRmUnlinkItemsElement;
         new (): HTMLDnnRmUnlinkItemsElement;
     };
+    interface HTMLDnnRmUploadFileElement extends Components.DnnRmUploadFile, HTMLStencilElement {
+    }
+    var HTMLDnnRmUploadFileElement: {
+        prototype: HTMLDnnRmUploadFileElement;
+        new (): HTMLDnnRmUploadFileElement;
+    };
     interface HTMLElementTagNameMap {
         "dnn-action-copy-url": HTMLDnnActionCopyUrlElement;
         "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
@@ -309,6 +350,7 @@ declare global {
         "dnn-action-edit-item": HTMLDnnActionEditItemElement;
         "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
         "dnn-action-unlink-items": HTMLDnnActionUnlinkItemsElement;
+        "dnn-action-upload-file": HTMLDnnActionUploadFileElement;
         "dnn-resource-manager": HTMLDnnResourceManagerElement;
         "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
         "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
@@ -325,10 +367,12 @@ declare global {
         "dnn-rm-left-pane": HTMLDnnRmLeftPaneElement;
         "dnn-rm-move-items": HTMLDnnRmMoveItemsElement;
         "dnn-rm-progress-bar": HTMLDnnRmProgressBarElement;
+        "dnn-rm-queued-file": HTMLDnnRmQueuedFileElement;
         "dnn-rm-right-pane": HTMLDnnRmRightPaneElement;
         "dnn-rm-status-bar": HTMLDnnRmStatusBarElement;
         "dnn-rm-top-bar": HTMLDnnRmTopBarElement;
         "dnn-rm-unlink-items": HTMLDnnRmUnlinkItemsElement;
+        "dnn-rm-upload-file": HTMLDnnRmUploadFileElement;
     }
 }
 declare namespace LocalJSX {
@@ -352,6 +396,9 @@ declare namespace LocalJSX {
     }
     interface DnnActionUnlinkItems {
         "items": Item[];
+    }
+    interface DnnActionUploadFile {
+        "parentFolderId"?: number;
     }
     interface DnnResourceManager {
         /**
@@ -481,6 +528,24 @@ declare namespace LocalJSX {
          */
         "value"?: number;
     }
+    interface DnnRmQueuedFile {
+        /**
+          * Whether to extract uploaded zip files.
+         */
+        "extract"?: boolean;
+        /**
+          * The file to upload.
+         */
+        "file": File;
+        /**
+          * Optionally limit the file types that can be uploaded.
+         */
+        "filter": string;
+        /**
+          * The validation code to use for uploads.
+         */
+        "validationCode": string;
+    }
     interface DnnRmRightPane {
     }
     interface DnnRmStatusBar {
@@ -497,6 +562,12 @@ declare namespace LocalJSX {
          */
         "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
     }
+    interface DnnRmUploadFile {
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+    }
     interface IntrinsicElements {
         "dnn-action-copy-url": DnnActionCopyUrl;
         "dnn-action-create-folder": DnnActionCreateFolder;
@@ -505,6 +576,7 @@ declare namespace LocalJSX {
         "dnn-action-edit-item": DnnActionEditItem;
         "dnn-action-move-items": DnnActionMoveItems;
         "dnn-action-unlink-items": DnnActionUnlinkItems;
+        "dnn-action-upload-file": DnnActionUploadFile;
         "dnn-resource-manager": DnnResourceManager;
         "dnn-rm-actions-bar": DnnRmActionsBar;
         "dnn-rm-create-folder": DnnRmCreateFolder;
@@ -521,10 +593,12 @@ declare namespace LocalJSX {
         "dnn-rm-left-pane": DnnRmLeftPane;
         "dnn-rm-move-items": DnnRmMoveItems;
         "dnn-rm-progress-bar": DnnRmProgressBar;
+        "dnn-rm-queued-file": DnnRmQueuedFile;
         "dnn-rm-right-pane": DnnRmRightPane;
         "dnn-rm-status-bar": DnnRmStatusBar;
         "dnn-rm-top-bar": DnnRmTopBar;
         "dnn-rm-unlink-items": DnnRmUnlinkItems;
+        "dnn-rm-upload-file": DnnRmUploadFile;
     }
 }
 export { LocalJSX as JSX };
@@ -538,6 +612,7 @@ declare module "@stencil/core" {
             "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
             "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
             "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
+            "dnn-action-upload-file": LocalJSX.DnnActionUploadFile & JSXBase.HTMLAttributes<HTMLDnnActionUploadFileElement>;
             "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
             "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
             "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
@@ -554,10 +629,12 @@ declare module "@stencil/core" {
             "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
             "dnn-rm-move-items": LocalJSX.DnnRmMoveItems & JSXBase.HTMLAttributes<HTMLDnnRmMoveItemsElement>;
             "dnn-rm-progress-bar": LocalJSX.DnnRmProgressBar & JSXBase.HTMLAttributes<HTMLDnnRmProgressBarElement>;
+            "dnn-rm-queued-file": LocalJSX.DnnRmQueuedFile & JSXBase.HTMLAttributes<HTMLDnnRmQueuedFileElement>;
             "dnn-rm-right-pane": LocalJSX.DnnRmRightPane & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
             "dnn-rm-status-bar": LocalJSX.DnnRmStatusBar & JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
             "dnn-rm-top-bar": LocalJSX.DnnRmTopBar & JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
             "dnn-rm-unlink-items": LocalJSX.DnnRmUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnRmUnlinkItemsElement>;
+            "dnn-rm-upload-file": LocalJSX.DnnRmUploadFile & JSXBase.HTMLAttributes<HTMLDnnRmUploadFileElement>;
         }
     }
 }

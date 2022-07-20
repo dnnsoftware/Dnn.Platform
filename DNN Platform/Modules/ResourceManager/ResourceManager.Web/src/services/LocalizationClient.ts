@@ -54,6 +54,7 @@ export interface LocalizedStrings {
     Delete: string;
     DeleteItems: string;
     Edit: string;
+    ExtractUploads: string;
     FileAlreadyExistsMessage: string;
     FileId: string;
     Files: string;
@@ -67,6 +68,7 @@ export interface LocalizedStrings {
     FolderTypeRequiredMessage: string;
     General: string;
     Name: string;
+    Overwrite: string;
     Permissions: string;
     Save: string;
     Secure: string;
@@ -140,4 +142,5 @@ export interface LocalizedStrings {
     CopyUrl: string;
     StatusBarMessage: string;
     Download: string;
-  };
+    Upload: string;
+};

@@ -72,6 +72,24 @@ export class ItemsClient{
       });
     }
 
+    public getAllowedFileExtensions() {
+        return new Promise<GetAllowedFileExtensionsResponse>((resolve, reject) => {
+            const url = `${this.requestUrl}GetAllowedFileExtensions`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
+
     /**
      * Syncs the folder content.
      * @param folderId The folder id.
@@ -494,6 +512,12 @@ export interface GetFolderContentResponse{
     hasManagePermission: boolean;
     items: Item[];
     totalCount: number;
+}
+
+export interface GetAllowedFileExtensionsResponse {
+    /** A coma delimited list of the allowed file extensions. */
+    allowedExtensions: string;
+    validationCode: string;
 }
 
 export interface FolderInfo{
