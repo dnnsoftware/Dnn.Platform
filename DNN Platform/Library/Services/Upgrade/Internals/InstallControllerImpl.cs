@@ -183,6 +183,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     XmlNode administratorNode = AppendNewXmlNode(ref installTemplate, ref portalNode, "administrator", null);
                     XmlNode portalAliasesNode = AppendNewXmlNode(ref installTemplate, ref portalNode, "portalaliases", null);
                     AppendNewXmlNode(ref installTemplate, ref portalNode, "portalname", portalConfig.PortalName);
+                    AppendNewXmlNode(ref installTemplate, ref portalNode, "isssl", portalConfig.IsSsl.ToString());
                     AppendNewXmlNode(ref installTemplate, ref administratorNode, "firstname", portalConfig.AdminFirstName);
                     AppendNewXmlNode(ref installTemplate, ref administratorNode, "lastname", portalConfig.AdminLastName);
                     AppendNewXmlNode(ref installTemplate, ref administratorNode, "username", portalConfig.AdminUserName);
@@ -403,6 +404,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     {
                         var portalConfig = new PortalConfig();
                         portalConfig.PortalName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "portalname");
+                        portalConfig.IsSsl = bool.Parse(XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "isssl", "false"));
 
                         XmlNode adminNode = portalNode.SelectSingleNode("administrator");
                         if (adminNode != null)

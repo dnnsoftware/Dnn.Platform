@@ -96,10 +96,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -3185,6 +3181,8 @@
     <Content Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
+    <Content Include="Portals\_default\Blank Website.template" />
+    <Content Include="Portals\_default\Default Website.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
       <SubType>Designer</SubType>
@@ -3451,6 +3449,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Licenses\NUnit3TestAdapter %28MIT%29.txt.resources" />
+    <Content Include="Portals\_default\Blank Website.template.en-US.resx" />
+    <Content Include="Portals\_default\Default Website.template.en-US.resx" />
+    <Content Include="Portals\_default\Default Website.template.resources" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

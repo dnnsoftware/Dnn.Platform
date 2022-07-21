@@ -74,8 +74,9 @@ namespace DotNetNuke.Services.Install
             { InstallSiteStep, 20 },
             { InstallSuperUserStep, 5 },
             { new AddFcnModeStep(), 1 },
-            { ActivateLicenseStep, 4 },
+            { ActivateLicenseStep, 3 },
             { new InstallVersionStep(), 1 },
+            { new InstallSslStep(), 1 },
         };
 
         private static string localResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
@@ -753,6 +754,8 @@ namespace DotNetNuke.Services.Install
                     }
 
                     this.valEmailValid.ValidationExpression = Globals.glbEmailRegEx;
+
+                    this.chkWebsiteSsl.Checked = this.Request.IsSecureConnection;
                 }
             }
         }
@@ -1016,6 +1019,7 @@ namespace DotNetNuke.Services.Install
             var portalConfig = new PortalConfig()
             {
                 PortalName = installInfo["websiteName"],
+                IsSsl = bool.Parse(installInfo["websiteSsl"]),
                 TemplateFileName = installInfo["template"],
                 IsChild = false,
             };
