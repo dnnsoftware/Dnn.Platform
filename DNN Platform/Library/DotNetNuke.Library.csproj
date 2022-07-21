@@ -91,9 +91,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
@@ -1525,6 +1524,7 @@
     <Compile Include="Services\Tokens\TokenReplace.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\AddFcnModeStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\BaseInstallationStep.cs" />
+    <Compile Include="Services\Upgrade\Internals\Steps\InstallSslStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\InstallVersionStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\IISVerificationStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\ActivateLicenseStep.cs" />
