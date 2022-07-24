@@ -268,7 +268,7 @@ namespace Dnn.PersonaBar.Pages.Services
         /// Gets the pages hierarchy.
         /// </summary>
         /// <param name="pageId">The page (tab) id.</param>
-        /// <returns>The page hyerarchy.</returns>
+        /// <returns>The page hierarchy.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
         public HttpResponseMessage GetPageHierarchy(int pageId)

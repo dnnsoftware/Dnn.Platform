@@ -13,41 +13,41 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : TabPermissionInfo
+    /// Class    : PortalPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// TabPermissionInfo provides the Entity Layer for Tab Permissions.
+    /// PortalPermissionInfo provides the Entity Layer for Portal Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("permission")]
-    public class TabPermissionInfo : PermissionInfoBase, IHydratable
+    public class PortalPermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int _TabID;
+        private int _PortalID;
 
         // local property declarations
-        private int _TabPermissionID;
+        private int _PortalPermissionID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
-        /// Constructs a new TabPermissionInfo.
+        /// Initializes a new instance of the <see cref="PortalPermissionInfo"/> class.
+        /// Constructs a new PortalPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public TabPermissionInfo()
+        public PortalPermissionInfo()
         {
-            this._TabPermissionID = Null.NullInteger;
-            this._TabID = Null.NullInteger;
+            this._PortalPermissionID = Null.NullInteger;
+            this._PortalID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
-        /// Constructs a new TabPermissionInfo.
+        /// Initializes a new instance of the <see cref="PortalPermissionInfo"/> class.
+        /// Constructs a new PortalPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
-        public TabPermissionInfo(PermissionInfo permission)
+        public PortalPermissionInfo(PermissionInfo permission)
             : this()
         {
             this.ModuleDefID = permission.ModuleDefID;
@@ -59,47 +59,47 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Tab Permission ID.
+        /// Gets or sets and sets the Portal Permission ID.
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
-        [XmlElement("tabpermissionid")]
-        public int TabPermissionID
+        [XmlElement("portalpermissionid")]
+        public int PortalPermissionID
         {
             get
             {
-                return this._TabPermissionID;
+                return this._PortalPermissionID;
             }
 
             set
             {
-                this._TabPermissionID = value;
+                this._PortalPermissionID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Tab ID.
+        /// Gets or sets the Portal ID.
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
-        [XmlElement("tabid")]
-        public int TabID
+        [XmlElement("portalid")]
+        public int PortalID
         {
             get
             {
-                return this._TabID;
+                return this._PortalID;
             }
 
             set
             {
-                this._TabID = value;
+                this._PortalID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID.
+        /// Gets or sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
@@ -108,18 +108,18 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this.TabPermissionID;
+                return this.PortalPermissionID;
             }
 
             set
             {
-                this.TabPermissionID = value;
+                this.PortalPermissionID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a TabPermissionInfo from a Data Reader.
+        /// Fills a PortalPermissionInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
@@ -127,8 +127,8 @@ namespace DotNetNuke.Security.Permissions
         {
             // Call the base classes fill method to populate base class properties
             this.FillInternal(dr);
-            this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
-            this.TabID = Null.SetNullInteger(dr["TabID"]);
+            this.PortalPermissionID = Null.SetNullInteger(dr["PortalPermissionID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
         }
     }
 }

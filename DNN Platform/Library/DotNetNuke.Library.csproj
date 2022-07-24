@@ -681,8 +681,12 @@
     <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
+    <Compile Include="Security\Permissions\ComparePortalPermissions.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
     <Compile Include="Security\Permissions\IFolderPermissionController.cs" />
+    <Compile Include="Security\Permissions\PortalPermissionController.cs" />
+    <Compile Include="Security\Permissions\PortalPermissionInfo.cs" />
+    <Compile Include="Security\Permissions\PortalPermissionCollection.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
     <Compile Include="Security\RegistrationSettings.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
