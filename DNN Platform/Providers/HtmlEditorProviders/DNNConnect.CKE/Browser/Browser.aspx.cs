@@ -17,7 +17,6 @@ namespace DNNConnect.CKEditorProvider.Browser
     using System.Web;
     using System.Web.Script.Services;
     using System.Web.Services;
-    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -32,6 +31,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security.Permissions;
@@ -39,6 +39,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.JScript;
 
     using Convert = System.Convert;
@@ -48,7 +49,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
     /// <summary>The browser.</summary>
     [ScriptService]
-    public partial class Browser : Page
+    public partial class Browser : PageBase
     {
         private const string FileItemDisplayFormat =
             "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>";
@@ -464,62 +465,16 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             this.LoadFavIcon();
 
-            var jqueryScriptLink = new HtmlGenericControl("script");
-
-            jqueryScriptLink.Attributes["type"] = "text/javascript";
-            jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
-
-            this.favicon.Controls.Add(jqueryScriptLink);
-
-            var jqueryUiScriptLink = new HtmlGenericControl("script");
-
-            jqueryUiScriptLink.Attributes["type"] = "text/javascript";
-            jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
-
-            this.favicon.Controls.Add(jqueryUiScriptLink);
-
-            var jqueryImageSliderScriptLink = new HtmlGenericControl("script");
-
-            jqueryImageSliderScriptLink.Attributes["type"] = "text/javascript";
-            jqueryImageSliderScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.ImageSlider.js");
-
-            this.favicon.Controls.Add(jqueryImageSliderScriptLink);
-
-            var jqueryImageResizerScriptLink = new HtmlGenericControl("script");
-
-            jqueryImageResizerScriptLink.Attributes["type"] = "text/javascript";
-            jqueryImageResizerScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.cropzoom.js");
-
-            this.favicon.Controls.Add(jqueryImageResizerScriptLink);
-
-            var jqueryCropZoomScriptLink = new HtmlGenericControl("script");
-
-            jqueryCropZoomScriptLink.Attributes["type"] = "text/javascript";
-            jqueryCropZoomScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.ImageResizer.js");
-
-            this.favicon.Controls.Add(jqueryCropZoomScriptLink);
-
-            var jqueryPageMetodScriptLink = new HtmlGenericControl("script");
-
-            jqueryPageMetodScriptLink.Attributes["type"] = "text/javascript";
-            jqueryPageMetodScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.pagemethod.js");
-
-            this.favicon.Controls.Add(jqueryPageMetodScriptLink);
-
-            var jqueryFileUploadScriptLink = new HtmlGenericControl("script");
-
-            jqueryFileUploadScriptLink.Attributes["type"] = "text/javascript";
-            jqueryFileUploadScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.fileupload.comb.min.js");
-
-            this.favicon.Controls.Add(jqueryFileUploadScriptLink);
-
-            var objCssLink = new HtmlGenericSelfClosing("link");
-
-            objCssLink.Attributes["rel"] = "stylesheet";
-            objCssLink.Attributes["type"] = "text/css";
-            objCssLink.Attributes["href"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css";
-
-            this.favicon.Controls.Add(objCssLink);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Browser.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageSlider.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.cropzoom.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageResizer.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.pagemethod.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.fileupload.comb.min.js"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, "https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("Browser.comb.min.css"));
 
             this.GetSelectedImageOrLink();
 
@@ -964,7 +919,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             this.AcceptFileTypes = this.GetAcceptedFileTypes();
 
-                            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+                            this.title.Text = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
                             this.AnchorList.Visible = this.currentSettings.UseAnchorSelector;
                             this.LabelAnchor.Visible = this.currentSettings.UseAnchorSelector;
@@ -996,7 +951,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                         this.lblModus.Text = string.Format(
                                             "Browser-Modus: {0}",
                                             string.Format("Page {0}", this.browserModus));
-                                        this.title.InnerText = string.Format(
+                                        this.title.Text = string.Format(
                                             "{0} - DNNConnect.CKEditorProvider.FileBrowser",
                                             this.lblModus.Text);
 
@@ -1240,7 +1195,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.BrowserMode.Visible = false;
 
             this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
+            this.title.Text = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
 
             // Hide all Unwanted Elements from the Image Editor
             this.cmdClose.Visible = false;
@@ -1818,6 +1773,9 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.FoldersTree.SelectedNodeChanged += this.FoldersTree_NodeClick;
 
             this.FilesList.ItemCommand += this.FilesList_ItemCommand;
+
+            this.ClientResourceLoader.DataBind();
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
         }
 
         /// <summary>
@@ -2638,7 +2596,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.BrowserMode.Visible = true;
             }
 
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             // Add new file to database
             var currentFolderInfo = this.GetCurrentFolder();
@@ -2669,7 +2627,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             if (this.browserModus.Equals("Link"))
             {
@@ -2791,7 +2749,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             if (this.browserModus.Equals("Link"))
             {
@@ -2827,7 +2785,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.cmdResize2.Visible = true;
 
             this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader2.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
+            this.title.Text = $"{this.lblResizeHeader.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             var file = FileManager.Instance.GetFile(this.GetCurrentFolder(), this.lblFileName.Text);
             string sFilePath = FileManager.Instance.GetUrl(file);
@@ -3127,7 +3085,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     break;
             }
 
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             this.SetDefaultLinkTypeText();
         }

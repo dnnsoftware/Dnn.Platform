@@ -21,7 +21,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl title;
+        protected global::System.Web.UI.HtmlControls.HtmlTitle title;
 
         /// <summary>
         /// favicon control.
@@ -33,6 +33,24 @@ namespace DNNConnect.CKEditorProvider.Browser
         protected global::System.Web.UI.WebControls.PlaceHolder favicon;
 
         /// <summary>
+        /// ClientDependencyHeadCss control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadCss;
+
+        /// <summary>
+        /// ClientDependencyHeadJs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadJs;
+
+        /// <summary>
         /// fBrowser control.
         /// </summary>
         /// <remarks>
@@ -40,6 +58,15 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm fBrowser;
+
+        /// <summary>
+        /// BodySCRIPTS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder BodySCRIPTS;
 
         /// <summary>
         /// scriptManager1 control.
@@ -859,5 +886,32 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label WaitMessage;
+
+        /// <summary>
+        /// ClientResourcesFormBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder ClientResourcesFormBottom;
+
+        /// <summary>
+        /// ClientResourceIncludes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder ClientResourceIncludes;
+
+        /// <summary>
+        /// ClientResourceLoader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceLoader ClientResourceLoader;
     }
 }
