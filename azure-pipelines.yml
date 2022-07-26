@@ -122,4 +122,5 @@ steps:
     condition: always()
 
 - publish: 'Artifacts'
+  artifact: 'Artifacts$(System.JobAttempt)'
   condition: always()
