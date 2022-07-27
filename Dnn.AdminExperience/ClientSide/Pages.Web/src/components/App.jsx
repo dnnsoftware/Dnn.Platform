@@ -1561,7 +1561,7 @@ class App extends Component {
                 { isListPagesAllowed &&
                     <PersonaBarPage fullWidth={true} isOpen={true}>
                         <PersonaBarPageHeader title={Localization.get(inSearch ? "PagesSearchHeader" : "Pages")}>
-                            {securityService.canAddPages() &&
+                            {securityService.isSuperUser() &&
                                 <div>
                                     <Button type="primary" disabled={ this.onEditMode()  || this.state.inSearch} size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                                     <Button type="secondary" disabled={ this.onEditMode() || this.state.inSearch } size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages")}</Button>

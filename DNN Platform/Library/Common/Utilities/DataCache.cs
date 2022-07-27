@@ -74,10 +74,6 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PortalGroupsCachePriority = CacheItemPriority.High;
         public const int PortalGroupsCacheTimeOut = 20;
 
-        public const string PortalPermissionCacheKey = "PortalPermission{0}";
-        public const CacheItemPriority PortalPermissionCachePriority = CacheItemPriority.High;
-        public const int PortalPermissionCacheTimeOut = 20;
-
         // Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
         public const string TabSettingsCacheKey = "TabSettings{0}";
@@ -436,11 +432,6 @@ namespace DotNetNuke.Common.Utilities
         public static void ClearTabPermissionsCache(int PortalId)
         {
             RemoveCache(string.Format(TabPermissionCacheKey, PortalId));
-        }
-
-        public static void ClearPortalPermissionsCache(int PortalId)
-        {
-            RemoveCache(string.Format(PortalPermissionCacheKey, PortalId));
         }
 
         public static void ClearUserCache(int PortalId, string username)

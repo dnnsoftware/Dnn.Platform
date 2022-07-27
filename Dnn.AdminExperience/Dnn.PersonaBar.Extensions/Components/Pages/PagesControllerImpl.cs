@@ -865,15 +865,15 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public virtual PageSettings GetDefaultSettings(int pageId = 0)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var pageSettings = new PageSettings
             {
                 Templates = this._templateController.GetTemplates(),
-                Permissions = pageId == 0 ? this.GetPermissionsData(portalSettings.HomeTabId) : this.GetPermissionsData(pageId),
+                Permissions = this.GetPermissionsData(pageId),
             };
 
             pageSettings.TemplateId = this._templateController.GetDefaultTemplateId(pageSettings.Templates);
 
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (PortalController.GetPortalSettingAsBoolean("SSLEnabled", portalSettings.PortalId, false) &&
                 PortalController.GetPortalSettingAsBoolean("SSLEnforced", portalSettings.PortalId, false))
             {
