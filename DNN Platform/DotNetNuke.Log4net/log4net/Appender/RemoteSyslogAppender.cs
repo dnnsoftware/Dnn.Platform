@@ -1,33 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Core;
+using log4net.Appender;
+using log4net.Util;
+using log4net.Layout;
+using System.Text;
 
 namespace log4net.Appender
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Text;
-
-    using log4net.Appender;
-    using log4net.Core;
-    using log4net.Layout;
-    using log4net.Util;
-
     /// <summary>
     /// Logs events to a remote syslog daemon.
     /// </summary>
@@ -55,28 +55,28 @@ namespace log4net.Appender
     /// <para>
     /// Syslog messages must have a facility and and a severity. The severity
     /// is derived from the Level of the logging event.
-    /// The facility must be chosen from the set of defined syslog
+    /// The facility must be chosen from the set of defined syslog 
     /// <see cref="SyslogFacility"/> values. The facilities list is predefined
     /// and cannot be extended.
     /// </para>
     /// <para>
     /// An identifier is specified with each log message. This can be specified
-    /// by setting the <see cref="Identity"/> property. The identity (also know
+    /// by setting the <see cref="Identity"/> property. The identity (also know 
     /// as the tag) must not contain white space. The default value for the
     /// identity is the application name (from <see cref="LoggingEvent.Domain"/>).
     /// </para>
     /// </remarks>
-    /// <author>Rob Lyon.</author>
-    /// <author>Nicko Cadell.</author>
+    /// <author>Rob Lyon</author>
+    /// <author>Nicko Cadell</author>
     public class RemoteSyslogAppender : UdpAppender
     {
         /// <summary>
-        /// Syslog port 514.
+        /// Syslog port 514
         /// </summary>
         private const int DefaultSyslogPort = 514;
 
         /// <summary>
-        /// syslog severities.
+        /// syslog severities
         /// </summary>
         /// <remarks>
         /// <para>
@@ -123,15 +123,15 @@ namespace log4net.Appender
             /// <summary>
             /// debug-level messages
             /// </summary>
-            Debug = 7,
-        }
+            Debug = 7
+        };
 
         /// <summary>
-        /// syslog facilities.
+        /// syslog facilities
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The syslog facilities.
+        /// The syslog facilities
         /// </para>
         /// </remarks>
         public enum SyslogFacility
@@ -254,14 +254,14 @@ namespace log4net.Appender
             /// <summary>
             /// reserved for local use
             /// </summary>
-            Local7 = 23,
+            Local7 = 23
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteSyslogAppender" /> class.
         /// </summary>
         /// <remarks>
-        /// This instance of the <see cref="RemoteSyslogAppender" /> class is set up to write
+        /// This instance of the <see cref="RemoteSyslogAppender" /> class is set up to write 
         /// to a remote syslog daemon.
         /// </remarks>
         public RemoteSyslogAppender()
@@ -269,16 +269,16 @@ namespace log4net.Appender
             // syslog udp defaults
             this.RemotePort = DefaultSyslogPort;
             this.RemoteAddress = System.Net.IPAddress.Parse("127.0.0.1");
-            this.Encoding = System.Text.Encoding.ASCII;
+            this.Encoding = Encoding.ASCII;
         }
 
         /// <summary>
-        /// Gets or sets message identity.
+        /// Message identity
         /// </summary>
         /// <remarks>
         /// <para>
         /// An identifier is specified with each log message. This can be specified
-        /// by setting the <see cref="Identity"/> property. The identity (also know
+        /// by setting the <see cref="Identity"/> property. The identity (also know 
         /// as the tag) must not contain white space. The default value for the
         /// identity is the application name (from <see cref="LoggingEvent.Domain"/>).
         /// </para>
@@ -290,7 +290,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets syslog facility.
+        /// Syslog facility
         /// </summary>
         /// <remarks>
         /// Set to one of the <see cref="SyslogFacility"/> values. The list of
@@ -304,9 +304,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Add a mapping of level to severity.
+        /// Add a mapping of level to severity
         /// </summary>
-        /// <param name="mapping">The mapping to add.</param>
+        /// <param name="mapping">The mapping to add</param>
         /// <remarks>
         /// <para>
         /// Add a <see cref="LevelSeverity"/> mapping to this appender.
@@ -351,7 +351,7 @@ namespace log4net.Appender
                 // Message. The message goes after the tag/identity
                 string message = this.RenderLoggingEvent(loggingEvent);
 
-                byte[] buffer;
+                Byte[] buffer;
                 int i = 0;
                 char c;
 
@@ -380,7 +380,6 @@ namespace log4net.Appender
                         {
                             builder.Append(c);
                         }
-
                         // If character is newline, break and send the current line
                         else if ((c == '\r') || (c == '\n'))
                         {
@@ -389,7 +388,6 @@ namespace log4net.Appender
                             {
                                 i++;
                             }
-
                             i++;
                             break;
                         }
@@ -398,8 +396,8 @@ namespace log4net.Appender
                     // Grab as a byte array
                     buffer = this.Encoding.GetBytes(builder.ToString());
 
-#if NETSTANDARD1_3
-                    Client.SendAsync(buffer, buffer.Length, RemoteEndPoint).Wait();
+#if NET_4_5 || NETSTANDARD
+                    this.Client.SendAsync(buffer, buffer.Length, this.RemoteEndPoint).Wait();
 #else
                     this.Client.Send(buffer, buffer.Length, this.RemoteEndPoint);
 #endif
@@ -418,7 +416,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the options for this appender.
+        /// Initialize the options for this appender
         /// </summary>
         /// <remarks>
         /// <para>
@@ -449,7 +447,10 @@ namespace log4net.Appender
                 return levelSeverity.Severity;
             }
 
+            //
             // Fallback to sensible default values
+            //
+
             if (level >= Level.Alert)
             {
                 return SyslogSeverity.Alert;
@@ -474,7 +475,6 @@ namespace log4net.Appender
             {
                 return SyslogSeverity.Informational;
             }
-
             // Default setting
             return SyslogSeverity.Debug;
         }
@@ -514,22 +514,22 @@ namespace log4net.Appender
         private SyslogFacility m_facility = SyslogFacility.User;
 
         /// <summary>
-        /// The message identity.
+        /// The message identity
         /// </summary>
         private PatternLayout m_identity;
 
         /// <summary>
-        /// Mapping from level object to syslog severity.
+        /// Mapping from level object to syslog severity
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
         /// <summary>
-        /// Initial buffer size.
+        /// Initial buffer size
         /// </summary>
         private const int c_renderBufferSize = 256;
 
         /// <summary>
-        /// Maximum buffer size before it is recycled.
+        /// Maximum buffer size before it is recycled
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
 
@@ -548,12 +548,12 @@ namespace log4net.Appender
             private SyslogSeverity m_severity;
 
             /// <summary>
-            /// Gets or sets the mapped syslog severity for the specified level.
+            /// The mapped syslog severity for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped syslog severity for the specified level.
+            /// The mapped syslog severity for the specified level
             /// </para>
             /// </remarks>
             public SyslogSeverity Severity

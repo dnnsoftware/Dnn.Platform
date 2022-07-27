@@ -1,30 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+using System.IO;
+using System.Text;
 
 namespace log4net.DateFormatter
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Text;
-
     /// <summary>
     /// Formats a <see cref="DateTime"/> as <c>"HH:mm:ss,fff"</c>.
     /// </summary>
@@ -33,8 +33,8 @@ namespace log4net.DateFormatter
     /// Formats a <see cref="DateTime"/> in the format <c>"HH:mm:ss,fff"</c> for example, <c>"15:49:37,459"</c>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class AbsoluteTimeDateFormatter : IDateFormatter
     {
         /// <summary>
@@ -53,29 +53,26 @@ namespace log4net.DateFormatter
         protected virtual void FormatDateWithoutMillis(DateTime dateToFormat, StringBuilder buffer)
         {
             int hour = dateToFormat.Hour;
-            if (hour < 10)
+            if (hour < 10) 
             {
                 buffer.Append('0');
             }
-
             buffer.Append(hour);
             buffer.Append(':');
 
             int mins = dateToFormat.Minute;
-            if (mins < 10)
+            if (mins < 10) 
             {
                 buffer.Append('0');
             }
-
             buffer.Append(mins);
             buffer.Append(':');
-
+    
             int secs = dateToFormat.Second;
-            if (secs < 10)
+            if (secs < 10) 
             {
                 buffer.Append('0');
             }
-
             buffer.Append(secs);
         }
 
@@ -99,76 +96,71 @@ namespace log4net.DateFormatter
         /// </remarks>
         public virtual void FormatDate(DateTime dateToFormat, TextWriter writer)
         {
-            lock (s_lastTimeStrings)
+                    lock (s_lastTimeStrings)
             {
-                // Calculate the current time precise only to the second
-                long currentTimeToTheSecond = dateToFormat.Ticks - (dateToFormat.Ticks % TimeSpan.TicksPerSecond);
+            // Calculate the current time precise only to the second
+            long currentTimeToTheSecond = (dateToFormat.Ticks - (dateToFormat.Ticks % TimeSpan.TicksPerSecond));
 
-                string timeString = null;
-
-                // Compare this time with the stored last time
-                // If we are in the same second then append
-                // the previously calculated time string
-                if (s_lastTimeToTheSecond != currentTimeToTheSecond)
-                {
-                    s_lastTimeStrings.Clear();
-                }
-                else
-                {
-                    timeString = (string)s_lastTimeStrings[this.GetType()];
-                }
-
-                if (timeString == null)
-                {
-                    // lock so that only one thread can use the buffer and
-                    // update the s_lastTimeToTheSecond and s_lastTimeStrings
-
-                    // PERF: Try removing this lock and using a new StringBuilder each time
-                    lock (s_lastTimeBuf)
-                    {
-                        timeString = (string)s_lastTimeStrings[this.GetType()];
+                        string timeString = null;
+            // Compare this time with the stored last time
+            // If we are in the same second then append
+            // the previously calculated time string
+                        if (s_lastTimeToTheSecond != currentTimeToTheSecond)
+                        {
+                            s_lastTimeStrings.Clear();
+                        }
+                        else
+                        {
+                            timeString = (string) s_lastTimeStrings[this.GetType()];
+                        }
 
                         if (timeString == null)
                         {
-                            // We are in a new second.
-                            s_lastTimeBuf.Length = 0;
+                // lock so that only one thread can use the buffer and
+                // update the s_lastTimeToTheSecond and s_lastTimeStrings
 
-                            // Calculate the new string for this second
-                            this.FormatDateWithoutMillis(dateToFormat, s_lastTimeBuf);
+                // PERF: Try removing this lock and using a new StringBuilder each time
+                lock(s_lastTimeBuf)
+                {
+                                        timeString = (string) s_lastTimeStrings[this.GetType()];
 
-                            // Render the string buffer to a string
-                            timeString = s_lastTimeBuf.ToString();
+                                        if (timeString == null)
+                                        {
+                        // We are in a new second.
+                        s_lastTimeBuf.Length = 0;
+
+                        // Calculate the new string for this second
+                        this.FormatDateWithoutMillis(dateToFormat, s_lastTimeBuf);
+
+                        // Render the string buffer to a string
+                                                timeString = s_lastTimeBuf.ToString();
 
 #if NET_1_1
-						// Ensure that the above string is written into the variable NOW on all threads.
-						// This is only required on multiprocessor machines with weak memeory models
-						System.Threading.Thread.MemoryBarrier();
+                        // Ensure that the above string is written into the variable NOW on all threads.
+                        // This is only required on multiprocessor machines with weak memeory models
+                        System.Threading.Thread.MemoryBarrier();
 #endif
-
-                            // Store the time as a string (we only have to do this once per second)
-                            s_lastTimeStrings[this.GetType()] = timeString;
-                            s_lastTimeToTheSecond = currentTimeToTheSecond;
-                        }
+                        // Store the time as a string (we only have to do this once per second)
+                                                s_lastTimeStrings[this.GetType()] = timeString;
+                        s_lastTimeToTheSecond = currentTimeToTheSecond;
                     }
                 }
-
-                writer.Write(timeString);
-
-                // Append the current millisecond info
-                writer.Write(',');
-                int millis = dateToFormat.Millisecond;
-                if (millis < 100)
-                {
-                    writer.Write('0');
-                }
-
-                if (millis < 10)
-                {
-                    writer.Write('0');
-                }
-
-                writer.Write(millis);
             }
+            writer.Write(timeString);
+    
+            // Append the current millisecond info
+            writer.Write(',');
+            int millis = dateToFormat.Millisecond;
+            if (millis < 100) 
+            {
+                writer.Write('0');
+            }
+            if (millis < 10) 
+            {
+                writer.Write('0');
+            }
+            writer.Write(millis);
+                    }
         }
 
         /// <summary>

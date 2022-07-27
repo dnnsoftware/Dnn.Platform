@@ -1,28 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
     /// <summary>
     /// An always empty <see cref="IEnumerator"/>.
     /// </summary>
@@ -32,12 +32,12 @@ namespace log4net.Util
     /// that is empty and not modifiable.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public sealed class NullEnumerator : IEnumerator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NullEnumerator" /> class.
+        /// Initializes a new instance of the <see cref="NullEnumerator" /> class. 
         /// </summary>
         /// <remarks>
         /// <para>
@@ -49,7 +49,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets get the singleton instance of the <see cref="NullEnumerator" />.
+        /// Get the singleton instance of the <see cref="NullEnumerator" />.
         /// </summary>
         /// <returns>The singleton instance of the <see cref="NullEnumerator" />.</returns>
         /// <remarks>
@@ -66,7 +66,7 @@ namespace log4net.Util
         /// Gets the current object from the enumerator.
         /// </summary>
         /// <remarks>
-        /// Throws an <see cref="InvalidOperationException" /> because the
+        /// Throws an <see cref="InvalidOperationException" /> because the 
         /// <see cref="NullDictionaryEnumerator" /> never has a current value.
         /// </remarks>
         /// <remarks>
@@ -76,15 +76,15 @@ namespace log4net.Util
         /// will throw an <see cref="InvalidOperationException"/>.
         /// </para>
         /// </remarks>
-        /// <exception cref="InvalidOperationException">The collection is empty and <see cref="Current"/>
+        /// <exception cref="InvalidOperationException">The collection is empty and <see cref="Current"/> 
         /// cannot be positioned over a valid location.</exception>
-        public object Current
+        public object Current 
         {
-            get { throw new InvalidOperationException(); }
+            get	{ throw new InvalidOperationException(); }
         }
-
+  
         /// <summary>
-        /// Test if the enumerator can advance, if so advance.
+        /// Test if the enumerator can advance, if so advance
         /// </summary>
         /// <returns><c>false</c> as the <see cref="NullEnumerator" /> cannot advance.</returns>
         /// <remarks>
@@ -98,7 +98,7 @@ namespace log4net.Util
         {
             return false;
         }
-
+  
         /// <summary>
         /// Resets the enumerator back to the start.
         /// </summary>
@@ -107,7 +107,7 @@ namespace log4net.Util
         /// As the enumerator is over an empty collection <see cref="Reset"/> does nothing.
         /// </para>
         /// </remarks>
-        public void Reset()
+        public void Reset() 
         {
         }
 

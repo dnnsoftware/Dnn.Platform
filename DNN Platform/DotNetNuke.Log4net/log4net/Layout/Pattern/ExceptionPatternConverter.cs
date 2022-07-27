@@ -1,32 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System.Diagnostics;
+using System.IO;
+using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System.Diagnostics;
-    using System.IO;
-
-    using log4net.Core;
-
     /// <summary>
-    /// Write the exception text to the output.
+    /// Write the exception text to the output
     /// </summary>
     /// <remarks>
     /// <para>
@@ -41,12 +40,11 @@ namespace log4net.Layout.Pattern
     /// and to have the exception as the last data in the pattern.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    internal sealed class ExceptionPatternConverter : PatternLayoutConverter
+    /// <author>Nicko Cadell</author>
+    internal sealed class ExceptionPatternConverter : PatternLayoutConverter 
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionPatternConverter"/> class.
-        /// Default constructor.
+        /// Default constructor
         /// </summary>
         public ExceptionPatternConverter()
         {
@@ -55,10 +53,10 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Write the exception text to the output.
+        /// Write the exception text to the output
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged.</param>
+        /// <param name="loggingEvent">the event being logged</param>
         /// <remarks>
         /// <para>
         /// If an exception object is stored in the logging event
@@ -90,7 +88,7 @@ namespace log4net.Layout.Pattern
         ///         </item>
         ///         <item>
         ///             <description>HelpLink</description>
-        ///         </item>
+        ///         </item>		
         /// </list>
         /// </remarks>
         protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
@@ -102,14 +100,14 @@ namespace log4net.Layout.Pattern
                     case "message":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.Message);
                         break;
-#if !NETCF
+#if !NETCF						
                     case "source":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.Source);
                         break;
                     case "stacktrace":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.StackTrace);
                         break;
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
                     case "targetsite":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.TargetSite);
                         break;
@@ -117,7 +115,7 @@ namespace log4net.Layout.Pattern
                     case "helplink":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.HelpLink);
                         break;
-#endif
+#endif						
                     default:
                         // do not output SystemInfo.NotAvailableText
                         break;
@@ -126,7 +124,7 @@ namespace log4net.Layout.Pattern
             else
             {
                 string exceptionString = loggingEvent.GetExceptionString();
-                if (exceptionString != null && exceptionString.Length > 0)
+                if (exceptionString != null && exceptionString.Length > 0) 
                 {
                     writer.WriteLine(exceptionString);
                 }

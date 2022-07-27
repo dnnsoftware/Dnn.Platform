@@ -1,23 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 // and uses the CompactRepositorySelector instead
@@ -25,10 +24,8 @@
 
 using System;
 using System.Collections;
-
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
 using System.Configuration;
-
 #else
 using System.Linq;
 #endif
@@ -36,8 +33,8 @@ using System.IO;
 using System.Reflection;
 
 using log4net.Config;
-using log4net.Repository;
 using log4net.Util;
+using log4net.Repository;
 
 namespace log4net.Core
 {
@@ -50,8 +47,8 @@ namespace log4net.Core
     /// configure the hierarchy for the repository.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class DefaultRepositorySelector : IRepositorySelector
     {
         /// <summary>
@@ -68,17 +65,16 @@ namespace log4net.Core
         /// holds the newly created <see cref="ILoggerRepository"/>.
         /// </para>
         /// </remarks>
-        public event LoggerRepositoryCreationEventHandler LoggerRepositoryCreatedEvent
+        public event LoggerRepositoryCreationEventHandler LoggerRepositoryCreatedEvent 
         {
             add { this.m_loggerRepositoryCreatedEvent += value; }
             remove { this.m_loggerRepositoryCreatedEvent -= value; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultRepositorySelector"/> class.
         /// Creates a new repository selector.
         /// </summary>
-        /// <param name="defaultRepositoryType">The type of the repositories to create, must implement <see cref="ILoggerRepository"/>.</param>
+        /// <param name="defaultRepositoryType">The type of the repositories to create, must implement <see cref="ILoggerRepository"/></param>
         /// <remarks>
         /// <para>
         /// Create an new repository selector.
@@ -96,9 +92,9 @@ namespace log4net.Core
             }
 
             // Check that the type is a repository
-            if (!typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType))
+            if (!(typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)))
             {
-                throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
+                throw SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
             }
 
             this.m_defaultRepositoryType = defaultRepositoryType;
@@ -112,22 +108,22 @@ namespace log4net.Core
         /// <param name="repositoryAssembly">The assembly use to lookup the <see cref="ILoggerRepository"/>.</param>
         /// <remarks>
         /// <para>
-        /// The type of the <see cref="ILoggerRepository"/> created and the repository
-        /// to create can be overridden by specifying the <see cref="log4net.Config.RepositoryAttribute"/>
+        /// The type of the <see cref="ILoggerRepository"/> created and the repository 
+        /// to create can be overridden by specifying the <see cref="log4net.Config.RepositoryAttribute"/> 
         /// attribute on the <paramref name="repositoryAssembly"/>.
         /// </para>
         /// <para>
-        /// The default values are to use the <see cref="log4net.Repository.Hierarchy.Hierarchy"/>
+        /// The default values are to use the <see cref="log4net.Repository.Hierarchy.Hierarchy"/> 
         /// implementation of the <see cref="ILoggerRepository"/> interface and to use the
         /// <see cref="AssemblyName.Name"/> as the name of the repository.
         /// </para>
         /// <para>
-        /// The <see cref="ILoggerRepository"/> created will be automatically configured using
+        /// The <see cref="ILoggerRepository"/> created will be automatically configured using 
         /// any <see cref="log4net.Config.ConfiguratorAttribute"/> attributes defined on
         /// the <paramref name="repositoryAssembly"/>.
         /// </para>
         /// </remarks>
-        /// <returns>The <see cref="ILoggerRepository"/> for the assembly.</returns>
+        /// <returns>The <see cref="ILoggerRepository"/> for the assembly</returns>
         /// <exception cref="ArgumentNullException"><paramref name="repositoryAssembly"/> is <see langword="null" />.</exception>
         public ILoggerRepository GetRepository(Assembly repositoryAssembly)
         {
@@ -135,7 +131,6 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
-
             return this.CreateRepository(repositoryAssembly, this.m_defaultRepositoryType);
         }
 
@@ -147,7 +142,7 @@ namespace log4net.Core
         /// <remarks>
         /// <para>
         /// Returns the named repository. If <paramref name="repositoryName"/> is <c>null</c>
-        /// a <see cref="ArgumentNullException"/> is thrown. If the repository
+        /// a <see cref="ArgumentNullException"/> is thrown. If the repository 
         /// does not exist a <see cref="LogException"/> is thrown.
         /// </para>
         /// <para>
@@ -163,7 +158,7 @@ namespace log4net.Core
                 throw new ArgumentNullException("repositoryName");
             }
 
-            lock (this)
+            lock(this)
             {
                 // Lookup in map
                 ILoggerRepository rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
@@ -171,13 +166,12 @@ namespace log4net.Core
                 {
                     throw new LogException("Repository [" + repositoryName + "] is NOT defined.");
                 }
-
                 return rep;
             }
         }
 
         /// <summary>
-        /// Create a new repository for the assembly specified.
+        /// Create a new repository for the assembly specified 
         /// </summary>
         /// <param name="repositoryAssembly">the assembly to use to create the repository to associate with the <see cref="ILoggerRepository"/>.</param>
         /// <param name="repositoryType">The type of repository to create, must implement <see cref="ILoggerRepository"/>.</param>
@@ -191,23 +185,23 @@ namespace log4net.Core
         /// <para>
         /// The type of the <see cref="ILoggerRepository"/> created and
         /// the repository to create can be overridden by specifying the
-        /// <see cref="log4net.Config.RepositoryAttribute"/> attribute on the
-        /// <paramref name="repositoryAssembly"/>.  The default values are to use the
-        /// <paramref name="repositoryType"/> implementation of the
+        /// <see cref="log4net.Config.RepositoryAttribute"/> attribute on the 
+        /// <paramref name="repositoryAssembly"/>.  The default values are to use the 
+        /// <paramref name="repositoryType"/> implementation of the 
         /// <see cref="ILoggerRepository"/> interface and to use the
         /// <see cref="AssemblyName.Name"/> as the name of the repository.
         /// </para>
         /// <para>
         /// The <see cref="ILoggerRepository"/> created will be automatically
-        /// configured using any <see cref="log4net.Config.ConfiguratorAttribute"/>
+        /// configured using any <see cref="log4net.Config.ConfiguratorAttribute"/> 
         /// attributes defined on the <paramref name="repositoryAssembly"/>.
         /// </para>
         /// <para>
         /// If a repository for the <paramref name="repositoryAssembly"/> already exists
-        /// that repository will be returned. An error will not be raised and that
+        /// that repository will be returned. An error will not be raised and that 
         /// repository may be of a different type to that specified in <paramref name="repositoryType"/>.
         /// Also the <see cref="log4net.Config.RepositoryAttribute"/> attribute on the
-        /// assembly may be used to override the repository type specified in
+        /// assembly may be used to override the repository type specified in 
         /// <paramref name="repositoryType"/>.
         /// </para>
         /// </remarks>
@@ -222,8 +216,8 @@ namespace log4net.Core
         /// </summary>
         /// <param name="repositoryAssembly">the assembly to use to create the repository to associate with the <see cref="ILoggerRepository"/>.</param>
         /// <param name="repositoryType">The type of repository to create, must implement <see cref="ILoggerRepository"/>.</param>
-        /// <param name="repositoryName">The name to assign to the created repository.</param>
-        /// <param name="readAssemblyAttributes">Set to <c>true</c> to read and apply the assembly attributes.</param>
+        /// <param name="repositoryName">The name to assign to the created repository</param>
+        /// <param name="readAssemblyAttributes">Set to <c>true</c> to read and apply the assembly attributes</param>
         /// <returns>The repository created.</returns>
         /// <remarks>
         /// <para>
@@ -234,23 +228,23 @@ namespace log4net.Core
         /// <para>
         /// The type of the <see cref="ILoggerRepository"/> created and
         /// the repository to create can be overridden by specifying the
-        /// <see cref="log4net.Config.RepositoryAttribute"/> attribute on the
-        /// <paramref name="repositoryAssembly"/>.  The default values are to use the
-        /// <paramref name="repositoryType"/> implementation of the
+        /// <see cref="log4net.Config.RepositoryAttribute"/> attribute on the 
+        /// <paramref name="repositoryAssembly"/>.  The default values are to use the 
+        /// <paramref name="repositoryType"/> implementation of the 
         /// <see cref="ILoggerRepository"/> interface and to use the
         /// <see cref="AssemblyName.Name"/> as the name of the repository.
         /// </para>
         /// <para>
         /// The <see cref="ILoggerRepository"/> created will be automatically
-        /// configured using any <see cref="log4net.Config.ConfiguratorAttribute"/>
+        /// configured using any <see cref="log4net.Config.ConfiguratorAttribute"/> 
         /// attributes defined on the <paramref name="repositoryAssembly"/>.
         /// </para>
         /// <para>
         /// If a repository for the <paramref name="repositoryAssembly"/> already exists
-        /// that repository will be returned. An error will not be raised and that
+        /// that repository will be returned. An error will not be raised and that 
         /// repository may be of a different type to that specified in <paramref name="repositoryType"/>.
         /// Also the <see cref="log4net.Config.RepositoryAttribute"/> attribute on the
-        /// assembly may be used to override the repository type specified in
+        /// assembly may be used to override the repository type specified in 
         /// <paramref name="repositoryType"/>.
         /// </para>
         /// </remarks>
@@ -268,7 +262,7 @@ namespace log4net.Core
                 repositoryType = this.m_defaultRepositoryType;
             }
 
-            lock (this)
+            lock(this)
             {
                 // Lookup in map
                 ILoggerRepository rep = this.m_assembly2repositoryMap[repositoryAssembly] as ILoggerRepository;
@@ -335,7 +329,6 @@ namespace log4net.Core
 
                     this.m_assembly2repositoryMap[repositoryAssembly] = rep;
                 }
-
                 return rep;
             }
         }
@@ -369,7 +362,7 @@ namespace log4net.Core
                 repositoryType = this.m_defaultRepositoryType;
             }
 
-            lock (this)
+            lock(this)
             {
                 ILoggerRepository rep = null;
 
@@ -430,29 +423,29 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Test if a named repository exists.
+        /// Test if a named repository exists
         /// </summary>
-        /// <param name="repositoryName">the named repository to check.</param>
-        /// <returns><c>true</c> if the repository exists.</returns>
+        /// <param name="repositoryName">the named repository to check</param>
+        /// <returns><c>true</c> if the repository exists</returns>
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(string, Type)"/>
-        /// to create a new repository and <see cref="M:GetRepository(string)"/> to retrieve
+        /// to create a new repository and <see cref="M:GetRepository(string)"/> to retrieve 
         /// a repository.
         /// </para>
         /// </remarks>
         public bool ExistsRepository(string repositoryName)
         {
-            lock (this)
+            lock(this)
             {
                 return this.m_name2repositoryMap.ContainsKey(repositoryName);
             }
         }
 
         /// <summary>
-        /// Gets a list of <see cref="ILoggerRepository"/> objects.
+        /// Gets a list of <see cref="ILoggerRepository"/> objects
         /// </summary>
-        /// <returns>an array of all known <see cref="ILoggerRepository"/> objects.</returns>
+        /// <returns>an array of all known <see cref="ILoggerRepository"/> objects</returns>
         /// <remarks>
         /// <para>
         /// Gets an array of all of the repositories created by this selector.
@@ -460,7 +453,7 @@ namespace log4net.Core
         /// </remarks>
         public ILoggerRepository[] GetAllRepositories()
         {
-            lock (this)
+            lock(this)
             {
                 ICollection reps = this.m_name2repositoryMap.Values;
                 ILoggerRepository[] all = new ILoggerRepository[reps.Count];
@@ -476,11 +469,11 @@ namespace log4net.Core
         /// <param name="repositoryTarget">The repository that the repository is aliased to.</param>
         /// <remarks>
         /// <para>
-        /// The repository specified will be aliased to the repository when created.
+        /// The repository specified will be aliased to the repository when created. 
         /// The repository must not already exist.
         /// </para>
         /// <para>
-        /// When the repository is created it must utilize the same repository type as
+        /// When the repository is created it must utilize the same repository type as 
         /// the repository it is aliased to, otherwise the aliasing will fail.
         /// </para>
         /// </remarks>
@@ -489,42 +482,40 @@ namespace log4net.Core
         ///     <para>-or-</para>
         ///     <para><paramref name="repositoryTarget" /> is <see langword="null" />.</para>
         /// </exception>
-        public void AliasRepository(string repositoryAlias, ILoggerRepository repositoryTarget)
+        public void AliasRepository(string repositoryAlias, ILoggerRepository repositoryTarget) 
         {
-            if (repositoryAlias == null)
+            if (repositoryAlias == null) 
             {
                 throw new ArgumentNullException("repositoryAlias");
             }
-
-            if (repositoryTarget == null)
+            if (repositoryTarget == null) 
             {
                 throw new ArgumentNullException("repositoryTarget");
             }
 
-            lock (this)
+            lock(this) 
             {
                 // Check if the alias is already set
-                if (this.m_alias2repositoryMap.Contains(repositoryAlias))
+                if (this.m_alias2repositoryMap.Contains(repositoryAlias)) 
                 {
                     // Check if this is a duplicate of the current alias
-                    if (repositoryTarget != ((ILoggerRepository)this.m_alias2repositoryMap[repositoryAlias]))
+                    if (repositoryTarget != ((ILoggerRepository)this.m_alias2repositoryMap[repositoryAlias])) 
                     {
                         // Cannot redefine existing alias
                         throw new InvalidOperationException("Repository [" + repositoryAlias + "] is already aliased to repository [" + ((ILoggerRepository)this.m_alias2repositoryMap[repositoryAlias]).Name + "]. Aliases cannot be redefined.");
                     }
                 }
-
-                // Check if the alias is already mapped to a repository
-                else if (this.m_name2repositoryMap.Contains(repositoryAlias))
+                    // Check if the alias is already mapped to a repository
+                else if (this.m_name2repositoryMap.Contains(repositoryAlias)) 
                 {
                     // Check if this is a duplicate of the current mapping
-                    if (repositoryTarget != ((ILoggerRepository)this.m_name2repositoryMap[repositoryAlias]))
+                    if ( repositoryTarget != ((ILoggerRepository)this.m_name2repositoryMap[repositoryAlias]) ) 
                     {
                         // Cannot define alias for already mapped repository
                         throw new InvalidOperationException("Repository [" + repositoryAlias + "] already exists and cannot be aliased to repository [" + repositoryTarget.Name + "].");
                     }
                 }
-                else
+                else 
                 {
                     // Set the alias
                     this.m_alias2repositoryMap[repositoryAlias] = repositoryTarget;
@@ -541,10 +532,10 @@ namespace log4net.Core
         /// Raises the <see cref="LoggerRepositoryCreatedEvent"/> event.
         /// </para>
         /// </remarks>
-        protected virtual void OnLoggerRepositoryCreatedEvent(ILoggerRepository repository)
+        protected virtual void OnLoggerRepositoryCreatedEvent(ILoggerRepository repository) 
         {
             LoggerRepositoryCreationEventHandler handler = this.m_loggerRepositoryCreatedEvent;
-            if (handler != null)
+            if (handler != null) 
             {
                 handler(this, new LoggerRepositoryCreationEventArgs(repository));
             }
@@ -575,11 +566,11 @@ namespace log4net.Core
 
             try
             {
-                // Look for the RepositoryAttribute on the assembly
-#if NETSTANDARD1_3
-				object[] repositoryAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.RepositoryAttribute)).ToArray();
+                // Look for the RepositoryAttribute on the assembly 
+#if NETSTANDARD
+                object[] repositoryAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.RepositoryAttribute)).ToArray();
 #else
-                object[] repositoryAttributes = Attribute.GetCustomAttributes(assembly, typeof(log4net.Config.RepositoryAttribute), false);
+                object[] repositoryAttributes = Attribute.GetCustomAttributes(assembly, typeof(RepositoryAttribute), false);
 #endif
                 if (repositoryAttributes == null || repositoryAttributes.Length == 0)
                 {
@@ -593,7 +584,7 @@ namespace log4net.Core
                         LogLog.Error(declaringType, "Assembly [" + assembly + "] has multiple log4net.Config.RepositoryAttribute assembly attributes. Only using first occurrence.");
                     }
 
-                    log4net.Config.RepositoryAttribute domAttr = repositoryAttributes[0] as log4net.Config.RepositoryAttribute;
+                    RepositoryAttribute domAttr = repositoryAttributes[0] as RepositoryAttribute;
 
                     if (domAttr == null)
                     {
@@ -646,17 +637,16 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("assembly");
             }
-
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");
             }
 
             // Look for the Configurator attributes (e.g. XmlConfiguratorAttribute) on the assembly
-#if NETSTANDARD1_3
-			object[] configAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.ConfiguratorAttribute)).ToArray();
+#if NETSTANDARD
+            object[] configAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.ConfiguratorAttribute)).ToArray();
 #else
-            object[] configAttributes = Attribute.GetCustomAttributes(assembly, typeof(log4net.Config.ConfiguratorAttribute), false);
+            object[] configAttributes = Attribute.GetCustomAttributes(assembly, typeof(ConfiguratorAttribute), false);
 #endif
             if (configAttributes != null && configAttributes.Length > 0)
             {
@@ -664,7 +654,7 @@ namespace log4net.Core
                 Array.Sort(configAttributes);
 
                 // Delegate to the attribute the job of configuring the repository
-                foreach (log4net.Config.ConfiguratorAttribute configAttr in configAttributes)
+                foreach(ConfiguratorAttribute configAttr in configAttributes)
                 {
                     if (configAttr != null)
                     {
@@ -674,7 +664,7 @@ namespace log4net.Core
                         }
                         catch (Exception ex)
                         {
-                            LogLog.Error(declaringType, "Exception calling [" + configAttr.GetType().FullName + "] .Configure method.", ex);
+                            LogLog.Error(declaringType, "Exception calling ["+configAttr.GetType().FullName+"] .Configure method.", ex);
                         }
                     }
                 }
@@ -685,6 +675,7 @@ namespace log4net.Core
                 // Try to configure the default repository using an AppSettings specified config file
                 // Do this even if the repository has been configured (or claims to be), this allows overriding
                 // of the default config files etc, if that is required.
+
                 string repositoryConfigFile = SystemInfo.GetAppSetting("log4net.Config");
                 if (repositoryConfigFile != null && repositoryConfigFile.Length > 0)
                 {
@@ -693,9 +684,9 @@ namespace log4net.Core
                     {
                         applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
-                        LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. appSettings log4net.Config path [" + repositoryConfigFile + "] will be treated as an absolute URI", ex);
+                        LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. appSettings log4net.Config path ["+repositoryConfigFile+"] will be treated as an absolute URI", ex);
                     }
 
                     string repositoryConfigFilePath = repositoryConfigFile;
@@ -706,8 +697,8 @@ namespace log4net.Core
 
                     // Determine whether to watch the file or not based on an app setting value:
                     bool watchRepositoryConfigFile = false;
-#if NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD1_3
-                    bool.TryParse(SystemInfo.GetAppSetting("log4net.Config.Watch"), out watchRepositoryConfigFile);
+#if NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD
+                    Boolean.TryParse(SystemInfo.GetAppSetting("log4net.Config.Watch"), out watchRepositoryConfigFile);
 #else
                                     {
                                         string watch = SystemInfo.GetAppSetting("log4net.Config.Watch");
@@ -727,8 +718,8 @@ namespace log4net.Core
 
                     if (watchRepositoryConfigFile)
                     {
-                        // As we are going to watch the config file it is required to resolve it as a
-                        // physical file system path pass that in a FileInfo object to the Configurator
+                         // As we are going to watch the config file it is required to resolve it as a 
+                         // physical file system path pass that in a FileInfo object to the Configurator
                         FileInfo repositoryConfigFileInfo = null;
                         try
                         {
@@ -738,7 +729,6 @@ namespace log4net.Core
                         {
                             LogLog.Error(declaringType, "DefaultRepositorySelector: Exception while parsing log4net.Config file physical path [" + repositoryConfigFilePath + "]", ex);
                         }
-
                         try
                         {
                             LogLog.Debug(declaringType, "Loading and watching configuration for default repository from AppSettings specified Config path [" + repositoryConfigFilePath + "]");
@@ -752,32 +742,32 @@ namespace log4net.Core
                     }
                     else
                     {
-                        // As we are not going to watch the config file it is easiest to just resolve it as a
-                        // URI and pass that to the Configurator
-                        Uri repositoryConfigUri = null;
+                    // As we are not going to watch the config file it is easiest to just resolve it as a 
+                    // URI and pass that to the Configurator
+                    Uri repositoryConfigUri = null;
+                    try
+                    {
+                        repositoryConfigUri = new Uri(repositoryConfigFilePath);
+                    }
+                    catch(Exception ex)
+                    {
+                        LogLog.Error(declaringType, "Exception while parsing log4net.Config file path [" + repositoryConfigFile + "]", ex);
+                    }
+
+                    if (repositoryConfigUri != null)
+                    {
+                        LogLog.Debug(declaringType, "Loading configuration for default repository from AppSettings specified Config URI [" + repositoryConfigUri.ToString() + "]");
+
                         try
                         {
-                            repositoryConfigUri = new Uri(repositoryConfigFilePath);
+                            // TODO: Support other types of configurator
+                            XmlConfigurator.Configure(repository, repositoryConfigUri);
                         }
                         catch (Exception ex)
                         {
-                            LogLog.Error(declaringType, "Exception while parsing log4net.Config file path [" + repositoryConfigFile + "]", ex);
+                            LogLog.Error(declaringType, "Exception calling XmlConfigurator.Configure method with ConfigUri ["+repositoryConfigUri+"]", ex);
                         }
-
-                        if (repositoryConfigUri != null)
-                        {
-                            LogLog.Debug(declaringType, "Loading configuration for default repository from AppSettings specified Config URI [" + repositoryConfigUri.ToString() + "]");
-
-                            try
-                            {
-                                // TODO: Support other types of configurator
-                                XmlConfigurator.Configure(repository, repositoryConfigUri);
-                            }
-                            catch (Exception ex)
-                            {
-                                LogLog.Error(declaringType, "Exception calling XmlConfigurator.Configure method with ConfigUri [" + repositoryConfigUri + "]", ex);
-                            }
-                        }
+                    }
                     }
                 }
             }
@@ -799,28 +789,27 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("assembly");
             }
-
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");
             }
 
             // Look for the PluginAttribute on the assembly
-#if NETSTANDARD1_3
-			object[] configAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.PluginAttribute)).ToArray();
+#if NETSTANDARD
+            object[] configAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.PluginAttribute)).ToArray();
 #else
-            object[] configAttributes = Attribute.GetCustomAttributes(assembly, typeof(log4net.Config.PluginAttribute), false);
+            object[] configAttributes = Attribute.GetCustomAttributes(assembly, typeof(PluginAttribute), false);
 #endif
             if (configAttributes != null && configAttributes.Length > 0)
             {
-                foreach (log4net.Plugin.IPluginFactory configAttr in configAttributes)
+                foreach(Plugin.IPluginFactory configAttr in configAttributes)
                 {
                     try
                     {
                         // Create the plugin and add it to the repository
                         repository.PluginMap.Add(configAttr.CreatePlugin());
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         LogLog.Error(declaringType, "Failed to create plugin. Attribute [" + configAttr.ToString() + "]", ex);
                     }
@@ -844,27 +833,26 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("assembly");
             }
-
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");
             }
 
             // Look for the AliasRepositoryAttribute on the assembly
-#if NETSTANDARD1_3
-			object[] configAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.AliasRepositoryAttribute)).ToArray();
+#if NETSTANDARD
+            object[] configAttributes = assembly.GetCustomAttributes(typeof(log4net.Config.AliasRepositoryAttribute)).ToArray();
 #else
-            object[] configAttributes = Attribute.GetCustomAttributes(assembly, typeof(log4net.Config.AliasRepositoryAttribute), false);
+            object[] configAttributes = Attribute.GetCustomAttributes(assembly, typeof(AliasRepositoryAttribute), false);
 #endif
             if (configAttributes != null && configAttributes.Length > 0)
             {
-                foreach (log4net.Config.AliasRepositoryAttribute configAttr in configAttributes)
+                foreach(AliasRepositoryAttribute configAttr in configAttributes)
                 {
                     try
                     {
                         this.AliasRepository(configAttr.Name, repository);
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         LogLog.Error(declaringType, "Failed to alias repository [" + configAttr.Name + "]", ex);
                     }
@@ -882,6 +870,7 @@ namespace log4net.Core
         private static readonly Type declaringType = typeof(DefaultRepositorySelector);
 
         private const string DefaultRepositoryName = "log4net-default-repository";
+
         private readonly Hashtable m_name2repositoryMap = new Hashtable();
         private readonly Hashtable m_assembly2repositoryMap = new Hashtable();
         private readonly Hashtable m_alias2repositoryMap = new Hashtable();
