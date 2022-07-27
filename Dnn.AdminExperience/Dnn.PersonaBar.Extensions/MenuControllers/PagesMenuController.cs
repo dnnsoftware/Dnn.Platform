@@ -10,7 +10,6 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Pages.Components.Security;
     using DotNetNuke.Application;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
     /// <summary>
@@ -45,7 +44,6 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
             var settings = new Dictionary<string, object>
             {
                 { "canSeePagesList", this.securityService.CanViewPageList(menuItem.MenuId) },
-                { "canAddPages", this.securityService.CanAddPage(PortalSettings.Current.PortalId) },
                 { "portalName", PortalSettings.Current.PortalName },
                 { "currentPagePermissions", this.securityService.GetCurrentPagePermissions() },
                 { "currentPageName", PortalSettings.Current?.ActiveTab?.TabName },

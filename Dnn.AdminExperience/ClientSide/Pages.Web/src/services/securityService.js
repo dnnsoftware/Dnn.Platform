@@ -19,9 +19,6 @@ const securityService = {
     },
     canSeePagesList() {
         return utils.canSeePagesList();
-    },
-    canAddPages() {
-        return utils.canAddPages();
-    },
+    }
 };
 export default securityService;

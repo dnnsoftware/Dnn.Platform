@@ -182,9 +182,6 @@ namespace DotNetNuke.Services.Log.EventLog
             WEBSERVER_ENABLED = 151,
             WEBSERVER_PINGFAILED = 152,
             FOLDER_MOVED = 153,
-            PORTALPERMISSION_DELETED = 154,
-            PORTALPERMISSION_CREATED = 155,
-            PORTALPERMISSION_UPDATED = 156,
         }
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead. Scheduled for removal in v11.0.0.")]

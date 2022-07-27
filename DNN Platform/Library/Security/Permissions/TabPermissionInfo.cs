@@ -125,7 +125,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            // Call the base classes fill method to populate base class properties
+            // Call the base classes fill method to ppoulate base class proeprties
             this.FillInternal(dr);
             this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
             this.TabID = Null.SetNullInteger(dr["TabID"]);
