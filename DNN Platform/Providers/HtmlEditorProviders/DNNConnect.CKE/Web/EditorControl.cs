@@ -1248,7 +1248,7 @@ namespace DNNConnect.CKEditorProvider.Web
             var editorFixedId = this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty);
 
             var postBackScript = string.Format(
-                @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && Page_IsValid) CKEDITOR.instances.{0}.destroy(); }}",
+                @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return false; CKEDITOR.instances.{0}.destroy(); }}",
                 editorFixedId);
 
             this.RegisterOnSubmitStatement(

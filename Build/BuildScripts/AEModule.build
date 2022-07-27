@@ -17,7 +17,7 @@
       <PersonaBar-css Include="admin/personaBar/**/css/**/*" />
       <PersonaBar-resources Include="admin/personaBar/**/App_LocalResources/*.resx" />
       <PersonaBar-controls Include="admin/personaBar/**/UserControls/*.ascx" />
-      <PersonaBar-scripts Include="admin/personaBar/**/scripts/*;admin/personaBar/**/scripts/**/*" />
+      <PersonaBar-scripts Include="admin/personaBar/**/scripts/**/*" />
       <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" Exclude="**/node_modules/**/*" />
     </ItemGroup>
   </Target>

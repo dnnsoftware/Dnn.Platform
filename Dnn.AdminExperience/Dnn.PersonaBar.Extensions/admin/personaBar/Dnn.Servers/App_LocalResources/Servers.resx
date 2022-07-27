@@ -418,7 +418,7 @@
     <value>SMTP Server Mode:</value>
   </data>
   <data name="plSMTPPassword.Help" xml:space="preserve">
-    <value>Enter the password for the SMTP server.</value>
+    <value>Enter the password for the SMTP server. Leave blank to not to change it.</value>
   </data>
   <data name="plSMTPPassword.Text" xml:space="preserve">
     <value>SMTP Password:</value>
@@ -716,5 +716,8 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="DeleteNonActiveServers.Warning" xml:space="preserve">
     <value>You can delete all servers that have not been active for 24 hours below</value>
+  </data>
+  <data name="Change.Text" xml:space="preserve">
+    <value>Change</value>
   </data>
 </root>

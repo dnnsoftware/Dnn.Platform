@@ -40,7 +40,7 @@
     "prop-types": "^15.6.2",
     "raw-loader": "2.0.0",
     "react": "^16.6.3",
-    "react-collapse": "4.0.3",
+    "react-collapse": "5.1.0",
     "react-custom-scrollbars": "4.2.1",
     "react-dom": "^16.6.3",
     "react-height": "3.0.1",
