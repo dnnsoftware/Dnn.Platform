@@ -64,8 +64,7 @@ const AddTermBox = ({
                     <p className="parent-display" onClick={toggleParentTree}>{parentDisplay && parentDisplay.Name || ""}</p>
                     <Collapsible
                         isOpened={parentTreeOpened}
-                        fixedHeight={115}
-                        keepCollapsedContent={true}>
+                        theme={{collapse: "parent-term-collapse ReactCollapse--collapse", content: "ReactCollapse--content"}}>
                         <Scrollbars style={parentTermTreeStyle}>
                             <ul className="term-ul root-level parent-tree">
                                 {parentTermTree}

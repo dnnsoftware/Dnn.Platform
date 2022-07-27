@@ -98,8 +98,7 @@ class TermHeader extends Component {
                 </div>
                 <Collapse
                     className={"term-header-collapsible"}
-                    isOpened={!this.state.collapsed}
-                    style={{ float: "left" }}>
+                    isOpened={!this.state.collapsed}>
                     {!state.collapsed && props.children}
                     {!state.collapsed && <GridCell className="vocab-footer">
                         {!props.term.IsSystem && util.canEdit() && <Button type="secondary" onClick={this.onDelete.bind(this)}>{LocalizedResources.get("DeleteTerm")}</Button>}

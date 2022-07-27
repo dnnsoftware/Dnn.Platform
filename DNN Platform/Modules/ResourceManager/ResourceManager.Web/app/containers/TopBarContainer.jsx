@@ -94,7 +94,6 @@ class TopBarContainer extends React.Component {
                                 ]} 
                                 onSelect={option => this.onRefreshSyncChange(folderPanelState, currentFolderId, option)} 
                                 withBorder={false} 
-                                fixedHeight={200}
                                 label=""
                                 prependWith={<span dangerouslySetInnerHTML={{__html: refreshSyncIcon}}></span>}
                                 withIcon={false} />
@@ -110,8 +109,7 @@ class TopBarContainer extends React.Component {
                     }
                 </div>
                 <div className="sort-container">
-                    <DropDown className="rm-dropdown" options={sortOptions} value={sorting} onSelect={this.onSortingChange.bind(this)} 
-                        withBorder={false} fixedHeight={200}/>
+                    <DropDown className="rm-dropdown" options={sortOptions} value={sorting} onSelect={this.onSortingChange.bind(this)} withBorder={false}/>
                 </div>
                 <div className="search-box-container">
                     <input className="assets-input" type="search" placeholder={localizeService.getString("SearchInputPlaceholder")}

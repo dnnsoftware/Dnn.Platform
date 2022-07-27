@@ -11,9 +11,13 @@
   &:not(:last-child) {
     border-bottom: 1px solid #ddd;
   }
-  .logitem-collapsible > div {
+  .logitem-collapsible {
     float: left;
-    padding-bottom: 25px;
+    width: 100%;
+    > div {
+      float: left;
+      padding-bottom: 25px;
+    }
   }
   div.collapsible-logitemdetail-header {
     width: 100%;

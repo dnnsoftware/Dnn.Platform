@@ -107,7 +107,6 @@ class RolesPanel extends Component {
                     <div className="group-filter">
                         <Dropdown
                             value={state.groupId}
-                            fixedHeight={200}
                             style={{ width: "150px" }}
                             options={this.getRoleGroupOptions()}
                             withBorder={false}

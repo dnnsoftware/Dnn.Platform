@@ -21,8 +21,7 @@ export default class Collapsible extends Component {
             this.scrollTimeout = null;
         }
     }
-    scroll(size) {
-        const {height} = size;
+    scroll(contentHeight) {
         const {scrollDelay} = this.props;
         const delay = scrollDelay || scrollDelay === 0 ? scrollDelay : defaultDelay;
         if (!this.props.isOpened || !this.props.autoScroll ) {
@@ -31,9 +30,8 @@ export default class Collapsible extends Component {
         this.scrollTimeout = setTimeout(()=> {
             const collapsible = this.collapsibleRef;
             const collapsibleTop = collapsible.getBoundingClientRect().top;
-            const collapsibleHeight = this.props.fixedHeight || height;
             const bodyTop = document.body.getBoundingClientRect().top;
-            let bottom = collapsibleTop - bodyTop + collapsibleHeight + 40;
+            let bottom = collapsibleTop - bodyTop + contentHeight + 40;
             
             if (bottom > window.innerHeight ) {
                 bottom = bottom - window.innerHeight;
@@ -42,23 +40,18 @@ export default class Collapsible extends Component {
                 }
             }
         }, delay);
-        if (typeof this.props.onHeightReady === "function") {
-            this.props.onHeightReady(height);
-        }
     }
 
     render() {
-        const {isOpened, style, fixedHeight} = this.props;
+        const {isOpened} = this.props;
         const className = this.props.className || "";
         return (
             <div ref={(node) => this.collapsibleRef = node} style={{height: "100%", width:"100%"}}>
                 <ReactCollapse
                     isOpened={isOpened}
-                    style={style}
-                    className={className}
+                    theme={{collapse: `${className} ReactCollapse--collapse`, content: "ReactCollapse--content"}}
                     onRest={({contentHeight}) => this.scroll(contentHeight)}
-                    onWork={({contentHeight}) => this.scroll(contentHeight)}
-                    fixedHeight={fixedHeight}>
+                    onWork={({contentHeight}) => this.scroll(contentHeight)}>
                     {this.props.children}
                 </ReactCollapse>
             </div>
@@ -68,11 +61,8 @@ export default class Collapsible extends Component {
 
 Collapsible.propTypes = {
     isOpened: PropTypes.bool,
-    style: PropTypes.object,
-    fixedHeight: PropTypes.number,
     autoScroll: PropTypes.bool,
     scrollDelay: PropTypes.number,
-    onHeightReady: PropTypes.func,
     children: PropTypes.node,
     className: PropTypes.string
 };

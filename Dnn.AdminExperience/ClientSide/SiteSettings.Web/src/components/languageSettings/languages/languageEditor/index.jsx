@@ -260,7 +260,6 @@ class LanguageEditor extends Component {
                 />
                 <Dropdown
                     options={this.getFallbackOptions()}
-                    fixedHeight={100}
                     value={state.languageDetail.Fallback}
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
                     enabled={true}
@@ -297,7 +296,6 @@ class LanguageEditor extends Component {
                 />
                 <Dropdown
                     options={this.getFallbackOptions()}
-                    fixedHeight={100}
                     value={state.languageDetail.Fallback}
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
                     enabled={isHost}
