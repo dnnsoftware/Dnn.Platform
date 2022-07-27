@@ -949,7 +949,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                         this.panPageMode.Visible = true;
 
                                         this.lblModus.Text = string.Format(
-                                            "Browser-Modus: {0}",
+                                            Localization.GetString("BrowserModus.Text", this.ResXFile, this.LanguageCode),
                                             string.Format("Page {0}", this.browserModus));
                                         this.title.Text = string.Format(
                                             "{0} - DNNConnect.CKEditorProvider.FileBrowser",
@@ -3074,12 +3074,12 @@ namespace DNNConnect.CKEditorProvider.Browser
                 case "file":
                     this.panLinkMode.Visible = true;
                     this.panPageMode.Visible = false;
-                    this.lblModus.Text = string.Format("Browser-Modus: {0}", this.browserModus);
+                    this.lblModus.Text = string.Format(Localization.GetString("BrowserModus.Text", this.ResXFile, this.LanguageCode), this.browserModus);
                     break;
                 case "page":
                     this.panLinkMode.Visible = false;
                     this.panPageMode.Visible = true;
-                    this.lblModus.Text = string.Format("Browser-Modus: {0}", string.Format("Page {0}", this.browserModus));
+                    this.lblModus.Text = string.Format(Localization.GetString("BrowserModus.Text", this.ResXFile, this.LanguageCode), string.Format("Page {0}", this.browserModus));
 
                     this.RenderTabs();
                     break;
