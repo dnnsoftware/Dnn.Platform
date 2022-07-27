@@ -1,22 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DNNConnect.CKEditorProvider
 {
     using System;
     using System.Globalization;
     using System.IO;
     using System.Web;
-    using System.Web.UI.HtmlControls;
 
     using DNNConnect.CKEditorProvider.Controls;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// <summary>
     /// The options page.
@@ -71,57 +71,13 @@ namespace DNNConnect.CKEditorProvider
         /// </param>
         protected override void OnPreRender(EventArgs e)
         {
-            var jqueryScriptLink = new HtmlGenericControl("script");
-
-            jqueryScriptLink.Attributes["type"] = "text/javascript";
-            jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
-
-            this.favicon.Controls.Add(jqueryScriptLink);
-
-            var jqueryUiScriptLink = new HtmlGenericControl("script");
-
-            jqueryUiScriptLink.Attributes["type"] = "text/javascript";
-            jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
-
-            this.favicon.Controls.Add(jqueryUiScriptLink);
-
-            var notificationScriptLink = new HtmlGenericControl("script");
-
-            notificationScriptLink.Attributes["type"] = "text/javascript";
-            notificationScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.notification.js");
-
-            this.favicon.Controls.Add(notificationScriptLink);
-
-            var optionsScriptLink = new HtmlGenericControl("script");
-
-            optionsScriptLink.Attributes["type"] = "text/javascript";
-            optionsScriptLink.Attributes["src"] = this.ResolveUrl("js/Options.js");
-
-            this.favicon.Controls.Add(optionsScriptLink);
-
-            var objCssLink = new HtmlGenericSelfClosing("link");
-
-            objCssLink.Attributes["rel"] = "stylesheet";
-            objCssLink.Attributes["type"] = "text/css";
-            objCssLink.Attributes["href"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css";
-
-            this.favicon.Controls.Add(objCssLink);
-
-            var notificationCssLink = new HtmlGenericSelfClosing("link");
-
-            notificationCssLink.Attributes["rel"] = "stylesheet";
-            notificationCssLink.Attributes["type"] = "text/css";
-            notificationCssLink.Attributes["href"] = this.ResolveUrl("css/jquery.notification.css");
-
-            this.favicon.Controls.Add(notificationCssLink);
-
-            var optionsCssLink = new HtmlGenericSelfClosing("link");
-
-            optionsCssLink.Attributes["rel"] = "stylesheet";
-            optionsCssLink.Attributes["type"] = "text/css";
-            optionsCssLink.Attributes["href"] = this.ResolveUrl("css/Options.css");
-
-            this.favicon.Controls.Add(optionsCssLink);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.notification.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Options.js"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, "https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("css/jquery.notification.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("css/Options.css"));
 
             base.OnPreRender(e);
         }
@@ -256,6 +212,9 @@ namespace DNNConnect.CKEditorProvider
         private void InitializeComponent()
         {
             this.curPortalSettings = this.GetPortalSettings();
+
+            this.ClientResourceLoader.DataBind();
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
         }
 
         /// <summary>
