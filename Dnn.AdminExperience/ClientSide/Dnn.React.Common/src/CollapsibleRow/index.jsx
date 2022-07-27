@@ -83,7 +83,6 @@ export default class CollapsibleRow extends Component {
                     isOpened={!this.state.collapsed}
                     style={Object.assign({ float: "left" }, props.collapseStyle) }
                     keepCollapsedContent={props.keepCollapsedContent}
-                    springConfig={props.springConfig}
                     fixedHeight={props.fixedHeight}
                     onRest={props.onRest}
                     onHeightReady={props.onHeightReady}>
@@ -104,7 +103,6 @@ CollapsibleRow.propTypes = {
     label: PropTypes.node,
     collapseStyle: PropTypes.object,
     keepCollapsedContent: PropTypes.bool,
-    springConfig: PropTypes.object,
     fixedHeight: PropTypes.number,
     onRest: PropTypes.func,
     onHeightReady: PropTypes.func,

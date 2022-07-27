@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactCollapse from "react-collapse";
 import scroll from "scroll";
+import "./style.less";
 
 const defaultDelay = 300;
 
@@ -55,7 +56,8 @@ export default class Collapsible extends Component {
                     isOpened={isOpened}
                     style={style}
                     className={className}
-                    onMeasure={this.scroll.bind(this)}
+                    onRest={({contentHeight}) => this.scroll(contentHeight)}
+                    onWork={({contentHeight}) => this.scroll(contentHeight)}
                     fixedHeight={fixedHeight}>
                     {this.props.children}
                 </ReactCollapse>
