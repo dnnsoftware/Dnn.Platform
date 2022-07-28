@@ -4123,6 +4123,16 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
         }
 
+        /// <summary>
+        /// Sets all tabs of the portal to the specified secure value.
+        /// </summary>
+        /// <param name="portalId">The portal to update</param>
+        /// <param name="secure">True to set all pages to secure, false to set them all to non secure.</param>
+        public virtual void SetAllPortalTabsSecure(int portalId, bool secure)
+        {
+            Instance().ExecuteNonQuery("SetAllPortalTabsSecure", portalId, secure);
+        }
+
         public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
         {
             return Globals.ConvertDataReaderToDataSet(this.ExecuteReader(procedureName, commandParameters));

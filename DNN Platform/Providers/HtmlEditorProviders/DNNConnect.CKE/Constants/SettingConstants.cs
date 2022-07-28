@@ -57,6 +57,11 @@ namespace DNNConnect.CKEditorProvider.Constants
         public const string BROWSERROOTDIRID = "browserRootDirId";
 
         /// <summary>
+        /// The browser root folder for images id setting name.
+        /// </summary>
+        public const string BROWSERROOTDIRFORIMGID = "browserRootDirForImgId";
+
+        /// <summary>
         /// The config setting name.
         /// </summary>
         public const string CONFIG = "config";
@@ -147,6 +152,11 @@ namespace DNNConnect.CKEditorProvider.Constants
         public const string UPLOADDIRID = "uploadDirId";
 
         /// <summary>
+        /// The upload folder for images id setting name.
+        /// </summary>
+        public const string UPLOADDIRFORIMGID = "uploadDirForImgId";
+
+        /// <summary>
         /// The use anchor selector setting name.
         /// </summary>
         public const string USEANCHORSELECTOR = "UseAnchorSelector";
@@ -165,5 +175,15 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// The resize height setting name.
         /// </summary>
         public const string RESIZEHEIGHT = "resizeheight";
+
+        /// <summary>
+        /// The Resize Upload width setting name.
+        /// </summary>
+        public const string RESIZEWIDTHUPLOAD = "resizewidthupload";
+
+        /// <summary>
+        /// The resize Upload height setting name.
+        /// </summary>
+        public const string RESIZEHEIGHTUPLOAD = "resizeheightupload";
     }
 }

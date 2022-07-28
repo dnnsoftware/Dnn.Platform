@@ -23,17 +23,3 @@ SELECT
 FROM {databaseOwner}[{objectQualifier}Portals] p
 WHERE p.PortalID=@PortalId
 GO
-
-IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PersonaBar_SetAllPortalTabsSecure]'))
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SetAllPortalTabsSecure];
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SetAllPortalTabsSecure]
-@PortalId INT,
-@Secure BIT
-AS
-UPDATE {databaseOwner}[{objectQualifier}Tabs]
-SET IsSecure=@Secure
-WHERE PortalId=@PortalId
-GO
-

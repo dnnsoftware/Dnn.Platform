@@ -1,44 +1,42 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
-// .NET Compact Framework 1.0 has no support for System.Runtime.Remoting
-#if !NETCF
+// .NET Compact Framework 1.0 && netstandard has no support for System.Runtime.Remoting
+#if NET_2_0
 
 using System;
 using System.Runtime.Remoting;
 
-using log4net.Core;
-using log4net.Repository;
 using log4net.Util;
-
+using log4net.Repository;
+using log4net.Core;
 using IRemoteLoggingSink = log4net.Appender.RemotingAppender.IRemoteLoggingSink;
 
 namespace log4net.Plugin
 {
     /// <summary>
-    /// Plugin that listens for events from the <see cref="log4net.Appender.RemotingAppender"/>.
+    /// Plugin that listens for events from the <see cref="log4net.Appender.RemotingAppender"/>
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This plugin publishes an instance of <see cref="IRemoteLoggingSink"/>
+    /// This plugin publishes an instance of <see cref="IRemoteLoggingSink"/> 
     /// on a specified <see cref="SinkUri"/>. This listens for logging events delivered from
     /// a remote <see cref="log4net.Appender.RemotingAppender"/>.
     /// </para>
@@ -47,13 +45,12 @@ namespace log4net.Plugin
     /// as if it had been raised locally.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class RemoteLoggingServerPlugin : PluginSkeleton
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoteLoggingServerPlugin"/> class.
-        /// Default constructor.
+        /// Default constructor
         /// </summary>
         /// <remarks>
         /// <para>
@@ -63,16 +60,14 @@ namespace log4net.Plugin
         /// The <see cref="SinkUri"/> property must be set.
         /// </para>
         /// </remarks>
-        public RemoteLoggingServerPlugin()
-            : base("RemoteLoggingServerPlugin:Unset URI")
+        public RemoteLoggingServerPlugin() : base("RemoteLoggingServerPlugin:Unset URI")
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoteLoggingServerPlugin"/> class.
         /// Construct with sink Uri.
         /// </summary>
-        /// <param name="sinkUri">The name to publish the sink under in the remoting infrastructure.
+        /// <param name="sinkUri">The name to publish the sink under in the remoting infrastructure. 
         /// See <see cref="SinkUri"/> for more details.</param>
         /// <remarks>
         /// <para>
@@ -80,8 +75,7 @@ namespace log4net.Plugin
         /// with specified name.
         /// </para>
         /// </remarks>
-        public RemoteLoggingServerPlugin(string sinkUri)
-            : base("RemoteLoggingServerPlugin:" + sinkUri)
+        public RemoteLoggingServerPlugin(string sinkUri) : base("RemoteLoggingServerPlugin:"+sinkUri)
         {
             this.m_sinkUri = sinkUri;
         }
@@ -95,11 +89,11 @@ namespace log4net.Plugin
         /// <remarks>
         /// <para>
         /// This is the name under which the object is marshaled.
-        /// <see cref="M:RemotingServices.Marshal(MarshalByRefObject,String,Type)"/>.
+        /// <see cref="M:RemotingServices.Marshal(MarshalByRefObject,String,Type)"/>
         /// </para>
         /// </remarks>
-        public virtual string SinkUri
-        {
+        public virtual string SinkUri 
+        { 
             get { return this.m_sinkUri; }
             set { this.m_sinkUri = value; }
         }
@@ -124,13 +118,13 @@ namespace log4net.Plugin
             base.Attach(repository);
 
             // Create the sink and marshal it
-            this.m_sink = new RemoteLoggingSinkImpl(repository);
+            this.m_sink = new RemoteLoggingSinkImpl(repository); 
 
             try
             {
-                RemotingServices.Marshal(this.m_sink, this.m_sinkUri, typeof(IRemoteLoggingSink));
+                RemotingServices.Marshal(this.m_sink, this.m_sinkUri, typeof(IRemoteLoggingSink));		
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 LogLog.Error(declaringType, "Failed to Marshal remoting sink", ex);
             }
@@ -181,8 +175,7 @@ namespace log4net.Plugin
         private class RemoteLoggingSinkImpl : MarshalByRefObject, IRemoteLoggingSink
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="RemoteLoggingSinkImpl"/> class.
-            /// Constructor.
+            /// Constructor
             /// </summary>
             /// <param name="repository">The repository to log to.</param>
             /// <remarks>
@@ -202,14 +195,14 @@ namespace log4net.Plugin
             /// <param name="events">The events to log.</param>
             /// <remarks>
             /// <para>
-            /// The events passed are logged to the <see cref="ILoggerRepository"/>.
+            /// The events passed are logged to the <see cref="ILoggerRepository"/>
             /// </para>
             /// </remarks>
             public void LogEvents(LoggingEvent[] events)
             {
                 if (events != null)
                 {
-                    foreach (LoggingEvent logEvent in events)
+                    foreach(LoggingEvent logEvent in events)
                     {
                         if (logEvent != null)
                         {
@@ -220,13 +213,13 @@ namespace log4net.Plugin
             }
 
             /// <summary>
-            /// Obtains a lifetime service object to control the lifetime
+            /// Obtains a lifetime service object to control the lifetime 
             /// policy for this instance.
             /// </summary>
             /// <returns><c>null</c> to indicate that this instance should live forever.</returns>
             /// <remarks>
             /// <para>
-            /// Obtains a lifetime service object to control the lifetime
+            /// Obtains a lifetime service object to control the lifetime 
             /// policy for this instance. This object should live forever
             /// therefore this implementation returns <c>null</c>.
             /// </para>
@@ -248,4 +241,4 @@ namespace log4net.Plugin
     }
 }
 
-#endif // !NETCF
+#endif // NET_2_0

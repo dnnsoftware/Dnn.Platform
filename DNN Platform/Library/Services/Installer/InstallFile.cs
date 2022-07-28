@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.ComponentModel;
     using System.IO;
+    using System.IO.Compression;
     using System.Text.RegularExpressions;
 
     using ICSharpCode.SharpZipLib.Zip;
@@ -33,11 +34,11 @@ namespace DotNetNuke.Services.Installer
         /// <param name="entry">The ZipEntry.</param>
         /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
-        public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+        public InstallFile(ZipArchiveEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
             this.InstallerInfo = info;
-            this.ReadZip(zip, entry);
+            this.ReadZip(entry);
         }
 
         /// -----------------------------------------------------------------------------
@@ -340,6 +341,22 @@ namespace DotNetNuke.Services.Installer
         /// <param name="unzip">A ZipStream containing the file content.</param>
         /// <param name="entry">A ZipEntry containing the file metadata.</param>
         /// -----------------------------------------------------------------------------
+        private void ReadZip(ZipArchiveEntry entry)
+        {
+            this.ParseFileName(entry.FullName);
+            Util.WriteStream(entry.Open(), this.TempFileName);
+            File.SetLastWriteTime(this.TempFileName, entry.LastWriteTime.LocalDateTime);
+        }
+
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+        {
+            this.Encoding = TextEncoding.UTF8;
+            this.InstallerInfo = info;
+            this.ReadZip(zip, entry);
+        }
+
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0.")]
         private void ReadZip(ZipInputStream unzip, ZipEntry entry)
         {
             this.ParseFileName(entry.Name);

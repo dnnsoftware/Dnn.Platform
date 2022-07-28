@@ -1,36 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Util;
+using log4net.Core;
 
 namespace log4net.Repository.Hierarchy
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    using log4net.Core;
-    using log4net.Util;
-
     /// <summary>
-    /// The <see cref="RootLogger" /> sits at the root of the logger hierarchy tree.
+    /// The <see cref="RootLogger" /> sits at the root of the logger hierarchy tree. 
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <see cref="RootLogger" /> is a regular <see cref="Logger" /> except
+    /// The <see cref="RootLogger" /> is a regular <see cref="Logger" /> except 
     /// that it provides several guarantees.
     /// </para>
     /// <para>
@@ -40,13 +40,12 @@ namespace log4net.Repository.Hierarchy
     /// level field without walking the hierarchy.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class RootLogger : Logger
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RootLogger"/> class.
-        /// Construct a <see cref="RootLogger"/>.
+        /// Construct a <see cref="RootLogger"/>
         /// </summary>
         /// <param name="level">The level to assign to the root logger.</param>
         /// <remarks>
@@ -59,8 +58,7 @@ namespace log4net.Repository.Hierarchy
         /// logger cannot be retrieved by name.
         /// </para>
         /// </remarks>
-        public RootLogger(Level level)
-            : base("root")
+        public RootLogger(Level level) : base("root")
         {
             this.Level = level;
         }
@@ -76,16 +74,16 @@ namespace log4net.Repository.Hierarchy
         /// value of <see cref="Logger.Level"/>.
         /// </para>
         /// </remarks>
-        public override Level EffectiveLevel
+        public override Level EffectiveLevel 
         {
-            get
+            get 
             {
                 return base.Level;
             }
         }
 
         /// <summary>
-        /// Gets or sets the assigned <see cref="Level"/> for the root logger.
+        /// Gets or sets the assigned <see cref="Level"/> for the root logger.  
         /// </summary>
         /// <value>
         /// The <see cref="Level"/> of the root logger.
@@ -99,14 +97,13 @@ namespace log4net.Repository.Hierarchy
         public override Level Level
         {
             get { return base.Level; }
-
             set
             {
-                if (value == null)
+                if (value == null) 
                 {
                     LogLog.Error(declaringType, "You have tried to set a null level to root.", new LogException());
                 }
-                else
+                else 
                 {
                     base.Level = value;
                 }

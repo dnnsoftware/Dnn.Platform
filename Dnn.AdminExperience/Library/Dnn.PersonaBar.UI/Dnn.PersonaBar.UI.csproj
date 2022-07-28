@@ -60,8 +60,8 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -165,7 +165,6 @@
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
     <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx" />
-    <Content Include="admin\personaBar\css\pikaday.css" />
     <Content Include="admin\personaBar\css\tokenInput.css" />
     <Content Include="admin\personaBar\index.html" />
     <Content Include="admin\personaBar\scripts\codeEditor.js" />
@@ -179,8 +178,6 @@
     <Content Include="admin\personaBar\scripts\koBindingHandlers\tabs.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\toggle.js" />
     <Content Include="admin\personaBar\scripts\extension.js" />
-    <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.html" />
-    <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.js" />
     <Content Include="admin\personaBar\scripts\loader.js" />
     <Content Include="admin\personaBar\scripts\gateway.js" />
     <AdditionalFiles Include="..\..\..\stylecop.json">
@@ -226,7 +223,6 @@
     <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.carousel.min.js" />
     <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.theme.css" />
     <Content Include="admin\personaBar\scripts\contrib\owl-carousel\owl.transitions.css" />
-    <Content Include="admin\personaBar\scripts\contrib\pikaday.js" />
     <Content Include="admin\personaBar\scripts\contrib\require.js" />
     <Content Include="admin\personaBar\scripts\contrib\text.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\folderPicker.js" />

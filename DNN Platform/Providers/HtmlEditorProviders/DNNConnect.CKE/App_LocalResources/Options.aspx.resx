@@ -263,6 +263,12 @@
   <data name="lblResizeWidth.Text" xml:space="preserve">
     <value>Default Image Resize Width:</value>
   </data>
+  <data name="lblResizeHeightUpload.Text" xml:space="preserve">
+    <value>Image Resize Height On Upload:</value>
+  </data>
+  <data name="lblResizeWidthUpload.Text" xml:space="preserve">
+    <value>Image Resize Width On Upload:</value>
+  </data>
   <data name="lnkExport.Text" xml:space="preserve">
     <value>Export</value>
   </data>

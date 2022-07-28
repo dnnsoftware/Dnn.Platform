@@ -1164,6 +1164,8 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}SetCorePackageVersions]
 GO
 DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettingsBySetting]
 GO
+DROP PROCEDURE {databaseOwner}[{objectQualifier}SetAllPortalTabsSecure]
+GO
 
 /** Remove AspNet Data **/
 

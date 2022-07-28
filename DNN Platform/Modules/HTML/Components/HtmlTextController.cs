@@ -98,82 +98,88 @@ namespace DotNetNuke.Modules.Html
             return content;
         }
 
-        public static string ManageRelativePaths(string strHTML, string strUploadDirectory, string strToken, int intPortalID)
+        [Obsolete("Deprecated in Platform 9.11.0. Use overload without int. Scheduled removal in v11.0.0.")]
+        public static string ManageRelativePaths(string htmlContent, string strUploadDirectory, string strToken, int intPortalID)
         {
-            int P = 0;
-            int R = 0;
-            int S = 0;
-            int tLen = 0;
-            string strURL = null;
+            return ManageRelativePaths(htmlContent, strUploadDirectory, strToken);
+        }
+
+        public static string ManageRelativePaths(string htmlContent, string uploadDirectory, string token)
+        {
+            var htmlContentIndex = 0;
             var sbBuff = new StringBuilder(string.Empty);
 
-            if (!string.IsNullOrEmpty(strHTML))
+            if (string.IsNullOrEmpty(htmlContent))
             {
-                tLen = strToken.Length + 2;
-                string uploadDirectory = strUploadDirectory.ToLowerInvariant();
+                return string.Empty;
+            }
 
-                // find position of first occurrance:
-                P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
-                while (P != -1)
+            token = token + "=\"";
+            var tokenLength = token.Length;
+            uploadDirectory = uploadDirectory.ToLowerInvariant();
+
+            // find position of first occurrence:
+            var tokenIndex = htmlContent.IndexOf(token, StringComparison.InvariantCultureIgnoreCase);
+            while (tokenIndex != -1)
+            {
+                sbBuff.Append(htmlContent.Substring(htmlContentIndex, tokenIndex - htmlContentIndex + tokenLength));
+
+                // keep characters left of URL
+                htmlContentIndex = tokenIndex + tokenLength;
+
+                // save start position of URL
+                var urlEndIndex = htmlContent.IndexOf('\"', htmlContentIndex);
+
+                // end of URL
+                string strURL;
+                if (urlEndIndex >= 0 && urlEndIndex < htmlContent.Length - 2)
                 {
-                    sbBuff.Append(strHTML.Substring(S, P - S + tLen));
-
-                    // keep charactes left of URL
-                    S = P + tLen;
-
-                    // save startpos of URL
-                    R = strHTML.IndexOf("\"", S);
-
-                    // end of URL
-                    if (R >= 0)
-                    {
-                        strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
-                    }
-                    else
-                    {
-                        strURL = strHTML.Substring(S).ToLowerInvariant();
-                    }
-
-                    if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
-                        continue;
-                    }
-
-                    // if we are linking internally
-                    if (!strURL.Contains("://"))
-                    {
-                        // remove the leading portion of the path if the URL contains the upload directory structure
-                        string strDirectory = uploadDirectory;
-                        if (!strDirectory.EndsWith("/"))
-                        {
-                            strDirectory += "/";
-                        }
-
-                        if (strURL.IndexOf(strDirectory) != -1)
-                        {
-                            S = S + strURL.IndexOf(strDirectory) + strDirectory.Length;
-                            strURL = strURL.Substring(strURL.IndexOf(strDirectory) + strDirectory.Length);
-                        }
-
-                        // add upload directory
-                        if (!strURL.StartsWith("/")
-                            && !string.IsNullOrEmpty(strURL.Trim())) // We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
-                        {
-                            sbBuff.Append(uploadDirectory);
-                        }
-                    }
-
-                    // find position of next occurrance
-                    P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                    strURL = htmlContent.Substring(htmlContentIndex, urlEndIndex - htmlContentIndex).ToLowerInvariant();
+                }
+                else
+                {
+                    tokenIndex = -1;
+                    continue;
                 }
 
-                if (S > -1)
+                if (htmlContent.Substring(tokenIndex + tokenLength, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    sbBuff.Append(strHTML.Substring(S));
+                    tokenIndex = htmlContent.IndexOf(token, htmlContentIndex + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                    continue;
                 }
 
-                // append characters of last URL and behind
+                // if we are linking internally
+                if (!strURL.Contains("://"))
+                {
+                    // remove the leading portion of the path if the URL contains the upload directory structure
+                    var strDirectory = uploadDirectory;
+                    if (!strDirectory.EndsWith("/", StringComparison.Ordinal))
+                    {
+                        strDirectory += "/";
+                    }
+
+                    if (strURL.IndexOf(strDirectory, StringComparison.InvariantCultureIgnoreCase) != -1)
+                    {
+                        htmlContentIndex = htmlContentIndex + strURL.IndexOf(strDirectory, StringComparison.InvariantCultureIgnoreCase) + strDirectory.Length;
+                        strURL = strURL.Substring(strURL.IndexOf(strDirectory, StringComparison.InvariantCultureIgnoreCase) + strDirectory.Length);
+                    }
+
+                    // add upload directory
+                    // We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
+                    if (!strURL.StartsWith("/", StringComparison.Ordinal) && !string.IsNullOrWhiteSpace(strURL))
+                    {
+                        sbBuff.Append(uploadDirectory);
+                    }
+                }
+
+                // find position of next occurrence
+                tokenIndex = htmlContent.IndexOf(token, htmlContentIndex + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            // append characters of last URL and behind
+            if (htmlContentIndex > -1)
+            {
+                sbBuff.Append(htmlContent.Substring(htmlContentIndex));
             }
 
             return sbBuff.ToString();

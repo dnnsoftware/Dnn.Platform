@@ -1,30 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+
+using log4net.Repository;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
-    using log4net.Repository;
-
     /// <summary>
     /// Delegate used to handle creation of new wrappers.
     /// </summary>
@@ -40,7 +40,6 @@ namespace log4net.Core
     /// constructor.
     /// </para>
     /// </remarks>
-    /// <returns></returns>
     public delegate ILoggerWrapper WrapperCreationHandler(ILogger logger);
 
     /// <summary>
@@ -49,7 +48,7 @@ namespace log4net.Core
     /// <remarks>
     /// <para>
     /// This class maintains a mapping between <see cref="ILogger"/> objects and
-    /// <see cref="ILoggerWrapper"/> objects. Use the <see cref="GetWrapper"/> method to
+    /// <see cref="ILoggerWrapper"/> objects. Use the <see cref="GetWrapper"/> method to 
     /// lookup the <see cref="ILoggerWrapper"/> for the specified <see cref="ILogger"/>.
     /// </para>
     /// <para>
@@ -60,22 +59,21 @@ namespace log4net.Core
     /// requiring subclassing of this type.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class WrapperMap
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrapperMap"/> class.
-        /// Initializes a new instance of the <see cref="WrapperMap" />.
+        /// Initializes a new instance of the <see cref="WrapperMap" />
         /// </summary>
         /// <param name="createWrapperHandler">The handler to use to create the wrapper objects.</param>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="WrapperMap" /> class with
+        /// Initializes a new instance of the <see cref="WrapperMap" /> class with 
         /// the specified handler to create the wrapper objects.
         /// </para>
         /// </remarks>
-        public WrapperMap(WrapperCreationHandler createWrapperHandler)
+        public WrapperMap(WrapperCreationHandler createWrapperHandler) 
         {
             this.m_createWrapperHandler = createWrapperHandler;
 
@@ -86,7 +84,7 @@ namespace log4net.Core
         /// <summary>
         /// Gets the wrapper object for the specified logger.
         /// </summary>
-        /// <returns>The wrapper object for the specified logger.</returns>
+        /// <returns>The wrapper object for the specified logger</returns>
         /// <remarks>
         /// <para>
         /// If the logger is null then the corresponding wrapper is null.
@@ -106,7 +104,7 @@ namespace log4net.Core
                 return null;
             }
 
-            lock (this)
+            lock(this)
             {
                 // Lookup hierarchy in map.
                 Hashtable wrappersMap = (Hashtable)this.m_repositories[logger.Repository];
@@ -115,6 +113,7 @@ namespace log4net.Core
                 {
                     // Hierarchy does not exist in map.
                     // Must register with hierarchy
+
                     wrappersMap = new Hashtable();
                     this.m_repositories[logger.Repository] = wrappersMap;
 
@@ -131,7 +130,7 @@ namespace log4net.Core
 
                     // Create a new wrapper wrapping the logger
                     wrapperObject = this.CreateNewWrapperObject(logger);
-
+                    
                     // Store wrapper logger in map
                     wrappersMap[logger] = wrapperObject;
                 }
@@ -153,7 +152,7 @@ namespace log4net.Core
         /// value being the corresponding <see cref="ILoggerWrapper"/>.
         /// </para>
         /// </remarks>
-        protected Hashtable Repositories
+        protected Hashtable Repositories 
         {
             get { return this.m_repositories; }
         }
@@ -176,14 +175,13 @@ namespace log4net.Core
             {
                 return this.m_createWrapperHandler(logger);
             }
-
             return null;
         }
 
         /// <summary>
         /// Called when a monitored repository shutdown event is received.
         /// </summary>
-        /// <param name="repository">The <see cref="ILoggerRepository"/> that is shutting down.</param>
+        /// <param name="repository">The <see cref="ILoggerRepository"/> that is shutting down</param>
         /// <remarks>
         /// <para>
         /// This method is called when a <see cref="ILoggerRepository"/> that this
@@ -195,7 +193,7 @@ namespace log4net.Core
         /// </remarks>
         protected virtual void RepositoryShutdown(ILoggerRepository repository)
         {
-            lock (this)
+            lock(this)
             {
                 // Remove the repository from map
                 this.m_repositories.Remove(repository);
@@ -221,7 +219,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings.
+        /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings
         /// </summary>
         private readonly Hashtable m_repositories = new Hashtable();
 
