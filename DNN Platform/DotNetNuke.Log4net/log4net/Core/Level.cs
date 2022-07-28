@@ -1,28 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
 
 namespace log4net.Core
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
     /// <summary>
     /// Defines the default set of levels recognized by the system.
     /// </summary>
@@ -31,8 +31,8 @@ namespace log4net.Core
     /// Each <see cref="LoggingEvent"/> has an associated <see cref="Level"/>.
     /// </para>
     /// <para>
-    /// Levels have a numeric <see cref="Level.Value"/> that defines the relative
-    /// ordering between levels. Two Levels with the same <see cref="Level.Value"/>
+    /// Levels have a numeric <see cref="Level.Value"/> that defines the relative 
+    /// ordering between levels. Two Levels with the same <see cref="Level.Value"/> 
     /// are deemed to be equivalent.
     /// </para>
     /// <para>
@@ -47,7 +47,7 @@ namespace log4net.Core
     /// <see cref="Level.Info"/>, but this can be changed by reconfiguring the level map.
     /// </para>
     /// <para>
-    /// Each level has a <see cref="DisplayName"/> in addition to its <see cref="Name"/>. The
+    /// Each level has a <see cref="DisplayName"/> in addition to its <see cref="Name"/>. The 
     /// <see cref="DisplayName"/> is the string that is written into the output log. By default
     /// the display name is the same as the level name, but this can be used to alias levels
     /// or to localize the log output.
@@ -79,33 +79,31 @@ namespace log4net.Core
     ///         </item>
     /// </list>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
 #if !NETCF
     [Serializable]
 #endif
     public sealed class Level : IComparable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Level"/> class.
-        /// Constructor.
+        /// Constructor
         /// </summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
         /// <param name="levelName">The string name of this level.</param>
-        /// <param name="displayName">The display name for this level. This may be localized or otherwise different from the name.</param>
+        /// <param name="displayName">The display name for this level. This may be localized or otherwise different from the name</param>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="Level" /> class with
         /// the specified level name and value.
         /// </para>
         /// </remarks>
-        public Level(int level, string levelName, string displayName)
+        public Level(int level, string levelName, string displayName) 
         {
             if (levelName == null)
             {
                 throw new ArgumentNullException("levelName");
             }
-
             if (displayName == null)
             {
                 throw new ArgumentNullException("displayName");
@@ -113,7 +111,7 @@ namespace log4net.Core
 
             this.m_levelValue = level;
 #if NETSTANDARD1_3
-			m_levelName = levelName;
+            m_levelName = levelName;
 #else
             this.m_levelName = string.Intern(levelName);
 #endif
@@ -121,8 +119,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Level"/> class.
-        /// Constructor.
+        /// Constructor
         /// </summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
         /// <param name="levelName">The string name of this level.</param>
@@ -132,8 +129,7 @@ namespace log4net.Core
         /// the specified level name and value.
         /// </para>
         /// </remarks>
-        public Level(int level, string levelName)
-            : this(level, levelName, levelName)
+        public Level(int level, string levelName) : this(level, levelName, levelName)
         {
         }
 
@@ -186,7 +182,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Returns the <see cref="string" /> representation of the current
+        /// Returns the <see cref="string" /> representation of the current 
         /// <see cref="Level" />.
         /// </summary>
         /// <returns>
@@ -197,7 +193,7 @@ namespace log4net.Core
         /// Returns the level <see cref="Name"/>.
         /// </para>
         /// </remarks>
-        public override string ToString()
+        public override string ToString() 
         {
             return this.m_levelName;
         }
@@ -209,7 +205,7 @@ namespace log4net.Core
         /// <returns><c>true</c> if the objects are equal.</returns>
         /// <remarks>
         /// <para>
-        /// Compares the levels of <see cref="Level" /> instances, and
+        /// Compares the levels of <see cref="Level" /> instances, and 
         /// defers to base class if the target object is not a <see cref="Level" />
         /// instance.
         /// </para>
@@ -228,12 +224,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Returns a hash code.
+        /// Returns a hash code
         /// </summary>
         /// <returns>A hash code for the current <see cref="Level" />.</returns>
         /// <remarks>
         /// <para>
-        /// Returns a hash code suitable for use in hashing algorithms and data
+        /// Returns a hash code suitable for use in hashing algorithms and data 
         /// structures like a hash table.
         /// </para>
         /// <para>
@@ -246,12 +242,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Compares this instance to a specified object and returns an
+        /// Compares this instance to a specified object and returns an 
         /// indication of their relative values.
         /// </summary>
         /// <param name="r">A <see cref="Level"/> instance or <see langword="null" /> to compare with this instance.</param>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the
+        /// A 32-bit signed integer that indicates the relative order of the 
         /// values compared. The return value has these meanings:
         /// <list type="table">
         ///         <listheader>
@@ -278,7 +274,7 @@ namespace log4net.Core
         /// </returns>
         /// <remarks>
         /// <para>
-        /// <paramref name="r" /> must be an instance of <see cref="Level" />
+        /// <paramref name="r" /> must be an instance of <see cref="Level" /> 
         /// or <see langword="null" />; otherwise, an exception is thrown.
         /// </para>
         /// </remarks>
@@ -290,18 +286,17 @@ namespace log4net.Core
             {
                 return Compare(this, target);
             }
-
             throw new ArgumentException("Parameter: r, Value: [" + r + "] is not an instance of Level");
         }
 
         /// <summary>
-        /// Returns a value indicating whether a specified <see cref="Level" />
+        /// Returns a value indicating whether a specified <see cref="Level" /> 
         /// is greater than another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" />.</param>
-        /// <param name="r">A <see cref="Level" />.</param>
+        /// <param name="l">A <see cref="Level" /></param>
+        /// <param name="r">A <see cref="Level" /></param>
         /// <returns>
-        /// <c>true</c> if <paramref name="l" /> is greater than
+        /// <c>true</c> if <paramref name="l" /> is greater than 
         /// <paramref name="r" />; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
@@ -309,19 +304,19 @@ namespace log4net.Core
         /// Compares two levels.
         /// </para>
         /// </remarks>
-        public static bool operator >(Level l, Level r)
+        public static bool operator > (Level l, Level r)
         {
             return l.m_levelValue > r.m_levelValue;
         }
 
         /// <summary>
-        /// Returns a value indicating whether a specified <see cref="Level" />
+        /// Returns a value indicating whether a specified <see cref="Level" /> 
         /// is less than another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" />.</param>
-        /// <param name="r">A <see cref="Level" />.</param>
+        /// <param name="l">A <see cref="Level" /></param>
+        /// <param name="r">A <see cref="Level" /></param>
         /// <returns>
-        /// <c>true</c> if <paramref name="l" /> is less than
+        /// <c>true</c> if <paramref name="l" /> is less than 
         /// <paramref name="r" />; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
@@ -329,19 +324,19 @@ namespace log4net.Core
         /// Compares two levels.
         /// </para>
         /// </remarks>
-        public static bool operator <(Level l, Level r)
+        public static bool operator < (Level l, Level r)
         {
             return l.m_levelValue < r.m_levelValue;
         }
 
         /// <summary>
-        /// Returns a value indicating whether a specified <see cref="Level" />
+        /// Returns a value indicating whether a specified <see cref="Level" /> 
         /// is greater than or equal to another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" />.</param>
-        /// <param name="r">A <see cref="Level" />.</param>
+        /// <param name="l">A <see cref="Level" /></param>
+        /// <param name="r">A <see cref="Level" /></param>
         /// <returns>
-        /// <c>true</c> if <paramref name="l" /> is greater than or equal to
+        /// <c>true</c> if <paramref name="l" /> is greater than or equal to 
         /// <paramref name="r" />; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
@@ -349,19 +344,19 @@ namespace log4net.Core
         /// Compares two levels.
         /// </para>
         /// </remarks>
-        public static bool operator >=(Level l, Level r)
+        public static bool operator >= (Level l, Level r)
         {
             return l.m_levelValue >= r.m_levelValue;
         }
 
         /// <summary>
-        /// Returns a value indicating whether a specified <see cref="Level" />
+        /// Returns a value indicating whether a specified <see cref="Level" /> 
         /// is less than or equal to another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" />.</param>
-        /// <param name="r">A <see cref="Level" />.</param>
+        /// <param name="l">A <see cref="Level" /></param>
+        /// <param name="r">A <see cref="Level" /></param>
         /// <returns>
-        /// <c>true</c> if <paramref name="l" /> is less than or equal to
+        /// <c>true</c> if <paramref name="l" /> is less than or equal to 
         /// <paramref name="r" />; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
@@ -369,19 +364,19 @@ namespace log4net.Core
         /// Compares two levels.
         /// </para>
         /// </remarks>
-        public static bool operator <=(Level l, Level r)
+        public static bool operator <= (Level l, Level r)
         {
             return l.m_levelValue <= r.m_levelValue;
         }
 
         /// <summary>
-        /// Returns a value indicating whether two specified <see cref="Level" />
+        /// Returns a value indicating whether two specified <see cref="Level" /> 
         /// objects have the same value.
         /// </summary>
         /// <param name="l">A <see cref="Level" /> or <see langword="null" />.</param>
         /// <param name="r">A <see cref="Level" /> or <see langword="null" />.</param>
         /// <returns>
-        /// <c>true</c> if the value of <paramref name="l" /> is the same as the
+        /// <c>true</c> if the value of <paramref name="l" /> is the same as the 
         /// value of <paramref name="r" />; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>
@@ -389,7 +384,7 @@ namespace log4net.Core
         /// Compares two levels.
         /// </para>
         /// </remarks>
-        public static bool operator ==(Level l, Level r)
+        public static bool operator == (Level l, Level r)
         {
             if (((object)l) != null && ((object)r) != null)
             {
@@ -397,12 +392,12 @@ namespace log4net.Core
             }
             else
             {
-                return ((object)l) == ((object)r);
+                return ((object) l) == ((object) r);
             }
         }
 
         /// <summary>
-        /// Returns a value indicating whether two specified <see cref="Level" />
+        /// Returns a value indicating whether two specified <see cref="Level" /> 
         /// objects have different values.
         /// </summary>
         /// <param name="l">A <see cref="Level" /> or <see langword="null" />.</param>
@@ -416,7 +411,7 @@ namespace log4net.Core
         /// Compares two levels.
         /// </para>
         /// </remarks>
-        public static bool operator !=(Level l, Level r)
+        public static bool operator != (Level l, Level r)
         {
             return !(l == r);
         }
@@ -427,7 +422,7 @@ namespace log4net.Core
         /// <param name="l">The first <see cref="Level"/> to compare.</param>
         /// <param name="r">The second <see cref="Level"/> to compare.</param>
         /// <returns>
-        /// A 32-bit signed integer that indicates the relative order of the
+        /// A 32-bit signed integer that indicates the relative order of the 
         /// two values compared. The return value has these meanings:
         /// <list type="table">
         ///         <listheader>
@@ -465,12 +460,10 @@ namespace log4net.Core
             {
                 return 0;
             }
-
             if (l == null)
             {
                 return -1;
             }
-
             if (r == null)
             {
                 return 1;
@@ -485,31 +478,31 @@ namespace log4net.Core
         public static readonly Level Off = new Level(int.MaxValue, "OFF");
 
         /// <summary>
-        /// The <see cref="Emergency" /> level designates very severe error events.
+        /// The <see cref="Emergency" /> level designates very severe error events. 
         /// System unusable, emergencies.
         /// </summary>
         public static readonly Level Log4Net_Debug = new Level(120000, "log4net:DEBUG");
 
         /// <summary>
-        /// The <see cref="Emergency" /> level designates very severe error events.
+        /// The <see cref="Emergency" /> level designates very severe error events. 
         /// System unusable, emergencies.
         /// </summary>
         public static readonly Level Emergency = new Level(120000, "EMERGENCY");
 
         /// <summary>
-        /// The <see cref="Fatal" /> level designates very severe error events
+        /// The <see cref="Fatal" /> level designates very severe error events 
         /// that will presumably lead the application to abort.
         /// </summary>
         public static readonly Level Fatal = new Level(110000, "FATAL");
 
         /// <summary>
-        /// The <see cref="Alert" /> level designates very severe error events.
+        /// The <see cref="Alert" /> level designates very severe error events. 
         /// Take immediate action, alerts.
         /// </summary>
         public static readonly Level Alert = new Level(100000, "ALERT");
 
         /// <summary>
-        /// The <see cref="Critical" /> level designates very severe error events.
+        /// The <see cref="Critical" /> level designates very severe error events. 
         /// Critical condition, critical.
         /// </summary>
         public static readonly Level Critical = new Level(90000, "CRITICAL");
@@ -520,61 +513,61 @@ namespace log4net.Core
         public static readonly Level Severe = new Level(80000, "SEVERE");
 
         /// <summary>
-        /// The <see cref="Error" /> level designates error events that might
+        /// The <see cref="Error" /> level designates error events that might 
         /// still allow the application to continue running.
         /// </summary>
         public static readonly Level Error = new Level(70000, "ERROR");
 
         /// <summary>
-        /// The <see cref="Warn" /> level designates potentially harmful
+        /// The <see cref="Warn" /> level designates potentially harmful 
         /// situations.
         /// </summary>
-        public static readonly Level Warn = new Level(60000, "WARN");
+        public static readonly Level Warn  = new Level(60000, "WARN");
 
         /// <summary>
-        /// The <see cref="Notice" /> level designates informational messages
+        /// The <see cref="Notice" /> level designates informational messages 
         /// that highlight the progress of the application at the highest level.
         /// </summary>
-        public static readonly Level Notice = new Level(50000, "NOTICE");
+        public static readonly Level Notice  = new Level(50000, "NOTICE");
 
         /// <summary>
-        /// The <see cref="Info" /> level designates informational messages that
+        /// The <see cref="Info" /> level designates informational messages that 
         /// highlight the progress of the application at coarse-grained level.
         /// </summary>
-        public static readonly Level Info = new Level(40000, "INFO");
+        public static readonly Level Info  = new Level(40000, "INFO");
 
         /// <summary>
-        /// The <see cref="Debug" /> level designates fine-grained informational
+        /// The <see cref="Debug" /> level designates fine-grained informational 
         /// events that are most useful to debug an application.
         /// </summary>
         public static readonly Level Debug = new Level(30000, "DEBUG");
 
         /// <summary>
-        /// The <see cref="Fine" /> level designates fine-grained informational
+        /// The <see cref="Fine" /> level designates fine-grained informational 
         /// events that are most useful to debug an application.
         /// </summary>
         public static readonly Level Fine = new Level(30000, "FINE");
 
         /// <summary>
-        /// The <see cref="Trace" /> level designates fine-grained informational
+        /// The <see cref="Trace" /> level designates fine-grained informational 
         /// events that are most useful to debug an application.
         /// </summary>
         public static readonly Level Trace = new Level(20000, "TRACE");
 
         /// <summary>
-        /// The <see cref="Finer" /> level designates fine-grained informational
+        /// The <see cref="Finer" /> level designates fine-grained informational 
         /// events that are most useful to debug an application.
         /// </summary>
         public static readonly Level Finer = new Level(20000, "FINER");
 
         /// <summary>
-        /// The <see cref="Verbose" /> level designates fine-grained informational
+        /// The <see cref="Verbose" /> level designates fine-grained informational 
         /// events that are most useful to debug an application.
         /// </summary>
         public static readonly Level Verbose = new Level(10000, "VERBOSE");
 
         /// <summary>
-        /// The <see cref="Finest" /> level designates fine-grained informational
+        /// The <see cref="Finest" /> level designates fine-grained informational 
         /// events that are most useful to debug an application.
         /// </summary>
         public static readonly Level Finest = new Level(10000, "FINEST");
@@ -583,6 +576,7 @@ namespace log4net.Core
         /// The <see cref="All" /> level designates the lowest level possible.
         /// </summary>
         public static readonly Level All = new Level(int.MinValue, "ALL");
+
         private readonly int m_levelValue;
         private readonly string m_levelName;
         private readonly string m_levelDisplayName;

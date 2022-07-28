@@ -1,31 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.IO;
+
+using log4net;
+using log4net.Core;
 
 namespace log4net.Layout
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.IO;
-
-    using log4net;
-    using log4net.Core;
-
     /// <summary>
     /// Extend this abstract class to create your own log layout format.
     /// </summary>
@@ -47,12 +47,12 @@ namespace log4net.Layout
     /// </para>
     /// </note>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public abstract class LayoutSkeleton : ILayout, IOptionHandler
     {
         /// <summary>
-        /// The header text.
+        /// The header text
         /// </summary>
         /// <remarks>
         /// <para>
@@ -62,7 +62,7 @@ namespace log4net.Layout
         private string m_header = null;
 
         /// <summary>
-        /// The footer text.
+        /// The footer text
         /// </summary>
         /// <remarks>
         /// <para>
@@ -72,22 +72,21 @@ namespace log4net.Layout
         private string m_footer = null;
 
         /// <summary>
-        /// Flag indicating if this layout handles exceptions.
+        /// Flag indicating if this layout handles exceptions
         /// </summary>
         /// <remarks>
         /// <para>
-        /// <c>false</c> if this layout handles exceptions.
+        /// <c>false</c> if this layout handles exceptions
         /// </para>
         /// </remarks>
         private bool m_ignoresException = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LayoutSkeleton"/> class.
-        /// Empty default constructor.
+        /// Empty default constructor
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Empty default constructor.
+        /// Empty default constructor
         /// </para>
         /// </remarks>
         protected LayoutSkeleton()
@@ -95,18 +94,18 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Activate component options.
+        /// Activate component options
         /// </summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must
+        /// activation scheme. The <see cref="ActivateOptions"/> method must 
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used.
+        /// object is in an undefined state and must not be used. 
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then
+        /// If any of the configuration properties are modified then 
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
@@ -118,8 +117,8 @@ namespace log4net.Layout
         /// <summary>
         /// Implement this method to create your own layout format.
         /// </summary>
-        /// <param name="writer">The TextWriter to write the formatted event to.</param>
-        /// <param name="loggingEvent">The event to format.</param>
+        /// <param name="writer">The TextWriter to write the formatted event to</param>
+        /// <param name="loggingEvent">The event to format</param>
         /// <remarks>
         /// <para>
         /// This method is called by an appender to format
@@ -135,18 +134,19 @@ namespace log4net.Layout
         /// <remarks>
         /// Creates a new StringWriter instance to store the formatted logging event.
         /// </remarks>
-        /// <returns></returns>
         public string Format(LoggingEvent loggingEvent)
         {
-            StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-            this.Format(writer, loggingEvent);
-            return writer.ToString();
+            using (var writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture))
+            {
+                this.Format(writer, loggingEvent);
+                return writer.ToString();
+            }
         }
 
         /// <summary>
-        /// Gets the content type output by this layout.
+        /// The content type output by this layout. 
         /// </summary>
-        /// <value>The content type is <c>"text/plain"</c>.</value>
+        /// <value>The content type is <c>"text/plain"</c></value>
         /// <remarks>
         /// <para>
         /// The content type output by this layout.
@@ -163,9 +163,9 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets or sets the header for the layout format.
+        /// The header for the layout format.
         /// </summary>
-        /// <value>the layout header.</value>
+        /// <value>the layout header</value>
         /// <remarks>
         /// <para>
         /// The Header text will be appended before any logging events
@@ -179,9 +179,9 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets or sets the footer for the layout format.
+        /// The footer for the layout format.
         /// </summary>
-        /// <value>the layout footer.</value>
+        /// <value>the layout footer</value>
         /// <remarks>
         /// <para>
         /// The Footer text will be appended after all the logging events
@@ -195,9 +195,9 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether flag indicating if this layout handles exceptions.
+        /// Flag indicating if this layout handles exceptions
         /// </summary>
-        /// <value><c>false</c> if this layout handles exceptions.</value>
+        /// <value><c>false</c> if this layout handles exceptions</value>
         /// <remarks>
         /// <para>
         /// If this layout handles the exception object contained within
@@ -210,8 +210,8 @@ namespace log4net.Layout
         /// value is <c>true</c>, this layout does not handle the exception.
         /// </para>
         /// </remarks>
-        public virtual bool IgnoresException
-        {
+        public virtual bool IgnoresException 
+        { 
             get { return this.m_ignoresException; }
             set { this.m_ignoresException = value; }
         }
