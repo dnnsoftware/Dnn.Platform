@@ -1202,7 +1202,7 @@ namespace DNNConnect.CKEditorProvider.Web
             if (HttpContext.Current.Request.QueryString["rwndrnd"] != null)
             {
                 ScriptManager.RegisterClientScriptInclude(
-                    this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
+                    this, csType, "jquery_registered", Globals.ResolveUrl(JavaScript.GetJQueryScriptReference()));
             }
 
             if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"))
