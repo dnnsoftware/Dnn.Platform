@@ -206,7 +206,19 @@ namespace DotNetNuke.Services.Install
                     throw new InvalidOperationException(LocalizeStringStatic("TelerikUnintallOptionMissing"));
                 }
 
-                SetHostSetting(TelerikUninstallOptionClientID, accountInfo[TelerikUninstallOptionClientID]);
+                var option = accountInfo[TelerikUninstallOptionClientID];
+                SetHostSetting(TelerikUninstallOptionClientID, option);
+                if ("Y".Equals(option, StringComparison.OrdinalIgnoreCase))
+                {
+                    var moduleInstallDir = new DirectoryInfo(Globals.ApplicationMapPath + @"\Install\Module");
+                    foreach (var f in moduleInstallDir.GetFiles(@"*.resources"))
+                    {
+                        if (f.Name.IndexOf("TelerikRemoval", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            File.Move(f.FullName, Path.Combine(moduleInstallDir.FullName, Path.GetFileNameWithoutExtension(f.FullName) + ".zip"));
+                        }
+                    }
+                }
 
                 _upgradeRunning = false;
                 LaunchUpgrade();
