@@ -1,6 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
+using System.Linq;
+using DotNetNuke.Abstractions.Portals;
+
 namespace DotNetNuke.Security.Permissions
 {
     using System;
@@ -54,6 +58,11 @@ namespace DotNetNuke.Security.Permissions
         private const string ManagePagePermissionKey = "EDIT";
         private const string NavigatePagePermissionKey = "VIEW";
         private const string ViewPagePermissionKey = "VIEW";
+
+        // Portal Permission Keys
+        private const string TopPagePermissionKey = "ADDTOPLEVELPAGE";
+        private const string PageAdminPermissionKey = "PAGEADMIN";
+
         private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
@@ -377,7 +386,17 @@ namespace DotNetNuke.Security.Permissions
         {
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
-                   && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
+
+        private bool HasSitePermission(PortalInfo portal, string permissionKey)
+        {
+            return (PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(AdminPagePermissionKey)))
+                    && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
 
             // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
             // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
@@ -1014,7 +1033,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddContentToPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ContentPagePermissionKey);
+            return this.HasPagePermission(tab, ContentPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1024,7 +1043,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, AddPagePermissionKey);
+            return this.HasPagePermission(tab, AddPagePermissionKey) || (tab.TabID == Null.NullInteger && this.CanAddTopLevel(tab.PortalID)) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1034,7 +1053,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAdminPage(TabInfo tab)
         {
-            return PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey));
+            return PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1044,7 +1063,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanCopyPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, CopyPagePermissionKey);
+            return this.HasPagePermission(tab, CopyPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1054,7 +1073,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeletePage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, DeletePagePermissionKey);
+            return this.HasPagePermission(tab, DeletePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1064,7 +1083,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanExportPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ExportPagePermissionKey);
+            return this.HasPagePermission(tab, ExportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1074,7 +1093,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanImportPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ImportPagePermissionKey);
+            return this.HasPagePermission(tab, ImportPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1084,7 +1103,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManagePage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ManagePagePermissionKey);
+            return this.HasPagePermission(tab, ManagePagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1094,7 +1113,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanNavigateToPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, NavigatePagePermissionKey) || this.HasPagePermission(tab, ViewPagePermissionKey);
+            return this.HasPagePermission(tab, NavigatePagePermissionKey) || this.HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
         }
 
         /// <summary>
@@ -1104,7 +1123,39 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewPage(TabInfo tab)
         {
-            return this.HasPagePermission(tab, ViewPagePermissionKey);
+            return this.HasPagePermission(tab, ViewPagePermissionKey) || this.IsPageAdmin(tab.PortalID);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add top level pages.
+        /// </summary>
+        /// <param name="portalId">The id of the portal.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public virtual bool CanAddTopLevel(int portalId)
+        {
+            var portal = PortalController.Instance.GetPortal(portalId);
+            if (portal == null)
+            {
+                return false;
+            }
+
+            return this.HasPortalPermission(portal.PortalPermissions, TopPagePermissionKey);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user is a page admin.
+        /// </summary>
+        /// <param name="portalId">The id of the portal.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public virtual bool IsPageAdmin(int portalId)
+        {
+            var portal = PortalController.Instance.GetPortal(portalId);
+            if (portal == null)
+            {
+                return false;
+            }
+
+            return this.HasPortalPermission(portal.PortalPermissions, PageAdminPermissionKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1262,6 +1313,173 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
         {
             return PortalSecurity.IsInRoles(desktopModulePermissions.ToString(permissionKey));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeletePortalPermissionsByUser deletes a user's Portal Permissions in the Database.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// -----------------------------------------------------------------------------
+        public virtual void DeletePortalPermissionsByUser(UserInfo user)
+        {
+            this.dataProvider.DeletePortalPermissionsByUserID(user.PortalID, user.UserID);
+            DataCache.ClearPortalPermissionsCache(user.PortalID);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetPortalPermissions gets a PortalPermissionCollection.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public virtual PortalPermissionCollection GetPortalPermissions(int portalId)
+        {
+            // Get the Portal PortalPermission Dictionary
+            var dicPortalPermissions = this.GetPortalPermissionsDic(portalId);
+
+            // Get the Collection from the Dictionary
+            var bFound = dicPortalPermissions.TryGetValue(portalId, out PortalPermissionCollection portalPermissions);
+            if (!bFound)
+            {
+                // Return empty collection
+                portalPermissions = new PortalPermissionCollection();
+            }
+
+            return portalPermissions;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetPortalPermissions gets a Dictionary of PortalPermissionCollections by
+        /// PortalId.
+        /// </summary>
+        /// <param name="portalID">The ID of the portal.</param>
+        /// -----------------------------------------------------------------------------
+        private Dictionary<int, PortalPermissionCollection> GetPortalPermissionsDic(int portalID)
+        {
+            string cacheKey = string.Format(DataCache.PortalPermissionCacheKey, portalID);
+            return CBO.GetCachedObject<Dictionary<int, PortalPermissionCollection>>(
+                new CacheItemArgs(cacheKey, DataCache.PortalPermissionCacheTimeOut, DataCache.PortalPermissionCachePriority, portalID),
+                this.GetPortalPermissionsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetPortalPermissionsCallBack gets a Dictionary of PortalPermissionCollections.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private object GetPortalPermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            var dic = new Dictionary<int, PortalPermissionCollection>();
+
+            if (portalID > -1)
+            {
+                var dr = this.dataProvider.GetPortalPermissionsByPortal(portalID);
+                try
+                {
+                    while (dr.Read())
+                    {
+                        // fill business object
+                        var portalPermissionInfo = CBO.FillObject<PortalPermissionInfo>(dr, false);
+
+                        // add Portal Permission to dictionary
+                        if (dic.ContainsKey(portalPermissionInfo.PortalID))
+                        {
+                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[portalPermissionInfo.PortalID].Add(portalPermissionInfo);
+                        }
+                        else
+                        {
+                            // Create new PortalPermission Collection for PortalId
+                            var collection = new PortalPermissionCollection { portalPermissionInfo };
+
+                            // Add Collection to Dictionary
+                            dic.Add(portalPermissionInfo.PortalID, collection);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    // close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+
+            return dic;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// HasPortalPermission checks whether the current user has a specific Portal Permission.
+        /// </summary>
+        /// <param name="portalPermissions">The Permissions for the Portal.</param>
+        /// <param name="permissionKey">The Permission to check.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public virtual bool HasPortalPermission(PortalPermissionCollection portalPermissions, string permissionKey)
+        {
+            bool hasPermission = false;
+            if (permissionKey.Contains(","))
+            {
+                if (permissionKey.Split(',').Any(permission => PortalSecurity.IsInRoles(portalPermissions.ToString(permission))))
+                {
+                    hasPermission = true;
+                }
+            }
+            else
+            {
+                hasPermission = PortalSecurity.IsInRoles(portalPermissions.ToString(permissionKey));
+            }
+
+            return hasPermission;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SavePortalPermissions saves a Portal's permissions.
+        /// </summary>
+        /// <param name="portal">The Portal to update.</param>
+        /// -----------------------------------------------------------------------------
+        public virtual void SavePortalPermissions(PortalInfo portal)
+        {
+            var objCurrentPortalPermissions = this.GetPortalPermissions(portal.PortalID);
+            if (!objCurrentPortalPermissions.CompareTo(portal.PortalPermissions))
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+                if (objCurrentPortalPermissions.Count > 0)
+                {
+                    this.dataProvider.DeletePortalPermissionsByPortalID(portal.PortalID);
+                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
+                }
+
+                if (portal.PortalPermissions != null && portal.PortalPermissions.Count > 0)
+                {
+                    foreach (PortalPermissionInfo objPortalPermission in portal.PortalPermissions)
+                    {
+                        objPortalPermission.PortalPermissionID = this.dataProvider.AddPortalPermission(
+                            portal.PortalID,
+                            objPortalPermission.PermissionID,
+                            objPortalPermission.RoleID,
+                            objPortalPermission.AllowAccess,
+                            objPortalPermission.UserID,
+                            userId);
+                    }
+
+                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_CREATED);
+                }
+            }
         }
     }
 }

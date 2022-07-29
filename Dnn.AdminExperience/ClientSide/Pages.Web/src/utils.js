@@ -150,6 +150,11 @@ function canSeePagesList() {
     return settings.isHost || settings.isAdmin || settings.canSeePagesList;
 }
 
+function canAddPages() {
+    checkInit();
+    return settings.isHost || settings.isAdmin || settings.canAddPages;
+}
+
 function getCurrentPagePermissions() {
     checkInit();
     return settings.currentPagePermissions;
@@ -230,6 +235,7 @@ const utils = {
     getTemplateFolder,
     getIsSuperUser,
     canSeePagesList,
+    canAddPages,
     getCurrentPagePermissions,
     getCurrentParentHasChildren,
     getCurrentPageName,
