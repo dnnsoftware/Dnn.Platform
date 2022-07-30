@@ -329,7 +329,7 @@ class CreatePortal extends Component {
                                 value={state.newPortal.UseCurrentUserAsAdmin}
                                 onChange={this.onChange.bind(this, "UseCurrentUserAsAdmin")}
                             />
-                            <Collapse style={{clear:"both"}} isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>
+                            <Collapse className="user-as-admin-collapse" isOpened={!this.state.newPortal.UseCurrentUserAsAdmin}>
                                 <GridSystem className="with-right-border top-half">
                                     <GridCell>
                                         <SingleLineInputWithError

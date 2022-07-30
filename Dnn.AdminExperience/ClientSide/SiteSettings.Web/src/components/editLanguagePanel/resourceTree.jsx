@@ -81,7 +81,7 @@ class ResourceTree extends Component {
                         {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}
                         <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }}></div>
                     </div>
-                    <Collapsible isOpened={this.state.treeOpened} className="tree-container" keepCollapsedContent={true}>
+                    <Collapsible isOpened={this.state.treeOpened} className="tree-container">
                         <Scrollbars style={parentTermTreeStyle}>
                             <ul className="resource-tree root-level parent-tree">
                                 {mapChildFolders(languageFolders, getChildFolders, getResxEntries, resxBeingEdited)}

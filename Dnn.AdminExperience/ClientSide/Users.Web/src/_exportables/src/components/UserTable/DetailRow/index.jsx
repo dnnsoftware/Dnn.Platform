@@ -183,12 +183,12 @@ class DetailsRow extends Component {
         return (
             /* eslint-disable react/no-danger */
             <GridCell className={"collapsible-component-users"} id={uniqueId} ref={(node) => this.rootElement = node}>
-                <GridCell  className={"collapsible-header-users " + !opened}>
+                <GridCell className={"collapsible-header-users " + !opened}>
                     <GridCell className={styles.extensionDetailRow + " " + props.addIsOpened} columnSize={100}>
                         {(!props.addIsOpened || props.addIsOpened === "add-opened") && <GridCell>
                             {userColumns}
                         </GridCell>}
-                        <Collapsible accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
+                        <Collapsible accordion={true} isOpened={opened} className="user-detail-row">
                             {opened && props.children }
                         </Collapsible>
                     </GridCell>

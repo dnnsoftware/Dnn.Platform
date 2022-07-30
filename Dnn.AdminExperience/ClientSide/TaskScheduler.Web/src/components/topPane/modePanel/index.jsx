@@ -104,44 +104,40 @@ class ModePanel extends Component {
         return (
             <div className={props.isOpened ? "collapsible-content-mode" : "collapsible-content-mode-hidden"}>
                 <Collapsible
-                    fixedHeight={props.fixedHeight}
-                    keepCollapsedContent={props.keepCollapsedContent}
+                    className={props.className}
                     isOpened={props.isOpened}>
-                    {props.fixedHeight &&
-                        <div>
-                            <div className="modepanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
-                                <div className="">
-                                    <div className="editor-row divider">
-                                        <label>{resx.get("plSchedulerMode")}</label>
-                                        <Select
-                                            onChange={this.onValueChange.bind(this, "SchedulerMode")}
-                                            options={props.schedulerModeOptions}
-                                            value={state.updateRequest.SchedulerMode} />
-                                    </div>
-                                    <div className="editor-row divider">
-                                        <label>{resx.get("plScheduleAppStartDelay")}</label>
-                                        <SingleLineInputWithError
-                                            inputStyle={{ margin: "0" }}
-                                            withLabel={false}
-                                            error={this.state.error.schedulerDelay && this.state.triedToSubmit}
-                                            errorMessage={resx.get("ScheduleAppStartDelayValidation")}
-                                            value={state.updateRequest.SchedulerdelayAtAppStart}
-                                            onChange={this.onValueChange.bind(this, "SchedulerdelayAtAppStart")}
-                                        />
-                                    </div>
-                                    <div className="action-buttons">
-                                        <Button type="secondary" onClick={this.onClose.bind(this)}>{resx.get("Cancel")}</Button>
-                                        <Button
-                                            type="primary"
-                                            disabled={!state.clientModified}
-                                            onClick={this.onSave.bind(this)}>{resx.get("Update")}
-                                        </Button>
-                                    </div>
+                    <div className="modepanel-content-outer-wrapper">
+                        <div className="modepanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
+                            <div className="">
+                                <div className="editor-row divider">
+                                    <label>{resx.get("plSchedulerMode")}</label>
+                                    <Select
+                                        onChange={this.onValueChange.bind(this, "SchedulerMode")}
+                                        options={props.schedulerModeOptions}
+                                        value={state.updateRequest.SchedulerMode} />
+                                </div>
+                                <div className="editor-row divider">
+                                    <label>{resx.get("plScheduleAppStartDelay")}</label>
+                                    <SingleLineInputWithError
+                                        inputStyle={{ margin: "0" }}
+                                        withLabel={false}
+                                        error={this.state.error.schedulerDelay && this.state.triedToSubmit}
+                                        errorMessage={resx.get("ScheduleAppStartDelayValidation")}
+                                        value={state.updateRequest.SchedulerdelayAtAppStart}
+                                        onChange={this.onValueChange.bind(this, "SchedulerdelayAtAppStart")}
+                                    />
+                                </div>
+                                <div className="action-buttons">
+                                    <Button type="secondary" onClick={this.onClose.bind(this)}>{resx.get("Cancel")}</Button>
+                                    <Button
+                                        type="primary"
+                                        disabled={!state.clientModified}
+                                        onClick={this.onSave.bind(this)}>{resx.get("Update")}
+                                    </Button>
                                 </div>
                             </div>
                         </div>
-                    }
-                    {!props.fixedHeight && props.children}
+                    </div>
                 </Collapsible>
             </div>
         );
@@ -150,10 +146,9 @@ class ModePanel extends Component {
 
 ModePanel.propTypes = {
     label: PropTypes.string,
-    fixedHeight: PropTypes.number,
+    className: PropTypes.string,
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
-    keepCollapsedContent: PropTypes.bool,
     scrollAreaStyle: PropTypes.object,
     children: PropTypes.node,
     isOpened: PropTypes.bool,

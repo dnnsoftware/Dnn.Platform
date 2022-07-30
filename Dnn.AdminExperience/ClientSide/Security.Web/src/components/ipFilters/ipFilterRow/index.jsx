@@ -81,7 +81,7 @@ class IpFilterRow extends Component {
                         </div>
                     </div>
                 }
-                <Collapsible className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ overflow: "visible", width: "100%" }}>{opened && props.children}</Collapsible>
+                <Collapsible className="ip-filter-wrapper" accordion={true} isOpened={opened}>{opened && props.children}</Collapsible>
             </div>
         );
 

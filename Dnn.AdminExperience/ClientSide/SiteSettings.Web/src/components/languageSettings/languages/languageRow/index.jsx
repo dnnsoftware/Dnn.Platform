@@ -181,8 +181,8 @@ class LanguageRow extends Component {
                         </div>
                     </div>
 
-                    {isAddMode && <Collapsible autoScroll={true} isOpened={opened} style={{ width: "100%", overflow: "visible" }}>{opened && props.children}</Collapsible>}
-                    {!isAddMode && <Collapsible autoScroll={true} className="language-permission-grid" isOpened={opened} style={{ width: "100%", overflow: "visible" }}>{opened && props.children}</Collapsible>}
+                    {isAddMode && <Collapsible autoScroll={true} className="collapsible-body-language" isOpened={opened}>{opened && props.children}</Collapsible>}
+                    {!isAddMode && <Collapsible autoScroll={true} className="collapsible-body-language language-permission-grid" isOpened={opened}>{opened && props.children}</Collapsible>}
                 </div>
             );
         }
@@ -206,8 +206,8 @@ class LanguageRow extends Component {
                             </div>
                         </div>
                     </div>
-                    {isAddMode && <Collapsible autoScroll={true} isOpened={opened} style={{ width: "100%", overflow: "visible" }}>{opened && props.children}</Collapsible>}
-                    {!isAddMode && <Collapsible autoScroll={true} className="language-permission-grid" isOpened={opened} style={{ width: "100%", overflow: "visible" }}>{opened && props.children}</Collapsible>}
+                    {isAddMode && <Collapsible autoScroll={true} className="collapsible-body-language" isOpened={opened}>{opened && props.children}</Collapsible>}
+                    {!isAddMode && <Collapsible autoScroll={true} className="collapsible-body-language language-permission-grid" isOpened={opened}>{opened && props.children}</Collapsible>}
                 </div>
             );
         }
