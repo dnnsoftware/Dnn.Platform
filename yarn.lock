@@ -18672,10 +18672,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"object-path@npm:0.11.4":
-  version: 0.11.4
-  resolution: "object-path@npm:0.11.4"
-  checksum: 232995154661e144f0605ff570fda5f9b14c66a6f19bb80f50fc3ea882e52b5b2fddda8db12f93e59362164cc15ec8661f62488de6a57f38d03890670c96522f
+"object-path@npm:0.11.8":
+  version: 0.11.8
+  resolution: "object-path@npm:0.11.8"
+  checksum: 684ccf0fb6b82f067dc81e2763481606692b8485bec03eb2a64e086a44dbea122b2b9ef44423a08e09041348fe4b4b67bd59985598f1652f67df95f0618f5968
   languageName: node
   linkType: hard
 
@@ -24910,7 +24910,7 @@ fsevents@^1.2.7:
     jwt-decode: 2.2.0
     less: 4.1.2
     less-loader: 5.0.0
-    object-path: 0.11.4
+    object-path: 0.11.8
     prop-types: ^15.6.2
     raw-loader: 2.0.0
     react: ^16.6.3
