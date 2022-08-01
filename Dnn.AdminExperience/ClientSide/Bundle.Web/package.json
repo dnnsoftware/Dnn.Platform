@@ -54,7 +54,7 @@
     "redux": "4.1.1",
     "redux-devtools": "3.5.0",
     "redux-devtools-dock-monitor": "1.2.0",
-    "redux-devtools-log-monitor": "1.4.0",
+    "redux-devtools-log-monitor": "2.1.0",
     "redux-immutable-state-invariant": "2.1.0",
     "redux-thunk": "2.3.0",
     "source-map-loader": "^0.2.3",
