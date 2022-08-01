@@ -39,7 +39,7 @@
     "moment": "^2.29.2",
     "prop-types": "^15.6.2",
     "raw-loader": "2.0.0",
-    "react": "^16.6.3",
+    "react": "^18.2.0",
     "react-collapse": "5.1.0",
     "react-custom-scrollbars": "4.2.1",
     "react-dom": "^16.6.3",

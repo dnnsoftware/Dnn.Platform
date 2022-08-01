@@ -51,7 +51,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "prop-types": "^15.6.2",
     "raw-loader": "2.0.0",
-    "react": "^16.6.3",
+    "react": "^18.2.0",
     "react-click-outside": "^3.0.1",
     "react-dom": "^16.6.3",
     "react-hot-loader": "4.8.5",
