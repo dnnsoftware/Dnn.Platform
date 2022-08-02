@@ -2016,7 +2016,7 @@ __metadata:
     scroll: ^3.0.1
     shortid: ^2.2.13
     style-loader: ^0.23.0
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     webpack: ^4.31.0
     webpack-bundle-size-analyzer: ^3.0.0
@@ -5650,7 +5650,7 @@ __metadata:
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
     style-loader: ^0.23.1
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     webpack: 4.31.0
     webpack-bundle-size-analyzer: 3.0.0
@@ -10580,7 +10580,7 @@ __metadata:
     react-widgets: ^4.4.7
     redux: 4.1.1
     style-loader: ^0.23.1
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     utils: ^0.3.1
     webpack: 4.31.0
     webpack-cli: 3.1.2
@@ -11970,7 +11970,7 @@ __metadata:
     redux-thunk: 2.3.0
     source-map-loader: ^0.2.3
     style-loader: 0.23.1
-    throttle-debounce: 3.0.1
+    throttle-debounce: 5.0.0
     url-loader: 1.1.2
     webpack: 4.31.0
     webpack-bundle-analyzer: ^4.4.1
@@ -19288,7 +19288,7 @@ fsevents@^1.2.7:
     react-widgets: 4.4.7
     string.prototype.startswith: 1.0.0
     style-loader: ^0.23.1
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     uglifyjs-webpack-plugin: ^2.1.3
     url-loader: 1.1.2
     url-parse: ^1.2.0
@@ -20525,7 +20525,7 @@ fsevents@^1.2.7:
     redux-mock-store: ^1.4.0
     redux-thunk: 2.3.0
     style-loader: ^0.23.1
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     webpack: ^4.31.0
     webpack-bundle-analyzer: ^4.4.1
@@ -22837,7 +22837,7 @@ fsevents@^1.2.7:
     react-hot-loader: 4.8.5
     react-widgets: ^4.4.6
     style-loader: 0.23.1
-    throttle-debounce: 3.0.1
+    throttle-debounce: 5.0.0
     url-loader: 1.1.2
     webpack: 4.31.0
     webpack-bundle-size-analyzer: 3.0.0
@@ -23655,7 +23655,7 @@ fsevents@^1.2.7:
     shortid: ^2.2.8
     style-loader: ^0.23.1
     svg-url-loader: ^7.1.1
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     utils: ^0.3.1
     webpack: 4.31.0
@@ -25120,10 +25120,10 @@ fsevents@^1.2.7:
   languageName: unknown
   linkType: soft
 
-"throttle-debounce@npm:3.0.1, throttle-debounce@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "throttle-debounce@npm:3.0.1"
-  checksum: e34ef638e8df3a9154249101b68afcbf2652a139c803415ef8a2f6a8bc577bcd4d79e4bb914ad3cd206523ac78b9fb7e80885bfa049f64fbb1927f99d98b5736
+"throttle-debounce@npm:5.0.0, throttle-debounce@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "throttle-debounce@npm:5.0.0"
+  checksum: aa8bf25828b4f8645ce863589de05d6807ea3debc147ce7d89624638ff8a16792d6d0baa0f8a32a260f0b163444d74020c6087b713ae561fde594b97b6e51f28
   languageName: node
   linkType: hard
 
@@ -25958,7 +25958,7 @@ fsevents@^1.2.7:
     redux-thunk: ^2.3.0
     services: ^0.0.3
     style-loader: ^0.23.1
-    throttle-debounce: ^3.0.1
+    throttle-debounce: ^5.0.0
     url-loader: 1.1.2
     utils: ^0.3.1
     webpack: 4.31.0

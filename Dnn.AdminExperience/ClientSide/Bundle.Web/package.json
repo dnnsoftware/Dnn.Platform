@@ -59,7 +59,7 @@
     "redux-thunk": "2.3.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "0.23.1",
-    "throttle-debounce": "3.0.1",
+    "throttle-debounce": "5.0.0",
     "url-loader": "1.1.2",
     "webpack": "4.31.0",
     "webpack-bundle-analyzer": "^4.4.1",
