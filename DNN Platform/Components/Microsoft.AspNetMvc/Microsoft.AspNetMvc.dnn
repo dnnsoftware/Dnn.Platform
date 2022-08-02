@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.AspNetMvc" type="Library" version="5.2.7">
+    <package name="DotNetNuke.AspNetMvc" type="Library" version="5.2.8">
       <friendlyName>ASP.NET MVC Components</friendlyName>
       <description>Libraries required for ASP.NET MVC.</description>
       <dependencies/>
@@ -23,7 +23,7 @@
             <assembly>
               <path>bin</path>
               <name>System.Web.Mvc.dll</name>
-              <version>5.2.7</version>
+              <version>5.2.8</version>
             </assembly>
           </assemblies>
         </component>
