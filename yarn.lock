@@ -10637,7 +10637,7 @@ __metadata:
     react-hot-loader: ^4.8.5
     react-redux: ^5.1.1
     react-widgets: ^4.4.7
-    redux: 4.1.1
+    redux: 4.2.0
     style-loader: ^0.23.1
     throttle-debounce: ^5.0.0
     utils: ^0.3.1
@@ -12021,7 +12021,7 @@ __metadata:
     react-tabs: 3.0.0
     react-tooltip: 4.2.21
     react-widgets: 4.4.6
-    redux: 4.1.1
+    redux: 4.2.0
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.2.0
     redux-devtools-log-monitor: 2.1.0
@@ -20569,7 +20569,7 @@ fsevents@^1.2.7:
     react-hot-loader: 4.8.5
     react-redux: 5.1.0
     react-test-renderer: ^17.0.2
-    redux: 4.1.1
+    redux: 4.2.0
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: 1.2.0
     redux-devtools-log-monitor: 2.1.0
@@ -22236,12 +22236,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"redux@npm:4.1.1":
-  version: 4.1.1
-  resolution: "redux@npm:4.1.1"
+"redux@npm:4.2.0":
+  version: 4.2.0
+  resolution: "redux@npm:4.2.0"
   dependencies:
     "@babel/runtime": ^7.9.2
-  checksum: 99519438a5d20b69404ad3816307ccc189f16df04b64c50d82c415ec488ea68b656d7a2fc81b6345e8d90f095344dfea68246500f72613d76464986660bc0485
+  checksum: 75f3955c89b3f18edf5411e5fb482aa2e4f41a416183e8802a6bf6472c4fc3d47675b8b321d147f8af8e0f616436ac507bf5a25f1c4d6180e797b549c7db2c1d
   languageName: node
   linkType: hard
 
