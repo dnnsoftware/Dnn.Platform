@@ -72,7 +72,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fare, Version=2.2.0.0, Culture=neutral, PublicKeyToken=ea68d375bf33a7c8, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fare.2.2.0\lib\net35\Fare.dll</HintPath>
+      <HintPath>..\..\..\packages\Fare.2.2.1\lib\net35\Fare.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
