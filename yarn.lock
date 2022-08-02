@@ -4782,6 +4782,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/base16@npm:*, @types/base16@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@types/base16@npm:1.0.2"
+  checksum: 5bc587d45066dae6fb14a4a7f72e57044fa1a8057eed86d4005f9e38a0c38b83009828ac3072e6e9e4be1cf5d5032849690adf8cd51efd545fa281bee5cf0fa5
+  languageName: node
+  linkType: hard
+
 "@types/cheerio@npm:^0.22.22":
   version: 0.22.30
   resolution: "@types/cheerio@npm:0.22.30"
@@ -4913,6 +4920,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.debounce@npm:^4.0.6":
+  version: 4.0.7
+  resolution: "@types/lodash.debounce@npm:4.0.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: e873b2d77f89010876baba3437ef826b17221b98948e00b5590828334a481dea1c8f9d28543210e564adc53199584f42c3cb171f8b6c3614fefc0b4e0888679c
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*, @types/lodash@npm:^4.14.178":
+  version: 4.14.182
+  resolution: "@types/lodash@npm:4.14.182"
+  checksum: 7dd137aa9dbabd632408bd37009d984655164fa1ecc3f2b6eb94afe35bf0a5852cbab6183148d883e9c73a958b7fec9a9bcf7c8e45d41195add6a18c34958209
+  languageName: node
+  linkType: hard
+
 "@types/minimatch@npm:*":
   version: 3.0.3
   resolution: "@types/minimatch@npm:3.0.3"
@@ -5016,6 +5039,15 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 3a1147d963c16dc9bbea5afb20c4be94f2389cf4eca4c5fbe9b02f3406bd9957602c0459ea017c95f8c3d523221f572e8bd842f94654835776d4c2923357f9dc
+  languageName: node
+  linkType: hard
+
+"@types/redux-devtools-themes@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/redux-devtools-themes@npm:1.0.0"
+  dependencies:
+    "@types/base16": "*"
+  checksum: 6d211cb0e62d67e148645ea0e4d20ce28330af4d7b38eda61f389b55dadc65d4c9df751ab562c1f82537cb441b0bae1ab7a3cf0abad82f8615e18fc9f5f761cb
   languageName: node
   linkType: hard
 
@@ -5646,7 +5678,7 @@ __metadata:
     redux: ^4.0.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.2.0
-    redux-devtools-log-monitor: 1.4.0
+    redux-devtools-log-monitor: 2.1.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
     style-loader: ^0.23.1
@@ -7581,7 +7613,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-runtime@npm:6.x, babel-runtime@npm:^6.18.0, babel-runtime@npm:^6.2.0, babel-runtime@npm:^6.22.0, babel-runtime@npm:^6.26.0, babel-runtime@npm:^6.6.1":
+"babel-runtime@npm:6.x, babel-runtime@npm:^6.18.0, babel-runtime@npm:^6.2.0, babel-runtime@npm:^6.22.0, babel-runtime@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-runtime@npm:6.26.0"
   dependencies:
@@ -8914,7 +8946,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-convert@npm:^1.9.0, color-convert@npm:^1.9.1":
+"color-convert@npm:^1.9.0, color-convert@npm:^1.9.1, color-convert@npm:^1.9.3":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
   dependencies:
@@ -8956,6 +8988,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"color-string@npm:^1.6.0":
+  version: 1.9.1
+  resolution: "color-string@npm:1.9.1"
+  dependencies:
+    color-name: ^1.0.0
+    simple-swizzle: ^0.2.2
+  checksum: c13fe7cff7885f603f49105827d621ce87f4571d78ba28ef4a3f1a104304748f620615e6bf065ecd2145d0d9dad83a3553f52bb25ede7239d18e9f81622f1cc5
+  languageName: node
+  linkType: hard
+
 "color-support@npm:^1.1.3":
   version: 1.1.3
   resolution: "color-support@npm:1.1.3"
@@ -8972,6 +9014,16 @@ __metadata:
     color-convert: ^1.9.1
     color-string: ^1.5.2
   checksum: b8466009face5ed40d4752458678381e62c4a2739c9672ddb139de3d78847bc6f75d64c75e1b7859ab146efc088df5b0ab2dfd6e652218fd880a625c4ede2bac
+  languageName: node
+  linkType: hard
+
+"color@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "color@npm:3.2.1"
+  dependencies:
+    color-convert: ^1.9.3
+    color-string: ^1.6.0
+  checksum: f81220e8b774d35865c2561be921f5652117638dcda7ca4029262046e37fc2444ac7bbfdd110cf1fd9c074a4ee5eda8f85944ffbdda26186b602dd9bb05f6400
   languageName: node
   linkType: hard
 
@@ -9963,6 +10015,13 @@ __metadata:
   version: 2.6.4
   resolution: "csstype@npm:2.6.4"
   checksum: a8ee653b0e9c7ba88291c7e9cd54e1f3ebb929e5fbf7b9991a68d016823f0756de582b4aa2b2faecce289b103a4de04eda2f05931d5e7ac82e80bbe652b354cc
+  languageName: node
+  linkType: hard
+
+"csstype@npm:^3.0.10":
+  version: 3.1.0
+  resolution: "csstype@npm:3.1.0"
+  checksum: 644e986cefab86525f0b674a06889cfdbb1f117e5b7d1ce0fc55b0423ecc58807a1ea42ecc75c4f18999d14fc42d1d255f84662a45003a52bb5840e977eb2ffd
   languageName: node
   linkType: hard
 
@@ -11965,7 +12024,7 @@ __metadata:
     redux: 4.1.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.2.0
-    redux-devtools-log-monitor: 1.4.0
+    redux-devtools-log-monitor: 2.1.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
     source-map-loader: ^0.2.3
@@ -16736,7 +16795,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash.curry@npm:^4.0.1":
+"lodash.curry@npm:^4.1.1":
   version: 4.1.1
   resolution: "lodash.curry@npm:4.1.1"
   checksum: 9192b70fe7df4d1ff780c0260bee271afa9168c93fe4fa24bc861900240531b59781b5fdaadf4644fea8f4fbcd96f0700539ab294b579ffc1022c6c15dcc462a
@@ -16752,7 +16811,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash.debounce@npm:^4.0.4, lodash.debounce@npm:^4.0.8":
+"lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
@@ -16770,13 +16829,6 @@ fsevents@^1.2.7:
   version: 4.4.0
   resolution: "lodash.flattendeep@npm:4.4.0"
   checksum: 8521c919acac3d4bcf0aaf040c1ca9cb35d6c617e2d72e9b4d51c9a58b4366622cd6077441a18be626c3f7b28227502b3bf042903d447b056ee7e0b11d45c722
-  languageName: node
-  linkType: hard
-
-"lodash.flow@npm:^3.3.0":
-  version: 3.5.0
-  resolution: "lodash.flow@npm:3.5.0"
-  checksum: a9a62ad344e3c5a1f42bc121da20f64dd855aaafecee24b1db640f29b88bd165d81c37ff7e380a7191de6f70b26f5918abcebbee8396624f78f3618a0b18634c
   languageName: node
   linkType: hard
 
@@ -20520,7 +20572,7 @@ fsevents@^1.2.7:
     redux: 4.1.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: 1.2.0
-    redux-devtools-log-monitor: 1.4.0
+    redux-devtools-log-monitor: 2.1.0
     redux-immutable-state-invariant: 2.1.0
     redux-mock-store: ^1.4.0
     redux-thunk: 2.3.0
@@ -20718,13 +20770,6 @@ fsevents@^1.2.7:
   version: 2.1.1
   resolution: "punycode@npm:2.1.1"
   checksum: 823bf443c6dd14f669984dea25757b37993f67e8d94698996064035edd43bed8a5a17a9f12e439c2b35df1078c6bec05a6c86e336209eb1061e8025c481168e8
-  languageName: node
-  linkType: hard
-
-"pure-color@npm:^1.2.0":
-  version: 1.3.0
-  resolution: "pure-color@npm:1.3.0"
-  checksum: 646d8bed6e6eab89affdd5e2c11f607a85b631a7fb03c061dfa658eb4dc4806881a15feed2ac5fd8c0bad8c00c632c640d5b1cb8b9a972e6e947393a1329371b
   languageName: node
   linkType: hard
 
@@ -20973,15 +21018,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-base16-styling@npm:^0.5.1":
-  version: 0.5.3
-  resolution: "react-base16-styling@npm:0.5.3"
+"react-base16-styling@npm:^0.8.0":
+  version: 0.8.2
+  resolution: "react-base16-styling@npm:0.8.2"
   dependencies:
+    "@types/base16": ^1.0.2
+    "@types/lodash": ^4.14.178
     base16: ^1.0.0
-    lodash.curry: ^4.0.1
-    lodash.flow: ^3.3.0
-    pure-color: ^1.2.0
-  checksum: 02ec61df472e9ec3bf2cbc54332ed24d886e0315c0c339c17cd026b7da08ca7c18fe757a3c31b7f9ff1e7be3d7edb0eb1a04b4dfdac685d0290a21b328a8aed2
+    color: ^3.2.1
+    csstype: ^3.0.10
+    lodash.curry: ^4.1.1
+  checksum: be5eba7f7b5330bc616c327f0fcba03e4676318382ad62c841aeac483da16e394a6c313af3fc15e6a08ed3616f8896376c46400852bbff86b15852224146b366
   languageName: node
   linkType: hard
 
@@ -21339,17 +21386,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-json-tree@npm:^0.11.0":
-  version: 0.11.2
-  resolution: "react-json-tree@npm:0.11.2"
+"react-json-tree@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "react-json-tree@npm:0.13.0"
   dependencies:
-    babel-runtime: ^6.6.1
-    prop-types: ^15.5.8
-    react-base16-styling: ^0.5.1
+    "@types/prop-types": ^15.7.3
+    prop-types: ^15.7.2
+    react-base16-styling: ^0.8.0
   peerDependencies:
-    react: ^15.0.0 || ^16.0.0
-    react-dom: ^15.0.0 || ^16.0.0
-  checksum: a58eb6e2803449fa709d977e45608cb0db42575c7df0706e9f4b2c81d8028279d7a7df6a3392380a01af8212492f7ae422904c70054ba2294b676f0ff4ef160d
+    "@types/react": ^16.3.18
+    react: ^16.3.0
+  checksum: 023a79e339de0bc7289bb9316e8ef59f35909102fdcd7bf9430fafb6216396d152d23ae0bde05116574c98bff535487f3169fb7ab0e9bf4ddf1b8e56233f0aaf
   languageName: node
   linkType: hard
 
@@ -22112,19 +22159,23 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"redux-devtools-log-monitor@npm:1.4.0, redux-devtools-log-monitor@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "redux-devtools-log-monitor@npm:1.4.0"
+"redux-devtools-log-monitor@npm:2.1.0, redux-devtools-log-monitor@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "redux-devtools-log-monitor@npm:2.1.0"
   dependencies:
-    lodash.debounce: ^4.0.4
-    prop-types: ^15.0.0
-    react-json-tree: ^0.11.0
-    react-pure-render: ^1.0.2
+    "@types/lodash.debounce": ^4.0.6
+    "@types/prop-types": ^15.7.3
+    "@types/redux-devtools-themes": ^1.0.0
+    lodash.debounce: ^4.0.8
+    prop-types: ^15.7.2
+    react-json-tree: ^0.13.0
     redux-devtools-themes: ^1.0.0
   peerDependencies:
-    react: ^15.0.0 || ^16.0.0
+    "@types/react": ^16.9.46
+    react: ^16.3.0
+    redux: ^4.0.5
     redux-devtools: ^3.4.0
-  checksum: fa2d8638f990257bbf76a5c00f40392af900c485aafefac25983db839d02d1f2c960235d9d27cb54620efb4c48d9b52e9db53d4bd77800d7f83bbd7e19c32069
+  checksum: b54d7f07a52484e54b2fc0819965d1195fade83ad3b01926244c7a18f32e7f606bd49beee4badcb3fec2f9468e9f58ad879e7aea910993d80be8be2844c9b01b
   languageName: node
   linkType: hard
 
@@ -22693,7 +22744,7 @@ fsevents@^1.2.7:
     redux: ^4.0.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: ^1.1.3
-    redux-devtools-log-monitor: ^1.4.0
+    redux-devtools-log-monitor: ^2.1.0
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
     style-loader: 0.23.1
@@ -23649,7 +23700,7 @@ fsevents@^1.2.7:
     redux: ^4.0.1
     redux-devtools: 3.5.0
     redux-devtools-dock-monitor: 1.2.0
-    redux-devtools-log-monitor: 1.4.0
+    redux-devtools-log-monitor: 2.1.0
     redux-immutable-state-invariant: 2.1.0
     redux-thunk: 2.3.0
     shortid: ^2.2.8
@@ -25953,7 +26004,7 @@ fsevents@^1.2.7:
     redux: ^4.0.1
     redux-devtools: ^3.5.0
     redux-devtools-dock-monitor: ^1.1.3
-    redux-devtools-log-monitor: ^1.4.0
+    redux-devtools-log-monitor: ^2.1.0
     redux-immutable-state-invariant: ^2.1.0
     redux-thunk: ^2.3.0
     services: ^0.0.3
