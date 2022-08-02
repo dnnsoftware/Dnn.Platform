@@ -24,7 +24,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            this.RenameResourcesFor98xUpgrades(context);
+            this.RenameResourcesForUpgrade(context);
             context.CreateDirectory(context.ArtifactsFolder);
             var excludes = new string[context.PackagingPatterns.InstallExclude.Length + context.PackagingPatterns.UpgradeExclude.Length];
             context.PackagingPatterns.InstallExclude.CopyTo(excludes, 0);
@@ -38,20 +38,22 @@ namespace DotNetNuke.Build.Tasks
         }
 
         [Obsolete(
-            "Workaround to support upgrades from 9.8.0 which may or may not still have Telerik installed."
-            + "This method is to be removed in v10.0.0 and we should also implement a solution to remove these .resources files"
-            + "from the available extensions to make sure people don't install them by mistake.")]
-        private void RenameResourcesFor98xUpgrades(Context context)
+                    "Workaround to support upgrades from 9.8.0 which may or may not still have Telerik installed."
+                    + "It also prevents the new Resource Manager module being installed for 9.11+ upgrades."
+                    + "This method is to be removed in v10.0.0 and we should also implement a solution to remove these .resources files"
+                    + "from the available extensions to make sure people don't install them by mistake.")]
+        private void RenameResourcesForUpgrade(Context context)
         {
-            var telerikPackages = new[]
+            var packages = new[]
                                   {
                                       $"{context.WebsiteFolder}Install/Module/DNNCE_DigitalAssetsManagement*.zip",
                                       $"{context.WebsiteFolder}Install/Module/Telerik*.zip",
                                       $"{context.WebsiteFolder}Install/Library/DNNCE_Web.Deprecated*.zip",
                                       $"{context.WebsiteFolder}Install/Library/DNNCE_Website.Deprecated*.zip",
+                                      $"{context.WebsiteFolder}Install/Module/DNNCE_ResourceManager*.zip",
                                   };
 
-            var filesToRename = context.GetFilesByPatterns(telerikPackages);
+            var filesToRename = context.GetFilesByPatterns(packages);
             foreach (var fileToRename in filesToRename)
             {
                 File.Move(

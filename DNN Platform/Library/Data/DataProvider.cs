@@ -1845,6 +1845,38 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
+        public virtual IDataReader GetPortalPermissionsByPortal(int portalId)
+        {
+            return this.ExecuteReader("GetPortalPermissionsByPortal", this.GetNull(portalId));
+        }
+
+        public virtual int AddPortalPermission(int portalId, int permissionId, int roleId, bool allowAccess, int userId, int createdByUserId)
+        {
+            return this.ExecuteScalar<int>(
+                "SaveTabPermission",
+                portalId,
+                permissionId,
+                this.GetRoleNull(roleId),
+                allowAccess,
+                this.GetNull(userId),
+                createdByUserId);
+        }
+
+        public virtual void DeletePortalPermission(int portalPermissionId)
+        {
+            this.ExecuteNonQuery("DeletePortalPermission", portalPermissionId);
+        }
+
+        public virtual void DeletePortalPermissionsByPortalID(int portalId)
+        {
+            this.ExecuteNonQuery("DeletePortalPermissionsByPortalID", portalId);
+        }
+
+        public virtual void DeletePortalPermissionsByUserID(int portalId, int userId)
+        {
+            this.ExecuteNonQuery("DeletePortalPermissionsByUserID", portalId, userId);
+        }
+
         public virtual void DeleteFolderPermission(int folderPermissionId)
         {
             this.ExecuteNonQuery("DeleteFolderPermission", folderPermissionId);
@@ -4121,6 +4153,16 @@ namespace DotNetNuke.Data
         public virtual void DeleteExpiredAuthCookies(DateTime utcExpiredBefore)
         {
             this.ExecuteNonQuery("AuthCookies_DeleteOld", FixDate(utcExpiredBefore));
+        }
+
+        /// <summary>
+        /// Sets all tabs of the portal to the specified secure value.
+        /// </summary>
+        /// <param name="portalId">The portal to update</param>
+        /// <param name="secure">True to set all pages to secure, false to set them all to non secure.</param>
+        public virtual void SetAllPortalTabsSecure(int portalId, bool secure)
+        {
+            Instance().ExecuteNonQuery("SetAllPortalTabsSecure", portalId, secure);
         }
 
         public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)

@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Permissions;
+    using Newtonsoft.Json;
 
     [Serializable]
     public class PortalDesktopModuleInfo : BaseEntityInfo
@@ -16,6 +17,7 @@ namespace DotNetNuke.Entities.Modules
         private DesktopModulePermissionCollection _permissions;
 
         [XmlIgnore]
+        [JsonIgnore]
         public DesktopModuleInfo DesktopModule
         {
             get
@@ -43,17 +45,21 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int PortalDesktopModuleID { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int DesktopModuleID { get; set; }
 
         public string FriendlyName { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public int PortalID { get; set; }
 
         [XmlIgnore]
+        [JsonIgnore]
         public string PortalName { get; set; }
     }
 }

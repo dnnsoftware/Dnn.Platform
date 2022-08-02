@@ -650,7 +650,10 @@ namespace DotNetNuke.Entities.Portals
         public int SearchMinWordlLength { get; internal set; }
 
         /// <inheritdoc/>
-        public bool SSLEnabled { get; internal set; }
+        public Abstractions.Security.SiteSslSetup SSLSetup { get; internal set; }
+
+        /// <inheritdoc/>
+        public bool SSLEnabled => this.SSLSetup != Abstractions.Security.SiteSslSetup.Off;
 
         /// <inheritdoc/>
         public bool SSLEnforced { get; internal set; }

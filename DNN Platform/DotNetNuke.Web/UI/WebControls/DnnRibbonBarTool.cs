@@ -310,7 +310,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             // Prevent PageSettings in a popup if SSL is enabled and enforced, which causes redirection/javascript broswer security issues.
                             if (this.ToolInfo.ToolName == "PageSettings" || this.ToolInfo.ToolName == "CopyPage" || this.ToolInfo.ToolName == "NewPage")
                             {
-                                if (!(PortalSettings.SSLEnabled && PortalSettings.SSLEnforced))
+                                if (!(PortalSettings.SSLSetup != Abstractions.Security.SiteSslSetup.Off && PortalSettings.SSLEnforced))
                                 {
                                     this.DnnLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.DnnLink.NavigateUrl, this, PortalSettings, true, false));
                                 }

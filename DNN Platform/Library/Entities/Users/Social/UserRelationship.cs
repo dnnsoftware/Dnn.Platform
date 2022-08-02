@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Users.Social
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
@@ -66,6 +67,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
