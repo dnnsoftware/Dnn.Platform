@@ -8,12 +8,14 @@ namespace DotNetNuke.Services.Install
     using System;
     using System.Data;
     using System.IO;
+    using System.Linq;
     using System.Web;
     using System.Web.UI;
     using System.Xml;
 
     using DotNetNuke.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Framework.Providers;
@@ -26,6 +28,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class Install : Page
     {
@@ -387,6 +390,30 @@ namespace DotNetNuke.Services.Install
                         Logger.Error(strError);
                     }
 
+                    // Check Telerik status
+                    var message = "";
+                    var telerikUtils = CreateTelerikUtils();
+                    if (telerikUtils.TelerikIsInstalled())
+                    {
+                        var version = telerikUtils.GetTelerikVersion().ToString();
+                        var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                                        .Select(a => Path.GetFileName(a));
+
+                        if (!assemblies.Any())
+                        {
+                            message = "Telerik is installed but no assemblies depend on it.";
+                        }
+                        else if (assemblies.Count() == 1)
+                        {
+                            message = "Telerik is installed but " + assemblies.First() + " depends on it.";
+                        }
+                        else
+                        {
+                            message = "Telerik is installed but " + string.Join(", ", assemblies) + " depend on it.";
+                        }
+                    }
+
+
                     this.Response.Write("<h2>Upgrade Complete</h2>");
                     this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
 
@@ -560,6 +587,11 @@ namespace DotNetNuke.Services.Install
 
             // Write out Footer
             HtmlUtils.WriteFooter(this.Response);
+        }
+
+        private static ITelerikUtils CreateTelerikUtils()
+        {
+            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Dnn.Modules.TelerikRemoval
 {
     using System;
 
-    using Dnn.Modules.TelerikRemovalLibrary;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Web;
 
     /// <summary>

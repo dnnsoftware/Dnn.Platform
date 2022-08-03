@@ -11,9 +11,9 @@ namespace Dnn.Modules.TelerikRemoval
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using Dnn.Modules.TelerikRemovalLibrary;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Maintenance.Telerik;
 
     /// <summary>
     /// The main view of the DNN Telerik Removal module.

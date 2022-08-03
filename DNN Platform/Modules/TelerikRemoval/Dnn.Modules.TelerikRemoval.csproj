@@ -118,6 +118,10 @@
       <Project>{0FCA217A-5F9A-4F5B-A31B-86D64AE65198}</Project>
       <Name>DotNetNuke.DependencyInjection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Maintenance\DotNetNuke.Maintenance.csproj">
+      <Project>{1D5A98BD-F8E0-45F7-B26D-270D9023629D}</Project>
+      <Name>DotNetNuke.Maintenance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
       <Name>DotNetNuke.Web</Name>
@@ -125,10 +129,6 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TelerikRemovalLibrary\Dnn.Modules.TelerikRemovalLibrary.csproj">
-      <Project>{ef55f4c7-ac75-49ef-8f82-b6c8f877a1f7}</Project>
-      <Name>Dnn.Modules.TelerikRemovalLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
