@@ -6,6 +6,7 @@
     using Dnn.PersonaBar.Security.Components;
     using Dnn.PersonaBar.Security.Components.Checks;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Maintenance.Telerik;
     using Moq;
     using NUnit.Framework;
 

@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Maintenance.Telerik
+namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System;
 
@@ -24,6 +24,7 @@ namespace DotNetNuke.Maintenance.Telerik
         public void ConfigureServices(IServiceCollection services)
 #pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
+            services.AddTransient<ITelerikUtils, TelerikUtils>();
             services.AddTransient<ITelerikUninstaller, TelerikUninstaller>();
             services.AddTransient<ILocalizer, Localizer>();
 

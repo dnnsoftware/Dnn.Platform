@@ -10,6 +10,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <inheritdoc/>
     internal abstract class XmlStepBase : StepBase, IXmlStep

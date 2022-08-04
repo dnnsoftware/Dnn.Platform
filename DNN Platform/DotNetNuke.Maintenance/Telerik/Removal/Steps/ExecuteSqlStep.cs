@@ -9,6 +9,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
+    using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <inheritdoc/>
     internal class ExecuteSqlStep : StepBase, IExecuteSqlStep

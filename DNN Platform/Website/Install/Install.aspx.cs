@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Data;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;

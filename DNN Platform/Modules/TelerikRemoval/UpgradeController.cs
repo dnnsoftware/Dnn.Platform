@@ -11,7 +11,7 @@ namespace Dnn.Modules.TelerikRemoval
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Web;
 
     /// <summary>

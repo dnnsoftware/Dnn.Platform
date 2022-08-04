@@ -8,6 +8,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System.Collections.Generic;
 
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <summary>
     /// A container for an array of steps.

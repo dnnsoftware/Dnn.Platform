@@ -12,6 +12,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
 

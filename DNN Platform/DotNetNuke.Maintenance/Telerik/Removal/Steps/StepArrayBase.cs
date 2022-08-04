@@ -7,6 +7,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System.Collections.Generic;
 
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <summary>
     /// A base class that implements <see cref="IStepArray"/>.

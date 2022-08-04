@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Common.Internal
+namespace DotNetNuke.Maintenance.Telerik
 {
     using System;
     using System.Collections.Generic;
@@ -45,18 +45,10 @@ namespace DotNetNuke.Common.Internal
         /// <summary>
         /// Initializes a new instance of the <see cref="TelerikUtils"/> class.
         /// </summary>
-        public TelerikUtils()
-            : this(Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TelerikUtils"/> class.
-        /// </summary>
         /// <param name="applicationStatusInfo">
         /// An instance of <see cref="IApplicationStatusInfo"/>.
         /// </param>
-        internal TelerikUtils(IApplicationStatusInfo applicationStatusInfo)
+        public TelerikUtils(IApplicationStatusInfo applicationStatusInfo)
         {
             this.applicationStatusInfo = applicationStatusInfo
                 ?? throw new ArgumentNullException(nameof(applicationStatusInfo));

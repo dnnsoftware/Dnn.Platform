@@ -10,6 +10,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
+    using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <summary>
     /// Deletes files.

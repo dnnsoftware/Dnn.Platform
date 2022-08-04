@@ -18,13 +18,13 @@ namespace DotNetNuke.Services.Install
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Installer.Blocker;

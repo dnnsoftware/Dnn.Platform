@@ -10,17 +10,18 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik.Removal;
 
     /// <inheritdoc/>
-    internal class RemoveTelerikRewriterRulesStep : XmlStepBase, IRemoveTelerikRewriterRulesStep
+    internal class RemoveItemFromCollectionStep : XmlStepBase, IRemoveItemFromCollectionStep
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoveTelerikRewriterRulesStep"/> class.
+        /// Initializes a new instance of the <see cref="RemoveItemFromCollectionStep"/> class.
         /// </summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
-        public RemoveTelerikRewriterRulesStep(
+        public RemoveItemFromCollectionStep(
             ILoggerSource loggerSource,
             ILocalizer localizer,
             IApplicationStatusInfo applicationStatusInfo)
@@ -29,44 +30,54 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         }
 
         /// <inheritdoc/>
-        public override string Name => this.Localize("UninstallStepRemoveRewriteRules");
+        [Required]
+        public virtual string CollectionPath { get; set; }
 
         /// <inheritdoc/>
         [Required]
-        public override string RelativeFilePath => "Config/SiteUrls.config";
+        public virtual string AttributeNamesToIncludeInSearch { get; set; }
+
+        /// <inheritdoc/>
+        [Required]
+        public string SearchTerm { get; set; }
 
         /// <inheritdoc/>
         protected override void ProcessXml(XmlDocument doc)
         {
-            const string RulesPath = "/RewriterConfig/Rules";
-
             this.Success = true;
 
-            var rules = doc.SelectSingleNode(RulesPath);
-            if (rules is null)
+            var collection = doc.SelectSingleNode(this.CollectionPath);
+            if (collection is null)
             {
-                this.Notes = this.LocalizeFormat("UninstallStepSectionNotFound", RulesPath);
+                this.Notes = this.LocalizeFormat("UninstallStepSectionNotFound", this.CollectionPath);
                 return;
             }
 
             var matchCount = 0;
 
-            rules.SelectNodes("RewriterRule")
+            collection.SelectNodes("add|remove", this.NamespaceManager)
                 .Cast<XmlElement>()
-                .Select(e => new { RewriterRule = e, LookFor = (XmlElement)e.SelectSingleNode("LookFor") })
-                .Where(x => x.LookFor != null && x.LookFor.InnerText != null)
-                .Where(x => x.LookFor.InnerText.IndexOf("telerik", StringComparison.OrdinalIgnoreCase) >= 0)
-                .Select(x => x.RewriterRule)
+                .Select(e => new { Item = e, Text = this.JoinAttributesToIncludeInSearch(e) })
+                .Where(x => x.Text.IndexOf(this.SearchTerm, StringComparison.OrdinalIgnoreCase) >= 0)
+                .Select(x => x.Item)
                 .ToList()
-                .ForEach(rewriterRule =>
+                .ForEach(item =>
                 {
-                    rules.RemoveChild(rewriterRule);
+                    collection.RemoveChild(item);
                     matchCount++;
                 });
 
             this.Notes = matchCount > 0
                 ? this.LocalizeFormat("UninstallStepCountOfMatchesFound", matchCount)
                 : this.Localize("UninstallStepNoMatchesFound");
+        }
+
+        private string JoinAttributesToIncludeInSearch(XmlElement element)
+        {
+            var attributeValues = this.AttributeNamesToIncludeInSearch.Split(',')
+                .Select(attrName => element.GetAttribute(attrName.Trim()));
+
+            return string.Join("|", attributeValues);
         }
     }
 }
