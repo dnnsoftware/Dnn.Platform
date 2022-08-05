@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
@@ -391,6 +392,8 @@ namespace DotNetNuke.Services.Install
                         Logger.Error(strError);
                     }
 
+                    Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+
                     // Check Telerik status
                     var message = "";
                     var telerikUtils = CreateTelerikUtils();
@@ -413,7 +416,6 @@ namespace DotNetNuke.Services.Install
                             message = "Telerik is installed but " + string.Join(", ", assemblies) + " depend on it.";
                         }
                     }
-
 
                     this.Response.Write("<h2>Upgrade Complete</h2>");
                     this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");

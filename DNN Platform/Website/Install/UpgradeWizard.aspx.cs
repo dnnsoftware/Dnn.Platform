@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Installer.Blocker;
@@ -205,6 +206,8 @@ namespace DotNetNuke.Services.Install
                 {
                     throw new InvalidOperationException(LocalizeStringStatic("TelerikUnintallOptionMissing"));
                 }
+
+                Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
 
                 var option = accountInfo[TelerikUninstallOptionClientID];
                 SetHostSetting(TelerikUninstallOptionClientID, option);

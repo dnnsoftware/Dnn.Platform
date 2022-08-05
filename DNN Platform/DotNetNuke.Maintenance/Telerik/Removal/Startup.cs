@@ -25,6 +25,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 #pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             services.AddTransient<ITelerikUtils, TelerikUtils>();
+            services.AddTransient<IDamUninstaller, DamUninstaller>();
             services.AddTransient<ITelerikUninstaller, TelerikUninstaller>();
             services.AddTransient<ILocalizer, Localizer>();
 
