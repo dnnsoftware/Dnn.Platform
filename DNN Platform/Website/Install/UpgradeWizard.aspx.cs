@@ -181,12 +181,10 @@ namespace DotNetNuke.Services.Install
                     GetTelerikInstalledButNotUsedResult(version));
             }
 
-            var damPresent = telerikUtils.DigitalAssetsIsInstalled();
-
             return Tuple.Create(
                 true,
                 default(string),
-                GetTelerikInstalledAndUsedResult(assemblies, version, damPresent));
+                GetTelerikInstalledAndUsedResult(assemblies, version));
         }
 
         [WebMethod]
@@ -204,7 +202,7 @@ namespace DotNetNuke.Services.Install
 
                 if (!accountInfo.ContainsKey(TelerikUninstallOptionClientID))
                 {
-                    throw new InvalidOperationException(LocalizeStringStatic("TelerikUnintallOptionMissing"));
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikUninstallOptionMissing"));
                 }
 
                 var option = accountInfo[TelerikUninstallOptionClientID];
@@ -375,10 +373,8 @@ namespace DotNetNuke.Services.Install
         }
 
         private static SecurityTabResult GetTelerikInstalledAndUsedResult(
-            IEnumerable<string> assemblies, string version, bool damPresent)
+            IEnumerable<string> assemblies, string version)
         {
-            var damPresentOrRemoved = damPresent ? "DamPresent" : "DamRemoved";
-
             return new SecurityTabResult
             {
                 CanProceed = true,
@@ -386,9 +382,9 @@ namespace DotNetNuke.Services.Install
                     CreateTelerikAntiForgeryTokenField(),
                     CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
                     CreateTelerikInstalledHeader(version),
-                    CreateParagraph($"TelerikInstalledAndUsed{damPresentOrRemoved}Info"),
+                    CreateParagraph($"TelerikInstalledAndUsedInfo"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
-                    CreateParagraph($"TelerikInstalledAndUsed{damPresentOrRemoved}Warning")),
+                    CreateParagraph($"TelerikInstalledAndUsedWarning")),
             };
         }
 
