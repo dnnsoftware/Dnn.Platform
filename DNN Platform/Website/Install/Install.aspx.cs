@@ -391,11 +391,11 @@ namespace DotNetNuke.Services.Install
                         Logger.Error(strError);
                     }
 
-                    this.Response.Write("Replacing Digital Assets Manager with the new Resource Manager<br />");
+                    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Replacing Digital Assets Manager with the new Resource Manager: ");
                     Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
-                    this.Response.Write("Digital Assets Manager replaced with the new Resource Manager<br />");
+                    HtmlUtils.WriteSuccessError(HttpContext.Current.Response, true);
 
-                    this.Response.Write("<br><br>");
+                    this.Response.Write("<br>");
                     this.Response.Write("<h2>Checking Security Aspects</h2>");
                     // Check Telerik status
                     var message = "";

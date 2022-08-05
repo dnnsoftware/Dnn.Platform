@@ -357,7 +357,7 @@ namespace DotNetNuke.Services.Install
 
             return new SecurityTabResult
             {
-                CanProceed = false,
+                CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
                     CreateTelerikInstalledHeader(version),
