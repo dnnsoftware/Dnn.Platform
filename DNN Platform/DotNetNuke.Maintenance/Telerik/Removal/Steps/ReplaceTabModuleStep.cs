@@ -67,6 +67,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 {
                     var step = this.GetService<IReplacePortalTabModuleStep>();
                     step.ParentStep = this;
+                    step.PortalId = info.PortalId;
                     return step;
                 });
 

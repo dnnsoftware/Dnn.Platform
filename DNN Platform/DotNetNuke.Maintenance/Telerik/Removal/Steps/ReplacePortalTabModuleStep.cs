@@ -5,6 +5,7 @@
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System;
+    using System.Collections;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -167,6 +168,11 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 newModule.ModuleDefID = definition.ModuleDefID;
                 newModule.ModuleOrder = position;
                 newModule.ModuleTitle = definition.FriendlyName;
+
+                foreach (DictionaryEntry ms in oldModule.ModuleSettings)
+                {
+                    newModule.ModuleSettings.Add(ms.Key, ms.Value);
+                }
 
                 this.moduleController.InitialModulePermission(newModule, newModule.TabID, permissionType);
                 this.moduleController.AddModule(newModule);

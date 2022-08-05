@@ -10,8 +10,6 @@ namespace DotNetNuke.Maintenance.Telerik
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class TelerikUtils : ITelerikUtils

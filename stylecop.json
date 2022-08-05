@@ -36,14 +36,14 @@
       "companyName": ".NET Foundation",
       "copyrightText": "Licensed to the .NET Foundation under one or more agreements.\nThe .NET Foundation licenses this file to you under the MIT license.\nSee the LICENSE file in the project root for more information",
       "xmlHeader": false,
-      "documentInterfaces": true,
-      "documentExposedElements": true,
-      "documentInternalElements": true,
+      "documentInterfaces": false,
+      "documentExposedElements": false,
+      "documentInternalElements": false,
       "documentPrivateElements": false,
       "documentPrivateFields": false,
       "documentationCulture": "en-US",
       "fileNamingConvention": "stylecop",
-      "excludeFromPunctuationCheck": ["seealso"]
+      "excludeFromPunctuationCheck": [ "seealso" ]
     }
   }
 }
