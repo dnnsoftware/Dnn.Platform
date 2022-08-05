@@ -15,10 +15,8 @@ namespace DotNetNuke.Services.Install
 
     using DotNetNuke.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Maintenance.Telerik.Removal;
@@ -36,6 +34,7 @@ namespace DotNetNuke.Services.Install
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object installLocker = new object();
+        protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
         protected override void OnInit(EventArgs e)
         {
@@ -392,8 +391,12 @@ namespace DotNetNuke.Services.Install
                         Logger.Error(strError);
                     }
 
+                    this.Response.Write("Replacing Digital Assets Manager with the new Resource Manager<br />");
                     Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+                    this.Response.Write("Digital Assets Manager replaced with the new Resource Manager<br />");
 
+                    this.Response.Write("<br><br>");
+                    this.Response.Write("<h2>Checking Security Aspects</h2>");
                     // Check Telerik status
                     var message = "";
                     var telerikUtils = CreateTelerikUtils();
@@ -403,20 +406,41 @@ namespace DotNetNuke.Services.Install
                         var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
                                         .Select(a => Path.GetFileName(a));
 
+                        this.Response.Write("<strong>");
+                        this.Response.Write(this.LocalizeString("TelerikInstalledHeading"));
+                        this.Response.Write("</strong><br>");
+                        this.Response.Write(this.LocalizeString("TelerikInstalledDetected"));
+                        this.Response.Write(" ");
+                        this.Response.Write(version);
+                        this.Response.Write("<br>");
+                        this.Response.Write(this.LocalizeString("TelerikInstalledBulletin"));
+                        this.Response.Write("<br>");
+
                         if (!assemblies.Any())
                         {
-                            message = "Telerik is installed but no assemblies depend on it.";
-                        }
-                        else if (assemblies.Count() == 1)
-                        {
-                            message = "Telerik is installed but " + assemblies.First() + " depends on it.";
+                            this.Response.Write(this.LocalizeString("TelerikInstalledButNotUsedInfoAutoInstall"));
+                            this.Response.Write("<br>");
                         }
                         else
                         {
-                            message = "Telerik is installed but " + string.Join(", ", assemblies) + " depend on it.";
+                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedInfo"));
+                            this.Response.Write("<br>");
+                            foreach (var a in assemblies)
+                            {
+                                this.Response.Write($"{a}<br/>");
+                            }
+
+                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
+                            this.Response.Write("<br>");
                         }
                     }
+                    else
+                    {
+                        this.Response.Write(this.LocalizeString("TelerikNotInstalledInfo"));
+                        this.Response.Write("<br>");
+                    }
 
+                    this.Response.Write("<br>");
                     this.Response.Write("<h2>Upgrade Complete</h2>");
                     this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
 
@@ -595,6 +619,11 @@ namespace DotNetNuke.Services.Install
         private static ITelerikUtils CreateTelerikUtils()
         {
             return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
+        }
+
+        private string LocalizeString(string key)
+        {
+            return Localization.GetString(key, UpgradeWizardLocalResourceFile);
         }
     }
 }
