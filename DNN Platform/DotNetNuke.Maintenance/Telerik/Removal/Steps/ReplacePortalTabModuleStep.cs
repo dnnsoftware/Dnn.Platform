@@ -73,6 +73,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
         private string NewModuleName => this.ParentStep?.NewModuleName;
 
+        private Func<Hashtable, Hashtable> MigrateSettings => this.ParentStep?.MigrateSettings;
+
         /// <inheritdoc />
         protected override void ExecuteInternal()
         {
@@ -81,8 +83,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
             foreach (var module in modules)
             {
-                this.DeleteTheOldModule(module);
                 this.AddTheNewModule(module);
+                this.DeleteTheOldModule(module);
             }
 
             this.Success = true;
@@ -150,13 +152,16 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 newModule.ModuleOrder = position;
                 newModule.ModuleTitle = definition.FriendlyName;
 
-                foreach (DictionaryEntry ms in oldModule.ModuleSettings)
-                {
-                    newModule.ModuleSettings.Add(ms.Key, ms.Value);
-                }
-
                 this.moduleController.InitialModulePermission(newModule, newModule.TabID, permissionType);
                 this.moduleController.AddModule(newModule);
+
+                var newSettings = this.MigrateSettings?.Invoke(oldModule.ModuleSettings) ??
+                    new Hashtable();
+
+                foreach (var key in newSettings.Keys)
+                {
+                    this.moduleController.UpdateModuleSetting(newModule.ModuleID, key.ToString(), (string)newSettings[key]);
+                }
 
                 if (tabModuleId == Null.NullInteger)
                 {

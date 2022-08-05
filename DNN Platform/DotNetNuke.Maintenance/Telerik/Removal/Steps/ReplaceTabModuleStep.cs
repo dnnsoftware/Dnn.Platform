@@ -5,6 +5,7 @@
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -50,6 +51,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
         /// <inheritdoc/>
         public IEnumerable<IStep> Steps => this.steps;
+
+        public Func<Hashtable, Hashtable> MigrateSettings { get; set; }
 
         /// <inheritdoc />
         protected override void ExecuteInternal()

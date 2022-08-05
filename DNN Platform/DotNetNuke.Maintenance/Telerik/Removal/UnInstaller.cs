@@ -1,6 +1,11 @@
-﻿namespace DotNetNuke.Maintenance.Telerik.Removal
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
 
@@ -35,11 +40,12 @@
             return step;
         }
 
-        private protected IStep ReplaceModule(string oldModuleName, string newModuleName)
+        private protected IStep ReplaceModule(string oldModuleName, string newModuleName, Func<Hashtable, Hashtable> migrateSettings)
         {
             var step = this.GetService<IReplaceTabModuleStep>();
             step.OldModuleName = oldModuleName;
             step.NewModuleName = newModuleName;
+            step.MigrateSettings = migrateSettings;
             return step;
         }
 

@@ -46,11 +46,9 @@ namespace DotNetNuke.Build.Tasks
         {
             var packages = new[]
                                   {
-                                      $"{context.WebsiteFolder}Install/Module/DNNCE_DigitalAssetsManagement*.zip",
                                       $"{context.WebsiteFolder}Install/Module/Telerik*.zip",
                                       $"{context.WebsiteFolder}Install/Library/DNNCE_Web.Deprecated*.zip",
                                       $"{context.WebsiteFolder}Install/Library/DNNCE_Website.Deprecated*.zip",
-                                      $"{context.WebsiteFolder}Install/Module/DNNCE_ResourceManager*.zip",
                                   };
 
             var filesToRename = context.GetFilesByPatterns(packages);

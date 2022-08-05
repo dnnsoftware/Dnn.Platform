@@ -207,21 +207,8 @@ namespace DotNetNuke.Services.Install
                     throw new InvalidOperationException(LocalizeStringStatic("TelerikUnintallOptionMissing"));
                 }
 
-                Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
-
                 var option = accountInfo[TelerikUninstallOptionClientID];
                 SetHostSetting(TelerikUninstallOptionClientID, option);
-                if ("Y".Equals(option, StringComparison.OrdinalIgnoreCase))
-                {
-                    var moduleInstallDir = new DirectoryInfo(Globals.ApplicationMapPath + @"\Install\Module");
-                    foreach (var f in moduleInstallDir.GetFiles(@"*.resources"))
-                    {
-                        if (f.Name.IndexOf("TelerikRemoval", StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            File.Move(f.FullName, Path.Combine(moduleInstallDir.FullName, Path.GetFileNameWithoutExtension(f.FullName) + ".zip"));
-                        }
-                    }
-                }
 
                 _upgradeRunning = false;
                 LaunchUpgrade();
@@ -719,6 +706,9 @@ namespace DotNetNuke.Services.Install
 
             _currentStep = null;
             _upgradeProgress = 100;
+
+            Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+
             CurrentStepActivity(Localization.GetString("UpgradeDone", LocalResourceFile));
 
             // indicate we are done

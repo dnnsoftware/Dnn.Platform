@@ -5,6 +5,7 @@
 namespace DotNetNuke.Maintenance.Telerik.Removal
 {
     using System;
+    using System.Collections;
 
     /// <inheritdoc />
     internal class DamUninstaller : UnInstaller, IDamUninstaller
@@ -24,7 +25,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         {
             var steps = new[]
             {
-                this.ReplaceModule("Digital Asset Management", "ResourceManager"),
+                this.ReplaceModule("Digital Asset Management", "ResourceManager", this.MigrateSettings),
                 this.RemoveExtension("DigitalAssetsManagement"),
             };
 
@@ -45,6 +46,37 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 
                 this.ProgressInternal.AddRange(UninstallSummaryItem.FromStep(step));
             }
+        }
+
+        private Hashtable MigrateSettings(Hashtable oldSettings)
+        {
+            var settings = new Hashtable();
+            var mode = oldSettings["Mode"];
+            var newMode = 0;
+            if (mode != null)
+            {
+                switch ((string)mode)
+                {
+                    case "User":
+                        newMode = 1;
+                        break;
+                    case "Group":
+                        newMode = 2;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            settings.Add("RM_Mode", newMode.ToString());
+
+            var rootFolder = oldSettings["RootFolderId"];
+            if (rootFolder != null)
+            {
+                settings.Add("RM_HomeFolder", rootFolder);
+            }
+
+            return settings;
         }
     }
 }

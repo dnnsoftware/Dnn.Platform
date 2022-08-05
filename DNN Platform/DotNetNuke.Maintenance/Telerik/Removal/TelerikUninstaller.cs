@@ -61,6 +61,5 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
                 this.ProgressInternal.AddRange(UninstallSummaryItem.FromStep(step));
             }
         }
-
     }
 }
