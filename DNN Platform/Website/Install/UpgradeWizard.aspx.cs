@@ -331,7 +331,10 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+#pragma warning disable SA1124 // Do not use regions
+        #region Security Screen Methods
         private static ITelerikUtils CreateTelerikUtils()
+#pragma warning restore SA1124 // Do not use regions
         {
             return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
@@ -366,6 +369,7 @@ namespace DotNetNuke.Services.Install
                     {
                         ID = TelerikUninstallOptionClientID,
                         Items = { yesButton, noButton },
+                        SelectedValue = OptionYes,
                     }),
             };
         }
@@ -551,6 +555,7 @@ namespace DotNetNuke.Services.Install
 
             return true;
         }
+        #endregion
 
         private static string Encrypt(string token)
         {
