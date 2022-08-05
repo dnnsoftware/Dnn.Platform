@@ -244,10 +244,10 @@
     <value>Remove the 'System' attribute from package '{0}'</value>
   </data>
   <data name="UninstallStepReplacePageModule.Text" xml:space="preserve">
-    <value>Replace '{0}' with '{1}' in page '{2}'</value>
+    <value>Replace '{0}' with '{1}'</value>
   </data>
   <data name="UninstallStepReplacePortalPageModule.Text" xml:space="preserve">
-    <value>Replace '{0}' with '{1}' in page '{2}', portal ID '{3}'</value>
+    <value>Replace '{0}' with '{1}' in portal ID '{2}'</value>
   </data>
   <data name="UninstallStepRequiredPropertiesNotSet.Text" xml:space="preserve">
     <value>Following required properties are not set: {0}</value>

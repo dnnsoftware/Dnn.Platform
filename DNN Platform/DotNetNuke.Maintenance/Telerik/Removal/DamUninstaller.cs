@@ -24,10 +24,8 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         {
             var steps = new[]
             {
-                this.ReplaceModuleInPage("File Management", "Digital Asset Management", "ResourceManager"),
+                this.ReplaceModule("Digital Asset Management", "ResourceManager"),
                 this.RemoveExtension("DigitalAssetsManagement"),
-                this.UpdateDataTypeList("Date"),
-                this.UpdateDataTypeList("DateTime"),
             };
 
             var skip = false;

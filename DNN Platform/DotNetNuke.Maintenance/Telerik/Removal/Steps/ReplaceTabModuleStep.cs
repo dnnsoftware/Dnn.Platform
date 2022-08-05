@@ -38,12 +38,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         public override string Name => this.LocalizeFormat(
             "UninstallStepReplacePageModule",
             this.OldModuleName,
-            this.NewModuleName,
-            this.PageName);
-
-        /// <inheritdoc />
-        [Required]
-        public string PageName { get; set; }
+            this.NewModuleName);
 
         /// <inheritdoc />
         [Required]

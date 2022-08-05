@@ -10,11 +10,6 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     internal interface IReplaceTabModuleStep : IStep
     {
         /// <summary>
-        /// Gets or sets the page name.
-        /// </summary>
-        string PageName { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the module to replace.
         /// </summary>
         string OldModuleName { get; set; }

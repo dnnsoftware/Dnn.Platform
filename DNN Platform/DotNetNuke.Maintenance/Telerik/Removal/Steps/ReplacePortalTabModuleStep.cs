@@ -59,7 +59,6 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             "UninstallStepReplacePortalPageModule",
             this.OldModuleName,
             this.NewModuleName,
-            this.PageName,
             this.PortalId);
 
         /// <inheritdoc />
@@ -74,29 +73,11 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
         private string NewModuleName => this.ParentStep?.NewModuleName;
 
-        private string PageName => this.ParentStep?.PageName;
-
         /// <inheritdoc />
         protected override void ExecuteInternal()
         {
-            var tab = this.tabController.GetTabByName(this.PageName, this.PortalId);
-
-            if (tab is null)
-            {
-                this.Success = true;
-                this.Notes = this.LocalizeFormat("UninstallStepPageNotFoundInPortal", this.PageName, this.PortalId);
-                return;
-            }
-
-            var modules = tab.Modules
-                .Cast<ModuleInfo>()
-                .Where(m => this.OldModuleName.Equals(m.ModuleDefinition.DefinitionName, StringComparison.OrdinalIgnoreCase));
-
-            if (!modules.Any())
-            {
-                this.Success = true;
-                this.Notes = this.LocalizeFormat("UninstallStepModuleNotFoundInPage", this.OldModuleName, this.PageName);
-            }
+            var modules = this.moduleController.GetModulesByDefinition(this.PortalId, this.OldModuleName)
+                .Cast<ModuleInfo>();
 
             foreach (var module in modules)
             {

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Maintenance.Telerik.Steps;
 
     internal class UnInstaller
@@ -36,26 +35,11 @@
             return step;
         }
 
-        private protected IStep ReplaceModuleInPage(string pageName, string oldModuleName, string newModuleName)
+        private protected IStep ReplaceModule(string oldModuleName, string newModuleName)
         {
             var step = this.GetService<IReplaceTabModuleStep>();
-            step.PageName = pageName;
             step.OldModuleName = oldModuleName;
             step.NewModuleName = newModuleName;
-            return step;
-        }
-
-        private protected IStep ReplaceModuleInHostPage(string pageName, string oldModuleName, string newModuleName)
-        {
-            var parentStep = this.GetService<IReplaceTabModuleStep>();
-            parentStep.PageName = pageName;
-            parentStep.OldModuleName = oldModuleName;
-            parentStep.NewModuleName = newModuleName;
-
-            var step = this.GetService<IReplacePortalTabModuleStep>();
-            step.ParentStep = parentStep;
-            step.PortalId = Null.NullInteger;
-
             return step;
         }
 
