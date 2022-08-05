@@ -199,9 +199,8 @@ namespace Dnn.Modules.TelerikRemoval
 
             this.InstalledMultiView.ActiveViewIndex = 1; // InstalledAndUsedView
 
-            var damPresentOrRemoved = telerikUtils.DigitalAssetsIsInstalled() ? "DamPresent" : "DamRemoved";
-            this.TelerikInstalledAndUsedInfoLabel.Text = $"TelerikInstalledAndUsed{damPresentOrRemoved}Info";
-            this.TelerikInstalledAndUsedWarningLabel.Text = $"TelerikInstalledAndUsed{damPresentOrRemoved}Warning";
+            this.TelerikInstalledAndUsedInfoLabel.Text = $"TelerikInstalledAndUsedInfo";
+            this.TelerikInstalledAndUsedWarningLabel.Text = $"TelerikInstalledAndUsedWarning";
 
             var table = CreateTable(assemblies, maxRows: 3, maxColumns: 3);
             this.AssemblyListPlaceHolder.Controls.Add(table);
