@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="..\..\..\DNN_Platform.build" />
   <PropertyGroup>
-    <Extension>resources</Extension>
+    <Extension>zip</Extension>
     <DNNFileName>TelerikRemoval</DNNFileName>
     <PackageName>DNNCE_TelerikRemoval</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\TelerikRemoval</ModuleFolderName>

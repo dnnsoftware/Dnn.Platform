@@ -265,6 +265,6 @@
     <value>Checking security aspects of this installation</value>
   </data>
   <data name="TelerikInstalledButNotUsedInfoAutoInstall.Text" xml:space="preserve">
-    <value>Since your installation does NOT appear to be utilizing any of these components, you can safely remove them. Please install the (available) Telerik Removal Tool, put this on a page and run this tool to remove these components.</value>
+    <value>Since your installation does NOT appear to be utilizing any of these components, you can safely remove them. Please put the Telerik Removal Tool on a page and run this tool to remove these components.</value>
   </data>
 </root>
