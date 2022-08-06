@@ -70,8 +70,15 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                if (ex.GetType() == typeof(InvalidPasswordException))
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
+                else
+                {
+                    Logger.Error(ex);
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                }
             }
         }
 
