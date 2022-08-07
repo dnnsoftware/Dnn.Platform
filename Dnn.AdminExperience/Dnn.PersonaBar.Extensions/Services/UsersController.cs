@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                if (ex.GetType() == typeof(InvalidPasswordException))
+                if (ex.GetType() == typeof(InvalidUserRegisterException))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }

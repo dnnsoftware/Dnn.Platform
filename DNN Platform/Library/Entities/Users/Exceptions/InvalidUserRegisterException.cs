@@ -7,20 +7,20 @@ namespace DotNetNuke.Entities.Users
     using System;
 
     [Serializable]
-    public class InvalidPasswordException : Exception
+    public class InvalidUserRegisterException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidPasswordException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.
         /// </summary>
-        public InvalidPasswordException()
+        public InvalidUserRegisterException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidPasswordException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.
         /// </summary>
         /// <param name="message"></param>
-        public InvalidPasswordException(string message)
+        public InvalidUserRegisterException(string message)
             : base(message)
         {
         }
