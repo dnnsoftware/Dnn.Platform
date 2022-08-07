@@ -70,13 +70,13 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 if (ex.GetType() == typeof(InvalidUserRegisterException))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }
                 else
                 {
-                    Logger.Error(ex);
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
                 }
             }
