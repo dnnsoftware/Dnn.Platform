@@ -118,6 +118,10 @@
       <Project>{0FCA217A-5F9A-4F5B-A31B-86D64AE65198}</Project>
       <Name>DotNetNuke.DependencyInjection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{3CD5F6B8-8360-4862-80B6-F402892DB7DD}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Maintenance\DotNetNuke.Maintenance.csproj">
       <Project>{1D5A98BD-F8E0-45F7-B26D-270D9023629D}</Project>
       <Name>DotNetNuke.Maintenance</Name>
