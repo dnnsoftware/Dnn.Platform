@@ -11,11 +11,19 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 
     using DotNetNuke.Maintenance.Telerik.Steps;
 
+    /// <summary>
+    /// Base class for uninstalling Telerik and related components.
+    /// </summary>
     internal class UnInstaller
     {
         private readonly IServiceProvider serviceProvider;
         private readonly ILocalizer localizer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnInstaller"/> class.
+        /// </summary>
+        /// <param name="serviceProvider">Instance of <see cref="IServiceProvider"/>.</param>
+        /// <param name="localizer">Instance of <see cref="ILocalizer"/>.</param>
         public UnInstaller(IServiceProvider serviceProvider, ILocalizer localizer)
         {
             this.serviceProvider = serviceProvider ??
@@ -27,19 +35,25 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             this.ProgressInternal = new List<UninstallSummaryItem>();
         }
 
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of type <see cref="UninstallSummaryItem"/>
+        /// containing the overall execution progress.
+        /// </summary>
         public IEnumerable<UninstallSummaryItem> Progress => this.ProgressInternal;
 
+        /// <summary>
+        /// Gets or sets an <see cref="List{T}"/> of type <see cref="UninstallSummaryItem"/>
+        /// containing the overall execution progress.
+        /// </summary>
         private protected List<UninstallSummaryItem> ProgressInternal { get; set; }
 
-        private protected IStep InstallAvailableExtension(string packageName, string fileNamePattern, string packageType)
-        {
-            var step = this.GetService<IInstallAvailablePackageStep>();
-            step.PackageFileNamePattern = fileNamePattern;
-            step.PackageName = packageName;
-            step.PackageType = packageType;
-            return step;
-        }
-
+        /// <summary>
+        /// Returns a step to replace one module by another.
+        /// </summary>
+        /// <param name="oldModuleName">Modulename of the module to be replaced.</param>
+        /// <param name="newModuleName">Modulename of the module to be put in its place.</param>
+        /// <param name="migrateSettings">Callback function to migrate settings.</param>
+        /// <returns><see cref="IStep"/> of the module replacer.</returns>
         private protected IStep ReplaceModule(string oldModuleName, string newModuleName, Func<Hashtable, Hashtable> migrateSettings)
         {
             var step = this.GetService<IReplaceTabModuleStep>();
@@ -49,6 +63,11 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
+        /// <summary>
+        /// Returns a step to remove a package from the DNN installation.
+        /// </summary>
+        /// <param name="packageName">Name of the package.</param>
+        /// <returns><see cref="IStep"/> of the package remover.</returns>
         private protected IStep RemoveExtension(string packageName)
         {
             var step = this.GetService<IRemoveExtensionStep>();
@@ -56,6 +75,11 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
+        /// <summary>
+        /// Returns a step to replace a data type's editor.
+        /// </summary>
+        /// <param name="value">Data type's name.</param>
+        /// <returns><see cref="IStep"/> of the data type updater.</returns>
         private protected IStep UpdateDataTypeList(string value)
         {
             var commandFormat = string.Join(
@@ -70,11 +94,21 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
+        /// <summary>
+        /// Returns a step to remove Telerik rewriter rules in the siteurls.config.
+        /// </summary>
+        /// <returns><see cref="IStep"/> of the Telerik rewriter remover.</returns>
         private protected IStep UpdateSiteUrlsConfig()
         {
             return this.GetService<IRemoveTelerikRewriterRulesStep>();
         }
 
+        /// <summary>
+        /// Returns step to remove items from the web.config.
+        /// </summary>
+        /// <param name="collectionPath">Collection path.</param>
+        /// <param name="attributeNames">Attribute names.</param>
+        /// <returns><see cref="IStep"/> of the web.config editor.</returns>
         private protected IStep UpdateWebConfig(string collectionPath, string attributeNames)
         {
             var step = this.GetService<IRemoveItemFromCollectionStep>();
@@ -86,11 +120,22 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
+        /// <summary>
+        /// Returns a step to remove Telerik binding redirects from the web.config.
+        /// </summary>
+        /// <returns><see cref="IStep"/> of the Telerik binding redirect remover.</returns>
         private protected IStep RemoveTelerikBindingRedirects()
         {
             return this.GetService<IRemoveTelerikBindingRedirectsStep>();
         }
 
+        /// <summary>
+        /// Returns a step to remove uninstalled extensions from the install folder so they can't get installed by mistake.
+        /// </summary>
+        /// <param name="relativePath">Path to where the extension is.</param>
+        /// <param name="searchPattern">Pattern to get the right files.</param>
+        /// <param name="recurse">Whether to recurse folders.</param>
+        /// <returns><see cref="IStep"/> of the uninstalled extension remover.</returns>
         private protected IStep RemoveUninstalledExtensionFiles(string relativePath, string searchPattern, bool recurse = false)
         {
             var step = this.GetService<IDeleteFilesStep>();
@@ -102,6 +147,11 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             return step;
         }
 
+        /// <summary>
+        /// Returns a service dependency.
+        /// </summary>
+        /// <typeparam name="T">Dependency type.</typeparam>
+        /// <returns>Requested Service.</returns>
         private protected T GetService<T>()
             where T : class
         {
