@@ -9,7 +9,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     using System.Linq;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Maintenance.Telerik;
+
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>

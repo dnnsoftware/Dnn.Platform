@@ -18,12 +18,14 @@ namespace DotNetNuke.Services.Install
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
-    using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Installer.Blocker;
@@ -166,35 +168,46 @@ namespace DotNetNuke.Services.Install
                     GetTelerikNotInstalledResult());
             }
 
-            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik();
+            var version = telerikUtils.GetTelerikVersion().ToString();
 
-            if (assemblies.Any())
+            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                .Select(a => Path.GetFileName(a));
+
+            if (!assemblies.Any())
             {
                 return Tuple.Create(
                     true,
                     default(string),
-                    GetTelerikInstalledAndUsedResult(assemblies));
+                    GetTelerikInstalledButNotUsedResult(version));
             }
 
             return Tuple.Create(
                 true,
                 default(string),
-                GetTelerikInstalledButNotUsedResult());
+                GetTelerikInstalledAndUsedResult(assemblies, version));
         }
 
         [WebMethod]
         public static void RunUpgrade(Dictionary<string, string> accountInfo)
         {
-            if (!TelerikAntiForgeryTokenIsValid(accountInfo))
-            {
-                throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
-            }
-
             string errorMsg;
             var result = VerifyHostUser(accountInfo, out errorMsg);
 
             if (result == true)
             {
+                if (!TelerikAntiForgeryTokenIsValid(accountInfo))
+                {
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
+                }
+
+                if (!accountInfo.ContainsKey(TelerikUninstallOptionClientID))
+                {
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikUninstallOptionMissing"));
+                }
+
+                var option = accountInfo[TelerikUninstallOptionClientID];
+                SetHostSetting(TelerikUninstallOptionClientID, option);
+
                 _upgradeRunning = false;
                 LaunchUpgrade();
 
@@ -316,7 +329,10 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+#pragma warning disable SA1124 // Do not use regions
+        #region Security Screen Methods
         private static ITelerikUtils CreateTelerikUtils()
+#pragma warning restore SA1124 // Do not use regions
         {
             return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
@@ -328,61 +344,72 @@ namespace DotNetNuke.Services.Install
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
                     CreateHeading("TelerikNotInstalledHeading"),
                     CreateParagraph("TelerikNotInstalledInfo")),
             };
         }
 
-        private static SecurityTabResult GetTelerikInstalledButNotUsedResult()
+        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(string version)
         {
             var yesButton = new ListItem(LocalizeStringStatic("TelerikUninstallYes"), OptionYes);
             var noButton = new ListItem(LocalizeStringStatic("TelerikUninstallNo"), OptionNo);
 
             return new SecurityTabResult
             {
-                CanProceed = false,
+                CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
-                    CreateTelerikInstalledHeader(),
+                    CreateTelerikInstalledHeader(version),
                     CreateParagraph("TelerikInstalledButNotUsedInfo"),
                     CreateParagraph("TelerikUninstallInfo"),
                     new RadioButtonList
                     {
                         ID = TelerikUninstallOptionClientID,
                         Items = { yesButton, noButton },
+                        SelectedValue = OptionYes,
                     }),
             };
         }
 
-        private static SecurityTabResult GetTelerikInstalledAndUsedResult(IEnumerable<string> assemblies)
+        private static SecurityTabResult GetTelerikInstalledAndUsedResult(
+            IEnumerable<string> assemblies, string version)
         {
             return new SecurityTabResult
             {
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
-                    CreateTelerikInstalledHeader(),
-                    CreateParagraph("TelerikInstalledAndUsedInfo"),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph($"TelerikInstalledAndUsedInfo"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
-                    CreateParagraph("TelerikInstalledAndUsedWarning")),
+                    CreateParagraph($"TelerikInstalledAndUsedWarning")),
             };
         }
 
-        private static Control CreateTelerikAntiForgeryTokenField()
-        {
-            return new HiddenField
-            {
-                ID = TelerikAntiForgeryTokenClientID,
-                Value = CreateTelerikAntiForgeryToken(),
-            };
-        }
+        private static Control CreateTelerikAntiForgeryTokenField() =>
+            CreateHiddenField(TelerikAntiForgeryTokenClientID, CreateTelerikAntiForgeryToken());
 
-        private static Control CreateTelerikInstalledHeader()
+        private static Control CreateTelerikInstalledHeader(string version)
         {
             return CreateBundle(
                 CreateHeading("TelerikInstalledHeading"),
-                CreateParagraph("TelerikInstalledDetected"),
+                CreateTelerikInstalledDetectedParagraph(version),
                 CreateParagraph("TelerikInstalledBulletin"));
+        }
+
+        private static Control CreateTelerikInstalledDetectedParagraph(string version)
+        {
+            return new HtmlGenericControl("p")
+            {
+                Controls =
+                {
+                    new Label { Text = LocalizeStringStatic("TelerikInstalledDetected") },
+                    new Literal { Text = " " },
+                    new Label { Text = version, CssClass = "telerikVersion" },
+                },
+            };
         }
 
         private static Control CreateBundle(params Control[] controls)
@@ -411,6 +438,15 @@ namespace DotNetNuke.Services.Install
             });
 
             return control;
+        }
+
+        private static Control CreateHiddenField(string id, string value)
+        {
+            return new HiddenField
+            {
+                ID = id,
+                Value = value,
+            };
         }
 
         private static Table CreateTable(IEnumerable<string> items, int maxRows, int maxColumns)
@@ -515,6 +551,7 @@ namespace DotNetNuke.Services.Install
 
             return true;
         }
+        #endregion
 
         private static string Encrypt(string token)
         {
@@ -531,6 +568,20 @@ namespace DotNetNuke.Services.Install
             return Globals.DependencyProvider
                 .GetRequiredService<IHostSettingsService>()
                 .GetSettingsDictionary()[key];
+        }
+
+        private static void SetHostSetting(string key, string value, bool isSecure = false)
+        {
+            var setting = new ConfigurationSetting
+            {
+                IsSecure = isSecure,
+                Key = key,
+                Value = value,
+            };
+
+            Globals.DependencyProvider
+                .GetRequiredService<IHostSettingsService>()
+                .Update(setting);
         }
 
         private static void GetInstallerLocales()
@@ -656,6 +707,9 @@ namespace DotNetNuke.Services.Install
 
             _currentStep = null;
             _upgradeProgress = 100;
+
+            Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+
             CurrentStepActivity(Localization.GetString("UpgradeDone", LocalResourceFile));
 
             // indicate we are done
