@@ -27,7 +27,7 @@ class ControlRow extends Component {
                     <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}></div>
                     <div onClick={props.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} className={props.isEditMode ? "svg-active" : ""}></div>
                 </GridCell>
-                <Collapsible isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-control">
+                <Collapsible isOpened={props.isEditMode} className="edit-module-control">
                     <ControlFields {...props} />
                 </Collapsible>
             </GridCell>

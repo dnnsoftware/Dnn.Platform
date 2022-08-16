@@ -94,59 +94,55 @@ class EmailPanel extends Component {
         return (
             <div className="collapsible-content-email">
                 <Collapse
-                    fixedHeight={props.fixedHeight}
-                    keepCollapsedContent={props.keepCollapsedContent}
+                    className={props.className}
                     isOpened={props.isOpened}>
-                    {props.fixedHeight &&
-                        <div>
-                            <div className="emailpanel-content-wrapper" style={{ height: "100%" }}>
-                                <div className="">
-                                    <InputGroup>
-                                        <Label
-                                            labelType="inline"
-                                            tooltipMessage={Localization.get("plEmailAddress.Help")}
-                                            label={Localization.get("plEmailAddress")}
-                                        />
-                                        <SingleLineInputWithError
-                                            error={state.error.email && state.triedToSubmit}
-                                            inputStyle={{ marginBottom: "15px" }}
-                                            errorMessage={Localization.get("Email.Message")}
-                                            value={state.emailRequest.Email}
-                                            onChange={this.onEmailValueChange.bind(this, "Email")} />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <Label
-                                            labelType="inline"
-                                            tooltipMessage={Localization.get("plSubject.Help")}
-                                            label={Localization.get("plSubject")}
-                                        />
-                                        <SingleLineInputWithError
-                                            error={false}
-                                            inputStyle={{ marginBottom: "15px" }}
-                                            value={state.emailRequest.Subject}
-                                            onChange={this.onEmailValueChange.bind(this, "Subject")}
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <Label
-                                            labelType="inline"
-                                            tooltipMessage={Localization.get("SendMessage.Help")}
-                                            label={Localization.get("SendMessage")}
-                                        />
-                                        <MultiLineInput
-                                            value={state.emailRequest.Message}
-                                            onChange={this.onEmailValueChange.bind(this, "Message")}
-                                        />
-                                    </InputGroup>
-                                    <div className="action-buttons">
-                                        <Button type="secondary" onClick={this.onCloseEmailPanel.bind(this)}>{Localization.get("btnCancel")}</Button>
-                                        <Button type="primary" onClick={this.onSendEmail.bind(this)}>{Localization.get("btnSend")}</Button>
-                                    </div>
+                    <div>
+                        <div className="emailpanel-content-wrapper" style={{ height: "100%" }}>
+                            <div className="">
+                                <InputGroup>
+                                    <Label
+                                        labelType="inline"
+                                        tooltipMessage={Localization.get("plEmailAddress.Help")}
+                                        label={Localization.get("plEmailAddress")}
+                                    />
+                                    <SingleLineInputWithError
+                                        error={state.error.email && state.triedToSubmit}
+                                        inputStyle={{ marginBottom: "15px" }}
+                                        errorMessage={Localization.get("Email.Message")}
+                                        value={state.emailRequest.Email}
+                                        onChange={this.onEmailValueChange.bind(this, "Email")} />
+                                </InputGroup>
+                                <InputGroup>
+                                    <Label
+                                        labelType="inline"
+                                        tooltipMessage={Localization.get("plSubject.Help")}
+                                        label={Localization.get("plSubject")}
+                                    />
+                                    <SingleLineInputWithError
+                                        error={false}
+                                        inputStyle={{ marginBottom: "15px" }}
+                                        value={state.emailRequest.Subject}
+                                        onChange={this.onEmailValueChange.bind(this, "Subject")}
+                                    />
+                                </InputGroup>
+                                <InputGroup>
+                                    <Label
+                                        labelType="inline"
+                                        tooltipMessage={Localization.get("SendMessage.Help")}
+                                        label={Localization.get("SendMessage")}
+                                    />
+                                    <MultiLineInput
+                                        value={state.emailRequest.Message}
+                                        onChange={this.onEmailValueChange.bind(this, "Message")}
+                                    />
+                                </InputGroup>
+                                <div className="action-buttons">
+                                    <Button type="secondary" onClick={this.onCloseEmailPanel.bind(this)}>{Localization.get("btnCancel")}</Button>
+                                    <Button type="primary" onClick={this.onSendEmail.bind(this)}>{Localization.get("btnSend")}</Button>
                                 </div>
                             </div>
                         </div>
-                    }
-                    {!props.fixedHeight && props.children}
+                    </div>
                 </Collapse>
             </div>
         );
@@ -155,12 +151,10 @@ class EmailPanel extends Component {
 
 EmailPanel.PropTypes = {
     label: PropTypes.string,
-    fixedHeight: PropTypes.number,
+    className: PropTypes.string,
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
-    keepCollapsedContent: PropTypes.bool,
     scrollAreaStyle: PropTypes.object,
-    children: PropTypes.node,
     isOpened: PropTypes.bool,
     logIds: PropTypes.array,
     onCloseEmailPanel: PropTypes.func.isRequired

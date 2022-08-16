@@ -300,7 +300,7 @@
     <value>Relative URL  - &lt;em&gt;'/Images/MyImage.jpg'&lt;/em&gt;</value>
   </data>
   <data name="Wait.Text" xml:space="preserve">
-    <value>Please Wait...</value>
+    <value>Please Wait…</value>
   </data>
   <data name="WaitMessage.Text" xml:space="preserve">
     <value>Loading Page and Parsing Anchors.</value>
@@ -393,7 +393,7 @@
     <value>Uploaded file is bigger then the allowed file size.</value>
   </data>
   <data name="AddFiles.Text" xml:space="preserve">
-    <value>Add file(s)...</value>
+    <value>Add file(s)…</value>
   </data>
   <data name="DropHere.Text" xml:space="preserve">
     <value>Drop file(s) here</value>
@@ -414,7 +414,7 @@
     <value>Created</value>
   </data>
   <data name="lblBrowserModus.Text" xml:space="preserve">
-    <value>Browser-Modus: {0}</value>
+    <value>Browser Mode: {0}</value>
   </data>
   <data name="Size.Text" xml:space="preserve">
     <value>Size</value>
@@ -433,5 +433,8 @@
   </data>
   <data name="SortByDateDescending.Text" xml:space="preserve">
     <value>Sort By Descending Date</value>
+  </data>
+  <data name="BrowserModus.Text" xml:space="preserve">
+    <value>Browser Mode: {0}</value>
   </data>
 </root>

@@ -17,7 +17,6 @@ namespace DNNConnect.CKEditorProvider.Browser
     using System.Web;
     using System.Web.Script.Services;
     using System.Web.Services;
-    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -32,6 +31,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security.Permissions;
@@ -39,6 +39,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.JScript;
 
     using Convert = System.Convert;
@@ -48,7 +49,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
     /// <summary>The browser.</summary>
     [ScriptService]
-    public partial class Browser : Page
+    public partial class Browser : PageBase
     {
         private const string FileItemDisplayFormat =
             "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>";
@@ -298,8 +299,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </returns>
         public DataTable GetFiles(IFolderInfo currentFolderInfo)
         {
-            var sizeResx = Localization.GetString("Size.Text", this.ResXFile, this.LanguageCode);
-            var createdResx = Localization.GetString("Created.Text", this.ResXFile, this.LanguageCode);
+            var sizeResx = this.LocalizeString("Size.Text");
+            var createdResx = this.LocalizeString("Created.Text");
 
             var filesTable = new DataTable();
 
@@ -464,62 +465,16 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             this.LoadFavIcon();
 
-            var jqueryScriptLink = new HtmlGenericControl("script");
-
-            jqueryScriptLink.Attributes["type"] = "text/javascript";
-            jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
-
-            this.favicon.Controls.Add(jqueryScriptLink);
-
-            var jqueryUiScriptLink = new HtmlGenericControl("script");
-
-            jqueryUiScriptLink.Attributes["type"] = "text/javascript";
-            jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
-
-            this.favicon.Controls.Add(jqueryUiScriptLink);
-
-            var jqueryImageSliderScriptLink = new HtmlGenericControl("script");
-
-            jqueryImageSliderScriptLink.Attributes["type"] = "text/javascript";
-            jqueryImageSliderScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.ImageSlider.js");
-
-            this.favicon.Controls.Add(jqueryImageSliderScriptLink);
-
-            var jqueryImageResizerScriptLink = new HtmlGenericControl("script");
-
-            jqueryImageResizerScriptLink.Attributes["type"] = "text/javascript";
-            jqueryImageResizerScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.cropzoom.js");
-
-            this.favicon.Controls.Add(jqueryImageResizerScriptLink);
-
-            var jqueryCropZoomScriptLink = new HtmlGenericControl("script");
-
-            jqueryCropZoomScriptLink.Attributes["type"] = "text/javascript";
-            jqueryCropZoomScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.ImageResizer.js");
-
-            this.favicon.Controls.Add(jqueryCropZoomScriptLink);
-
-            var jqueryPageMetodScriptLink = new HtmlGenericControl("script");
-
-            jqueryPageMetodScriptLink.Attributes["type"] = "text/javascript";
-            jqueryPageMetodScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.pagemethod.js");
-
-            this.favicon.Controls.Add(jqueryPageMetodScriptLink);
-
-            var jqueryFileUploadScriptLink = new HtmlGenericControl("script");
-
-            jqueryFileUploadScriptLink.Attributes["type"] = "text/javascript";
-            jqueryFileUploadScriptLink.Attributes["src"] = this.ResolveUrl("js/jquery.fileupload.comb.min.js");
-
-            this.favicon.Controls.Add(jqueryFileUploadScriptLink);
-
-            var objCssLink = new HtmlGenericSelfClosing("link");
-
-            objCssLink.Attributes["rel"] = "stylesheet";
-            objCssLink.Attributes["type"] = "text/css";
-            objCssLink.Attributes["href"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css";
-
-            this.favicon.Controls.Add(objCssLink);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Browser.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageSlider.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.cropzoom.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageResizer.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.pagemethod.js"));
+            ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.fileupload.comb.min.js"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, "https://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, this.ResolveUrl("Browser.comb.min.css"));
 
             this.GetSelectedImageOrLink();
 
@@ -644,8 +599,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     this.Response.Write("<script type=\"text/javascript\">");
                     this.Response.Write(
                         string.Format(
-                            "javascript:alert('{0}');",
-                            Localization.GetString("Error5.Text", this.ResXFile, this.LanguageCode)));
+                            "javascript:alert('{0}');", this.LocalizeString("Error5.Text")));
                     this.Response.Write("</script>");
 
                     this.Response.End();
@@ -955,16 +909,16 @@ namespace DNNConnect.CKEditorProvider.Browser
                     if (this.request.QueryString["Type"] != null)
                     {
                         this.browserModus = this.request.QueryString["Type"];
-                        var browserModusText = Localization.GetString("lblBrowserModus.Text", this.ResXFile, this.LanguageCode);
+                        var browserModusText = this.LocalizeString("lblBrowserModus.Text");
                         var browserModusTypeKey = string.Format("BrowserModus.{0}.Text", this.browserModus);
-                        var browserModusTypeText = Localization.GetString(browserModusTypeKey, this.ResXFile, this.LanguageCode);
+                        var browserModusTypeText = this.LocalizeString(browserModusTypeKey);
                         this.lblModus.Text = string.Format(browserModusText, browserModusTypeText);
 
                         if (!this.IsPostBack)
                         {
                             this.AcceptFileTypes = this.GetAcceptedFileTypes();
 
-                            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+                            this.title.Text = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
                             this.AnchorList.Visible = this.currentSettings.UseAnchorSelector;
                             this.LabelAnchor.Visible = this.currentSettings.UseAnchorSelector;
@@ -993,10 +947,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                                         this.panLinkMode.Visible = false;
                                         this.panPageMode.Visible = true;
 
-                                        this.lblModus.Text = string.Format(
-                                            "Browser-Modus: {0}",
+                                        this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"),
                                             string.Format("Page {0}", this.browserModus));
-                                        this.title.InnerText = string.Format(
+                                        this.title.Text = string.Format(
                                             "{0} - DNNConnect.CKEditorProvider.FileBrowser",
                                             this.lblModus.Text);
 
@@ -1079,7 +1032,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         if (!folderSelected)
                         {
                             var folderName = !string.IsNullOrEmpty(startFolder.FolderPath) ?
-                                startFolder.FolderPath : Localization.GetString("RootFolder.Text", this.ResXFile, this.LanguageCode);
+                                startFolder.FolderPath : this.LocalizeString("RootFolder.Text");
                             this.lblCurrentDir.Text = folderName;
 
                             this.ShowFilesIn(startFolder);
@@ -1092,8 +1045,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             else
             {
                 var errorScript = string.Format(
-                    "javascript:alert('{0}');self.close();",
-                    Localization.GetString("Error1.Text", this.ResXFile, this.LanguageCode));
+                    "javascript:alert('{0}');self.close();", this.LocalizeString("Error1.Text"));
 
                 this.Response.Write("<script type=\"text/javascript\">");
                 this.Response.Write(errorScript);
@@ -1239,8 +1191,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = false;
             this.BrowserMode.Visible = false;
 
-            this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
+            this.lblResizeHeader.Text = this.LocalizeString("lblResizeHeader.Text");
+            this.title.Text = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
 
             // Hide all Unwanted Elements from the Image Editor
             this.cmdClose.Visible = false;
@@ -1339,10 +1291,10 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.imgResized.Height = iDefaultHeight;
             this.imgResized.Width = iDefaultWidth;
 
-            this.imgOriginal.ToolTip = Localization.GetString("imgOriginal.Text", this.ResXFile, this.LanguageCode);
+            this.imgOriginal.ToolTip = this.LocalizeString("imgOriginal.Text");
             this.imgOriginal.AlternateText = this.imgOriginal.ToolTip;
 
-            this.imgResized.ToolTip = Localization.GetString("imgResized.Text", this.ResXFile, this.LanguageCode);
+            this.imgResized.ToolTip = this.LocalizeString("imgResized.Text");
             this.imgResized.AlternateText = this.imgResized.ToolTip;
 
             sbScript1.Append("ResizeMe('#imgResized', 360, 300);");
@@ -1392,6 +1344,11 @@ namespace DNNConnect.CKEditorProvider.Browser
             var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(directory, this.portalSettings);
 
             this.ShowFilesIn(currentFolderInfo, pagerChanged);
+        }
+
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.ResXFile, this.LanguageCode);
         }
 
         /// <summary>
@@ -1576,8 +1533,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private void SetDefaultLinkTypeText()
         {
-            this.rblLinkType.Items[0].Text = Localization.GetString("relLnk.Text", this.ResXFile, this.LanguageCode);
-            this.rblLinkType.Items[1].Text = Localization.GetString("absLnk.Text", this.ResXFile, this.LanguageCode);
+            this.rblLinkType.Items[0].Text = this.LocalizeString("relLnk.Text");
+            this.rblLinkType.Items[1].Text = this.LocalizeString("absLnk.Text");
         }
 
         /// <summary>
@@ -1589,7 +1546,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.FoldersTree.Nodes.Clear();
 
             var folderName = !string.IsNullOrEmpty(currentFolderInfo.FolderPath) ?
-                currentFolderInfo.FolderPath : Localization.GetString("RootFolder.Text", this.ResXFile, this.LanguageCode);
+                currentFolderInfo.FolderPath : this.LocalizeString("RootFolder.Text");
 
             TreeNode folderNode = new TreeNode
             {
@@ -1827,6 +1784,9 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.FoldersTree.SelectedNodeChanged += this.FoldersTree_NodeClick;
 
             this.FilesList.ItemCommand += this.FilesList_ItemCommand;
+
+            this.ClientResourceLoader.DataBind();
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
         }
 
         /// <summary>
@@ -2070,157 +2030,128 @@ namespace DNNConnect.CKEditorProvider.Browser
         private void SetLanguage()
         {
             // Buttons
-            this.cmdResizeCancel.Text = Localization.GetString("cmdResizeCancel.Text", this.ResXFile, this.LanguageCode);
-            this.cmdResizeNow.Text = Localization.GetString("cmdResizeNow.Text", this.ResXFile, this.LanguageCode);
-            this.cmdUploadCancel.Text = Localization.GetString("cmdUploadCancel.Text", this.ResXFile, this.LanguageCode);
-            this.cmdCancel.Text = Localization.GetString("cmdCancel.Text", this.ResXFile, this.LanguageCode);
-            this.cmdClose.Text = Localization.GetString("cmdClose.Text", this.ResXFile, this.LanguageCode);
-            this.cmdCreateFolder.Text = Localization.GetString("cmdCreateFolder.Text", this.ResXFile, this.LanguageCode);
-            this.cmdCreateCancel.Text = Localization.GetString("cmdCreateCancel.Text", this.ResXFile, this.LanguageCode);
-            this.cmdCrop.Text = Localization.GetString("cmdCrop.Text", this.ResXFile, this.LanguageCode);
-            this.cmdZoom.Text = Localization.GetString("cmdZoom.Text", this.ResXFile, this.LanguageCode);
-            this.cmdRotate.Text = Localization.GetString("cmdRotate.Text", this.ResXFile, this.LanguageCode);
-            this.cmdResize2.Text = Localization.GetString("cmdResize2.Text", this.ResXFile, this.LanguageCode);
-            this.cmdCropNow.Text = Localization.GetString("cmdCropNow.Text", this.ResXFile, this.LanguageCode);
-            this.cmdCropCancel.Text = Localization.GetString("cmdCropCancel.Text", this.ResXFile, this.LanguageCode);
+            this.cmdResizeCancel.Text = this.LocalizeString("cmdResizeCancel.Text");
+            this.cmdResizeNow.Text = this.LocalizeString("cmdResizeNow.Text");
+            this.cmdUploadCancel.Text = this.LocalizeString("cmdUploadCancel.Text");
+            this.cmdCancel.Text = this.LocalizeString("cmdCancel.Text");
+            this.cmdClose.Text = this.LocalizeString("cmdClose.Text");
+            this.cmdCreateFolder.Text = this.LocalizeString("cmdCreateFolder.Text");
+            this.cmdCreateCancel.Text = this.LocalizeString("cmdCreateCancel.Text");
+            this.cmdCrop.Text = this.LocalizeString("cmdCrop.Text");
+            this.cmdZoom.Text = this.LocalizeString("cmdZoom.Text");
+            this.cmdRotate.Text = this.LocalizeString("cmdRotate.Text");
+            this.cmdResize2.Text = this.LocalizeString("cmdResize2.Text");
+            this.cmdCropNow.Text = this.LocalizeString("cmdCropNow.Text");
+            this.cmdCropCancel.Text = this.LocalizeString("cmdCropCancel.Text");
 
             // Labels
-            this.lblConFiles.Text = Localization.GetString("lblConFiles.Text", this.ResXFile, this.LanguageCode);
-            this.lblCurrent.Text = Localization.GetString("lblCurrent.Text", this.ResXFile, this.LanguageCode);
-            this.lblSubDirs.Text = Localization.GetString("lblSubDirs.Text", this.ResXFile, this.LanguageCode);
-            this.lblUrlType.Text = Localization.GetString("lblUrlType.Text", this.ResXFile, this.LanguageCode);
-            this.rblLinkType.ToolTip = Localization.GetString("lblUrlType.Text", this.ResXFile, this.LanguageCode);
-            this.lblChoosetab.Text = Localization.GetString("lblChoosetab.Text", this.ResXFile, this.LanguageCode);
-            this.lblHeight.Text = Localization.GetString("lblHeight.Text", this.ResXFile, this.LanguageCode);
-            this.lblWidth.Text = Localization.GetString("lblWidth.Text", this.ResXFile, this.LanguageCode);
-            this.lblThumbName.Text = Localization.GetString("lblThumbName.Text", this.ResXFile, this.LanguageCode);
-            this.lblImgQuality.Text = Localization.GetString("lblImgQuality.Text", this.ResXFile, this.LanguageCode);
-            this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader.Text", this.ResXFile, this.LanguageCode);
-            this.lblOtherTools.Text = Localization.GetString("lblOtherTools.Text", this.ResXFile, this.LanguageCode);
-            this.lblCropImageName.Text = Localization.GetString("lblThumbName.Text", this.ResXFile, this.LanguageCode);
-            this.lblCropInfo.Text = Localization.GetString("lblCropInfo.Text", this.ResXFile, this.LanguageCode);
-            this.lblShowPreview.Text = Localization.GetString("lblShowPreview.Text", this.ResXFile, this.LanguageCode);
-            this.lblClearPreview.Text = Localization.GetString("lblClearPreview.Text", this.ResXFile, this.LanguageCode);
-            this.lblOriginal.Text = Localization.GetString("lblOriginal.Text", this.ResXFile, this.LanguageCode);
-            this.lblPreview.Text = Localization.GetString("lblPreview.Text", this.ResXFile, this.LanguageCode);
-            this.lblNewFoldName.Text = Localization.GetString("lblNewFoldName.Text", this.ResXFile, this.LanguageCode);
-            this.LabelAnchor.Text = Localization.GetString("LabelAnchor.Text", this.ResXFile, this.LanguageCode);
-            this.NewFolderTitle.Text = Localization.GetString("cmdCreate.Text", this.ResXFile, this.LanguageCode);
-            this.UploadTitle.Text = Localization.GetString("cmdUpload.Text", this.ResXFile, this.LanguageCode);
-            this.AddFiles.Text = Localization.GetString("AddFiles.Text", this.ResXFile, this.LanguageCode);
-            this.Wait.Text = Localization.GetString("Wait.Text", this.ResXFile, this.LanguageCode);
-            this.WaitMessage.Text = Localization.GetString("WaitMessage.Text", this.ResXFile, this.LanguageCode);
-            this.ExtraTabOptions.Text = Localization.GetString("ExtraTabOptions.Text", this.ResXFile, this.LanguageCode);
-            this.LabelTabLanguage.Text = Localization.GetString("LabelTabLanguage.Text", this.ResXFile, this.LanguageCode);
+            this.lblConFiles.Text = this.LocalizeString("lblConFiles.Text");
+            this.lblCurrent.Text = this.LocalizeString("lblCurrent.Text");
+            this.lblSubDirs.Text = this.LocalizeString("lblSubDirs.Text");
+            this.lblUrlType.Text = this.LocalizeString("lblUrlType.Text");
+            this.rblLinkType.ToolTip = this.LocalizeString("lblUrlType.Text");
+            this.lblChoosetab.Text = this.LocalizeString("lblChoosetab.Text");
+            this.lblHeight.Text = this.LocalizeString("lblHeight.Text");
+            this.lblWidth.Text = this.LocalizeString("lblWidth.Text");
+            this.lblThumbName.Text = this.LocalizeString("lblThumbName.Text");
+            this.lblImgQuality.Text = this.LocalizeString("lblImgQuality.Text");
+            this.lblResizeHeader.Text = this.LocalizeString("lblResizeHeader.Text");
+            this.lblOtherTools.Text = this.LocalizeString("lblOtherTools.Text");
+            this.lblCropImageName.Text = this.LocalizeString("lblThumbName.Text");
+            this.lblCropInfo.Text = this.LocalizeString("lblCropInfo.Text");
+            this.lblShowPreview.Text = this.LocalizeString("lblShowPreview.Text");
+            this.lblClearPreview.Text = this.LocalizeString("lblClearPreview.Text");
+            this.lblOriginal.Text = this.LocalizeString("lblOriginal.Text");
+            this.lblPreview.Text = this.LocalizeString("lblPreview.Text");
+            this.lblNewFoldName.Text = this.LocalizeString("lblNewFoldName.Text");
+            this.LabelAnchor.Text = this.LocalizeString("LabelAnchor.Text");
+            this.NewFolderTitle.Text = this.LocalizeString("cmdCreate.Text");
+            this.UploadTitle.Text = this.LocalizeString("cmdUpload.Text");
+            this.AddFiles.Text = this.LocalizeString("AddFiles.Text");
+            this.Wait.Text = this.LocalizeString("Wait.Text");
+            this.WaitMessage.Text = this.LocalizeString("WaitMessage.Text");
+            this.ExtraTabOptions.Text = this.LocalizeString("ExtraTabOptions.Text");
+            this.LabelTabLanguage.Text = this.LocalizeString("LabelTabLanguage.Text");
 
             this.MaximumUploadSizeInfo.Text =
-                string.Format(
-                    Localization.GetString("FileSizeRestriction", this.ResXFile, this.LanguageCode),
+                string.Format(this.LocalizeString("FileSizeRestriction"),
                     this.MaxUploadSize / (1024 * 1024),
                     this.AcceptFileTypes.Replace("|", ","));
 
             // RadioButtonList
-            this.BrowserMode.Items[0].Text = Localization.GetString("FileLink.Text", this.ResXFile, this.LanguageCode);
-            this.BrowserMode.Items[1].Text = Localization.GetString("PageLink.Text", this.ResXFile, this.LanguageCode);
+            this.BrowserMode.Items[0].Text = this.LocalizeString("FileLink.Text");
+            this.BrowserMode.Items[1].Text = this.LocalizeString("PageLink.Text");
 
             // DropDowns
-            this.LanguageList.Items[0].Text = Localization.GetString("None.Text", this.ResXFile, this.LanguageCode);
-            this.AnchorList.Items[0].Text = Localization.GetString("None.Text", this.ResXFile, this.LanguageCode);
+            this.LanguageList.Items[0].Text = this.LocalizeString("None.Text");
+            this.AnchorList.Items[0].Text = this.LocalizeString("None.Text");
 
             // CheckBoxes
-            this.chkAspect.Text = Localization.GetString("chkAspect.Text", this.ResXFile, this.LanguageCode);
-            this.chkHumanFriendy.Text = Localization.GetString("chkHumanFriendy.Text", this.ResXFile, this.LanguageCode);
-            this.OverrideFile.Text = Localization.GetString("OverrideFile.Text", this.ResXFile, this.LanguageCode);
+            this.chkAspect.Text = this.LocalizeString("chkAspect.Text");
+            this.chkHumanFriendy.Text = this.LocalizeString("chkHumanFriendy.Text");
+            this.OverrideFile.Text = this.LocalizeString("OverrideFile.Text");
 
             // LinkButtons (with Image)
             this.Syncronize.Text = string.Format(
-               "<img src=\"Images/SyncFolder.png\" alt=\"{0}\" title=\"{1}\" />",
-               Localization.GetString("Syncronize.Text", this.ResXFile, this.LanguageCode),
-               Localization.GetString("Syncronize.Help", this.ResXFile, this.LanguageCode));
-            this.Syncronize.ToolTip = Localization.GetString("Syncronize.Help", this.ResXFile, this.LanguageCode);
+               "<img src=\"Images/SyncFolder.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("Syncronize.Text"), this.LocalizeString("Syncronize.Help"));
+            this.Syncronize.ToolTip = this.LocalizeString("Syncronize.Help");
 
             this.cmdCreate.Text = string.Format(
-                "<img src=\"Images/CreateFolder.png\" alt=\"{0}\" title=\"{1}\" />",
-                Localization.GetString("cmdCreate.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("cmdCreate.Help", this.ResXFile, this.LanguageCode));
-            this.cmdCreate.ToolTip = Localization.GetString("cmdCreate.Help", this.ResXFile, this.LanguageCode);
+                "<img src=\"Images/CreateFolder.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdCreate.Text"), this.LocalizeString("cmdCreate.Help"));
+            this.cmdCreate.ToolTip = this.LocalizeString("cmdCreate.Help");
 
             this.cmdDownload.Text =
                 string.Format(
-                    "<img src=\"Images/DownloadButton.png\" alt=\"{0}\" title=\"{1}\" />",
-                    Localization.GetString("cmdDownload.Text", this.ResXFile, this.LanguageCode),
-                    Localization.GetString("cmdDownload.Help", this.ResXFile, this.LanguageCode));
-            this.cmdDownload.ToolTip = Localization.GetString("cmdDownload.Help", this.ResXFile, this.LanguageCode);
+                    "<img src=\"Images/DownloadButton.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdDownload.Text"), this.LocalizeString("cmdDownload.Help"));
+            this.cmdDownload.ToolTip = this.LocalizeString("cmdDownload.Help");
 
             this.cmdUpload.Text = string.Format(
-                "<img src=\"Images/UploadButton.png\" alt=\"{0}\" title=\"{1}\" />",
-                Localization.GetString("cmdUpload.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("cmdUpload.Help", this.ResXFile, this.LanguageCode));
-            this.cmdUpload.ToolTip = Localization.GetString("cmdUpload.Help", this.ResXFile, this.LanguageCode);
+                "<img src=\"Images/UploadButton.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdUpload.Text"), this.LocalizeString("cmdUpload.Help"));
+            this.cmdUpload.ToolTip = this.LocalizeString("cmdUpload.Help");
 
             this.cmdDelete.Text = string.Format(
-                "<img src=\"Images/DeleteFile.png\" alt=\"{0}\" title=\"{1}\" />",
-                Localization.GetString("cmdDelete.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("cmdDelete.Help", this.ResXFile, this.LanguageCode));
-            this.cmdDelete.ToolTip = Localization.GetString("cmdDelete.Help", this.ResXFile, this.LanguageCode);
+                "<img src=\"Images/DeleteFile.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdDelete.Text"), this.LocalizeString("cmdDelete.Help"));
+            this.cmdDelete.ToolTip = this.LocalizeString("cmdDelete.Help");
 
             this.cmdResizer.Text = string.Format(
-                "<img src=\"Images/ResizeImage.png\" alt=\"{0}\" title=\"{1}\" />",
-                Localization.GetString("cmdResizer.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("cmdResizer.Help", this.ResXFile, this.LanguageCode));
-            this.cmdResizer.ToolTip = Localization.GetString("cmdResizer.Help", this.ResXFile, this.LanguageCode);
+                "<img src=\"Images/ResizeImage.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdResizer.Text"), this.LocalizeString("cmdResizer.Help"));
+            this.cmdResizer.ToolTip = this.LocalizeString("cmdResizer.Help");
 
             const string SwitchContent =
                 "<a class=\"Switch{0}\" onclick=\"javascript: SwitchView('{0}');\" href=\"javascript:void(0)\"><img src=\"Images/{0}.png\" alt=\"{1}\" title=\"{2}\" />{1}</a>";
 
             this.SwitchDetailView.Text = string.Format(
                 SwitchContent,
-                "DetailView",
-                Localization.GetString("DetailView.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("DetailViewTitle.Text", this.ResXFile, this.LanguageCode));
-            this.SwitchDetailView.ToolTip = Localization.GetString("DetailViewTitle.Text", this.ResXFile, this.LanguageCode);
+                "DetailView", this.LocalizeString("DetailView.Text"), this.LocalizeString("DetailViewTitle.Text"));
+            this.SwitchDetailView.ToolTip = this.LocalizeString("DetailViewTitle.Text");
 
             this.SwitchListView.Text = string.Format(
                 SwitchContent,
-                "ListView",
-                Localization.GetString("ListView.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("ListViewTitle.Text", this.ResXFile, this.LanguageCode));
-            this.SwitchListView.ToolTip = Localization.GetString("ListViewTitle.Text", this.ResXFile, this.LanguageCode);
+                "ListView", this.LocalizeString("ListView.Text"), this.LocalizeString("ListViewTitle.Text"));
+            this.SwitchListView.ToolTip = this.LocalizeString("ListViewTitle.Text");
 
             this.SwitchIconsView.Text = string.Format(
                 SwitchContent,
-                "IconsView",
-                Localization.GetString("IconsView.Text", this.ResXFile, this.LanguageCode),
-                Localization.GetString("IconsViewTitle.Text", this.ResXFile, this.LanguageCode));
-            this.SwitchIconsView.ToolTip = Localization.GetString("IconsViewTitle.Text", this.ResXFile, this.LanguageCode);
+                "IconsView", this.LocalizeString("IconsView.Text"), this.LocalizeString("IconsViewTitle.Text"));
+            this.SwitchIconsView.ToolTip = this.LocalizeString("IconsViewTitle.Text");
 
             this.SortAscending.Text = string.Format(
-                 "<img src=\"Images/SortAscending.png\" alt=\"{0}\" title=\"{1}\" />",
-                 Localization.GetString("SortAscending.Text", this.ResXFile, this.LanguageCode),
-                 Localization.GetString("SortAscending.Help", this.ResXFile, this.LanguageCode));
-            this.SortAscending.ToolTip = Localization.GetString("SortAscending.Help", this.ResXFile, this.LanguageCode);
+                 "<img src=\"Images/SortAscending.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("SortAscending.Text"), this.LocalizeString("SortAscending.Help"));
+            this.SortAscending.ToolTip = this.LocalizeString("SortAscending.Help");
 
             this.SortDescending.Text = string.Format(
-                 "<img src=\"Images/SortDescending.png\" alt=\"{0}\" title=\"{1}\" />",
-                 Localization.GetString("SortDescending.Text", this.ResXFile, this.LanguageCode),
-                 Localization.GetString("SortDescending.Help", this.ResXFile, this.LanguageCode));
-            this.SortDescending.ToolTip = Localization.GetString("SortDescending.Help", this.ResXFile, this.LanguageCode);
+                 "<img src=\"Images/SortDescending.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("SortDescending.Text"), this.LocalizeString("SortDescending.Help"));
+            this.SortDescending.ToolTip = this.LocalizeString("SortDescending.Help");
 
             this.SortByDateAscending.Text = string.Format(
-                 "<img src=\"Images/AscendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}",
-                 Localization.GetString("SortByDateAscending.Text", this.ResXFile, this.LanguageCode),
-                 Localization.GetString("SortByDateAscending.Help", this.ResXFile, this.LanguageCode),
-                 Localization.GetString("SortByDate.Text", this.ResXFile, this.LanguageCode));
-            this.SortByDateAscending.ToolTip = Localization.GetString("SortByDateAscending.Help", this.ResXFile, this.LanguageCode);
+                 "<img src=\"Images/AscendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}", this.LocalizeString("SortByDateAscending.Text"), this.LocalizeString("SortByDateAscending.Help"), this.LocalizeString("SortByDate.Text"));
+            this.SortByDateAscending.ToolTip = this.LocalizeString("SortByDateAscending.Help");
 
             this.SortByDateDescending.Text = string.Format(
-                 "<img src=\"Images/DescendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}",
-                 Localization.GetString("SortByDateDescending.Text", this.ResXFile, this.LanguageCode),
-                 Localization.GetString("SortByDateDescending.Help", this.ResXFile, this.LanguageCode),
-                 Localization.GetString("SortByDate.Text", this.ResXFile, this.LanguageCode));
-            this.SortByDateDescending.ToolTip = Localization.GetString("SortByDateDescending.Help", this.ResXFile, this.LanguageCode);
+                 "<img src=\"Images/DescendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}", this.LocalizeString("SortByDateDescending.Text"), this.LocalizeString("SortByDateDescending.Help"), this.LocalizeString("SortByDate.Text"));
+            this.SortByDateDescending.ToolTip = this.LocalizeString("SortByDateDescending.Help");
 
-            ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("AreYouSure.Text", this.ResXFile, this.LanguageCode));
+            ClientAPI.AddButtonConfirm(this.cmdDelete, this.LocalizeString("AreYouSure.Text"));
 
             this.SetDefaultLinkTypeText();
         }
@@ -2410,8 +2341,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     this.GetType(),
                     "errorcloseScript",
                     string.Format(
-                        "javascript:alert('{0}')",
-                        Localization.GetString("FileToBigMessage.Text", this.ResXFile, this.LanguageCode)),
+                        "javascript:alert('{0}')", this.LocalizeString("FileToBigMessage.Text")),
                     true);
 
                 this.Response.End();
@@ -2593,8 +2523,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     this.GetType(),
                     "errorcloseScript",
                     string.Format(
-                        "javascript:alert('{0}')",
-                        Localization.GetString("Error2.Text", this.ResXFile, this.LanguageCode)),
+                        "javascript:alert('{0}')", this.LocalizeString("Error2.Text")),
                     true);
 
                 this.Response.End();
@@ -2727,7 +2656,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.BrowserMode.Visible = true;
             }
 
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             // Add new file to database
             var currentFolderInfo = this.GetCurrentFolder();
@@ -2758,7 +2687,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             if (this.browserModus.Equals("Link"))
             {
@@ -2880,7 +2809,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             if (this.browserModus.Equals("Link"))
             {
@@ -2915,8 +2844,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.cmdZoom.Visible = false;
             this.cmdResize2.Visible = true;
 
-            this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader2.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
+            this.lblResizeHeader.Text = this.LocalizeString("lblResizeHeader2.Text");
+            this.title.Text = $"{this.lblResizeHeader.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             var file = FileManager.Instance.GetFile(this.GetCurrentFolder(), this.lblFileName.Text);
             string sFilePath = FileManager.Instance.GetUrl(file);
@@ -3118,7 +3047,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             // Clear Item list first...
             this.AnchorList.Items.Clear();
 
-            var noneText = Localization.GetString("None.Text", this.ResXFile, this.LanguageCode);
+            var noneText = this.LocalizeString("None.Text");
 
             try
             {
@@ -3205,18 +3134,18 @@ namespace DNNConnect.CKEditorProvider.Browser
                 case "file":
                     this.panLinkMode.Visible = true;
                     this.panPageMode.Visible = false;
-                    this.lblModus.Text = string.Format("Browser-Modus: {0}", this.browserModus);
+                    this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"), this.browserModus);
                     break;
                 case "page":
                     this.panLinkMode.Visible = false;
                     this.panPageMode.Visible = true;
-                    this.lblModus.Text = string.Format("Browser-Modus: {0}", string.Format("Page {0}", this.browserModus));
+                    this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"), string.Format("Page {0}", this.browserModus));
 
                     this.RenderTabs();
                     break;
             }
 
-            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             this.SetDefaultLinkTypeText();
         }
@@ -3232,7 +3161,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             var folder = FolderManager.Instance.GetFolder(folderId);
 
             var folderName = !string.IsNullOrEmpty(folder.FolderPath) ?
-                folder.FolderPath : Localization.GetString("RootFolder.Text", this.ResXFile, this.LanguageCode);
+                folder.FolderPath : this.LocalizeString("RootFolder.Text");
             this.lblCurrentDir.Text = folderName;
 
             this.CurrentFolderId = folderId;
@@ -3255,7 +3184,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         private void GetDiskSpaceUsed()
         {
             var spaceAvailable = this.portalSettings.HostSpace.Equals(0)
-                                     ? Localization.GetString("UnlimitedSpace.Text", this.ResXFile, this.LanguageCode)
+                                     ? this.LocalizeString("UnlimitedSpace.Text")
                                      : string.Format("{0}MB", this.portalSettings.HostSpace);
 
             var spaceUsed = new PortalController().GetPortalSpaceUsedBytes(this.portalSettings.PortalId);
@@ -3283,8 +3212,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
 
             this.FileSpaceUsedLabel.Text =
-                string.Format(
-                    Localization.GetString("SpaceUsed.Text", this.ResXFile, this.LanguageCode),
+                string.Format(this.LocalizeString("SpaceUsed.Text"),
                     usedSpace,
                     spaceAvailable);
         }

@@ -65,7 +65,9 @@ class FolderDropdown extends Component {
         ].concat(props.folders);
         return (
             <GridCell className={styles.folderDropdown} style={{ padding: 0 }}>
-                <Collapsible isOpened={state.addNewFolderOpen} className="add-new-folder-box" fixedHeight={250} style={{ float: "left" }}>
+                <Collapsible 
+                    isOpened={state.addNewFolderOpen}
+                    theme={{collapse: "add-new-folder-box ReactCollapse--collapse", content: "ReactCollapse--content"}}>
                     <GridCell style={{ padding: "20px 10px" }}>
                         <GridCell>
                             <h3 className="new-folder-title">{Localization.get("CreateNewModule_NewFolder.Label")}</h3>

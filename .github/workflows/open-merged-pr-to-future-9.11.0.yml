@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.2
 
       - uses: peterjgrainger/action-create-branch@v2.2.0
         env:
@@ -20,7 +20,7 @@ jobs:
           branch: v9.11.0/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
 
       - name: Create Pull Request
-        uses: repo-sync/pull-request@v2.6
+        uses: repo-sync/pull-request@v2.6.2
         with:
           source_branch: v9.11.0/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
           destination_branch: release/9.11.0
