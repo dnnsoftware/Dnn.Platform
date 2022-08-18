@@ -1,10 +1,10 @@
 name: Open Merged PR to release/10.0.0 Branch
 
-on:
-  pull_request:
-    types: [closed]
-    branches:
-      - develop
+on: workflow_dispatch
+#  pull_request:
+#    types: [closed]
+#    branches:
+#      - develop
 
 jobs:
   open-merged-pr-to-release-branch:

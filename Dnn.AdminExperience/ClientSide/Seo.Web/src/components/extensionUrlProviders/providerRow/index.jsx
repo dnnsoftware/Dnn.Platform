@@ -48,7 +48,7 @@ class ProviderRow extends Component {
                             </div>
                         </div>
                     </div>
-                    <Collapse accordion={true} isOpened={opened} style={{ float: "left", overflow: "inherit", width: "100%" }} fixedHeight={160}>{opened && props.children}</Collapse>
+                    <Collapse accordion={true} isOpened={opened} className="collapsible-providers-body">{opened && props.children}</Collapse>
                 </div>
             );
         }

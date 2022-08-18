@@ -71,7 +71,14 @@ namespace Dnn.PersonaBar.Users.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                if (ex.GetType() == typeof(InvalidUserRegisterException))
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
+                else
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                }
             }
         }
 

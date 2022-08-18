@@ -192,7 +192,6 @@ class EditThemeAttributes extends Component {
             options={options}
             value={state.value}
             onSelect={onFieldChange.bind(this)}
-            fixedHeight={100}
             error={state.startSave && !state.value}
             label={Localization.get("Value")} />;
     }
@@ -203,8 +202,10 @@ class EditThemeAttributes extends Component {
         return (
             <div className="edit-theme-attributes">
                 <Button size="small" onClick={this.startEdit.bind(this)}>{Localization.get("EditThemeAttributes")}</Button>
-                <Collapsible isOpened={state.openEditPopup} className="edit-popup" fixedHeight={420} style={{ float: "left" }}>
-                    <div>
+                <Collapsible
+                    isOpened={state.openEditPopup}
+                    theme={{collapse: "edit-popup ReactCollapse--collapse", content: "ReactCollapse--content"}}>
+                    <div className="edit-popup-body">
                         <h3>{Localization.get("EditThemeAttributes")}</h3>
                         <GridCell>
                             <GridCell columnSize={50}>
@@ -213,7 +214,6 @@ class EditThemeAttributes extends Component {
                                     options={this.getThemeOptions()}
                                     value={state.themeName}
                                     onSelect={this.onThemeChanged.bind(this)}
-                                    fixedHeight={100}
                                     error={state.startSave && !state.themeName}
                                     label={Localization.get("Theme")} />
                             </GridCell>
@@ -232,7 +232,6 @@ class EditThemeAttributes extends Component {
                                     value={state.path}
                                     onSelect={this.onThemeFileChanged.bind(this)}
                                     enabled={state.themeName}
-                                    fixedHeight={100}
                                     error={state.startSave && !state.path}
                                     label={Localization.get("File")} />
                             </GridCell>
@@ -243,7 +242,6 @@ class EditThemeAttributes extends Component {
                                     value={state.setting}
                                     onSelect={this.onSettingChanged.bind(this)}
                                     enabled={state.path && state.token}
-                                    fixedHeight={100}
                                     error={state.startSave && !state.setting}
                                     label={Localization.get("Setting")} />
                             </GridCell>
@@ -254,7 +252,6 @@ class EditThemeAttributes extends Component {
                                     value={state.token}
                                     onSelect={this.onTokenChanged.bind(this)}
                                     enabled={state.path}
-                                    fixedHeight={100}
                                     error={state.startSave && !state.token}
                                     label={Localization.get("Token")} />
                             </GridCell>

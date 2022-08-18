@@ -78,7 +78,7 @@ class Table extends Component {
                             <EditUrl url={editedUrl}
                                 saving={addingNewUrl}
                                 pageHasParent={pageHasParent}
-                                accordion={true} isOpened={newFormOpened} keepCollapsedContent={true}
+                                accordion={true} isOpened={newFormOpened}
                                 onChange={onChange}
                                 onSave={this.onAddNewUrl.bind(this)}
                                 onCancel={onCloseNewUrl}

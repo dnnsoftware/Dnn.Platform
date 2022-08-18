@@ -134,44 +134,41 @@ class InUseModal extends Component {
         const {props, state} = this;
         return (
             <Modal
-                fixedHeight={props.fixedHeight}
                 isOpen={props.isOpened}
                 style={modalStyles}>
-                {props.fixedHeight &&
-                    <div className="modepanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
-                        <div className="modepanel-content-title">{resx.get("ModuleUsageTitle").replace("{0}", props.packageName)}</div>
-                        <div className="modepanel-content-filter">
-                            <Label
-                                style={{ width: "auto", marginTop: "8px" }}
-                                label={resx.get("PagesFromSite")}
-                            />
-                            {props.usageFilter && <Dropdown
-                                enabled={props.usageFilter.length > 1}
-                                value={state.portalId}
-                                style={{ width: "150px" }}
-                                options={this.getPortalOptions()}
-                                withBorder={false}
-                                onSelect={this.onSelectPortal.bind(this)}
-                            />
-                            }
-                        </div>
-                        <div className="modepanel-content-detail-wrapper">
-                            <Label
-                                label={this.getUsageDetailSubject()}
-                            />
-                            <div className="usage-detail">
-                                {this.renderUsageDetail()}
-                            </div>
-                        </div>
-                        <div className="button-box">
-                            <Button
-                                type="secondary"
-                                onClick={this.onClose.bind(this)}>
-                                {resx.get("Close")}
-                            </Button>
+                <div className="modepanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
+                    <div className="modepanel-content-title">{resx.get("ModuleUsageTitle").replace("{0}", props.packageName)}</div>
+                    <div className="modepanel-content-filter">
+                        <Label
+                            style={{ width: "auto", marginTop: "8px" }}
+                            label={resx.get("PagesFromSite")}
+                        />
+                        {props.usageFilter && <Dropdown
+                            enabled={props.usageFilter.length > 1}
+                            value={state.portalId}
+                            style={{ width: "150px" }}
+                            options={this.getPortalOptions()}
+                            withBorder={false}
+                            onSelect={this.onSelectPortal.bind(this)}
+                        />
+                        }
+                    </div>
+                    <div className="modepanel-content-detail-wrapper">
+                        <Label
+                            label={this.getUsageDetailSubject()}
+                        />
+                        <div className="usage-detail">
+                            {this.renderUsageDetail()}
                         </div>
                     </div>
-                }
+                    <div className="button-box">
+                        <Button
+                            type="secondary"
+                            onClick={this.onClose.bind(this)}>
+                            {resx.get("Close")}
+                        </Button>
+                    </div>
+                </div>
             </Modal>
         );
     }
@@ -183,10 +180,8 @@ InUseModal.PropTypes = {
     tabUrls: PropTypes.array,
     packageName: PropTypes.string,
     packageId: PropTypes.number,
-    fixedHeight: PropTypes.number,
     collapsibleWidth: PropTypes.number,
     collapsibleHeight: PropTypes.number,
-    keepCollapsedContent: PropTypes.bool,
     scrollAreaStyle: PropTypes.object,
     isOpened: PropTypes.bool,
     onClose: PropTypes.func.isRequired,

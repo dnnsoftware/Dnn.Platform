@@ -1202,7 +1202,7 @@ namespace DNNConnect.CKEditorProvider.Web
             if (HttpContext.Current.Request.QueryString["rwndrnd"] != null)
             {
                 ScriptManager.RegisterClientScriptInclude(
-                    this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
+                    this, csType, "jquery_registered", Globals.ResolveUrl(JavaScript.GetJQueryScriptReference()));
             }
 
             if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/ckeditor.js"))
@@ -1246,7 +1246,7 @@ namespace DNNConnect.CKEditorProvider.Web
             var editorFixedId = this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty);
 
             var postBackScript = string.Format(
-                @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && Page_IsValid) CKEDITOR.instances.{0}.destroy(); }}",
+                @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return false; CKEDITOR.instances.{0}.destroy(); }}",
                 editorFixedId);
 
             this.RegisterOnSubmitStatement(

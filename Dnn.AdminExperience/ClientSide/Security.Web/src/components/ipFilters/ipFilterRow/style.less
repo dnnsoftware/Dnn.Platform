@@ -7,9 +7,13 @@
     &:not(:last-child) {
         border-bottom: 1px solid @alto;
     }
-    .ip-filter-wrapper > div {
-        float: left;
+    .ip-filter-wrapper {
+        overflow: visible;
         width: 100%;
+        > div {
+            float: left;
+            width: 100%;
+        }
     }
     div.collapsible-ipfilters {
         width: 100%;

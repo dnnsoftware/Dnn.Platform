@@ -150,8 +150,9 @@ class ListEntriesPanel extends Component {
                     </div>
                     <div className="list-items-grid">
                         {this.renderHeader()}
-                        <Collapsible isOpened={opened}
-                            style={{ overflow: "visible", width: "100%" }}>
+                        <Collapsible
+                            isOpened={opened}
+                            className="list-items-grid-collapsible">
                             <ListEntryRow
                                 text={"-"}
                                 value={"-"}

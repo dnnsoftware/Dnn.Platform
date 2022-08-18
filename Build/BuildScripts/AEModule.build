@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" 
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.10\build\Yarn.MSBuild.targets')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.props')" />
+  <Import Project="..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
@@ -17,7 +17,7 @@
       <PersonaBar-css Include="admin/personaBar/**/css/**/*" />
       <PersonaBar-resources Include="admin/personaBar/**/App_LocalResources/*.resx" />
       <PersonaBar-controls Include="admin/personaBar/**/UserControls/*.ascx" />
-      <PersonaBar-scripts Include="admin/personaBar/**/scripts/*;admin/personaBar/**/scripts/**/*" />
+      <PersonaBar-scripts Include="admin/personaBar/**/scripts/**/*" />
       <Resources Include="@(PersonaBar-views);@(PersonaBar-images);@(PersonaBar-css);@(PersonaBar-scripts);@(PersonaBar-data);@(PersonaBar-resources);@(PersonaBar-controls)" Exclude="**/node_modules/**/*" />
     </ItemGroup>
   </Target>

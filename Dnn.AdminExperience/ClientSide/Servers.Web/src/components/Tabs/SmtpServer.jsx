@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { GridSystem, Button } from "@dnnsoftware/dnn-react-common";
 import RadioButtonBlock from "../common/RadioButtonBlock";
 import EditBlock from "../common/EditBlock";
+import EditPwdBlock from "../common/EditPwdBlock";
 import SwitchBlock from "../common/SwitchBlock";
 import localization from "../../localization";
 import { connect } from "react-redux";
@@ -159,7 +160,9 @@ class SmtpServer extends Component {
       return (
         <div className="dnn-servers-info-panel-big smtpServerSettingsTab">
           <div className="warningBox">
-            <div className="warningText">{localization.get("NonCoreMailProvider")}</div>
+            <div className="warningText">
+              {localization.get("NonCoreMailProvider")}
+            </div>
           </div>
         </div>
       );
@@ -241,7 +244,7 @@ class SmtpServer extends Component {
               </div>
             )}
             {smtpSettingsVisible && credentialVisible && (
-              <div className="tooltipAdjustment border-bottom">
+              <div className="tooltipAdjustment">
                 <EditBlock
                   label={localization.get("plSMTPUsername")}
                   tooltip={localization.get("plSMTPUsername.Help")}
@@ -251,19 +254,22 @@ class SmtpServer extends Component {
                   error={props.errors["smtpUserName"]}
                 />
 
-                <EditBlock
+                <EditPwdBlock
                   label={localization.get("plSMTPPassword")}
+                  changeButtonText={localization.get("Change")}
                   tooltip={localization.get("plSMTPPassword.Help")}
                   value={selectedSmtpSettings.smtpPassword}
                   isGlobal={areGlobalSettings}
-                  type="password"
                   onChange={this.onChangeField.bind(this, "smtpPassword")}
+                  onClear={() =>
+                    props.onChangeSmtpConfigurationValue("smtpPassword", "")
+                  }
                   error={props.errors["smtpPassword"]}
                 />
               </div>
             )}
             {smtpSettingsVisible && (
-              <div className="tooltipAdjustment border-bottom">
+              <div className="tooltipAdjustment border-bottom" style={{paddingBottom: "22px"}}>
                 <SwitchBlock
                   label={localization.get("plSMTPEnableSSL")}
                   onText={localization.get("SwitchOn")}

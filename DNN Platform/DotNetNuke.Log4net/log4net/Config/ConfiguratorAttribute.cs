@@ -1,23 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 #if !NETCF
@@ -33,23 +32,22 @@ namespace log4net.Config
     /// Base class for all log4net configuration attributes.
     /// </summary>
     /// <remarks>
-    /// This is an abstract class that must be extended by
+    /// This is an abstract class that must be extended by 
     /// specific configurators. This attribute allows the
     /// configurator to be parameterized by an assembly level
     /// attribute.
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     public abstract class ConfiguratorAttribute : Attribute, IComparable
     {
         private int m_priority = 0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfiguratorAttribute"/> class.
         /// Constructor used by subclasses.
         /// </summary>
-        /// <param name="priority">the ordering priority for this configurator.</param>
+        /// <param name="priority">the ordering priority for this configurator</param>
         /// <remarks>
         /// <para>
         /// The <paramref name="priority"/> is used to order the configurator
@@ -76,10 +74,10 @@ namespace log4net.Config
         public abstract void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository);
 
         /// <summary>
-        /// Compare this instance to another ConfiguratorAttribute.
+        /// Compare this instance to another ConfiguratorAttribute
         /// </summary>
-        /// <param name="obj">the object to compare to.</param>
-        /// <returns>see <see cref="IComparable.CompareTo"/>.</returns>
+        /// <param name="obj">the object to compare to</param>
+        /// <returns>see <see cref="IComparable.CompareTo"/></returns>
         /// <remarks>
         /// <para>
         /// Compares the priorities of the two <see cref="ConfiguratorAttribute"/> instances.
@@ -108,7 +106,6 @@ namespace log4net.Config
                     result = -1;
                 }
             }
-
             return result;
         }
     }

@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.Servers.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class ServerSettingsSmtpAdminController : PersonaBarApiController
     {
+        private const string ObfuscateString = "*****";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
 
         [HttpGet]
@@ -49,7 +50,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0"),
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
-                        smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey()),
+                        smtpPassword = GetSmtpPassword(portalId, true),
                     },
                     portalName = PortalSettings.Current.PortalName,
                     hideCoreSettings = ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes.GetValueOrDefault("hideCoreSettings", false),
@@ -71,6 +72,11 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
+
+                if (request.SmtpPassword == ObfuscateString)
+                {
+                    request.SmtpPassword = GetSmtpPassword(portalId, false);
+                }
 
                 // admins can only change site settings
                 PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
@@ -111,14 +117,14 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 var errMessage = Mail.SendMail(mailFrom,
                     mailTo,
-                    "",
-                    "",
+                    string.Empty,
+                    string.Empty,
                     MailPriority.Normal,
                     Localization.GetSystemMessage(this.PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
                     MailFormat.Text,
                     Encoding.UTF8,
-                    "",
-                    "",
+                    string.Empty,
+                    string.Empty,
                     smtpHostMode ? HostController.Instance.GetString("SMTPServer") : request.SmtpServer,
                     smtpHostMode ? HostController.Instance.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
                     smtpHostMode ? HostController.Instance.GetString("SMTPUsername") : request.SmtpUsername,
@@ -144,6 +150,18 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private static string GetSmtpPassword(int portalId, bool obfuscate)
+        {
+            var pwd = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey());
+
+            if (obfuscate && !string.IsNullOrEmpty(pwd))
+            {
+                return ObfuscateString;
+            }
+
+            return pwd;
         }
     }
 }
