@@ -169,7 +169,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc/>
-        public string DefaultPortalAlias
+        public virtual string DefaultPortalAlias
         {
             get
             {

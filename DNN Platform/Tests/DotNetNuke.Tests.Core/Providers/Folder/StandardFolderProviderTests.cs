@@ -779,7 +779,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             portalSettingsMock.Object.PortalId = Constants.CONTENT_ValidPortalId;
             portalSettingsMock.Object.EnableUrlLanguage = false;
             portalSettingsMock.Object.GUID = Guid.NewGuid();
-
+            portalSettingsMock.SetupGet(x => x.DefaultPortalAlias).Returns("example.com");
             return portalSettingsMock.Object;
         }
     }

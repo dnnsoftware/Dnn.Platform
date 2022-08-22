@@ -219,10 +219,10 @@ namespace DotNetNuke.Services.FileSystem
                     file.LastModificationTime.GetHashCode().ToString(),
                     portalSettings.GUID.ToString());
 
-                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cachebusterToken);
+                return this.EnforceAbsoluteUrl(TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + cachebusterToken), portalSettings);
             }
 
-            return TestableGlobals.Instance.ResolveUrl(fullPath);
+            return this.EnforceAbsoluteUrl(TestableGlobals.Instance.ResolveUrl(fullPath), portalSettings);
         }
 
         /// <inheritdoc/>
@@ -466,5 +466,18 @@ namespace DotNetNuke.Services.FileSystem
         {
             return PathUtils.Instance.GetRelativePath(folderMapping.PortalID, path);
         }
+
+        private string EnforceAbsoluteUrl(string uri, PortalSettings portalSettings)
+        {
+            var initialUri = new Uri(uri, UriKind.RelativeOrAbsolute);
+            if (!initialUri.IsAbsoluteUri)
+            {
+                var appUrl = new Uri(Globals.AddHTTP(portalSettings.DefaultPortalAlias));
+                return new Uri(appUrl, initialUri).AbsoluteUri;
+            }
+
+            return uri;
+        }
+
     }
 }
