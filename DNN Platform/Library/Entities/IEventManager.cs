@@ -168,6 +168,12 @@ namespace DotNetNuke.Entities
         void OnRoleCreated(RoleEventArgs args);
 
         /// <summary>
+        /// Fires up when a role was updated.
+        /// </summary>
+        /// <param name="args">The event arguments.</param>
+        void OnRoleUpdated(RoleEventArgs args);
+
+        /// <summary>
         /// Fires up when a role was deleted.
         /// </summary>
         /// <param name="args">The event arguments.</param>
