@@ -151,18 +151,10 @@ dnn.controls.control.prototype =
         var evts = this.get_events()._getEvent(name);   //warning: accessing private member
         if (evts)
         {
-            var argString = '';
-            for (var i=1; i<arguments.length; i++)
-            {
-                if (i > 1)
-                    argString += ',';
-                argString += 'arguments[' + i + ']';
-            }
-            
             for (var i=0; i< evts.length; i++)
             {
                 h = evts[i];
-                ret = (eval('h(' + argString + ')') != false);
+                ret = h.apply(undefined, arguments) != false;
                 if (ret == false)
                     return ret;
             }
