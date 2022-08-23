@@ -243,7 +243,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             if (createStatus != UserCreateStatus.Success)
             {
-                throw new Exception(UserController.GetUserCreateStatus(createStatus));
+                throw new InvalidUserRegisterException(UserController.GetUserCreateStatus(createStatus));
             }
 
             // if (registerationDetails.IgnoreRegistrationMode)

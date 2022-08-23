@@ -2,10 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-// ReSharper disable CheckNamespace
+// ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Users
-
-// ReSharper restore CheckNamespace
 {
     using System;
     using System.Globalization;
@@ -18,6 +16,7 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
     using Newtonsoft.Json;
 
@@ -622,7 +621,7 @@ namespace DotNetNuke.Entities.Users
         /// <remarks>
         /// Used mainly for custom profile properties, many default properties are already exposed in this class.
         /// </remarks>
-        /// <param name="propName">The name of the propoerty to retrieve.</param>
+        /// <param name="propName">The name of the property to retrieve.</param>
         /// <returns>A string representing the property value.</returns>
         public string GetPropertyValue(string propName)
         {
@@ -636,6 +635,12 @@ namespace DotNetNuke.Entities.Users
                 {
                     var controller = new ListController();
                     var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
+                    if (dataType == null)
+                    {
+                        LoggerSource.Instance.GetLogger(typeof(UserProfile)).ErrorFormat("Invalid data type {0} for profile property {1}", profileProp.DataType, profileProp.PropertyName);
+                        return propValue;
+                    }
+
                     if (dataType.Value == "Country" || dataType.Value == "Region")
                     {
                         propValue = this.GetListValue(dataType.Value, propValue);

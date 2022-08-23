@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -52,7 +52,8 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
+                var cleanedFileName = Path.GetFileName(fileName);
+                var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", cleanedFileName);
                 return this.CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
@@ -72,7 +73,8 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var providerPath = DataProvider.Instance().GetProviderPath();
-                var logFilePath = Path.Combine(providerPath, logName);
+                var cleanedLogName = Path.GetFileName(logName);
+                var logFilePath = Path.Combine(providerPath, cleanedLogName);
                 return this.CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
