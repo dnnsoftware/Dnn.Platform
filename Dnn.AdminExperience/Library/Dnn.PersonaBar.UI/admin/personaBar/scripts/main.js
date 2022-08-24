@@ -399,7 +399,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                         if (menuItem.id === identifier) {
                             if (menuItem.settings) {
                                 var defaultSettings = { isAdmin: config.isAdmin, isHost: config.isHost };
-                                settings = $.extend({}, defaultSettings, eval("(" + menuItem.settings + ")"));
+                                settings = $.extend({}, defaultSettings, JSON.parse(menuItem.settings));
                             } else {
                                 settings = {};
                             }

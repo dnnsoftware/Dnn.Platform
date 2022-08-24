@@ -2410,7 +2410,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (!xhr.responseText) return null;
 
         try {
-            var data = eval("(" + xhr.responseText + ")");
+            var data = JSON.parse(xhr.responseText);
 
             if (data.ExceptionMessage) {
                 return data.ExceptionMessage;

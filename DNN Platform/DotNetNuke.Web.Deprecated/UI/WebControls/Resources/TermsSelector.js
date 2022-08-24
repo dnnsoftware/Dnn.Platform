@@ -8,7 +8,7 @@
 			webcontrols.termsSelector.update(sender);
 		},
 		itemDataLoaded: function(result, context) {
-			var itemsData = eval("(" + result + ")");
+			var itemsData = JSON.parse(result);
 			var clientId = itemsData[0].clientId;
 			var selectedTerms = $("#" + clientId).attr("selectedterms").split(',');
 			var selectedObj = {};
