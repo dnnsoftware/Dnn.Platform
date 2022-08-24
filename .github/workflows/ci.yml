@@ -3,67 +3,65 @@ name: CI (Build and Package)
 on:
   workflow_dispatch:
   push:
-    branches: [ master, develop ]
+    branches: [master, develop]
   pull_request:
-    branches: [ master, develop ]
+    branches: [master, develop]
 
 defaults:
   run:
     shell: pwsh
 
 jobs:
-
   build:
-
     strategy:
       matrix:
         configuration: [Release]
-        node-version: [14.x]
+        node-version: [16.x]
 
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2.3.4
+      - name: Checkout
+        uses: actions/checkout@v3.0.2
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.3
-    
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1.8.1
-      with:
-        dotnet-version: '5.0.x'
-    
-    - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.5
-      with:
-        nuget-version: latest
-    
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.4.0
-      with:
-        node-version: ${{ matrix.node-version }}
-    
-    - name: Install npm modules
-      run: |
-        cd DeployClient
-        npm ci
-        cd ../PolyDeploy
-        npm ci
-        cd ..
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.1
 
-    - name: Restore NuGet packages
-      run: nuget restore
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v2.1.0
+        with:
+          dotnet-version: "6.0.x"
 
-    - name: Build and package the application
-      run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-      
-    - name: Publish Deploy Client
-      run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
+      - name: Setup NuGet.exe for use with actions
+        uses: NuGet/setup-nuget@v1.0.6
+        with:
+          nuget-version: latest
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2.2.4
-      with:
-        path: dist/
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install npm modules
+        run: |
+          cd DeployClient
+          npm ci
+          cd ../PolyDeploy
+          npm ci
+          cd ..
+
+      - name: Restore NuGet packages
+        run: nuget restore
+
+      - name: Build and package the application
+        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration
+        env:
+          Configuration: ${{ matrix.configuration }}
+
+      - name: Publish Deploy Client
+        run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          path: dist/
