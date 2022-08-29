@@ -20,6 +20,8 @@
 - dnn-vertical-splitview
 - [dnn-rm-left-pane](../dnn-rm-left-pane)
 - [dnn-rm-right-pane](../dnn-rm-right-pane)
+- dnn-modal
+- [dnn-rm-folder-mappings](../dnn-rm-folder-mappings)
 
 ### Graph
 ```mermaid
@@ -28,6 +30,8 @@ graph TD;
   dnn-resource-manager --> dnn-vertical-splitview
   dnn-resource-manager --> dnn-rm-left-pane
   dnn-resource-manager --> dnn-rm-right-pane
+  dnn-resource-manager --> dnn-modal
+  dnn-resource-manager --> dnn-rm-folder-mappings
   dnn-rm-top-bar --> dnn-searchbox
   dnn-rm-left-pane --> dnn-rm-folder-list
   dnn-rm-folder-list --> dnn-rm-folder-list-item

@@ -54,6 +54,7 @@ export interface LocalizedStrings {
     Delete: string;
     DeleteItems: string;
     Edit: string;
+    EditFolderMappings: string;
     ExtractUploads: string;
     FileAlreadyExistsMessage: string;
     FileId: string;

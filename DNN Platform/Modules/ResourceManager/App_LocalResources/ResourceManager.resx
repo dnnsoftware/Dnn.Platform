@@ -420,4 +420,7 @@
   <data name="Overwrite.Text" xml:space="preserve">
     <value>Overwrite</value>
   </data>
+  <data name="EditFolderMappings.Text" xml:space="preserve">
+    <value>Edit Folder Mappings</value>
+  </data>
 </root>
