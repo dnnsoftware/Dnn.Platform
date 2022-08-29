@@ -163,13 +163,10 @@ export namespace Components {
     interface DnnRmUploadFile {
     }
 }
-<<<<<<< HEAD
-=======
 export interface DnnActionUploadFileCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDnnActionUploadFileElement;
 }
->>>>>>> origin/resource-manager
 export interface DnnRmCreateFolderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDnnRmCreateFolderElement;
