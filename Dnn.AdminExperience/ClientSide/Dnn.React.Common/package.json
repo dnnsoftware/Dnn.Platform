@@ -27,7 +27,7 @@
     "interact.js": "^1.2.8",
     "raw-loader": "2.0.0",
     "react-accessible-tooltip": "^2.0.3",
-    "react-collapse": "^4.0.3",
+    "react-collapse": "^5.1.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-day-picker": "^7.1.10",
     "react-height": "^3.0.0",

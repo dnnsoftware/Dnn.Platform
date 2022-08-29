@@ -1,48 +1,48 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+
+using log4net.Util;
+using log4net.Layout;
+using log4net.Core;
 
 namespace log4net.Appender
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-
-    using log4net.Core;
-    using log4net.Layout;
-    using log4net.Util;
-
     /// <summary>
     /// Buffers events and then forwards them to attached appenders.
     /// </summary>
     /// <remarks>
     /// <para>
     /// The events are buffered in this appender until conditions are
-    /// met to allow the appender to deliver the events to the attached
+    /// met to allow the appender to deliver the events to the attached 
     /// appenders. See <see cref="BufferingAppenderSkeleton"/> for the
     /// conditions that cause the buffer to be sent.
     /// </para>
-    /// <para>The forwarding appender can be used to specify different
-    /// thresholds and filters for the same appender at different locations
+    /// <para>The forwarding appender can be used to specify different 
+    /// thresholds and filters for the same appender at different locations 
     /// within the hierarchy.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public class BufferingForwardingAppender : BufferingAppenderSkeleton, IAppenderAttachable
     {
         /// <summary>
@@ -62,7 +62,7 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Releases any resources allocated within the appender such as file handles,
+        /// Releases any resources allocated within the appender such as file handles, 
         /// network connections, etc.
         /// </para>
         /// <para>
@@ -72,7 +72,7 @@ namespace log4net.Appender
         protected override void OnClose()
         {
             // Remove all the attached appenders
-            lock (this)
+            lock(this)
             {
                 // Delegate to base, which will flush buffers
                 base.OnClose();
@@ -113,18 +113,17 @@ namespace log4net.Appender
         /// appenders, then it won't be added again.
         /// </para>
         /// </remarks>
-        public virtual void AddAppender(IAppender newAppender)
+        public virtual void AddAppender(IAppender newAppender) 
         {
             if (newAppender == null)
             {
                 throw new ArgumentNullException("newAppender");
             }
-
-            lock (this)
+            lock(this)
             {
-                if (this.m_appenderAttachedImpl == null)
+                if (this.m_appenderAttachedImpl == null) 
                 {
-                    this.m_appenderAttachedImpl = new log4net.Util.AppenderAttachedImpl();
+                    this.m_appenderAttachedImpl = new AppenderAttachedImpl();
                 }
 
                 this.m_appenderAttachedImpl.AddAppender(newAppender);
@@ -132,11 +131,11 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets the appenders contained in this appender as an
+        /// Gets the appenders contained in this appender as an 
         /// <see cref="System.Collections.ICollection"/>.
         /// </summary>
         /// <remarks>
-        /// If no appenders can be found, then an <see cref="EmptyCollection"/>
+        /// If no appenders can be found, then an <see cref="EmptyCollection"/> 
         /// is returned.
         /// </remarks>
         /// <returns>
@@ -146,13 +145,13 @@ namespace log4net.Appender
         {
             get
             {
-                lock (this)
+                lock(this)
                 {
                     if (this.m_appenderAttachedImpl == null)
                     {
                         return AppenderCollection.EmptyCollection;
                     }
-                    else
+                    else 
                     {
                         return this.m_appenderAttachedImpl.Appenders;
                     }
@@ -172,9 +171,9 @@ namespace log4net.Appender
         /// Get the named appender attached to this buffering appender.
         /// </para>
         /// </remarks>
-        public virtual IAppender GetAppender(string name)
+        public virtual IAppender GetAppender(string name) 
         {
-            lock (this)
+            lock(this)
             {
                 if (this.m_appenderAttachedImpl == null || name == null)
                 {
@@ -193,11 +192,11 @@ namespace log4net.Appender
         /// This is useful when re-reading configuration information.
         /// </para>
         /// </remarks>
-        public virtual void RemoveAllAppenders()
+        public virtual void RemoveAllAppenders() 
         {
-            lock (this)
+            lock(this)
             {
-                if (this.m_appenderAttachedImpl != null)
+                if (this.m_appenderAttachedImpl != null) 
                 {
                     this.m_appenderAttachedImpl.RemoveAllAppenders();
                     this.m_appenderAttachedImpl = null;
@@ -209,22 +208,21 @@ namespace log4net.Appender
         /// Removes the specified appender from the list of appenders.
         /// </summary>
         /// <param name="appender">The appender to remove.</param>
-        /// <returns>The appender removed from the list.</returns>
+        /// <returns>The appender removed from the list</returns>
         /// <remarks>
         /// The appender removed is not closed.
         /// If you are discarding the appender you must call
         /// <see cref="IAppender.Close"/> on the appender removed.
         /// </remarks>
-        public virtual IAppender RemoveAppender(IAppender appender)
+        public virtual IAppender RemoveAppender(IAppender appender) 
         {
-            lock (this)
+            lock(this)
             {
-                if (appender != null && this.m_appenderAttachedImpl != null)
+                if (appender != null && this.m_appenderAttachedImpl != null) 
                 {
                     return this.m_appenderAttachedImpl.RemoveAppender(appender);
                 }
             }
-
             return null;
         }
 
@@ -232,27 +230,26 @@ namespace log4net.Appender
         /// Removes the appender with the specified name from the list of appenders.
         /// </summary>
         /// <param name="name">The name of the appender to remove.</param>
-        /// <returns>The appender removed from the list.</returns>
+        /// <returns>The appender removed from the list</returns>
         /// <remarks>
         /// The appender removed is not closed.
         /// If you are discarding the appender you must call
         /// <see cref="IAppender.Close"/> on the appender removed.
         /// </remarks>
-        public virtual IAppender RemoveAppender(string name)
+        public virtual IAppender RemoveAppender(string name) 
         {
-            lock (this)
+            lock(this)
             {
                 if (name != null && this.m_appenderAttachedImpl != null)
                 {
                     return this.m_appenderAttachedImpl.RemoveAppender(name);
                 }
             }
-
             return null;
         }
 
         /// <summary>
-        /// Implementation of the <see cref="IAppenderAttachable"/> interface.
+        /// Implementation of the <see cref="IAppenderAttachable"/> interface
         /// </summary>
         private AppenderAttachedImpl m_appenderAttachedImpl;
     }

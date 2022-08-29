@@ -88,6 +88,7 @@
       <Link>stylecop.json</Link>
     </AdditionalFiles>
     <Content Include="Data\Scripts\09.08.00.SqlDataProvider" />
+    <None Include="app.config" />
     <None Include="Dnn.Jwt.dnn">
       <SubType>Designer</SubType>
     </None>

@@ -1,36 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 
-#if !NETSTANDARD1_3
-using System.Configuration;
-
-#endif
+using System;
+using System.Collections;
 using System.Diagnostics;
 
 namespace log4net.Util
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
     /// <summary>
-    ///
+    /// 
     /// </summary>
     /// <param name="source"></param>
     /// <param name="e"></param>
@@ -47,12 +42,12 @@ namespace log4net.Util
     /// </para>
     /// <para>
     /// All log4net internal debug calls go to the standard output stream
-    /// whereas internal error messages are sent to the standard error output
+    /// whereas internal error messages are sent to the standard error output 
     /// stream.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public sealed class LogLog
     {
         /// <summary>
@@ -67,7 +62,7 @@ namespace log4net.Util
         private readonly Exception exception;
 
         /// <summary>
-        /// Gets the Type that generated the internal message.
+        /// The Type that generated the internal message.
         /// </summary>
         public Type Source
         {
@@ -75,7 +70,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the DateTime stamp of when the internal message was received.
+        /// The DateTime stamp of when the internal message was received.
         /// </summary>
         public DateTime TimeStamp
         {
@@ -83,7 +78,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the UTC DateTime stamp of when the internal message was received.
+        /// The UTC DateTime stamp of when the internal message was received.
         /// </summary>
         public DateTime TimeStampUtc
         {
@@ -91,12 +86,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a string indicating the severity of the internal message.
+        /// A string indicating the severity of the internal message.
         /// </summary>
         /// <remarks>
-        /// "log4net: ",
-        /// "log4net:ERROR ",
-        /// "log4net:WARN ".
+        /// "log4net: ", 
+        /// "log4net:ERROR ", 
+        /// "log4net:WARN "
         /// </remarks>
         public string Prefix
         {
@@ -104,7 +99,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the internal log message.
+        /// The internal log message.
         /// </summary>
         public string Message
         {
@@ -112,7 +107,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the Exception related to the message.
+        /// The Exception related to the message.
         /// </summary>
         /// <remarks>
         /// Optional. Will be null if no Exception was passed.
@@ -133,7 +128,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogLog" /> class.
+        /// Initializes a new instance of the <see cref="LogLog" /> class. 
         /// </summary>
         /// <param name="source"></param>
         /// <param name="prefix"></param>
@@ -142,7 +137,7 @@ namespace log4net.Util
         public LogLog(Type source, string prefix, string message, Exception exception)
         {
             this.timeStampUtc = DateTime.UtcNow;
-
+            
             this.source = source;
             this.prefix = prefix;
             this.message = message;
@@ -150,8 +145,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Initializes static members of the <see cref="LogLog"/> class.
-        /// Static constructor that initializes logging by reading
+        /// Static constructor that initializes logging by reading 
         /// settings from the application configuration file.
         /// </summary>
         /// <remarks>
@@ -162,7 +156,7 @@ namespace log4net.Util
         /// </para>
         /// <para>
         /// The <c>log4net.Internal.Quiet</c> application setting
-        /// suppresses all internal logging including error messages.
+        /// suppresses all internal logging including error messages. 
         /// This setting should be set to <c>true</c> to enable message
         /// suppression.
         /// </para>
@@ -176,7 +170,7 @@ namespace log4net.Util
                 QuietMode = OptionConverter.ToBoolean(SystemInfo.GetAppSetting("log4net.Internal.Quiet"), false);
                 EmitInternalMessages = OptionConverter.ToBoolean(SystemInfo.GetAppSetting("log4net.Internal.Emit"), true);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 // If an exception is thrown here then it looks like the config file does not
                 // parse correctly.
@@ -192,16 +186,16 @@ namespace log4net.Util
         /// is enabled or disabled.
         /// </summary>
         /// <value>
-        /// <c>true</c> if log4net internal logging is enabled, otherwise
+        /// <c>true</c> if log4net internal logging is enabled, otherwise 
         /// <c>false</c>.
         /// </value>
         /// <remarks>
         /// <para>
-        /// When set to <c>true</c>, internal debug level logging will be
+        /// When set to <c>true</c>, internal debug level logging will be 
         /// displayed.
         /// </para>
         /// <para>
-        /// This value can be set by setting the application setting
+        /// This value can be set by setting the application setting 
         /// <c>log4net.Internal.Debug</c> in the application configuration
         /// file.
         /// </para>
@@ -212,7 +206,7 @@ namespace log4net.Util
         /// </remarks>
         /// <example>
         /// <para>
-        /// The following example enables internal debugging using the
+        /// The following example enables internal debugging using the 
         /// application configuration file :
         /// </para>
         /// <code lang="XML" escaped="true">
@@ -231,17 +225,17 @@ namespace log4net.Util
 
         /// <summary>
         /// Gets or sets a value indicating whether log4net should generate no output
-        /// from internal logging, not even for errors.
+        /// from internal logging, not even for errors. 
         /// </summary>
         /// <value>
-        /// <c>true</c> if log4net should generate no output at all from internal
+        /// <c>true</c> if log4net should generate no output at all from internal 
         /// logging, otherwise <c>false</c>.
         /// </value>
         /// <remarks>
         /// <para>
-        /// When set to <c>true</c> will cause internal logging at all levels to be
-        /// suppressed. This means that no warning or error reports will be logged.
-        /// This option overrides the <see cref="InternalDebugging"/> setting and
+        /// When set to <c>true</c> will cause internal logging at all levels to be 
+        /// suppressed. This means that no warning or error reports will be logged. 
+        /// This option overrides the <see cref="InternalDebugging"/> setting and 
         /// disables all debug also.
         /// </para>
         /// <para>This value can be set by setting the application setting
@@ -253,7 +247,7 @@ namespace log4net.Util
         /// </para>
         /// </remarks>
         /// <example>
-        /// The following example disables internal logging using the
+        /// The following example disables internal logging using the 
         /// application configuration file :
         /// <code lang="XML" escaped="true">
         /// <configuration>
@@ -270,7 +264,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public static bool EmitInternalMessages
         {
@@ -294,10 +288,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a value indicating whether test if LogLog.Debug is enabled for output.
+        /// Test if LogLog.Debug is enabled for output.
         /// </summary>
         /// <value>
-        /// <c>true</c> if Debug is enabled.
+        /// <c>true</c> if Debug is enabled
         /// </value>
         /// <remarks>
         /// <para>
@@ -310,20 +304,20 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes log4net internal debug messages to the
+        /// Writes log4net internal debug messages to the 
         /// standard output stream.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="message">The message to log.</param>
         /// <remarks>
         /// <para>
-        ///     All internal debug messages are prepended with
+        ///     All internal debug messages are prepended with 
         ///     the string "log4net: ".
         /// </para>
         /// </remarks>
-        public static void Debug(Type source, string message)
+        public static void Debug(Type source, string message) 
         {
-            if (IsDebugEnabled)
+            if (IsDebugEnabled) 
             {
                 if (EmitInternalMessages)
                 {
@@ -335,7 +329,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes log4net internal debug messages to the
+        /// Writes log4net internal debug messages to the 
         /// standard output stream.
         /// </summary>
         /// <param name="source">The Type that generated this message.</param>
@@ -343,13 +337,13 @@ namespace log4net.Util
         /// <param name="exception">An exception to log.</param>
         /// <remarks>
         /// <para>
-        ///     All internal debug messages are prepended with
+        ///     All internal debug messages are prepended with 
         ///     the string "log4net: ".
         /// </para>
         /// </remarks>
-        public static void Debug(Type source, string message, Exception exception)
+        public static void Debug(Type source, string message, Exception exception) 
         {
-            if (IsDebugEnabled)
+            if (IsDebugEnabled) 
             {
                 if (EmitInternalMessages)
                 {
@@ -363,12 +357,12 @@ namespace log4net.Util
                 OnLogReceived(source, PREFIX, message, exception);
             }
         }
-
+  
         /// <summary>
-        /// Gets a value indicating whether test if LogLog.Warn is enabled for output.
+        /// Test if LogLog.Warn is enabled for output.
         /// </summary>
         /// <value>
-        /// <c>true</c> if Warn is enabled.
+        /// <c>true</c> if Warn is enabled
         /// </value>
         /// <remarks>
         /// <para>
@@ -381,18 +375,18 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes log4net internal warning messages to the
+        /// Writes log4net internal warning messages to the 
         /// standard error stream.
         /// </summary>
         /// <param name="source">The Type that generated this message.</param>
         /// <param name="message">The message to log.</param>
         /// <remarks>
         /// <para>
-        ///     All internal warning messages are prepended with
+        ///     All internal warning messages are prepended with 
         ///     the string "log4net:WARN ".
         /// </para>
         /// </remarks>
-        public static void Warn(Type source, string message)
+        public static void Warn(Type source, string message) 
         {
             if (IsWarnEnabled)
             {
@@ -403,10 +397,10 @@ namespace log4net.Util
 
                 OnLogReceived(source, WARN_PREFIX, message, null);
             }
-        }
+        }  
 
         /// <summary>
-        /// Writes log4net internal warning messages to the
+        /// Writes log4net internal warning messages to the 
         /// standard error stream.
         /// </summary>
         /// <param name="source">The Type that generated this message.</param>
@@ -414,11 +408,11 @@ namespace log4net.Util
         /// <param name="exception">An exception to log.</param>
         /// <remarks>
         /// <para>
-        ///     All internal warning messages are prepended with
+        ///     All internal warning messages are prepended with 
         ///     the string "log4net:WARN ".
         /// </para>
         /// </remarks>
-        public static void Warn(Type source, string message, Exception exception)
+        public static void Warn(Type source, string message, Exception exception) 
         {
             if (IsWarnEnabled)
             {
@@ -433,13 +427,13 @@ namespace log4net.Util
 
                 OnLogReceived(source, WARN_PREFIX, message, exception);
             }
-        }
+        } 
 
         /// <summary>
-        /// Gets a value indicating whether test if LogLog.Error is enabled for output.
+        /// Test if LogLog.Error is enabled for output.
         /// </summary>
         /// <value>
-        /// <c>true</c> if Error is enabled.
+        /// <c>true</c> if Error is enabled
         /// </value>
         /// <remarks>
         /// <para>
@@ -452,18 +446,18 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes log4net internal error messages to the
+        /// Writes log4net internal error messages to the 
         /// standard error stream.
         /// </summary>
         /// <param name="source">The Type that generated this message.</param>
         /// <param name="message">The message to log.</param>
         /// <remarks>
         /// <para>
-        ///     All internal error messages are prepended with
+        ///     All internal error messages are prepended with 
         ///     the string "log4net:ERROR ".
         /// </para>
         /// </remarks>
-        public static void Error(Type source, string message)
+        public static void Error(Type source, string message) 
         {
             if (IsErrorEnabled)
             {
@@ -474,10 +468,10 @@ namespace log4net.Util
 
                 OnLogReceived(source, ERR_PREFIX, message, null);
             }
-        }
+        }  
 
         /// <summary>
-        /// Writes log4net internal error messages to the
+        /// Writes log4net internal error messages to the 
         /// standard error stream.
         /// </summary>
         /// <param name="source">The Type that generated this message.</param>
@@ -485,11 +479,11 @@ namespace log4net.Util
         /// <param name="exception">An exception to log.</param>
         /// <remarks>
         /// <para>
-        ///     All internal debug messages are prepended with
+        ///     All internal debug messages are prepended with 
         ///     the string "log4net:ERROR ".
         /// </para>
         /// </remarks>
-        public static void Error(Type source, string message, Exception exception)
+        public static void Error(Type source, string message, Exception exception) 
         {
             if (IsErrorEnabled)
             {
@@ -507,7 +501,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes output to the standard output stream.
+        /// Writes output to the standard output stream.  
         /// </summary>
         /// <param name="message">The message to log.</param>
         /// <remarks>
@@ -527,8 +521,8 @@ namespace log4net.Util
             try
             {
 #if NETCF
-				Console.WriteLine(message);
-				//System.Diagnostics.Debug.WriteLine(message);
+                Console.WriteLine(message);
+                //System.Diagnostics.Debug.WriteLine(message);
 #else
                 Console.Out.WriteLine(message);
                 Trace.WriteLine(message);
@@ -541,7 +535,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes output to the standard error stream.
+        /// Writes output to the standard error stream.  
         /// </summary>
         /// <param name="message">The message to log.</param>
         /// <remarks>
@@ -561,8 +555,8 @@ namespace log4net.Util
             try
             {
 #if NETCF
-				Console.WriteLine(message);
-				//System.Diagnostics.Debug.WriteLine(message);
+                Console.WriteLine(message);
+                //System.Diagnostics.Debug.WriteLine(message);
 #else
                 Console.Error.WriteLine(message);
                 Trace.WriteLine(message);
@@ -575,7 +569,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        ///  Default debug level.
+        ///  Default debug level
         /// </summary>
         private static bool s_debugEnabled = false;
 
@@ -586,9 +580,9 @@ namespace log4net.Util
 
         private static bool s_emitInternalMessages = true;
 
-        private const string PREFIX = "log4net: ";
-        private const string ERR_PREFIX = "log4net:ERROR ";
-        private const string WARN_PREFIX = "log4net:WARN ";
+        private const string PREFIX			= "log4net: ";
+        private const string ERR_PREFIX		= "log4net:ERROR ";
+        private const string WARN_PREFIX	= "log4net:WARN ";
 
         /// <summary>
         /// Subscribes to the LogLog.LogReceived event and stores messages
@@ -600,7 +594,7 @@ namespace log4net.Util
             private readonly LogReceivedEventHandler handler;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="LogReceivedAdapter"/> class.
+            /// 
             /// </summary>
             /// <param name="items"></param>
             public LogReceivedAdapter(IList items)
@@ -612,13 +606,13 @@ namespace log4net.Util
                 LogReceived += this.handler;
             }
 
-            private void LogLog_LogReceived(object source, LogReceivedEventArgs e)
+            void LogLog_LogReceived(object source, LogReceivedEventArgs e)
             {
                 this.items.Add(e.LogLog);
             }
 
             /// <summary>
-            ///
+            /// 
             /// </summary>
             public IList Items
             {
@@ -626,7 +620,7 @@ namespace log4net.Util
             }
 
             /// <summary>
-            ///
+            /// 
             /// </summary>
             public void Dispose()
             {
@@ -636,14 +630,14 @@ namespace log4net.Util
     }
 
     /// <summary>
-    ///
+    /// 
     /// </summary>
     public class LogReceivedEventArgs : EventArgs
     {
         private readonly LogLog loglog;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogReceivedEventArgs"/> class.
+        /// 
         /// </summary>
         /// <param name="loglog"></param>
         public LogReceivedEventArgs(LogLog loglog)
@@ -652,7 +646,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public LogLog LogLog
         {
