@@ -161,6 +161,46 @@ export namespace Components {
     interface DnnRmUploadFile {
     }
 }
+export interface DnnActionUploadFileCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnActionUploadFileElement;
+}
+export interface DnnRmCreateFolderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmCreateFolderElement;
+}
+export interface DnnRmDeleteItemsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmDeleteItemsElement;
+}
+export interface DnnRmEditFileCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmEditFileElement;
+}
+export interface DnnRmEditFolderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmEditFolderElement;
+}
+export interface DnnRmFolderListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmFolderListElement;
+}
+export interface DnnRmFolderListItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmFolderListItemElement;
+}
+export interface DnnRmMoveItemsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmMoveItemsElement;
+}
+export interface DnnRmUnlinkItemsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmUnlinkItemsElement;
+}
+export interface DnnRmUploadFileCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnRmUploadFileElement;
+}
 declare global {
     interface HTMLDnnActionCopyUrlElement extends Components.DnnActionCopyUrl, HTMLStencilElement {
     }
@@ -398,6 +438,10 @@ declare namespace LocalJSX {
         "items": Item[];
     }
     interface DnnActionUploadFile {
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: DnnActionUploadFileCustomEvent<void>) => void;
         "parentFolderId"?: number;
     }
     interface DnnResourceManager {
@@ -412,7 +456,7 @@ declare namespace LocalJSX {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmCreateFolderCustomEvent<void>) => void;
     }
     interface DnnRmDeleteItems {
         /**
@@ -422,7 +466,7 @@ declare namespace LocalJSX {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmDeleteItemsCustomEvent<void>) => void;
     }
     interface DnnRmEditFile {
         /**
@@ -432,7 +476,7 @@ declare namespace LocalJSX {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmEditFileCustomEvent<void>) => void;
     }
     interface DnnRmEditFolder {
         /**
@@ -442,7 +486,7 @@ declare namespace LocalJSX {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmEditFolderCustomEvent<void>) => void;
     }
     interface DnnRmFileContextMenu {
         /**
@@ -466,7 +510,7 @@ declare namespace LocalJSX {
         /**
           * Fires when a folder is picked.
          */
-        "onDnnRmFolderListFolderPicked"?: (event: CustomEvent<FolderTreeItem>) => void;
+        "onDnnRmFolderListFolderPicked"?: (event: DnnRmFolderListCustomEvent<FolderTreeItem>) => void;
     }
     interface DnnRmFolderListItem {
         /**
@@ -480,11 +524,11 @@ declare namespace LocalJSX {
         /**
           * Fires when a folder is clicked.
          */
-        "onDnnRmFolderListItemClicked"?: (event: CustomEvent<FolderTreeItem>) => void;
+        "onDnnRmFolderListItemClicked"?: (event: DnnRmFolderListItemCustomEvent<FolderTreeItem>) => void;
         /**
           * Fires when a context menu is opened for this item. Emits the folder ID.
          */
-        "onDnnRmcontextMenuOpened"?: (event: CustomEvent<number>) => void;
+        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListItemCustomEvent<number>) => void;
         /**
           * The ID of the parent folder.
          */
@@ -516,7 +560,7 @@ declare namespace LocalJSX {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmMoveItemsCustomEvent<void>) => void;
     }
     interface DnnRmProgressBar {
         /**
@@ -560,13 +604,13 @@ declare namespace LocalJSX {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmUnlinkItemsCustomEvent<void>) => void;
     }
     interface DnnRmUploadFile {
         /**
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
-        "onDnnRmFoldersChanged"?: (event: CustomEvent<void>) => void;
+        "onDnnRmFoldersChanged"?: (event: DnnRmUploadFileCustomEvent<void>) => void;
     }
     interface IntrinsicElements {
         "dnn-action-copy-url": DnnActionCopyUrl;

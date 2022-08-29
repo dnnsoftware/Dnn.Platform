@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, Host, h, Event, EventEmitter, Prop } from '@stencil/core';
 import state from "../../../store/store";
 
 @Component({
@@ -10,7 +10,13 @@ export class DnnActionUploadFile {
 
   @Prop() parentFolderId: number;
 
-  private handleClick(): void {
+  /**
+  * Fires when there is a possibility that some folders have changed.
+  * Can be used to force parts of the UI to refresh.
+  */
+   @Event() dnnRmFoldersChanged: EventEmitter<void>;
+
+   private handleClick(): void {
     this.showModal();
   }
 
@@ -26,6 +32,9 @@ export class DnnActionUploadFile {
     modal.appendChild(container);
     document.body.appendChild(modal);
     modal.show();
+    modal.addEventListener('dismissed', () => {
+      this.dnnRmFoldersChanged.emit();
+    });
   }
 
   render() {
