@@ -98,6 +98,8 @@ export namespace Components {
          */
         "selectedFolder": FolderTreeItem;
     }
+    interface DnnRmFolderMappings {
+    }
     interface DnnRmItemsCardview {
         /**
           * The list of current items.
@@ -316,6 +318,12 @@ declare global {
         prototype: HTMLDnnRmFolderListItemElement;
         new (): HTMLDnnRmFolderListItemElement;
     };
+    interface HTMLDnnRmFolderMappingsElement extends Components.DnnRmFolderMappings, HTMLStencilElement {
+    }
+    var HTMLDnnRmFolderMappingsElement: {
+        prototype: HTMLDnnRmFolderMappingsElement;
+        new (): HTMLDnnRmFolderMappingsElement;
+    };
     interface HTMLDnnRmItemsCardviewElement extends Components.DnnRmItemsCardview, HTMLStencilElement {
     }
     var HTMLDnnRmItemsCardviewElement: {
@@ -402,6 +410,7 @@ declare global {
         "dnn-rm-folder-context-menu": HTMLDnnRmFolderContextMenuElement;
         "dnn-rm-folder-list": HTMLDnnRmFolderListElement;
         "dnn-rm-folder-list-item": HTMLDnnRmFolderListItemElement;
+        "dnn-rm-folder-mappings": HTMLDnnRmFolderMappingsElement;
         "dnn-rm-items-cardview": HTMLDnnRmItemsCardviewElement;
         "dnn-rm-items-listview": HTMLDnnRmItemsListviewElement;
         "dnn-rm-left-pane": HTMLDnnRmLeftPaneElement;
@@ -538,6 +547,8 @@ declare namespace LocalJSX {
          */
         "selectedFolder"?: FolderTreeItem;
     }
+    interface DnnRmFolderMappings {
+    }
     interface DnnRmItemsCardview {
         /**
           * The list of current items.
@@ -632,6 +643,7 @@ declare namespace LocalJSX {
         "dnn-rm-folder-context-menu": DnnRmFolderContextMenu;
         "dnn-rm-folder-list": DnnRmFolderList;
         "dnn-rm-folder-list-item": DnnRmFolderListItem;
+        "dnn-rm-folder-mappings": DnnRmFolderMappings;
         "dnn-rm-items-cardview": DnnRmItemsCardview;
         "dnn-rm-items-listview": DnnRmItemsListview;
         "dnn-rm-left-pane": DnnRmLeftPane;
@@ -668,6 +680,7 @@ declare module "@stencil/core" {
             "dnn-rm-folder-context-menu": LocalJSX.DnnRmFolderContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
             "dnn-rm-folder-list": LocalJSX.DnnRmFolderList & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
             "dnn-rm-folder-list-item": LocalJSX.DnnRmFolderListItem & JSXBase.HTMLAttributes<HTMLDnnRmFolderListItemElement>;
+            "dnn-rm-folder-mappings": LocalJSX.DnnRmFolderMappings & JSXBase.HTMLAttributes<HTMLDnnRmFolderMappingsElement>;
             "dnn-rm-items-cardview": LocalJSX.DnnRmItemsCardview & JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
             "dnn-rm-items-listview": LocalJSX.DnnRmItemsListview & JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
             "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;

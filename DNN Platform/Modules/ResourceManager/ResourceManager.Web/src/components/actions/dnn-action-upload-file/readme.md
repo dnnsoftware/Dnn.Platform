@@ -12,6 +12,13 @@
 | `parentFolderId` | `parent-folder-id` |             | `number` | `undefined` |
 
 
+## Events
+
+| Event                 | Description                                                                                                        | Type                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
+| `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
+
+
 ## Dependencies
 
 ### Used by
