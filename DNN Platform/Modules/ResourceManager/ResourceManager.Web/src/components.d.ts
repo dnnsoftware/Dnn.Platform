@@ -163,6 +163,13 @@ export namespace Components {
     interface DnnRmUploadFile {
     }
 }
+<<<<<<< HEAD
+=======
+export interface DnnActionUploadFileCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLDnnActionUploadFileElement;
+}
+>>>>>>> origin/resource-manager
 export interface DnnRmCreateFolderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLDnnRmCreateFolderElement;
@@ -443,6 +450,10 @@ declare namespace LocalJSX {
         "items": Item[];
     }
     interface DnnActionUploadFile {
+        /**
+          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+         */
+        "onDnnRmFoldersChanged"?: (event: DnnActionUploadFileCustomEvent<void>) => void;
         "parentFolderId"?: number;
     }
     interface DnnResourceManager {
