@@ -104,7 +104,7 @@ export class DnnRmFolderListItem {
   }
 
   private dismissContextMenu() {
-    const existingMenus = this.el.shadowRoot.querySelectorAll(".contextMenu");
+    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
     existingMenus?.forEach(contextMenu => this.el.shadowRoot.removeChild(contextMenu));
   }
 
