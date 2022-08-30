@@ -71,7 +71,7 @@ export class DnnRmItemsCardview {
                     src={item.thumbnailAvailable ? item.thumbnailUrl : item.iconUrl}
                     alt={`${item.itemName} (ID: ${item.itemId})`}
                   />
-                  <span>
+                  <span class="item-name">
                     {item.itemName}
                   </span>
               </button>

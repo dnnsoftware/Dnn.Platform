@@ -18,6 +18,11 @@
         display: flex;
         flex-direction: column;
         padding: 0.5em;
+        .success{
+            color: green;
+            margin-top: 0.25em;
+            font-weight: bold;
+        }
         .warning{
             display: flex;
             justify-content: flex-end;
@@ -52,6 +57,11 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
+        }
+    }
+    .uploaded{
+        .success{
+            fill: green;
         }
     }
 }
