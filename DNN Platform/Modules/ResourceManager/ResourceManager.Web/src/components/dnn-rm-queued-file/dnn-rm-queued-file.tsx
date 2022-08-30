@@ -23,6 +23,9 @@ export class DnnRmQueuedFile {
     /** Optionally limit the file types that can be uploaded. */
     @Prop() filter!: string;
 
+    /** The maximal allowed file upload size */
+    @Prop() maxUploadFileSize!: number;
+
     @State() overwrite = false;
     @State() fileUploadResults: UploadFromLocalResponse;
     @State() progress: number;
@@ -73,6 +76,35 @@ export class DnnRmQueuedFile {
 
     private uploadFile(){
         return new Promise<string>((resolve, reject) => {
+            const extension = this.file.name.split('.').pop();
+            if (this.filter.split(',').indexOf(extension) === -1) {
+                const message = `'.${extension}' ${state.localization.InvalidExtensionMessage}`;
+                this.fileUploadResults = {
+                    alreadyExists: false,
+                    message: message,
+                    fileIconUrl: undefined,
+                    fileName: this.file.name,
+                    fileId: -1,
+                    orientation: 0,
+                };
+                reject(message);
+                return;
+            }
+
+            if (this.file.size > this.maxUploadFileSize) {
+                const message = `${this.file.name} ${state.localization.FileSizeErrorMessage} ${getFileSize(this.maxUploadFileSize)}`; 
+                this.fileUploadResults = {
+                    alreadyExists: false,
+                    message: message,
+                    fileIconUrl: undefined,
+                    fileName: this.file.name,
+                    fileId: -1,
+                    orientation: 0,
+                };
+                reject(message);
+                return;
+            }
+            
             const headers = this.servicesFramework.getModuleHeaders();
     
             const formData = new FormData();

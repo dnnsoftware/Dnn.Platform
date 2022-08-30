@@ -653,7 +653,9 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var validationCode = ValidationUtils.ComputeValidationCode(parameters);
 
-            return this.Ok(new { allowedExtensions, validationCode });
+            var maxUploadFileSize = Config.GetMaxUploadSize();
+
+            return this.Ok(new { allowedExtensions, validationCode, maxUploadFileSize });
         }
 
         private static string GetFileIconUrl(string extension)
