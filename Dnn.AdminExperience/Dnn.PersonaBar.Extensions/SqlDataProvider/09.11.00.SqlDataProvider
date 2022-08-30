@@ -1,0 +1,25 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PersonaBar_GetPortalStats]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPortalStats];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPortalStats]
+@PortalId INT
+AS
+SELECT
+ p.PortalID,
+ (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0) NumberOfTabs,
+ (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0 AND t.HasBeenPublished=1 AND t.IsSecure=1) NumberOfSecureTabs,
+ (SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}Tabs] t WHERE t.PortalID=p.PortalID AND t.IsDeleted=0 AND t.HasBeenPublished=1 AND t.IsSecure=0) NumberOfNonSecureTabs
+FROM {databaseOwner}[{objectQualifier}Portals] p
+WHERE p.PortalID=@PortalId
+GO

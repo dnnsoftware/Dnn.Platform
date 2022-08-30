@@ -74,7 +74,7 @@ class LogSettingRow extends Component {
                     }
                 </div>
                 }
-                <Collapse isOpened={opened} style={{width: "100%", height: "auto"}}>{opened && props.children}</Collapse>
+                <Collapse isOpened={opened} className="collapsible-body-log">{opened && props.children}</Collapse>
             </div>
         );
     }

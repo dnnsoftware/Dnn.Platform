@@ -20,7 +20,6 @@ namespace Dnn.PersonaBar.Extensions.Components
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
-    using ICSharpCode.SharpZipLib;
 
     public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
     {
@@ -80,7 +79,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         DeleteTempInstallFiles(installer);
                     }
                 }
-                catch (SharpZipBaseException)
+                catch (InvalidDataException)
                 {
                     parseResult.Failed("ZipCriticalError");
                 }
@@ -145,7 +144,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         DeleteTempInstallFiles(installer);
                     }
                 }
-                catch (SharpZipBaseException)
+                catch (InvalidDataException)
                 {
                     installResult.Failed("ZipCriticalError");
                 }

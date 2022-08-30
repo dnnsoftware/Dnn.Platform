@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -162,6 +162,9 @@
   <data name="Next.Text" xml:space="preserve">
     <value>Upgrade Now</value>
   </data>
+  <data name="NextStep.Text" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>No Installation Log</value>
   </data>
@@ -215,5 +218,53 @@
   </data>
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
+  </data>
+  <data name="Security.Text" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="TelerikInstalledAndUsedInfo.Text" xml:space="preserve">
+    <value>Your installation is utilizing Telerik in the following assemblies:</value>
+  </data>
+  <data name="TelerikInstalledAndUsedWarning.Text" xml:space="preserve">
+    <value>It appears that you have extensions that depended on Telerik. We are unable to remove the dependencies we've detected and listed above for you. However, please ensure that you have in fact properly patched Telerik and removed all DNN Platform distributed Telerik components per the guidance found &lt;a href="https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html" target="_blank"&gt;here&lt;/a&gt;. Note you will NOT be able to upgrade to DNN 10 with those dependencies unless they are distributed with their own copy of Telerik.</value>
+  </data>
+  <data name="TelerikInstalledButNotUsedInfo.Text" xml:space="preserve">
+    <value>Since your installation does NOT appear to be utilizing any of these components, you may elect to have them removed as part of this upgrade to improve the security of your application.</value>
+  </data>
+  <data name="TelerikInstalledHeading.Text" xml:space="preserve">
+    <value>Security Alert</value>
+  </data>
+  <data name="TelerikInstalledDetected.Text" xml:space="preserve">
+    <value>We have detected the presence of the previously distributed Telerik developer components. Detected Telerik version is:</value>
+  </data>
+  <data name="TelerikInstalledBulletin.Text" xml:space="preserve">
+    <value>A Security Bulletin was released in August of 2021 that recommends immediate removal of this component due to the high-level security vulnerabilities present. You can read more about this on the &lt;a href="https://dnncommunity.org/security" target="_blank"&gt;DNN Security Center&lt;/a&gt;.</value>
+  </data>
+  <data name="TelerikNotInstalledHeading.Text" xml:space="preserve">
+    <value>Ready for Future Upgrades</value>
+  </data>
+  <data name="TelerikNotInstalledInfo.Text" xml:space="preserve">
+    <value>We have confirmed that you have removed Telerik, which makes your site ready for DNN 10.0.0.</value>
+  </data>
+  <data name="TelerikUninstallInfo.Text" xml:space="preserve">
+    <value>Please note that selecting "Yes" from below will complete &lt;a href="https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html" target="_blank"&gt;these steps&lt;/a&gt; for you automatically.</value>
+  </data>
+  <data name="TelerikUninstallNo.Text" xml:space="preserve">
+    <value>No, Leave my Site Insecure</value>
+  </data>
+  <data name="TelerikUninstallYes.Text" xml:space="preserve">
+    <value>Yes, Improve my Security &amp; Remove Telerik Now</value>
+  </data>
+  <data name="TelerikInvalidAntiForgeryToken.Text" xml:space="preserve">
+    <value>Invalid Telerik anti-forgery token.</value>
+  </data>
+  <data name="TelerikUninstallOptionMissing.Text" xml:space="preserve">
+    <value>Telerik uninstall option is missing.</value>
+  </data>
+  <data name="CheckingSecurity.Text" xml:space="preserve">
+    <value>Checking security aspects of this installation</value>
+  </data>
+  <data name="TelerikInstalledButNotUsedInfoAutoInstall.Text" xml:space="preserve">
+    <value>Since your installation does NOT appear to be utilizing any of these components, you can safely remove them. Please use the Telerik Removal Tool on the Personabar menu to remove these components.</value>
   </data>
 </root>

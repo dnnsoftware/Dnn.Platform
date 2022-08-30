@@ -9,7 +9,8 @@ namespace DotNetNuke.Entities.Portals
     using System.Data;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
+  using System.IO.Compression;
+  using System.Linq;
     using System.Text;
     using System.Web;
     using System.Xml;
@@ -45,7 +46,6 @@ namespace DotNetNuke.Entities.Portals
     // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
-    using ICSharpCode.SharpZipLib.Zip;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
@@ -1464,7 +1464,7 @@ namespace DotNetNuke.Entities.Portals
         {
             try
             {
-                FileSystemUtils.UnzipResources(new ZipInputStream(new FileStream(resoureceFile, FileMode.Open, FileAccess.Read)), portalPath);
+                FileSystemUtils.UnzipResources(new ZipArchive(new FileStream(resoureceFile, FileMode.Open, FileAccess.Read)), portalPath);
             }
             catch (Exception exc)
             {

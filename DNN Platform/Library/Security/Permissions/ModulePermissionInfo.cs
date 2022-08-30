@@ -9,6 +9,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -103,6 +104,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get

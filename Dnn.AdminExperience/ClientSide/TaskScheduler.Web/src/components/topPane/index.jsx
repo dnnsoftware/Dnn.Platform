@@ -165,7 +165,7 @@ class TopPane extends Component {
                                 <div className="collapsible-content">
                                     {props.schedulerDelay &&
                                         <ModePanel
-                                            fixedHeight={200}
+                                            className="topPane-middle-content-body"
                                             isOpened={state.modePanelOpen}
                                             onClose={this.toggleModePanel.bind(this)}
                                             schedulerDelay={props.schedulerDelay}

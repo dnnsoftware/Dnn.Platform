@@ -10,13 +10,12 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Services.Installer.Log;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PackageInfo class represents a single Installer Package.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class PackageInfo : BaseEntityInfo
@@ -52,6 +51,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// <summary>Gets the direct dependencies of this package.</summary>
         [XmlIgnore]
+        [JsonIgnore]
         public IList<PackageDependencyInfo> Dependencies
         {
             get
@@ -69,6 +69,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public Dictionary<string, InstallFile> Files
         {
             get
@@ -98,6 +99,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <value>An Logger object.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public Logger Log
         {
             get
@@ -169,6 +171,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <value>An InstallerInfo object.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -186,6 +189,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsValid { get; private set; }
 
         /// -----------------------------------------------------------------------------

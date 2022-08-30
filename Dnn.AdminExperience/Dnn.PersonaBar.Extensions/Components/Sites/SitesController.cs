@@ -8,6 +8,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -19,6 +20,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using Dnn.PersonaBar.Library.DTO.Tabs;
     using Dnn.PersonaBar.Sites.Components.Dto;
     using Dnn.PersonaBar.Sites.Services.Dto;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -38,8 +40,6 @@ namespace Dnn.PersonaBar.Sites.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
-    using ICSharpCode.SharpZipLib;
-    using ICSharpCode.SharpZipLib.Zip;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
@@ -252,15 +252,13 @@ namespace Dnn.PersonaBar.Sites.Components
                 if (request.IncludeFiles)
                 {
                     // Create Zip File to hold files
-                    var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
-                    resourcesFile.SetLevel(6);
+                    var resourcesFile = new ZipArchive(File.Create(filename + ".resources"));
 
                     // Serialize folders (while adding files to zip file)
                     this.SerializeFolders(writer, portal, ref resourcesFile);
 
                     // Finish and Close Zip file
-                    resourcesFile.Finish();
-                    resourcesFile.Close();
+                    resourcesFile.Dispose();
                 }
                 writer.WriteEndElement();
                 writer.Close();
@@ -917,7 +915,7 @@ namespace Dnn.PersonaBar.Sites.Components
             writer.WriteEndElement();
         }
 
-        private void SerializeFolders(XmlWriter writer, PortalInfo objportal, ref ZipOutputStream zipFile)
+        private void SerializeFolders(XmlWriter writer, PortalInfo objportal, ref ZipArchive zipFile)
         {
             // Sync db and filesystem before exporting so all required files are found
             var folderManager = FolderManager.Instance;
@@ -942,17 +940,18 @@ namespace Dnn.PersonaBar.Sites.Components
             writer.WriteEndElement();
         }
 
-        private void SerializeFiles(XmlWriter writer, PortalInfo objportal, string folderPath, ref ZipOutputStream zipFile)
+        private void SerializeFiles(XmlWriter writer, IPortalInfo portal, string folderPath, ref ZipArchive zipFile)
         {
             var folderManager = FolderManager.Instance;
-            var objFolder = folderManager.GetFolder(objportal.PortalID, folderPath);
+            var objFolder = folderManager.GetFolder(portal.PortalId, folderPath);
 
             writer.WriteStartElement("files");
             foreach (var fileInfo in folderManager.GetFiles(objFolder))
             {
                 var objFile = (FileInfo)fileInfo;
+
                 // verify that the file exists on the file system
-                var filePath = objportal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
+                var filePath = portal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
                 if (File.Exists(filePath))
                 {
                     writer.WriteStartElement("file");
@@ -966,9 +965,14 @@ namespace Dnn.PersonaBar.Sites.Components
 
                     writer.WriteEndElement();
 
-                    FileSystemUtils.AddToZip(ref zipFile, filePath, this.GetActualFileName(objFile), folderPath);
+                    FileSystemUtils.AddToZip(
+                        zipFile: ref zipFile,
+                        filePath: filePath,
+                        fileName: this.GetActualFileName(objFile),
+                        folder: folderPath);
                 }
             }
+
             writer.WriteEndElement();
         }
 

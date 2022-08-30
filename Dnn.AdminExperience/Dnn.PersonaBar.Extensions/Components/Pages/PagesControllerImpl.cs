@@ -874,8 +874,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             pageSettings.TemplateId = this._templateController.GetDefaultTemplateId(pageSettings.Templates);
 
-            if (PortalController.GetPortalSettingAsBoolean("SSLEnabled", portalSettings.PortalId, false) &&
-                PortalController.GetPortalSettingAsBoolean("SSLEnforced", portalSettings.PortalId, false))
+            if (portalSettings.SSLSetup == DotNetNuke.Abstractions.Security.SiteSslSetup.On || (portalSettings.SSLEnabled && portalSettings.SSLEnforced))
             {
                 pageSettings.IsSecure = true;
             }

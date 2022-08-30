@@ -16,6 +16,7 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The ContentItem class which itself inherits from BaseEntityInfo paves the way for easily adding support for taxonomy,
@@ -86,6 +87,7 @@ namespace DotNetNuke.Entities.Content
         /// <value>metadata collection.</value>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public NameValueCollection Metadata
         {
             get
@@ -100,6 +102,7 @@ namespace DotNetNuke.Entities.Content
         /// <value>Terms Collection.</value>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public List<Term> Terms
         {
             get
@@ -113,6 +116,7 @@ namespace DotNetNuke.Entities.Content
         /// </summary>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public List<IFileInfo> Files
         {
             get { return this._files ?? (this._files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
@@ -123,6 +127,7 @@ namespace DotNetNuke.Entities.Content
         /// </summary>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public List<IFileInfo> Videos
         {
             get { return this._videos ?? (this._videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
@@ -133,6 +138,7 @@ namespace DotNetNuke.Entities.Content
         /// </summary>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public List<IFileInfo> Images
         {
             get { return this._images ?? (this._images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
@@ -146,6 +152,7 @@ namespace DotNetNuke.Entities.Content
         /// </value>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int ContentItemId { get; set; }
 
         /// <summary>
@@ -175,6 +182,7 @@ namespace DotNetNuke.Entities.Content
         /// <see cref="ContentType"/>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public int ContentTypeId { get; set; }
 
         /// <summary>
@@ -185,6 +193,7 @@ namespace DotNetNuke.Entities.Content
         /// </value>
         [XmlIgnore]
         [ScriptIgnore]
+        [JsonIgnore]
         public bool Indexed { get; set; }
 
         /// <summary>
@@ -227,6 +236,7 @@ namespace DotNetNuke.Entities.Content
         /// The Content Workflow State ID.
         /// </value>
         [XmlIgnore]
+        [JsonIgnore]
         public int StateID { get; set; }
 
         /// <summary>
@@ -239,6 +249,7 @@ namespace DotNetNuke.Entities.Content
         /// If you derive class has its own key id, please override this property and set the value to your own key id.
         /// </remarks>
         [XmlIgnore]
+        [JsonIgnore]
         public virtual int KeyID
         {
             get
