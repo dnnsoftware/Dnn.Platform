@@ -495,8 +495,6 @@
     <Content Include="admin\personaBar\Dnn.Extensions\extensions.html" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\bundles\rw-widgets.svg" />
     <Content Include="admin\personaBar\Dnn.Extensions\scripts\extensions.js" />
-    <Content Include="admin\personaBar\Dnn.Files\files.html" />
-    <Content Include="admin\personaBar\Dnn.Files\scripts\Files.js" />
     <Content Include="admin\personaBar\Dnn.Licensing\css\Licensing.css" />
     <Content Include="admin\personaBar\Dnn.Licensing\Licensing.html" />
     <Content Include="admin\personaBar\Dnn.Licensing\scripts\bundles\licensing-bundle.js" />
@@ -660,7 +658,6 @@
     <Content Include="admin\personaBar\Dnn.Vocabularies\App_LocalResources\Vocabularies.resx" />
     <Content Include="admin\personaBar\Dnn.SiteGroups\App_LocalResources\SiteGroups.resx" />
     <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
-    <Content Include="admin\personaBar\Dnn.Files\App_LocalResources\Files.resx" />
     <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
     <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
     <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />
