@@ -108,7 +108,7 @@
         </component>
       </components>
     </package>
-    <package name="PersonaBar.ResourceManager" type="PersonaBar" version="09.10.02">
+    <package name="PersonaBar.ResourceManager" type="PersonaBar" version="09.11.00">
       <description>This module allows you to manage files on the server</description>
       <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
       <owner>
