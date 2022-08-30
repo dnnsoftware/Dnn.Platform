@@ -2,6 +2,7 @@
   "name": "dnn-resource-manager",
   "version": "9.10.2",
   "description": "Stencil Component Starter",
+  "private": true,
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -12,7 +13,7 @@
   "unpkg": "dist/dnn-resource-manager/dnn-resource-manager.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ionic-team/stencil-component-starter.git"
+    "url": "https://github.com/dnnsoftware/Dnn.Platform.git"
   },
   "files": [
     "dist/",
