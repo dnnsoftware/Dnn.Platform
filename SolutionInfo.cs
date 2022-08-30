@@ -16,4 +16,3 @@ using System.Reflection;
 [assembly: AssemblyVersion("9.11.0.0")]
 [assembly: AssemblyFileVersion("9.11.0.0")]
 [assembly: AssemblyInformationalVersion("9.11.0.0 Custom build")]
-
