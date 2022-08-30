@@ -107,7 +107,6 @@
     <Compile Include="Components\Models\ThumbnailContent.cs" />
     <Compile Include="Components\PermissionHelper.cs" />
     <Compile Include="Components\PermissionsManager.cs" />
-    <Compile Include="Components\PersonaBarMenuController.cs" />
     <Compile Include="Components\ResourceManagerController.cs" />
     <Compile Include="Components\SearchController.cs" />
     <Compile Include="Components\SettingsManager.cs" />
