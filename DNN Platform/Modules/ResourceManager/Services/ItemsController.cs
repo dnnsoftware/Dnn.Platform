@@ -4,6 +4,8 @@
 namespace Dnn.Modules.ResourceManager.Services
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -16,12 +18,13 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Helpers;
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
-
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Assets;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.UI.Modules;
@@ -40,6 +43,7 @@ namespace Dnn.Modules.ResourceManager.Services
     {
         private readonly IFolderMappingController folderMappingController = FolderMappingController.Instance;
         private readonly IModuleControlPipeline modulePipeline;
+        private readonly Hashtable mappedPathsSupported = new Hashtable();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemsController"/> class.
@@ -48,7 +52,8 @@ namespace Dnn.Modules.ResourceManager.Services
         /// An instance of an <see cref="IModuleControlPipeline"/> used to hook into the
         /// EditUrl of the webforms folders provider settings UI.
         /// </param>
-        public ItemsController(IModuleControlPipeline modulePipeline)
+        public ItemsController(
+            IModuleControlPipeline modulePipeline)
         {
             this.modulePipeline = modulePipeline;
         }
@@ -91,6 +96,19 @@ namespace Dnn.Modules.ResourceManager.Services
                 hasDeletePermission = permissionsManager.HasDeletePermission(moduleMode, folderId),
                 hasManagePermission = permissionsManager.HasManagePermission(moduleMode, folderId),
             });
+        }
+
+        /// <summary>
+        /// Gets an item representation for a provided folder ID.
+        /// </summary>
+        /// <param name="folderId">The ID of the folder to get.</param>
+        /// <returns>An Item viewmodel.</returns>
+        [HttpGet]
+        public IHttpActionResult GetFolderItem(int folderId)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            var item = this.GetItemViewModel(folder);
+            return this.Ok(item);
         }
 
         /// <summary>
@@ -363,6 +381,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 lastModifiedOnDate = file.LastModifiedOnDate.ToShortDateString(),
                 lastModifiedBy = lastModifiedBy != null ? lastModifiedBy.Username : string.Empty,
                 url = FileManager.Instance.GetUrl(file),
+                iconUrl = GetFileIconUrl(file.Extension),
             });
         }
 
@@ -505,6 +524,140 @@ namespace Dnn.Modules.ResourceManager.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
+        /// <summary>
+        /// Gets the relevant icon for this requested folder.
+        /// </summary>
+        /// <param name="folderId">The ID of the folder for which to get the image for.</param>
+        /// <returns>A string representing the full url  to the folder icon.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetFolderIconUrl(int folderId)
+        {
+            var folderMappingId = FolderManager.Instance.GetFolder(folderId).FolderMappingID;
+            var url = GetFolderIconUrl(this.PortalSettings.PortalId, folderMappingId);
+            return this.Ok(new { url });
+        }
+
+        /// <summary>
+        /// Gets a list of role groups.
+        /// </summary>
+        /// <returns>A collection of role groups.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetRoleGroups()
+        {
+            if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+            {
+                return this.Unauthorized();
+            }
+
+            var groups = RoleController.GetRoleGroups(this.PortalSettings.PortalId)
+                            .Cast<RoleGroupInfo>()
+                            .Select(RoleGroupDto.FromRoleGroupInfo);
+
+            return this.Ok(groups);
+        }
+
+        /// <summary>
+        /// Gets the roles for a rolegroup.
+        /// </summary>
+        /// <returns>A collection of roles.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetRoles()
+        {
+            var matchedRoles = RoleController.Instance.GetRoles(this.PortalSettings.PortalId)
+                .Where(r => r.Status == RoleStatus.Approved)
+                .OrderBy(r => r.RoleName)
+                .Select(r => new
+                {
+                    IsSystemRole = r.IsSystemRole,
+                    RoleGroupId = r.RoleGroupID,
+                    RoleId = r.RoleID,
+                    RoleName = r.RoleName,
+                })
+                .ToList();
+
+            return this.Ok(matchedRoles);
+        }
+
+        /// <summary>
+        /// Gets a list of users that match the search keyword.
+        /// </summary>
+        /// <param name="keyword">The keyword to search for.</param>
+        /// <param name="count">The amount of results to return.</param>
+        /// <returns>A collection of users.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetSuggestionUsers(string keyword, int count)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    return this.Ok(new List<string>());
+                }
+
+                var displayMatch = keyword + "%";
+                var totalRecords = 0;
+                var totalRecords2 = 0;
+                var matchedUsers = UserController.GetUsersByDisplayName(
+                    this.PortalSettings.PortalId,
+                    displayMatch,
+                    0,
+                    count,
+                    ref totalRecords,
+                    false,
+                    false);
+                matchedUsers.AddRange(
+                    UserController.GetUsersByUserName(
+                        this.PortalSettings.PortalId,
+                        displayMatch,
+                        0,
+                        count,
+                        ref totalRecords2,
+                        false,
+                        false));
+                var finalUsers = matchedUsers
+                    .Cast<UserInfo>()
+                    .Where(x => x.Membership.Approved)
+                    .Select(u => new
+                    {
+                        userId = u.UserID,
+                        displayName = $"{u.DisplayName}",
+                    });
+
+                return this.Ok(finalUsers.ToList().GroupBy(x => x.userId).Select(group => group.First()));
+            }
+            catch (Exception ex)
+            {
+                return this.InternalServerError(new Exception(ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of possible file extensions as well as the validation code to use for uploads.
+        /// </summary>
+        /// <returns>An object containing the allowed file exteions and the validation code to use for uploads.</returns>
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult GetAllowedFileExtensions()
+        {
+            var allowedExtensions = FileManager.Instance.WhiteList.ToStorageString();
+            var parameters = new List<object>() { allowedExtensions.Split(',').Select(i => i.Trim()).OrderBy(a => a).ToList() };
+            parameters.Add(this.PortalSettings.UserInfo.UserID);
+            if (!this.UserInfo.IsSuperUser)
+            {
+                parameters.Add(this.PortalSettings.PortalId);
+            }
+
+            var validationCode = ValidationUtils.ComputeValidationCode(parameters);
+
+            var maxUploadFileSize = Config.GetMaxUploadSize();
+
+            return this.Ok(new { allowedExtensions, validationCode, maxUploadFileSize });
+        }
+
         private static string GetFileIconUrl(string extension)
         {
             if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
@@ -517,7 +670,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private static string GetFolderIconUrl(int portalId, int folderMappingId)
         {
-            var url = Globals.ApplicationPath + "/" + Constants.ModulePath + "images/icon-asset-manager-{0}-folder.png";
+            var url = Globals.ApplicationPath + "/" + Constants.ModulePath + "images/icon-asset-manager-{0}-folder.svg";
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingId);
             var name = folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl))
@@ -546,6 +699,9 @@ namespace Dnn.Modules.ResourceManager.Services
                     itemId = folder.FolderID,
                     itemName = folder.FolderName,
                     iconUrl = GetFolderIconUrl(this.PortalSettings.PortalId, folder.FolderMappingID),
+                    createdOn = folder.CreatedOnDate,
+                    modifiedOn = folder.LastModifiedOnDate,
+                    unlinkAllowedStatus = this.GetUnlinkAllowedStatus(folder),
                 };
             }
 
@@ -560,7 +716,39 @@ namespace Dnn.Modules.ResourceManager.Services
                 iconUrl = GetFileIconUrl(file.Extension),
                 thumbnailAvailable = thumbnailsManager.ThumbnailAvailable(file.FileName),
                 thumbnailUrl = thumbnailsManager.ThumbnailUrl(this.ActiveModule.ModuleID, file.FileId, 110, 110),
+                createdOn = file.CreatedOnDate,
+                modifiedOn = file.LastModifiedOnDate,
+                fileSize = file.Size,
             };
+        }
+
+        private string GetUnlinkAllowedStatus(IFolderInfo folder)
+        {
+            if (this.AreMappedPathsSupported(folder.FolderMappingID) && folder.ParentID > 0 && FolderManager.Instance.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
+            {
+                return "onlyUnlink";
+            }
+
+            if (this.AreMappedPathsSupported(folder.FolderMappingID))
+            {
+                return "true";
+            }
+
+            return "false";
+        }
+
+        private bool AreMappedPathsSupported(int folderMappingId)
+        {
+            if (this.mappedPathsSupported.ContainsKey(folderMappingId))
+            {
+                return (bool)this.mappedPathsSupported[folderMappingId];
+            }
+
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
+            var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
+            var result = folderProvider.SupportsMappedPaths;
+            this.mappedPathsSupported[folderMappingId] = result;
+            return result;
         }
 
         private ModuleInstanceContext GetModuleContext()

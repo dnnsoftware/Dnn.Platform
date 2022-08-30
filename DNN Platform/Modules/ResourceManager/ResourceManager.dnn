@@ -16,6 +16,7 @@
         <dependency type="CoreVersion">09.02.00</dependency>
       </dependencies>
       <components>
+        <component type="Cleanup" version="09.11.00" glob="DesktopModules/ResourceManager/**/*" />
         <component type="Script">
           <scripts>
             <basePath>DesktopModules\ResourceManager</basePath>
@@ -31,7 +32,6 @@
             </script>
           </scripts>
         </component>
-
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/ResourceManager</basePath>
@@ -55,7 +55,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey/>
-                    <controlSrc>DesktopModules/ResourceManager/View.ascx</controlSrc>
+                    <controlSrc>DesktopModules/ResourceManager/View.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle/>
                     <controlType>View</controlType>
@@ -105,6 +105,36 @@
               <path>bin</path>
             </assembly>
           </assemblies>
+        </component>
+      </components>
+    </package>
+    <package name="PersonaBar.ResourceManager" type="PersonaBar" version="09.11.00">
+      <description>This module allows you to manage files on the server</description>
+      <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
+      <owner>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">09.11.00</dependency>
+        <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
+      </dependencies>
+      <components>
+        <component type="PersonaBarMenu">
+          <menu>
+            <identifier>Dnn.Files</identifier>
+            <moduleName>Files</moduleName>
+            <controller>Dnn.Modules.ResourceManager.Components.PersonaBarMenuController, Dnn.Modules.ResourceManager</controller>
+            <resourceKey>nav_Files</resourceKey>
+            <mobileSupport>true</mobileSupport>
+            <parent>Manage</parent>
+            <order>25</order>
+            <defaultPermissions>Administrators</defaultPermissions>
+          </menu>
         </component>
       </components>
     </package>
