@@ -144,6 +144,10 @@ export namespace Components {
          */
         "filter": string;
         /**
+          * The maximal allowed file upload size
+         */
+        "maxUploadFileSize": number;
+        /**
           * The validation code to use for uploads.
          */
         "validationCode": string;
@@ -596,6 +600,10 @@ declare namespace LocalJSX {
           * Optionally limit the file types that can be uploaded.
          */
         "filter": string;
+        /**
+          * The maximal allowed file upload size
+         */
+        "maxUploadFileSize": number;
         /**
           * The validation code to use for uploads.
          */

@@ -26,6 +26,7 @@ export class DnnRmUploadFile {
   private itemsClient: ItemsClient;
   private allowedExtensions: string;
   private validationCode: string;
+  private maxUploadFileSize: number;
   private extract = false;
 
   constructor() {
@@ -37,6 +38,7 @@ export class DnnRmUploadFile {
       .then(data => {
         this.allowedExtensions = data.allowedExtensions;
         this.validationCode = data.validationCode;
+        this.maxUploadFileSize = data.maxUploadFileSize;
       })
       .catch(err => alert(err));
   }
@@ -56,13 +58,16 @@ export class DnnRmUploadFile {
           {state.localization.ExtractUploads}
           </dnn-checkbox>
         </label>
-        <dnn-dropzone onFilesSelected={e => this.handleFilesDropped(e.detail)}></dnn-dropzone>
+        <dnn-dropzone
+          onFilesSelected={e => this.handleFilesDropped(e.detail)}
+        />
         {this.allowedExtensions && this.validationCode && this.queuedFiles.map(file => 
           <dnn-rm-queued-file
             file={file}
             validationCode={this.validationCode}
             filter={this.allowedExtensions}
             extract={this.extract}
+            maxUploadFileSize={this.maxUploadFileSize}
           />
         )}
       </Host>

@@ -7,12 +7,13 @@
 
 ## Properties
 
-| Property                      | Attribute         | Description                                           | Type      | Default     |
-| ----------------------------- | ----------------- | ----------------------------------------------------- | --------- | ----------- |
-| `extract`                     | `extract`         | Whether to extract uploaded zip files.                | `boolean` | `false`     |
-| `file` _(required)_           | --                | The file to upload.                                   | `File`    | `undefined` |
-| `filter` _(required)_         | `filter`          | Optionally limit the file types that can be uploaded. | `string`  | `undefined` |
-| `validationCode` _(required)_ | `validation-code` | The validation code to use for uploads.               | `string`  | `undefined` |
+| Property                         | Attribute              | Description                                           | Type      | Default     |
+| -------------------------------- | ---------------------- | ----------------------------------------------------- | --------- | ----------- |
+| `extract`                        | `extract`              | Whether to extract uploaded zip files.                | `boolean` | `false`     |
+| `file` _(required)_              | --                     | The file to upload.                                   | `File`    | `undefined` |
+| `filter` _(required)_            | `filter`               | Optionally limit the file types that can be uploaded. | `string`  | `undefined` |
+| `maxUploadFileSize` _(required)_ | `max-upload-file-size` | The maximal allowed file upload size                  | `number`  | `undefined` |
+| `validationCode` _(required)_    | `validation-code`      | The validation code to use for uploads.               | `string`  | `undefined` |
 
 
 ## Dependencies

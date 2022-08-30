@@ -518,6 +518,7 @@ export interface GetAllowedFileExtensionsResponse {
     /** A coma delimited list of the allowed file extensions. */
     allowedExtensions: string;
     validationCode: string;
+    maxUploadFileSize: number;
 }
 
 export interface FolderInfo{
