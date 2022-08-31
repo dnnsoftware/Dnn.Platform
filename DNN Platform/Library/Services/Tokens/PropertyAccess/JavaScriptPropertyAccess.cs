@@ -14,16 +14,12 @@ namespace DotNetNuke.Services.Tokens
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// <summary>
-    /// Property Access implementenation for javascript registration.
-    /// </summary>
+    /// <summary>Property Access implementation for javascript registration.</summary>
     public class JavaScriptPropertyAccess : JsonPropertyAccess<JavaScriptDto>
     {
         private readonly Page page;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
         /// <param name="page">The current page.</param>
         public JavaScriptPropertyAccess(Page page)
         {
@@ -35,7 +31,7 @@ namespace DotNetNuke.Services.Tokens
         {
             if (string.IsNullOrEmpty(model.JsName) && string.IsNullOrEmpty(model.Path))
             {
-                throw new ArgumentException("If the jsname property is not specified then the JavaScript token must specify a path or property.");
+                throw new ArgumentException("If the jsname property is not specified then the JavaScript token must specify a path.");
             }
 
             if (model.Priority == 0)
@@ -43,21 +39,29 @@ namespace DotNetNuke.Services.Tokens
                 model.Priority = (int)FileOrder.Js.DefaultPriority;
             }
 
-            if (!string.IsNullOrEmpty(model.JsName) && string.IsNullOrEmpty(model.Path))
+            if (string.IsNullOrEmpty(model.Path))
             {
-                this.RegisterInstalledLibrary(model);
-                return string.Empty;
+                RegisterInstalledLibrary(model);
             }
-
-            this.RegisterPath(model);
+            else
+            {
+                ClientResourceManager.RegisterScript(
+                    this.page,
+                    model.Path,
+                    model.Priority,
+                    model.Provider ?? string.Empty,
+                    model.JsName ?? string.Empty,
+                    model.Version ?? string.Empty,
+                    model.HtmlAttributes);
+            }
 
             return string.Empty;
         }
 
-        private void RegisterInstalledLibrary(JavaScriptDto model)
+        private static void RegisterInstalledLibrary(JavaScriptDto model)
         {
             Version version = null;
-            SpecificVersion specific = SpecificVersion.Latest;
+            var specific = SpecificVersion.Latest;
             if (!string.IsNullOrEmpty(model.Version))
             {
                 version = new Version(model.Version);
@@ -83,51 +87,6 @@ namespace DotNetNuke.Services.Tokens
             }
 
             JavaScript.RequestRegistration(model.JsName, version, specific);
-        }
-
-        private void RegisterPath(JavaScriptDto model)
-        {
-            var hasName = !string.IsNullOrEmpty(model.JsName);
-            var hasProvider = !string.IsNullOrEmpty(model.Provider);
-            var hasPath = !string.IsNullOrEmpty(model.Path);
-
-            var htmlAttributes = new Dictionary<string, string>();
-            try
-            {
-                if (!string.IsNullOrEmpty(model.HtmlAttributesAsString))
-                {
-                    var attributes = model.HtmlAttributesAsString.Split(',');
-                    foreach (var attribute in attributes)
-                    {
-                        var attributeParts = attribute.Split(':');
-                        htmlAttributes.Add(attributeParts[0], attributeParts[1]);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw new ArgumentException("HtmlAttributesAsString is malformed.");
-            }
-
-            if (hasName && hasProvider && hasPath)
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, model.Provider, model.JsName, model.Version, htmlAttributes);
-                return;
-            }
-
-            if (hasName && hasProvider)
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, string.Empty, model.JsName, model.Version, htmlAttributes);
-                return;
-            }
-
-            if (hasProvider)
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, model.Provider, htmlAttributes);
-                return;
-            }
-
-            ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, htmlAttributes);
         }
     }
 }
