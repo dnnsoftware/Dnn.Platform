@@ -344,7 +344,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
             if (htmlAttributes != null && htmlAttributes.Any())
             {
-                include.HtmlAttributesAsString = string.Join(",", htmlAttributes.Select(h => $"{h.Key}:${h.Value}"));
+                include.HtmlAttributesAsString = string.Join(",", htmlAttributes.Select(h => $"{h.Key}:{h.Value}"));
             }
 
             var loader = page.FindControl("ClientResourceIncludes");
