@@ -6,20 +6,17 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Web;
-    using System.Web.Configuration;
     using System.Web.Hosting;
     using System.Web.UI;
     using System.Xml;
-    using System.Xml.XPath;
 
     using ClientDependency.Core;
     using ClientDependency.Core.CompositeFiles.Providers;
     using ClientDependency.Core.Config;
-    using DotNetNuke;
     using DotNetNuke.Instrumentation;
 
     /// <summary>
@@ -27,12 +24,19 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceManager
     {
+        /// <summary>
+        ///  The default css provider.
+        /// </summary>
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
-        internal const string DefaultJsProvider = "DnnBodyProvider";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceManager));
 
-        private static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
-        private static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
+        /// <summary>
+        /// The default javascript provider.
+        /// </summary>
+        internal const string DefaultJsProvider = "DnnBodyProvider";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceManager));
+        private static Dictionary<string, bool> fileExistsCache = new Dictionary<string, bool>();
+        private static ReaderWriterLockSlim lockFileExistsCache = new ReaderWriterLockSlim();
 
         /// <summary>
         /// Adds the neccessary configuration to website root web.config to use the Client Depenedecny componenet.
@@ -117,6 +121,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
         }
 
+        /// <summary>
+        /// Checks if ClientDependency is installed.
+        /// </summary>
+        /// <returns>A value indicating whether the ClientDependency provider is installed.</returns>
         public static bool IsInstalled()
         {
             var configPath = HostingEnvironment.MapPath("~/web.config");
@@ -139,21 +147,41 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             return installed;
         }
 
+        /// <summary>
+        /// Registers a stylesheet that has an admin level priority.
+        /// </summary>
+        /// <param name="page">The page on which to register the style.</param>
+        /// <param name="filePath">The path to the css stylesheet.</param>
         public static void RegisterAdminStylesheet(Page page, string filePath)
         {
             RegisterStyleSheet(page, filePath, FileOrder.Css.AdminCss);
         }
 
+        /// <summary>
+        /// Registers the default.css stylesheet.
+        /// </summary>
+        /// <param name="page">The page on which to register the style.</param>
+        /// <param name="filePath">The path to the css stylesheet.</param>
         public static void RegisterDefaultStylesheet(Page page, string filePath)
         {
             RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "7.0.0");
         }
 
+        /// <summary>
+        /// Registers a stylesheet for a specific feature.
+        /// </summary>
+        /// <param name="page">The page on which to register the style.</param>
+        /// <param name="filePath">The path to the css stylesheet.</param>
         public static void RegisterFeatureStylesheet(Page page, string filePath)
         {
             RegisterStyleSheet(page, filePath, FileOrder.Css.FeatureCss);
         }
 
+        /// <summary>
+        /// Registers a stylesheet specific for Internet Explorer.
+        /// </summary>
+        /// <param name="page">The page on which to register the style.</param>
+        /// <param name="filePath">The path to the css stylesheet.</param>
         public static void RegisterIEStylesheet(Page page, string filePath)
         {
             var browser = HttpContext.Current.Request.Browser;
@@ -170,7 +198,18 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         public static void RegisterScript(Page page, string filePath)
         {
-            RegisterScript(page, filePath, FileOrder.Js.DefaultPriority);
+            RegisterScript(page, filePath, new Dictionary<string, string>());
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="htmlAttributes">A dictionnary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
+        public static void RegisterScript(Page page, string filePath, Dictionary<string, string> htmlAttributes)
+        {
+            RegisterScript(page, filePath, FileOrder.Js.DefaultPriority, htmlAttributes);
         }
 
         /// <summary>
@@ -181,7 +220,19 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public static void RegisterScript(Page page, string filePath, int priority)
         {
-            RegisterScript(page, filePath, priority, DefaultJsProvider);
+            RegisterScript(page, filePath, priority, new Dictionary<string, string>());
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="htmlAttributes">A dictionnary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
+        public static void RegisterScript(Page page, string filePath, int priority, Dictionary<string, string> htmlAttributes)
+        {
+            RegisterScript(page, filePath, priority, DefaultJsProvider, htmlAttributes);
         }
 
         /// <summary>
@@ -192,7 +243,19 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public static void RegisterScript(Page page, string filePath, FileOrder.Js priority)
         {
-            RegisterScript(page, filePath, (int)priority, DefaultJsProvider);
+            RegisterScript(page, filePath, priority, new Dictionary<string, string>());
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="htmlAttributes">A dictionnary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
+        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, Dictionary<string, string> htmlAttributes)
+        {
+            RegisterScript(page, filePath, (int)priority, DefaultJsProvider, htmlAttributes);
         }
 
         /// <summary>
@@ -204,7 +267,20 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider)
         {
-            RegisterScript(page, filePath, (int)priority, provider);
+            RegisterScript(page, filePath, priority, provider, new Dictionary<string, string>());
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
+        /// /// <param name="htmlAttributes">A dictionnary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
+        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider, Dictionary<string, string> htmlAttributes)
+        {
+            RegisterScript(page, filePath, (int)priority, provider, htmlAttributes);
         }
 
         /// <summary>
@@ -216,7 +292,20 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            RegisterScript(page, filePath, priority, provider, string.Empty, string.Empty);
+            RegisterScript(page, filePath, priority, provider, new Dictionary<string, string>());
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
+        /// <param name="htmlAttributes">A dictionnary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
+        public static void RegisterScript(Page page, string filePath, int priority, string provider, Dictionary<string, string> htmlAttributes)
+        {
+            RegisterScript(page, filePath, priority, provider, string.Empty, string.Empty, htmlAttributes);
         }
 
         /// <summary>
@@ -230,7 +319,34 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="version">Version nr of framework.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider, string name, string version)
         {
+            RegisterScript(page, filePath, priority, provider, name, version, new Dictionary<string, string>());
+        }
+
+        /// <summary>
+        /// Requests that a JavaScript file be registered on the client browser.
+        /// </summary>
+        /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
+        /// <param name="filePath">The relative file path to the JavaScript resource.</param>
+        /// <param name="priority">The relative priority in which the file should be loaded.</param>
+        /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
+        /// <param name="version">Version nr of framework.</param>
+        /// <param name="htmlAttributes">A dictionnary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
+        public static void RegisterScript(
+            Page page,
+            string filePath,
+            int priority,
+            string provider,
+            string name,
+            string version,
+            Dictionary<string, string> htmlAttributes)
+        {
             var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
+            if (htmlAttributes != null && htmlAttributes.Any())
+            {
+                include.HtmlAttributesAsString = string.Join(",", htmlAttributes.Select(h => $"{h.Key}:{h.Value}"));
+            }
+
             var loader = page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
@@ -359,26 +475,33 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
         }
 
+        /// <summary>
+        /// Clears the cache used for file existence.
+        /// </summary>
+        /// <param name="path">The path for the file.</param>
         public static void ClearFileExistsCache(string path)
         {
-            _lockFileExistsCache.EnterWriteLock();
+            lockFileExistsCache.EnterWriteLock();
             try
             {
                 if (string.IsNullOrEmpty(path))
                 {
-                    _fileExistsCache.Clear();
+                    fileExistsCache.Clear();
                 }
                 else
                 {
-                    _fileExistsCache.Remove(path.ToLowerInvariant());
+                    fileExistsCache.Remove(path.ToLowerInvariant());
                 }
             }
             finally
             {
-                _lockFileExistsCache.ExitWriteLock();
+                lockFileExistsCache.ExitWriteLock();
             }
         }
 
+        /// <summary>
+        /// Enables the async postback handler.
+        /// </summary>
         public static void EnableAsyncPostBackHandler()
         {
             if (HttpContext.Current != null && !HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled"))
@@ -394,29 +517,29 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var cacheKey = filePath.ToLowerInvariant();
 
             // cache css file paths
-            if (!_fileExistsCache.ContainsKey(cacheKey))
+            if (!fileExistsCache.ContainsKey(cacheKey))
             {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
-                _lockFileExistsCache.EnterWriteLock();
+                lockFileExistsCache.EnterWriteLock();
                 try
                 {
-                    _fileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+                    fileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
                 }
                 finally
                 {
-                    _lockFileExistsCache.ExitWriteLock();
+                    lockFileExistsCache.ExitWriteLock();
                 }
             }
 
             // return if file exists from cache
-            _lockFileExistsCache.EnterReadLock();
+            lockFileExistsCache.EnterReadLock();
             try
             {
-                return _fileExistsCache[cacheKey];
+                return fileExistsCache[cacheKey];
             }
             finally
             {
-                _lockFileExistsCache.ExitReadLock();
+                lockFileExistsCache.ExitReadLock();
             }
         }
 
