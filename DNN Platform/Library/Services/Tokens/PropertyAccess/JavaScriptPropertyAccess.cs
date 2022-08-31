@@ -83,10 +83,6 @@ namespace DotNetNuke.Services.Tokens
 
         private void RegisterPath(JavaScriptDto model)
         {
-            var hasName = !string.IsNullOrEmpty(model.JsName);
-            var hasProvider = !string.IsNullOrEmpty(model.Provider);
-            var hasPath = !string.IsNullOrEmpty(model.Path);
-
             var htmlAttributes = new Dictionary<string, string>();
             try
             {
@@ -105,22 +101,14 @@ namespace DotNetNuke.Services.Tokens
                 throw new ArgumentException("HtmlAttributesAsString is malformed.");
             }
 
-            if (hasName && hasProvider && hasPath)
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, model.Provider, model.JsName, model.Version, htmlAttributes);
-            }
-            else if (hasName && hasProvider)
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, string.Empty, model.JsName, model.Version, htmlAttributes);
-            }
-            else if (hasProvider)
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, model.Provider, htmlAttributes);
-            }
-            else
-            {
-                ClientResourceManager.RegisterScript(this.page, model.Path, model.Priority, htmlAttributes);
-            }
+            ClientResourceManager.RegisterScript(
+                this.page,
+                model.Path,
+                model.Priority,
+                model.Provider ?? string.Empty,
+                model.JsName ?? string.Empty,
+                model.Version ?? string.Empty,
+                htmlAttributes);
         }
     }
 }
