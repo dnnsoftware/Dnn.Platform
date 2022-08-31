@@ -176,14 +176,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         public static void RegisterScript(Page page, string filePath)
         {
-            RegisterScript(page, filePath, new Dictionary<string, string>());
+            RegisterScript(page, filePath, htmlAttributes: null);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, Dictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, FileOrder.Js.DefaultPriority, htmlAttributes);
         }
@@ -194,7 +194,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public static void RegisterScript(Page page, string filePath, int priority)
         {
-            RegisterScript(page, filePath, priority, new Dictionary<string, string>());
+            RegisterScript(page, filePath, priority, htmlAttributes: null);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
@@ -202,7 +202,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, int priority, Dictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, int priority, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, priority, DefaultJsProvider, htmlAttributes);
         }
@@ -213,7 +213,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public static void RegisterScript(Page page, string filePath, FileOrder.Js priority)
         {
-            RegisterScript(page, filePath, priority, new Dictionary<string, string>());
+            RegisterScript(page, filePath, priority, htmlAttributes: null);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
@@ -221,7 +221,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, Dictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, (int)priority, DefaultJsProvider, htmlAttributes);
         }
@@ -233,7 +233,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider)
         {
-            RegisterScript(page, filePath, priority, provider, new Dictionary<string, string>());
+            RegisterScript(page, filePath, priority, provider, htmlAttributes: null);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
@@ -242,7 +242,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         /// /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider, Dictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, (int)priority, provider, htmlAttributes);
         }
@@ -254,7 +254,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            RegisterScript(page, filePath, priority, provider, new Dictionary<string, string>());
+            RegisterScript(page, filePath, priority, provider, htmlAttributes: null);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
@@ -263,7 +263,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the script tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, int priority, string provider, Dictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, int priority, string provider, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, priority, provider, string.Empty, string.Empty, htmlAttributes);
         }
@@ -277,7 +277,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="version">Version number of framework.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider, string name, string version)
         {
-            RegisterScript(page, filePath, priority, provider, name, version, new Dictionary<string, string>());
+            RegisterScript(page, filePath, priority, provider, name, version, htmlAttributes: null);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
@@ -295,7 +295,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             string provider,
             string name,
             string version,
-            Dictionary<string, string> htmlAttributes)
+            IDictionary<string, string> htmlAttributes)
         {
             var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version, };
             if (htmlAttributes != null)
