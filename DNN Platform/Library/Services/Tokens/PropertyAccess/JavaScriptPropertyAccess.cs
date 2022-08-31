@@ -39,13 +39,21 @@ namespace DotNetNuke.Services.Tokens
                 model.Priority = (int)FileOrder.Js.DefaultPriority;
             }
 
-            if (!string.IsNullOrEmpty(model.JsName) && string.IsNullOrEmpty(model.Path))
+            if (string.IsNullOrEmpty(model.Path))
             {
                 RegisterInstalledLibrary(model);
-                return string.Empty;
             }
-
-            this.RegisterPath(model);
+            else
+            {
+                ClientResourceManager.RegisterScript(
+                    this.page,
+                    model.Path,
+                    model.Priority,
+                    model.Provider ?? string.Empty,
+                    model.JsName ?? string.Empty,
+                    model.Version ?? string.Empty,
+                    model.HtmlAttributes);
+            }
 
             return string.Empty;
         }
@@ -79,36 +87,6 @@ namespace DotNetNuke.Services.Tokens
             }
 
             JavaScript.RequestRegistration(model.JsName, version, specific);
-        }
-
-        private void RegisterPath(JavaScriptDto model)
-        {
-            var htmlAttributes = new Dictionary<string, string>();
-            try
-            {
-                if (!string.IsNullOrEmpty(model.HtmlAttributesAsString))
-                {
-                    var attributes = model.HtmlAttributesAsString.Split(',');
-                    foreach (var attribute in attributes)
-                    {
-                        var attributeParts = attribute.Split(':');
-                        htmlAttributes.Add(attributeParts[0], attributeParts[1]);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw new ArgumentException("HtmlAttributesAsString is malformed.");
-            }
-
-            ClientResourceManager.RegisterScript(
-                this.page,
-                model.Path,
-                model.Priority,
-                model.Provider ?? string.Empty,
-                model.JsName ?? string.Empty,
-                model.Version ?? string.Empty,
-                htmlAttributes);
         }
     }
 }

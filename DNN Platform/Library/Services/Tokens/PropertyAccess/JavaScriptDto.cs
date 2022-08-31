@@ -5,6 +5,8 @@
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Tokens
 {
+    using System.Collections.Generic;
+
     using Newtonsoft.Json;
 
     /// <summary>Data-transfer-object for javascript file registration.</summary>
@@ -35,7 +37,7 @@ namespace DotNetNuke.Services.Tokens
         public string Version { get; set; }
 
         /// <summary>Gets or sets the HTML attributes to include in the script tag.</summary>
-        [JsonProperty("htmlattributesasstring")]
-        public string HtmlAttributesAsString { get; set; }
+        [JsonProperty("htmlAttributes")]
+        public IDictionary<string, string> HtmlAttributes { get; set; }
     }
 }
