@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Web;
     using System.Web.Hosting;
@@ -298,10 +297,13 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             string version,
             Dictionary<string, string> htmlAttributes)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
-            if (htmlAttributes != null && htmlAttributes.Any())
+            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version, };
+            if (htmlAttributes != null)
             {
-                include.HtmlAttributesAsString = string.Join(",", htmlAttributes.Select(h => $"{h.Key}:{h.Value}"));
+                foreach (var attribute in htmlAttributes)
+                {
+                    include.HtmlAttributes[attribute.Key] = attribute.Value;
+                }
             }
 
             page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
