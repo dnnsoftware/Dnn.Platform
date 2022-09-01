@@ -73,7 +73,7 @@ dnn.extend(dnn, {
         /// <returns type="String" />
 		if (this.getVars()[key] != null)
 		{
-			var re = eval('/' + QUOTE_REPLACEMENT + '/g');
+			var re = new RegExp(QUOTE_REPLACEMENT, 'g');
 			return this.getVars()[key].replace(re, '"');
 		}
         return def;
@@ -1293,7 +1293,7 @@ dnn.dom.browser = new dnn.dom.browserObject();
 //-- shorthand functions.  Only define if not already present
 if (typeof($) == 'undefined')
 {
-eval("function $() {var ary = new Array(); for (var i=0; i<arguments.length; i++) {var arg = arguments[i]; var ctl; if (typeof arg == 'string') ctl = dnn.dom.getById(arg); else ctl = arg; if (ctl != null && typeof(Element) != 'undefined' && typeof(Element.extend) != 'undefined') Element.extend(ctl); if (arguments.length == 1) return ctl; ary[ary.length] = ctl;} return ary;}");
+    window.$ = function $() {var ary = new Array(); for (var i=0; i<arguments.length; i++) {var arg = arguments[i]; var ctl; if (typeof arg == 'string') ctl = dnn.dom.getById(arg); else ctl = arg; if (ctl != null && typeof(Element) != 'undefined' && typeof(Element.extend) != 'undefined') Element.extend(ctl); if (arguments.length == 1) return ctl; ary[ary.length] = ctl;} return ary;};
 }
 
 //image flickering

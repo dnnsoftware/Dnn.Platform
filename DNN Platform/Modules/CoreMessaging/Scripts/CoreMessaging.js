@@ -946,7 +946,7 @@
                     displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
                 }
             }).fail(function (xhr, status) {
-                displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescription + eval("(" + xhr.responseText + ")").ExceptionMessage, "dnnFormWarning");
+                displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescription + JSON.parse(xhr.responseText).ExceptionMessage, "dnnFormWarning");
             });
         };
 

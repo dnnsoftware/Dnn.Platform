@@ -675,7 +675,7 @@ define(['jquery',
       }, function (xhr) {
         var message = resx.QueryFailed;
         if (xhr.responseText) {
-          var response = eval('(' + xhr.responseText + ')');
+          var response = JSON.parse(xhr.responseText);
           if (response['Error'] || response['Message']) {
             message = response['Error'] || response['Message'];
           }
