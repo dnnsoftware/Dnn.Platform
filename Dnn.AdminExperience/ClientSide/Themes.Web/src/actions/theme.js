@@ -3,7 +3,7 @@ import ThemeService from "services/themeService";
 import Localization from "localization";
 
 function errorCallback(xhr) {
-    let response = eval("(" + xhr.responseText + ")");
+    let response = JSON.parse(xhr.responseText);
     let message = xhr.responseText;
     if (response && response.Message) {
         message = response.Message;
