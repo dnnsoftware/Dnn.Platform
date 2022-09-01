@@ -35,7 +35,7 @@
     "react-dom": "^16.6.3",
     "react-hot-loader": "4.8.5",
     "react-modal": "3.6.1",
-    "react-redux": "^6.0.0",
+    "react-redux": "^8.0.2",
     "redux": "^4.0.1",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.3.0",
