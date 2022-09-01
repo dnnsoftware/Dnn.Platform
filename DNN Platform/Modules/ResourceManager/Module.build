@@ -15,10 +15,7 @@
     </PropertyGroup>
     <Import Project="$(BuildScriptsPath)\Package.Targets" />
     <Import Project="$(BuildScriptsPath)\Module.Build"/>
-    <ItemGroup>
-        <Scripts Include="$(MSBuildProjectDirectory)\Scripts\**\*.*" />
-    </ItemGroup>
-    <Target Name="UpdateFiles">
+    <Target Name="CopyScripts" BeforeTargets="UpdateFiles">
         <PropertyGroup>
             <ComponentsDestinationFolder>$(MSBuildProjectDirectory)\Scripts\dnn-resource-manager</ComponentsDestinationFolder>
         </PropertyGroup>
@@ -27,7 +24,11 @@
         </ItemGroup>
         <RemoveDir Directories="$(ComponentsDestinationFolder)" />
         <Copy SourceFiles="@(ComponentsSource)" DestinationFolder="$(ComponentsDestinationFolder)" />
+    </Target>
+    <Target Name="UpdateFiles">
         <ItemGroup>
+            <Scripts Include="$(MSBuildProjectDirectory)\Scripts\**\*.*" />
+            <Resources Include="$(MSBuildProjectDirectory)\Scripts\**\*.*" />
             <Resources Remove="web.config" />
             <Resources Remove="web.Debug.config" />
             <Resources Remove="web.Release.config" />
