@@ -41,6 +41,11 @@ namespace DotNetNuke.UI.Modules.Html5
                     return this.request.QueryString.ToString();
                 case "applicationpath":
                     return this.request.ApplicationPath;
+                case "relativeapppath":
+                    // RelativeAppPath is like ApplicationPath, but will always end with a forward slash (/)
+                    return this.request.ApplicationPath.EndsWith("/")
+                        ? this.request.ApplicationPath
+                        : $"{this.request.ApplicationPath}/";
             }
 
             propertyNotFound = true;
