@@ -95,8 +95,16 @@ namespace DotNetNuke.Maintenance.Telerik
 
         private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
         {
-            return this.GetReferencedAssemblyNames(path, domain)
-                .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
+            try
+            {
+                return this.GetReferencedAssemblyNames(path, domain)
+                    .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception)
+            {
+                // If we can't get the referenced assemblies, then it can't depend on Telerik.
+                return false;
+            }
         }
 
         private string[] DirectoryGetFiles(string path, string searchPattern, SearchOption searchOption) =>
