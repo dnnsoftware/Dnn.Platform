@@ -81,9 +81,6 @@
                             $element("ul", { 'class': 'dnnButtonGroup' }).append(
                                 $element("li").append(
                                     $element("a", { href: "javascript:void(0);", 'class': 'upload-file active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))
-                                ),
-                                $element("li").append(
-                                    $element("a", { href: "javascript:void(0);", 'class': 'from-url' }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web))
                                 )
                             ),
                             this._$decompressOption = $element("span").append(
@@ -101,25 +98,6 @@
                             $element("div", { 'class': 'fu-dialog-drag-and-drop-area-message' })
                         )
                     ),
-                    $element("div", { style: 'display: none', 'class': 'fu-dialog-content-fileupload-web' }).append(
-                        $element("table", { 'class': 'fu-dialog-url-upload-area' }).append(
-                            $element("tbody").append(
-                                $element("tr").append(
-                                    $element("td").append(
-                                        $element("div").append(
-                                            this._$url = $element("input", { type: 'text', title: this.options.resources.urlTooltip, placeholder: this.options.resources.urlTooltip })
-                                                .onEnter($.proxy(this._uploadByUrl, this))
-                                                .on("change keyup paste input propertychange", $.proxy(this._validateUrl, this))
-                                                .prefixInput({ prefix: "http" })
-                                        )
-                                    ),
-                                    $element("td").append(
-                                        $element("a", { href: 'javascript:void(0);', 'class': 'dnnSecondaryAction' }).text(this.options.resources.uploadFromWebButtonText).on("click", $.proxy(this._uploadByUrl, this))
-                                    )
-                                )
-                            )
-                        )
-                    ),
                     $element("div", { style: 'display: none', 'class': 'fu-fileupload-statuses-container' }).append(
                         $element("ul", { 'class': 'fu-fileupload-statuses' })
                     )
@@ -127,16 +105,6 @@
             );
 
             return dialog;
-        },
-
-        _validateUrl: function() {
-            var url = this._$url.val();
-            if (dnn.isUrl(url)) {
-                this._$url.removeClass("fu-dialog-url-error");
-            }
-            else {
-                this._$url.addClass("fu-dialog-url-error");
-            }
         },
 
         _getFileExtension: function(fileName) {
@@ -159,55 +127,6 @@
                 }
             }
             return false;
-        },
-
-        _uploadByUrl: function(eventObject) {
-            var url = this._$url.val();
-            if (!dnn.isUrl(url)) {
-                this._$url.addClass("fu-dialog-url-error");
-                return;
-            }
-
-            if (!this._isValidExtension(url, this.options.extensions)) {
-                this._$url.addClass("fu-dialog-url-error");
-                $.dnnAlert({ title: this.options.resources.errorDialogTitle || "Error", text: this.options.resources.invalidFileExtensions });
-                return;
-            }
-
-            this._$url.removeClass("fu-dialog-url-error");
-            this._$url.val("");
-
-            var status = this._getInitializedStatusElement({ fileName: url }).data("status");
-            this._submitUrl(status);
-        },
-
-        _submitUrl: function (status) {
-            var serviceUrl = $.dnnSF().getServiceRoot("InternalServices");
-            var serviceSettings = {
-                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
-                url: serviceUrl + "FileUpload/UploadFromUrl",
-                type: "POST",
-                async: true,
-                success: $.proxy(this._onUploadByUrl, this, [status.fileName]),
-                error: $.onAjaxError
-            };
-            serviceSettings.data = {
-                 Url: status.fileName, 
-                 Folder: this._selectedPath(), 
-                 Overwrite: status.overwrite, 
-                 Unzip: this._extract(), 
-                 Filter: this.options.extensions.join(","), 
-                 IsHostMenu: this.options.parameters.isHostPortal,
-                 ValidationCode: this.options.validationCode
-            };
-            $.extend(serviceSettings.data, this.options.parameters);
-            $.ajax(serviceSettings);
-        },
-
-        _onUploadByUrl: function (url, data, textStatus, jqXhr) {
-            this._processResponse(url[0], data);
-            
-            this.$element.trigger($.Event("onfileuploadcomplete"), [data]);
         },
 
         _createFileUploadStatusElement: function (status) {
@@ -426,12 +345,7 @@
         },
 
         _submitResource: function(status) {
-            if (status.data) {
-                this._submitFile(status);
-            }
-            else {
-                this._submitUrl(status);
-            }
+            this._submitFile(status);
         },
 
         _submitFile: function(status) {

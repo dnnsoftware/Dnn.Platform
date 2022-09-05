@@ -1,0 +1,24 @@
+:host {
+    display: block;
+}
+table{
+    border-collapse: collapse;
+    thead{
+        tr{
+            th{
+                padding: 0.5em;
+                text-align: left;
+                font-size: 1.2em;
+            }
+        }
+    }
+    tr{
+        &:nth-child(even){
+            background-color: #f2f2f2;
+        }
+        td{
+            padding: 0.5em;
+            font-size: 1.1em;
+        }
+    }
+}

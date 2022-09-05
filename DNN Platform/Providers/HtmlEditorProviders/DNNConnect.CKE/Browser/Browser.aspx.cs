@@ -1642,7 +1642,16 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             IFolderInfo startingFolderInfo = null;
 
-            if (!this.currentSettings.BrowserRootDirId.Equals(-1))
+            if (this.browserModus == "Image" && !this.currentSettings.BrowserRootDirForImgId.Equals(-1))
+            {
+                var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirForImgId);
+
+                if (rootFolder != null)
+                {
+                    startingFolderInfo = rootFolder;
+                }
+            }
+            else if (!this.currentSettings.BrowserRootDirId.Equals(-1))
             {
                 // var rootFolder = new FolderController().GetFolderInfo(this.portalSettings.PortalId, this.currentSettings.BrowserRootDirId);
                 var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirId);
@@ -2386,7 +2395,18 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 var currentFolderInfo = this.GetCurrentFolder();
 
-                if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
+                if (command == "ImageUpload" && !this.currentSettings.UploadDirForImgId.Equals(-1) && !this.currentSettings.SubDirs)
+                {
+                    var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirForImgId);
+
+                    if (uploadFolder != null)
+                    {
+                        uploadPhysicalPath = uploadFolder.PhysicalPath;
+
+                        currentFolderInfo = uploadFolder;
+                    }
+                }
+                else if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
                 {
                     var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirId);
 
@@ -2399,17 +2419,86 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
 
                 string sFilePath = Path.Combine(uploadPhysicalPath, fileName);
-
+                DotNetNuke.Services.FileSystem.IFileInfo uploadedFile;
                 if (File.Exists(sFilePath))
                 {
                     iCounter++;
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
+                }
 
+                int maxWidth = this.currentSettings.ResizeWidthUpload;
+                int maxHeight = this.currentSettings.ResizeHeightUpload;
+                if (maxWidth <= 0 && maxHeight <= 0)
+                {
                     FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
                 }
                 else
                 {
-                    FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                    // check if the size of the image is within boundaries
+                    using (var uplImage = Image.FromStream(file.InputStream))
+                    {
+                        if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
+                        {
+                            // it's too big: we need to resize
+                            int newWidth, newHeight;
+
+                            // which determines the max: height or width?
+                            double ratioWidth = (double)maxWidth / (double)uplImage.Width;
+                            double ratioHeight = (double)maxHeight / (double)uplImage.Height;
+                            if (ratioWidth < ratioHeight)
+                            {
+                                // max width needs to be used
+                                newWidth = maxWidth;
+                                newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
+                            }
+                            else
+                            {
+                                // max height needs to be used
+                                newHeight = maxHeight;
+                                newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
+                            }
+
+                            // Add Compression to Jpeg Images
+                            if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
+                            {
+                                ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
+
+                                Encoder myEncoder = Encoder.Quality;
+                                EncoderParameters encodeParams = new EncoderParameters(1);
+                                EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
+                                encodeParams.Param[0] = encodeParam;
+
+                                using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                                {
+                                    using (Graphics g = Graphics.FromImage(dst))
+                                    {
+                                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                        g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
+                                    }
+
+                                    using (var stream = new MemoryStream())
+                                    {
+                                        dst.Save(stream, jpgEncoder, encodeParams);
+                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // Finally Create a new Resized Image
+                                using (Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
+                                {
+                                    var imageFormat = uplImage.RawFormat;
+                                    using (var stream = new MemoryStream())
+                                    {
+                                        newImage.Save(stream, imageFormat);
+                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (command == "EasyImageUpload")

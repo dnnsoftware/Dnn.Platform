@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -307,6 +308,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <inheritdoc/>
         [XmlIgnore]
+        [JsonIgnore]
         public int PortalId { get; set; }
 
         /// <inheritdoc/>
@@ -461,6 +463,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public bool HasBeenPublished { get; private set; }
 
         /// <summary>
@@ -470,6 +473,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <inheritdoc/>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get

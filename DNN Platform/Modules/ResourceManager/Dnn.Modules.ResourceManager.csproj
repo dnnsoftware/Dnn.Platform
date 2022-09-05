@@ -57,8 +57,8 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
@@ -107,6 +107,7 @@
     <Compile Include="Components\Models\ThumbnailContent.cs" />
     <Compile Include="Components\PermissionHelper.cs" />
     <Compile Include="Components\PermissionsManager.cs" />
+    <Compile Include="Components\ResourceManagerController.cs" />
     <Compile Include="Components\SearchController.cs" />
     <Compile Include="Components\SettingsManager.cs" />
     <Compile Include="Components\ThumbnailsManager.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Services\Dto\MoveFolderRequest.cs" />
     <Compile Include="Services\Dto\Permission.cs" />
     <Compile Include="Services\Dto\Permissions.cs" />
+    <Compile Include="Services\Dto\RoleGroupDto.cs" />
     <Compile Include="Services\Dto\RolePermission.cs" />
     <Compile Include="Services\Dto\ThumbnailDownloadRequest.cs" />
     <Compile Include="Services\Dto\UserPermission.cs" />
@@ -145,13 +147,6 @@
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="View.ascx.cs">
-      <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="View.ascx.designer.cs">
-      <DependentUpon>View.ascx</DependentUpon>
     </Compile>
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
@@ -195,9 +190,7 @@
     <Content Include="License.txt" />
     <Content Include="module.css" />
     <Content Include="ReleaseNotes.txt" />
-    <Content Include="Scripts\dnn.Localization.js" />
     <Content Include="Settings.ascx" />
-    <Content Include="View.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ResourceManager.dnn">
@@ -216,6 +209,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Dnn.AdminExperience\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
+      <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
+      <Name>Dnn.PersonaBar.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
@@ -256,6 +253,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="View.html" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -267,6 +265,9 @@
   <ItemGroup>
     <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

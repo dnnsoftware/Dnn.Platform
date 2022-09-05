@@ -31,7 +31,6 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <summary>
         /// Gets a dictionary of the resource manager localization values.
         /// </summary>
-        /// <param name="culture">The culture for which to get the localized texts.</param>
         /// <returns>
         /// A dictionary of the keys and values where the key is the localization key
         /// and the value is the localized text for the requested culture.
@@ -39,8 +38,9 @@ namespace Dnn.Modules.ResourceManager.Services
         [HttpGet]
         [AllowAnonymous]
         [DnnPageEditor]
-        public HttpResponseMessage GetResources(string culture)
+        public HttpResponseMessage GetResources()
         {
+            var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
                 this.localizationController.GetLocalizedDictionary(Constants.ViewResourceFileName, culture, Constants.ResourceManagerLocalization));

@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
@@ -99,6 +100,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get { return this.NotificationTypeId; }
