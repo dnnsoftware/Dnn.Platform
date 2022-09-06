@@ -13,5 +13,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         /// Gets or sets the package name.
         /// </summary>
         string PackageName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to delete the installed files.
+        /// </summary>
+        bool DeleteFiles { get; set; }
     }
 }

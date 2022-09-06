@@ -38,6 +38,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         public string PackageName { get; set; }
 
         /// <inheritdoc/>
+        [Required]
+        public bool DeleteFiles { get; set; }
+
+        /// <inheritdoc/>
         protected override void ExecuteInternal()
         {
             this.Steps = new List<IStep>(new[]
@@ -76,7 +80,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         {
             var step = this.GetService<IUninstallPackageStep>();
             step.PackageName = this.PackageName;
-            step.DeleteFiles = true;
+            step.DeleteFiles = this.DeleteFiles;
 
             return step;
         }
