@@ -1,0 +1,94 @@
+﻿#telerikRemoval input[type=checkbox] {
+    margin-right: 12px;
+}
+
+#telerikRemoval table {
+    width: 100%;
+}
+
+#uninstallReport td, #uninstallReport th {
+    padding: 12px;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+#telerikRemoval .telerikVersion {
+    font-weight: bold;
+    color: #ec3d46;
+}
+
+#uninstallReport th {
+    font-size: initial;
+}
+
+#telerikRemoval td:nth-child(2), #telerikRemoval th:nth-child(2) {
+    text-align: center;
+}
+
+#telerikRemoval:before {
+    background: rgba(255,255,255,0.8);
+    content: " ";
+    display: block;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    transition: all .3s;
+    transition-timing-function: ease-in;
+    width: 99%;
+    z-index: -1;
+}
+
+#telerikRemoval.running:before {
+    z-index: 4000;
+    opacity: 1;
+}
+
+#telerikRemoval .loading {
+    animation: ld-spin 1s infinite linear;
+    box-sizing: content-box;
+    color: #21a3da;
+    display: inline-block;
+    font-size: 3em;
+    height: 1em;
+    left: 50%;
+    margin: -0.5em;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform-origin: 50% 50%;
+    transition: all .1s;
+    transition-timing-function: ease-in;
+    width: 1em;
+    z-index: -1;
+}
+
+#telerikRemoval .loading:after {
+    backface-visibility: hidden;
+    border-radius: 50%;
+    border: 0.3em solid currentColor;
+    border-left-color: transparent;
+    box-sizing: border-box;
+    content: " ";
+    display: block;
+    height: 2em;
+    transform-origin: 0 0;
+    transform: translateZ(0) scale(0.5);
+    width: 2em;
+}
+
+#telerikRemoval.running .loading {
+    opacity: 1;
+    z-index: 4001;
+}
+
+@keyframes ld-spin {
+    0% {
+        animation-timing-function: cubic-bezier(0.5856,0.0703,0.4143,0.9297);
+        transform: rotate(0)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}

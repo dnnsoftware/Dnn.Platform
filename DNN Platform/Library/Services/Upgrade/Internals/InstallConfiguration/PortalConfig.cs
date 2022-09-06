@@ -43,5 +43,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
         public string HomeDirectory { get; set; }
 
         public IList<string> PortAliases { get; set; }
+
+        public bool IsSsl { get; set; }
     }
 }

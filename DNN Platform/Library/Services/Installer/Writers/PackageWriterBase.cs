@@ -6,7 +6,8 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text;
+  using System.IO.Compression;
+  using System.Text;
     using System.Text.RegularExpressions;
     using System.Xml;
     using System.Xml.XPath;
@@ -15,7 +16,6 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
-    using ICSharpCode.SharpZipLib.Zip;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -625,7 +625,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        private void AddFilesToZip(ZipOutputStream stream, IDictionary<string, InstallFile> files, string basePath)
+        private void AddFilesToZip(ZipArchive stream, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
             {
@@ -655,7 +655,6 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void CreateZipFile(string zipFileName)
         {
-            int CompressionLevel = 9;
             var zipFile = new FileInfo(zipFileName);
 
             string ZipFileShortName = zipFile.Name;
@@ -666,11 +665,10 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, ZipFileShortName));
                 strmZipFile = File.Create(zipFileName);
-                ZipOutputStream strmZipStream = null;
+                ZipArchive strmZipStream = null;
                 try
                 {
-                    strmZipStream = new ZipOutputStream(strmZipFile);
-                    strmZipStream.SetLevel(CompressionLevel);
+                    strmZipStream = new ZipArchive(strmZipFile);
 
                     // Add Files To zip
                     this.AddFilesToZip(strmZipStream, this._Assemblies, string.Empty);
@@ -689,8 +687,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     if (strmZipStream != null)
                     {
-                        strmZipStream.Finish();
-                        strmZipStream.Close();
+                        strmZipStream.Dispose();
                     }
                 }
 

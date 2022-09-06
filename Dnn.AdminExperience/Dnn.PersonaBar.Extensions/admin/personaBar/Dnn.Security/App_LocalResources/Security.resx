@@ -597,17 +597,11 @@
   <data name="GlobalSetting.Text" xml:space="preserve">
     <value>This is a global setting. Changes to this setting will affect all of your sites.</value>
   </data>
-  <data name="plSSLEnabled.Text" xml:space="preserve">
-    <value>SSL Enabled</value>
-  </data>
-  <data name="plSSLEnabled.Help" xml:space="preserve">
-    <value>Check the box if an SSL certificate has been installed for use on this site.</value>
-  </data>
   <data name="plSSLEnforced.Text" xml:space="preserve">
-    <value>SSL Enforced</value>
+    <value>Mixed Mode</value>
   </data>
   <data name="plSSLEnforced.Help" xml:space="preserve">
-    <value>Check the box if unsecure pages will not be accessible with SSL (HTTPS).</value>
+    <value>Check the box if pages marked as insecure should not be accessible through HTTPS and should always be directed to HTTP.</value>
   </data>
   <data name="plSSLURL.Text" xml:space="preserve">
     <value>SSL URL</value>
@@ -1176,5 +1170,32 @@
   </data>
   <data name="Security_UserNameMinLength.ErrorMessage" xml:space="preserve">
     <value>Minimum Username length must be an integer greater than 0 and less than or equal to 100.</value>
+  </data>
+  <data name="SslOn.Help" xml:space="preserve">
+    <value>Use this mode to serve all content secure</value>
+  </data>
+  <data name="SslAdvanced.Help" xml:space="preserve">
+    <value>In this mode your website will serve both secure and unsecure pages depending on the setting on the page. Note you have [NumberOfNonSecureTabs] non secure pages on this site.</value>
+  </data>
+  <data name="SslOff.Help" xml:space="preserve">
+    <value>Use this when you don't have an SSL certificate installed on your server</value>
+  </data>
+  <data name="SslAdvanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="SslOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SslOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Text" xml:space="preserve">
+    <value>Set All Pages To Secure</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Completed" xml:space="preserve">
+    <value>All pages of the site have been set to be secure</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Confirm" xml:space="preserve">
+    <value>Do you wish to set all pages of this site to be only accessible through https?</value>
   </data>
 </root>

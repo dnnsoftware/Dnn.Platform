@@ -476,6 +476,11 @@ namespace DotNetNuke.Abstractions.Portals
         int SplashTabId { get; set; }
 
         /// <summary>
+        /// Gets a value indicating what the SSL setup is for this portal.
+        /// </summary>
+        Security.SiteSslSetup SSLSetup { get; }
+
+        /// <summary>
         /// Gets a value indicating whether SSL is enabled for the portal.
         /// </summary>
         bool SSLEnabled { get; }

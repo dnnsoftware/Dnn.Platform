@@ -10,20 +10,31 @@ namespace DotNetNuke.Services.Install
     using System.Linq;
     using System.Threading;
     using System.Web;
+    using System.Web.Services;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Maintenance.Telerik;
+    using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Security.Membership;
-    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization.Internal;
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Services.UserRequest;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
 
     using Globals = DotNetNuke.Common.Globals;
     using Localization = DotNetNuke.Services.Localization.Localization;
@@ -37,9 +48,33 @@ namespace DotNetNuke.Services.Install
     /// -----------------------------------------------------------------------------
     public partial class UpgradeWizard : PageBase
     {
+        /// <summary>
+        /// Client ID of the hidden input containing the Telerik anti-forgery token.
+        /// </summary>
+        protected static readonly string TelerikAntiForgeryTokenClientID = "telerikAntiForgeryToken";
+
+        /// <summary>
+        /// Client Id of the Telerik unintall radio buttons.
+        /// </summary>
+        protected static readonly string TelerikUninstallOptionClientID = "telerikUninstallOption";
+
+        /// <summary>
+        /// Form value when user selects Yes.
+        /// </summary>
+        protected static readonly string OptionYes = "Y";
+
+        /// <summary>
+        /// Form value when user selects No.
+        /// </summary>
+        protected static readonly string OptionNo = "N";
+
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
         protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeWizard));
+
         private static string _culture;
         private static string[] _supportedLanguages;
 
@@ -98,7 +133,7 @@ namespace DotNetNuke.Services.Install
 
         private static bool IsAuthenticated { get; set; }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)
         {
             string errorMsg;
@@ -107,7 +142,52 @@ namespace DotNetNuke.Services.Install
             return new Tuple<bool, string>(result, errorMsg);
         }
 
-        [System.Web.Services.WebMethod]
+        /// <summary>
+        /// Returns information to render the Security tab.
+        /// </summary>
+        /// <param name="accountInfo">Username and password to validate host user.</param>
+        /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
+        [WebMethod]
+        public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
+        {
+            string errorMsg;
+            var result = VerifyHostUser(accountInfo, out errorMsg);
+
+            if (!result)
+            {
+                return Tuple.Create(false, errorMsg, default(SecurityTabResult));
+            }
+
+            var telerikUtils = CreateTelerikUtils();
+
+            if (!telerikUtils.TelerikIsInstalled())
+            {
+                return Tuple.Create(
+                    true,
+                    default(string),
+                    GetTelerikNotInstalledResult());
+            }
+
+            var version = telerikUtils.GetTelerikVersion().ToString();
+
+            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                .Select(a => Path.GetFileName(a));
+
+            if (!assemblies.Any())
+            {
+                return Tuple.Create(
+                    true,
+                    default(string),
+                    GetTelerikInstalledButNotUsedResult(version));
+            }
+
+            return Tuple.Create(
+                true,
+                default(string),
+                GetTelerikInstalledAndUsedResult(assemblies, version));
+        }
+
+        [WebMethod]
         public static void RunUpgrade(Dictionary<string, string> accountInfo)
         {
             string errorMsg;
@@ -115,6 +195,19 @@ namespace DotNetNuke.Services.Install
 
             if (result == true)
             {
+                if (!TelerikAntiForgeryTokenIsValid(accountInfo))
+                {
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikInvalidAntiForgeryToken"));
+                }
+
+                if (!accountInfo.ContainsKey(TelerikUninstallOptionClientID))
+                {
+                    throw new InvalidOperationException(LocalizeStringStatic("TelerikUninstallOptionMissing"));
+                }
+
+                var option = accountInfo[TelerikUninstallOptionClientID];
+                SetHostSetting(TelerikUninstallOptionClientID, option);
+
                 _upgradeRunning = false;
                 LaunchUpgrade();
 
@@ -123,7 +216,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static object GetInstallationLog(int startRow)
         {
             if (IsAuthenticated == false)
@@ -226,7 +319,7 @@ namespace DotNetNuke.Services.Install
             if (!this.Page.IsPostBack)
             {
                 // Reset the accept terms flag
-                HostController.Instance.Update("AcceptDnnTerms", "N");
+                HostController.Instance.Update("AcceptDnnTerms", OptionNo);
                 if (!File.Exists(StatusFile))
                 {
                     File.CreateText(StatusFile).Close();
@@ -234,6 +327,261 @@ namespace DotNetNuke.Services.Install
 
                 Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
             }
+        }
+
+#pragma warning disable SA1124 // Do not use regions
+        #region Security Screen Methods
+        private static ITelerikUtils CreateTelerikUtils()
+#pragma warning restore SA1124 // Do not use regions
+        {
+            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
+        }
+
+        private static SecurityTabResult GetTelerikNotInstalledResult()
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
+                    CreateHeading("TelerikNotInstalledHeading"),
+                    CreateParagraph("TelerikNotInstalledInfo")),
+            };
+        }
+
+        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(string version)
+        {
+            var yesButton = new ListItem(LocalizeStringStatic("TelerikUninstallYes"), OptionYes);
+            var noButton = new ListItem(LocalizeStringStatic("TelerikUninstallNo"), OptionNo);
+
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph("TelerikInstalledButNotUsedInfo"),
+                    CreateParagraph("TelerikUninstallInfo"),
+                    new RadioButtonList
+                    {
+                        ID = TelerikUninstallOptionClientID,
+                        Items = { yesButton, noButton },
+                        SelectedValue = OptionYes,
+                    }),
+            };
+        }
+
+        private static SecurityTabResult GetTelerikInstalledAndUsedResult(
+            IEnumerable<string> assemblies, string version)
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph($"TelerikInstalledAndUsedInfo"),
+                    CreateTable(assemblies, maxRows: 3, maxColumns: 4),
+                    CreateParagraph($"TelerikInstalledAndUsedWarning")),
+            };
+        }
+
+        private static Control CreateTelerikAntiForgeryTokenField() =>
+            CreateHiddenField(TelerikAntiForgeryTokenClientID, CreateTelerikAntiForgeryToken());
+
+        private static Control CreateTelerikInstalledHeader(string version)
+        {
+            return CreateBundle(
+                CreateHeading("TelerikInstalledHeading"),
+                CreateTelerikInstalledDetectedParagraph(version),
+                CreateParagraph("TelerikInstalledBulletin"));
+        }
+
+        private static Control CreateTelerikInstalledDetectedParagraph(string version)
+        {
+            return new HtmlGenericControl("p")
+            {
+                Controls =
+                {
+                    new Label { Text = LocalizeStringStatic("TelerikInstalledDetected") },
+                    new Literal { Text = " " },
+                    new Label { Text = version, CssClass = "telerikVersion" },
+                },
+            };
+        }
+
+        private static Control CreateBundle(params Control[] controls)
+        {
+            var bundle = new PlaceHolder();
+
+            foreach (var control in controls)
+            {
+                bundle.Controls.Add(control);
+            }
+
+            return bundle;
+        }
+
+        private static Control CreateHeading(string localizationKey) => CreateLabel("h4", localizationKey);
+
+        private static Control CreateParagraph(string localizationKey) => CreateLabel("p", localizationKey);
+
+        private static Control CreateLabel(string tag, string localizationKey)
+        {
+            var control = new HtmlGenericControl(tag);
+
+            control.Controls.Add(new Label
+            {
+                Text = LocalizeStringStatic(localizationKey),
+            });
+
+            return control;
+        }
+
+        private static Control CreateHiddenField(string id, string value)
+        {
+            return new HiddenField
+            {
+                ID = id,
+                Value = value,
+            };
+        }
+
+        private static Table CreateTable(IEnumerable<string> items, int maxRows, int maxColumns)
+        {
+            var capacity = maxRows * maxColumns;
+
+            var row = new TableRow();
+            var list = StartNewColumn(row);
+
+            foreach (var extension in items.Take(capacity - 1))
+            {
+                list.Items.Add(new ListItem(extension));
+
+                if (list.Items.Count == maxRows)
+                {
+                    list = StartNewColumn(row);
+                }
+            }
+
+            if (capacity < items.Count())
+            {
+                list.Items.Add(new ListItem("..."));
+            }
+
+            foreach (TableCell cell in row.Cells)
+            {
+                cell.Width = Unit.Percentage(100.0 / row.Cells.Count);
+            }
+
+            var table = new Table
+            {
+                Rows = { row },
+                Width = Unit.Percentage(100.0),
+            };
+
+            return table;
+        }
+
+        private static ListControl StartNewColumn(TableRow row)
+        {
+            var list = new BulletedList();
+
+            var cell = new TableCell
+            {
+                Controls = { list },
+                VerticalAlign = VerticalAlign.Top,
+            };
+
+            row.Cells.Add(cell);
+
+            return list;
+        }
+
+        private static string RenderControls(params Control[] controls)
+        {
+            return RenderControl(CreateBundle(controls));
+        }
+
+        private static string RenderControl(Control control)
+        {
+            using (var textWriter = new StringWriter())
+            using (var htmlWriter = new HtmlTextWriter(textWriter))
+            {
+                control.RenderControl(htmlWriter);
+                return textWriter.ToString();
+            }
+        }
+
+        private static string CreateTelerikAntiForgeryToken()
+        {
+            var secret = GetHostSetting("GUID");
+            var salt = new Random().Next(int.MaxValue);
+            var token = new { secret, salt };
+            var json = JsonConvert.SerializeObject(token);
+
+            return Encrypt(json);
+        }
+
+        private static bool TelerikAntiForgeryTokenIsValid(Dictionary<string, string> accountInfo)
+        {
+            if (!accountInfo.ContainsKey(TelerikAntiForgeryTokenClientID))
+            {
+                return false; // token missing somehow.
+            }
+
+            try
+            {
+                var encrypted = accountInfo[TelerikAntiForgeryTokenClientID];
+                var json = Decrypt(encrypted);
+                dynamic token = JsonConvert.DeserializeObject(json);
+                var expected = GetHostSetting("GUID");
+                if (token.secret != expected)
+                {
+                    return false; // token mismatch.
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return false; // malformed token.
+            }
+
+            return true;
+        }
+        #endregion
+
+        private static string Encrypt(string token)
+        {
+            return CryptographyProvider.Instance().EncryptString(token, GetHostSetting("GUID"));
+        }
+
+        private static string Decrypt(string token)
+        {
+            return CryptographyProvider.Instance().DecryptString(token, GetHostSetting("GUID"));
+        }
+
+        private static string GetHostSetting(string key)
+        {
+            return Globals.DependencyProvider
+                .GetRequiredService<IHostSettingsService>()
+                .GetSettingsDictionary()[key];
+        }
+
+        private static void SetHostSetting(string key, string value, bool isSecure = false)
+        {
+            var setting = new ConfigurationSetting
+            {
+                IsSecure = isSecure,
+                Key = key,
+                Value = value,
+            };
+
+            Globals.DependencyProvider
+                .GetRequiredService<IHostSettingsService>()
+                .Update(setting);
         }
 
         private static void GetInstallerLocales()
@@ -359,6 +707,9 @@ namespace DotNetNuke.Services.Install
 
             _currentStep = null;
             _upgradeProgress = 100;
+
+            Globals.DependencyProvider.GetService<IDamUninstaller>().Execute();
+
             CurrentStepActivity(Localization.GetString("UpgradeDone", LocalResourceFile));
 
             // indicate we are done
@@ -418,7 +769,7 @@ namespace DotNetNuke.Services.Install
                 IsAuthenticated = true;
             }
 
-            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
+            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != OptionYes))
             {
                 result = false;
                 errorMsg = LocalizeStringStatic("AcceptTerms.Required");

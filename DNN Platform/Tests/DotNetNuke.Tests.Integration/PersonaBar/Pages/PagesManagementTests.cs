@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         {
             var connector = WebApiTestHelper.LoginHost();
 
-            var postData = new { SSLEnabled = sslEnabled, SSLEnforced = false, SSLURL = string.Empty, STDURL = string.Empty, SSLOffloadHeader = string.Empty };
+            var postData = new { SSLSetup = 2, SSLEnforced = false, SSLURL = string.Empty, STDURL = string.Empty, SSLOffloadHeader = string.Empty };
             connector.PostJson("API/PersonaBar/Security/UpdateSslSettings", postData);
         }
 

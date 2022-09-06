@@ -9,6 +9,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -104,6 +105,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
@@ -125,7 +127,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            // Call the base classes fill method to ppoulate base class proeprties
+            // Call the base classes fill method to populate base class properties
             this.FillInternal(dr);
             this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
             this.TabID = Null.SetNullInteger(dr["TabID"]);

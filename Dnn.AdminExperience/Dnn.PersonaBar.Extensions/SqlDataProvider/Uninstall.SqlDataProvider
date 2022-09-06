@@ -36,6 +36,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwne
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}SecurityAnalyzer_GetModifiedSettings]
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PersonaBar_GetPortalStats]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPortalStats]
+GO
 
 /************************************************************/
 /***** Servers SqlDataProvider                          *****/

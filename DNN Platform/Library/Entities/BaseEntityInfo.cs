@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// BaseEntityInfo provides auditing fields for Core tables.
@@ -32,6 +33,7 @@ namespace DotNetNuke.Entities
         /// <returns>An Integer.</returns>
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public int CreatedByUserID { get; internal set; }
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace DotNetNuke.Entities
         /// <returns>A DateTime.</returns>
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public DateTime CreatedOnDate { get; private set; }
 
         /// <summary>
@@ -48,6 +51,7 @@ namespace DotNetNuke.Entities
         /// <returns>An Integer.</returns>
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public int LastModifiedByUserID { get; internal set; }
 
         /// <summary>
@@ -56,6 +60,7 @@ namespace DotNetNuke.Entities
         /// <returns>A DateTime.</returns>
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public DateTime LastModifiedOnDate { get; private set; }
 
         /// <summary>

@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Library.Model
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
@@ -42,6 +43,7 @@ namespace Dnn.PersonaBar.Library.Model
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get
