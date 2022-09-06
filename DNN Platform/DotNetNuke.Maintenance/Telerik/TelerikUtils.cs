@@ -10,6 +10,7 @@ namespace DotNetNuke.Maintenance.Telerik
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Instrumentation;
 
     /// <inheritdoc />
     public class TelerikUtils : ITelerikUtils
@@ -34,17 +35,20 @@ namespace DotNetNuke.Maintenance.Telerik
         };
 
         private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly ILog log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TelerikUtils"/> class.
         /// </summary>
-        /// <param name="applicationStatusInfo">
-        /// An instance of <see cref="IApplicationStatusInfo"/>.
-        /// </param>
-        public TelerikUtils(IApplicationStatusInfo applicationStatusInfo)
+        /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
+        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        public TelerikUtils(
+            IApplicationStatusInfo applicationStatusInfo,
+            ILoggerSource loggerSource)
         {
             this.applicationStatusInfo = applicationStatusInfo
                 ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
+            this.log = loggerSource.GetLogger(nameof(TelerikUtils));
         }
 
         /// <inheritdoc />
@@ -95,8 +99,17 @@ namespace DotNetNuke.Maintenance.Telerik
 
         private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
         {
-            return this.GetReferencedAssemblyNames(path, domain)
-                .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
+            try
+            {
+                return this.GetReferencedAssemblyNames(path, domain)
+                    .Any(assemblyName => assemblyName.StartsWith("Telerik", StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                // If we can't get the referenced assemblies, then it can't depend on Telerik.
+                this.log.Warn("Could not determine Telerik dependencies on some assemblies.", ex);
+                return false;
+            }
         }
 
         private string[] DirectoryGetFiles(string path, string searchPattern, SearchOption searchOption) =>
