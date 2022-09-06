@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/",
         };
 
-        private static readonly int DefaultDimension = 0;
+        private static readonly int DefaultDimension = 10;
         private string _defaultImageFile = string.Empty;
 
         /// <summary>
