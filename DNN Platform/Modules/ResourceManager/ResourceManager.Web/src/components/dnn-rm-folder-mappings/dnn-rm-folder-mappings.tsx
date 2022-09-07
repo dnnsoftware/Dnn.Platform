@@ -68,18 +68,11 @@ export class DnnRmFolderMappings {
                 }
                 {this.addFolderTypeUrl &&
                     <div class="controls">
-                        <dnn-button
-                            type='primary'
-                            reversed
-                            onClick={() => this.dismiss()}
-                        >
-                            Cancel
+                        <dnn-button reversed onClick={() => this.dismiss()}>
+                            {state.localization?.Cancel}
                         </dnn-button>
-                        <dnn-button
-                            type='primary'
-                            onClick={() => window.location.href = this.addFolderTypeUrl}
-                        >
-                            Add Folder Type
+                        <dnn-button onClick={() => window.location.href = this.addFolderTypeUrl}>
+                            {state.localization?.AddFolderType}
                         </dnn-button>
                     </div>
                 }

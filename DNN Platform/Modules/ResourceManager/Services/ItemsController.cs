@@ -12,6 +12,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Web;
+    using System.Web.Hosting;
     using System.Web.Http;
 
     using Dnn.Modules.ResourceManager.Components;
@@ -660,7 +661,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private static string GetFileIconUrl(string extension)
         {
-            if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
+            if (!string.IsNullOrEmpty(extension) && File.Exists(HostingEnvironment.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
             {
                 return IconController.IconURL("Ext" + extension, "32x32", "Standard");
             }
@@ -679,16 +680,14 @@ namespace Dnn.Modules.ResourceManager.Services
             }
 
             var localSvg = string.Format(svgPath, folderMapping.FolderProviderType.Replace("FolderProvider", string.Empty).ToLowerInvariant());
-            if (File.Exists(HttpContext.Current.Server.MapPath($"~/{localSvg}")))
+            if (File.Exists(HostingEnvironment.MapPath($"~/{localSvg}")))
             {
                 return Globals.ApplicationPath + "/" + localSvg;
             }
 
-            if (File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl)))
+            if (File.Exists(HostingEnvironment.MapPath(folderMapping.ImageUrl)))
             {
-                var path = folderMapping.ImageUrl.Replace("~", HttpContext.Current.Request.ApplicationPath)
-                    .TrimStart('/');
-                return $"/{path}";
+                return VirtualPathUtility.ToAbsolute(folderMapping.ImageUrl);
             }
 
             return Globals.ApplicationPath + "/" + string.Format(svgPath, "standard");
