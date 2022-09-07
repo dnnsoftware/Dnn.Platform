@@ -670,14 +670,28 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private static string GetFolderIconUrl(int portalId, int folderMappingId)
         {
-            var url = Globals.ApplicationPath + "/" + Constants.ModulePath + "images/icon-asset-manager-{0}-folder.svg";
-
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingId);
-            var name = folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl))
-                       ? folderMapping.FolderProviderType.Replace("FolderProvider", string.Empty)
-                       : "standard";
+            var svgPath = Constants.ModulePath + "images/icon-asset-manager-{0}-folder.svg";
 
-            return string.Format(url, name.ToLower());
+            if (folderMapping is null)
+            {
+                return Globals.ApplicationPath + "/" + string.Format(svgPath, "standard");
+            }
+
+            var localSvg = string.Format(svgPath, folderMapping.FolderProviderType.Replace("FolderProvider", string.Empty).ToLowerInvariant());
+            if (File.Exists(HttpContext.Current.Server.MapPath($"~/{localSvg}")))
+            {
+                return Globals.ApplicationPath + "/" + localSvg;
+            }
+
+            if (File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl)))
+            {
+                var path = folderMapping.ImageUrl.Replace("~", HttpContext.Current.Request.ApplicationPath)
+                    .TrimStart('/');
+                return $"/{path}";
+            }
+
+            return Globals.ApplicationPath + "/" + string.Format(svgPath, "standard");
         }
 
         private int FindGroupId(HttpRequestMessage request)

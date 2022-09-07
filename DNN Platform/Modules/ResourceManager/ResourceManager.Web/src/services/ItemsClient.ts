@@ -215,6 +215,24 @@ export class ItemsClient{
         });
     }
 
+    public getAddFolderTypeUrl(){
+        return new Promise<string>((resolve, reject) => {
+            const url = `${this.requestUrl}GetAddFolderTypeUrl`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                }
+                else{
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    };
+
     public createNewFolder(request: CreateNewFolderRequest){
         return new Promise<CreateNewFolderResponse>((resolve, reject) => {
             const url = `${this.requestUrl}CreateNewFolder`;

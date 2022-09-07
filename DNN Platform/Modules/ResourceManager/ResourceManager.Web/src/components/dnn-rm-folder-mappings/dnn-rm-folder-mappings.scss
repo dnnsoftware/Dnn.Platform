@@ -22,3 +22,11 @@ table{
         }
     }
 }
+.controls{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1em;
+    dnn-button{
+        margin-left: 1em;
+    }
+}
