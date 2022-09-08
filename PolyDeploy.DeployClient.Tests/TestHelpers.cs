@@ -11,7 +11,7 @@ public static class TestHelpers
             TargetUri = targetUri ?? "https://test.com",
             ApiKey = apiKey ?? A.Dummy<string>(),
             EncryptionKey = encryptionKey ?? A.Dummy<string>(),
-            InstallationStatusTimeout = installationStatusTimeout ?? 5
+            InstallationStatusTimeout = installationStatusTimeout ?? 0
         };
     }
 }

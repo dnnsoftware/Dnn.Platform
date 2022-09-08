@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace PolyDeploy.DeployClient
 {
     using System;
@@ -11,9 +13,14 @@ namespace PolyDeploy.DeployClient
     {
         private readonly HttpClient httpClient;
 
-        public Installer(HttpClient httpClient)
+        private readonly IStopwatch stopwatch;
+
+        private static string deployClientVersion = typeof(Installer).Assembly.GetName().Version?.ToString() ?? string.Empty;
+
+        public Installer(HttpClient httpClient, IStopwatch stopwatch)
         {
             this.httpClient = httpClient;
+            this.stopwatch = stopwatch;
         }
 
         public async Task<Session> GetSessionAsync(DeployInput options, string sessionId)
@@ -69,17 +76,35 @@ namespace PolyDeploy.DeployClient
 
         private async Task<HttpResponseMessage> SendRequestAsync(DeployInput options, HttpMethod method, string path, HttpContent? content = null)
         {
-            // TODO: also set user-agent header
-            var request = new HttpRequestMessage
-            {
-                Headers = { { "x-api-key", options.ApiKey }, },
-                RequestUri = new Uri(options.GetTargetUri(), "DesktopModules/PolyDeploy/API/Remote/" + path),
-                Method = method,
-                Content = content,
-            };
+            this.stopwatch.StartNew();
 
-            var response = await this.httpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            async Task<HttpResponseMessage> SendRequest()
+            {
+                using var request = new HttpRequestMessage
+                {
+                    RequestUri = new Uri(options.GetTargetUri(), "DesktopModules/PolyDeploy/API/Remote/" + path),
+                    Method = method,
+                    Content = content,
+                };
+                
+                request.Headers.Add("x-api-key", options.ApiKey);
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", deployClientVersion));
+
+                return await this.httpClient.SendAsync(request);
+            }
+
+            var response = await SendRequest();
+            while (!response.IsSuccessStatusCode)
+            {
+                if (options.InstallationStatusTimeout <= stopwatch.Elapsed.TotalSeconds)
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                else
+                {
+                    response = await SendRequest();
+                }
+            }
             return response;
         }
 
