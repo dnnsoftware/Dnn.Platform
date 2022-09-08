@@ -1,7 +1,7 @@
-using System.Net.Http.Headers;
-
 namespace PolyDeploy.DeployClient
 {
+    using System.Net.Http.Headers;
+    using System.Reflection;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,7 +15,7 @@ namespace PolyDeploy.DeployClient
 
         private readonly IStopwatch stopwatch;
 
-        private static string deployClientVersion = typeof(Installer).Assembly.GetName().Version?.ToString() ?? string.Empty;
+        private static string deployClientVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
 
         public Installer(HttpClient httpClient, IStopwatch stopwatch)
         {
