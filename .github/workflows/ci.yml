@@ -54,7 +54,7 @@ jobs:
         run: nuget restore
 
       - name: Build and package the application
-        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration
+        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true
         env:
           Configuration: ${{ matrix.configuration }}
 
