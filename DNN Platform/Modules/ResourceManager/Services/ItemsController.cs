@@ -12,6 +12,7 @@ namespace Dnn.Modules.ResourceManager.Services
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Web;
+    using System.Web.Hosting;
     using System.Web.Http;
 
     using Dnn.Modules.ResourceManager.Components;
@@ -660,7 +661,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private static string GetFileIconUrl(string extension)
         {
-            if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
+            if (!string.IsNullOrEmpty(extension) && File.Exists(HostingEnvironment.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
             {
                 return IconController.IconURL("Ext" + extension, "32x32", "Standard");
             }
@@ -670,14 +671,26 @@ namespace Dnn.Modules.ResourceManager.Services
 
         private static string GetFolderIconUrl(int portalId, int folderMappingId)
         {
-            var url = Globals.ApplicationPath + "/" + Constants.ModulePath + "images/icon-asset-manager-{0}-folder.svg";
-
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingId);
-            var name = folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl))
-                       ? folderMapping.FolderProviderType.Replace("FolderProvider", string.Empty)
-                       : "standard";
+            var svgPath = Constants.ModulePath + "images/icon-asset-manager-{0}-folder.svg";
 
-            return string.Format(url, name.ToLower());
+            if (folderMapping is null)
+            {
+                return Globals.ApplicationPath + "/" + string.Format(svgPath, "standard");
+            }
+
+            var localSvg = string.Format(svgPath, folderMapping.FolderProviderType.Replace("FolderProvider", string.Empty).ToLowerInvariant());
+            if (File.Exists(HostingEnvironment.MapPath($"~/{localSvg}")))
+            {
+                return Globals.ApplicationPath + "/" + localSvg;
+            }
+
+            if (File.Exists(HostingEnvironment.MapPath(folderMapping.ImageUrl)))
+            {
+                return VirtualPathUtility.ToAbsolute(folderMapping.ImageUrl);
+            }
+
+            return Globals.ApplicationPath + "/" + string.Format(svgPath, "standard");
         }
 
         private int FindGroupId(HttpRequestMessage request)

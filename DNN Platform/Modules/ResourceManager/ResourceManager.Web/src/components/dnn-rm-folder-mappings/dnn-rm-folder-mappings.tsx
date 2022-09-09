@@ -1,4 +1,4 @@
-import {Component, Host, h, State} from '@stencil/core';
+import {Component, Element, Host, h, State} from '@stencil/core';
 import { FolderMappingInfo, ItemsClient } from '../../services/ItemsClient';
 import state from "../../store/store";
 
@@ -9,7 +9,11 @@ import state from "../../store/store";
 })
 export class DnnRmFolderMappings {
     private itemsClient: ItemsClient;
+
+    @Element() el: HTMLDnnRmFolderMappingsElement;
+
     @State() folderMappings: FolderMappingInfo[];
+    @State() addFolderTypeUrl: string;
 
     constructor() {
         this.itemsClient = new ItemsClient(state.moduleId);
@@ -21,6 +25,15 @@ export class DnnRmFolderMappings {
                 this.folderMappings = data;
             })
             .catch(reason => console.error(reason));
+        this.itemsClient.getAddFolderTypeUrl()
+            .then(data => {
+                this.addFolderTypeUrl = data;
+            })
+            .catch(reason => console.error(reason));
+    }
+
+    private dismiss(): void {
+        this.el.closest('dnn-modal').hide();
     }
 
     render() {
@@ -52,6 +65,16 @@ export class DnnRmFolderMappings {
                             )}
                         </tbody>
                     </table>
+                }
+                {this.addFolderTypeUrl &&
+                    <div class="controls">
+                        <dnn-button reversed onClick={() => this.dismiss()}>
+                            {state.localization?.Cancel}
+                        </dnn-button>
+                        <dnn-button onClick={() => window.location.href = this.addFolderTypeUrl}>
+                            {state.localization?.AddFolderType}
+                        </dnn-button>
+                    </div>
                 }
             </Host>
         );
