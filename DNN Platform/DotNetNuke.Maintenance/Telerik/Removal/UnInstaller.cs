@@ -67,11 +67,28 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         /// Returns a step to remove a package from the DNN installation.
         /// </summary>
         /// <param name="packageName">Name of the package.</param>
+        /// <param name="deleteFiles">Whether to delete installed files.</param>
         /// <returns><see cref="IStep"/> of the package remover.</returns>
-        private protected IStep RemoveExtension(string packageName)
+        private protected IStep RemoveExtension(string packageName, bool deleteFiles = true)
         {
             var step = this.GetService<IRemoveExtensionStep>();
+            step.DeleteFiles = deleteFiles;
             step.PackageName = packageName;
+            return step;
+        }
+
+        /// <summary>
+        /// Returns a step to remove a file from the DNN installation.
+        /// </summary>
+        /// <param name="relativePath">Path to the directory to search, relative to the application root path.</param>
+        /// <param name="searchPattern">Search string to match against the names of files in path.</param>
+        /// <returns><see cref="IStep"/> of the file remover.</returns>
+        private protected IStep RemoveFile(string relativePath, string searchPattern)
+        {
+            var step = this.GetService<IDeleteFilesStep>();
+            step.RelativePath = relativePath;
+            step.SearchPattern = searchPattern;
+            step.SearchOption = SearchOption.TopDirectoryOnly;
             return step;
         }
 
