@@ -136,7 +136,8 @@ export class DnnRmQueuedFile {
                 this.dismiss();
             };
             
-            this.xhr.open("POST", "/API/InternalServices/FileUpload/UploadFromLocal");
+            const url = this.servicesFramework.getServiceRoot('InternalServices') + 'FileUpload/UploadFromLocal';
+            this.xhr.open("POST", url);
             headers.forEach((value, key) => {
                 this.xhr.setRequestHeader(key, value);
             });
