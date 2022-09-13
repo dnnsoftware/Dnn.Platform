@@ -49,7 +49,6 @@
     "/favicon.ico",
     "/Robots.txt",
     "/web.config",
-    "/web.*.config",
     "/App_Data/Database.mdf",
     "/App_Data/Database_log.LDF",
     "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
