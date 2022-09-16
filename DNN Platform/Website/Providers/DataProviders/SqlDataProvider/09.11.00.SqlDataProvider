@@ -99,7 +99,7 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}PortalPermission_Permission] ON {
 
 GO
 
-CREATE VIEW [dbo].[vw_PortalPermissions]
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalPermissions]
 AS
 SELECT  PP.PortalPermissionID,
         PP.PortalId,
@@ -118,10 +118,10 @@ SELECT  PP.PortalPermissionID,
         PP.CreatedOnDate,
         PP.LastModifiedByUserID,
         PP.LastModifiedOnDate
-FROM        dbo.[PortalPermission]    AS PP
- INNER JOIN dbo.[Permission]       AS P  ON PP.PermissionID = P.PermissionID
- LEFT  JOIN dbo.[Roles]            AS R  ON PP.RoleID       = R.RoleID
- LEFT  JOIN dbo.[Users]            AS U  ON PP.UserID       = U.UserID
+FROM        {databaseOwner}[{objectQualifier}PortalPermission] AS PP
+ INNER JOIN {databaseOwner}[{objectQualifier}Permission]       AS P  ON PP.PermissionID = P.PermissionID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Roles]            AS R  ON PP.RoleID       = R.RoleID
+ LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON PP.UserID       = U.UserID
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPortalPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
