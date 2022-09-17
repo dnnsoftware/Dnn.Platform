@@ -1774,10 +1774,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnncommunity/dnn-elements@npm:^0.15.0":
-  version: 0.15.0
-  resolution: "@dnncommunity/dnn-elements@npm:0.15.0"
-  checksum: ad0d6beffb5d6dd4f013573a0e7135fd56d12a04a1d8227fa25bb7f7b35f1a8ccc92765ef0870f7a1d873264fc5a26602f672cf11f01d8c7ae2c45b0c9d3cc57
+"@dnncommunity/dnn-elements@npm:^0.15.1":
+  version: 0.15.1
+  resolution: "@dnncommunity/dnn-elements@npm:0.15.1"
+  checksum: dfabf0d4df59363e7487dcca2ba62192a42869975f8da8248d8664cdecb650ffbf62ad9c4cc4bfccfd89c6a115a8de6f5c32354efed574da650909be0b066140
   languageName: node
   linkType: hard
 
@@ -3823,30 +3823,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^2.15.1":
-  version: 2.17.4
-  resolution: "@stencil/core@npm:2.17.4"
+"@stencil/core@npm:^2.18.0":
+  version: 2.18.0
+  resolution: "@stencil/core@npm:2.18.0"
   bin:
     stencil: bin/stencil
-  checksum: cb7496a58fb040dd91ca451f3c54041bb387cf6e81fb60d17650646d1d1ee62fc0badea10d74b6ecc1ac3de5c36063c7ce556a860044727be7001a22a08660f2
+  checksum: f471a4ca4269fb3d67c84fac1909c8e21ec2df944d854dd13c8cc969b1a2a21fa8e89d67ad533fff52472a7b290c80c9348254397403461c9b8476e2a9588bf6
   languageName: node
   linkType: hard
 
-"@stencil/sass@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "@stencil/sass@npm:1.5.2"
+"@stencil/sass@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@stencil/sass@npm:2.0.0"
   peerDependencies:
-    "@stencil/core": ">=1.0.2"
-  checksum: fc4250eb31351f24c4f59829be2f8f57b81a4c6b5af395f8325e0eb13fe749334c6fbda7edfa250831d50419ba8c111b8fc31b81e2f176d251648dffbdf2cb49
+    "@stencil/core": ">=2.0.0"
+  checksum: 382bbc6f30b57d68688fda527f9bf1041c236703e80c2b718947f43b2af250d6efd6530743f8d2b0068cde09ce4e7a97bd1916ba241a9c9043c23d88faeb2aab
   languageName: node
   linkType: hard
 
-"@stencil/store@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@stencil/store@npm:1.5.0"
+"@stencil/store@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@stencil/store@npm:2.0.1"
   peerDependencies:
-    "@stencil/core": ">=1.9.0"
-  checksum: c529061b4582514160a7b38185381571399a9dd62b4a67ad3b78aafff3a1d318895aa89de277897bb3d418b865b82dce01499a46625ea2fad2db33a2995c8d2a
+    "@stencil/core": ">=2.0.0"
+  checksum: 99fa9da7ff71716594aa10aa824c7ce8ce7fdb7c8fe6fec4f367ff82e566e3ed4a0ba5c6f0d5f1b65c128d70bb1c103f8e3a79f9b5e277815f5890da1d597195
   languageName: node
   linkType: hard
 
@@ -9953,10 +9953,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-resource-manager@workspace:DNN Platform/Modules/ResourceManager/ResourceManager.Web"
   dependencies:
-    "@dnncommunity/dnn-elements": ^0.15.0
-    "@stencil/core": ^2.15.1
-    "@stencil/sass": ^1.5.2
-    "@stencil/store": ^1.5.0
+    "@dnncommunity/dnn-elements": ^0.15.1
+    "@stencil/core": ^2.18.0
+    "@stencil/sass": ^2.0.0
+    "@stencil/store": ^2.0.1
   languageName: unknown
   linkType: soft
 
@@ -22462,7 +22462,6 @@ resolve@^1.20.0:
     array.prototype.findindex: 2.0.2
     babel-loader: ^8.0.6
     babel-plugin-transform-react-remove-prop-types: ^0.4.24
-    babel-polyfill: ^6.26.0
     create-react-class: ^15.6.3
     css-loader: 2.1.1
     eslint: 7.32.0
