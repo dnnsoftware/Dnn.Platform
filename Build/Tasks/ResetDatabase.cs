@@ -5,6 +5,7 @@ namespace DotNetNuke.Build.Tasks
 {
     using System;
     using System.Data.SqlClient;
+    using System.IO;
     using System.Linq;
 
     using Cake.Common.Diagnostics;
@@ -46,8 +47,12 @@ namespace DotNetNuke.Build.Tasks
 
         private static string ReplaceScriptVariables(Context context, string script)
         {
+            var dbPath = context.FileSystem.GetDirectory(context.Settings.DatabasePath);
+            dbPath.Create();
+            var fullDbPath = Path.GetFullPath(dbPath.Path.FullPath);
+
             return script.Replace("{DBName}", context.Settings.DnnDatabaseName)
-                .Replace("{DBPath}", context.Settings.DatabasePath)
+                .Replace("{DBPath}", fullDbPath)
                 .Replace("{DBLogin}", context.Settings.DnnSqlUsername);
         }
 
