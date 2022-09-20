@@ -196,6 +196,11 @@ namespace Dnn.PersonaBar.Users.Services
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
+            catch (InvalidPasswordException exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex);
