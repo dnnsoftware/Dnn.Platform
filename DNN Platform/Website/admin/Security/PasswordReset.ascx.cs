@@ -159,49 +159,35 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        protected void RedirectAfterLogin()
+        /// <summary>
+        /// After a successful password change will redirect the user to requested returnurl OR the login page.
+        /// </summary>
+        protected void RedirectAfterPasswordChange()
         {
-            var redirectURL = string.Empty;
+            var redirectUrl = string.Empty;
 
-            var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
-
-            if (Convert.ToInt32(setting) == Null.NullInteger)
+            if (this.Request.QueryString["returnurl"] != null)
             {
-                if (this.Request.QueryString["returnurl"] != null)
-                {
-                    // return to the url passed to signin
-                    redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
+                // return to the url passed to signin
+                redirectUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                    // clean the return url to avoid possible XSS attack.
-                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
-                }
-
-                if (this.Request.Cookies["returnurl"] != null)
-                {
-                    // return to the url passed to signin
-                    redirectURL = HttpUtility.UrlDecode(this.Request.Cookies["returnurl"].Value);
-
-                    // clean the return url to avoid possible XSS attack.
-                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
-                }
-
-                if (string.IsNullOrEmpty(redirectURL))
-                {
-                    if (this.PortalSettings.RegisterTabId != -1 && this.PortalSettings.HomeTabId != -1)
-                    {
-                        // redirect to portal home page specified
-                        redirectURL = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
-                    }
-                    else
-                    {
-                        // redirect to current page
-                        redirectURL = this._navigationManager.NavigateURL();
-                    }
-                }
+                // clean the return url to avoid possible XSS attack.
+                redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
             }
-            else // redirect to after login page
+
+            if (this.Request.Cookies["returnurl"] != null)
             {
-                redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+                // return to the url passed to signin
+                redirectUrl = HttpUtility.UrlDecode(this.Request.Cookies["returnurl"].Value);
+
+                // clean the return url to avoid possible XSS attack.
+                redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
+            }
+
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                // return to the login page by default to allow users to login
+                redirectUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Login");
             }
 
             this.AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -209,7 +195,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.lblHelp.Text = this.lblInfo.Text = string.Empty;
 
             // redirect page after 5 seconds
-            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
+            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectUrl, RedirectTimeout);
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
                 // respect MS AJAX
@@ -243,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void cmdChangePassword_Click(object sender, EventArgs e)
         {
-            string username = this.txtUsername.Text;
+            var username = this.txtUsername.Text;
 
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && string.IsNullOrEmpty(this.txtAnswer.Text))
             {
@@ -296,7 +282,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
 
             string errorMessage;
-            string answer = string.Empty;
+            var answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
                 answer = this.txtAnswer.Text;
@@ -324,9 +310,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     // Log user in to site
                     this.LogSuccess();
-                    var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                    UserController.UserLogin(this.PortalSettings.PortalId, username, this.txtPassword.Text, string.Empty, string.Empty, string.Empty, ref loginStatus, false);
-                    this.RedirectAfterLogin();
+                    this.RedirectAfterPasswordChange();
                 }
             }
         }
