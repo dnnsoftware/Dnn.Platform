@@ -2346,13 +2346,13 @@ namespace DotNetNuke.Entities.Portals
         {
             string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
 
+            if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
+            {
+                settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+            }
+
             if (currentSetting != settingValue)
             {
-                if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
-                {
-                    settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
-                }
-
                 DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode, isSecure);
                 EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
                 if (clearCache)
