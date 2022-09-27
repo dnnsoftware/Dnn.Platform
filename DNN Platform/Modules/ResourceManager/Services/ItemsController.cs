@@ -257,12 +257,8 @@ namespace Dnn.Modules.ResourceManager.Services
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
             var moduleMode = new SettingsManager(moduleId, groupId).Mode;
-            var parentFolder = FolderManager.Instance.GetFolder(request.ParentFolderId);
-            var folderMappingId = string.IsNullOrWhiteSpace(parentFolder.FolderPath)
-                ? request.FolderMappingId
-                : parentFolder.FolderMappingID;
 
-            var folder = ItemsManager.Instance.CreateNewFolder(request.FolderName, request.ParentFolderId, folderMappingId, request.MappedName, moduleMode);
+            var folder = ItemsManager.Instance.CreateNewFolder(request.FolderName, request.ParentFolderId, request.FolderMappingId, request.MappedName, moduleMode);
 
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
