@@ -162,6 +162,26 @@ __metadata:
   version: 7.18.13
   resolution: "@babel/generator@npm:7.18.13"
   dependencies:
+  languageName: node
+  linkType: hard
+
+"@babel/generator@npm:^7.1.6, @babel/generator@npm:^7.2.2, @babel/generator@npm:^7.4.0, @babel/generator@npm:^7.4.4":
+  version: 7.4.4
+  resolution: "@babel/generator@npm:7.4.4"
+  dependencies:
+    "@babel/types": ^7.4.4
+    jsesc: ^2.5.1
+    lodash: ^4.17.11
+    source-map: ^0.5.0
+    trim-right: ^1.0.1
+  checksum: 0b9efad8573167c04920f9cff2d0494a8e93a652249740210d7861f8dc8b99eb101b4634d8f2465e8b08f376149214169f68dbed4a5013ae8dca87f1784ea2fd
+  languageName: node
+  linkType: hard
+
+"@babel/generator@npm:^7.18.13, @babel/generator@npm:^7.7.2":
+  version: 7.18.13
+  resolution: "@babel/generator@npm:7.18.13"
+  dependencies:
     "@babel/types": ^7.18.13
     "@jridgewell/gen-mapping": ^0.3.2
     jsesc: ^2.5.1
@@ -1834,7 +1854,6 @@ __metadata:
     react-slider: 0.11.2
     react-tabs: 3.0.0
     react-test-renderer: ^17.0.2
-    react-test-utils: 0.0.1
     react-tooltip: ^4.2.21
     react-widgets: ^4.4.4
     redux-undo: ^1.0.0-beta9
@@ -10522,18 +10541,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"envify@npm:~0.2.0":
-  version: 0.2.0
-  resolution: "envify@npm:0.2.0"
-  dependencies:
-    falafel: ~0.2.1
-    through: ~2.3.4
-  bin:
-    envify: bin/envify
-  checksum: 8c1319d64dd4e8bcffc2786e973ceaef1f1c5785d4c65b1631feedb3d33984a6c366383633ef7fc6a94e027818b735a0a5b25ffa6359c47f9e935210ae2d17a3
-  languageName: node
-  linkType: hard
-
 "envinfo@npm:^7.7.4":
   version: 7.8.1
   resolution: "envinfo@npm:7.8.1"
@@ -11073,16 +11080,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esprima@substack/esprima#is-keyword":
-  version: 1.1.0-dev
-  resolution: "esprima@https://github.com/substack/esprima.git#commit=0a7f8489a11b44b019ce168506f535f22d0be290"
-  bin:
-    esparse: ./bin/esparse.js
-    esvalidate: ./bin/esvalidate.js
-  checksum: a74ad68004d500fe41d56ea1bc52d7d86f95c3fbc695913b7ecd283792161bf6f6254c73c58b5c35d75be76d674be308226579828aebb4c4b8eb1ea1edc0ac44
-  languageName: node
-  linkType: hard
-
 "esquery@npm:^1.4.0":
   version: 1.4.0
   resolution: "esquery@npm:1.4.0"
@@ -11515,15 +11512,6 @@ __metadata:
   peerDependencies:
     webpack: ^3.1.0
   checksum: b3a39b58d8827ea09507c2cf3aec4c154bd0ce54d708f9ec4d0d26d3fa0238cc1c62d023bba48ed5df179cebe029fb8ef50dbbb44cc818023f8db3781b65fce7
-  languageName: node
-  linkType: hard
-
-"falafel@npm:~0.2.1":
-  version: 0.2.1
-  resolution: "falafel@npm:0.2.1"
-  dependencies:
-    esprima: "substack/esprima#is-keyword"
-  checksum: 38d02c330fb6524139fae165fcb7bea7476b404cdc1d4f6ebc4c1c39525d9748276165b46d06f3ce3f28ad53dc9d5ed1704fcd5356a511ae6d904e3f77ca4375
   languageName: node
   linkType: hard
 
@@ -20560,16 +20548,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-test-utils@npm:0.0.1":
-  version: 0.0.1
-  resolution: "react-test-utils@npm:0.0.1"
-  dependencies:
-    envify: ~0.2.0
-    react: ~0.8.0
-  checksum: a11a66ef788771470a46ed10bedca2397a74d2f9ab2990a8e398813895f985f33149d66ecd7a6e997878edff10c6ebba79456e5fbff35e67e747229c2d9837d5
-  languageName: node
-  linkType: hard
-
 "react-textarea-autosize@npm:^7.0.4":
   version: 7.1.0
   resolution: "react-textarea-autosize@npm:7.1.0"
@@ -20711,12 +20689,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react@npm:~0.8.0":
-  version: 0.8.0
-  resolution: "react@npm:0.8.0"
+"reactjs-popup@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "reactjs-popup@npm:1.3.2"
   peerDependencies:
-    envify: ~0.2.0
-  checksum: 87afdb69147a49f00deffa5c41ead84c7721cfc4eed36788a214647ae2546d48a723ab8bc4cdcf1e2538f0526ad403db5128c152cd4dde20a240964b51fd7a9c
+    react: ^16.0.0
+    react-dom: ^16.0.0
+  checksum: 14d4190a6aaa9f331f7699a3bbf7bd78008e7457c1d8fb1b136dc2cf7346ab0c6564955a36e1e26129f89123fe14544c2e9bc639f81fbc268522c230d98ff060
   languageName: node
   linkType: hard
 
@@ -23806,7 +23785,7 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"through@npm:2, through@npm:>=2.2.7 <3, through@npm:^2.3.4, through@npm:^2.3.6, through@npm:~2.3.4":
+"through@npm:2, through@npm:>=2.2.7 <3, through@npm:^2.3.4, through@npm:^2.3.6":
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: a38c3e059853c494af95d50c072b83f8b676a9ba2818dcc5b108ef252230735c54e0185437618596c790bbba8fcdaef5b290405981ffa09dce67b1f1bf190cbd
