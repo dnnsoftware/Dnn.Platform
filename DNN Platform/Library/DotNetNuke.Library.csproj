@@ -228,6 +228,7 @@
     <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
     <Compile Include="Entities\Portals\PortalSettingUpdatedEventArgs.cs" />
     <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
+    <Compile Include="Entities\Users\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidUserRegisterException.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />

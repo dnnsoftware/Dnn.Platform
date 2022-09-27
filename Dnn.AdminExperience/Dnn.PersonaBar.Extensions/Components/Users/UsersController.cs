@@ -152,6 +152,14 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 return true;
             }
+            catch (InvalidPasswordException exc)
+            {
+                // Password validation has failed
+                Logger.Error(exc);
+                throw new InvalidPasswordException(
+                    Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile),
+                    exc);
+            }
             catch (Exception exc)
             {
                 // Fail

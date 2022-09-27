@@ -162,6 +162,26 @@ __metadata:
   version: 7.18.13
   resolution: "@babel/generator@npm:7.18.13"
   dependencies:
+  languageName: node
+  linkType: hard
+
+"@babel/generator@npm:^7.1.6, @babel/generator@npm:^7.2.2, @babel/generator@npm:^7.4.0, @babel/generator@npm:^7.4.4":
+  version: 7.4.4
+  resolution: "@babel/generator@npm:7.4.4"
+  dependencies:
+    "@babel/types": ^7.4.4
+    jsesc: ^2.5.1
+    lodash: ^4.17.11
+    source-map: ^0.5.0
+    trim-right: ^1.0.1
+  checksum: 0b9efad8573167c04920f9cff2d0494a8e93a652249740210d7861f8dc8b99eb101b4634d8f2465e8b08f376149214169f68dbed4a5013ae8dca87f1784ea2fd
+  languageName: node
+  linkType: hard
+
+"@babel/generator@npm:^7.18.13, @babel/generator@npm:^7.7.2":
+  version: 7.18.13
+  resolution: "@babel/generator@npm:7.18.13"
+  dependencies:
     "@babel/types": ^7.18.13
     "@jridgewell/gen-mapping": ^0.3.2
     jsesc: ^2.5.1
@@ -20666,6 +20686,16 @@ fsevents@^1.2.7:
     prop-types: ^15.6.2
     scheduler: ^0.13.6
   checksum: 8dfdbec9af6999c2cfb33a9389995c6401daba732e1ee7e0a4920d28fd2e8e6b0fde99dfe4b8e2f81efc4a962c92656e3e79e221323449e55850232163f15ff4
+  languageName: node
+  linkType: hard
+
+"reactjs-popup@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "reactjs-popup@npm:1.3.2"
+  peerDependencies:
+    react: ^16.0.0
+    react-dom: ^16.0.0
+  checksum: 14d4190a6aaa9f331f7699a3bbf7bd78008e7457c1d8fb1b136dc2cf7346ab0c6564955a36e1e26129f89123fe14544c2e9bc639f81fbc268522c230d98ff060
   languageName: node
   linkType: hard
 

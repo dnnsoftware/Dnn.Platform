@@ -17,6 +17,11 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
+            if (string.IsNullOrWhiteSpace(context.Settings.DnnConnectionString))
+            {
+                throw new InvalidOperationException("DnnConnectionString was blank and must have a value when the CopyWebConfigToDevSite task is run");
+            }
+
             var conf = context.FileReadText("./Website/web.config");
             var transFile = "./Build/Tasks/webconfig-transform.local.xsl";
             if (!context.FileExists(transFile))
