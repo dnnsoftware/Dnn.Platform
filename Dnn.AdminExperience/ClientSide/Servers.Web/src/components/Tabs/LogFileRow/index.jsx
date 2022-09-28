@@ -115,9 +115,7 @@ class LogFileRow extends Component {
                 </div>
                 <Collapse
                     className="logitem-collapsible"
-                    isOpened={!this.state.collapsed}
-                    style={{ float: "left", width: "100%" }}
-                >
+                    isOpened={!this.state.collapsed}>
                     {!state.collapsed && props.children}
                 </Collapse>
             </div>

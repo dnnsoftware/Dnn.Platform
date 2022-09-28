@@ -1,21 +1,22 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="ResourceManager" type="Module" version="09.10.02">
+    <package name="ResourceManager" type="Module" version="09.11.00">
       <friendlyName>Resource Manager</friendlyName>
       <description>This module allows you to manage files on the server</description>
       <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
       <dependencies>
-        <dependency type="CoreVersion">09.02.00</dependency>
+        <dependency type="CoreVersion">09.11.00</dependency>
       </dependencies>
       <components>
+        <component type="Cleanup" version="09.11.00" glob="DesktopModules/ResourceManager/**/*" />
         <component type="Script">
           <scripts>
             <basePath>DesktopModules\ResourceManager</basePath>
@@ -31,7 +32,6 @@
             </script>
           </scripts>
         </component>
-
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/ResourceManager</basePath>
@@ -44,7 +44,10 @@
           <desktopModule>
             <moduleName>ResourceManager</moduleName>
             <foldername>ResourceManager</foldername>
-            <supportedFeatures/>
+            <businessControllerClass>Dnn.Modules.ResourceManager.Components.ResourceManagerController, Dnn.Modules.ResourceManager</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Upgradeable" />
+            </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>ResourceManager</friendlyName>
@@ -52,7 +55,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey/>
-                    <controlSrc>DesktopModules/ResourceManager/View.ascx</controlSrc>
+                    <controlSrc>DesktopModules/ResourceManager/View.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle/>
                     <controlType>View</controlType>
@@ -85,6 +88,15 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
+          <eventMessage>
+            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+            <processorCommand>UpgradeModule</processorCommand>
+            <attributes>
+              <businessControllerClass>Dnn.Modules.ResourceManager.Components.ResourceManagerController, Dnn.Modules.ResourceManager</businessControllerClass>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <upgradeVersionsList>00.00.01</upgradeVersionsList>
+            </attributes>
+          </eventMessage>
         </component>
         <component type="Assembly">
           <assemblies>

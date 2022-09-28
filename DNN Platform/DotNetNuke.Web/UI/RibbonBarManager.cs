@@ -88,11 +88,17 @@ namespace DotNetNuke.Web.UI
                 newTab.PortalID = parentTab.PortalID;
                 newTab.ParentId = parentTab.TabID;
                 newTab.Level = parentTab.Level + 1;
-                if (PortalSettings.Current.SSLEnabled)
+                switch (PortalSettings.Current.SSLSetup)
                 {
-                    newTab.IsSecure = parentTab.IsSecure;
-
-                    // Inherit from parent
+                    case Abstractions.Security.SiteSslSetup.Off:
+                        newTab.IsSecure = false;
+                        break;
+                    case Abstractions.Security.SiteSslSetup.Advanced:
+                        newTab.IsSecure = parentTab.IsSecure;
+                        break;
+                    default:
+                        newTab.IsSecure = true;
+                        break;
                 }
             }
             else

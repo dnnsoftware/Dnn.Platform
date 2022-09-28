@@ -1,32 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Text;
+using System.IO;
+using System.Collections;
+
+using log4net.Util;
 
 namespace log4net.ObjectRenderer
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-    using System.IO;
-    using System.Text;
-
-    using log4net.Util;
-
     /// <summary>
     /// The default object Renderer.
     /// </summary>
@@ -38,17 +38,16 @@ namespace log4net.ObjectRenderer
     /// See the <see cref="RenderObject"/> method for details of the output.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public sealed class DefaultRenderer : IObjectRenderer
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultRenderer"/> class.
-        /// Default constructor.
+        /// Default constructor
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor.
+        /// Default constructor
         /// </para>
         /// </remarks>
         public DefaultRenderer()
@@ -56,11 +55,11 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Render the object <paramref name="obj"/> to a string.
+        /// Render the object <paramref name="obj"/> to a string
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers.</param>
-        /// <param name="obj">The object to render.</param>
-        /// <param name="writer">The writer to render to.</param>
+        /// <param name="rendererMap">The map used to lookup renderers</param>
+        /// <param name="obj">The object to render</param>
+        /// <param name="writer">The writer to render to</param>
         /// <remarks>
         /// <para>
         /// Render the object <paramref name="obj"/> to a string.
@@ -93,13 +92,13 @@ namespace log4net.ObjectRenderer
         ///             For a one dimensional array this is the
         ///             array type name, an open brace, followed by a comma
         ///             separated list of the elements (using the appropriate
-        ///             renderer), followed by a close brace.
+        ///             renderer), followed by a close brace. 
         ///             </para>
         ///             <para>
         ///             For example: <c>int[] {1, 2, 3}</c>.
         ///             </para>
         ///             <para>
-        ///             If the array is not one dimensional the
+        ///             If the array is not one dimensional the 
         ///             <c>Array.ToString()</c> is returned.
         ///             </para>
         ///             </description>
@@ -116,23 +115,23 @@ namespace log4net.ObjectRenderer
         ///             For example: <c>{a, b, c}</c>.
         ///             </para>
         ///             <para>
-        ///             All collection classes that implement <see cref="ICollection"/> its subclasses,
+        ///             All collection classes that implement <see cref="ICollection"/> its subclasses, 
         ///             or generic equivalents all implement the <see cref="IEnumerable"/> interface.
         ///             </para>
         ///             </description>
-        ///         </item>
+        ///         </item>		
         ///         <item>
         ///             <term><see cref="DictionaryEntry"/></term>
         ///             <description>
         ///             <para>
         ///             Rendered as the key, an equals sign ('='), and the value (using the appropriate
-        ///             renderer).
+        ///             renderer). 
         ///             </para>
         ///             <para>
         ///             For example: <c>key=value</c>.
         ///             </para>
         ///             </description>
-        ///         </item>
+        ///         </item>		
         ///         <item>
         ///             <term>other</term>
         ///             <description>
@@ -153,7 +152,7 @@ namespace log4net.ObjectRenderer
                 writer.Write(SystemInfo.NullText);
                 return;
             }
-
+            
             Array objArray = obj as Array;
             if (objArray != null)
             {
@@ -173,11 +172,11 @@ namespace log4net.ObjectRenderer
                     writer.Write("{}");
                     return;
                 }
-
+                
                 // This is a special check to allow us to get the enumerator from the IDictionary
                 // interface as this guarantees us DictionaryEntry objects. Note that in .NET 2.0
                 // the generic IDictionary<> interface enumerates KeyValuePair objects rather than
-                // DictionaryEntry ones. However the implementation of the plain IDictionary
+                // DictionaryEntry ones. However the implementation of the plain IDictionary 
                 // interface on the generic Dictionary<> still returns DictionaryEntry objects.
                 IDictionary objDictionary = obj as IDictionary;
                 if (objDictionary != null)
@@ -196,7 +195,7 @@ namespace log4net.ObjectRenderer
                 this.RenderEnumerator(rendererMap, objEnumerator, writer);
                 return;
             }
-
+            
             if (obj is DictionaryEntry)
             {
                 this.RenderDictionaryEntry(rendererMap, (DictionaryEntry)obj, writer);
@@ -204,15 +203,15 @@ namespace log4net.ObjectRenderer
             }
 
             string str = obj.ToString();
-            writer.Write((str == null) ? SystemInfo.NullText : str);
+            writer.Write( (str == null) ? SystemInfo.NullText : str );
         }
 
         /// <summary>
-        /// Render the array argument into a string.
+        /// Render the array argument into a string
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers.</param>
-        /// <param name="array">the array to render.</param>
-        /// <param name="writer">The writer to render to.</param>
+        /// <param name="rendererMap">The map used to lookup renderers</param>
+        /// <param name="array">the array to render</param>
+        /// <param name="writer">The writer to render to</param>
         /// <remarks>
         /// <para>
         /// For a one dimensional array this is the
@@ -222,7 +221,7 @@ namespace log4net.ObjectRenderer
         ///     <c>int[] {1, 2, 3}</c>.
         ///     </para>
         ///     <para>
-        ///     If the array is not one dimensional the
+        ///     If the array is not one dimensional the 
         ///     <c>Array.ToString()</c> is returned.
         ///     </para>
         /// </remarks>
@@ -240,23 +239,22 @@ namespace log4net.ObjectRenderer
                 if (len > 0)
                 {
                     rendererMap.FindAndRender(array.GetValue(0), writer);
-                    for (int i = 1; i < len; i++)
+                    for(int i = 1; i < len; i++)
                     {
                         writer.Write(", ");
                         rendererMap.FindAndRender(array.GetValue(i), writer);
                     }
                 }
-
                 writer.Write("}");
             }
         }
 
         /// <summary>
-        /// Render the enumerator argument into a string.
+        /// Render the enumerator argument into a string
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers.</param>
-        /// <param name="enumerator">the enumerator to render.</param>
-        /// <param name="writer">The writer to render to.</param>
+        /// <param name="rendererMap">The map used to lookup renderers</param>
+        /// <param name="enumerator">the enumerator to render</param>
+        /// <param name="writer">The writer to render to</param>
         /// <remarks>
         /// <para>
         /// Rendered as an open brace, followed by a comma
@@ -284,11 +282,11 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Render the DictionaryEntry argument into a string.
+        /// Render the DictionaryEntry argument into a string
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers.</param>
-        /// <param name="entry">the DictionaryEntry to render.</param>
-        /// <param name="writer">The writer to render to.</param>
+        /// <param name="rendererMap">The map used to lookup renderers</param>
+        /// <param name="entry">the DictionaryEntry to render</param>
+        /// <param name="writer">The writer to render to</param>
         /// <remarks>
         /// <para>
         /// Render the key, an equals sign ('='), and the value (using the appropriate
@@ -300,6 +298,6 @@ namespace log4net.ObjectRenderer
             rendererMap.FindAndRender(entry.Key, writer);
             writer.Write("=");
             rendererMap.FindAndRender(entry.Value, writer);
-        }
+        }	
     }
 }

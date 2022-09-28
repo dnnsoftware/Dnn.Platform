@@ -9,6 +9,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules.Settings;
@@ -43,6 +44,8 @@ namespace DotNetNuke
             services.AddScoped<IApplicationStatusInfo, ApplicationStatusInfo>();
 
             services.AddScoped<IPortalAliasService, PortalAliasController>();
+
+            services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
         }
     }
 }

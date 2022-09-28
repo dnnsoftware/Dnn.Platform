@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.UserRequest;
 
     public static class UrlRewriterUtils
     {
@@ -97,7 +98,11 @@ namespace DotNetNuke.Entities.Urls
 
                 log.LogProperties.Add(new LogDetailInfo("Url", request.Url.AbsoluteUri));
                 log.LogProperties.Add(new LogDetailInfo("UserAgent", request.UserAgent));
-                log.LogProperties.Add(new LogDetailInfo("HostAddress", request.UserHostAddress));
+
+                var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+                var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(request));
+
+                log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
                 log.LogProperties.Add(new LogDetailInfo("HostName", request.UserHostName));
             }
 

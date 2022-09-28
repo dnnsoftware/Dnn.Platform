@@ -8,7 +8,6 @@ namespace DotNetNuke.Build
 
     using Cake.AzurePipelines.Module;
     using Cake.Frosting;
-    using Cake.Frosting.Issues.Recipe;
 
     /// <summary>Runs the build process.</summary>
     public class Program
@@ -17,7 +16,7 @@ namespace DotNetNuke.Build
         internal const string MicrosoftTestPlatformVersion = "16.11.0";
 
         /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
-        internal const string NUnit3TestAdapterVersion = "4.0.0";
+        internal const string NUnit3TestAdapterVersion = "4.2.1";
 
         /// <summary>Runs the build process.</summary>
         /// <param name="args">The arguments from the command line.</param>
@@ -34,7 +33,6 @@ namespace DotNetNuke.Build
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
                 .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.10.0"))
                 .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=1.0.0"))
-                .AddAssembly(Assembly.GetAssembly(typeof(IssuesTask)))
                 .Run(args);
         }
     }

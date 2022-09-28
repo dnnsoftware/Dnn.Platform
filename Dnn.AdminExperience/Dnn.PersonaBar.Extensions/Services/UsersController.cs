@@ -71,7 +71,14 @@ namespace Dnn.PersonaBar.Users.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                if (ex.GetType() == typeof(InvalidUserRegisterException))
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
+                else
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                }
             }
         }
 
@@ -188,6 +195,11 @@ namespace Dnn.PersonaBar.Users.Services
                 controller.ChangePassword(this.PortalId, userId, password);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (InvalidPasswordException exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception ex)
             {

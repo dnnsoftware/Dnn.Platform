@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.UI.WebControls;
+    using Newtonsoft.Json;
 
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
@@ -84,6 +85,7 @@ namespace DotNetNuke.Entities.Profile
         [Required(true)]
         [SortOrder(1)]
         [XmlIgnore]
+        [JsonIgnore]
         public int DataType
         {
             get
@@ -109,6 +111,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [SortOrder(4)]
         [XmlIgnore]
+        [JsonIgnore]
         public string DefaultValue
         {
             get
@@ -134,6 +137,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [SortOrder(10)]
         [XmlIgnore]
+        [JsonIgnore]
         public UserVisibilityMode DefaultVisibility
         {
             get
@@ -159,6 +163,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public bool Deleted
         {
             get
@@ -179,6 +184,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public bool IsDirty { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -213,6 +219,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public int ModuleDefId
         {
             get
@@ -233,6 +240,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public int PortalId
         {
             get
@@ -279,6 +287,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public int PropertyDefinitionId { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -316,6 +325,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public string PropertyValue
         {
             get
@@ -341,6 +351,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [SortOrder(7)]
         [XmlIgnore]
+        [JsonIgnore]
         public bool ReadOnly
         {
             get
@@ -366,6 +377,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [SortOrder(6)]
         [XmlIgnore]
+        [JsonIgnore]
         public bool Required
         {
             get
@@ -391,6 +403,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [SortOrder(5)]
         [XmlIgnore]
+        [JsonIgnore]
         public string ValidationExpression
         {
             get
@@ -417,6 +430,7 @@ namespace DotNetNuke.Entities.Profile
         [IsReadOnly(true)]
         [SortOrder(9)]
         [XmlIgnore]
+        [JsonIgnore]
         public int ViewOrder
         {
             get
@@ -442,6 +456,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [SortOrder(8)]
         [XmlIgnore]
+        [JsonIgnore]
         public bool Visible
         {
             get
@@ -467,6 +482,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public ProfileVisibility ProfileVisibility
         {
             get
@@ -488,6 +504,7 @@ namespace DotNetNuke.Entities.Profile
         [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
         [Browsable(false)]
         [XmlIgnore]
+        [JsonIgnore]
         public UserVisibilityMode Visibility
         {
             get

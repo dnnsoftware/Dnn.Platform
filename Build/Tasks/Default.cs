@@ -10,12 +10,12 @@ namespace DotNetNuke.Build.Tasks
 
     /// <summary>A cake task to build the platform and create packages.</summary>
     /// <remarks>This is the default Cake target if no target is supplied.</remarks>
-    [Dependency(typeof(CleanArtifacts))]
-    [Dependency(typeof(UpdateDnnManifests))]
-    [Dependency(typeof(CreateInstall))]
-    [Dependency(typeof(CreateUpgrade))]
-    [Dependency(typeof(CreateDeploy))]
-    [Dependency(typeof(CreateSymbols))]
+    [IsDependentOn(typeof(CleanArtifacts))]
+    [IsDependentOn(typeof(UpdateDnnManifests))]
+    [IsDependentOn(typeof(CreateInstall))]
+    [IsDependentOn(typeof(CreateUpgrade))]
+    [IsDependentOn(typeof(CreateDeploy))]
+    [IsDependentOn(typeof(CreateSymbols))]
     public sealed class Default : FrostingTask<Context>
     {
     }

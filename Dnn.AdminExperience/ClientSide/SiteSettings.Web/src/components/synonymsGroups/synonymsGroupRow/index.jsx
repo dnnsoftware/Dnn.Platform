@@ -37,7 +37,7 @@ class SynonymsGroupRow extends Component {
                         </div>
                     </div>
                 }
-                <Collapsible className="synonyms-editor-wrapper" isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapsible>
+                <Collapsible className="synonyms-editor-wrapper" isOpened={opened}>{opened && props.children}</Collapsible>
             </div>
         );
     }

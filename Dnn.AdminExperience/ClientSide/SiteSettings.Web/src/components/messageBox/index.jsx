@@ -41,7 +41,6 @@ class MessageBox extends Component {
         const {props} = this;
         return (
             <Modal
-                fixedHeight={props.fixedHeight}
                 isOpen={props.isOpened}
                 style={modalStyles}>
                 <div className="dnn-message-box">

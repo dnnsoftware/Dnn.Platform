@@ -138,18 +138,6 @@
   <data name="Database.Text" xml:space="preserve">
     <value>Database</value>
   </data>
-  <data name="DeleteFileDialogHeader.Text" xml:space="preserve">
-    <value>Confirm delete</value>
-  </data>
-  <data name="DeleteFileDialogMessage.Text" xml:space="preserve">
-    <value>Are you sure to delete the file?</value>
-  </data>
-  <data name="DeleteFolderDialogHeader.Text" xml:space="preserve">
-    <value>Confirm delete</value>
-  </data>
-  <data name="DeleteFolderDialogMessage.Text" xml:space="preserve">
-    <value>Are you sure to delete the folder?</value>
-  </data>
   <data name="FileAlreadyExistsMessage.Text" xml:space="preserve">
     <value>The file you want to upload already exists in this folder.</value>
   </data>
@@ -282,6 +270,9 @@
   <data name="Refresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="Sync.Text" xml:space="preserve">
+    <value>Sync</value>
+  </data>
   <data name="SyncThisFolder.Text" xml:space="preserve">
     <value>Sync This Folder</value>
   </data>
@@ -312,10 +303,124 @@
   <data name="RemoveFolderTypeDialogHeader.Text" xml:space="preserve">
     <value>Remove Folder Type</value>
   </data>
-  <data name="MoveItem.Text" xml:space="preserve">
-    <value>Move Item</value>
+  <data name="MoveItems.Text" xml:space="preserve">
+    <value>Move Item(s)</value>
   </data>
   <data name="NewLocation.Text" xml:space="preserve">
     <value>New Location</value>
+  </data>
+  <data name="SortField_ItemName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SortField_LastModifiedOnDate.Text" xml:space="preserve">
+    <value>Last Modified</value>
+  </data>
+  <data name="SortField_Size.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="SortField_ParentFolder.Text" xml:space="preserve">
+    <value>Parent Folder</value>
+  </data>
+  <data name="SortField_CreatedOnDate.Text" xml:space="preserve">
+    <value>Date Created</value>
+  </data>
+  <data name="Sort.Text" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="Items.Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="MappedPath.Text" xml:space="preserve">
+    <value>Mapped Path</value>
+  </data>
+  <data name="Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="RolePermissions.Text" xml:space="preserve">
+    <value>Role Permissions</value>
+  </data>
+  <data name="UserPermissions.Text" xml:space="preserve">
+    <value>User Permissions</value>
+  </data>
+  <data name="FolderId.Text" xml:space="preserve">
+    <value>Folder ID</value>
+  </data>
+  <data name="General.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="FileId.Text" xml:space="preserve">
+    <value>File ID</value>
+  </data>
+  <data name="ConfirmDeleteMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to delete the selected items?</value>
+  </data>
+  <data name="ConfirmMoveMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to move the selected items?</value>
+  </data>
+  <data name="ConfirmUnlinkMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to unlink the following folders?</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteItems.Text" xml:space="preserve">
+    <value>Delete Items</value>
+  </data>
+  <data name="DeletingItems.Text" xml:space="preserve">
+    <value>Deleting Items</value>
+  </data>
+  <data name="Files.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="Folders.Text" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="Move.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="MovingItems.Text" xml:space="preserve">
+    <value>Moving Items</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="SelectDestinationFolder.Text" xml:space="preserve">
+    <value>Select the destination folder.</value>
+  </data>
+  <data name="Unlink.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkFolders.Text" xml:space="preserve">
+    <value>Unlink Folder(s)</value>
+  </data>
+  <data name="UnlinkingFolders.Text" xml:space="preserve">
+    <value>Unlinking Folders</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="CopyUrl.Text" xml:space="preserve">
+    <value>Copy URL</value>
+  </data>
+  <data name="StatusBarMessage.Text" xml:space="preserve">
+    <value>Showing {0} of {1} items</value>
+  </data>
+  <data name="Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Upload.Text" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="ExtractUploads.Text" xml:space="preserve">
+    <value>Extract uploaded ZIP files</value>
+  </data>
+  <data name="Overwrite.Text" xml:space="preserve">
+    <value>Overwrite</value>
+  </data>
+  <data name="EditFolderMappings.Text" xml:space="preserve">
+    <value>Edit Folder Mappings</value>
   </data>
 </root>

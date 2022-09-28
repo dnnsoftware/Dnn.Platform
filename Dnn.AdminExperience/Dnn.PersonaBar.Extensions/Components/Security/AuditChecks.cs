@@ -34,7 +34,8 @@ namespace Dnn.PersonaBar.Security.Components
                 new CheckSqlRisk(),
                 new CheckAllowableFileExtensions(),
                 new CheckHiddenSystemFiles(),
-                new CheckTelerikVulnerability(),
+                new CheckTelerikPresence(),
+                new CheckUserProfilePage(),
             };
 
             if (Globals.NETFrameworkVersion <= new Version(4, 5, 1))

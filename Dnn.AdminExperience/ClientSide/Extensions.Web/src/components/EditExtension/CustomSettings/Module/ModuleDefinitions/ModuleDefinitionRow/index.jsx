@@ -26,7 +26,7 @@ class ModuleDefinitionRow extends Component {
                     <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}></div>
                     <div onClick={props.onEdit.bind(this)} className={props.isEditMode ? "svg-active" : ""} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>
                 </GridCell>
-                <Collapsible isOpened={props.isEditMode} style={{ float: "left" }} className="edit-module-definition">
+                <Collapsible isOpened={props.isEditMode} className="edit-module-definition">
                     <GridCell className="edit-module-definition-box">
                         <DefinitionFields
                             error={props.error}

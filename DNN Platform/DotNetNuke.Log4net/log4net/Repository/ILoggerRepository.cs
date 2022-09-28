@@ -1,40 +1,39 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+// 
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to you under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
+
+using System;
+using System.Collections;
+using log4net;
+using log4net.ObjectRenderer;
+using log4net.Core;
+using log4net.Plugin;
+using log4net.Repository.Hierarchy;
+using log4net.Util;
 
 namespace log4net.Repository
 {
-    //
-    // Licensed to the Apache Software Foundation (ASF) under one or more
-    // contributor license agreements. See the NOTICE file distributed with
-    // this work for additional information regarding copyright ownership.
-    // The ASF licenses this file to you under the Apache License, Version 2.0
-    // (the "License"); you may not use this file except in compliance with
-    // the License. You may obtain a copy of the License at
-    //
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an "AS IS" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
-    //
-    using System;
-    using System.Collections;
-
-    using log4net;
-    using log4net.Core;
-    using log4net.ObjectRenderer;
-    using log4net.Plugin;
-    using log4net.Repository.Hierarchy;
-    using log4net.Util;
-
     /// <summary>
-    /// Delegate used to handle logger repository shutdown event notifications.
+    /// Delegate used to handle logger repository shutdown event notifications
     /// </summary>
     /// <param name="sender">The <see cref="ILoggerRepository"/> that is shutting down.</param>
-    /// <param name="e">Empty event args.</param>
+    /// <param name="e">Empty event args</param>
     /// <remarks>
     /// <para>
     /// Delegate used to handle logger repository shutdown event notifications.
@@ -43,10 +42,10 @@ namespace log4net.Repository
     public delegate void LoggerRepositoryShutdownEventHandler(object sender, EventArgs e);
 
     /// <summary>
-    /// Delegate used to handle logger repository configuration reset event notifications.
+    /// Delegate used to handle logger repository configuration reset event notifications
     /// </summary>
     /// <param name="sender">The <see cref="ILoggerRepository"/> that has had its configuration reset.</param>
-    /// <param name="e">Empty event args.</param>
+    /// <param name="e">Empty event args</param>
     /// <remarks>
     /// <para>
     /// Delegate used to handle logger repository configuration reset event notifications.
@@ -71,7 +70,7 @@ namespace log4net.Repository
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This interface is implemented by logger repositories. e.g.
+    /// This interface is implemented by logger repositories. e.g. 
     /// <see cref="Hierarchy"/>.
     /// </para>
     /// <para>
@@ -79,15 +78,15 @@ namespace log4net.Repository
     /// to obtain <see cref="ILog"/> interfaces.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface ILoggerRepository
     {
         /// <summary>
-        /// Gets or sets the name of the repository.
+        /// The name of the repository
         /// </summary>
         /// <value>
-        /// The name of the repository.
+        /// The name of the repository
         /// </value>
         /// <remarks>
         /// <para>
@@ -97,7 +96,7 @@ namespace log4net.Repository
         string Name { get; set; }
 
         /// <summary>
-        /// Gets rendererMap accesses the object renderer map for this repository.
+        /// RendererMap accesses the object renderer map for this repository.
         /// </summary>
         /// <value>
         /// RendererMap accesses the object renderer map for this repository.
@@ -114,7 +113,7 @@ namespace log4net.Repository
         RendererMap RendererMap { get; }
 
         /// <summary>
-        /// Gets the plugin map for this repository.
+        /// The plugin map for this repository.
         /// </summary>
         /// <value>
         /// The plugin map for this repository.
@@ -128,7 +127,7 @@ namespace log4net.Repository
         PluginMap PluginMap { get; }
 
         /// <summary>
-        /// Gets get the level map for the Repository.
+        /// Get the level map for the Repository.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -143,10 +142,10 @@ namespace log4net.Repository
         LevelMap LevelMap { get; }
 
         /// <summary>
-        /// Gets or sets the threshold for all events in this repository.
+        /// The threshold for all events in this repository
         /// </summary>
         /// <value>
-        /// The threshold for all events in this repository.
+        /// The threshold for all events in this repository
         /// </value>
         /// <remarks>
         /// <para>
@@ -159,8 +158,8 @@ namespace log4net.Repository
         /// Check if the named logger exists in the repository. If so return
         /// its reference, otherwise returns <c>null</c>.
         /// </summary>
-        /// <param name="name">The name of the logger to lookup.</param>
-        /// <returns>The Logger object with the name specified.</returns>
+        /// <param name="name">The name of the logger to lookup</param>
+        /// <returns>The Logger object with the name specified</returns>
         /// <remarks>
         /// <para>
         /// If the names logger exists it is returned, otherwise
@@ -172,7 +171,7 @@ namespace log4net.Repository
         /// <summary>
         /// Returns all the currently defined loggers as an Array.
         /// </summary>
-        /// <returns>All the defined loggers.</returns>
+        /// <returns>All the defined loggers</returns>
         /// <remarks>
         /// <para>
         /// Returns all the currently defined loggers as an Array.
@@ -181,10 +180,10 @@ namespace log4net.Repository
         ILogger[] GetCurrentLoggers();
 
         /// <summary>
-        /// Returns a named logger instance.
+        /// Returns a named logger instance
         /// </summary>
-        /// <param name="name">The name of the logger to retrieve.</param>
-        /// <returns>The logger object with the name specified.</returns>
+        /// <param name="name">The name of the logger to retrieve</param>
+        /// <returns>The logger object with the name specified</returns>
         /// <remarks>
         /// <para>
         /// Returns a named logger instance.
@@ -197,7 +196,7 @@ namespace log4net.Repository
         /// </remarks>
         ILogger GetLogger(string name);
 
-        /// <summary>Shutdown the repository.</summary>
+        /// <summary>Shutdown the repository</summary>
         /// <remarks>
         /// <para>
         /// Shutting down a repository will <i>safely</i> close and remove
@@ -218,7 +217,7 @@ namespace log4net.Repository
         void Shutdown();
 
         /// <summary>
-        /// Reset the repositories configuration to a default state.
+        /// Reset the repositories configuration to a default state
         /// </summary>
         /// <remarks>
         /// <para>
@@ -238,11 +237,11 @@ namespace log4net.Repository
         /// <summary>
         /// Log the <see cref="LoggingEvent"/> through this repository.
         /// </summary>
-        /// <param name="logEvent">the event to log.</param>
+        /// <param name="logEvent">the event to log</param>
         /// <remarks>
         /// <para>
         /// This method should not normally be used to log.
-        /// The <see cref="ILog"/> interface should be used
+        /// The <see cref="ILog"/> interface should be used 
         /// for routine logging. This interface can be obtained
         /// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
         /// </para>
@@ -254,7 +253,7 @@ namespace log4net.Repository
         void Log(LoggingEvent logEvent);
 
         /// <summary>
-        /// Gets or sets a value indicating whether flag indicates if this repository has been configured.
+        /// Flag indicates if this repository has been configured.
         /// </summary>
         /// <value>
         /// Flag indicates if this repository has been configured.
@@ -267,7 +266,7 @@ namespace log4net.Repository
         bool Configured { get; set; }
 
         /// <summary>
-        /// Gets or sets collection of internal messages captured during the most
+        /// Collection of internal messages captured during the most 
         /// recent configuration process.
         /// </summary>
         ICollection ConfigurationMessages { get; set; }
@@ -313,10 +312,10 @@ namespace log4net.Repository
         event LoggerRepositoryConfigurationChangedEventHandler ConfigurationChanged;
 
         /// <summary>
-        /// Gets repository specific properties.
+        /// Repository specific properties
         /// </summary>
         /// <value>
-        /// Repository specific properties.
+        /// Repository specific properties
         /// </value>
         /// <remarks>
         /// <para>
@@ -328,12 +327,12 @@ namespace log4net.Repository
         /// <summary>
         /// Returns all the Appenders that are configured as an Array.
         /// </summary>
-        /// <returns>All the Appenders.</returns>
+        /// <returns>All the Appenders</returns>
         /// <remarks>
         /// <para>
         /// Returns all the Appenders that are configured as an Array.
         /// </para>
         /// </remarks>
-        log4net.Appender.IAppender[] GetAppenders();
+        Appender.IAppender[] GetAppenders();
     }
 }

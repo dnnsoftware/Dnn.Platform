@@ -1,0 +1,70 @@
+<dotnetnuke type="Package" version="6.0">
+    <packages>
+        <package name="TelerikRemoval" type="Module" version="09.11.00">
+            <friendlyName>Telerik Removal</friendlyName>
+            <description>This module allows you to remove the DotNetNuke Telerik Web Components library from your site.</description>
+            <owner>
+                <name>.NET Foundation and Contributors</name>
+                <organization>DNN Community</organization>
+                <url>https://dnncommunity.org</url>
+                <email>info@dnncommunity.org</email>
+            </owner>
+            <license src="License.txt"></license>
+            <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+            <dependencies>
+                <dependency type="CoreVersion">09.08.00</dependency>
+            </dependencies>
+            <components>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules/TelerikRemoval</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Module">
+                    <desktopModule>
+                        <moduleName>TelerikRemoval</moduleName>
+                        <foldername>TelerikRemoval</foldername>
+                        <supportedFeatures/>
+                        <moduleDefinitions>
+                            <moduleDefinition>
+                                <friendlyName>Telerik Removal</friendlyName>
+                                <defaultCacheTime>0</defaultCacheTime>
+                                <moduleControls>
+                                    <moduleControl>
+                                        <controlKey/>
+                                        <controlSrc>DesktopModules/TelerikRemoval/View.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle/>
+                                        <controlType>View</controlType>
+                                        <iconFile/>
+                                        <helpUrl>https://docs.dnncommunity.org/content/getting-started/setup/telerik-removal/index.html</helpUrl>
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                </moduleControls>
+                            </moduleDefinition>
+                        </moduleDefinitions>
+                    </desktopModule>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <name>Dnn.Modules.TelerikRemoval.dll</name>
+                            <path>bin</path>
+                        </assembly>
+                    </assemblies>
+                </component>
+            </components>
+            <eventMessage>
+                <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+                <processorCommand>UpgradeModule</processorCommand>
+                <attributes>
+                    <businessControllerClass>Dnn.Modules.TelerikRemoval.UpgradeController, Dnn.Modules.TelerikRemoval</businessControllerClass>
+                    <upgradeVersionsList>install</upgradeVersionsList>
+                </attributes>
+            </eventMessage>
+        </package>
+    </packages>
+</dotnetnuke>

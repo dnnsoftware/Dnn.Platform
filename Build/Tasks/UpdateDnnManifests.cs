@@ -16,8 +16,8 @@ namespace DotNetNuke.Build.Tasks
     using Dnn.CakeUtils;
 
     /// <summary>A cake task to set the <c>version</c> attribute in all of the <c>.dnn</c> manifest files.</summary>
-    [Dependency(typeof(SetVersion))]
-    [Dependency(typeof(SetPackageVersions))]
+    [IsDependentOn(typeof(SetVersion))]
+    [IsDependentOn(typeof(SetPackageVersions))]
     public sealed class UpdateDnnManifests : FrostingTask<Context>
     {
         /// <summary>Gets the version from the context and formats it as a string.</summary>

@@ -169,7 +169,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                throw new Exception("Invalid Password");
+                throw new InvalidPasswordException("Invalid Password");
             }
 
             return passwordChanged;

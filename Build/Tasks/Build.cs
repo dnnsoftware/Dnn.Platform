@@ -3,17 +3,22 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
+    using System;
+    using System.Linq;
+
+    using Cake.Common.Build;
+    using Cake.Common.Build.AzurePipelines.Data;
+    using Cake.Common.IO;
     using Cake.Common.Tools.MSBuild;
     using Cake.Core.IO;
     using Cake.Frosting;
-    using Cake.Frosting.Issues.Recipe;
-
+    using Cake.Issues;
+    using Cake.Issues.MsBuild;
     using DotNetNuke.Build;
 
     /// <summary>A cake task to compile the platform.</summary>
-    [Dependency(typeof(CleanWebsite))]
-    [Dependency(typeof(RestoreNuGetPackages))]
-    [IsDependeeOf(typeof(ReadIssuesTask))]
+    [IsDependentOn(typeof(CleanWebsite))]
+    [IsDependentOn(typeof(RestoreNuGetPackages))]
     public sealed class Build : FrostingTask<Context>
     {
         /// <inheritdoc/>
@@ -36,8 +41,29 @@ namespace DotNetNuke.Build.Tasks
             }
             finally
             {
-                context.Parameters.InputFiles.AddMsBuildBinaryLogFile(cleanLog);
-                context.Parameters.InputFiles.AddMsBuildBinaryLogFile(buildLog);
+                var issueProviders =
+                    from logFilePath in new[] { cleanLog, buildLog, }
+                    where context.FileExists(logFilePath)
+                    let settings = new MsBuildIssuesSettings(logFilePath, context.MsBuildBinaryLogFileFormat())
+                    select new MsBuildIssuesProvider(context.Log, settings);
+                var issues = context.ReadIssues(issueProviders, context.Directory("."));
+                foreach (var issue in issues)
+                {
+                    var messageData = new AzurePipelinesMessageData
+                    {
+                        SourcePath = issue.AffectedFileRelativePath?.FullPath,
+                        LineNumber = issue.Line,
+                    };
+
+                    if (string.Equals(issue.PriorityName, "Error", StringComparison.Ordinal))
+                    {
+                        context.AzurePipelines().Commands.WriteError(issue.MessageText, messageData);
+                    }
+                    else
+                    {
+                        context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
+                    }
+                }
             }
         }
 

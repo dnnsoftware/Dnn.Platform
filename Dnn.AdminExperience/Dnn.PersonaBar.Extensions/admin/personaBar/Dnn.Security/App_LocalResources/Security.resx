@@ -597,17 +597,11 @@
   <data name="GlobalSetting.Text" xml:space="preserve">
     <value>This is a global setting. Changes to this setting will affect all of your sites.</value>
   </data>
-  <data name="plSSLEnabled.Text" xml:space="preserve">
-    <value>SSL Enabled</value>
-  </data>
-  <data name="plSSLEnabled.Help" xml:space="preserve">
-    <value>Check the box if an SSL certificate has been installed for use on this site.</value>
-  </data>
   <data name="plSSLEnforced.Text" xml:space="preserve">
-    <value>SSL Enforced</value>
+    <value>Mixed Mode</value>
   </data>
   <data name="plSSLEnforced.Help" xml:space="preserve">
-    <value>Check the box if unsecure pages will not be accessible with SSL (HTTPS).</value>
+    <value>Check the box if pages marked as insecure should not be accessible through HTTPS and should always be directed to HTTP.</value>
   </data>
   <data name="plSSLURL.Text" xml:space="preserve">
     <value>SSL URL</value>
@@ -884,7 +878,7 @@
     <value>Check if default.aspx or default.aspx.cs files have been modified</value>
   </data>
   <data name="CheckDefaultPageFailure.Text" xml:space="preserve">
-    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN or Evoq version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
+    <value>The default page(s) have been modified. We recommend you evaluate these files carefully, they may be modified by a hacker and may contain malicious code. It is best to compare these files with that from a standard install of your product. Ensure that the DNN version of your current site matches with the standard site prior to comparison. Either remove the malicious code or restore these files from standard installation.</value>
   </data>
   <data name="CheckDefaultPageReason.Text" xml:space="preserve">
     <value>DNN use default.aspx to load everything, so all requests will load this file when user browse the site, if someone modify this file, it may cause huge risk.</value>
@@ -1102,17 +1096,35 @@
   <data name="CheckHiddenSystemFilesSuccess.Text" xml:space="preserve">
     <value>There are no files marked as system file or hidden in the website folder.</value>
   </data>
-  <data name="CheckTelerikVulnerabilityFailure.Text" xml:space="preserve">
-    <value>The Telerik component vulnerability has not been patched, please go to http://www.dnnsoftware.com/community-blog/cid/155449/critical-security-update--september2017 for detailed information and to download the patch.</value>
+  <data name="CheckTelerikPresenceFailure.Text" xml:space="preserve">
+    <value>The Telerik component was found in the site.</value>
   </data>
-  <data name="CheckTelerikVulnerabilityName.Text" xml:space="preserve">
-    <value>Check if Telerik component has vulnerability.</value>
+  <data name="CheckTelerikPresenceName.Text" xml:space="preserve">
+    <value>Check if Telerik is installed.</value>
   </data>
-  <data name="CheckTelerikVulnerabilityReason.Text" xml:space="preserve">
-    <value>Third party components referenced in core may have vulnerability in old versions and need to be patched.</value>
+  <data name="CheckTelerikPresenceReason.Text" xml:space="preserve">
+    <value>In DNN 10.x, Telerik removal will be forced, and no longer optional.</value>
   </data>
-  <data name="CheckTelerikVulnerabilitySuccess.Text" xml:space="preserve">
-    <value>Telerik Component already patched.</value>
+  <data name="CheckTelerikPresenceSuccess.Text" xml:space="preserve">
+    <value>Telerik component is not installed.</value>
+  </data>
+  <data name="CheckTelerikPresenceInstalledButNotUsed.Text" xml:space="preserve">
+    <value>Telerik was found in this site, but no dependencies on Telerik were discovered. You should have a reasonable expectation of being safe to uninstall Telerik per the 9.8.0 instructions.</value>
+  </data>
+  <data name="CheckTelerikPresenceInstalledAndUsed.Text" xml:space="preserve">
+    <value>Dependencies on Telerik were discovered in assemblies that will NOT be addressed by un-installing per the instructions with 9.8.0. The list below includes all:</value>
+  </data>
+  <data name="CheckUserProfilePageFailure.Text" xml:space="preserve">
+    <value>The User Profile page is public.</value>
+  </data>
+  <data name="CheckUserProfilePageName.Text" xml:space="preserve">
+    <value>Check access to the User Profile page</value>
+  </data>
+  <data name="CheckUserProfilePageReason.Text" xml:space="preserve">
+    <value>The User Profile page might be visible to all users unintentionally.</value>
+  </data>
+  <data name="CheckUserProfilePageSuccess.Text" xml:space="preserve">
+    <value>The User Profile page is not public.</value>
   </data>
   <data name="UserNotMemberOfRole.Text" xml:space="preserve">
     <value>User not member of {0} role.</value>
@@ -1158,5 +1170,32 @@
   </data>
   <data name="Security_UserNameMinLength.ErrorMessage" xml:space="preserve">
     <value>Minimum Username length must be an integer greater than 0 and less than or equal to 100.</value>
+  </data>
+  <data name="SslOn.Help" xml:space="preserve">
+    <value>Use this mode to serve all content secure</value>
+  </data>
+  <data name="SslAdvanced.Help" xml:space="preserve">
+    <value>In this mode your website will serve both secure and unsecure pages depending on the setting on the page. Note you have [NumberOfNonSecureTabs] non secure pages on this site.</value>
+  </data>
+  <data name="SslOff.Help" xml:space="preserve">
+    <value>Use this when you don't have an SSL certificate installed on your server</value>
+  </data>
+  <data name="SslAdvanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="SslOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SslOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Text" xml:space="preserve">
+    <value>Set All Pages To Secure</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Completed" xml:space="preserve">
+    <value>All pages of the site have been set to be secure</value>
+  </data>
+  <data name="SslSetAllPagesSecure.Confirm" xml:space="preserve">
+    <value>Do you wish to set all pages of this site to be only accessible through https?</value>
   </data>
 </root>

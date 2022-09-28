@@ -22,7 +22,9 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             // arrange
             var controllerMock = new Mock<Components.SecurityController>();
             var portalAliasControllerMock = new Mock<IPortalAliasController>();
-            var sut = new SecurityController(controllerMock.Object, portalAliasControllerMock.Object);
+            var sut = new SecurityController(
+                controllerMock.Object,
+                portalAliasControllerMock.Object);
 
             // act
             var alias = sut.AddPortalAlias(SslUrl, PortalId);
@@ -45,7 +47,9 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             portalAliasControllerMock
                 .Setup(c => c.GetPortalAlias(SomeAlias, PortalId))
                 .Returns(() => portalAliasInfo);
-            var sut = new SecurityController(controllerMock.Object, portalAliasControllerMock.Object);
+            var sut = new SecurityController(
+                controllerMock.Object,
+                portalAliasControllerMock.Object);
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);
@@ -66,7 +70,9 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             portalAliasControllerMock
                 .Setup(c => c.GetPortalAlias(SomeAlias, PortalId))
                 .Returns(() => null);
-            var sut = new SecurityController(controllerMock.Object, portalAliasControllerMock.Object);
+            var sut = new SecurityController(
+                controllerMock.Object,
+                portalAliasControllerMock.Object);
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);

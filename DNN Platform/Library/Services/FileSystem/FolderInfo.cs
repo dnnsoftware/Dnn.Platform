@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
+    using Newtonsoft.Json;
 
     [XmlRoot("folder", IsNullable = false)]
     [Serializable]
@@ -275,6 +276,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <inheritdoc/>
         [XmlIgnore]
+        [JsonIgnore]
         public DateTime LastUpdated { get; set; }
 
 
@@ -318,6 +320,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
+        [JsonIgnore]
         public int KeyID
         {
             get

@@ -65,7 +65,7 @@ class UrlRow extends Component {
                     <EditUrl url={editedUrl}
                         saving={saving}
                         pageHasParent={pageHasParent}
-                        accordion={true} isOpened={opened} keepCollapsedContent={true}
+                        accordion={true} isOpened={opened}
                         onChange={onChange}
                         onSave={onSave}
                         onCancel={onCancel}

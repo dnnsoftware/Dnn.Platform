@@ -1,27 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-//
+// 
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
 // this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
 // (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
+
 namespace log4net.Repository
 {
     /// <summary>
-    /// Basic Configurator interface for repositories.
+    /// Basic Configurator interface for repositories
     /// </summary>
     /// <remarks>
     /// <para>
@@ -33,14 +33,14 @@ namespace log4net.Repository
     /// configuration by the <see cref="log4net.Config.BasicConfigurator"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell.</author>
-    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
     public interface IBasicRepositoryConfigurator
     {
         /// <summary>
-        /// Initialize the repository using the specified appender.
+        /// Initialize the repository using the specified appender
         /// </summary>
-        /// <param name="appender">the appender to use to log all logging events.</param>
+        /// <param name="appender">the appender to use to log all logging events</param>
         /// <remarks>
         /// <para>
         /// Configure the repository to route all logging events to the
@@ -50,9 +50,9 @@ namespace log4net.Repository
         void Configure(Appender.IAppender appender);
 
         /// <summary>
-        /// Initialize the repository using the specified appenders.
+        /// Initialize the repository using the specified appenders
         /// </summary>
-        /// <param name="appenders">the appenders to use to log all logging events.</param>
+        /// <param name="appenders">the appenders to use to log all logging events</param>
         /// <remarks>
         /// <para>
         /// Configure the repository to route all logging events to the

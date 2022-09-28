@@ -9,10 +9,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     using System.Linq;
     using System.Threading;
     using System.Web;
-    using System.Web.Mvc;
-
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Mvc.Common;
 
     public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
@@ -28,9 +24,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
                     // Try to fetch the token from Headers. (Used with Dnn service framework.).
                     // If not found then fetch it from form fields. (Would be used with standard MVC call).
-                    var token = headers.AllKeys.Contains("RequestVerificationToken") ? headers.GetValues("RequestVerificationToken").FirstOrDefault()
-                        : (
-                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault() : null);
+                    var token = headers.GetValues("RequestVerificationToken")?.FirstOrDefault() ?? form.GetValues("__RequestVerificationToken")?.FirstOrDefault();
 
                     var cookieValue = this.GetAntiForgeryCookieValue(httpContext);
                     if (token != null)

@@ -1,12 +1,12 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Social Groups" type="Module" isSystem="true" version="09.10.02">
+    <package name="Social Groups" type="Module" isSystem="true" version="09.11.00">
       <friendlyName>Social Groups</friendlyName>
       <description>DotNetNuke Corporation Social Groups module</description>
       <iconFile>~/DesktopModules/SocialGroups/Images/Social_Groups_32X32.png</iconFile>
       <owner>
-        <name>DNN</name>
-        <organization>.NET Foundation</organization>
+        <name>.NET Foundation and Contributors</name>
+        <organization>DNN Community</organization>
         <url>https://dnncommunity.org</url>
         <email>info@dnncommunity.org</email>
       </owner>

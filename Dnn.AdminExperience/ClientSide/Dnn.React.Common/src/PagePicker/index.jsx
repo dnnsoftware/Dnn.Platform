@@ -588,7 +588,7 @@ class PagePicker extends Component {
                     {props.IsInDropDown &&
                         <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") } style={props.style}>
                             <Collapse
-                                className="page-picker-content"
+                                theme={{collapse: "page-picker-content ReactCollapse--collapse", content: "ReactCollapse--content"}}
                                 ref={this.pagePickerContentRef}
                                 isOpened={state.dropDownOpen}>
                                 {!props.IsMultiSelect && props.SearchEnabled &&

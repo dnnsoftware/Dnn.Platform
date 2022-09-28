@@ -129,8 +129,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.internalSearchController = InternalSearchController.Instance;
 
             this.mockCBO = new Mock<ICBO>();
-            var tabKey = string.Format("{0}-{1}", TabSearchTypeId, 0);
-            var userKey = string.Format("{0}-{1}", UserSearchTypeId, 0);
+            var tabKey = string.Format("{0}-{1}-{2}", TabSearchTypeId, 0, CultureEnUs);
+            var userKey = string.Format("{0}-{1}-{2}", UserSearchTypeId, 0, CultureEnUs);
             this.mockCBO.Setup(c => c.GetCachedObject<IDictionary<string, string>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
                     .Returns(new Dictionary<string, string>() { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
             CBO.SetTestableInstance(this.mockCBO.Object);

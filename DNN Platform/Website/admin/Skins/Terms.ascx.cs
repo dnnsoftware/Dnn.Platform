@@ -31,6 +31,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string CssClass { get; set; }
 
+        public string Rel { get; set; } = "nofollow";
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -58,8 +60,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 this.hypTerms.NavigateUrl = this.PortalSettings.TermsTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Terms") : this._navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
+                if (!string.IsNullOrWhiteSpace(this.Rel))
+                {
+                    this.hypTerms.Attributes["rel"] = this.Rel;
+                }
 
-                this.hypTerms.Attributes["rel"] = "nofollow";
             }
             catch (Exception exc)
             {

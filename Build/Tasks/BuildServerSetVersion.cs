@@ -9,7 +9,7 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
 
     /// <summary>A cake task to update the build number in CI.</summary>
-    [Dependency(typeof(SetVersion))]
+    [IsDependentOn(typeof(SetVersion))]
     public sealed class BuildServerSetVersion : FrostingTask<Context>
     {
         /// <inheritdoc/>
