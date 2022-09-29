@@ -19,7 +19,7 @@
     <PackageReference Include="Cake.Frosting" Version="2.2.0" />
     <PackageReference Include="Cake.Git" Version="2.0.0" />
     <PackageReference Include="Cake.Issues" Version="2.0.0-beta0001" />
-    <PackageReference Include="Cake.Issues.MsBuild" Version="1.0.0" />
+    <PackageReference Include="Cake.Issues.MsBuild" Version="2.0.0-beta0001" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />
