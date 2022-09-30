@@ -32,7 +32,6 @@ namespace DotNetNuke.Build
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
                 .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.10.0"))
-                .InstallTool(new Uri("nuget:?package=Cake.Issues.MsBuild&version=1.0.0"))
                 .Run(args);
         }
     }
