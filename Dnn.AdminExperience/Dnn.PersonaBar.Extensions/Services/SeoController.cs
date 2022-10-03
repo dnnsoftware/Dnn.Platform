@@ -267,14 +267,14 @@ namespace Dnn.PersonaBar.Seo.Services
 
                 var str = PortalController.GetPortalSetting("SitemapMinPriority", this.PortalId, "0.1");
                 float sitemapMinPriority;
-                if (!float.TryParse(str, out sitemapMinPriority))
+                if (!float.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out sitemapMinPriority))
                 {
                     sitemapMinPriority = 0.1f;
                 }
 
                 str = PortalController.GetPortalSetting("SitemapExcludePriority", this.PortalId, "0.1");
                 float sitemapExcludePriority;
-                if (!float.TryParse(str, out sitemapExcludePriority))
+                if (!float.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out sitemapExcludePriority))
                 {
                     sitemapExcludePriority = 0.1f;
                 }
