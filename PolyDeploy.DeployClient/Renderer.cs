@@ -1,3 +1,5 @@
+using System;
+
 namespace PolyDeploy.DeployClient
 {
     using System.Collections.Generic;
@@ -121,6 +123,12 @@ namespace PolyDeploy.DeployClient
                     FailedPackageFiles.Add(file.Name);
                 }
             }
+        }
+
+        public void RenderError(string message, Exception exception)
+        {
+            this.console.WriteLine(message);
+            this.console.WriteException(exception);
         }
 
         private readonly HashSet<string> StartedPackageFiles = new HashSet<string>();

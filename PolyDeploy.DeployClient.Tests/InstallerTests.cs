@@ -13,6 +13,7 @@ namespace PolyDeploy.DeployClient.Tests
     using FakeItEasy;
     using Shouldly;
     using Xunit;
+    using System.Reflection;
 
     public class InstallerTests
     {
@@ -48,7 +49,9 @@ namespace PolyDeploy.DeployClient.Tests
 
             var installer = CreateInstaller(handler);
 
-            await Should.ThrowAsync<HttpRequestException>(() => installer.StartSessionAsync(options));
+            var exception = await Should.ThrowAsync<InstallerException>(() => installer.StartSessionAsync(options));
+            exception.Message.ShouldBe("An Error Occurred While Starting the Deployment Session");
+            exception.InnerException.ShouldBeAssignableTo<HttpRequestException>();
         }
 
         [Fact]
@@ -71,6 +74,40 @@ namespace PolyDeploy.DeployClient.Tests
             var formContent = handler.Request.Content.ShouldBeOfType<MultipartFormDataContent>();
             var innerContent = formContent.ShouldHaveSingleItem();
             (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
+        }
+
+        [Fact]
+        public async Task UploadPackageAsync_WhenApiErrors_ThrowWrappedException()
+        {
+            var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var targetUri = new Uri("https://polydeploy.example.com/");
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+
+            var handler = new FakeMessageHandler(
+                new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+                new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            var installer = CreateInstaller(handler);
+
+            var exception = await Should.ThrowAsync<InstallerException>(() => installer.UploadPackageAsync(options, sessionId, new MemoryStream(Encoding.UTF8.GetBytes("XYZ")), "Jamestown_install_5.5.7.zip"));
+
+            exception.Message.ShouldBe("An Error Occurred While Uploading the Packages");
+        }
+
+        [Fact]
+        public async Task InstallPackagesAsync_WhenAPIErrors_ThrowsWrappedException()
+        {
+            var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var targetUri = new Uri("https://polydeploy.example.com/");
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+
+            var handler = new FakeMessageHandler(
+                new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}"),
+                new HttpResponseMessage(HttpStatusCode.InternalServerError));
+            var installer = CreateInstaller(handler);
+
+            var exception = await Should.ThrowAsync<InstallerException>(() => installer.InstallPackagesAsync(options, sessionId));
+
+            exception.Message.ShouldBe("An Error Occurred While Installing the Packages");
         }
 
         [Fact]
@@ -171,7 +208,9 @@ namespace PolyDeploy.DeployClient.Tests
                 new HttpResponseMessage(HttpStatusCode.NotFound));
             var installer = CreateInstaller(handler, stopwatch);
 
-            await Should.ThrowAsync<HttpRequestException>(() => installer.GetSessionAsync(options, sessionId));
+            var exception = await Should.ThrowAsync<InstallerException>(() => installer.GetSessionAsync(options, sessionId));
+            exception.Message.ShouldBe("An Error Occurred Getting the Status of the Deployment Session");
+            exception.InnerException.ShouldBeAssignableTo<HttpRequestException>();
             handler.Requests.Count.ShouldBe(3);
         }
 
@@ -193,7 +232,7 @@ namespace PolyDeploy.DeployClient.Tests
             await Should.NotThrowAsync(() => installer.GetSessionAsync(options, sessionId));
             handler.Requests.Count.ShouldBe(3);
         }
-        
+
         [Fact]
         public async Task StartSessionAsync_SetsUserAgentHeader()
         {
@@ -212,7 +251,7 @@ namespace PolyDeploy.DeployClient.Tests
             var userAgent = request.Headers.UserAgent.ShouldHaveSingleItem();
             var product = userAgent.Product.ShouldNotBeNull();
             product.Name.ShouldBe("PolyDeploy");
-            product.Version.ShouldBe(typeof(Installer).Assembly.GetName().Version!.ToString());
+            product.Version.ShouldBe(Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion);
 
             sessionId.ShouldBe(expectedSessionId);
         }

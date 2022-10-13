@@ -58,6 +58,9 @@ jobs:
         env:
           Configuration: ${{ matrix.configuration }}
 
+      - name: Test
+        run: dotnet test PolyDeploy.sln --configuration ${{ matrix.configuration }} --no-build
+
       - name: Publish Deploy Client
         run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 

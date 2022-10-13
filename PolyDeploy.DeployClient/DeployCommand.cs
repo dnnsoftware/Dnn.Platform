@@ -8,7 +8,7 @@
     using Spectre.Cli;
     using Spectre.Console;
 
-    using ValidationResult=Spectre.Cli.ValidationResult;
+    using ValidationResult = Spectre.Cli.ValidationResult;
 
     public class DeployCommand : AsyncCommand<DeployInput>
     {
@@ -20,8 +20,8 @@
                 new Installer(new HttpClient(), new Stopwatch()),
                 new Encryptor(),
                 new Delayer());
-            await deployer.StartAsync(input);
-            return 0;
+            var exitCode = await deployer.StartAsync(input);
+            return (int)exitCode;
         }
 
         public override ValidationResult Validate(CommandContext context, DeployInput settings)

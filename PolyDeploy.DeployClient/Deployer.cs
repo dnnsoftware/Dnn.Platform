@@ -21,41 +21,56 @@ namespace PolyDeploy.DeployClient
             this.delayer = delayer;
         }
 
-        public async Task StartAsync(DeployInput options)
+        public async Task<ExitCode> StartAsync(DeployInput options)
         {
-            this.renderer.Welcome();
-
-            var packageFiles = this.packageFileSource.GetPackageFiles();
-            this.renderer.RenderListOfFiles(packageFiles);
-
-            var sessionId = await this.installer.StartSessionAsync(options);
-
-            var uploads = packageFiles.Select(file => (file, this.UploadPackage(sessionId, file, options)));
-            await this.renderer.RenderFileUploadsAsync(uploads);
-
-            _ = this.installer.InstallPackagesAsync(options, sessionId);
-
-            var hasRenderedOverview = false;
-            while (true)
+            try
             {
-                var session = await this.installer.GetSessionAsync(options, sessionId);
-                if (session?.Responses != null)
+                this.renderer.Welcome();
+
+                var packageFiles = this.packageFileSource.GetPackageFiles();
+                this.renderer.RenderListOfFiles(packageFiles);
+
+                var sessionId = await this.installer.StartSessionAsync(options);
+
+                var uploads = packageFiles.Select(file => (file, this.UploadPackage(sessionId, file, options)));
+                await this.renderer.RenderFileUploadsAsync(uploads);
+
+                _ = this.installer.InstallPackagesAsync(options, sessionId);
+
+                var hasRenderedOverview = false;
+                while (true)
                 {
-                    if (!hasRenderedOverview)
+                    var session = await this.installer.GetSessionAsync(options, sessionId);
+                    if (session?.Responses != null)
                     {
-                        this.renderer.RenderInstallationOverview(session.Responses);
-                        hasRenderedOverview = true;
+                        if (!hasRenderedOverview)
+                        {
+                            this.renderer.RenderInstallationOverview(session.Responses);
+                            hasRenderedOverview = true;
+                        }
+
+                        this.renderer.RenderInstallationStatus(session.Responses);
                     }
 
-                    this.renderer.RenderInstallationStatus(session.Responses);
+                    if (session?.Status == SessionStatus.Complete)
+                    {
+                        break;
+                    }
+
+                    await this.delayer.Delay(TimeSpan.FromSeconds(1));
                 }
 
-                if (session?.Status == SessionStatus.Complete)
-                {
-                    break;
-                }
-                
-                await this.delayer.Delay(TimeSpan.FromSeconds(1));
+                return ExitCode.Success;
+            }
+            catch (InstallerException e)
+            {
+                this.renderer.RenderError(e.Message, e.InnerException!);
+                return ExitCode.InstallerError;
+            }
+            catch (Exception e)
+            {
+                this.renderer.RenderError("An unexpected error occurred.", e);
+                return ExitCode.UnexpectedError;
             }
         }
 

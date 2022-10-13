@@ -4,6 +4,6 @@ namespace PolyDeploy.DeployClient
 
     public interface IDeployer
     {
-        Task StartAsync(DeployInput options);
+        Task<ExitCode> StartAsync(DeployInput options);
     }
 }

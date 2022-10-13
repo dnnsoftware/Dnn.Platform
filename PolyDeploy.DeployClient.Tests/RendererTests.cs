@@ -293,5 +293,23 @@
             console.Output.ShouldNotContainStringsInOrder("James", "Failed");
             console.Output.ShouldContainStringsInOrder("Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
         }
+        
+        [Fact]
+        public void RenderError()
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            try
+            {
+                throw new Exception("Exception message");
+            }
+            catch (Exception exception)
+            {
+                renderer.RenderError("An error occurred while uploading the packages", exception);
+                console.Output.ShouldContainStringsInOrder("An error occurred while uploading the packages",
+                    "Exception message", nameof(RendererTests), nameof(RenderError));
+            }
+        }
     }
 }

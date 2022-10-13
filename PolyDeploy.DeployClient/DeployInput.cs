@@ -6,6 +6,13 @@ namespace PolyDeploy.DeployClient
     using Spectre.Cli;
     using ValidationResult = Spectre.Cli.ValidationResult;
 
+    public enum ExitCode
+    {
+        Success = 0,
+        InstallerError = 1,
+        UnexpectedError = int.MaxValue
+    }
+
     public class DeployInput : CommandSettings
     {
         [CommandOption("-u|--target-uri")]

@@ -1,3 +1,5 @@
+using System.Net.Http;
+
 namespace PolyDeploy.DeployClient.Tests
 {
     using System;
@@ -248,6 +250,47 @@ namespace PolyDeploy.DeployClient.Tests
             fakeRenderer.InstallStatus.Count.ShouldBe(2);
         }
 
+        [Fact]
+        public async Task StartAsync_InstallerExceptionThrown_RendersMessage()
+        {
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+
+            var installer = A.Fake<IInstaller>();
+            var innerException = A.Dummy<HttpRequestException>();
+            A.CallTo(() => installer.StartSessionAsync(options))
+                .Throws(new InstallerException("Installer exception occurrrrrred", innerException));
+
+            var fakeRenderer = new FakeRenderer();
+            var deployer = new Deployer(fakeRenderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
+            var exitCode = await deployer.StartAsync(options);
+
+            exitCode.ShouldBe(ExitCode.InstallerError);
+            fakeRenderer.ErrorMessage.ShouldBe("Installer exception occurrrrrred");
+            fakeRenderer.ErrorException.ShouldBe(innerException);
+        }
+
+        [Fact]
+        public async Task StartAsync_ExceptionThrown_RendersMessage()
+        {
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.StartSessionAsync(options))
+                .Throws<HttpRequestException>();
+
+            var fakeRenderer = new FakeRenderer();
+            var deployer = new Deployer(fakeRenderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
+            var exitCode = await deployer.StartAsync(options);
+
+            exitCode.ShouldBe(ExitCode.UnexpectedError);
+            fakeRenderer.ErrorMessage.ShouldBe("An unexpected error occurred.");
+            fakeRenderer.ErrorException.ShouldBeOfType<HttpRequestException>();
+        }
+
         private static void SimulateResponses(IInstaller fakeInstaller, DeployInput options, String sessionId, params SessionResponse?[] responses)
         {
             A.CallTo(() => fakeInstaller.GetSessionAsync(options, sessionId))
@@ -276,6 +319,9 @@ namespace PolyDeploy.DeployClient.Tests
         {
             public SortedList<int, SessionResponse?>? InstallationOverview { get; private set; }
             public List<SortedList<int, SessionResponse?>> InstallStatus { get; } = new();
+            public string? ErrorMessage { get; private set; }
+            public Exception? ErrorException { get; private set; }
+
 
             public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
             {
@@ -299,6 +345,12 @@ namespace PolyDeploy.DeployClient.Tests
             public void RenderInstallationStatus(SortedList<int, SessionResponse?> packageFiles)
             {
                 this.InstallStatus.Add(packageFiles);
+            }
+
+            public void RenderError(string message, Exception exception)
+            {
+                this.ErrorMessage = message;
+                this.ErrorException = exception;
             }
         }
     }
