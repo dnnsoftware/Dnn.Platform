@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Language {
-        
         /// <summary>
         /// litCommonHeaderTemplate control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litCommonHeaderTemplate;
-        
         /// <summary>
         /// selectCulture control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList selectCulture;
-        
         /// <summary>
         /// rptLanguages control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptLanguages;
-        
         /// <summary>
         /// litCommonFooterTemplate control.
         /// </summary>

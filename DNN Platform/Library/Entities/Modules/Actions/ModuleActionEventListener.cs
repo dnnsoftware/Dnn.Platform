@@ -16,21 +16,21 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// -----------------------------------------------------------------------------
     public class ModuleActionEventListener
     {
-        private readonly ActionEventHandler _actionEvent;
-        private readonly int _moduleID;
+        private readonly ActionEventHandler actionEvent;
+        private readonly int moduleID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.
         /// </summary>
-        /// <param name="ModID"></param>
+        /// <param name="modID"></param>
         /// <param name="e"></param>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
-        public ModuleActionEventListener(int ModID, ActionEventHandler e)
+        public ModuleActionEventListener(int modID, ActionEventHandler e)
         {
-            this._moduleID = ModID;
-            this._actionEvent = e;
+            this.moduleID = modID;
+            this.actionEvent = e;
         }
 
         /// -----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return this._moduleID;
+                return this.moduleID;
             }
         }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return this._actionEvent;
+                return this.actionEvent;
             }
         }
     }

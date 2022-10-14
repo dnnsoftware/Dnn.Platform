@@ -23,8 +23,8 @@ namespace DotNetNuke.Security.Permissions
     public class DesktopModulePermissionInfo : PermissionInfoBase, IHydratable
     {
         // local property declarations
-        private int _desktopModulePermissionID;
-        private int _portalDesktopModuleID;
+        private int desktopModulePermissionID;
+        private int portalDesktopModuleID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -34,8 +34,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo()
         {
-            this._desktopModulePermissionID = Null.NullInteger;
-            this._portalDesktopModuleID = Null.NullInteger;
+            this.desktopModulePermissionID = Null.NullInteger;
+            this.portalDesktopModuleID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -65,12 +65,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._desktopModulePermissionID;
+                return this.desktopModulePermissionID;
             }
 
             set
             {
-                this._desktopModulePermissionID = value;
+                this.desktopModulePermissionID = value;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._portalDesktopModuleID;
+                return this.portalDesktopModuleID;
             }
 
             set
             {
-                this._portalDesktopModuleID = value;
+                this.portalDesktopModuleID = value;
             }
         }
 
@@ -193,7 +193,7 @@ namespace DotNetNuke.Security.Permissions
         {
             unchecked
             {
-                return (this._desktopModulePermissionID * 397) ^ this._portalDesktopModuleID;
+                return (this.desktopModulePermissionID * 397) ^ this.portalDesktopModuleID;
             }
         }
     }

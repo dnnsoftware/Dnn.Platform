@@ -20,7 +20,7 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Tokens;
-using Newtonsoft.Json;
+    using Newtonsoft.Json;
 
 /// -----------------------------------------------------------------------------
 /// Project:    DotNetNuke
@@ -34,9 +34,9 @@ using Newtonsoft.Json;
     [Serializable]
     public class RoleInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPropertyAccess
     {
-        private RoleType _RoleType = RoleType.None;
-        private bool _RoleTypeSet = Null.NullBoolean;
-        private Dictionary<string, string> _settings;
+        private RoleType roleType = RoleType.None;
+        private bool roleTypeSet = Null.NullBoolean;
+        private Dictionary<string, string> settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleInfo"/> class.
@@ -59,13 +59,13 @@ using Newtonsoft.Json;
         {
             get
             {
-                if (!this._RoleTypeSet)
+                if (!this.roleTypeSet)
                 {
                     this.GetRoleType();
-                    this._RoleTypeSet = true;
+                    this.roleTypeSet = true;
                 }
 
-                return this._RoleType;
+                return this.roleType;
             }
         }
 
@@ -80,7 +80,7 @@ using Newtonsoft.Json;
         {
             get
             {
-                return this._settings ?? (this._settings = (this.RoleID == Null.NullInteger)
+                return this.settings ?? (this.settings = (this.RoleID == Null.NullInteger)
                                                      ? new Dictionary<string, string>()
                                                      : RoleController.Instance.GetRoleSettings(this.RoleID) as
                                                        Dictionary<string, string>);
@@ -386,14 +386,14 @@ using Newtonsoft.Json;
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser,
                                   Scope accessLevel, ref bool propertyNotFound)
         {
-            string OutputFormat = string.Empty;
+            string outputFormat = string.Empty;
             if (format == string.Empty)
             {
-                OutputFormat = "g";
+                outputFormat = "g";
             }
             else
             {
-                OutputFormat = format;
+                outputFormat = format;
             }
 
             string propName = propertyName.ToLowerInvariant();
@@ -559,23 +559,23 @@ using Newtonsoft.Json;
                             switch (reader.ReadElementContentAsString())
                             {
                                 case "adminrole":
-                                    this._RoleType = RoleType.Administrator;
+                                    this.roleType = RoleType.Administrator;
                                     break;
                                 case "registeredrole":
-                                    this._RoleType = RoleType.RegisteredUser;
+                                    this.roleType = RoleType.RegisteredUser;
                                     break;
                                 case "subscriberrole":
-                                    this._RoleType = RoleType.Subscriber;
+                                    this.roleType = RoleType.Subscriber;
                                     break;
                                 case "unverifiedrole":
-                                    this._RoleType = RoleType.UnverifiedUser;
+                                    this.roleType = RoleType.UnverifiedUser;
                                     break;
                                 default:
-                                    this._RoleType = RoleType.None;
+                                    this.roleType = RoleType.None;
                                     break;
                             }
 
-                            this._RoleTypeSet = true;
+                            this.roleTypeSet = true;
                             break;
                         case "securitymode":
                             switch (reader.ReadElementContentAsString())
@@ -698,19 +698,19 @@ using Newtonsoft.Json;
             var portal = PortalController.Instance.GetPortal(this.PortalID);
             if (this.RoleID == portal.AdministratorRoleId)
             {
-                this._RoleType = RoleType.Administrator;
+                this.roleType = RoleType.Administrator;
             }
             else if (this.RoleID == portal.RegisteredRoleId)
             {
-                this._RoleType = RoleType.RegisteredUser;
+                this.roleType = RoleType.RegisteredUser;
             }
             else if (this.RoleName == "Subscribers")
             {
-                this._RoleType = RoleType.Subscriber;
+                this.roleType = RoleType.Subscriber;
             }
             else if (this.RoleName == "Unverified Users")
             {
-                this._RoleType = RoleType.UnverifiedUser;
+                this.roleType = RoleType.UnverifiedUser;
             }
         }
 

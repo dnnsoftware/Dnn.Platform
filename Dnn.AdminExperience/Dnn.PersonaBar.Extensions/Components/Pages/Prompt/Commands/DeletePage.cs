@@ -15,17 +15,22 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("delete-page", Constants.PagesCategory, "Prompt_DeletePage_Description")]
+
     public class DeletePage : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_DeletePage_FlagName", "String")]
+
         private const string FlagName = "name";
 
         [FlagParameter("id", "Prompt_DeletePage_FlagId", "Integer")]
+
         private const string FlagId = "id";
 
         [FlagParameter("parentid", "Prompt_DeletePage_FlagParentId", "Integer")]
+
         private const string FlagParentId = "parentid";
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int PageId { get; set; } = -1;
@@ -34,6 +39,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private int ParentId { get; set; } = -1;
 
+        /// <inheritdoc/>
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
@@ -46,6 +52,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
         }
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             this.PageId = this.PageId != -1
@@ -56,10 +63,12 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_PageNotFound"));
             }
+
             if (!SecurityService.Instance.CanDeletePage(this.PageId))
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
             }
+
             try
             {
                 PagesController.Instance.DeletePage(new PageItem { Id = this.PageId }, this.PortalSettings);
@@ -68,6 +77,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_PageNotFound"));
             }
+
             return new ConsoleResultModel(this.LocalizeString("PageDeletedMessage")) { Records = 1 };
         }
     }

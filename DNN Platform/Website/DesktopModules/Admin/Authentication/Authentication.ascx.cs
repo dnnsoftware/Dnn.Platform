@@ -22,8 +22,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Authentication : PortalModuleBase
     {
-        private readonly List<AuthenticationSettingsBase> _settingControls = new List<AuthenticationSettingsBase>();
+        private readonly List<AuthenticationSettingsBase> settingControls = new List<AuthenticationSettingsBase>();
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -51,7 +52,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 // Add Settings Control to Container
                 container.Controls.Add(authSettingsControl);
-                this._settingControls.Add(authSettingsControl);
+                this.settingControls.Add(authSettingsControl);
 
                 // Add Section Head Control to Container
                 this.pnlSettings.Controls.Add(sectionHeadControl);
@@ -73,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         protected void OnUpdateClick(object sender, EventArgs e)
         {
-            foreach (var settingControl in this._settingControls)
+            foreach (var settingControl in this.settingControls)
             {
                 settingControl.UpdateSettings();
             }

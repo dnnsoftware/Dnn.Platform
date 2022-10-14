@@ -22,9 +22,9 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     /// -----------------------------------------------------------------------------
     public class MessageConversationView : IHydratable
     {
-        private int _messageID = -1;
-        private string _displayDate;
-        private DateTime _createdOnDate;
+        private int messageID = -1;
+        private string displayDate;
+        private DateTime createdOnDate;
 
         /// <summary>
         /// Gets a pretty printed string with the time since the message was created.
@@ -33,12 +33,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayDate))
+                if (string.IsNullOrEmpty(this.displayDate))
                 {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this._createdOnDate);
+                    this.displayDate = DateUtils.CalculateDateForDisplay(this.createdOnDate);
                 }
 
-                return this._displayDate;
+                return this.displayDate;
             }
         }
 
@@ -60,12 +60,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         {
             get
             {
-                return this._messageID;
+                return this.messageID;
             }
 
             set
             {
-                this._messageID = value;
+                this.messageID = value;
             }
         }
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             this.AttachmentCount = Convert.ToInt32(dr["AttachmentCount"]);
             this.NewThreadCount = Convert.ToInt32(dr["NewThreadCount"]);
             this.ThreadCount = Convert.ToInt32(dr["ThreadCount"]);
-            this._createdOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
+            this.createdOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
         }
     }
 }

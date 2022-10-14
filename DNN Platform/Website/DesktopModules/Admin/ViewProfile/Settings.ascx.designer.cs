@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class ViewProfileSettings {
-        
         /// <summary>
         /// lblIncludeButton control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeButton;
-        
         /// <summary>
         /// IncludeButton control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox IncludeButton;
-        
         /// <summary>
         /// plTemplate control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTemplate;
-        
         /// <summary>
         /// txtTemplate control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTemplate;
-        
         /// <summary>
         /// cmdLoadDefault control.
         /// </summary>

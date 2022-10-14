@@ -16,10 +16,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckTracing : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckTracing";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);

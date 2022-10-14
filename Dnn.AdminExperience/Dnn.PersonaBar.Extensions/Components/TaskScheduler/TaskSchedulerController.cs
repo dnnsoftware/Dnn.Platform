@@ -74,8 +74,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                         str = strPrefix + " " + timeLapse + " " + (timeLapse > 1 ? strYears : strYear);
                         break;
                 }
+
                 return str;
             }
+
             return Localization.GetString("n/a", this.LocalResourcesFile);
         }
 
@@ -108,11 +110,13 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 {
                     servers = "," + servers;
                 }
+
                 if (!servers.EndsWith(","))
                 {
                     servers = servers + ",";
                 }
             }
+
             scheduleItem.Servers = string.IsNullOrEmpty(servers) ? Null.NullString : servers;
             return scheduleItem;
         }
@@ -130,15 +134,23 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 {
                     scheduleviews = SchedulingController.GetSchedule(serverName);
                 }
+
                 if (!string.IsNullOrEmpty(taskName))
+                {
                     scheduleviews = scheduleviews.Where(item => item.FriendlyName.IndexOf(taskName, StringComparison.OrdinalIgnoreCase) >= 0);
+                }
+
                 if (enabled.HasValue)
+                {
                     scheduleviews = scheduleviews.Where(item => item.Enabled == enabled.Value);
+                }
 
                 var scheduleItems = scheduleviews as IList<ScheduleItem> ?? scheduleviews.ToList();
                 foreach (var item in scheduleItems.Where(x => x.NextStart == Null.NullDate)
                             .Where(item => item.ScheduleStartDate != Null.NullDate))
+                {
                     item.NextStart = item.ScheduleStartDate;
+                }
 
                 return scheduleItems;
             }

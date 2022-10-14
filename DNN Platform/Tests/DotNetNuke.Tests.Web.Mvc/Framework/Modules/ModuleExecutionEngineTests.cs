@@ -24,6 +24,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
     public class ModuleExecutionEngineTests
     {
         [Test]
+
         public void ExecuteModule_Requires_NonNull_ModuleRequestContext()
         {
             var engine = new ModuleExecutionEngine();
@@ -31,6 +32,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteModule_Returns_Null_If_Application_Is_Null()
         {
             // Arrange
@@ -45,6 +47,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteModule_Executes_ModuleApplication_If_Not_Null()
         {
             // Arrange
@@ -61,6 +64,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteModule_Returns_Result_Of_Executing_ModuleApplication()
         {
             // Arrange

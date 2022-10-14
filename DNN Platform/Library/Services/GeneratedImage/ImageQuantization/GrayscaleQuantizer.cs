@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             // purposes, use a grayscale.
             for (uint i = 0; i < nColors; i++)
             {
-                uint Alpha = 0xFF;                      // Colors are opaque.
+                uint alpha = 0xFF;                      // Colors are opaque.
                 uint intensity = Convert.ToUInt32(i * 0xFF / (nColors - 1));    // Even distribution.
 
                 // The GIF encoder makes the first entry in the palette
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // and an optimum palette for that algorithm generated here.
                 // For example, a color histogram, or a median cut palette.
                 this._colors[i] = Color.FromArgb(
-                    (int)Alpha,
+                    (int)alpha,
                     (int)intensity,
                     (int)intensity,
                     (int)intensity);

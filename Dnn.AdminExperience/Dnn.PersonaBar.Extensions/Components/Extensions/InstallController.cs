@@ -25,11 +25,12 @@ namespace Dnn.PersonaBar.Extensions.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
 
+        /// <inheritdoc/>
         public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
             var parseResult = new ParseResultDto();
             var fileName = Path.GetFileName(filePath);
-            var extension = Path.GetExtension(fileName ?? "").ToLowerInvariant();
+            var extension = Path.GetExtension(fileName ?? string.Empty).ToLowerInvariant();
 
             if (extension != ".zip" && extension != ".resources")
             {
@@ -88,11 +89,12 @@ namespace Dnn.PersonaBar.Extensions.Components
             return parseResult;
         }
 
+        /// <inheritdoc/>
         public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
         {
             var installResult = new InstallResultDto();
             var fileName = Path.GetFileName(filePath);
-            var extension = Path.GetExtension(fileName ?? "").ToLowerInvariant();
+            var extension = Path.GetExtension(fileName ?? string.Empty).ToLowerInvariant();
 
             if (extension != ".zip" && extension != ".resources")
             {
@@ -153,6 +155,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
+        /// <inheritdoc/>
         protected override Func<IInstallController> GetFactory()
         {
             return () => new InstallController();
@@ -164,6 +167,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
             {
                 var manifestFile = CreateManifest(installer, fileName, legacySkin);
+
                 // Re-evaluate the package after creating a temporary manifest
                 installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
             }
@@ -177,6 +181,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 installer.ReadManifest(true);
             }
+
             return installer;
         }
 
@@ -188,6 +193,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 manifestWriter.Write(LegacyUtil.CreateSkinManifest(fileName, legacySkin ?? "Skin", installer.TempInstallFolder));
                 manifestWriter.Close();
             }
+
             return manifestFile;
         }
 
@@ -201,6 +207,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 installer2.ReadManifest(true);
             }
+
             return installer2.IsValid && installer2.InstallerInfo.Installed;
         }
 
@@ -244,6 +251,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 manifestFile = installer.InstallerInfo.ManifestFile.TempFileName;
             }
+
             if (installer.Packages.Count > 0)
             {
                 if (installer.Packages[0].Package.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase)
@@ -252,6 +260,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     compact = true;
                 }
             }
+
             if (!IsAzureDatabase())
             {
                 compact = true;
@@ -272,7 +281,6 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     Logger.Error(ex);
                 }
-
             }
 
             return compact;

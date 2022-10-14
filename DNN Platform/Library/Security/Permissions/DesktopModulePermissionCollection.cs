@@ -32,31 +32,31 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
         /// </summary>
-        /// <param name="DesktopModulePermissions"></param>
-        public DesktopModulePermissionCollection(ArrayList DesktopModulePermissions)
+        /// <param name="desktopModulePermissions"></param>
+        public DesktopModulePermissionCollection(ArrayList desktopModulePermissions)
         {
-            this.AddRange(DesktopModulePermissions);
+            this.AddRange(desktopModulePermissions);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
         /// </summary>
-        /// <param name="DesktopModulePermissions"></param>
-        public DesktopModulePermissionCollection(DesktopModulePermissionCollection DesktopModulePermissions)
+        /// <param name="desktopModulePermissions"></param>
+        public DesktopModulePermissionCollection(DesktopModulePermissionCollection desktopModulePermissions)
         {
-            this.AddRange(DesktopModulePermissions);
+            this.AddRange(desktopModulePermissions);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
         /// </summary>
-        /// <param name="DesktopModulePermissions"></param>
-        /// <param name="DesktopModulePermissionID"></param>
-        public DesktopModulePermissionCollection(ArrayList DesktopModulePermissions, int DesktopModulePermissionID)
+        /// <param name="desktopModulePermissions"></param>
+        /// <param name="desktopModulePermissionID"></param>
+        public DesktopModulePermissionCollection(ArrayList desktopModulePermissions, int desktopModulePermissionID)
         {
-            foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)
+            foreach (DesktopModulePermissionInfo permission in desktopModulePermissions)
             {
-                if (permission.DesktopModulePermissionID == DesktopModulePermissionID)
+                if (permission.DesktopModulePermissionID == desktopModulePermissionID)
                 {
                     this.Add(permission);
                 }
@@ -109,17 +109,17 @@ namespace DotNetNuke.Security.Permissions
             return id;
         }
 
-        public void AddRange(ArrayList DesktopModulePermissions)
+        public void AddRange(ArrayList desktopModulePermissions)
         {
-            foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)
+            foreach (DesktopModulePermissionInfo permission in desktopModulePermissions)
             {
                 this.Add(permission);
             }
         }
 
-        public void AddRange(DesktopModulePermissionCollection DesktopModulePermissions)
+        public void AddRange(DesktopModulePermissionCollection desktopModulePermissions)
         {
-            foreach (DesktopModulePermissionInfo permission in DesktopModulePermissions)
+            foreach (DesktopModulePermissionInfo permission in desktopModulePermissions)
             {
                 this.Add(permission);
             }

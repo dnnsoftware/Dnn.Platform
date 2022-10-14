@@ -17,7 +17,7 @@ namespace DotNetNuke.Common
 
     internal class NavigationManager : INavigationManager
     {
-        private readonly IPortalController _portalController;
+        private readonly IPortalController portalController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationManager"/> class.
@@ -25,7 +25,7 @@ namespace DotNetNuke.Common
         /// <param name="portalController">An <see cref="IPortalController"/> instance.</param>
         public NavigationManager(IPortalController portalController)
         {
-            this._portalController = portalController;
+            this.portalController = portalController;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL()
         {
-            PortalSettings portalSettings = this._portalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
             return this.NavigateURL(portalSettings.ActiveTab.TabID, Null.NullString);
         }
 
@@ -56,9 +56,9 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            IPortalSettings _portalSettings = this._portalController.GetCurrentSettings();
-            string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, _portalSettings);
-            return this.NavigateURL(tabID, isSuperTab, _portalSettings, Null.NullString, cultureCode);
+            IPortalSettings portalSettings = this.portalController.GetCurrentSettings();
+            string cultureCode = Globals.GetCultureCode(tabID, isSuperTab, portalSettings);
+            return this.NavigateURL(tabID, isSuperTab, portalSettings, Null.NullString, cultureCode);
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace DotNetNuke.Common
             }
             else
             {
-                PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-                return this.NavigateURL(_portalSettings.ActiveTab.TabID, controlKey);
+                PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+                return this.NavigateURL(portalSettings.ActiveTab.TabID, controlKey);
             }
         }
 
@@ -87,8 +87,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(_portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+            return this.NavigateURL(portalSettings?.ActiveTab?.TabID ?? -1, controlKey, additionalParameters);
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, string controlKey)
         {
-            PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(tabID, _portalSettings, controlKey, null);
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+            return this.NavigateURL(tabID, portalSettings, controlKey, null);
         }
 
         /// <summary>
@@ -112,8 +112,8 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = this._portalController.GetCurrentPortalSettings();
-            return this.NavigateURL(tabID, _portalSettings, controlKey, additionalParameters);
+            PortalSettings portalSettings = this.portalController.GetCurrentPortalSettings();
+            return this.NavigateURL(tabID, portalSettings, controlKey, additionalParameters);
         }
 
         /// <summary>

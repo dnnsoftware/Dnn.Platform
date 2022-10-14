@@ -20,9 +20,9 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LanguageComponentWriter : FileComponentWriter
     {
-        private readonly int _DependentPackageID;
-        private readonly Locale _Language;
-        private readonly LanguagePackType _PackageType;
+        private readonly int dependentPackageID;
+        private readonly Locale language;
+        private readonly LanguagePackType packageType;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -37,8 +37,8 @@ namespace DotNetNuke.Services.Installer.Writers
         public LanguageComponentWriter(Locale language, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {
-            this._Language = language;
-            this._PackageType = LanguagePackType.Core;
+            this.language = language;
+            this.packageType = LanguagePackType.Core;
         }
 
         /// -----------------------------------------------------------------------------
@@ -54,9 +54,9 @@ namespace DotNetNuke.Services.Installer.Writers
         public LanguageComponentWriter(LanguagePackInfo languagePack, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {
-            this._Language = LocaleController.Instance.GetLocale(languagePack.LanguageID);
-            this._PackageType = languagePack.PackageType;
-            this._DependentPackageID = languagePack.DependentPackageID;
+            this.language = LocaleController.Instance.GetLocale(languagePack.LanguageID);
+            this.packageType = languagePack.PackageType;
+            this.dependentPackageID = languagePack.DependentPackageID;
         }
 
         /// -----------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                if (this._PackageType == LanguagePackType.Core)
+                if (this.packageType == LanguagePackType.Core)
                 {
                     return "CoreLanguage";
                 }
@@ -117,15 +117,15 @@ namespace DotNetNuke.Services.Installer.Writers
         protected override void WriteCustomManifest(XmlWriter writer)
         {
             // Write language Elements
-            writer.WriteElementString("code", this._Language.Code);
-            if (this._PackageType == LanguagePackType.Core)
+            writer.WriteElementString("code", this.language.Code);
+            if (this.packageType == LanguagePackType.Core)
             {
-                writer.WriteElementString("displayName", this._Language.Text);
-                writer.WriteElementString("fallback", this._Language.Fallback);
+                writer.WriteElementString("displayName", this.language.Text);
+                writer.WriteElementString("fallback", this.language.Fallback);
             }
             else
             {
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this._DependentPackageID);
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.dependentPackageID);
                 writer.WriteElementString("package", package.Name);
             }
         }

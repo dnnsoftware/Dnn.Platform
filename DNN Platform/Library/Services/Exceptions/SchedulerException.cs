@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Exceptions
     public class SchedulerException : BasePortalException
     {
         // default constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulerException"/> class.
         /// </summary>
@@ -17,6 +18,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulerException"/> class.
         /// </summary>
@@ -27,6 +29,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with message and inner exception
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulerException"/> class.
         /// </summary>

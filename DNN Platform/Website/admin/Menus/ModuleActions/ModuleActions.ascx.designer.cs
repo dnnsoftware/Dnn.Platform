@@ -15,7 +15,6 @@ namespace DotNetNuke.Admin.Containers {
     
     
     public partial class ModuleActions {
-        
         /// <summary>
         /// actionButton control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Admin.Containers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton actionButton;
-        
         /// <summary>
         /// quickSettings control.
         /// </summary>

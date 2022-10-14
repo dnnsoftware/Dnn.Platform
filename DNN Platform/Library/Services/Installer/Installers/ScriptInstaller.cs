@@ -19,11 +19,11 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ScriptInstaller : FileInstaller
     {
-        private readonly SortedList<Version, InstallFile> _installScripts = new SortedList<Version, InstallFile>();
-        private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
-        private InstallFile _installScript;
-        private readonly List<InstallFile> _preUpgradeScripts = new List<InstallFile>();
-        private readonly List<InstallFile> _postUpgradeScripts = new List<InstallFile>();
+        private readonly SortedList<Version, InstallFile> installScripts = new SortedList<Version, InstallFile>();
+        private readonly SortedList<Version, InstallFile> unInstallScripts = new SortedList<Version, InstallFile>();
+        private InstallFile installScript;
+        private readonly List<InstallFile> preUpgradeScripts = new List<InstallFile>();
+        private readonly List<InstallFile> postUpgradeScripts = new List<InstallFile>();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._installScript;
+                return this.installScript;
             }
         }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._installScripts;
+                return this.installScripts;
             }
         }
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._unInstallScripts;
+                return this.unInstallScripts;
             }
         }
 
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._preUpgradeScripts;
+                return this.preUpgradeScripts;
             }
         }
 
@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._postUpgradeScripts;
+                return this.postUpgradeScripts;
             }
         }
 
@@ -303,16 +303,16 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (file.Name.StartsWith("install.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // This is the initial script when installing
-                    this._installScript = file;
+                    this.installScript = file;
                 }
                 else if (type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._preUpgradeScripts.Add(file);
+                    this.preUpgradeScripts.Add(file);
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase)
                     || type.Equals("postupgrade", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._postUpgradeScripts.Add(file);
+                    this.postUpgradeScripts.Add(file);
                 }
                 else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {

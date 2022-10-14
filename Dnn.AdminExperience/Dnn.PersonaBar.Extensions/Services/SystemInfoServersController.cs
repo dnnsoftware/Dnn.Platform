@@ -22,6 +22,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoServersController));
 
         [HttpGet]
+
         public HttpResponseMessage GetServers()
         {
             try
@@ -52,6 +53,7 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
+
         public HttpResponseMessage EditServerUrl(EditServerUrlDTO data)
         {
             try
@@ -70,6 +72,7 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpPost]
+
         public HttpResponseMessage DeleteNonActiveServers()
         {
             try

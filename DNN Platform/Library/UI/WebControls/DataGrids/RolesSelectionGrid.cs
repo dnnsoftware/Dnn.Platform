@@ -23,9 +23,9 @@ namespace DotNetNuke.UI.WebControls
 
     public class RolesSelectionGrid : Control, INamingContainer
     {
-        private readonly DataTable _dtRoleSelections = new DataTable();
-        private IList<RoleInfo> _roles;
-        private IList<string> _selectedRoles;
+        private readonly DataTable dtRoleSelections = new DataTable();
+        private IList<RoleInfo> roles;
+        private IList<string> selectedRoles;
         private DropDownList cboRoleGroups;
         private DataGrid dgRoleSelection;
         private Label lblGroups;
@@ -190,11 +190,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private DataTable dtRolesSelection
+        private DataTable DtRolesSelection
         {
             get
             {
-                return this._dtRoleSelections;
+                return this.dtRoleSelections;
             }
         }
 
@@ -202,12 +202,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._selectedRoles ?? (this._selectedRoles = new List<string>());
+                return this.selectedRoles ?? (this.selectedRoles = new List<string>());
             }
 
             set
             {
-                this._selectedRoles = value;
+                this.selectedRoles = value;
             }
         }
 
@@ -279,8 +279,8 @@ namespace DotNetNuke.UI.WebControls
             this.pnlRoleSlections = new Panel { CssClass = "dnnRolesGrid" };
 
             // Optionally Add Role Group Filter
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            ArrayList arrGroups = RoleController.GetRoleGroups(_portalSettings.PortalId);
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            ArrayList arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
             if (arrGroups.Count > 0)
             {
                 this.lblGroups = new Label { Text = Localization.GetString("RoleGroupFilter") };
@@ -326,8 +326,8 @@ namespace DotNetNuke.UI.WebControls
         /// Updates a Selection.
         /// </summary>
         /// <param name="roleName">The name of the role.</param>
-        /// <param name="Selected"></param>
-        protected virtual void UpdateSelection(string roleName, bool Selected)
+        /// <param name="selected"></param>
+        protected virtual void UpdateSelection(string roleName, bool selected)
         {
             var isMatch = false;
             foreach (string currentRoleName in this.CurrentRoleSelection)
@@ -335,7 +335,7 @@ namespace DotNetNuke.UI.WebControls
                 if (currentRoleName == roleName)
                 {
                     // role is in collection
-                    if (!Selected)
+                    if (!selected)
                     {
                         // Remove from collection as we only keep selected roles
                         this.CurrentRoleSelection.Remove(currentRoleName);
@@ -347,7 +347,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Rolename not found so add new
-            if (!isMatch && Selected)
+            if (!isMatch && selected)
             {
                 this.CurrentRoleSelection.Add(roleName);
             }
@@ -397,36 +397,36 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         private void BindRolesGrid()
         {
-            this.dtRolesSelection.Columns.Clear();
-            this.dtRolesSelection.Rows.Clear();
+            this.DtRolesSelection.Columns.Clear();
+            this.DtRolesSelection.Rows.Clear();
 
             // Add Roles Column
             var col = new DataColumn("RoleId", typeof(string));
-            this.dtRolesSelection.Columns.Add(col);
+            this.DtRolesSelection.Columns.Add(col);
 
             // Add Roles Column
             col = new DataColumn("RoleName", typeof(string));
-            this.dtRolesSelection.Columns.Add(col);
+            this.DtRolesSelection.Columns.Add(col);
 
             // Add Selected Column
             col = new DataColumn("Selected", typeof(bool));
-            this.dtRolesSelection.Columns.Add(col);
+            this.DtRolesSelection.Columns.Add(col);
 
             this.GetRoles();
 
             this.UpdateRoleSelections();
-            for (int i = 0; i <= this._roles.Count - 1; i++)
+            for (int i = 0; i <= this.roles.Count - 1; i++)
             {
-                var role = this._roles[i];
-                DataRow row = this.dtRolesSelection.NewRow();
+                var role = this.roles[i];
+                DataRow row = this.DtRolesSelection.NewRow();
                 row["RoleId"] = role.RoleID;
                 row["RoleName"] = Localization.LocalizeRole(role.RoleName);
                 row["Selected"] = this.GetSelection(role.RoleName);
 
-                this.dtRolesSelection.Rows.Add(row);
+                this.DtRolesSelection.Rows.Add(row);
             }
 
-            this.dgRoleSelection.DataSource = this.dtRolesSelection;
+            this.dgRoleSelection.DataSource = this.DtRolesSelection;
             this.dgRoleSelection.DataBind();
         }
 
@@ -446,7 +446,7 @@ namespace DotNetNuke.UI.WebControls
                 roleGroupId = int.Parse(this.cboRoleGroups.SelectedValue);
             }
 
-            this._roles = roleGroupId > -2
+            this.roles = roleGroupId > -2
                     ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
                     : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
@@ -454,16 +454,16 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (this.ShowUnauthenticatedUsers)
                 {
-                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
                 }
 
                 if (this.ShowAllUsers)
                 {
-                    this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
+                    this.roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
                 }
             }
 
-            this._roles = this._roles.OrderBy(r => r.RoleName).ToList();
+            this.roles = this.roles.OrderBy(r => r.RoleName).ToList();
         }
 
         /// <summary>

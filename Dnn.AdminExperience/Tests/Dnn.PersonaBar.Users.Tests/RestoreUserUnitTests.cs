@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.Users.Tests
     using NUnit.Framework;
 
     [TestFixture]
+
     public class RestoreUserUnitTests : CommandTests<RestoreUser>
     {
         private Mock<IUserValidator> _userValidatorMock;
@@ -24,6 +25,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_RestoreValidUserId_ReturnSuccessResponse()
         {
             // Arrange
@@ -43,6 +45,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_RecycleBinControllerRestoringError_ReturnErrorResponse()
         {
             // Arrange
@@ -62,6 +65,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_RestoreNotDeletedUser_ReturnErrorResponse()
         {
             // Arrange
@@ -79,6 +83,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void Run_RestoreNullUserId_ReturnErrorResponse()
         {
             // Arrange

@@ -19,8 +19,8 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class FileInstaller : ComponentInstallerBase
     {
-        private readonly List<InstallFile> _Files = new List<InstallFile>();
-        private bool _DeleteFiles = Null.NullBoolean;
+        private readonly List<InstallFile> files = new List<InstallFile>();
+        private bool deleteFiles = Null.NullBoolean;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -47,12 +47,12 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._DeleteFiles;
+                return this.deleteFiles;
             }
 
             set
             {
-                this._DeleteFiles = value;
+                this.deleteFiles = value;
             }
         }
 
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._Files;
+                return this.files;
             }
         }
 
@@ -122,13 +122,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string _PhysicalBasePath = this.PhysicalSitePath + "\\" + this.BasePath;
-                if (!_PhysicalBasePath.EndsWith("\\"))
+                string physicalBasePath = this.PhysicalSitePath + "\\" + this.BasePath;
+                if (!physicalBasePath.EndsWith("\\"))
                 {
-                    _PhysicalBasePath += "\\";
+                    physicalBasePath += "\\";
                 }
 
-                return _PhysicalBasePath.Replace("/", "\\");
+                return physicalBasePath.Replace("/", "\\");
             }
         }
 

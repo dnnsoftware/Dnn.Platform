@@ -9,8 +9,8 @@ namespace DotNetNuke.ComponentModel
 
     internal class TransientComponentBuilder : IComponentBuilder
     {
-        private readonly string _Name;
-        private readonly Type _Type;
+        private readonly string name;
+        private readonly Type type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TransientComponentBuilder"/> class.
@@ -19,8 +19,8 @@ namespace DotNetNuke.ComponentModel
         /// <param name="type">The type of the component.</param>
         public TransientComponentBuilder(string name, Type type)
         {
-            this._Name = name;
-            this._Type = type;
+            this.name = name;
+            this.type = type;
         }
 
         /// <inheritdoc/>
@@ -28,14 +28,14 @@ namespace DotNetNuke.ComponentModel
         {
             get
             {
-                return this._Name;
+                return this.name;
             }
         }
 
         /// <inheritdoc/>
         public object BuildComponent()
         {
-            return Reflection.CreateObject(this._Type);
+            return Reflection.CreateObject(this.type);
         }
     }
 }

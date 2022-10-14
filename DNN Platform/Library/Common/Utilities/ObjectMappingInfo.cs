@@ -25,13 +25,13 @@ namespace DotNetNuke.Common.Utilities
     public class ObjectMappingInfo
     {
         private const string RootCacheKey = "ObjectCache_";
-        private readonly Dictionary<string, string> _ColumnNames;
-        private readonly Dictionary<string, PropertyInfo> _Properties;
-        private string _CacheByProperty;
-        private int _CacheTimeOutMultiplier;
-        private string _ObjectType;
-        private string _PrimaryKey;
-        private string _TableName;
+        private readonly Dictionary<string, string> columnNames;
+        private readonly Dictionary<string, PropertyInfo> properties;
+        private string cacheByProperty;
+        private int cacheTimeOutMultiplier;
+        private string objectType;
+        private string primaryKey;
+        private string tableName;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -41,8 +41,8 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public ObjectMappingInfo()
         {
-            this._Properties = new Dictionary<string, PropertyInfo>();
-            this._ColumnNames = new Dictionary<string, string>();
+            this.properties = new Dictionary<string, PropertyInfo>();
+            this.columnNames = new Dictionary<string, string>();
         }
 
         /// -----------------------------------------------------------------------------
@@ -55,13 +55,13 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                string _CacheKey = RootCacheKey + this.TableName + "_";
+                string cacheKey = RootCacheKey + this.TableName + "_";
                 if (!string.IsNullOrEmpty(this.CacheByProperty))
                 {
-                    _CacheKey += this.CacheByProperty + "_";
+                    cacheKey += this.CacheByProperty + "_";
                 }
 
-                return _CacheKey;
+                return cacheKey;
             }
         }
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._ColumnNames;
+                return this.columnNames;
             }
         }
 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._Properties;
+                return this.properties;
             }
         }
 
@@ -103,12 +103,12 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._CacheByProperty;
+                return this.cacheByProperty;
             }
 
             set
             {
-                this._CacheByProperty = value;
+                this.cacheByProperty = value;
             }
         }
 
@@ -124,12 +124,12 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._CacheTimeOutMultiplier;
+                return this.cacheTimeOutMultiplier;
             }
 
             set
             {
-                this._CacheTimeOutMultiplier = value;
+                this.cacheTimeOutMultiplier = value;
             }
         }
 
@@ -142,12 +142,12 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._ObjectType;
+                return this.objectType;
             }
 
             set
             {
-                this._ObjectType = value;
+                this.objectType = value;
             }
         }
 
@@ -161,12 +161,12 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._PrimaryKey;
+                return this.primaryKey;
             }
 
             set
             {
-                this._PrimaryKey = value;
+                this.primaryKey = value;
             }
         }
 
@@ -180,12 +180,12 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._TableName;
+                return this.tableName;
             }
 
             set
             {
-                this._TableName = value;
+                this.tableName = value;
             }
         }
     }

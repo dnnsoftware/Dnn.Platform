@@ -11,7 +11,7 @@ namespace DotNetNuke.Framework
 
     public abstract class BaseHttpHandler : IHttpHandler
     {
-        private HttpContext _context;
+        private HttpContext context;
 
         /// <summary>
         ///   Gets the <see cref = "HttpContext" /> object for the incoming HTTP request.
@@ -20,7 +20,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return this._context;
+                return this.context;
             }
         }
 
@@ -55,9 +55,9 @@ namespace DotNetNuke.Framework
             get
             {
                 this.Request.InputStream.Position = 0;
-                using (var Reader = new StreamReader(this.Request.InputStream))
+                using (var reader = new StreamReader(this.Request.InputStream))
                 {
-                    return Reader.ReadToEnd();
+                    return reader.ReadToEnd();
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace DotNetNuke.Framework
         ///   Gets the content MIME type for the response object.
         /// </summary>
         /// <value>
-        /// <placeholder>The content MIME type for the response object.</placeholder>
+        /// The content MIME type for the response object.
         /// </value>
         public virtual string ContentMimeType
         {
@@ -116,7 +116,7 @@ namespace DotNetNuke.Framework
         ///   Gets the content encoding for the response object.
         /// </summary>
         /// <value>
-        /// <placeholder>The content encoding for the response object.</placeholder>
+        /// The content encoding for the response object.
         /// </value>
         public virtual Encoding ContentEncoding
         {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Framework
         /// <param name = "context">Context.</param>
         public void ProcessRequest(HttpContext context)
         {
-            this._context = context;
+            this.context = context;
 
             this.SetResponseCachePolicy(this.Response.Cache);
 

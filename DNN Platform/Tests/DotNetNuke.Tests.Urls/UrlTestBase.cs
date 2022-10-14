@@ -16,6 +16,7 @@ namespace DotNetNuke.Tests.Urls
 
     public class UrlTestBase : DnnWebTest
     {
+
         public UrlTestBase(int portalId)
             : base(portalId)
         {

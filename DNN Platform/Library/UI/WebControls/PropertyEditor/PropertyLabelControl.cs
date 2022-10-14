@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
         protected Label lblLabel;
         protected Panel pnlTooltip;
         protected Panel pnlHelp;
-        private string _ResourceKey;
+        private string resourceKey;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyLabelControl"/> class.
@@ -163,18 +163,18 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._ResourceKey;
+                return this.resourceKey;
             }
 
             set
             {
-                this._ResourceKey = value;
+                this.resourceKey = value;
 
                 this.EnsureChildControls();
 
                 // Localize the Label and the Help text
-                this.lblHelp.Attributes["resourcekey"] = this._ResourceKey + ".Help";
-                this.lblLabel.Attributes["resourcekey"] = this._ResourceKey + ".Text";
+                this.lblHelp.Attributes["resourcekey"] = this.resourceKey + ".Help";
+                this.lblLabel.Attributes["resourcekey"] = this.resourceKey + ".Text";
             }
         }
 

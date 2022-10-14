@@ -26,7 +26,7 @@ namespace DotNetNuke.UI.WebControls
     [ValidationPropertyAttribute("Value")]
     public abstract class EditControl : WebControl, IPostBackDataHandler
     {
-        private object[] _CustomAttributes;
+        private object[] customAttributes;
 
         public event PropertyChangedEventHandler ItemAdded;
 
@@ -66,13 +66,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._CustomAttributes;
+                return this.customAttributes;
             }
 
             set
             {
-                this._CustomAttributes = value;
-                if ((this._CustomAttributes != null) && this._CustomAttributes.Length > 0)
+                this.customAttributes = value;
+                if ((this.customAttributes != null) && this.customAttributes.Length > 0)
                 {
                     this.OnAttributesChanged();
                 }

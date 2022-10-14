@@ -26,6 +26,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageEditor));
 
+        /// <inheritdoc/>
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
@@ -46,6 +47,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
+        /// <inheritdoc/>
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -70,6 +72,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -228,6 +231,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId);
 
             var desktopModulePermissions = new DesktopModulePermissionCollection();
+
             // add default permissions for administrators
             if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
             {
@@ -245,7 +249,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         RoleName = portalSettings.AdministratorRoleName,
                     };
                     desktopModulePermissions.Add(permission);
-
                 }
             }
 
@@ -299,6 +302,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     DesktopModulePermissionController.AddDesktopModulePermission(objPermission);
                 }
             }
+
             DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
         }
     }

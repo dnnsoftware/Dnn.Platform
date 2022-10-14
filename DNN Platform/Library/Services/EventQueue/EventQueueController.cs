@@ -194,13 +194,13 @@ namespace DotNetNuke.Services.EventQueue
             return SendMessage(message, eventName);
         }
 
-        private static EventMessage FillMessage(IDataReader dr, bool CheckForOpenDataReader)
+        private static EventMessage FillMessage(IDataReader dr, bool checkForOpenDataReader)
         {
             EventMessage message;
 
             // read datareader
             bool canContinue = true;
-            if (CheckForOpenDataReader)
+            if (checkForOpenDataReader)
             {
                 canContinue = false;
                 if (dr.Read())

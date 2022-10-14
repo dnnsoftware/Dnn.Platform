@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Installer.Log
     [Serializable]
     public class LogEntry
     {
-        private readonly string _description;
+        private readonly string description;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Installer.Log
         public LogEntry(LogType type, string description)
         {
             this.Type = type;
-            this._description = description;
+            this.description = description;
         }
 
         /// -----------------------------------------------------------------------------
@@ -43,12 +43,12 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (this._description == null)
+                if (this.description == null)
                 {
                     return "...";
                 }
 
-                return this._description;
+                return this.description;
             }
         }
 

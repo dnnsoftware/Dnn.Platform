@@ -22,13 +22,14 @@ namespace DotNetNuke.Services.Syndication
         where RssItemType : RssElementBase, new()
         where RssImageType : RssElementBase, new()
     {
-        private RssChannelType _channel;
-        private HttpContext _context;
+        private RssChannelType channel;
+        private HttpContext context;
 
         public event InitEventHandler Init;
 
         public event PreRenderEventHandler PreRender;
 
+        /// <inheritdoc/>
         bool IHttpHandler.IsReusable
         {
             get
@@ -41,7 +42,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._channel;
+                return this.channel;
             }
         }
 
@@ -49,10 +50,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._context;
+                return this.context;
             }
         }
 
+        /// <inheritdoc/>
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
             this.InternalInit(context);
@@ -101,17 +103,17 @@ namespace DotNetNuke.Services.Syndication
 
         protected virtual void Render(XmlTextWriter writer)
         {
-            XmlDocument doc = this._channel.SaveAsXml();
+            XmlDocument doc = this.channel.SaveAsXml();
             doc.Save(writer);
         }
 
         private void InternalInit(HttpContext context)
         {
-            this._context = context;
+            this.context = context;
 
             // create the channel
-            this._channel = new RssChannelType();
-            this._channel.SetDefaults();
+            this.channel = new RssChannelType();
+            this.channel.SetDefaults();
 
             this.Context.Response.ContentType = "text/xml";
         }

@@ -25,8 +25,8 @@ namespace DotNetNuke.Services.Social.Messaging
     [Serializable]
     public class Message : BaseEntityInfo, IHydratable
     {
-        private int _messageID = -1;
-        private string _displayDate;
+        private int messageID = -1;
+        private string displayDate;
 
         /// <summary>
         /// Gets a pretty printed string with the time since the message was created.
@@ -36,12 +36,12 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayDate))
+                if (string.IsNullOrEmpty(this.displayDate))
                 {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
+                    this.displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
 
-                return this._displayDate;
+                return this.displayDate;
             }
         }
 
@@ -53,12 +53,12 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return this._messageID;
+                return this.messageID;
             }
 
             set
             {
-                this._messageID = value;
+                this.messageID = value;
             }
         }
 

@@ -40,13 +40,13 @@ namespace DotNetNuke.Framework
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly NameValueCollection _htmlAttributes = new NameValueCollection();
-        private readonly ArrayList _localizedControls;
+        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly NameValueCollection htmlAttributes = new NameValueCollection();
+        private readonly ArrayList localizedControls;
 
-        private PageStatePersister _persister;
-        private CultureInfo _pageCulture;
-        private string _localResourceFile;
+        private PageStatePersister persister;
+        private CultureInfo pageCulture;
+        private string localResourceFile;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -56,7 +56,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         protected PageBase()
         {
-            this._localizedControls = new ArrayList();
+            this.localizedControls = new ArrayList();
         }
 
         public PortalSettings PortalSettings
@@ -71,7 +71,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return this._htmlAttributes;
+                return this.htmlAttributes;
             }
         }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return this._pageCulture ?? (this._pageCulture = Localization.GetPageLocale(this.PortalSettings));
+                return this.pageCulture ?? (this.pageCulture = Localization.GetPageLocale(this.PortalSettings));
             }
         }
 
@@ -89,13 +89,13 @@ namespace DotNetNuke.Framework
             {
                 string fileRoot;
                 var page = this.Request.ServerVariables["SCRIPT_NAME"].Split('/');
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = string.Concat(this.TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -103,7 +103,7 @@ namespace DotNetNuke.Framework
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -125,25 +125,25 @@ namespace DotNetNuke.Framework
             get
             {
                 // Set ViewState Persister to default (as defined in Base Class)
-                if (this._persister == null)
+                if (this.persister == null)
                 {
-                    this._persister = base.PageStatePersister;
+                    this.persister = base.PageStatePersister;
 
                     if (Globals.Status == Globals.UpgradeStatus.None)
                     {
                         switch (Host.PageStatePersister)
                         {
                             case "M":
-                                this._persister = new CachePageStatePersister(this);
+                                this.persister = new CachePageStatePersister(this);
                                 break;
                             case "D":
-                                this._persister = new DiskPageStatePersister(this);
+                                this.persister = new DiskPageStatePersister(this);
                                 break;
                         }
                     }
                 }
 
-                return this._persister;
+                return this.persister;
             }
         }
 
@@ -478,8 +478,8 @@ namespace DotNetNuke.Framework
         {
             this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");
 
-            this.IterateControls(this.Controls, this._localizedControls, this.LocalResourceFile);
-            RemoveKeyAttribute(this._localizedControls);
+            this.IterateControls(this.Controls, this.localizedControls, this.LocalResourceFile);
+            RemoveKeyAttribute(this.localizedControls);
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
 
@@ -529,9 +529,9 @@ namespace DotNetNuke.Framework
                 tabId = this.PortalSettings.ActiveTab.TabID;
             }
 
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+                this.tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
             }
         }
 

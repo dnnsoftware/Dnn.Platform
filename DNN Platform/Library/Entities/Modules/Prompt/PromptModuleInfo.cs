@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System.Linq;
-using System.Text;
-
 namespace DotNetNuke.Entities.Modules.Prompt
 {
+    using System.Linq;
+    using System.Text;
+
     public class PromptModuleInfo
     {
         public string __ModuleId { get; set; } // command link
@@ -45,15 +45,21 @@ namespace DotNetNuke.Entities.Modules.Prompt
             // get a list of all pages this module is added to
             var addedTo = ModuleController.Instance.GetTabModulesByModule(mim.ModuleId);
             if (deleted.HasValue)
+            {
                 addedTo = addedTo.Where(x => x.IsDeleted == deleted.Value).ToList();
+            }
 
             var sbAddedTo = new StringBuilder();
             foreach (var modInfo in addedTo)
             {
                 if (sbAddedTo.Length > 0)
+                {
                     sbAddedTo.Append(", ");
+                }
+
                 sbAddedTo.Append(modInfo.TabID);
             }
+
             mim.AddedToPages = sbAddedTo.ToString();
             return mim;
         }

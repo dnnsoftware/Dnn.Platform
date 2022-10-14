@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Library.Containers
 
     public class PersonaBarContainer : IPersonaBarContainer
     {
-        private static IPersonaBarContainer _instance;
+        private static IPersonaBarContainer instance;
 
         public PersonaBarContainer(INavigationManager navigationManager)
         {
@@ -39,38 +39,42 @@ namespace Dnn.PersonaBar.Library.Containers
         {
             get
             {
-                if (_instance == null)
+                if (instance == null)
                 {
-                    _instance = Globals.DependencyProvider.GetRequiredService<IPersonaBarContainer>();
+                    instance = Globals.DependencyProvider.GetRequiredService<IPersonaBarContainer>();
                 }
 
-                return _instance;
+                return instance;
             }
         }
 
+        /// <inheritdoc/>
         public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
 
+        /// <inheritdoc/>
         public virtual bool Visible => true;
 
         protected INavigationManager NavigationManager { get; }
 
         public static void SetInstance(IPersonaBarContainer instance, bool overwrite = false)
         {
-            if (_instance == null || overwrite)
+            if (PersonaBarContainer.instance == null || overwrite)
             {
-                _instance = instance;
+                PersonaBarContainer.instance = instance;
             }
         }
 
         public static void ClearInstance()
         {
-            _instance = null;
+            instance = null;
         }
 
+        /// <inheritdoc/>
         public virtual void Initialize(UserControl personaBarControl)
         {
         }
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, object> GetConfiguration()
         {
             var portalSettings = PortalSettings.Current;
@@ -78,6 +82,7 @@ namespace Dnn.PersonaBar.Library.Containers
             return this.GetConfigration(portalSettings);
         }
 
+        /// <inheritdoc/>
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
         }

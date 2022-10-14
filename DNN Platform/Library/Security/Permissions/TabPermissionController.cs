@@ -23,7 +23,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     public class TabPermissionController
     {
-        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Tabs.
@@ -32,7 +32,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A List with the implicit roles.</returns>
         public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
         {
-            return _provider.ImplicitRolesForPages(portalId);
+            return Provider.ImplicitRolesForPages(portalId);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAddContentToPage(TabInfo tab)
         {
-            return _provider.CanAddContentToPage(tab);
+            return Provider.CanAddContentToPage(tab);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAddPage(TabInfo tab)
         {
-            return _provider.CanAddPage(tab);
+            return Provider.CanAddPage(tab);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAdminPage(TabInfo tab)
         {
-            return _provider.CanAdminPage(tab);
+            return Provider.CanAdminPage(tab);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanCopyPage(TabInfo tab)
         {
-            return _provider.CanCopyPage(tab);
+            return Provider.CanCopyPage(tab);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanDeletePage(TabInfo tab)
         {
-            return _provider.CanDeletePage(tab);
+            return Provider.CanDeletePage(tab);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanExportPage(TabInfo tab)
         {
-            return _provider.CanExportPage(tab);
+            return Provider.CanExportPage(tab);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanImportPage(TabInfo tab)
         {
-            return _provider.CanImportPage(tab);
+            return Provider.CanImportPage(tab);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanManagePage(TabInfo tab)
         {
-            return _provider.CanManagePage(tab);
+            return Provider.CanManagePage(tab);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanNavigateToPage(TabInfo tab)
         {
-            return _provider.CanNavigateToPage(tab);
+            return Provider.CanNavigateToPage(tab);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanViewPage(TabInfo tab)
         {
-            return _provider.CanViewPage(tab);
+            return Provider.CanViewPage(tab);
         }
 
         /// -----------------------------------------------------------------------------
@@ -233,7 +233,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeleteTabPermissionsByUser(UserInfo user)
         {
-            _provider.DeleteTabPermissionsByUser(user);
+            Provider.DeleteTabPermissionsByUser(user);
             EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
             DataCache.ClearTabPermissionsCache(user.PortalID);
         }
@@ -248,7 +248,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
-            return _provider.GetTabPermissions(tabId, portalId);
+            return Provider.GetTabPermissions(tabId, portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -277,7 +277,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
         {
-            return _provider.HasTabPermission(tabPermissions, permissionKey);
+            return Provider.HasTabPermission(tabPermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -288,7 +288,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void SaveTabPermissions(TabInfo tab)
         {
-            _provider.SaveTabPermissions(tab);
+            Provider.SaveTabPermissions(tab);
             EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }

@@ -60,10 +60,13 @@ namespace Dnn.ExportImport.Components.Services
         private Dictionary<int, bool> searchedParentTabs = new Dictionary<int, bool>();
         private IList<ImportModuleMapping> importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Pages;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 20;
 
         public virtual bool IncludeSystem { get; set; } = false;
@@ -93,6 +96,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -122,6 +126,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -149,6 +154,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
@@ -1898,6 +1904,7 @@ namespace Dnn.ExportImport.Components.Services
 
         // Note: until now there is no use of time range for content
         // ReSharper disable UnusedParameter.Local
+
         private int ExportPortableContent(ExportTab exportPage, ExportModule exportModule, DateTime toDate, DateTime? fromDat)
 
         // ReSharper enable UnusedParameter.Local

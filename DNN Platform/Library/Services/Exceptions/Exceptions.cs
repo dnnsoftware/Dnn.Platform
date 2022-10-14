@@ -108,11 +108,11 @@ namespace DotNetNuke.Services.Exceptions
             ProcessHttpException(exc, HttpContext.Current.Request.RawUrl);
         }
 
-        public static void ProcessHttpException(string URL)
+        public static void ProcessHttpException(string url)
         {
             var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
             var exc = new HttpException(404, notFoundErrorString);
-            ProcessHttpException(exc, URL);
+            ProcessHttpException(exc, url);
         }
 
         public static void ProcessHttpException(HttpException exc)
@@ -142,22 +142,22 @@ namespace DotNetNuke.Services.Exceptions
         /// </summary>
         /// <param name="objPortalModuleBase">The portal module base.</param>
         /// <param name="exc">The exc.</param>
-        /// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
-        public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
+        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool displayErrorMessage)
         {
-            ProcessModuleLoadException((Control)objPortalModuleBase, exc, DisplayErrorMessage);
+            ProcessModuleLoadException((Control)objPortalModuleBase, exc, displayErrorMessage);
         }
 
         /// <summary>
         /// Processes the module load exception.
         /// </summary>
-        /// <param name="FriendlyMessage">The friendly message.</param>
+        /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="objPortalModuleBase">The obj portal module base.</param>
         /// <param name="exc">The exc.</param>
-        /// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
-        public static void ProcessModuleLoadException(string FriendlyMessage, PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
+        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        public static void ProcessModuleLoadException(string friendlyMessage, PortalModuleBase objPortalModuleBase, Exception exc, bool displayErrorMessage)
         {
-            ProcessModuleLoadException(FriendlyMessage, (Control)objPortalModuleBase, exc, DisplayErrorMessage);
+            ProcessModuleLoadException(friendlyMessage, (Control)objPortalModuleBase, exc, displayErrorMessage);
         }
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace DotNetNuke.Services.Exceptions
         /// </summary>
         /// <param name="ctrl">The CTRL.</param>
         /// <param name="exc">The exc.</param>
-        /// <param name="DisplayErrorMessage">if set to <c>true</c> [display error message].</param>
-        public static void ProcessModuleLoadException(Control ctrl, Exception exc, bool DisplayErrorMessage)
+        /// <param name="displayErrorMessage">if set to <c>true</c> [display error message].</param>
+        public static void ProcessModuleLoadException(Control ctrl, Exception exc, bool displayErrorMessage)
         {
             // Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
@@ -209,16 +209,16 @@ namespace DotNetNuke.Services.Exceptions
                 friendlyMessage = string.Format(Localization.GetString("ModuleUnavailable"), moduleTitle);
             }
 
-            ProcessModuleLoadException(friendlyMessage, ctrl, exc, DisplayErrorMessage);
+            ProcessModuleLoadException(friendlyMessage, ctrl, exc, displayErrorMessage);
         }
 
         /// <summary>
         /// Processes the module load exception.
         /// </summary>
-        /// <param name="FriendlyMessage">The friendly message.</param>
+        /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="ctrl">The CTRL.</param>
         /// <param name="exc">The exc.</param>
-        public static void ProcessModuleLoadException(string FriendlyMessage, Control ctrl, Exception exc)
+        public static void ProcessModuleLoadException(string friendlyMessage, Control ctrl, Exception exc)
         {
             // Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
@@ -226,17 +226,17 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            ProcessModuleLoadException(FriendlyMessage, ctrl, exc, true);
+            ProcessModuleLoadException(friendlyMessage, ctrl, exc, true);
         }
 
         /// <summary>
         /// Processes the module load exception.
         /// </summary>
-        /// <param name="FriendlyMessage">The friendly message.</param>
+        /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="ctrl">The CTRL.</param>
         /// <param name="exc">The exc.</param>
-        /// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
-        public static void ProcessModuleLoadException(string FriendlyMessage, Control ctrl, Exception exc, bool DisplayErrorMessage)
+        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        public static void ProcessModuleLoadException(string friendlyMessage, Control ctrl, Exception exc, bool displayErrorMessage)
         {
             // Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
@@ -244,12 +244,12 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             try
             {
                 if (!Host.UseCustomErrorMessages)
                 {
-                    throw new ModuleLoadException(FriendlyMessage, exc);
+                    throw new ModuleLoadException(friendlyMessage, exc);
                 }
                 else
                 {
@@ -278,25 +278,25 @@ namespace DotNetNuke.Services.Exceptions
 
                     // Some modules may want to suppress an error message
                     // and just log the exception.
-                    if (DisplayErrorMessage)
+                    if (displayErrorMessage)
                     {
-                        PlaceHolder ErrorPlaceholder = null;
+                        PlaceHolder errorPlaceholder = null;
                         if (ctrl.Parent != null)
                         {
-                            ErrorPlaceholder = (PlaceHolder)ctrl.Parent.FindControl("MessagePlaceHolder");
+                            errorPlaceholder = (PlaceHolder)ctrl.Parent.FindControl("MessagePlaceHolder");
                         }
 
-                        if (ErrorPlaceholder != null)
+                        if (errorPlaceholder != null)
                         {
                             // hide the module
                             ctrl.Visible = false;
-                            ErrorPlaceholder.Visible = true;
-                            ErrorPlaceholder.Controls.Add(new ErrorContainer(_portalSettings, FriendlyMessage, lex).Container);
+                            errorPlaceholder.Visible = true;
+                            errorPlaceholder.Controls.Add(new ErrorContainer(portalSettings, friendlyMessage, lex).Container);
                         }
                         else
                         {
                             // there's no ErrorPlaceholder, add it to the module's control collection
-                            ctrl.Controls.Add(new ErrorContainer(_portalSettings, FriendlyMessage, lex).Container);
+                            ctrl.Controls.Add(new ErrorContainer(portalSettings, friendlyMessage, lex).Container);
                         }
                     }
                 }
@@ -307,7 +307,7 @@ namespace DotNetNuke.Services.Exceptions
                 ProcessPageLoadException(exc2);
             }
 
-            Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", FriendlyMessage, ctrl, exc);
+            Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", friendlyMessage, ctrl, exc);
         }
 
         /// <summary>
@@ -316,7 +316,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="exc">The exc.</param>
         public static void ProcessPageLoadException(Exception exc)
         {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
             if (appURL.IndexOf("?") == Null.NullInteger)
             {
@@ -334,16 +334,16 @@ namespace DotNetNuke.Services.Exceptions
         /// Processes the page load exception.
         /// </summary>
         /// <param name="exc">The exc.</param>
-        /// <param name="URL">The URL.</param>
-        public static void ProcessPageLoadException(Exception exc, string URL)
+        /// <param name="url">The URL.</param>
+        public static void ProcessPageLoadException(Exception exc, string url)
         {
-            Logger.Error(URL, exc);
+            Logger.Error(url, exc);
             if (ThreadAbortCheck(exc))
             {
                 return;
             }
 
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!Host.UseCustomErrorMessages)
             {
                 throw new PageLoadException(exc == null ? string.Empty : exc.Message, exc);
@@ -355,17 +355,17 @@ namespace DotNetNuke.Services.Exceptions
                 // publish the exception
                 var objExceptionLog = new ExceptionLogController();
                 objExceptionLog.AddLog(lex);
-                if (!string.IsNullOrEmpty(URL))
+                if (!string.IsNullOrEmpty(url))
                 {
                     // redirect
-                    if (URL.IndexOf("error=terminate") != -1)
+                    if (url.IndexOf("error=terminate") != -1)
                     {
                         HttpContext.Current.Response.Clear();
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
                     }
                     else
                     {
-                        HttpContext.Current.Response.Redirect(URL, true);
+                        HttpContext.Current.Response.Redirect(url, true);
                     }
                 }
             }
@@ -466,10 +466,10 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        private static void ProcessHttpException(HttpException exc, string URL)
+        private static void ProcessHttpException(HttpException exc, string url)
         {
             var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
-            Logger.Error(notFoundErrorString + ": - " + URL, exc);
+            Logger.Error(notFoundErrorString + ": - " + url, exc);
 
             var log = new LogInfo
             {
@@ -480,7 +480,7 @@ namespace DotNetNuke.Services.Exceptions
             var context = HttpContext.Current;
             if (context != null)
             {
-                log.LogProperties.Add(new LogDetailInfo("URL:", URL));
+                log.LogProperties.Add(new LogDetailInfo("URL:", url));
             }
 
             LogController.Instance.AddLog(log);

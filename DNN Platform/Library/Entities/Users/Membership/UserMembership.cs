@@ -20,8 +20,8 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserMembership
     {
-        private readonly UserInfo _user;
-        private bool _approved;
+        private readonly UserInfo user;
+        private bool approved;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserMembership"/> class.
@@ -37,8 +37,8 @@ namespace DotNetNuke.Entities.Users
         /// <param name="user"></param>
         public UserMembership(UserInfo user)
         {
-            this._approved = true;
-            this._user = user;
+            this.approved = true;
+            this.user = user;
         }
 
         /// -----------------------------------------------------------------------------
@@ -50,17 +50,17 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._approved;
+                return this.approved;
             }
 
             set
             {
-                if (!this._approved && value)
+                if (!this.approved && value)
                 {
                     this.Approving = true;
                 }
 
-                this._approved = value;
+                this.approved = value;
             }
         }
 

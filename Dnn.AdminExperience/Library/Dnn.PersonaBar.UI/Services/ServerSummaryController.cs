@@ -44,6 +44,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+
         public HttpResponseMessage GetServerInfo()
         {
             try
@@ -74,6 +75,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// </summary>
         /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetUpdateInfo()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());

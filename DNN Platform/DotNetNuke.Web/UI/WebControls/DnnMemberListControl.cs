@@ -21,8 +21,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnMemberListControl runat=\"server\"></{0}:DnnMemberListControl>")]
     public class DnnMemberListControl : WebControl
     {
-        private UserInfo _currentUser;
-        private RelationshipController _relationshipController;
+        private UserInfo currentUser;
+        private RelationshipController relationshipController;
 
         /// <summary>
         /// Gets or sets the template for displaying the header section of a DnnMemberListControl object.
@@ -123,8 +123,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            this._currentUser = UserController.Instance.GetCurrentUserInfo();
-            this._relationshipController = new RelationshipController();
+            this.currentUser = UserController.Instance.GetCurrentUserInfo();
+            this.relationshipController = new RelationshipController();
         }
 
         /// <inheritdoc/>
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls
             additionalFilters.Add("SortAscending", this.SortAscending.ToString());
 
             // Currently Not Used by the SPROC
-            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this._currentUser.PortalID };
+            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this.currentUser.PortalID };
             var role = this.Filters.ContainsKey("RoleId") && this.Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(this.Filters["RoleId"]) } : null;
             var relationship = this.Filters.ContainsKey("RelationshipTypeId") && this.Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(this.Filters["RelationshipTypeId"]) } : null;
 

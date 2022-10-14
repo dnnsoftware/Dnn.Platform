@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Journal {
     
     
     public partial class View {
-        
         /// <summary>
         /// ctlJournalList control.
         /// </summary>

@@ -13,6 +13,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
 
     public class SqlQueryController : ServiceLocator<ISqlQueryController, SqlQueryController>, ISqlQueryController
     {
+        /// <inheritdoc/>
         public void AddQuery(SqlQuery query)
         {
             using (IDataContext ctx = DataContext.Instance())
@@ -22,6 +23,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteQuery(SqlQuery query)
         {
             using (IDataContext ctx = DataContext.Instance())
@@ -31,6 +33,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             }
         }
 
+        /// <inheritdoc/>
         public IEnumerable<SqlQuery> GetQueries()
         {
             IEnumerable<SqlQuery> queries;
@@ -40,9 +43,11 @@ namespace Dnn.PersonaBar.SqlConsole.Components
                 var rep = ctx.GetRepository<SqlQuery>();
                 queries = rep.Get();
             }
+
             return queries;
         }
 
+        /// <inheritdoc/>
         public SqlQuery GetQuery(int id)
         {
             SqlQuery query;
@@ -52,9 +57,11 @@ namespace Dnn.PersonaBar.SqlConsole.Components
                 var rep = ctx.GetRepository<SqlQuery>();
                 query = rep.GetById(id);
             }
+
             return query;
         }
 
+        /// <inheritdoc/>
         public SqlQuery GetQuery(string name)
         {
             List<SqlQuery> queries;
@@ -65,11 +72,15 @@ namespace Dnn.PersonaBar.SqlConsole.Components
                 var rep = ctx.GetRepository<SqlQuery>();
                 queries = rep.Find("where name = @0", name).ToList();
                 if (queries != null && queries.Count > 0)
+                {
                     query = queries.ElementAt(0);
+                }
             }
+
             return query;
         }
 
+        /// <inheritdoc/>
         public void UpdateQuery(SqlQuery query)
         {
             using (IDataContext ctx = DataContext.Instance())
@@ -79,6 +90,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             }
         }
 
+        /// <inheritdoc/>
         public IList<string> GetConnections()
         {
             IList<string> connections = new List<string>();
@@ -93,6 +105,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             return connections;
         }
 
+        /// <inheritdoc/>
         protected override Func<ISqlQueryController> GetFactory()
         {
             return () => new SqlQueryController();

@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Security;
-
 namespace DotNetNuke.Web.InternalServices
 {
     using System;
@@ -13,11 +11,13 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
+
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Social.Messaging;
     using DotNetNuke.Services.Social.Messaging.Internal;
@@ -89,11 +89,11 @@ namespace DotNetNuke.Web.InternalServices
                 q = q.Replace(",", string.Empty).Replace("'", string.Empty);
                 if (q.Length == 0)
                 {
-                    return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                    return this.Request.CreateResponse<object>(HttpStatusCode.OK, null);
                 }
 
                 var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
-                    .Select(user => new SearchResult
+                    .Select(user => new
                     {
                         id = "user-" + user.UserID,
                         name = user.DisplayName,
@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.InternalServices
                                  where
                                      isAdmin ||
                                      this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
-                                 select new SearchResult
+                                 select new
                                  {
                                      id = "role-" + roleInfo.RoleID,
                                      name = roleInfo.RoleName,
@@ -131,21 +131,6 @@ namespace DotNetNuke.Web.InternalServices
             public string RoleIds;
             public string UserIds;
             public string FileIds;
-        }
-
-        /// <summary>
-        /// This class stores a single search result needed by jQuery Tokeninput.
-        /// </summary>
-        private class SearchResult
-        {
-            // ReSharper disable InconsistentNaming
-            // ReSharper disable NotAccessedField.Local
-            public string id;
-            public string name;
-            public string iconfile;
-
-            // ReSharper restore NotAccessedField.Local
-            // ReSharper restore InconsistentNaming
         }
     }
 }

@@ -8,7 +8,7 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class LabelModeAttribute : Attribute
     {
-        private readonly LabelMode _Mode;
+        private readonly LabelMode mode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelModeAttribute"/> class.
@@ -16,14 +16,14 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="mode">The label mode to apply to the associated property.</param>
         public LabelModeAttribute(LabelMode mode)
         {
-            this._Mode = mode;
+            this.mode = mode;
         }
 
         public LabelMode Mode
         {
             get
             {
-                return this._Mode;
+                return this.mode;
             }
         }
     }

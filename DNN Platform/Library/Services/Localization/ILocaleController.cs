@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Localization
 
         List<CultureInfo> GetCultures(Dictionary<string, Locale> locales);
 
-        Locale GetCurrentLocale(int PortalId);
+        Locale GetCurrentLocale(int portalId);
 
         Locale GetDefaultLocale(int portalId);
 

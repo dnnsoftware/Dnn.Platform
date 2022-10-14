@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     using System.Linq;
     using System.Threading;
     using System.Web;
+
     using DotNetNuke.Web.Mvc.Common;
 
     public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
@@ -66,6 +67,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return string.Empty;
         }
 
+        /// <inheritdoc/>
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (!this.IsAuthenticated(httpContext))

@@ -10,20 +10,20 @@ namespace DotNetNuke.Services.Messaging
 
     public interface IMessagingController
     {
-        Message GetMessageByID(int PortalID, int UserID, int MessageID);
+        Message GetMessageByID(int portalID, int userID, int messageID);
 
-        List<Message> GetUserInbox(int PortalID, int UserID, int PageNumber, int PageSize);
+        List<Message> GetUserInbox(int portalID, int userID, int pageNumber, int pageSize);
 
-        int GetInboxCount(int PortalID, int UserID);
+        int GetInboxCount(int portalID, int userID);
 
-        int GetNewMessageCount(int PortalID, int UserID);
+        int GetNewMessageCount(int portalID, int userID);
 
-        Message GetNextMessageForDispatch(Guid SchedulerInstance);
+        Message GetNextMessageForDispatch(Guid schedulerInstance);
 
         void SaveMessage(Message objMessage);
 
         void UpdateMessage(Message objMessage);
 
-        void MarkMessageAsDispatched(int MessageID);
+        void MarkMessageAsDispatched(int messageID);
     }
 }

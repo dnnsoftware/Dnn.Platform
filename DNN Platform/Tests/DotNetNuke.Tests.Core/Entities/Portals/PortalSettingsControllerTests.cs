@@ -75,6 +75,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
         [Test]
         [TestCaseSource(typeof(PortalSettingsControllerTestFactory), nameof(PortalSettingsControllerTestFactory.LoadPortalSettings_Loads_Default_Value))]
+
         public void LoadPortalSettings_Loads_Default_Value(Dictionary<string, string> testFields)
         {
             // Arrange
@@ -126,6 +127,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
         [Test]
         [TestCaseSource(typeof(PortalSettingsControllerTestFactory), nameof(PortalSettingsControllerTestFactory.LoadPortalSettings_Loads_Setting_Value))]
+
         public void LoadPortalSettings_Loads_Setting_Value(Dictionary<string, string> testFields)
         {
             // Arrange
@@ -169,6 +171,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void LoadPortalSettings_Sets_TimeZone_Property_To_Local_TimeZone()
         {
             // Arrange
@@ -199,6 +202,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void LoadPortal_Loads_Portal_Property_Values()
         {
             // Arrange
@@ -260,6 +264,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void GetActiveTab_Gets_Correct_Tab_If_Valid_Portal_TabId()
         {
             // Arrange
@@ -284,6 +289,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void GetActiveTab_Gets_Correct_Tab_If_Valid_Host_TabId()
         {
             // Arrange
@@ -308,6 +314,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void GetActiveTab_Gets_Splash_Tab_If_InValid_TabId_And_SplashTab_Set()
         {
             // Arrange
@@ -331,6 +338,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void GetActiveTab_Gets_Home_Tab_If_InValid_TabId_And_Home_Set()
         {
             // Arrange
@@ -354,6 +362,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void GetActiveTab_Gets_Splash_Tab_If_InValid_TabId_And_Both_HomeTab_And_SplashTab_Set()
         {
             // Arrange
@@ -378,6 +387,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void GetActiveTab_Sets_StartDate_And_EndDate_Of_Tab_If_Not_Set()
         {
             // Arrange
@@ -403,6 +413,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Uses_PortalSettings_DefaultSkin_If_SkinSrc_Not_Set()
         {
             // Arrange
@@ -431,6 +442,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Uses_Tab_SkinSrc_If_SkinSrc_Set()
         {
             // Arrange
@@ -458,6 +470,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Formats_Tab_SkinSrc_If_Neccessary()
         {
             // Arrange
@@ -485,6 +498,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Uses_PortalSettings_DefaultContainer_If_ContainerSrc_Not_Set()
         {
             // Arrange
@@ -513,6 +527,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Uses_Tab_ContainerSrc_If_ContainerSrc_Set()
         {
             // Arrange
@@ -539,6 +554,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Formats_Tab_ContainerSrc_If_Neccessary()
         {
             // Arrange
@@ -565,6 +581,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Builds_Breadcrumbs_For_Tab()
         {
             // Arrange
@@ -593,6 +610,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
+
         public void ConfigureTab_Builds_Breadcrumbs_For_Tab_And_Parent()
         {
             // Arrange

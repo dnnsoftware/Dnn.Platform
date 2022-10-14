@@ -11,6 +11,9 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBar : WebControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnRibbonBar"/> class.
+        /// </summary>
         public DnnRibbonBar()
             : base("div")
         {

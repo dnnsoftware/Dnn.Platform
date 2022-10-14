@@ -19,11 +19,11 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class ActionButtonList : CompositeControl, IActionControl
     {
-        private ActionManager _ActionManager;
-        private ModuleActionCollection _ModuleActions;
-        private string _buttonSeparator = "&nbsp;&nbsp;";
-        private string _commandName = string.Empty;
-        private bool _displayLink = true;
+        private ActionManager actionManager;
+        private ModuleActionCollection moduleActions;
+        private string buttonSeparator = "&nbsp;&nbsp;";
+        private string commandName = string.Empty;
+        private bool displayLink = true;
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
@@ -37,12 +37,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._ActionManager == null)
+                if (this.actionManager == null)
                 {
-                    this._ActionManager = new ActionManager(this);
+                    this.actionManager = new ActionManager(this);
                 }
 
-                return this._ActionManager;
+                return this.actionManager;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._buttonSeparator;
+                return this.buttonSeparator;
             }
 
             set
             {
-                this._buttonSeparator = value;
+                this.buttonSeparator = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._commandName;
+                return this.commandName;
             }
 
             set
             {
-                this._commandName = value;
+                this.commandName = value;
             }
         }
 
@@ -102,12 +102,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._displayLink;
+                return this.displayLink;
             }
 
             set
             {
-                this._displayLink = value;
+                this.displayLink = value;
             }
         }
 
@@ -135,12 +135,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._ModuleActions == null)
+                if (this.moduleActions == null)
                 {
-                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
+                    this.moduleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
                 }
 
-                return this._ModuleActions;
+                return this.moduleActions;
             }
         }
 

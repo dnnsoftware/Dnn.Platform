@@ -54,22 +54,25 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Login : UserModuleBase
     {
-        private const string LOGIN_PATH = "/login";
+        private const string LOGINPATH = "/login";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
 
         private static readonly Regex UserLanguageRegex = new Regex(
             "(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
-        private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
-        private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
+        private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
+        private readonly List<AuthenticationLoginBase> defaultauthLogin = new List<AuthenticationLoginBase>();
+        private readonly List<OAuthLoginBase> oAuthControls = new List<OAuthLoginBase>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Login"/> class.
+        /// </summary>
         public Login()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// <summary>
@@ -125,19 +128,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         && (isDefaultPage || this.IsRedirectingFromLoginUrl())
                         && Convert.ToInt32(setting) != Null.NullInteger)
                     {
-                        redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+                        redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
                     else
                     {
                         if (this.PortalSettings.LoginTabId != -1 && this.PortalSettings.HomeTabId != -1)
                         {
                             // redirect to portal home page specified
-                            redirectURL = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
+                            redirectURL = this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
                         }
                         else
                         {
                             // redirect to current page
-                            redirectURL = this._navigationManager.NavigateURL();
+                            redirectURL = this.navigationManager.NavigateURL();
                         }
                     }
                 }
@@ -388,8 +391,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -420,7 +421,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(this.Request.QueryString["verificationcode"]);
                     }
 
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
+                    this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
                 }
             }
 
@@ -452,7 +453,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 else // make module container invisible if user is not a page admin
                 {
                     var path = this.RedirectURL.Split('?')[0];
-                    if (this.NeedRedirectAfterLogin && path != this._navigationManager.NavigateURL() && path != this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
+                    if (this.NeedRedirectAfterLogin && path != this.navigationManager.NavigateURL() && path != this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
                     {
                         this.Response.Redirect(this.RedirectURL, true);
                     }
@@ -480,8 +481,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdAssociate_Click runs when the associate button is clicked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void cmdAssociate_Click(object sender, EventArgs e)
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
@@ -519,8 +518,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdCreateUser runs when the register (as new user) button is clicked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void cmdCreateUser_Click(object sender, EventArgs e)
         {
             this.User.Membership.Password = UserController.GeneratePassword();
@@ -547,8 +544,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void cmdProceed_Click(object sender, EventArgs e)
         {
             var user = this.ctlPassword.User;
@@ -558,8 +553,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// PasswordUpdated runs when the password is updated.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             PasswordUpdateStatus status = e.UpdateStatus;
@@ -595,7 +588,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 case DataConsent.DataConsentStatus.Cancelled:
                 case DataConsent.DataConsentStatus.RemovedAccount:
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId), true);
+                    this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId), true);
                     break;
                 case DataConsent.DataConsentStatus.FailedToRemoveAccount:
                     this.AddModuleMessage("FailedToRemoveAccount", ModuleMessage.ModuleMessageType.RedError, true);
@@ -662,14 +655,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
 
                     // notify administrator about account lockout ( possible hack attempt )
-                    var Custom = new ArrayList { e.UserToken };
+                    var custom = new ArrayList { e.UserToken };
 
                     var message = new Message
                     {
                         FromUserID = this.PortalSettings.AdministratorId,
                         ToUserID = this.PortalSettings.AdministratorId,
-                        Subject = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_SUBJECT", Localization.GlobalResourceFile, Custom),
-                        Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, Custom),
+                        Subject = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_SUBJECT", Localization.GlobalResourceFile, custom),
+                        Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, custom),
                         Status = MessageStatusType.Unread,
                     };
 
@@ -770,15 +763,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// Replaces the original language with user language.
         /// </summary>
-        /// <param name="Url"></param>
+        /// <param name="url"></param>
         /// <param name="originalLanguage"></param>
         /// <param name="newLanguage"></param>
         /// <returns></returns>
-        private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
+        private static string ReplaceLanguage(string url, string originalLanguage, string newLanguage)
         {
             var returnValue = Host.UseFriendlyUrls
-                ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
-                : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
+                ? Regex.Replace(url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
+                : UserLanguageRegex.Replace(url, "$1$2$3" + newLanguage + "$5");
             return returnValue;
         }
 
@@ -786,11 +779,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             if (this.PortalSettings.LoginTabId == Null.NullInteger)
             {
-                return LOGIN_PATH;
+                return LOGINPATH;
             }
 
             var tab = TabController.Instance.GetTab(this.PortalSettings.LoginTabId, this.PortalId);
-            return tab != null ? new Uri(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId), UriKind.RelativeOrAbsolute).LocalPath : LOGIN_PATH;
+            return tab != null ? new Uri(this.navigationManager.NavigateURL(this.PortalSettings.LoginTabId), UriKind.RelativeOrAbsolute).LocalPath : LOGINPATH;
         }
 
         private bool IsRedirectingFromLoginUrl()
@@ -849,18 +842,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             if (oAuthLoginControl != null)
                             {
                                 // Add Login Control to List
-                                this._oAuthControls.Add(oAuthLoginControl);
+                                this.oAuthControls.Add(oAuthLoginControl);
                             }
                             else
                             {
                                 if (authLoginControl.AuthenticationType == defaultAuthProvider)
                                 {
-                                    this._defaultauthLogin.Add(authLoginControl);
+                                    this.defaultauthLogin.Add(authLoginControl);
                                 }
                                 else
                                 {
                                     // Add Login Control to List
-                                    this._loginControls.Add(authLoginControl);
+                                    this.loginControls.Add(authLoginControl);
                                 }
                             }
                         }
@@ -872,7 +865,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            int authCount = this._loginControls.Count + this._defaultauthLogin.Count;
+            int authCount = this.loginControls.Count + this.defaultauthLogin.Count;
             switch (authCount)
             {
                 case 0:
@@ -888,7 +881,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     else
                     {
                         // if there are social authprovider only
-                        if (this._oAuthControls.Count == 0)
+                        if (this.oAuthControls.Count == 0)
                         {
                             // Portal has no login controls enabled so load default DNN control
                             this.DisplayLoginControl(defaultLoginControl, false, false);
@@ -899,22 +892,22 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 case 1:
                     // We don't want the control to render with tabbed interface
                     this.DisplayLoginControl(
-                        this._defaultauthLogin.Count == 1
-                                            ? this._defaultauthLogin[0]
-                                            : this._loginControls.Count == 1
-                                                ? this._loginControls[0]
-                                                : this._oAuthControls[0],
+                        this.defaultauthLogin.Count == 1
+                                            ? this.defaultauthLogin[0]
+                                            : this.loginControls.Count == 1
+                                                ? this.loginControls[0]
+                                                : this.oAuthControls[0],
                         false,
                         false);
                     break;
                 default:
                     // make sure defaultAuth provider control is diplayed first
-                    if (this._defaultauthLogin.Count > 0)
+                    if (this.defaultauthLogin.Count > 0)
                     {
-                        this.DisplayTabbedLoginControl(this._defaultauthLogin[0], this.tsLogin.Tabs);
+                        this.DisplayTabbedLoginControl(this.defaultauthLogin[0], this.tsLogin.Tabs);
                     }
 
-                    foreach (AuthenticationLoginBase authLoginControl in this._loginControls)
+                    foreach (AuthenticationLoginBase authLoginControl in this.loginControls)
                     {
                         this.DisplayTabbedLoginControl(authLoginControl, this.tsLogin.Tabs);
                     }
@@ -927,7 +920,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private void BindOAuthControls()
         {
-            foreach (OAuthLoginBase oAuthLoginControl in this._oAuthControls)
+            foreach (OAuthLoginBase oAuthLoginControl in this.oAuthControls)
             {
                 this.socialLoginControls.Controls.Add(oAuthLoginControl);
             }
@@ -961,7 +954,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             // Verify that the current user has access to this page
             if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && this.Request.IsAuthenticated == false)
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL("Access Denied"), true);
             }
 
             this.lblRegisterHelp.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
@@ -983,13 +976,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 this.InitialiseUser();
             }
 
-            bool UserValid = true;
+            bool userValid = true;
             if (string.IsNullOrEmpty(this.User.Username) || string.IsNullOrEmpty(this.User.Email) || string.IsNullOrEmpty(this.User.FirstName) || string.IsNullOrEmpty(this.User.LastName))
             {
-                UserValid = Null.NullBoolean;
+                userValid = Null.NullBoolean;
             }
 
-            if (this.AutoRegister && UserValid)
+            if (this.AutoRegister && userValid)
             {
                 this.ctlUser.Visible = false;
                 this.lblRegisterTitle.Text = Localization.GetString("CreateTitle", this.LocalResourceFile);
@@ -1043,12 +1036,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this.pnlLoginContainer.Visible = true;
         }
 
-        private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
+        private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection tabs)
         {
             var tab = new DNNTab(Localization.GetString("Title", authLoginControl.LocalResourceFile)) { ID = authLoginControl.AuthenticationType };
 
             tab.Controls.Add(authLoginControl);
-            Tabs.Add(tab);
+            tabs.Add(tab);
 
             this.tsLogin.Visible = true;
         }
@@ -1301,11 +1294,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
             switch (validStatus)
             {
                 case UserValidStatus.VALID:
-                    
-                    //Obtain the current client IP
+
+                    // Obtain the current client IP
                     var userRequestIpAddressController = UserRequestIPAddressController.Instance;
                     var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
-                    
+
                     // check if the user is an admin/host and validate their IP
                     if (Host.EnableIPChecking)
                     {
@@ -1336,7 +1329,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     // Set the Authentication Type used
                     AuthenticationController.SetAuthenticationType(this.AuthenticationType);
 
-                    // Complete Login                    
+                    // Complete Login
                     UserController.UserLogin(this.PortalId, objUser, this.PortalSettings.PortalName, ipAddress, this.RememberMe);
 
                     // check whether user request comes with IPv6 and log it to make sure admin is aware of that
@@ -1409,7 +1402,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         // Use the reset password token to identify the user during the redirect
                         UserController.ResetPasswordToken(objUser);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
-                        this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, string.Empty, string.Format("token={0}", objUser.PasswordResetToken)));
+                        this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, string.Empty, string.Format("token={0}", objUser.PasswordResetToken)));
                     }
 
                     break;

@@ -16,11 +16,11 @@ namespace DotNetNuke.Services.Mobile
     [Serializable]
     public class Redirection : IRedirection, IHydratable
     {
-        private int _id = -1;
+        private int id = -1;
 
         [XmlIgnore]
         [JsonIgnore]
-        private IList<IMatchRule> _matchRules;
+        private IList<IMatchRule> matchRules;
 
         /// <summary>
         /// Gets or sets redirection's primary key.
@@ -29,13 +29,13 @@ namespace DotNetNuke.Services.Mobile
         {
             get
             {
-                return this._id;
+                return this.id;
             }
 
             set
             {
-                this._id = value;
-                this._matchRules = null;
+                this.id = value;
+                this.matchRules = null;
             }
         }
 
@@ -80,25 +80,25 @@ namespace DotNetNuke.Services.Mobile
         {
             get
             {
-                if (this._matchRules == null)
+                if (this.matchRules == null)
                 {
-                    if (this._id == Null.NullInteger)
+                    if (this.id == Null.NullInteger)
                     {
-                        this._matchRules = new List<IMatchRule>();
+                        this.matchRules = new List<IMatchRule>();
                     }
                     else
                     {
                         // get from database
-                        this._matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
+                        this.matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
                     }
                 }
 
-                return this._matchRules;
+                return this.matchRules;
             }
 
             set
             {
-                this._matchRules = value;
+                this.matchRules = value;
             }
         }
 

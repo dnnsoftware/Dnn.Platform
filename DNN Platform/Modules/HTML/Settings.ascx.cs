@@ -22,20 +22,23 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class Settings : ModuleSettingsBase
     {
-        private HtmlModuleSettings _moduleSettings;
+        private HtmlModuleSettings moduleSettings;
 
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Settings"/> class.
+        /// </summary>
         public Settings()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private new HtmlModuleSettings ModuleSettings
         {
             get
             {
-                return this._moduleSettings ?? (this._moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
+                return this.moduleSettings ?? (this.moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
             }
         }
 
@@ -50,7 +53,7 @@ namespace DotNetNuke.Modules.Html
             {
                 if (!this.Page.IsPostBack)
                 {
-                    var htmlTextController = new HtmlTextController(this._navigationManager);
+                    var htmlTextController = new HtmlTextController(this.navigationManager);
                     var workflowStateController = new WorkflowStateController();
 
                     this.chkReplaceTokens.Checked = this.ModuleSettings.ReplaceTokens;
@@ -99,7 +102,7 @@ namespace DotNetNuke.Modules.Html
         {
             try
             {
-                var htmlTextController = new HtmlTextController(this._navigationManager);
+                var htmlTextController = new HtmlTextController(this.navigationManager);
 
                 // update replace token setting
                 this.ModuleSettings.ReplaceTokens = this.chkReplaceTokens.Checked;
@@ -141,6 +144,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -50,11 +50,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
 
-        private ITabController _tabController = TabController.Instance;
-        private ILocaleController _localeController = LocaleController.Instance;
-        private IPortalController _portalController = PortalController.Instance;
+        private ITabController tabController = TabController.Instance;
+        private ILocaleController localeController = LocaleController.Instance;
+        private IPortalController portalController = PortalController.Instance;
 
-        private string _selectedResourceFile;
+        private string selectedResourceFile;
 
         public LanguagesController(INavigationManager navigationManager)
         {
@@ -68,6 +68,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/pages/GetTabsForTranslation?portalId=&cultureCode=fr-FR
         [HttpGet]
+
         public HttpResponseMessage GetTabsForTranslation(int? portalId, string cultureCode)
         {
             try
@@ -90,6 +91,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetRootResourcesFolders
         [HttpGet]
+
         public HttpResponseMessage GetRootResourcesFolders()
         {
             try
@@ -101,7 +103,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 folders.Add(new KeyValuePair<string, string>(LocalizeString("GlobalResources"), server.MapPath("~/App_GlobalResources")));
                 folders.Add(new KeyValuePair<string, string>(LocalizeString("SiteTemplates"), server.MapPath("~/Portals/_default")));
 
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Folders = folders.MapEntries(),
@@ -116,6 +119,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetSubRootResources?currentFolder=DesktopModules
         [HttpGet]
+
         public HttpResponseMessage GetSubRootResources(string currentFolder = null)
         {
             try
@@ -159,6 +163,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         foldername = foldername.Substring(2);
                     }
+
                     var directories = GetResxDirectories(server.MapPath("~/" + foldername));
                     var directoryFiles = GetResxFiles(server.MapPath("~/" + foldername));
                     if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
@@ -175,7 +180,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Folders = folders.MapEntries(),
@@ -191,6 +197,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetResxEntries?portalId=&mode=Portal&locale=de-DE&resourceFile=App_GlobalResources%2fFileUpload.resx
         [HttpGet]
+
         public HttpResponseMessage GetResxEntries(int? portalId, string mode, string locale, string resourceFile, bool highlight = false)
         {
             try
@@ -209,7 +216,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                var language = this._localeController.GetLocale(locale);
+                var language = this.localeController.GetLocale(locale);
 
                 switch (resourceMode)
                 {
@@ -217,28 +224,29 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     case LanguageResourceMode.Host:
                     case LanguageResourceMode.Portal:
                         {
-
                             break;
                         }
+
                     default:
                         return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "UnsupportedMode");
                 }
 
                 if (language == null)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
                         string.Format(LocalizeString("InvalidLocale.ErrorMessage"), locale));
                 }
 
-                this._selectedResourceFile = !string.IsNullOrEmpty(resourceFile)
+                this.selectedResourceFile = !string.IsNullOrEmpty(resourceFile)
                     ? HttpContext.Current.Server.MapPath("~/" + resourceFile)
                     : HttpContext.Current.Server.MapPath(Localization.GlobalResourceFile);
 
                 var editTable = this.LoadFile(pid, resourceMode, "Edit", locale);
                 var defaultTable = this.LoadFile(pid, resourceMode, "Default", locale);
 
-                var fullPath = Path.GetFileName(this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, ""));
-                var folder = this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, "").Replace("\\" + resourceFile, "");
+                var fullPath = Path.GetFileName(this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty));
+                var folder = this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty).Replace("\\" + resourceFile, string.Empty);
 
                 // check edit table and if empty, just use default
                 if (editTable.Count == 0)
@@ -256,6 +264,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             toBeDeleted.Add(key);
                         }
                     }
+
                     if (toBeDeleted.Count > 0)
                     {
                         Logger.Warn(LocalizeString("Obsolete"));
@@ -300,6 +309,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/SaveResxEntries
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage SaveResxEntries(UpdateTransaltionsRequest request)
         {
             try
@@ -318,7 +328,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                var language = this._localeController.GetLocale(request.Locale);
+                var language = this.localeController.GetLocale(request.Locale);
 
                 switch (resourceMode)
                 {
@@ -332,17 +342,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (language == null)
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
                         string.Format(LocalizeString("InvalidLocale.ErrorMessage"), request.Locale));
                 }
 
                 if (string.IsNullOrEmpty(request.ResourceFile))
                 {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.BadRequest,
                         string.Format(LocalizeString("MissingResourceFileName"), request.Locale));
                 }
 
-                this._selectedResourceFile = HttpContext.Current.Server.MapPath("~/" + request.ResourceFile);
+                this.selectedResourceFile = HttpContext.Current.Server.MapPath("~/" + request.ResourceFile);
                 var message = this.SaveResourceFileFile(pid, resourceMode, request.Locale, request.Entries);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = message });
             }
@@ -356,6 +368,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/EnableLocalizedContent?portalId=&translatePages=true
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage EnableLocalizedContent([FromUri] int? portalId, [FromUri] bool translatePages)
         {
             try
@@ -383,6 +396,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/LocalizedContent?portalId=&cultureCode=de-DE
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage LocalizedContent([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
@@ -409,6 +423,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetLocalizationProgress
         [HttpGet]
+
         public HttpResponseMessage GetLocalizationProgress()
         {
             try
@@ -426,6 +441,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/DisableLocalizedContent
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DisableLocalizedContent([FromUri] int? portalId)
         {
             try
@@ -439,15 +455,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portal = PortalController.Instance.GetPortal(pid);
                 var portalSettings = new PortalSettings(portal);
                 var portalDefault = portalSettings.DefaultLanguage;
-                foreach (var locale in this._localeController.GetLocales(pid).Values.Where(l => l.Code != portalDefault))
+                foreach (var locale in this.localeController.GetLocales(pid).Values.Where(l => l.Code != portalDefault))
                 {
-                    this._localeController.PublishLanguage(pid, locale.Code, false);
-                    this._tabController.DeleteTranslatedTabs(pid, locale.Code, false);
-                    this._portalController.RemovePortalLocalization(pid, locale.Code, false);
+                    this.localeController.PublishLanguage(pid, locale.Code, false);
+                    this.tabController.DeleteTranslatedTabs(pid, locale.Code, false);
+                    this.portalController.RemovePortalLocalization(pid, locale.Code, false);
                     DataProvider.Instance().EnsureLocalizationExists(pid, locale.Code);
                 }
 
-                this._tabController.EnsureNeutralLanguage(pid, portalDefault, false);
+                this.tabController.EnsureNeutralLanguage(pid, portalDefault, false);
                 PortalController.UpdatePortalSetting(pid, "ContentLocalizationEnabled", "False");
                 DataCache.ClearPortalCache(pid, true);
 
@@ -463,6 +479,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/MarkAllPagesTranslated?portalId=&cultureCode=de-DE
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkAllPagesTranslated([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
@@ -478,21 +495,21 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                var locale = this._localeController.GetLocale(pid, cultureCode);
+                var locale = this.localeController.GetLocale(pid, cultureCode);
                 if (locale == null)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
                 var nonTranslatedTabs =
-                    from t in this._tabController.GetTabsByPortal(pid).WithCulture(locale.Code, false).Values
+                    from t in this.tabController.GetTabsByPortal(pid).WithCulture(locale.Code, false).Values
                     where !t.IsTranslated && !t.IsDeleted
                     select t;
 
                 foreach (var page in nonTranslatedTabs)
                 {
                     page.LocalizedVersionGuid = page.DefaultLanguageTab.LocalizedVersionGuid;
-                    this._tabController.UpdateTab(page);
+                    this.tabController.UpdateTab(page);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -507,6 +524,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/ActivateLanguage?portalId=&cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage ActivateLanguage([FromUri] int? portalId, [FromUri] string cultureCode, [FromUri] bool enable)
         {
             try
@@ -522,13 +540,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                var locale = this._localeController.GetLocale(pid, cultureCode);
+                var locale = this.localeController.GetLocale(pid, cultureCode);
                 if (locale == null)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                this._localeController.ActivateLanguage(pid, locale.Code, enable);
+                this.localeController.ActivateLanguage(pid, locale.Code, enable);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -541,6 +559,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/PublishAllPages?portalId=&cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage PublishAllPages([FromUri] int? portalId, [FromUri] string cultureCode, [FromUri] bool enable)
         {
             try
@@ -556,13 +575,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                var locale = this._localeController.GetLocale(pid, cultureCode);
+                var locale = this.localeController.GetLocale(pid, cultureCode);
                 if (locale == null)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                this._localeController.PublishLanguage(pid, locale.Code, enable);
+                this.localeController.PublishLanguage(pid, locale.Code, enable);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -575,6 +594,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/DeleteLanguagePages?portalId=&cultureCode=de-DE
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeleteLanguagePages(int? portalId, string cultureCode)
         {
             try
@@ -590,15 +610,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                var locale = this._localeController.GetLocale(pid, cultureCode);
+                var locale = this.localeController.GetLocale(pid, cultureCode);
                 if (locale == null)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                this._tabController.DeleteTranslatedTabs(pid, locale.Code, false);
-                this._portalController.RemovePortalLocalization(pid, locale.Code, false);
-                this._localeController.PublishLanguage(pid, locale.Code, false);
+                this.tabController.DeleteTranslatedTabs(pid, locale.Code, false);
+                this.portalController.RemovePortalLocalization(pid, locale.Code, false);
+                this.localeController.PublishLanguage(pid, locale.Code, false);
 
                 DataCache.ClearPortalCache(pid, true);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -612,7 +632,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-
         private static IEnumerable<KeyValuePair<string, string>> GetResxDirectories(string path)
         {
             if (!Directory.Exists(path))
@@ -660,8 +679,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     hasResources = hasResources || HasLocalResources(folderInfo.FullName);
                 }
             }
-            return hasResources || folderInfo.GetFiles("*.resx").Length > 0;
 
+            return hasResources || folderInfo.GetFiles("*.resx").Length > 0;
         }
 
         private static string LocalizeString(string key)
@@ -696,6 +715,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Logger.Error(ex.Message);
                 xmlLoaded = false;
             }
+
             if (xmlLoaded)
             {
                 var nLoopVariables = d.SelectNodes("root/data");
@@ -754,7 +774,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private bool IsLanguageEnabled(int portalId, string cultureCode)
         {
-            return this._localeController.GetLocales(portalId).ContainsKey(cultureCode);
+            return this.localeController.GetLocales(portalId).ContainsKey(cultureCode);
         }
 
         /// -----------------------------------------------------------------------------
@@ -835,7 +855,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// -----------------------------------------------------------------------------
         private string ResourceFile(int portalId, string language, LanguageResourceMode mode)
         {
-            return Localization.GetResourceFileName(this._selectedResourceFile, language, mode.ToString(), portalId);
+            return Localization.GetResourceFileName(this.selectedResourceFile, language, mode.ToString(), portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -873,9 +893,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         {
                             node = AddResourceKey(resDoc, resourceKey);
                         }
+
                         node.InnerText = txtValue;
                         if (txtValue != entry.DefaultValue)
+                        {
                             changedResources.Add(resourceKey, txtValue);
+                        }
+
                         break;
                     case LanguageResourceMode.Host:
                     case LanguageResourceMode.Portal:
@@ -886,6 +910,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             {
                                 node = AddResourceKey(resDoc, resourceKey);
                             }
+
                             node.InnerText = txtValue;
                             changedResources.Add(resourceKey, txtValue);
                         }
@@ -898,6 +923,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                                 resDoc.SelectSingleNode("//root")?.RemoveChild(parent);
                             }
                         }
+
                         break;
                 }
             }
@@ -951,6 +977,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         // nothing to be saved, if file exists delete
                         File.Delete(filename);
                     }
+
                     break;
             }
 
@@ -974,8 +1001,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             var pages = new List<LanguageTabDto>();
             if (locale != null && locale.Code != portalSettings.DefaultLanguage)
             {
-                var portalTabs = this._tabController.GetTabsByPortal(portalId).WithCulture(locale.Code, false).Values;
-                var nonTranslated = (from t in portalTabs where !t.IsTranslated && !t.IsDeleted select t);
+                var portalTabs = this.tabController.GetTabsByPortal(portalId).WithCulture(locale.Code, false).Values;
+                var nonTranslated = from t in portalTabs where !t.IsTranslated && !t.IsDeleted select t;
                 pages.AddRange(
                     nonTranslated.Select(page => new LanguageTabDto()
                     {
@@ -984,17 +1011,22 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         ViewUrl = this.NavigationManager.NavigateURL(page.TabID),
                     }));
             }
+
             return pages;
         }
     }
 
     internal static class KpvExtension
     {
+
         public static IEnumerable<LocalizationEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
         {
             var appPath = Globals.ApplicationMapPath;
             var appPathLen = appPath.Length;
-            if (!appPath.EndsWith(@"\")) appPathLen++;
+            if (!appPath.EndsWith(@"\"))
+            {
+                appPathLen++;
+            }
 
             return list.Select(kpv => new LocalizationEntry
             {

@@ -81,16 +81,16 @@ namespace DotNetNuke.Security.Membership
 
         // Users Online
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public abstract void DeleteUsersOnline(int TimeWindow);
+        public abstract void DeleteUsersOnline(int timeWindow);
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public abstract ArrayList GetOnlineUsers(int PortalId);
+        public abstract ArrayList GetOnlineUsers(int portalId);
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public abstract bool IsUserOnline(UserInfo user);
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public abstract void UpdateUsersOnline(Hashtable UserList);
+        public abstract void UpdateUsersOnline(Hashtable userList);
 
         // Legacy
         public virtual void TransferUsersToMembershipProvider()

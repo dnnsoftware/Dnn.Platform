@@ -17,7 +17,7 @@ namespace DotNetNuke.HttpModules.Compression
     /// </remarks>
     public abstract class CompressingFilter : HttpOutputFilter
     {
-        private bool _HasWrittenHeaders;
+        private bool hasWrittenHeaders;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompressingFilter"/> class.
@@ -45,7 +45,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return this._HasWrittenHeaders;
+                return this.hasWrittenHeaders;
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.HttpModules.Compression
             // Look for handling cases in PreRequestSendHeaders and Pre
             HttpContext.Current.Response.AppendHeader("Content-Encoding", this.ContentEncoding);
             HttpContext.Current.Response.AppendHeader("X-Compressed-By", "DotNetNuke-Compression");
-            this._HasWrittenHeaders = true;
+            this.hasWrittenHeaders = true;
         }
     }
 }

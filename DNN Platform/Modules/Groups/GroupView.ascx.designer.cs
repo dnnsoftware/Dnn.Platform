@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class GroupView {
-        
         /// <summary>
         /// litOutput control.
         /// </summary>

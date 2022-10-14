@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.ClientCapability
     /// </summary>
     public class ClientCapability : IClientCapability
     {
-        private IDictionary<string, string> _capabilities;
+        private IDictionary<string, string> capabilities;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientCapability"/> class.
@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         public ClientCapability()
         {
-            this._capabilities = new Dictionary<string, string>();
+            this.capabilities = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -79,12 +79,12 @@ namespace DotNetNuke.Services.ClientCapability
         {
             get
             {
-                return this._capabilities;
+                return this.capabilities;
             }
 
             set
             {
-                this._capabilities = value;
+                this.capabilities = value;
             }
         }
 

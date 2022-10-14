@@ -19,7 +19,7 @@ namespace DotNetNuke.Security.Profile
     /// -----------------------------------------------------------------------------
     public class ProfileProviderConfig
     {
-        private static readonly ProfileProvider profileProvider = ProfileProvider.Instance();
+        private static readonly ProfileProvider ProfileProvider = ProfileProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -32,7 +32,7 @@ namespace DotNetNuke.Security.Profile
         {
             get
             {
-                return profileProvider.CanEditProviderProperties;
+                return ProfileProvider.CanEditProviderProperties;
             }
         }
     }

@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Search.Controllers
     {
         private const string SeacrchContollersCacheKey = "SearchControllers";
 
-        private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
+        private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         /// <inheritdoc/>
         public SearchResults SiteSearch(SearchQuery searchQuery)
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <inheritdoc/>
         public SearchResults ModuleSearch(SearchQuery searchQuery)
         {
-            searchQuery.SearchTypeIds = new List<int> { this._moduleSearchTypeId };
+            searchQuery.SearchTypeIds = new List<int> { this.moduleSearchTypeId };
             var results = this.GetResults(searchQuery);
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.Search.Controllers
             Requires.NotNull("Query", searchQuery);
             Requires.PropertyNotEqualTo("searchQuery", "SearchTypeIds", searchQuery.SearchTypeIds.Count(), 0);
 
-            if ((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId)))
+            if ((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this.moduleSearchTypeId)))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
             }
@@ -386,7 +386,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private void ApplySearchTypeIdFilter(BooleanQuery query, SearchQuery searchQuery)
         {
             // Special handling for Module Search
-            if (searchQuery.SearchTypeIds.Count() == 1 && searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId))
+            if (searchQuery.SearchTypeIds.Count() == 1 && searchQuery.SearchTypeIds.Contains(this.moduleSearchTypeId))
             {
                 // When moduleid is specified, we ignore other searchtypeid or moduledefinitionid. Major security check
                 if (searchQuery.ModuleId > 0)
@@ -408,14 +408,14 @@ namespace DotNetNuke.Services.Search.Controllers
                     }
                 }
 
-                query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, this._moduleSearchTypeId, this._moduleSearchTypeId, true, true), Occur.MUST);
+                query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, this.moduleSearchTypeId, this.moduleSearchTypeId, true, true), Occur.MUST);
             }
             else
             {
                 var searchTypeIdQuery = new BooleanQuery();
                 foreach (var searchTypeId in searchQuery.SearchTypeIds)
                 {
-                    if (searchTypeId == this._moduleSearchTypeId)
+                    if (searchTypeId == this.moduleSearchTypeId)
                     {
                         foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
                         {

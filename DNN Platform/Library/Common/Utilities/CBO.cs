@@ -26,9 +26,9 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
-        private const string defaultPrimaryKey = "ItemID";
+        private const string DefaultPrimaryKey = "ItemID";
 
-        private const string objectMapCacheKey = "ObjectMap_";
+        private const string ObjectMapCacheKey = "ObjectMap_";
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -706,10 +706,11 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField,
-                                                                                        IDataReader dr,
-                                                                                        IDictionary<TKey, TValue> objDictionary,
-                                                                                        bool closeReader)
+        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(
+            string keyField,
+            IDataReader dr,
+            IDictionary<TKey, TValue> objDictionary,
+            bool closeReader)
         {
             TValue objObject;
             TKey keyValue = default(TKey);
@@ -991,7 +992,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static ObjectMappingInfo GetObjectMapping(Type objType)
         {
-            string cacheKey = objectMapCacheKey + objType.FullName;
+            string cacheKey = ObjectMapCacheKey + objType.FullName;
             var objMap = (ObjectMappingInfo)DataCache.GetCache(cacheKey);
             if (objMap == null)
             {
@@ -1020,7 +1021,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static string GetPrimaryKey(Type objType)
         {
-            string primaryKey = defaultPrimaryKey;
+            string primaryKey = DefaultPrimaryKey;
             return primaryKey;
         }
 

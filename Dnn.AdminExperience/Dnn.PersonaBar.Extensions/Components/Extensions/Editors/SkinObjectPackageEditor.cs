@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinObjectPackageEditor));
 
+        /// <inheritdoc/>
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
@@ -31,6 +32,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
+        /// <inheritdoc/>
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -45,11 +47,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 {
                     skinControl.ControlKey = value;
                 }
+
                 if (packageSettings.EditorActions.TryGetValue("controlSrc", out value)
                     && !string.IsNullOrEmpty(value))
                 {
                     skinControl.ControlSrc = value;
                 }
+
                 if (packageSettings.EditorActions.TryGetValue("supportsPartialRendering", out value)
                     && !string.IsNullOrEmpty(value))
                 {

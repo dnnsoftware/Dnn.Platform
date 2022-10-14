@@ -48,14 +48,14 @@ namespace DotNetNuke.Entities.Content.Common
             var sb = new StringBuilder();
             if (terms != null)
             {
-                foreach (Term _Term in from term in terms orderby term.Name ascending select term)
+                foreach (Term term in terms.OrderBy(term => term.Name))
                 {
                     if (sb.Length > 0)
                     {
                         sb.Append(delimitter);
                     }
 
-                    sb.Append(_Term.Name);
+                    sb.Append(term.Name);
                 }
             }
 
@@ -74,14 +74,14 @@ namespace DotNetNuke.Entities.Content.Common
             var sb = new StringBuilder();
             if (terms != null)
             {
-                foreach (Term _Term in from term in terms orderby term.Name ascending select term)
+                foreach (Term term in terms.OrderBy(term => term.Name))
                 {
                     if (sb.Length > 0)
                     {
                         sb.Append(delimitter);
                     }
 
-                    sb.Append(string.Format(format, _Term.Name));
+                    sb.Append(string.Format(format, term.Name));
                 }
             }
 
@@ -91,11 +91,11 @@ namespace DotNetNuke.Entities.Content.Common
         /// <summary>
         /// Gets the child terms.
         /// </summary>
-        /// <param name="Term">The term.</param>
+        /// <param name="term1">The term.</param>
         /// <param name="termId">The term id.</param>
         /// <param name="vocabularyId">The vocabulary id.</param>
         /// <returns>term collection which's parent is the specific term.</returns>
-        internal static List<Term> GetChildTerms(this Term Term, int termId, int vocabularyId)
+        internal static List<Term> GetChildTerms(this Term term1, int termId, int vocabularyId)
         {
             ITermController ctl = Util.GetTermController();
 
@@ -153,17 +153,17 @@ namespace DotNetNuke.Entities.Content.Common
         {
             IContentController ctl = Util.GetContentController();
 
-            NameValueCollection _MetaData;
+            NameValueCollection metaData;
             if (contentItemId == Null.NullInteger)
             {
-                _MetaData = new NameValueCollection();
+                metaData = new NameValueCollection();
             }
             else
             {
-                _MetaData = ctl.GetMetaData(contentItemId);
+                metaData = ctl.GetMetaData(contentItemId);
             }
 
-            return _MetaData;
+            return metaData;
         }
 
         /// <summary>
@@ -176,17 +176,17 @@ namespace DotNetNuke.Entities.Content.Common
         {
             ITermController ctl = Util.GetTermController();
 
-            List<Term> _Terms = null;
+            List<Term> terms = null;
             if (contentItemId == Null.NullInteger)
             {
-                _Terms = new List<Term>();
+                terms = new List<Term>();
             }
             else
             {
-                _Terms = ctl.GetTermsByContent(contentItemId).ToList();
+                terms = ctl.GetTermsByContent(contentItemId).ToList();
             }
 
-            return _Terms;
+            return terms;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class CleanupComponentWriter
     {
-        private readonly SortedList<string, InstallFile> _Files;
-        private string _BasePath;
+        private readonly SortedList<string, InstallFile> files;
+        private string basePath;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -30,13 +30,13 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public CleanupComponentWriter(string basePath, SortedList<string, InstallFile> files)
         {
-            this._Files = files;
-            this._BasePath = basePath;
+            this.files = files;
+            this.basePath = basePath;
         }
 
         public virtual void WriteManifest(XmlWriter writer)
         {
-            foreach (KeyValuePair<string, InstallFile> kvp in this._Files)
+            foreach (KeyValuePair<string, InstallFile> kvp in this.files)
             {
                 // Start component Element
                 writer.WriteStartElement("component");

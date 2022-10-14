@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Installer.Packages
     [Serializable]
     public class PackageInfo : BaseEntityInfo
     {
-        private IList<PackageDependencyInfo> _dependencies;
+        private IList<PackageDependencyInfo> dependencies;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return this._dependencies ?? (this._dependencies = (this.PackageID == -1)
+                return this.dependencies ?? (this.dependencies = (this.PackageID == -1)
                                         ? new List<PackageDependencyInfo>()
                                         : PackageController.Instance.GetPackageDependencies(p => p.PackageId == this.PackageID));
             }

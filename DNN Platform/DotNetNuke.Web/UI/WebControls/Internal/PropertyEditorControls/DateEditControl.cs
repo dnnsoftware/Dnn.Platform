@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     public class DateEditControl : EditControl
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
-        private DnnDatePicker _dateControl;
+        private DnnDatePicker dateControl;
 
         /// <inheritdoc/>
         public override string EditControlClientId
@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             get
             {
-                string _Format = this.DefaultFormat;
+                string format = this.DefaultFormat;
                 if (this.CustomAttributes != null)
                 {
                     foreach (Attribute attribute in this.CustomAttributes)
@@ -112,13 +112,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                         if (attribute is FormatAttribute)
                         {
                             var formatAtt = (FormatAttribute)attribute;
-                            _Format = formatAtt.Format;
+                            format = formatAtt.Format;
                             break;
                         }
                     }
                 }
 
-                return _Format;
+                return format;
             }
         }
 
@@ -158,13 +158,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             get
             {
-                string _StringValue = Null.NullString;
+                string stringValue = Null.NullString;
                 if (this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate)
                 {
-                    _StringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format);
                 }
 
-                return _StringValue;
+                return stringValue;
             }
 
             set
@@ -177,12 +177,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             get
             {
-                if (this._dateControl == null)
+                if (this.dateControl == null)
                 {
-                    this._dateControl = new DnnDatePicker();
+                    this.dateControl = new DnnDatePicker();
                 }
 
-                return this._dateControl;
+                return this.dateControl;
             }
         }
 
@@ -240,7 +240,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             args.Value = this.DateValue;
             args.OldValue = this.OldDateValue;
             args.StringValue = this.DateValue.ToString(CultureInfo.InvariantCulture);
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// <inheritdoc/>

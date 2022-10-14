@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// </summary>
         public const string DnnFormBottomPlaceHolderName = "ClientResourcesFormBottom";
 
+        /// <inheritdoc/>
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one
@@ -41,6 +42,7 @@ namespace DotNetNuke.Web.Client.Providers
             base.Initialize(name, config);
         }
 
+        /// <inheritdoc/>
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!jsDependencies.Any())
@@ -69,11 +71,13 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {
             return string.Format(HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
         }
 
+        /// <inheritdoc/>
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!cssDependencies.Any())
@@ -102,6 +106,7 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
         {
             return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());

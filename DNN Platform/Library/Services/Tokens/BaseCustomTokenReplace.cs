@@ -24,15 +24,15 @@ namespace DotNetNuke.Services.Tokens
             get => ComponentFactory.GetComponent<TokenProvider>();
         }
 
-        TokenContext _tokenContext = new TokenContext();
+        private TokenContext tokenContext = new TokenContext();
 
         public TokenContext TokenContext
         {
-            get => this._tokenContext;
+            get => this.tokenContext;
             set
             {
-                this._tokenContext = value;
-                this.PropertySource = this._tokenContext.PropertySource;
+                this.tokenContext = value;
+                this.PropertySource = this.tokenContext.PropertySource;
             }
         }
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Tokens
         /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
         /// </summary>
         /// <value>
-        /// <placeholder>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages</placeholder>
+        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets/sets the language to be used, e.g. for date format.
+        /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
         public override string Language
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Tokens
             if (sourceText != null && !string.IsNullOrEmpty(sourceText))
             {
                 // initialize PropertyAccess classes
-                string DummyResult = this.ReplaceTokens(sourceText);
+                string dummyResult = this.ReplaceTokens(sourceText);
 
                 foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
                 {

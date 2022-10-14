@@ -32,14 +32,17 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     /// </remarks>
     public partial class EditExtension : ModuleUserControlBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private Control _control;
-        private PackageInfo _package;
+        private Control control;
+        private PackageInfo package;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditExtension"/> class.
+        /// </summary>
         public EditExtension()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string Mode
@@ -78,7 +81,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                return this._package ?? (this._package = this.PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID, true));
+                return this.package ?? (this.package = this.PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID, true));
             }
         }
 
@@ -86,19 +89,19 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (this._control == null)
+                if (this.control == null)
                 {
                     if (this.Package != null)
                     {
                         var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
                         if ((pkgType != null) && (!string.IsNullOrEmpty(pkgType.EditorControlSrc)))
                         {
-                            this._control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
+                            this.control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
                         }
                     }
                 }
 
-                return this._control as IPackageEditor;
+                return this.control as IPackageEditor;
             }
         }
 
@@ -122,6 +125,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             set { this.ViewState["ReturnUrl"] = value; }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -155,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
             if (!this.IsPostBack)
             {
-                this.ReturnUrl = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : this._navigationManager.NavigateURL();
+                this.ReturnUrl = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : this.navigationManager.NavigateURL();
                 switch (this.DisplayMode)
                 {
                     case "editor":

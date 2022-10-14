@@ -14,6 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
     public sealed class TypedControlCollection<T> : ControlCollection
         where T : Control
     {
+        /// <summary>Initializes a new instance of the <see cref="TypedControlCollection{T}"/> class.</summary>
+        /// <param name="owner">The owner control.</param>
         public TypedControlCollection(Control owner)
             : base(owner)
         {

@@ -100,6 +100,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void ParentPortalOnVirtualDirReturnsAnEmptyPrefix()
         {
             // Arrange
@@ -129,6 +130,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void SingleParentPortalReturnsAnEmptyPrefix()
         {
             // Arrange
@@ -158,6 +160,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void PrefixCountsAreCached()
         {
             // Arrange
@@ -183,6 +186,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void PrefixCountsCacheCanBeCleared()
         {
             // Arrange
@@ -209,6 +213,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void VirtralDirWithChildPortalHasABlankAndASinglePrefix()
         {
             // Arrange
@@ -259,6 +264,7 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("mfn", "name", "ce.lvh.me", "mfn-name-0")]
         [TestCase("mfn", "", "ce.lvh.me/child", "mfn--1")]
         [TestCase("first", "second", "ce.lvh.me/child1/child2/child3/child4/child5", "first-second-5")]
+
         public void GetRouteNameWithPortalAliasInfoHashesNameInCorrectFormat(string moduleFolderName, string routeName, string httpAlias, string expected)
         {
             // Arrange
@@ -295,6 +301,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesWorksWithNullRouteValues()
         {
             // Arrange
@@ -307,6 +314,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesPreservesPassedInRouteValues()
         {
             // Arrange
@@ -322,6 +330,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesExtractsChildPortalParams()
         {
             // Arrange
@@ -338,6 +347,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
+
         public void GetAllRouteValuesExtractsManyChildPortalParamsAndPreservesRouteValues()
         {
             // Arrange

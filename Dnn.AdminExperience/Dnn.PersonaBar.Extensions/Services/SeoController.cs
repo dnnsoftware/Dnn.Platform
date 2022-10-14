@@ -40,7 +40,8 @@ namespace Dnn.PersonaBar.Seo.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
         private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Seo/App_LocalResources/Seo.resx");
-        private readonly Components.SeoController _controller = new Components.SeoController();
+
+        private readonly Components.SeoController controller = new Components.SeoController();
 
         public SeoController(INavigationManager navigationManager)
         {
@@ -55,6 +56,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// </summary>
         /// <returns>General SEO settings.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetGeneralSettings()
         {
             try
@@ -105,6 +107,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateGeneralSettings(UpdateGeneralSettingsRequest request)
         {
             try
@@ -114,6 +117,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     characterSub = request.ReplaceSpaceWith;
                 }
+
                 PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.ReplaceSpaceWithSetting, characterSub, false);
                 PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.DeletedTabHandlingTypeSetting, request.DeletedTabHandlingType, false);
                 PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.ForceLowerCaseSetting, request.ForceLowerCase ? "Y" : "N", false);
@@ -141,6 +145,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns>General SEO regex settings.</returns>
         [HttpGet]
         [RequireHost]
+
         public HttpResponseMessage GetRegexSettings()
         {
             try
@@ -161,7 +166,7 @@ namespace Dnn.PersonaBar.Seo.Services
                         urlSettings.NoFriendlyUrlRegex,
                         urlSettings.DoNotIncludeInPathRegex,
                         urlSettings.ValidExtensionlessUrlsRegex,
-                        urlSettings.RegexMatch
+                        urlSettings.RegexMatch,
                     },
                 };
 
@@ -183,6 +188,7 @@ namespace Dnn.PersonaBar.Seo.Services
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateRegexSettings(UpdateRegexSettingsRequest request)
         {
             try
@@ -192,38 +198,47 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("IgnoreRegex", Localization.GetString("ignoreRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.DoNotRewriteRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("DoNotRewriteRegex", Localization.GetString("doNotRewriteRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.UseSiteUrlsRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("UseSiteUrlsRegex", Localization.GetString("siteUrlsOnlyRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.DoNotRedirectRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("DoNotRedirectRegex", Localization.GetString("doNotRedirectUrlRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.DoNotRedirectSecureRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("DoNotRedirectSecureRegex", Localization.GetString("doNotRedirectHttpsUrlRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.ForceLowerCaseRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("ForceLowerCaseRegex", Localization.GetString("preventLowerCaseUrlRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.NoFriendlyUrlRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("NoFriendlyUrlRegex", Localization.GetString("doNotUseFriendlyUrlsRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.DoNotIncludeInPathRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("DoNotIncludeInPathRegex", Localization.GetString("keepInQueryStringRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.ValidExtensionlessUrlsRegex))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("ValidExtensionlessUrlsRegex", Localization.GetString("urlsWithNoExtensionRegExInvalidPattern", LocalResourcesFile)));
                 }
+
                 if (!ValidateRegex(request.RegexMatch))
                 {
                     validationErrors.Add(new KeyValuePair<string, string>("RegexMatch", Localization.GetString("validFriendlyUrlRegExInvalidPattern", LocalResourcesFile)));
@@ -237,6 +252,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     // if no errors, update settings in db
                     this.UpdateRegexSettingsInternal(request);
+
                     // clear cache
                     this.ClearCache();
 
@@ -257,6 +273,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <param></param>
         /// <returns>Data of sitemap settings.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetSitemapSettings()
         {
             try
@@ -291,9 +308,9 @@ namespace Dnn.PersonaBar.Seo.Services
 
                 var searchEngineUrls = new List<KeyValuePair<string, string>>
                 {
-                    new KeyValuePair<string, string>("Google", this._controller.GetSearchEngineSubmissionUrl("google")),
-                    new KeyValuePair<string, string>("Bing", this._controller.GetSearchEngineSubmissionUrl("bing")),
-                    new KeyValuePair<string, string>("Yahoo!", this._controller.GetSearchEngineSubmissionUrl("yahoo!")),
+                    new KeyValuePair<string, string>("Google", this.controller.GetSearchEngineSubmissionUrl("google")),
+                    new KeyValuePair<string, string>("Bing", this.controller.GetSearchEngineSubmissionUrl("bing")),
+                    new KeyValuePair<string, string>("Yahoo!", this.controller.GetSearchEngineSubmissionUrl("yahoo!")),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
@@ -318,11 +335,12 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage CreateVerification(string verification)
         {
             try
             {
-                this._controller.CreateVerification(verification);
+                this.controller.CreateVerification(verification);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -340,6 +358,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateSitemapSettings(SitemapSettingsRequest request)
         {
             try
@@ -350,6 +369,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     request.SitemapMinPriority = 0;
                 }
+
                 PortalController.UpdatePortalSetting(this.PortalId, "SitemapMinPriority", request.SitemapMinPriority.ToString(NumberFormatInfo.InvariantInfo));
 
                 PortalController.UpdatePortalSetting(this.PortalId, "SitemapIncludeHidden", request.SitemapIncludeHidden.ToString());
@@ -358,11 +378,12 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     request.SitemapExcludePriority = 0;
                 }
+
                 PortalController.UpdatePortalSetting(this.PortalId, "SitemapExcludePriority", request.SitemapExcludePriority.ToString(NumberFormatInfo.InvariantInfo));
 
                 if (request.SitemapCacheDays == 0)
                 {
-                    this._controller.ResetCache();
+                    this.controller.ResetCache();
                 }
 
                 PortalController.UpdatePortalSetting(this.PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString());
@@ -383,11 +404,12 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage ResetCache()
         {
             try
             {
-                this._controller.ResetCache();
+                this.controller.ResetCache();
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -404,11 +426,12 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <param></param>
         /// <returns>Web Server information.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetSitemapProviders()
         {
             try
             {
-                var providers = this._controller.GetSitemapProviders().Select(p => new
+                var providers = this.controller.GetSitemapProviders().Select(p => new
                 {
                     p.Name,
                     p.Enabled,
@@ -438,12 +461,13 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateSitemapProvider(UpdateSitemapProviderRequest request)
         {
             try
             {
                 SitemapProvider editedProvider =
-                    this._controller.GetSitemapProviders()
+                    this.controller.GetSitemapProviders()
                         .FirstOrDefault(p => p.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (editedProvider != null)
@@ -472,6 +496,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <param></param>
         /// <returns>extension url providers.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetExtensionUrlProviders()
         {
             try
@@ -506,6 +531,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateExtensionUrlProviderStatus(UpdateExtensionUrlProviderStatusRequest request)
         {
             try
@@ -518,6 +544,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     ExtensionUrlProviderController.DisableProvider(request.ProviderId, this.PortalId);
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -535,6 +562,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// GET /API/PersonaBar/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page.
         /// </example>
         [HttpGet]
+
         public HttpResponseMessage TestUrl(int pageId, string queryString, string customPageName)
         {
             try
@@ -562,6 +590,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// GET /API/PersonaBar/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page.
         /// </example>
         [HttpGet]
+
         public HttpResponseMessage TestUrlRewrite(string uri)
         {
             try
@@ -584,7 +613,7 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                if (Regex.IsMatch("", regexPattern))
+                if (Regex.IsMatch(string.Empty, regexPattern))
                 {
                 }
 
@@ -594,6 +623,7 @@ namespace Dnn.PersonaBar.Seo.Services
             {
                 // ignore
             }
+
             return false;
         }
 
@@ -636,6 +666,7 @@ namespace Dnn.PersonaBar.Seo.Services
             {
                 DataCache.ClearPortalCache(this.PortalId, false);
             }
+
             CacheController.FlushPageIndexFromCache();
             CacheController.FlushFriendlyUrlSettingsFromCache();
         }
@@ -667,7 +698,7 @@ namespace Dnn.PersonaBar.Seo.Services
                 rewritingResult.RewritingResult = string.IsNullOrEmpty(result.RewritePath) ? noneText : result.RewritePath;
                 rewritingResult.Culture = string.IsNullOrEmpty(result.CultureCode) ? noneText : result.CultureCode;
                 var tab = TabController.Instance.GetTab(result.TabId, result.PortalId, false);
-                rewritingResult.IdentifiedPage = (tab != null ? tab.TabName : noneText);
+                rewritingResult.IdentifiedPage = tab != null ? tab.TabName : noneText;
                 rewritingResult.RedirectionReason = Localization.GetString(result.Reason.ToString());
                 rewritingResult.RedirectionResult = result.FinalUrl;
                 var messages = new StringBuilder();
@@ -675,12 +706,14 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     messages.AppendLine(message);
                 }
+
                 rewritingResult.OperationMessages = messages.ToString();
             }
             catch (Exception ex)
             {
                 rewritingResult.OperationMessages = ex.Message;
             }
+
             return rewritingResult;
         }
     }

@@ -446,7 +446,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                                                                    "DefaultWorkflowState3.OnDiscardMessageSubject"),
                                                            OnDiscardMessageBody =
                                                                Localization.GetString(
-                                                                   "DefaultWorkflowState3.OnDiscardMessageBody")
+                                                                   "DefaultWorkflowState3.OnDiscardMessageBody"),
                                                        },
                                                },
             };

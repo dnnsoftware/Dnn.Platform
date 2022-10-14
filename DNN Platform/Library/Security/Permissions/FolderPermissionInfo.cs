@@ -15,10 +15,10 @@ namespace DotNetNuke.Security.Permissions
     public class FolderPermissionInfo : PermissionInfoBase, IHydratable
     {
         // local property declarations
-        private int _folderID;
-        private string _folderPath;
-        private int _folderPermissionID;
-        private int _portalID;
+        private int folderID;
+        private string folderPath;
+        private int folderPermissionID;
+        private int portalID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -28,10 +28,10 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public FolderPermissionInfo()
         {
-            this._folderPermissionID = Null.NullInteger;
-            this._folderPath = Null.NullString;
-            this._portalID = Null.NullInteger;
-            this._folderID = Null.NullInteger;
+            this.folderPermissionID = Null.NullInteger;
+            this.folderPath = Null.NullString;
+            this.portalID = Null.NullInteger;
+            this.folderID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -57,12 +57,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._folderPermissionID;
+                return this.folderPermissionID;
             }
 
             set
             {
-                this._folderPermissionID = value;
+                this.folderPermissionID = value;
             }
         }
 
@@ -72,12 +72,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._folderID;
+                return this.folderID;
             }
 
             set
             {
-                this._folderID = value;
+                this.folderID = value;
             }
         }
 
@@ -87,12 +87,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._portalID;
+                return this.portalID;
             }
 
             set
             {
-                this._portalID = value;
+                this.portalID = value;
             }
         }
 
@@ -101,12 +101,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._folderPath;
+                return this.folderPath;
             }
 
             set
             {
-                this._folderPath = value;
+                this.folderPath = value;
             }
         }
 

@@ -13,8 +13,8 @@ namespace DotNetNuke.Common.Utilities
     /// <remarks></remarks>
     public abstract class StateVariable<T>
     {
-        private readonly string _key;
-        private readonly Func<T> _initializer;
+        private readonly string key;
+        private readonly Func<T> initializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateVariable{T}"/> class.
@@ -30,7 +30,7 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentNullException("key");
             }
 
-            this._key = key + this.GetType().FullName;
+            this.key = key + this.GetType().FullName;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentNullException("initializer");
             }
 
-            this._initializer = initializer;
+            this.initializer = initializer;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this[this._key] != null;
+                return this[this.key] != null;
             }
         }
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Common.Utilities
                 var returnedValue = this.GetInitializedInternalValue();
                 if (returnedValue == null)
                 {
-                    throw new InvalidOperationException("There is no value for the '" + this._key + "' key.");
+                    throw new InvalidOperationException("There is no value for the '" + this.key + "' key.");
                 }
 
                 return (T)returnedValue;
@@ -100,7 +100,7 @@ namespace DotNetNuke.Common.Utilities
 
             set
             {
-                this[this._key] = value;
+                this[this.key] = value;
             }
         }
 
@@ -118,7 +118,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         public void Clear()
         {
-            this.Remove(this._key);
+            this.Remove(this.key);
         }
 
         /// <summary>
@@ -130,11 +130,11 @@ namespace DotNetNuke.Common.Utilities
 
         private object GetInitializedInternalValue()
         {
-            var value = this[this._key];
-            if (value == null && this._initializer != null)
+            var value = this[this.key];
+            if (value == null && this.initializer != null)
             {
-                value = this._initializer();
-                this[this._key] = value;
+                value = this.initializer();
+                this[this.key] = value;
             }
 
             return value;

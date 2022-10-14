@@ -15,22 +15,25 @@ namespace Dnn.PersonaBar.Seo.Components
 
     public class SeoController
     {
-        private PortalSettings _portalSettings;
+        private PortalSettings portalSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeoController"/> class.
+        /// </summary>
         public SeoController()
         {
-            this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();
         }
 
         public IEnumerable<SitemapProvider> GetSitemapProviders()
         {
-            var builder = new SitemapBuilder(this._portalSettings);
+            var builder = new SitemapBuilder(this.portalSettings);
             return builder.Providers;
         }
 
         public void ResetCache()
         {
-            var cacheFolder = new DirectoryInfo(this._portalSettings.HomeSystemDirectoryMapPath + "sitemap\\");
+            var cacheFolder = new DirectoryInfo(this.portalSettings.HomeSystemDirectoryMapPath + "sitemap\\");
 
             if (cacheFolder.Exists)
             {
@@ -50,18 +53,21 @@ namespace Dnn.PersonaBar.Seo.Components
                 case "google":
                     strURL += "http://www.google.com/addurl?q=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)));
                     strURL += "&dq=";
-                    if (!string.IsNullOrEmpty(this._portalSettings.PortalName))
+                    if (!string.IsNullOrEmpty(this.portalSettings.PortalName))
                     {
-                        strURL += Globals.HTTPPOSTEncode(this._portalSettings.PortalName);
+                        strURL += Globals.HTTPPOSTEncode(this.portalSettings.PortalName);
                     }
-                    if (!string.IsNullOrEmpty(this._portalSettings.Description))
+
+                    if (!string.IsNullOrEmpty(this.portalSettings.Description))
                     {
-                        strURL += Globals.HTTPPOSTEncode(this._portalSettings.Description);
+                        strURL += Globals.HTTPPOSTEncode(this.portalSettings.Description);
                     }
-                    if (!string.IsNullOrEmpty(this._portalSettings.KeyWords))
+
+                    if (!string.IsNullOrEmpty(this.portalSettings.KeyWords))
                     {
-                        strURL += Globals.HTTPPOSTEncode(this._portalSettings.KeyWords);
+                        strURL += Globals.HTTPPOSTEncode(this.portalSettings.KeyWords);
                     }
+
                     strURL += "&submit=Add+URL";
                     break;
                 case "yahoo!":
@@ -71,6 +77,7 @@ namespace Dnn.PersonaBar.Seo.Components
                     strURL = "http://www.bing.com/webmaster";
                     break;
             }
+
             return strURL;
         }
 
@@ -80,9 +87,9 @@ namespace Dnn.PersonaBar.Seo.Components
             {
                 if (!File.Exists(Globals.ApplicationMapPath + "\\" + verification))
                 {
-                    string portalAlias = !String.IsNullOrEmpty(this._portalSettings.DefaultPortalAlias)
-                                        ? this._portalSettings.DefaultPortalAlias
-                                        : this._portalSettings.PortalAlias.HTTPAlias;
+                    string portalAlias = !string.IsNullOrEmpty(this.portalSettings.DefaultPortalAlias)
+                                        ? this.portalSettings.DefaultPortalAlias
+                                        : this.portalSettings.PortalAlias.HTTPAlias;
 
                     // write SiteMap verification file
                     var objStream = File.CreateText(Globals.ApplicationMapPath + "\\" + verification);

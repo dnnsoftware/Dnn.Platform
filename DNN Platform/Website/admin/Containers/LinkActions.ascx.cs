@@ -29,6 +29,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -43,8 +44,8 @@ namespace DotNetNuke.UI.Containers
                             this.Controls.Clear();
                         }
 
-                        var PreSpacer = new LiteralControl(this.ItemSeparator);
-                        this.Controls.Add(PreSpacer);
+                        var preSpacer = new LiteralControl(this.ItemSeparator);
+                        this.Controls.Add(preSpacer);
 
                         // Add Menu Items
                         foreach (ModuleAction action in this.ActionRoot.Actions)
@@ -60,16 +61,16 @@ namespace DotNetNuke.UI.Containers
                                     if ((this.ModuleControl.ModuleContext.EditMode && Globals.IsAdminControl() == false) ||
                                         (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                     {
-                                        var ModuleActionLink = new LinkButton();
-                                        ModuleActionLink.Text = action.Title;
-                                        ModuleActionLink.CssClass = "CommandButton";
-                                        ModuleActionLink.ID = "lnk" + action.ID;
+                                        var moduleActionLink = new LinkButton();
+                                        moduleActionLink.Text = action.Title;
+                                        moduleActionLink.CssClass = "CommandButton";
+                                        moduleActionLink.ID = "lnk" + action.ID;
 
-                                        ModuleActionLink.Click += this.LinkAction_Click;
+                                        moduleActionLink.Click += this.LinkAction_Click;
 
-                                        this.Controls.Add(ModuleActionLink);
-                                        var Spacer = new LiteralControl(this.ItemSeparator);
-                                        this.Controls.Add(Spacer);
+                                        this.Controls.Add(moduleActionLink);
+                                        var spacer = new LiteralControl(this.ItemSeparator);
+                                        this.Controls.Add(spacer);
                                     }
                                 }
                             }
@@ -93,6 +94,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

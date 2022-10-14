@@ -9,10 +9,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
     using Dnn.PersonaBar.Library.Prompt.Models;
 
     [ConsoleCommand("echo", Constants.GeneralCategory, "Prompt_Echo_Description")]
+
     public class Echo : ConsoleCommandBase
     {
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             if (this.Args.Length > 1)

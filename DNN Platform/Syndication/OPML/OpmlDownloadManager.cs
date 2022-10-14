@@ -17,41 +17,41 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     internal class OpmlDownloadManager
     {
-        private const string OPML_Dir = "/OPML/";
+        private const string OPMLDir = "/OPML/";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
-        private static readonly OpmlDownloadManager _theManager = new OpmlDownloadManager();
+        private static readonly OpmlDownloadManager TheManager = new OpmlDownloadManager();
 
-        private readonly Dictionary<string, Opml> _cache;
-        private readonly int _defaultTtlMinutes;
-        private readonly string _directoryOnDisk;
+        private readonly Dictionary<string, Opml> cache;
+        private readonly int defaultTtlMinutes;
+        private readonly string directoryOnDisk;
 
         private OpmlDownloadManager()
         {
             // create in-memory cache
-            this._cache = new Dictionary<string, Opml>();
+            this.cache = new Dictionary<string, Opml>();
 
-            this._defaultTtlMinutes = 60;
+            this.defaultTtlMinutes = 60;
 
             // prepare disk directory
-            this._directoryOnDisk = PrepareTempDir();
+            this.directoryOnDisk = PrepareTempDir();
         }
 
         public static Opml GetOpmlFeed(Uri uri)
         {
-            return _theManager.GetFeed(uri);
+            return TheManager.GetFeed(uri);
         }
 
         internal Opml GetFeed(Uri uri)
         {
             Opml opmlFeed = null;
 
-            lock (this._cache)
+            lock (this.cache)
             {
-                if (this._cache.TryGetValue(uri.AbsoluteUri, out opmlFeed))
+                if (this.cache.TryGetValue(uri.AbsoluteUri, out opmlFeed))
                 {
                     if (DateTime.UtcNow > opmlFeed.UtcExpiry)
                     {
-                        this._cache.Remove(uri.AbsoluteUri);
+                        this.cache.Remove(uri.AbsoluteUri);
                         opmlFeed = null;
                     }
                 }
@@ -61,9 +61,9 @@ namespace DotNetNuke.Services.Syndication
             {
                 opmlFeed = this.DownloadOpmlFeed(uri);
 
-                lock (this._cache)
+                lock (this.cache)
                 {
-                    this._cache[uri.AbsoluteUri] = opmlFeed;
+                    this.cache[uri.AbsoluteUri] = opmlFeed;
                 }
             }
 
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + OPML_Dir);
+                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + OPMLDir);
 
                 if (!Directory.Exists(d))
                 {
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Syndication
                 opmlDoc.Load(new MemoryStream(feed));
                 opmlFeed = Opml.LoadFromXml(opmlDoc);
 
-                opmlFeed.UtcExpiry = DateTime.UtcNow.AddMinutes(this._defaultTtlMinutes);
+                opmlFeed.UtcExpiry = DateTime.UtcNow.AddMinutes(this.defaultTtlMinutes);
 
                 // save to disk
                 this.TrySaveToDisk(opmlDoc, uri, opmlFeed.UtcExpiry);
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Syndication
 
         private Opml TryLoadFromDisk(Uri uri)
         {
-            if (this._directoryOnDisk == null)
+            if (this.directoryOnDisk == null)
             {
                 return null; // no place to cache
             }
@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.Syndication
             // looking for the one matching url that is not expired
             // removing expired (or invalid) ones
             string pattern = GetTempFileNamePrefixFromUrl(uri) + "_*.opml.resources";
-            string[] files = Directory.GetFiles(this._directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(this.directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
 
             foreach (string opmlFilename in files)
             {
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Syndication
 
         private void TrySaveToDisk(XmlDocument doc, Uri uri, DateTime utcExpiry)
         {
-            if (this._directoryOnDisk == null)
+            if (this.directoryOnDisk == null)
             {
                 return;
             }
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                doc.Save(Path.Combine(this._directoryOnDisk, fileName));
+                doc.Save(Path.Combine(this.directoryOnDisk, fileName));
             }
             catch
             {

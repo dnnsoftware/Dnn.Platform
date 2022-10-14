@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// ReSharper disable CheckNamespace
+
 namespace DotNetNuke.Services.Exceptions
 
 // ReSharper restore CheckNamespace
@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.Exceptions
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.Exceptions
             this.InstallStylesheet.Attributes["href"] = this.ResolveUrl("~/Install/install.css");
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

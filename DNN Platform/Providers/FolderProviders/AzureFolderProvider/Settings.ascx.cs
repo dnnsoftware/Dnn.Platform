@@ -125,7 +125,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DdlContainers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.ddlContainers.SelectedIndex != 1)
             {
@@ -156,7 +156,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void btnNewContainer_Click(object sender, EventArgs e)
+        protected void BtnNewContainer_Click(object sender, EventArgs e)
         {
             this.SelectContainerPanel.Visible = false;
             this.CreateContainerPanel.Visible = true;
@@ -164,7 +164,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void btnSelectExistingContainer_Click(object sender, EventArgs e)
+        protected void BtnSelectExistingContainer_Click(object sender, EventArgs e)
         {
             this.SelectContainerPanel.Visible = true;
             this.CreateContainerPanel.Visible = false;
@@ -172,7 +172,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         /// <summary>
         /// </summary>
-        protected void valContainerName_ServerValidate(object source, ServerValidateEventArgs args)
+        protected void ValContainerName_ServerValidate(object source, ServerValidateEventArgs args)
         {
             if (this.SelectContainerPanel.Visible)
             {

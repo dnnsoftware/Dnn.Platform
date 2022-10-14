@@ -24,18 +24,19 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        ///     Service scope that the container holds.
+        ///     Gets service scope that the container holds.
         /// </summary>
         public IServiceScope ServiceScope { get; }
 
         /// <summary>
-        ///     True if the <see cref="ServiceScope"/> should be disposed.
+        ///     Gets a value indicating whether true if the <see cref="ServiceScope"/> should be disposed.
         /// </summary>
         public bool ShouldDispose { get; }
 
         /// <summary>
         ///     Get the service scope from <see cref="HttpContext"/> or create a new scope from <see cref="Globals.DependencyProvider"/> when the scope doesn't exists.
         /// </summary>
+        /// <returns>The service scope container.</returns>
         public static ServiceScopeContainer GetRequestOrCreateScope()
         {
             var requestScope = HttpContextSource.Current?.GetScope();

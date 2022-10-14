@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.Client.Controls
 
         public ClientDependencyType DependencyType { get; internal set; }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

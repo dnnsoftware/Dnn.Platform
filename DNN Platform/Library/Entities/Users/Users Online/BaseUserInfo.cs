@@ -20,10 +20,10 @@ namespace DotNetNuke.Entities.Users
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public abstract class BaseUserInfo
     {
-        private DateTime _CreationDate;
-        private DateTime _LastActiveDate;
-        private int _PortalID;
-        private int _TabID;
+        private DateTime creationDate;
+        private DateTime lastActiveDate;
+        private int portalID;
+        private int tabID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -35,12 +35,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._PortalID;
+                return this.portalID;
             }
 
             set
             {
-                this._PortalID = value;
+                this.portalID = value;
             }
         }
 
@@ -54,12 +54,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._TabID;
+                return this.tabID;
             }
 
             set
             {
-                this._TabID = value;
+                this.tabID = value;
             }
         }
 
@@ -73,12 +73,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._CreationDate;
+                return this.creationDate;
             }
 
             set
             {
-                this._CreationDate = value;
+                this.creationDate = value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._LastActiveDate;
+                return this.lastActiveDate;
             }
 
             set
             {
-                this._LastActiveDate = value;
+                this.lastActiveDate = value;
             }
         }
     }

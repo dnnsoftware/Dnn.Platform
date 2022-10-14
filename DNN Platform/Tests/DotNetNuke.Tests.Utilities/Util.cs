@@ -24,32 +24,19 @@ namespace DotNetNuke.Tests.Utilities
 
         public static TMember GetPrivateMember<TInstance, TMember>(TInstance instance, string fieldName)
         {
-            Type type = typeof(TInstance);
-            TMember result = default(TMember);
-
-            const BindingFlags privateBindings = BindingFlags.NonPublic | BindingFlags.Instance;
-
-            // retrive private field from class
-            MemberInfo member = type.GetMember(fieldName, privateBindings)[0];
-
-            if (member.MemberType == MemberTypes.Property)
+            // retrieve private field from class
+            var member = typeof(TInstance).GetMember(fieldName, BindingFlags.NonPublic | BindingFlags.Instance)[0];
+            if (member is PropertyInfo property)
             {
-                var property = member as PropertyInfo;
-                if (property != null)
-                {
-                    result = (TMember)property.GetValue(instance, null);
-                }
-            }
-            else if (member.MemberType == MemberTypes.Field)
-            {
-                var field = member as FieldInfo;
-                if (field != null)
-                {
-                    result = (TMember)field.GetValue(instance);
-                }
+                return (TMember)property.GetValue(instance, null);
             }
 
-            return result;
+            if (member is FieldInfo field)
+            {
+                return (TMember)field.GetValue(instance);
+            }
+
+            return default(TMember);
         }
 
         public static void SetPrivateMember<TInstance, TField>(TInstance instance, string fieldName, TField value)
@@ -58,7 +45,7 @@ namespace DotNetNuke.Tests.Utilities
 
             BindingFlags privateBindings = BindingFlags.NonPublic | BindingFlags.Instance;
 
-            // retrive private field from class
+            // retrieve private field from classS
             FieldInfo field = type.GetField(fieldName, privateBindings);
 
             field.SetValue(instance, value);

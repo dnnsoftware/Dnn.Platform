@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
     public class ConfigConsoleController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
-        private Components.ConfigConsoleController _controller = new Components.ConfigConsoleController();
+        private Components.ConfigConsoleController controller = new Components.ConfigConsoleController();
 
         /// GET: api/ConfigConsole/GetConfigFilesList
         /// <summary>
@@ -29,11 +29,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <param></param>
         /// <returns>List of config files.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetConfigFilesList()
         {
             try
             {
-                var configFileList = this._controller.GetConfigFilesList().ToList();
+                var configFileList = this.controller.GetConfigFilesList().ToList();
 
                 var response = new
                 {
@@ -58,11 +59,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <param name="fileName">Name of a config file.</param>
         /// <returns>Content of a config file.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetConfigFile(string fileName)
         {
             try
             {
-                var fileContent = this._controller.GetConfigFile(fileName);
+                var fileContent = this.controller.GetConfigFile(fileName);
 
                 var response = new
                 {
@@ -91,11 +93,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <returns>A list of validation errors.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage ValidateConfigFile(ConfigFileDto configFileDto)
         {
             try
             {
-                var errors = this._controller.ValidateConfigFile(configFileDto.FileName, configFileDto.FileContent);
+                var errors = this.controller.ValidateConfigFile(configFileDto.FileName, configFileDto.FileContent);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { ValidationErrors = errors });
             }
             catch (ArgumentException exc)
@@ -117,11 +120,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateConfigFile(ConfigFileDto configFileDto)
         {
             try
             {
-                this._controller.UpdateConfigFile(configFileDto.FileName, configFileDto.FileContent);
+                this.controller.UpdateConfigFile(configFileDto.FileName, configFileDto.FileContent);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (ArgumentException exc)
@@ -143,11 +147,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MergeConfigFile(ConfigFileDto configFileDto)
         {
             try
             {
-                this._controller.MergeConfigFile(configFileDto.FileContent);
+                this.controller.MergeConfigFile(configFileDto.FileContent);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)

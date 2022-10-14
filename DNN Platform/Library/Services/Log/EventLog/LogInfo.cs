@@ -98,9 +98,9 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc />
         IExceptionInfo ILogInfo.Exception { get; set; }
 
-        public static bool IsSystemType(string PropName)
+        public static bool IsSystemType(string propName)
         {
-            switch (PropName)
+            switch (propName)
             {
                 case "LogGUID":
                 case "LogFileID":
@@ -120,28 +120,28 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        public void AddProperty(string PropertyName, string PropertyValue)
+        public void AddProperty(string propertyName, string propertyValue)
         {
             try
             {
-                if (PropertyValue == null)
+                if (propertyValue == null)
                 {
-                    PropertyValue = string.Empty;
+                    propertyValue = string.Empty;
                 }
 
-                if (PropertyName.Length > 50)
+                if (propertyName.Length > 50)
                 {
-                    PropertyName = PropertyName.Substring(0, 50);
+                    propertyName = propertyName.Substring(0, 50);
                 }
 
-                if (PropertyValue.Length > 500)
+                if (propertyValue.Length > 500)
                 {
-                    PropertyValue = "(TRUNCATED TO 500 CHARS): " + PropertyValue.Substring(0, 500);
+                    propertyValue = "(TRUNCATED TO 500 CHARS): " + propertyValue.Substring(0, 500);
                 }
 
                 var objLogDetailInfo = new LogDetailInfo();
-                objLogDetailInfo.PropertyName = PropertyName;
-                objLogDetailInfo.PropertyValue = PropertyValue;
+                objLogDetailInfo.PropertyName = propertyName;
+                objLogDetailInfo.PropertyValue = propertyValue;
                 this.LogProperties.Add(objLogDetailInfo);
             }
             catch (Exception exc)

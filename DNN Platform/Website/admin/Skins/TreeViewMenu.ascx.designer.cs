@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class TreeViewMenu {
-        
         /// <summary>
         /// tblMain control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tblMain;
-        
         /// <summary>
         /// cellHeader control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableCell cellHeader;
-        
         /// <summary>
         /// tblHeader control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable tblHeader;
-        
         /// <summary>
         /// lblHeader control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHeader;
-        
         /// <summary>
         /// cellBody control.
         /// </summary>

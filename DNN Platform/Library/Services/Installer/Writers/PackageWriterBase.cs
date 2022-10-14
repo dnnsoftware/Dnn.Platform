@@ -6,8 +6,8 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.IO;
-  using System.IO.Compression;
-  using System.Text;
+    using System.IO.Compression;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Xml;
     using System.Xml.XPath;
@@ -28,15 +28,15 @@ namespace DotNetNuke.Services.Installer.Writers
     {
         private static readonly Regex FileVersionMatchRegex = new Regex(Util.REGEX_Version, RegexOptions.Compiled);
 
-        private readonly Dictionary<string, InstallFile> _AppCodeFiles = new Dictionary<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Assemblies = new Dictionary<string, InstallFile>();
-        private readonly SortedList<string, InstallFile> _CleanUpFiles = new SortedList<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Files = new Dictionary<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Resources = new Dictionary<string, InstallFile>();
-        private readonly Dictionary<string, InstallFile> _Scripts = new Dictionary<string, InstallFile>();
-        private readonly List<string> _Versions = new List<string>();
-        private string _BasePath = Null.NullString;
-        private PackageInfo _Package;
+        private readonly Dictionary<string, InstallFile> appCodeFiles = new Dictionary<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> assemblies = new Dictionary<string, InstallFile>();
+        private readonly SortedList<string, InstallFile> cleanUpFiles = new SortedList<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> files = new Dictionary<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> resources = new Dictionary<string, InstallFile>();
+        private readonly Dictionary<string, InstallFile> scripts = new Dictionary<string, InstallFile>();
+        private readonly List<string> versions = new List<string>();
+        private string basePath = Null.NullString;
+        private PackageInfo package;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackageWriterBase"/> class.
@@ -44,8 +44,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="package"></param>
         public PackageWriterBase(PackageInfo package)
         {
-            this._Package = package;
-            this._Package.AttachInstallerInfo(new InstallerInfo());
+            this.package = package;
+            this.package.AttachInstallerInfo(new InstallerInfo());
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._AppCodeFiles;
+                return this.appCodeFiles;
             }
         }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Assemblies;
+                return this.assemblies;
             }
         }
 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._CleanUpFiles;
+                return this.cleanUpFiles;
             }
         }
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Files;
+                return this.files;
             }
         }
 
@@ -149,7 +149,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Resources;
+                return this.resources;
             }
         }
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Scripts;
+                return this.scripts;
             }
         }
 
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Versions;
+                return this.versions;
             }
         }
 
@@ -207,12 +207,12 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._BasePath;
+                return this.basePath;
             }
 
             set
             {
-                this._BasePath = value;
+                this.basePath = value;
             }
         }
 
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// Gets or sets and sets whether there are any errors in parsing legacy packages.
         /// </summary>
         /// <value>
-        /// <placeholder>And sets whether there are any errors in parsing legacy packages</placeholder>
+        /// And sets whether there are any errors in parsing legacy packages.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -244,12 +244,12 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Package;
+                return this.package;
             }
 
             set
             {
-                this._Package = value;
+                this.package = value;
             }
         }
 
@@ -286,35 +286,35 @@ namespace DotNetNuke.Services.Installer.Writers
             switch (file.Type)
             {
                 case InstallFileType.AppCode:
-                    this._AppCodeFiles[file.FullName.ToLowerInvariant()] = file;
+                    this.appCodeFiles[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.Assembly:
-                    this._Assemblies[file.FullName.ToLowerInvariant()] = file;
+                    this.assemblies[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.CleanUp:
-                    this._CleanUpFiles[file.FullName.ToLowerInvariant()] = file;
+                    this.cleanUpFiles[file.FullName.ToLowerInvariant()] = file;
                     break;
                 case InstallFileType.Script:
-                    this._Scripts[file.FullName.ToLowerInvariant()] = file;
+                    this.scripts[file.FullName.ToLowerInvariant()] = file;
                     break;
                 default:
-                    this._Files[file.FullName.ToLowerInvariant()] = file;
+                    this.files[file.FullName.ToLowerInvariant()] = file;
                     break;
             }
 
             if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
             {
                 string version = Path.GetFileNameWithoutExtension(file.Name);
-                if (!this._Versions.Contains(version))
+                if (!this.versions.Contains(version))
                 {
-                    this._Versions.Add(version);
+                    this.versions.Add(version);
                 }
             }
         }
 
         public void AddResourceFile(InstallFile file)
         {
-            this._Resources[file.FullName.ToLowerInvariant()] = file;
+            this.resources[file.FullName.ToLowerInvariant()] = file;
         }
 
         public void CreatePackage(string archiveName, string manifestName, string manifest, bool createManifest)
@@ -657,13 +657,13 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             var zipFile = new FileInfo(zipFileName);
 
-            string ZipFileShortName = zipFile.Name;
+            string zipFileShortName = zipFile.Name;
 
             FileStream strmZipFile = null;
             this.Log.StartJob(Util.WRITER_CreatingPackage);
             try
             {
-                this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, ZipFileShortName));
+                this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, zipFileShortName));
                 strmZipFile = File.Create(zipFileName);
                 ZipArchive strmZipStream = null;
                 try
@@ -671,12 +671,12 @@ namespace DotNetNuke.Services.Installer.Writers
                     strmZipStream = new ZipArchive(strmZipFile);
 
                     // Add Files To zip
-                    this.AddFilesToZip(strmZipStream, this._Assemblies, string.Empty);
-                    this.AddFilesToZip(strmZipStream, this._AppCodeFiles, this.AppCodePath);
-                    this.AddFilesToZip(strmZipStream, this._Files, this.BasePath);
-                    this.AddFilesToZip(strmZipStream, this._CleanUpFiles, this.BasePath);
-                    this.AddFilesToZip(strmZipStream, this._Resources, this.BasePath);
-                    this.AddFilesToZip(strmZipStream, this._Scripts, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.assemblies, string.Empty);
+                    this.AddFilesToZip(strmZipStream, this.appCodeFiles, this.AppCodePath);
+                    this.AddFilesToZip(strmZipStream, this.files, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.cleanUpFiles, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.resources, this.BasePath);
+                    this.AddFilesToZip(strmZipStream, this.scripts, this.BasePath);
                 }
                 catch (Exception ex)
                 {

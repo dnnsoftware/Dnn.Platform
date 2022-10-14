@@ -13,12 +13,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     using DotNetNuke.Instrumentation;
 
     [ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
+
     public class ClearCache : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCache));
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             try
@@ -31,6 +34,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
                 Logger.Error(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearCache_Error"));
             }
+
             return new ConsoleResultModel(this.LocalizeString("Prompt_ClearCache_Success")) { MustReload = true };
         }
     }

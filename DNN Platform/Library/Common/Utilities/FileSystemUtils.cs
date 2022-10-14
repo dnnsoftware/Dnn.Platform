@@ -20,7 +20,7 @@ namespace DotNetNuke.Common.Utilities
     using Directory = SchwabenCode.QuickIO.QuickIODirectory;
     using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
     using File = SchwabenCode.QuickIO.QuickIOFile;
-    using FileInfo = Services.FileSystem.FileInfo;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     public class FileSystemUtils
     {
@@ -459,18 +459,18 @@ namespace DotNetNuke.Common.Utilities
             return (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
         }
 
-        private static void RemoveOrphanedFiles(FolderInfo folder, int PortalId)
+        private static void RemoveOrphanedFiles(FolderInfo folder, int portalId)
         {
-            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID)
+            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(portalId, "Database").FolderMappingID)
             {
                 foreach (FileInfo objFile in FolderManager.Instance.GetFiles(folder))
                 {
-                    RemoveOrphanedFile(objFile, PortalId);
+                    RemoveOrphanedFile(objFile, portalId);
                 }
             }
         }
 
-        private static void RemoveOrphanedFile(FileInfo objFile, int PortalId)
+        private static void RemoveOrphanedFile(FileInfo objFile, int portalId)
         {
             FileManager.Instance.DeleteFile(objFile);
         }
@@ -538,7 +538,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
-        public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
+        public static void AddToZip(ref ZipOutputStream zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
             try
@@ -564,8 +564,8 @@ namespace DotNetNuke.Common.Utilities
                 fs.Close();
 
                 // Compress file and add to Zip file
-                ZipFile.PutNextEntry(entry);
-                ZipFile.Write(buffer, 0, buffer.Length);
+                zipFile.PutNextEntry(entry);
+                zipFile.Write(buffer, 0, buffer.Length);
             }
             finally
             {

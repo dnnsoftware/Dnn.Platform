@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
     
     
     public partial class Login {
-        
         /// <summary>
         /// pnlLogin control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlLogin;
-        
         /// <summary>
         /// tsLogin control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNTabStrip tsLogin;
-        
         /// <summary>
         /// pnlLoginContainer control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlLoginContainer;
-        
         /// <summary>
         /// socialLoginControls control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder socialLoginControls;
-        
         /// <summary>
         /// pnlAssociate control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlAssociate;
-        
         /// <summary>
         /// lblAuthenticatedTitle control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAuthenticatedTitle;
-        
         /// <summary>
         /// lblAuthenticatedHelp control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAuthenticatedHelp;
-        
         /// <summary>
         /// plType control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plType;
-        
         /// <summary>
         /// lblType control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblType;
-        
         /// <summary>
         /// plToken control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plToken;
-        
         /// <summary>
         /// lblToken control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblToken;
-        
         /// <summary>
         /// lblAssociateTitle control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAssociateTitle;
-        
         /// <summary>
         /// lblAssociateHelp control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAssociateHelp;
-        
         /// <summary>
         /// plUsername control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plUsername;
-        
         /// <summary>
         /// txtUsername control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUsername;
-        
         /// <summary>
         /// divCaptcha control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCaptcha;
-        
         /// <summary>
         /// plCaptcha control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plCaptcha;
-        
         /// <summary>
         /// ctlCaptcha control.
         /// </summary>
@@ -177,7 +159,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.CaptchaControl ctlCaptcha;
-        
         /// <summary>
         /// plPassword control.
         /// </summary>
@@ -186,7 +167,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plPassword;
-        
         /// <summary>
         /// txtPassword control.
         /// </summary>
@@ -195,7 +175,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
-        
         /// <summary>
         /// cmdAssociate control.
         /// </summary>
@@ -204,7 +183,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAssociate;
-        
         /// <summary>
         /// pnlRegister control.
         /// </summary>
@@ -213,7 +191,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlRegister;
-        
         /// <summary>
         /// lblRegisterTitle control.
         /// </summary>
@@ -222,7 +199,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblRegisterTitle;
-        
         /// <summary>
         /// lblRegisterHelp control.
         /// </summary>
@@ -231,7 +207,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblRegisterHelp;
-        
         /// <summary>
         /// ctlUser control.
         /// </summary>
@@ -240,7 +215,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.Admin.Users.User ctlUser;
-        
         /// <summary>
         /// cmdCreateUser control.
         /// </summary>
@@ -249,7 +223,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdCreateUser;
-        
         /// <summary>
         /// pnlPassword control.
         /// </summary>
@@ -258,7 +231,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlPassword;
-        
         /// <summary>
         /// ctlPassword control.
         /// </summary>
@@ -267,7 +239,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.Admin.Users.Password ctlPassword;
-        
         /// <summary>
         /// pnlProceed control.
         /// </summary>
@@ -276,7 +247,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlProceed;
-        
         /// <summary>
         /// cmdProceed control.
         /// </summary>
@@ -285,7 +255,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.CommandButton cmdProceed;
-        
         /// <summary>
         /// pnlProfile control.
         /// </summary>
@@ -294,7 +263,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlProfile;
-        
         /// <summary>
         /// ctlProfile control.
         /// </summary>
@@ -303,7 +271,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DesktopModules.Admin.Security.DNNProfile ctlProfile;
-        
         /// <summary>
         /// pnlDataConsent control.
         /// </summary>
@@ -312,7 +279,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlDataConsent;
-        
         /// <summary>
         /// ctlDataConsent control.
         /// </summary>

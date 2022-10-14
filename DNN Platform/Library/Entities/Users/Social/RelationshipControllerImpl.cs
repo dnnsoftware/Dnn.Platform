@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Users.Social
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Entities.Users.Social
         internal const string FriendRequest = "FriendRequest";
         internal const string FollowerRequest = "FollowerRequest";
         internal const string FollowBackRequest = "FollowBackRequest";
-        private readonly IDataService _dataService;
+        private readonly IDataService dataService;
         private readonly IEventLogger eventLogger;
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace DotNetNuke.Entities.Users.Social
             Requires.NotNull("dataService", dataService);
             Requires.NotNull("eventLogger", eventLogger);
 
-            this._dataService = dataService;
+            this.dataService = dataService;
             this.eventLogger = eventLogger;
         }
 
@@ -50,7 +51,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             Requires.NotNull("relationshipType", relationshipType);
 
-            this._dataService.DeleteRelationshipType(relationshipType.RelationshipTypeId);
+            this.dataService.DeleteRelationshipType(relationshipType.RelationshipTypeId);
 
             // log event
             string logContent =
@@ -74,7 +75,7 @@ namespace DotNetNuke.Entities.Users.Social
                 cacheArgs,
                 c =>
                                                                 CBO.FillCollection<RelationshipType>(
-                                                                    this._dataService.GetAllRelationshipTypes()));
+                                                                    this.dataService.GetAllRelationshipTypes()));
         }
 
         /// <inheritdoc/>
@@ -92,7 +93,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          ? "RelationshipType_Added"
                                          : "RelationshipType_Updated";
 
-            relationshipType.RelationshipTypeId = this._dataService.SaveRelationshipType(
+            relationshipType.RelationshipTypeId = this.dataService.SaveRelationshipType(
                 relationshipType,
                 UserController.Instance.GetCurrentUserInfo().
                                                                                         UserID);
@@ -112,7 +113,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             Requires.NotNull("relationship", relationship);
 
-            this._dataService.DeleteRelationship(relationship.RelationshipId);
+            this.dataService.DeleteRelationship(relationship.RelationshipId);
 
             // log event
             string logContent =
@@ -128,13 +129,13 @@ namespace DotNetNuke.Entities.Users.Social
         /// <inheritdoc/>
         public Relationship GetRelationship(int relationshipId)
         {
-            return CBO.FillCollection<Relationship>(this._dataService.GetRelationship(relationshipId)).FirstOrDefault();
+            return CBO.FillCollection<Relationship>(this.dataService.GetRelationship(relationshipId)).FirstOrDefault();
         }
 
         /// <inheritdoc/>
         public IList<Relationship> GetRelationshipsByUserId(int userId)
         {
-            return CBO.FillCollection<Relationship>(this._dataService.GetRelationshipsByUserId(userId));
+            return CBO.FillCollection<Relationship>(this.dataService.GetRelationshipsByUserId(userId));
         }
 
         /// <inheritdoc/>
@@ -155,7 +156,7 @@ namespace DotNetNuke.Entities.Users.Social
                 cacheArgs,
                 c =>
                                                             CBO.FillCollection<Relationship>(
-                                                                this._dataService.GetRelationshipsByPortalId(
+                                                                this.dataService.GetRelationshipsByPortalId(
                                                                     (int)c.ParamList[0])));
         }
 
@@ -168,7 +169,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          ? "Relationship_Added"
                                          : "Relationship_Updated";
 
-            relationship.RelationshipId = this._dataService.SaveRelationship(
+            relationship.RelationshipId = this.dataService.SaveRelationship(
                 relationship,
                 UserController.Instance.GetCurrentUserInfo().UserID);
 
@@ -187,7 +188,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             Requires.NotNull("userRelationship", userRelationship);
 
-            this._dataService.DeleteUserRelationship(userRelationship.UserRelationshipId);
+            this.dataService.DeleteUserRelationship(userRelationship.UserRelationshipId);
 
             // log event
             string logContent =
@@ -204,7 +205,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// <inheritdoc/>
         public UserRelationship GetUserRelationship(int userRelationshipId)
         {
-            return CBO.FillObject<UserRelationship>(this._dataService.GetUserRelationship(userRelationshipId));
+            return CBO.FillObject<UserRelationship>(this.dataService.GetUserRelationship(userRelationshipId));
         }
 
         /// <inheritdoc/>
@@ -213,7 +214,7 @@ namespace DotNetNuke.Entities.Users.Social
             UserRelationship userRelationship = null;
             if (relationship != null)
             {
-                userRelationship = CBO.FillObject<UserRelationship>(this._dataService.GetUserRelationship(user.UserID, relatedUser.UserID,
+                userRelationship = CBO.FillObject<UserRelationship>(this.dataService.GetUserRelationship(user.UserID, relatedUser.UserID,
                                                                                   relationship.RelationshipId,
                                                                                   this.GetRelationshipType(
                                                                                       relationship.RelationshipTypeId).
@@ -226,7 +227,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// <inheritdoc/>
         public IList<UserRelationship> GetUserRelationships(UserInfo user)
         {
-            return CBO.FillCollection<UserRelationship>(this._dataService.GetUserRelationships(user.UserID));
+            return CBO.FillCollection<UserRelationship>(this.dataService.GetUserRelationships(user.UserID));
         }
 
         /// <inheritdoc/>
@@ -238,7 +239,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          ? "UserRelationship_Added"
                                          : "UserRelationship_Updated";
 
-            userRelationship.UserRelationshipId = this._dataService.SaveUserRelationship(
+            userRelationship.UserRelationshipId = this.dataService.SaveUserRelationship(
                 userRelationship,
                 UserController.Instance.GetCurrentUserInfo().
                                                                                         UserID);
@@ -259,7 +260,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             Requires.NotNull("userRelationshipPreference", userRelationshipPreference);
 
-            this._dataService.DeleteUserRelationshipPreference(userRelationshipPreference.PreferenceId);
+            this.dataService.DeleteUserRelationshipPreference(userRelationshipPreference.PreferenceId);
 
             // log event
             string logContent =
@@ -274,14 +275,14 @@ namespace DotNetNuke.Entities.Users.Social
         public UserRelationshipPreference GetUserRelationshipPreference(int preferenceId)
         {
             return
-                CBO.FillObject<UserRelationshipPreference>(this._dataService.GetUserRelationshipPreferenceById(preferenceId));
+                CBO.FillObject<UserRelationshipPreference>(this.dataService.GetUserRelationshipPreferenceById(preferenceId));
         }
 
         /// <inheritdoc/>
         public UserRelationshipPreference GetUserRelationshipPreference(int userId, int relationshipId)
         {
             return
-                CBO.FillObject<UserRelationshipPreference>(this._dataService.GetUserRelationshipPreference(
+                CBO.FillObject<UserRelationshipPreference>(this.dataService.GetUserRelationshipPreference(
                     userId,
                     relationshipId));
         }
@@ -296,7 +297,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          : "UserRelationshipPreference_Updated";
 
             userRelationshipPreference.PreferenceId =
-                this._dataService.SaveUserRelationshipPreference(
+                this.dataService.SaveUserRelationshipPreference(
                     userRelationshipPreference,
                     UserController.Instance.GetCurrentUserInfo().UserID);
 

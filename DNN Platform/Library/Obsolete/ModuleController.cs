@@ -62,13 +62,13 @@ namespace DotNetNuke.Entities.Modules
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Please use the ModuleSettings property of the ModuleInfo object. Scheduled removal in v10.0.0.")]
-        public Hashtable GetModuleSettings(int ModuleId)
+        public Hashtable GetModuleSettings(int moduleId)
         {
             var settings = new Hashtable();
             IDataReader dr = null;
             try
             {
-                dr = dataProvider.GetModuleSettings(ModuleId);
+                dr = dataProvider.GetModuleSettings(moduleId);
                 while (dr.Read())
                 {
                     if (!dr.IsDBNull(1))
@@ -110,13 +110,13 @@ namespace DotNetNuke.Entities.Modules
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Please use the TabModuleSettings property of the ModuleInfo object. Scheduled removal in v10.0.0.")]
-        public Hashtable GetTabModuleSettings(int TabModuleId)
+        public Hashtable GetTabModuleSettings(int tabModuleId)
         {
             var settings = new Hashtable();
             IDataReader dr = null;
             try
             {
-                dr = dataProvider.GetTabModuleSettings(TabModuleId);
+                dr = dataProvider.GetTabModuleSettings(tabModuleId);
                 while (dr.Read())
                 {
                     if (!dr.IsDBNull(1))

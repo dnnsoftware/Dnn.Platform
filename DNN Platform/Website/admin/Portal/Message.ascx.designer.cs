@@ -15,7 +15,6 @@ namespace DotNetNuke.Common.Controls {
     
     
     public partial class Message {
-        
         /// <summary>
         /// lblMessage control.
         /// </summary>

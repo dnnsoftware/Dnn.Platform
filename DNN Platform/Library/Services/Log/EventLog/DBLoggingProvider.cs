@@ -61,6 +61,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         // ReSharper disable once InconsistentNaming
+
         /// <inheritdoc/>
         public override void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
         {
@@ -330,6 +331,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         // ReSharper disable once InconsistentNaming
+
         /// <inheritdoc/>
         public override void UpdateLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
         {

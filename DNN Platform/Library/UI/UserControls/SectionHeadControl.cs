@@ -26,11 +26,11 @@ namespace DotNetNuke.UI.UserControls
         protected ImageButton imgIcon;
         protected Label lblTitle;
         protected Panel pnlRule;
-        private bool _includeRule;
-        private bool _isExpanded = true;
-        private string _javaScript = "__dnn_SectionMaxMin";
-        private string _maxImageUrl = "images/plus.gif";
-        private string _minImageUrl = "images/minus.gif";
+        private bool includeRule;
+        private bool isExpanded = true;
+        private string javaScript = "__dnn_SectionMaxMin";
+        private string maxImageUrl = "images/plus.gif";
+        private string minImageUrl = "images/minus.gif";
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,12 +66,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._includeRule;
+                return this.includeRule;
             }
 
             set
             {
-                this._includeRule = value;
+                this.includeRule = value;
             }
         }
 
@@ -88,13 +88,13 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
+                return DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this.isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
             }
 
             set
             {
-                this._isExpanded = value;
-                DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page, value);
+                this.isExpanded = value;
+                DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this.isExpanded, DNNClientAPI.MinMaxPersistanceType.Page, value);
             }
         }
 
@@ -110,12 +110,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._javaScript;
+                return this.javaScript;
             }
 
             set
             {
-                this._javaScript = value;
+                this.javaScript = value;
             }
         }
 
@@ -132,12 +132,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._maxImageUrl;
+                return this.maxImageUrl;
             }
 
             set
             {
-                this._maxImageUrl = value;
+                this.maxImageUrl = value;
             }
         }
 
@@ -154,12 +154,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._minImageUrl;
+                return this.minImageUrl;
             }
 
             set
             {
-                this._minImageUrl = value;
+                this.minImageUrl = value;
             }
         }
 
@@ -255,7 +255,7 @@ namespace DotNetNuke.UI.UserControls
                 }
 
                 // optionlly show hr
-                this.pnlRule.Visible = this._includeRule;
+                this.pnlRule.Visible = this.includeRule;
             }
             catch (Exception exc) // Module failed to load
             {
@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        protected void imgIcon_Click(object sender, ImageClickEventArgs e)
+        protected void ImgIcon_Click(object sender, ImageClickEventArgs e)
         {
             var ctl = (HtmlControl)this.Parent.FindControl(this.Section);
             if (ctl != null)

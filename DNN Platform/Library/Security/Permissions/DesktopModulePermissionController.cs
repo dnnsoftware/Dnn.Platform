@@ -24,7 +24,7 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class DesktopModulePermissionController
     {
-        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -35,7 +35,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
-            int Id = DataProvider.Instance().AddDesktopModulePermission(
+            int id = DataProvider.Instance().AddDesktopModulePermission(
                 objDesktopModulePermission.PortalDesktopModuleID,
                 objDesktopModulePermission.PermissionID,
                 objDesktopModulePermission.RoleID,
@@ -49,21 +49,21 @@ namespace DotNetNuke.Security.Permissions
                 string.Empty,
                 EventLogController.EventLogType.DESKTOPMODULEPERMISSION_CREATED);
             ClearPermissionCache();
-            return Id;
+            return id;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeleteDesktopModulePermission deletes a DesktopModule Permission in the Database.
         /// </summary>
-        /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission to delete.</param>
+        /// <param name="desktopModulePermissionID">The ID of the DesktopModule Permission to delete.</param>
         /// -----------------------------------------------------------------------------
-        public static void DeleteDesktopModulePermission(int DesktopModulePermissionID)
+        public static void DeleteDesktopModulePermission(int desktopModulePermissionID)
         {
-            DataProvider.Instance().DeleteDesktopModulePermission(DesktopModulePermissionID);
+            DataProvider.Instance().DeleteDesktopModulePermission(desktopModulePermissionID);
             EventLogController.Instance.AddLog(
                 "DesktopModulePermissionID",
-                DesktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
+                desktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
                 PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.DESKTOPMODULEPERMISSION_DELETED);
@@ -111,12 +111,12 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// GetDesktopModulePermission gets a DesktopModule Permission from the Database.
         /// </summary>
-        /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission.</param>
+        /// <param name="desktopModulePermissionID">The ID of the DesktopModule Permission.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public static DesktopModulePermissionInfo GetDesktopModulePermission(int DesktopModulePermissionID)
+        public static DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionID)
         {
-            return _provider.GetDesktopModulePermission(DesktopModulePermissionID);
+            return Provider.GetDesktopModulePermission(desktopModulePermissionID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -128,7 +128,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleID)
         {
-            return _provider.GetDesktopModulePermissions(portalDesktopModuleID);
+            return Provider.GetDesktopModulePermissions(portalDesktopModuleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasDesktopModulePermission(DesktopModulePermissionCollection objDesktopModulePermissions, string permissionKey)
         {
-            return _provider.HasDesktopModulePermission(objDesktopModulePermissions, permissionKey);
+            return Provider.HasDesktopModulePermission(objDesktopModulePermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------

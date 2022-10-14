@@ -27,9 +27,10 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public static class Converters
     {
-        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
-        public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs) where T : PageItem, new()
+        public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs)
+            where T : PageItem, new()
         {
             return new T
             {
@@ -53,7 +54,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 CanNavigateToPage = TabPermissionController.CanNavigateToPage(tab),
                 LastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate = tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt"),
-                PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : "",
+                PublishDate = tab.HasBeenPublished ? WorkflowHelper.GetTabLastPublishedOn(tab).ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")) : string.Empty,
                 PublishStatus = GetTabPublishStatus(tab),
                 Tags = tab.Terms.Select(t => t.Name).ToArray(),
                 TabOrder = tab.TabOrder,
@@ -71,7 +72,8 @@ namespace Dnn.PersonaBar.Pages.Components
             AllTabs = module.AllTabs,
         };
 
-        public static T ConvertToPageSettings<T>(TabInfo tab) where T : PageSettings, new()
+        public static T ConvertToPageSettings<T>(TabInfo tab)
+            where T : PageSettings, new()
         {
             if (tab == null)
             {
@@ -141,7 +143,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private static string GetModuleEditSettingUrl(ModuleInfo module)
         {
             var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
-            return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
+            return NavigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
         }
 
         private static string GetModuleEditContentUrl(ModuleInfo module)
@@ -155,7 +157,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     parameters.Add("popUp=true");
                 }
 
-                return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
+                return NavigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
             }
 
             return string.Empty;
@@ -185,6 +187,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 return FileManager.Instance.GetFile(fileRedirectionId);
             }
+
             return null;
         }
 

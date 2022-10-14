@@ -38,8 +38,8 @@ namespace DotNetNuke.UI.Skins
     public class Pane
     {
         private const string CPaneOutline = "paneOutline";
-        private HtmlGenericControl _containerWrapperControl;
-        private Dictionary<string, Containers.Container> _containers;
+        private HtmlGenericControl containerWrapperControl;
+        private Dictionary<string, Containers.Container> containers;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._containers ?? (this._containers = new Dictionary<string, Containers.Container>());
+                return this.containers ?? (this.containers = new Dictionary<string, Containers.Container>());
             }
         }
 
@@ -119,8 +119,8 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void InjectModule(ModuleInfo module)
         {
-            this._containerWrapperControl = new HtmlGenericControl("div");
-            this.PaneControl.Controls.Add(this._containerWrapperControl);
+            this.containerWrapperControl = new HtmlGenericControl("div");
+            this.PaneControl.Controls.Add(this.containerWrapperControl);
 
             // inject module classes
             string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
@@ -136,13 +136,13 @@ namespace DotNetNuke.UI.Skins
                 classFormatString += " DnnVersionableControl";
             }
 
-            this._containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
+            this.containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
 
             try
             {
                 if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
                 {
-                    this._containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
+                    this.containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
                 }
 
                 // Load container control
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.Skins
 
                     // Assume that the title control is named dnnTitle.  If this becomes an issue we could loop through the controls looking for the title type of skin object
                     dragDropContainer.ID = container.ID + "_DD";
-                    this._containerWrapperControl.Controls.Add(dragDropContainer);
+                    this.containerWrapperControl.Controls.Add(dragDropContainer);
 
                     // inject the container into the page pane - this triggers the Pre_Init() event for the user control
                     dragDropContainer.Controls.Add(container);
@@ -200,10 +200,10 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    this._containerWrapperControl.Controls.Add(container);
+                    this.containerWrapperControl.Controls.Add(container);
                     if (Globals.IsAdminControl())
                     {
-                        this._containerWrapperControl.Attributes["class"] += " DnnModule-Admin";
+                        this.containerWrapperControl.Attributes["class"] += " DnnModule-Admin";
                     }
                 }
 
@@ -226,7 +226,7 @@ namespace DotNetNuke.UI.Skins
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    this._containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, Skin.MODULELOAD_ERROR, lex).Container);
+                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, Skin.MODULELOAD_ERROR, lex).Container);
                 }
 
                 Exceptions.LogException(exc);
@@ -380,7 +380,7 @@ namespace DotNetNuke.UI.Skins
                 if (TabPermissionController.CanAdminPage())
                 {
                     // only display the error to administrators
-                    this._containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
+                    this.containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
                 }
 
                 Exceptions.LogException(lex);

@@ -31,6 +31,7 @@
         private const string GenericHost = "dnn";
 
         [Test]
+
         public void CheckForRedirects_WithUmlautUrls_DontRedirectInfinitely()
         {
             // Arrange

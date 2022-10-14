@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Containers {
     
     
     public partial class Title {
-        
         /// <summary>
         /// titleLabel control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.UI.Containers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNLabelEdit titleLabel;
-        
         /// <summary>
         /// titleToolbar control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.Containers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBar titleToolbar;
-        
         /// <summary>
         /// tbEdit2 control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.UI.Containers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbEdit2;
-        
         /// <summary>
         /// tbSave2 control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.UI.Containers {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbSave2;
-        
         /// <summary>
         /// tbCancel2 control.
         /// </summary>

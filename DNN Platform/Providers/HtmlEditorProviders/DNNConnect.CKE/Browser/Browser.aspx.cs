@@ -160,7 +160,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets the current folder ID.</summary>
-
         protected int CurrentFolderId
         {
             get
@@ -947,7 +946,8 @@ namespace DNNConnect.CKEditorProvider.Browser
                                         this.panLinkMode.Visible = false;
                                         this.panPageMode.Visible = true;
 
-                                        this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"),
+                                        this.lblModus.Text = string.Format(
+                                            this.LocalizeString("BrowserModus.Text"),
                                             string.Format("Page {0}", this.browserModus));
                                         this.title.Text = string.Format(
                                             "{0} - DNNConnect.CKEditorProvider.FileBrowser",
@@ -2074,7 +2074,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.LabelTabLanguage.Text = this.LocalizeString("LabelTabLanguage.Text");
 
             this.MaximumUploadSizeInfo.Text =
-                string.Format(this.LocalizeString("FileSizeRestriction"),
+                string.Format(
+                    this.LocalizeString("FileSizeRestriction"),
                     this.MaxUploadSize / (1024 * 1024),
                     this.AcceptFileTypes.Replace("|", ","));
 
@@ -2419,7 +2420,6 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
 
                 string sFilePath = Path.Combine(uploadPhysicalPath, fileName);
-                DotNetNuke.Services.FileSystem.IFileInfo uploadedFile;
                 if (File.Exists(sFilePath))
                 {
                     iCounter++;
@@ -3212,7 +3212,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
 
             this.FileSpaceUsedLabel.Text =
-                string.Format(this.LocalizeString("SpaceUsed.Text"),
+                string.Format(
+                    this.LocalizeString("SpaceUsed.Text"),
                     usedSpace,
                     spaceAvailable);
         }

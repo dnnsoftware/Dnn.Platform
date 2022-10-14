@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
     
     
     public partial class AuthenticationEditor {
-        
         /// <summary>
         /// AuthEditorHead control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl AuthEditorHead;
-        
         /// <summary>
         /// lblHelp control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHelp;
-        
         /// <summary>
         /// authenticationForm control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormEditor authenticationForm;
-        
         /// <summary>
         /// authenticationType control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem authenticationType;
-        
         /// <summary>
         /// loginControlSrc control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem loginControlSrc;
-        
         /// <summary>
         /// logoffControlSrc control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem logoffControlSrc;
-        
         /// <summary>
         /// settingsControlSrc control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem settingsControlSrc;
-        
         /// <summary>
         /// isEnabled control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnFormToggleButtonItem isEnabled;
-        
         /// <summary>
         /// authenticationFormReadOnly control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormEditor authenticationFormReadOnly;
-        
         /// <summary>
         /// DnnFormTextBoxItem1 control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem DnnFormTextBoxItem1;
-        
         /// <summary>
         /// DnnFormTextBoxItem2 control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem DnnFormTextBoxItem2;
-        
         /// <summary>
         /// DnnFormTextBoxItem3 control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem DnnFormTextBoxItem3;
-        
         /// <summary>
         /// DnnFormTextBoxItem4 control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem DnnFormTextBoxItem4;
-        
         /// <summary>
         /// DnnFormToggleButtonItem1 control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem DnnFormToggleButtonItem1;
-        
         /// <summary>
         /// pnlSettings control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSettings;
-        
         /// <summary>
         /// cmdUpdate control.
         /// </summary>

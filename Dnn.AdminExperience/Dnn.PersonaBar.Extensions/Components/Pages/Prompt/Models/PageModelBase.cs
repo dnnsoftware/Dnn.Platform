@@ -6,10 +6,17 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 {
     public class PageModelBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageModelBase"/> class.
+        /// </summary>
         public PageModelBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageModelBase"/> class.
+        /// </summary>
+        /// <param name="tab"></param>
         public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
         {
             this.Name = tab.TabName;
@@ -26,9 +33,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 
         public string __ParentId => $"list-pages --parentid {this.ParentId}";
 
-        public string __IncludeInMenu => $"list-pages --visible{(this.IncludeInMenu ? "" : " false")}";
+        public string __IncludeInMenu => $"list-pages --visible{(this.IncludeInMenu ? string.Empty : " false")}";
 
-        public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? "" : " false")}";
+        public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? string.Empty : " false")}";
 
         public int TabId { get; set; }
 

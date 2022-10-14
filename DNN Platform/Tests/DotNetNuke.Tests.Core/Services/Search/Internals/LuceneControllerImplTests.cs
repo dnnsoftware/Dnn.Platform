@@ -15,6 +15,7 @@
     public class LuceneControllerImplTests
     {
         [Test]
+
         public void GetCustomAnalyzer_WithTheProvidedAnalyzer_ReturnsTheAnalyzerCorrectly()
         {
             // Arrange

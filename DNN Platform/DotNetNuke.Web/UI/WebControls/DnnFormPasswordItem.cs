@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnFormPasswordItem : DnnFormItemBase
     {
-        private TextBox _password;
+        private TextBox password;
 
         public string TextBoxCssClass
         {
@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <returns>An "input" control that can be used for attaching validators.</returns>
         protected override WebControl CreateControlInternal(Control container)
         {
-            this._password = new TextBox()
+            this.password = new TextBox()
             {
                 ID = this.ID + "_TextBox",
                 TextMode = TextBoxMode.Password,
@@ -57,19 +57,19 @@ namespace DotNetNuke.Web.UI.WebControls
                 MaxLength = 39, // ensure password cannot be cut if too long
                 Text = Convert.ToString(this.Value), // Load from ControlState
             };
-            this._password.Attributes.Add("autocomplete", "off");
-            this._password.Attributes.Add("aria-label", this.DataField);
-            this._password.TextChanged += this.TextChanged;
+            this.password.Attributes.Add("autocomplete", "off");
+            this.password.Attributes.Add("aria-label", this.DataField);
+            this.password.TextChanged += this.TextChanged;
 
             var passwordContainer = new Panel() { ID = "passwordContainer", CssClass = this.ContainerCssClass };
 
             // add control hierarchy to the container
             container.Controls.Add(passwordContainer);
 
-            passwordContainer.Controls.Add(this._password);
+            passwordContainer.Controls.Add(this.password);
 
             // return input control that can be used for validation
-            return this._password;
+            return this.password;
         }
 
         /// <inheritdoc/>
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void TextChanged(object sender, EventArgs e)
         {
-            this.UpdateDataSource(this.Value, this._password.Text, this.DataField);
+            this.UpdateDataSource(this.Value, this.password.Text, this.DataField);
         }
     }
 }

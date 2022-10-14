@@ -31,11 +31,14 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class Membership : UserModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Membership"/> class.
+        /// </summary>
         public Membership()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// -----------------------------------------------------------------------------
@@ -89,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (this.MembershipPromoteToSuperuser != null)
             {
                 this.MembershipPromoteToSuperuser(this, e);
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
             }
         }
 
@@ -108,7 +111,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (this.MembershipDemoteFromSuperuser != null)
             {
                 this.MembershipDemoteFromSuperuser(this, e);
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
             }
         }
 
@@ -260,11 +263,11 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnLoad(e);
 
-            this.cmdAuthorize.Click += this.cmdAuthorize_Click;
-            this.cmdPassword.Click += this.cmdPassword_Click;
-            this.cmdUnAuthorize.Click += this.cmdUnAuthorize_Click;
-            this.cmdUnLock.Click += this.cmdUnLock_Click;
-            this.cmdToggleSuperuser.Click += this.cmdToggleSuperuser_Click;
+            this.cmdAuthorize.Click += this.CmdAuthorize_Click;
+            this.cmdPassword.Click += this.CmdPassword_Click;
+            this.cmdUnAuthorize.Click += this.CmdUnAuthorize_Click;
+            this.cmdUnLock.Click += this.CmdUnLock_Click;
+            this.cmdToggleSuperuser.Click += this.CmdToggleSuperuser_Click;
         }
 
         /// -----------------------------------------------------------------------------
@@ -272,7 +275,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// cmdAuthorize_Click runs when the Authorize User Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdAuthorize_Click(object sender, EventArgs e)
+        private void CmdAuthorize_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -308,7 +311,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// cmdPassword_Click runs when the ChangePassword Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdPassword_Click(object sender, EventArgs e)
+        private void CmdPassword_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -346,7 +349,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdUnAuthorize_Click(object sender, EventArgs e)
+        private void CmdUnAuthorize_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -374,7 +377,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdToggleSuperuser_Click(object sender, EventArgs e)
+        private void CmdToggleSuperuser_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -413,7 +416,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// cmdUnlock_Click runs when the Unlock Account Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdUnLock_Click(object sender, EventArgs e)
+        private void CmdUnLock_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {

@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Installer
     public class Installer
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
-        private Stream _inputStream;
+        private Stream inputStream;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -87,8 +87,8 @@ namespace DotNetNuke.Services.Installer
         {
             this.Packages = new SortedList<int, PackageInstaller>();
 
-            this._inputStream = new MemoryStream();
-            inputStream.CopyTo(this._inputStream);
+            this.inputStream = new MemoryStream();
+            inputStream.CopyTo(this.inputStream);
 
             // Called from Batch installer - default IgnoreWhiteList to true
             this.InstallerInfo = new InstallerInfo(inputStream, physicalSitePath) { IgnoreWhiteList = true };
@@ -314,11 +314,11 @@ namespace DotNetNuke.Services.Installer
             this.LogInstallEvent("Package", "Install");
 
             // when the installer initialized by file stream, we need save the file stream into backup folder.
-            if (this._inputStream != null && bStatus && this.Packages.Any())
+            if (this.inputStream != null && bStatus && this.Packages.Any())
             {
                 Task.Run(() =>
                 {
-                    this.BackupStreamIntoFile(this._inputStream, this.Packages[0].Package);
+                    this.BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
                 });
             }
 

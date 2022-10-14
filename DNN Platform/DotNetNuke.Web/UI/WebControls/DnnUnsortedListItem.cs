@@ -13,6 +13,9 @@ namespace DotNetNuke.Web.UI.WebControls
     /// <remarks></remarks>
     public class DnnUnsortedListItem : WebControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnUnsortedListItem"/> class.
+        /// </summary>
         public DnnUnsortedListItem()
             : base(HtmlTextWriterTag.Li)
         {

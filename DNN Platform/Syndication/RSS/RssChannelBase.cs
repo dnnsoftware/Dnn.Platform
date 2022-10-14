@@ -15,15 +15,15 @@ namespace DotNetNuke.Services.Syndication
         where RssItemType : RssElementBase, new()
         where RssImageType : RssElementBase, new()
     {
-        private readonly List<RssItemType> _items = new List<RssItemType>();
-        private RssImageType _image;
-        private string _url;
+        private readonly List<RssItemType> items = new List<RssItemType>();
+        private RssImageType image;
+        private string url;
 
         public List<RssItemType> Items
         {
             get
             {
-                return this._items;
+                return this.items;
             }
         }
 
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return this._url;
+                return this.url;
             }
         }
 
@@ -40,17 +40,17 @@ namespace DotNetNuke.Services.Syndication
             return this.SaveAsXml(RssXmlHelper.CreateEmptyRssXml());
         }
 
-        public XmlDocument SaveAsXml(XmlDocument EmptyRssXml)
+        public XmlDocument SaveAsXml(XmlDocument emptyRssXml)
         {
-            XmlDocument doc = EmptyRssXml;
+            XmlDocument doc = emptyRssXml;
             XmlNode channelNode = RssXmlHelper.SaveRssElementAsXml(doc.DocumentElement, this, "channel");
 
-            if (this._image != null)
+            if (this.image != null)
             {
-                RssXmlHelper.SaveRssElementAsXml(channelNode, this._image, "image");
+                RssXmlHelper.SaveRssElementAsXml(channelNode, this.image, "image");
             }
 
-            foreach (RssItemType item in this._items)
+            foreach (RssItemType item in this.items)
             {
                 RssXmlHelper.SaveRssElementAsXml(channelNode, item, "item");
             }
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 var image = new RssImageType();
                 image.SetAttributes(dom.Image);
-                this._image = image;
+                this.image = image;
             }
 
             // items
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 var item = new RssItemType();
                 item.SetAttributes(i);
-                this._items.Add(item);
+                this.items.Add(item);
             }
         }
 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Syndication
             this.LoadFromDom(dom);
 
             // remember the url
-            this._url = url;
+            this.url = url;
         }
 
         protected void LoadFromXml(XmlDocument doc)
@@ -103,12 +103,12 @@ namespace DotNetNuke.Services.Syndication
 
         protected RssImageType GetImage()
         {
-            if (this._image == null)
+            if (this.image == null)
             {
-                this._image = new RssImageType();
+                this.image = new RssImageType();
             }
 
-            return this._image;
+            return this.image;
         }
     }
 }

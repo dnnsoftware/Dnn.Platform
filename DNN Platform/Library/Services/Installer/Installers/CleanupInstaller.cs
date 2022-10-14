@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly IFileSystemUtils fileSystemUtils;
 
-        private string _fileName;
-        private string _glob;
+        private string fileName;
+        private string glob;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CleanupInstaller"/> class.
@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(this._fileName) && string.IsNullOrEmpty(this._glob)) // No attribute: use the xml files definition.
+                if (string.IsNullOrEmpty(this.fileName) && string.IsNullOrEmpty(this.glob)) // No attribute: use the xml files definition.
                 {
                     foreach (InstallFile file in this.Files)
                     {
@@ -112,11 +112,11 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.CleanupFolder(folder);
                     }
                 }
-                else if (!string.IsNullOrEmpty(this._fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
+                else if (!string.IsNullOrEmpty(this.fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
                 {
                     bSuccess = this.ProcessCleanupFile();
                 }
-                else if (!string.IsNullOrEmpty(this._glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
+                else if (!string.IsNullOrEmpty(this.glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
                 {
                     bSuccess = this.ProcessGlob();
                 }
@@ -132,8 +132,8 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            this._fileName = Util.ReadAttribute(manifestNav, "fileName");
-            this._glob = Util.ReadAttribute(manifestNav, "glob");
+            this.fileName = Util.ReadAttribute(manifestNav, "fileName");
+            this.glob = Util.ReadAttribute(manifestNav, "glob");
 
             foreach (XPathNavigator nav in manifestNav.Select("folder"))
             {
@@ -327,7 +327,7 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
-                var strListFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._fileName);
+                var strListFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this.fileName);
                 if (File.Exists(strListFile))
                 {
                     FileSystemUtils.DeleteFiles(File.ReadAllLines(strListFile));
@@ -350,14 +350,14 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
-                if (this._glob.Contains(".."))
+                if (this.glob.Contains(".."))
                 {
                     this.Log.AddWarning(Util.EXCEPTION + " - " + Util.EXCEPTION_GlobDotDotNotSupportedInCleanup);
                 }
                 else
                 {
                     var globs = new Matcher(StringComparison.InvariantCultureIgnoreCase);
-                    globs.AddIncludePatterns(this._glob.Split(';'));
+                    globs.AddIncludePatterns(this.glob.Split(';'));
                     var files = globs.GetResultsInFullPath(Globals.ApplicationMapPath).ToArray();
                     FileSystemUtils.DeleteFiles(files);
                 }

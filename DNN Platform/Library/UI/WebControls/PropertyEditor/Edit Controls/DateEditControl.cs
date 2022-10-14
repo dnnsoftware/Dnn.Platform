@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                string _Format = this.DefaultFormat;
+                string format = this.DefaultFormat;
                 if (this.CustomAttributes != null)
                 {
                     foreach (Attribute attribute in this.CustomAttributes)
@@ -95,13 +95,13 @@ namespace DotNetNuke.UI.WebControls
                         if (attribute is FormatAttribute)
                         {
                             var formatAtt = (FormatAttribute)attribute;
-                            _Format = formatAtt.Format;
+                            format = formatAtt.Format;
                             break;
                         }
                     }
                 }
 
-                return _Format;
+                return format;
             }
         }
 
@@ -138,13 +138,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                string _StringValue = Null.NullString;
+                string stringValue = Null.NullString;
                 if (this.DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && this.DateValue != Null.NullDate)
                 {
-                    _StringValue = this.DateValue.ToString(this.Format);
+                    stringValue = this.DateValue.ToString(this.Format);
                 }
 
-                return _StringValue;
+                return stringValue;
             }
 
             set

@@ -32,16 +32,16 @@ namespace DotNetNuke.Services.Analytics
         /// <summary>
         ///   Handles module upgrades includes a new Google Analytics Asychronous script.
         /// </summary>
-        /// <param name = "Version"></param>
+        /// <param name = "version"></param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public void UpgradeModule(string Version)
+        public void UpgradeModule(string version)
         {
             // MD5 Hash value of the old synchronous script config file (from previous module versions)
-            string[] TRADITIONAL_FILEHASHES = { "aRUf9NsElvrpiASJHHlmZg==", "+R2k5mvFvVhWsCm4WinyAA==" };
+            string[] traditionalFileHashes = { "aRUf9NsElvrpiASJHHlmZg==", "+R2k5mvFvVhWsCm4WinyAA==" };
 
-            switch (Version)
+            switch (version)
             {
                 case "05.06.00":
                     // previous module versions
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Analytics
                                 currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
                                 fileReader.Close();
 
-                                IEnumerable<string> result = from h in TRADITIONAL_FILEHASHES where h == currFileHashValue select h;
+                                IEnumerable<string> result = from h in traditionalFileHashes where h == currFileHashValue select h;
 
                                 // compare md5 hash
                                 if (result.Any())
@@ -80,8 +80,6 @@ namespace DotNetNuke.Services.Analytics
         ///   Retrieves the Google Analytics config file, "SiteAnalytics.config".
         /// </summary>
         /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
         /// -----------------------------------------------------------------------------
         private StreamReader GetConfigFile()
         {

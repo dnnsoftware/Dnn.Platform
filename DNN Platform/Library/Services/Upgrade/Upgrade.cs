@@ -60,8 +60,8 @@ namespace DotNetNuke.Services.Upgrade
         private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
-        private static readonly object _threadLocker = new object();
-        private static DateTime _startTime;
+        private static readonly object ThreadLocker = new object();
+        private static DateTime startTime;
 
         public static string DefaultProvider
         {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Upgrade
             get
             {
                 DateTime currentTime = DateTime.Now;
-                return currentTime.Subtract(_startTime);
+                return currentTime.Subtract(startTime);
             }
         }
 
@@ -1444,7 +1444,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void StartTimer()
         {
             // Start Upgrade Timer
-            _startTime = DateTime.Now;
+            startTime = DateTime.Now;
         }
 
         /// -----------------------------------------------------------------------------
@@ -1982,7 +1982,7 @@ namespace DotNetNuke.Services.Upgrade
                 // check whether current binding already specific to correct version.
                 if (NewtonsoftNeedUpdate())
                 {
-                    lock (_threadLocker)
+                    lock (ThreadLocker)
                     {
                         if (NewtonsoftNeedUpdate())
                         {
@@ -2703,7 +2703,6 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
         }
-
 
         private static string GetStringVersionWithRevision(Version version)
         {

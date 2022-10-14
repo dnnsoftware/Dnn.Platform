@@ -37,6 +37,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
         /// <param name="portalId">Id of portal.</param>
         /// <returns>Content of portal.css.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetStyleSheet(int portalId)
         {
             try
@@ -50,8 +51,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
                     var activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
                     var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
 
-                    string uploadDirectory = "";
-                    string styleSheetContent = "";
+                    string uploadDirectory = string.Empty;
+                    string styleSheetContent = string.Empty;
                     if (portal != null)
                     {
                         uploadDirectory = portal.HomeDirectoryMapPath;
@@ -84,6 +85,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateStyleSheet(UpdateCssRequest request)
         {
             if (!PortalSettings.Current.UserInfo.IsSuperUser && PortalSettings.Current.UserInfo.PortalID != request.PortalId)
@@ -118,7 +120,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                     // Clear client resource cache
                     var overrideSetting =
-                        PortalController.GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey,
+                        PortalController.GetPortalSetting(
+                            ClientResourceSettings.OverrideDefaultSettingsKey,
                             request.PortalId, "False");
                     bool overridePortal;
                     if (bool.TryParse(overrideSetting, out overridePortal))
@@ -155,6 +158,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
         /// <returns>Content of portal.css.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage RestoreStyleSheet(RestoreCssRequest request)
         {
             if (!PortalSettings.Current.UserInfo.IsSuperUser &&
@@ -183,6 +187,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                         ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
                     }
+
                     var content = this.LoadStyleSheet(request.PortalId);
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, StyleSheetContent = content });
@@ -200,8 +205,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
             var activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
             var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
 
-            string uploadDirectory = "";
-            string styleSheetContent = "";
+            string uploadDirectory = string.Empty;
+            string styleSheetContent = string.Empty;
             if (portal != null)
             {
                 uploadDirectory = portal.HomeDirectoryMapPath;

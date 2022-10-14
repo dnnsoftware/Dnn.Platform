@@ -15,16 +15,19 @@ namespace DotNetNuke.Web.Razor
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class RazorHostControl : ModuleControlBase, IActionable
     {
-        private readonly string _razorScriptFile;
+        private readonly string razorScriptFile;
 
-        private RazorEngine _engine;
+        private RazorEngine engine;
 
+        /// <summary>Initializes a new instance of the <see cref="RazorHostControl"/> class.</summary>
+        /// <param name="scriptFile">The path to the Razor script file.</param>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public RazorHostControl(string scriptFile)
         {
-            this._razorScriptFile = scriptFile;
+            this.razorScriptFile = scriptFile;
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleActionCollection ModuleActions
         {
@@ -42,22 +45,23 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected virtual string RazorScriptFile
         {
-            get { return this._razorScriptFile; }
+            get { return this.razorScriptFile; }
         }
 
         private RazorEngine Engine
         {
             get
             {
-                if (this._engine == null)
+                if (this.engine == null)
                 {
-                    this._engine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
+                    this.engine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
                 }
 
-                return this._engine;
+                return this.engine;
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnPreRender(EventArgs e)
         {

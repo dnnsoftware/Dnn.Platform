@@ -25,24 +25,26 @@ namespace Dnn.PersonaBar.UI.UserControls
 
     public partial class PersonaBarContainer : ControlPanelBase
     {
-        private readonly IPersonaBarContainer _personaBarContainer = Library.Containers.PersonaBarContainer.Instance;
+        private readonly IPersonaBarContainer personaBarContainer = Library.Containers.PersonaBarContainer.Instance;
 
-        public string PersonaBarSettings => JsonConvert.SerializeObject(this._personaBarContainer.GetConfiguration());
+        public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
         public string AppPath => Globals.ApplicationPath;
 
         public string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            if (this._personaBarContainer.Visible)
+            if (this.personaBarContainer.Visible)
             {
-                this._personaBarContainer.Initialize(this);
+                this.personaBarContainer.Initialize(this);
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -54,6 +56,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             this.Visible = this.Response.StatusCode == (int)HttpStatusCode.OK;
@@ -63,7 +66,7 @@ namespace Dnn.PersonaBar.UI.UserControls
 
         private bool InjectPersonaBar()
         {
-            if (!this._personaBarContainer.Visible)
+            if (!this.personaBarContainer.Visible)
             {
                 return false;
             }

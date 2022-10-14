@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     {
         protected string LocalInstallResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
         protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
-        private string _details = string.Empty;
+        private string details = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseInstallationStep"/> class.
@@ -37,16 +37,16 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         {
             get
             {
-                return this._details;
+                return this.details;
             }
 
             set
             {
-                this._details = value;
-                DnnInstallLogger.InstallLogInfo(this._details);
+                this.details = value;
+                DnnInstallLogger.InstallLogInfo(this.details);
                 if (this.Activity != null)
                 {
-                    this.Activity(this._details);
+                    this.Activity(this.details);
                 }
             }
         }

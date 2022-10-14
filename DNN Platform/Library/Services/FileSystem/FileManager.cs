@@ -64,6 +64,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         return Host.AllowedExtensionWhitelist;
                     }
+
                     if (!user.IsAdmin)
                     {
                         var settings = PortalSettings.Current;
@@ -73,6 +74,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                 }
+
                 return Host.AllowedExtensionWhitelist;
             }
         }
@@ -1849,26 +1851,27 @@ namespace DotNetNuke.Services.FileSystem
 
         private void AddFile(IFileInfo file, int createdByUserID)
         {
-            file.FileId = DataProvider.Instance().AddFile(file.PortalId,
-                                                    file.UniqueId,
-                                                    file.VersionGuid,
-                                                    file.FileName,
-                                                    file.Extension,
-                                                    file.Size,
-                                                    file.Width,
-                                                    file.Height,
-                                                    file.ContentType,
-                                                    file.Folder,
-                                                    file.FolderId,
-                                                    createdByUserID,
-                                                    file.SHA1Hash,
-                                                    file.LastModificationTime,
-                                                    file.Title,
-                                                    file.Description,
-                                                    file.StartDate,
-                                                    file.EndDate,
-                                                    file.EnablePublishPeriod,
-                                                    file.ContentItemID);
+            file.FileId = DataProvider.Instance().AddFile(
+                file.PortalId,
+                file.UniqueId,
+                file.VersionGuid,
+                file.FileName,
+                file.Extension,
+                file.Size,
+                file.Width,
+                file.Height,
+                file.ContentType,
+                file.Folder,
+                file.FolderId,
+                createdByUserID,
+                file.SHA1Hash,
+                file.LastModificationTime,
+                file.Title,
+                file.Description,
+                file.StartDate,
+                file.EndDate,
+                file.EnablePublishPeriod,
+                file.ContentItemID);
         }
 
         /// <summary>
@@ -1889,6 +1892,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return FileVersionController.Instance.AddFileVersion(oldFile, createdByUserID);
             }
+
             return file.FileName;
         }
 
@@ -1959,6 +1963,7 @@ namespace DotNetNuke.Services.FileSystem
                 WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
                 return true;
             }
+
             return false;
         }
 

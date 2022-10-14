@@ -13,9 +13,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnLanguageLabel : CompositeControl, ILocalizable
     {
-        private Image _Flag;
+        private Image flag;
 
-        private Label _Label;
+        private Label label;
 
         public DnnLanguageLabel()
         {
@@ -66,14 +66,14 @@ namespace DotNetNuke.Web.UI.WebControls
             // First clear the controls collection
             this.Controls.Clear();
 
-            this._Flag = new Image { ViewStateMode = ViewStateMode.Disabled };
-            this.Controls.Add(this._Flag);
+            this.flag = new Image { ViewStateMode = ViewStateMode.Disabled };
+            this.Controls.Add(this.flag);
 
             this.Controls.Add(new LiteralControl("&nbsp;"));
 
-            this._Label = new Label();
-            this._Label.ViewStateMode = ViewStateMode.Disabled;
-            this.Controls.Add(this._Label);
+            this.label = new Label();
+            this.label.ViewStateMode = ViewStateMode.Disabled;
+            this.Controls.Add(this.label);
 
             // Call base class's method
             base.CreateChildControls();
@@ -90,19 +90,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (string.IsNullOrEmpty(this.Language))
             {
-                this._Flag.ImageUrl = "~/images/Flags/none.gif";
+                this.flag.ImageUrl = "~/images/Flags/none.gif";
             }
             else
             {
-                this._Flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
+                this.flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
             }
 
             if (this.DisplayType == 0)
             {
-                PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                string _ViewTypePersonalizationKey = "ViewType" + _PortalSettings.PortalId;
-                string _ViewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", _ViewTypePersonalizationKey));
-                switch (_ViewType)
+                PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                string viewTypePersonalizationKey = "ViewType" + portalSettings.PortalId;
+                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+                switch (viewType)
                 {
                     case "NATIVE":
                         this.DisplayType = CultureDropDownTypes.NativeName;
@@ -126,8 +126,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 localeName = Localization.GetLocaleName(this.Language, this.DisplayType);
             }
 
-            this._Label.Text = localeName;
-            this._Flag.AlternateText = localeName;
+            this.label.Text = localeName;
+            this.flag.AlternateText = localeName;
         }
     }
 }

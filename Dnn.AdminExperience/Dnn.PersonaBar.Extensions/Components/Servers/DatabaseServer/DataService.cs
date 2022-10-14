@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
 
         private static string GetFullyQualifiedName(string name)
         {
-            return String.Concat(moduleQualifier, name);
+            return string.Concat(moduleQualifier, name);
         }
     }
 }

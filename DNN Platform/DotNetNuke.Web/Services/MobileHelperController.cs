@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Services
     [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
-        private readonly string _dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
+        private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
         /// <summary>
         /// Gets the various defined monikers for the various tab modules in the system.
@@ -149,7 +149,7 @@ namespace DotNetNuke.Web.Services
             var siteDetails = new SiteDetail
             {
                 SiteName = this.PortalSettings.PortalName,
-                DnnVersion = this._dnnVersion,
+                DnnVersion = this.dnnVersion,
                 IsHost = this.UserInfo.IsSuperUser,
                 IsAdmin = this.UserInfo.IsInRole("Administrators"),
             };

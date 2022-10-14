@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Icons
         public const string IconStyleName = "IconStyle";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
 
-        private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
+        private static readonly SharedDictionary<string, bool> IconsStatusOnDisk = new SharedDictionary<string, bool>();
 
         /// <summary>
         /// Gets the Icon URL.
@@ -115,19 +115,19 @@ namespace DotNetNuke.Entities.Icons
 
         private static void CheckIconOnDisk(string path)
         {
-            using (_iconsStatusOnDisk.GetReadLock())
+            using (IconsStatusOnDisk.GetReadLock())
             {
-                if (_iconsStatusOnDisk.ContainsKey(path))
+                if (IconsStatusOnDisk.ContainsKey(path))
                 {
                     return;
                 }
             }
 
-            using (_iconsStatusOnDisk.GetWriteLock())
+            using (IconsStatusOnDisk.GetWriteLock())
             {
-                if (!_iconsStatusOnDisk.ContainsKey(path))
+                if (!IconsStatusOnDisk.ContainsKey(path))
                 {
-                    _iconsStatusOnDisk.Add(path, true);
+                    IconsStatusOnDisk.Add(path, true);
                     string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {

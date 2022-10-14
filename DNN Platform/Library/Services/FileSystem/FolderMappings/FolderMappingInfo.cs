@@ -18,9 +18,9 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FolderMappingInfo : IHydratable
     {
-        private Hashtable _folderMappingSettings;
+        private Hashtable folderMappingSettings;
 
-        private string _imageUrl;
+        private string imageUrl;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderMappingInfo"/> class.
@@ -49,19 +49,19 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (this._folderMappingSettings == null)
+                if (this.folderMappingSettings == null)
                 {
                     if (this.FolderMappingID == Null.NullInteger)
                     {
-                        this._folderMappingSettings = new Hashtable();
+                        this.folderMappingSettings = new Hashtable();
                     }
                     else
                     {
-                        this._folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(this.FolderMappingID);
+                        this.folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(this.FolderMappingID);
                     }
                 }
 
-                return this._folderMappingSettings;
+                return this.folderMappingSettings;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (string.IsNullOrEmpty(this._imageUrl))
+                if (string.IsNullOrEmpty(this.imageUrl))
                 {
-                    this._imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
+                    this.imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
                 }
 
-                return this._imageUrl;
+                return this.imageUrl;
             }
         }
 

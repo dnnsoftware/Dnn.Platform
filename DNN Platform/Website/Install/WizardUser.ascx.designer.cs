@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Install {
     
     
     public partial class WizardUser {
-        
         /// <summary>
         /// lblFirstName control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblFirstName;
-        
         /// <summary>
         /// txtFirstName control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFirstName;
-        
         /// <summary>
         /// lblLastName control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblLastName;
-        
         /// <summary>
         /// txtLastName control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLastName;
-        
         /// <summary>
         /// lblUserName control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblUserName;
-        
         /// <summary>
         /// txtUserName control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUserName;
-        
         /// <summary>
         /// lblPassword control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPassword;
-        
         /// <summary>
         /// txtPassword control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
-        
         /// <summary>
         /// lblConfirm control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblConfirm;
-        
         /// <summary>
         /// txtConfirm control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtConfirm;
-        
         /// <summary>
         /// lblEmail control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Services.Install {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblEmail;
-        
         /// <summary>
         /// txtEmail control.
         /// </summary>

@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.UrlManagement {
     
     
     public partial class ProviderSettings {
-        
         /// <summary>
         /// providerSettingsPlaceHolder control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.UrlManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder providerSettingsPlaceHolder;
-        
         /// <summary>
         /// cmdUpdate control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.UrlManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        
         /// <summary>
         /// cmdCancel control.
         /// </summary>

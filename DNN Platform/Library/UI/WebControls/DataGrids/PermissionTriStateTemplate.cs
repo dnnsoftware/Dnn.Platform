@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.WebControls.Internal
 
     internal class PermissionTriStateTemplate : ITemplate
     {
-        private readonly PermissionInfo _permission;
+        private readonly PermissionInfo permission;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionTriStateTemplate"/> class.
@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.WebControls.Internal
         /// <param name="permission"></param>
         public PermissionTriStateTemplate(PermissionInfo permission)
         {
-            this._permission = permission;
+            this.permission = permission;
         }
 
         public bool IsFullControl { get; set; }
@@ -43,12 +43,12 @@ namespace DotNetNuke.UI.WebControls.Internal
             var triState = (PermissionTriState)sender;
             var dataRowView = (DataRowView)((DataGridItem)triState.NamingContainer).DataItem;
 
-            triState.Value = dataRowView[this._permission.PermissionName].ToString();
-            triState.Locked = !bool.Parse(dataRowView[this._permission.PermissionName + "_Enabled"].ToString());
+            triState.Value = dataRowView[this.permission.PermissionName].ToString();
+            triState.Locked = !bool.Parse(dataRowView[this.permission.PermissionName + "_Enabled"].ToString());
             triState.SupportsDenyMode = this.SupportDenyMode;
             triState.IsFullControl = this.IsFullControl;
             triState.IsView = this.IsView;
-            triState.PermissionKey = this._permission.PermissionKey;
+            triState.PermissionKey = this.permission.PermissionKey;
         }
     }
 }

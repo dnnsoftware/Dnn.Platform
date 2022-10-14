@@ -53,6 +53,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [TestCase("*search*%_text*", "%search_text%")]
         [TestCase("*search%_text*", "%search_text%")]
         [TestCase("search text", "search text%")]
+
         public void FilteredSearchTest(string searchText, string expectedFilteredText)
         {
             int totalRecords;

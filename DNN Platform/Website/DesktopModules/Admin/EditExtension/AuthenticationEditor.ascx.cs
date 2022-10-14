@@ -22,29 +22,33 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     /// -----------------------------------------------------------------------------
     public partial class AuthenticationEditor : PackageEditorBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private AuthenticationInfo _AuthSystem;
-        private AuthenticationSettingsBase _SettingsControl;
+        private AuthenticationInfo authSystem;
+        private AuthenticationSettingsBase settingsControl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationEditor"/> class.
+        /// </summary>
         public AuthenticationEditor()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected AuthenticationInfo AuthSystem
         {
             get
             {
-                if (this._AuthSystem == null)
+                if (this.AuthSystem == null)
                 {
-                    this._AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
+                    this.authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
                 }
 
-                return this._AuthSystem;
+                return this.authSystem;
             }
         }
 
+        /// <inheritdoc/>
         protected override string EditorID
         {
             get
@@ -57,15 +61,16 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (this._SettingsControl == null && !string.IsNullOrEmpty(this.AuthSystem.SettingsControlSrc))
+                if (this.settingsControl == null && !string.IsNullOrEmpty(this.AuthSystem.SettingsControlSrc))
                 {
-                    this._SettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
+                    this.settingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
                 }
 
-                return this._SettingsControl;
+                return this.settingsControl;
             }
         }
 
+        /// <inheritdoc/>
         public override void Initialize()
         {
             this.pnlSettings.Visible = !this.IsSuperTab;
@@ -88,6 +93,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.BindAuthentication();
         }
 
+        /// <inheritdoc/>
         public override void UpdatePackage()
         {
             if (this.authenticationForm.IsValid)
@@ -100,6 +106,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -118,7 +125,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             var displayMode = this.DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
             {
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this.navigationManager.NavigateURL(), true);
             }
         }
 

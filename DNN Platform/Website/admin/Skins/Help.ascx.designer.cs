@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Help {
-        
         /// <summary>
         /// hypHelp control.
         /// </summary>

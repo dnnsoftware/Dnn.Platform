@@ -23,18 +23,26 @@ namespace Dnn.PersonaBar.Library.Controllers
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
-        private IContentVerifier _contentVerifier;
+        private IContentVerifier contentVerifier;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulesController"/> class.
+        /// </summary>
         public ModulesController()
             : this(new ContentVerifier())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModulesController"/> class.
+        /// </summary>
+        /// <param name="contentVerifier"></param>
         public ModulesController(IContentVerifier contentVerifier)
         {
-            this._contentVerifier = contentVerifier;
+            this.contentVerifier = contentVerifier;
         }
 
+        /// <inheritdoc/>
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -112,6 +120,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return moduleList;
         }
 
+        /// <inheritdoc/>
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
             var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
@@ -132,7 +141,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var currentPortalSetting = PortalController.Instance.GetCurrentPortalSettings();
 
-            if (this._contentVerifier.IsContentExistsForRequestedPortal(targetPage.PortalID, portalSettings))
+            if (this.contentVerifier.IsContentExistsForRequestedPortal(targetPage.PortalID, portalSettings))
             {
                 try
                 {
@@ -162,6 +171,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
+        /// <inheritdoc/>
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
@@ -181,6 +191,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
+        /// <inheritdoc/>
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -192,7 +203,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 {
                     var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
 
-                    if (this._contentVerifier.IsContentExistsForRequestedPortal(module.PortalID, portalSettings, true))
+                    if (this.contentVerifier.IsContentExistsForRequestedPortal(module.PortalID, portalSettings, true))
                     {
                         return module;
                     }
@@ -216,6 +227,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return null;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
             int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
@@ -253,6 +265,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
+        /// <inheritdoc/>
         protected override Func<IModulesController> GetFactory()
         {
             return () => new ModulesController();

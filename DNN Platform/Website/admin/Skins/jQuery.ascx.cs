@@ -16,6 +16,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool jQueryUI { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.jQuery);

@@ -29,16 +29,16 @@ namespace DotNetNuke.Security.Permissions
         public const CacheItemPriority WorkflowStatePermissionCachePriority = CacheItemPriority.Normal;
 
         public const int WorkflowStatePermissionCacheTimeOut = 20;
-        private static readonly DataProvider provider = DataProvider.Instance();
+        private static readonly DataProvider Provider = DataProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection.
         /// </summary>
-        /// <param name = "StateID">The ID of the State.</param>
+        /// <param name = "stateID">The ID of the State.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int StateID)
+        public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int stateID)
         {
             bool bFound = false;
 
@@ -46,18 +46,18 @@ namespace DotNetNuke.Security.Permissions
             Dictionary<int, WorkflowStatePermissionCollection> dicWorkflowStatePermissions = GetWorkflowStatePermissions();
 
             // Get the Collection from the Dictionary
-            WorkflowStatePermissionCollection WorkflowStatePermissions = null;
-            bFound = dicWorkflowStatePermissions.TryGetValue(StateID, out WorkflowStatePermissions);
+            WorkflowStatePermissionCollection workflowStatePermissions = null;
+            bFound = dicWorkflowStatePermissions.TryGetValue(stateID, out workflowStatePermissions);
 
             if (!bFound)
             {
                 // try the database
-                WorkflowStatePermissions = new WorkflowStatePermissionCollection(
-                    CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
-                    StateID);
+                workflowStatePermissions = new WorkflowStatePermissionCollection(
+                    CBO.FillCollection(Provider.GetWorkflowStatePermissionsByStateID(stateID), typeof(WorkflowStatePermissionInfo)),
+                    stateID);
             }
 
-            return WorkflowStatePermissions;
+            return workflowStatePermissions;
         }
 
         /// -----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         private static object GetWorkflowStatePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            return FillWorkflowStatePermissionDictionary(provider.GetWorkflowStatePermissions());
+            return FillWorkflowStatePermissionDictionary(Provider.GetWorkflowStatePermissions());
         }
 
         /// -----------------------------------------------------------------------------
