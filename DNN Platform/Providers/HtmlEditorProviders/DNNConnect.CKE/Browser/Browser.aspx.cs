@@ -2358,6 +2358,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             sExtension = sExtension.TrimStart('.');
 
             bool bAllowUpl = false;
+            bool bIsImage = false;
 
             switch (command)
             {
@@ -2373,6 +2374,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     if (AllowedImageExtensions.Contains(sExtension))
                     {
                         bAllowUpl = true;
+                        bIsImage = true;
                     }
 
                     break;
@@ -2426,74 +2428,78 @@ namespace DNNConnect.CKEditorProvider.Browser
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
                 }
 
-                int maxWidth = this.currentSettings.ResizeWidthUpload;
-                int maxHeight = this.currentSettings.ResizeHeightUpload;
-                if (maxWidth <= 0 && maxHeight <= 0)
+                if (bIsImage)
                 {
-                    FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
-                }
-                else
-                {
-                    // check if the size of the image is within boundaries
-                    using (var uplImage = Image.FromStream(file.InputStream))
+                    int maxWidth = this.currentSettings.ResizeWidthUpload;
+                    int maxHeight = this.currentSettings.ResizeHeightUpload;
+                    if (maxWidth <= 0 && maxHeight <= 0)
                     {
-                        if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
+                        FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                    }
+                    else
+                    {
+                        // check if the size of the image is within boundaries
+                        using (var uplImage = Image.FromStream(file.InputStream))
                         {
-                            // it's too big: we need to resize
-                            int newWidth, newHeight;
-
-                            // which determines the max: height or width?
-                            double ratioWidth = (double)maxWidth / (double)uplImage.Width;
-                            double ratioHeight = (double)maxHeight / (double)uplImage.Height;
-                            if (ratioWidth < ratioHeight)
+                            if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
                             {
-                                // max width needs to be used
-                                newWidth = maxWidth;
-                                newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
-                            }
-                            else
-                            {
-                                // max height needs to be used
-                                newHeight = maxHeight;
-                                newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
-                            }
+                                // it's too big: we need to resize
+                                int newWidth, newHeight;
 
-                            // Add Compression to Jpeg Images
-                            if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
-                            {
-                                ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
-
-                                Encoder myEncoder = Encoder.Quality;
-                                EncoderParameters encodeParams = new EncoderParameters(1);
-                                EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
-                                encodeParams.Param[0] = encodeParam;
-
-                                using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                                // which determines the max: height or width?
+                                double ratioWidth = (double)maxWidth / (double)uplImage.Width;
+                                double ratioHeight = (double)maxHeight / (double)uplImage.Height;
+                                if (ratioWidth < ratioHeight)
                                 {
-                                    using (Graphics g = Graphics.FromImage(dst))
-                                    {
-                                        g.SmoothingMode = SmoothingMode.AntiAlias;
-                                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                        g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
-                                    }
+                                    // max width needs to be used
+                                    newWidth = maxWidth;
+                                    newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
+                                }
+                                else
+                                {
+                                    // max height needs to be used
+                                    newHeight = maxHeight;
+                                    newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
+                                }
 
-                                    using (var stream = new MemoryStream())
+                                // Add Compression to Jpeg Images
+                                if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
+                                {
+                                    ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
+
+                                    Encoder myEncoder = Encoder.Quality;
+                                    EncoderParameters encodeParams = new EncoderParameters(1);
+                                    EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
+                                    encodeParams.Param[0] = encodeParam;
+
+                                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
                                     {
-                                        dst.Save(stream, jpgEncoder, encodeParams);
-                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        using (Graphics g = Graphics.FromImage(dst))
+                                        {
+                                            g.SmoothingMode = SmoothingMode.AntiAlias;
+                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                            g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
+                                        }
+
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            dst.Save(stream, jpgEncoder, encodeParams);
+                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                // Finally Create a new Resized Image
-                                using (Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
+                                else
                                 {
-                                    var imageFormat = uplImage.RawFormat;
-                                    using (var stream = new MemoryStream())
+                                    // Finally Create a new Resized Image
+                                    using (Image newImage =
+                                           uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
                                     {
-                                        newImage.Save(stream, imageFormat);
-                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        var imageFormat = uplImage.RawFormat;
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            newImage.Save(stream, imageFormat);
+                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        }
                                     }
                                 }
                             }
