@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     public partial class ViewProfileSettings : ModuleSettingsBase
     {
+        /// <inheritdoc/>
         public override void LoadSettings()
         {
             try
@@ -40,6 +41,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         public override void UpdateSettings()
         {
             try
@@ -54,6 +56,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

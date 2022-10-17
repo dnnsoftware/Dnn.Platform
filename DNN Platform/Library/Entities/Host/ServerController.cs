@@ -20,10 +20,10 @@ namespace DotNetNuke.Entities.Host
     {
         public const string DefaultUrlAdapter = "DotNetNuke.Entities.Host.ServerWebRequestAdapter, DotNetNuke";
 
-        private const string cacheKey = "WebServers";
-        private const int cacheTimeout = 20;
-        private const CacheItemPriority cachePriority = CacheItemPriority.High;
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
+        private const string CacheKey = "WebServers";
+        private const int CacheTimeout = 20;
+        private const CacheItemPriority CachePriority = CacheItemPriority.High;
+        private static readonly DataProvider DataProvider = DataProvider.Instance();
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
 
         public static bool UseAppName
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Host
 
         public static void ClearCachedServers()
         {
-            DataCache.RemoveCache(cacheKey);
+            DataCache.RemoveCache(CacheKey);
         }
 
         public static void DeleteServer(int serverID)
@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Host
 
         public static List<ServerInfo> GetServers()
         {
-            var servers = CBO.GetCachedObject<List<ServerInfo>>(new CacheItemArgs(cacheKey, cacheTimeout, cachePriority), GetServersCallBack);
+            var servers = CBO.GetCachedObject<List<ServerInfo>>(new CacheItemArgs(CacheKey, CacheTimeout, CachePriority), GetServersCallBack);
             return servers;
         }
 
@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Host
 
         private static object GetServersCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillCollection<ServerInfo>(dataProvider.GetServers());
+            return CBO.FillCollection<ServerInfo>(DataProvider.GetServers());
         }
 
         private static string GetServerUrl()

@@ -14,15 +14,15 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public class InvalidDependency : DependencyBase
     {
-        private readonly string _ErrorMessage;
+        private readonly string errorMessage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidDependency" /> class.
         /// </summary>
-        /// <param name="ErrorMessage">The error message to display.</param>
-        public InvalidDependency(string ErrorMessage)
+        /// <param name="errorMessage">The error message to display.</param>
+        public InvalidDependency(string errorMessage)
         {
-            this._ErrorMessage = ErrorMessage;
+            this.errorMessage = errorMessage;
         }
 
         /// <inheritdoc/>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return this._ErrorMessage;
+                return this.errorMessage;
             }
         }
 

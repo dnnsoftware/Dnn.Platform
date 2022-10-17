@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Urls
 
     internal static class TabIndexController
     {
-        private static readonly object tabPathDictBuildLock = new object();
+        private static readonly object TabPathDictBuildLock = new object();
 
         public static void InvalidateDictionary(string reason, PageIndexData rebuildData, int portalId)
         {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Urls
             if (dict == null || portalDepths == null || portalTabPathDictionary == null || !PortalExistsInIndex(portalDepths, portalId) || forceRebuild)
             {
                 // place threadlock to prevent two threads getting a null object. Use the same lock object that is used to
-                lock (tabPathDictBuildLock)
+                lock (TabPathDictBuildLock)
                 {
                     // check for the tab dictionary in the DataCache again as it could have been cached by another thread
                     // while waiting for the lock to become available.
@@ -1711,7 +1711,7 @@ namespace DotNetNuke.Entities.Urls
         private static SharedDictionary<string, string> FetchTabPathDictionary(int portalId)
         {
             SharedDictionary<string, string> tabPathDict;
-            lock (tabPathDictBuildLock)
+            lock (TabPathDictBuildLock)
             {
                 tabPathDict = CacheController.GetTabPathsFromCache(portalId);
             }

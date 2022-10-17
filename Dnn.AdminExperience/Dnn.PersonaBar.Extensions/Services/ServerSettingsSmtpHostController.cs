@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
 
         [HttpGet]
+
         public HttpResponseMessage GetSmtpSettings()
         {
             try
@@ -76,6 +77,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateSmtpSettings(UpdateSmtpSettingsRequest request)
         {
             try
@@ -99,7 +101,8 @@ namespace Dnn.PersonaBar.Servers.Services
                         Config.GetDecryptionkey());
                     HostController.Instance.Update("HostEmail", request.SmtpHostEmail);
                     HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
-                    HostController.Instance.Update("MessageSchedulerBatchSize",
+                    HostController.Instance.Update(
+                        "MessageSchedulerBatchSize",
                         request.MessageSchedulerBatchSize.ToString(), false);
                 }
                 else
@@ -137,6 +140,7 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage SendTestEmail(SendTestEmailRequest request)
         {
             try
@@ -144,7 +148,8 @@ namespace Dnn.PersonaBar.Servers.Services
                 var mailFrom = request.SmtpServerMode == "h" ? Host.HostEmail : this.PortalSettings.Email;
                 var mailTo = this.UserInfo.Email;
 
-                var errMessage = Mail.SendMail(mailFrom,
+                var errMessage = Mail.SendMail(
+                    mailFrom,
                     mailTo,
                     string.Empty,
                     string.Empty,
@@ -224,6 +229,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     decryptedText = string.Empty;
                 }
             }
+
             return decryptedText;
         }
     }

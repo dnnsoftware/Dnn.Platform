@@ -16,10 +16,11 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     public class UrlAction
     {
-        private List<string> _licensedProviders;
-        private PortalAliasInfo _portalAlias;
+        private List<string> licensedProviders;
+        private PortalAliasInfo portalAlias;
 
         // 829 add in constructor that works around physical path length restriction
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UrlAction"/> class.
         /// </summary>
@@ -130,7 +131,10 @@ namespace DotNetNuke.Entities.Urls
         // the alias for the current request
         public PortalAliasInfo PortalAlias
         {
-            get { return this._portalAlias; }
+            get
+            {
+                return this.portalAlias;
+            }
 
             set
             {
@@ -140,7 +144,7 @@ namespace DotNetNuke.Entities.Urls
                     this.HttpAlias = value.HTTPAlias;
                 }
 
-                this._portalAlias = value;
+                this.portalAlias = value;
             }
         }
 
@@ -187,41 +191,41 @@ namespace DotNetNuke.Entities.Urls
 
         public void AddLicensedProviders(List<string> licensedProviders)
         {
-            if (this._licensedProviders == null)
+            if (this.licensedProviders == null)
             {
-                this._licensedProviders = new List<string>();
+                this.licensedProviders = new List<string>();
             }
 
             foreach (string lp in licensedProviders)
             {
-                if (this._licensedProviders.Contains(lp.ToLowerInvariant()) == false)
+                if (this.licensedProviders.Contains(lp.ToLowerInvariant()) == false)
                 {
-                    this._licensedProviders.Add(lp.ToLowerInvariant());
+                    this.licensedProviders.Add(lp.ToLowerInvariant());
                 }
             }
         }
 
         public void AddLicensedProvider(string providerName)
         {
-            if (this._licensedProviders == null)
+            if (this.licensedProviders == null)
             {
-                this._licensedProviders = new List<string>();
+                this.licensedProviders = new List<string>();
             }
 
-            if (this._licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
+            if (this.licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
             {
-                this._licensedProviders.Add(providerName.ToLowerInvariant());
+                this.licensedProviders.Add(providerName.ToLowerInvariant());
             }
         }
 
         public bool IsProviderLicensed(string providerName)
         {
-            if (this._licensedProviders == null)
+            if (this.licensedProviders == null)
             {
                 return false;
             }
 
-            return this._licensedProviders.Contains(providerName.ToLowerInvariant());
+            return this.licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
         /// <summary>

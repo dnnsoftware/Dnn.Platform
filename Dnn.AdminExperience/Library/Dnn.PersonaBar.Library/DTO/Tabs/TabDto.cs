@@ -7,6 +7,9 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
 
     public class TabDto
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabDto"/> class.
+        /// </summary>
         public TabDto()
         {
             this.CheckedState = NodeCheckedState.UnChecked;

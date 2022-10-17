@@ -19,8 +19,11 @@ namespace DotNetNuke.Web.UI.WebControls
     /// </remarks>
     public class DnnUnsortedList : WebControl, INamingContainer
     {
-        private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> _listItems = null;
+        private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> listItems = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnUnsortedList"/> class.
+        /// </summary>
         public DnnUnsortedList()
             : base(HtmlTextWriterTag.Ul)
         {
@@ -32,7 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._listItems ?? (this._listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
+                return this.listItems ?? (this.listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
             }
         }
 

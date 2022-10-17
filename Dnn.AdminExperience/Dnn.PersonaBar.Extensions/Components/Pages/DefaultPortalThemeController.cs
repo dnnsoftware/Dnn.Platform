@@ -12,20 +12,31 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class DefaultPortalThemeController : ServiceLocator<IDefaultPortalThemeController, DefaultPortalThemeController>, IDefaultPortalThemeController
     {
+        /// <inheritdoc/>
         public string GetDefaultPortalContainer()
         {
             var portalSettings = PortalSettings.Current;
-            if (portalSettings == null) return null;
+            if (portalSettings == null)
+            {
+                return null;
+            }
+
             return PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId, Host.DefaultPortalContainer, portalSettings.CultureCode);
         }
 
+        /// <inheritdoc/>
         public string GetDefaultPortalLayout()
         {
             var portalSettings = PortalSettings.Current;
-            if (portalSettings == null) return null;
+            if (portalSettings == null)
+            {
+                return null;
+            }
+
             return PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId, Host.DefaultPortalSkin, portalSettings.CultureCode);
         }
 
+        /// <inheritdoc/>
         protected override Func<IDefaultPortalThemeController> GetFactory()
         {
             return () => new DefaultPortalThemeController();

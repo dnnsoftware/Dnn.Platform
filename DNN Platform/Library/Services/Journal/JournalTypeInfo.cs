@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Journal
 
         public string JournalType { get; set; }
 
-        public string icon { get; set; }
+        public string Icon { get; set; }
 
         public bool AppliesToProfile { get; set; }
 
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Journal
             this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
             this.PortalId = Null.SetNullInteger(dr["PortalId"]);
             this.JournalType = Null.SetNullString(dr["JournalType"]);
-            this.icon = Null.SetNullString(dr["icon"]);
+            this.Icon = Null.SetNullString(dr["icon"]);
             this.AppliesToProfile = Null.SetNullBoolean(dr["AppliesToProfile"]);
             this.AppliesToGroup = Null.SetNullBoolean(dr["AppliesToGroup"]);
             this.AppliesToStream = Null.SetNullBoolean(dr["AppliesToStream"]);

@@ -13,12 +13,12 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     public class DateUtils
     {
-        private static DateTime _lastUpdateUtc = DateTime.MinValue;
-        private static DateTime _lastUpdateLocal = DateTime.MinValue;
+        private static DateTime lastUpdateUtc = DateTime.MinValue;
+        private static DateTime lastUpdateLocal = DateTime.MinValue;
 
-        private static TimeSpan _driftUtc = TimeSpan.MinValue;
+        private static TimeSpan driftUtc = TimeSpan.MinValue;
 
-        private static TimeSpan _driftLocal = TimeSpan.MinValue;
+        private static TimeSpan driftLocal = TimeSpan.MinValue;
 
         /// <summary>
         /// Gets the database time.
@@ -51,19 +51,19 @@ namespace DotNetNuke.Common.Utilities
             try
             {
                 // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
-                if (DateTime.UtcNow >= _lastUpdateUtc + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= _driftUtc && _driftUtc <= TimeSpan.FromHours(26)) || _driftUtc == TimeSpan.MinValue)
+                if (DateTime.UtcNow >= lastUpdateUtc + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= driftUtc && driftUtc <= TimeSpan.FromHours(26)) || driftUtc == TimeSpan.MinValue)
                 {
-                    _lastUpdateUtc = DateTime.UtcNow;
-                    _driftUtc = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
+                    lastUpdateUtc = DateTime.UtcNow;
+                    driftUtc = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
                 }
             }
             catch (ArgumentOutOfRangeException)
             {
-                _lastUpdateUtc = DateTime.UtcNow;
-                _driftUtc = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
+                lastUpdateUtc = DateTime.UtcNow;
+                driftUtc = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
             }
 
-            return DateTime.UtcNow + _driftUtc;
+            return DateTime.UtcNow + driftUtc;
         }
 
         /// <summary>
@@ -75,19 +75,19 @@ namespace DotNetNuke.Common.Utilities
             try
             {
                 // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
-                if (DateTime.UtcNow >= _lastUpdateLocal + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= _driftLocal && _driftLocal <= TimeSpan.FromHours(26)) || _driftLocal == TimeSpan.MinValue)
+                if (DateTime.UtcNow >= lastUpdateLocal + TimeSpan.FromMinutes(15) || !(TimeSpan.FromHours(-26) <= driftLocal && driftLocal <= TimeSpan.FromHours(26)) || driftLocal == TimeSpan.MinValue)
                 {
-                    _lastUpdateLocal = DateTime.Now;
-                    _driftLocal = DateTime.Now - DataProvider.Instance().GetDatabaseTime();
+                    lastUpdateLocal = DateTime.Now;
+                    driftLocal = DateTime.Now - DataProvider.Instance().GetDatabaseTime();
                 }
             }
             catch (ArgumentOutOfRangeException)
             {
-                _lastUpdateLocal = DateTime.Now;
-                _driftLocal = DateTime.Now - DataProvider.Instance().GetDatabaseTime();
+                lastUpdateLocal = DateTime.Now;
+                driftLocal = DateTime.Now - DataProvider.Instance().GetDatabaseTime();
             }
 
-            return DateTime.Now + _driftLocal;
+            return DateTime.Now + driftLocal;
         }
 
         /// <summary>

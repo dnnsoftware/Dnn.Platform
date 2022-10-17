@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.Containers
     [Obsolete("This class has been deprecated in favour of the new ActionCommandButton and ActionButtonList.. Scheduled removal in v11.0.0.")]
     public class ActionButton : ActionBase
     {
-        private ActionButtonList _ButtonList;
+        private ActionButtonList buttonList;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -38,13 +38,13 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.CommandName;
+                return this.buttonList.CommandName;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.CommandName = value;
+                this.buttonList.CommandName = value;
             }
         }
 
@@ -62,13 +62,13 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.CssClass;
+                return this.buttonList.CssClass;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.CssClass = value;
+                this.buttonList.CssClass = value;
             }
         }
 
@@ -86,13 +86,13 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.DisplayLink;
+                return this.buttonList.DisplayLink;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.DisplayLink = value;
+                this.buttonList.DisplayLink = value;
             }
         }
 
@@ -110,13 +110,13 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.DisplayIcon;
+                return this.buttonList.DisplayIcon;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.DisplayIcon = value;
+                this.buttonList.DisplayIcon = value;
             }
         }
 
@@ -134,13 +134,13 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.ImageURL;
+                return this.buttonList.ImageURL;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.ImageURL = value;
+                this.buttonList.ImageURL = value;
             }
         }
 
@@ -158,13 +158,13 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 this.EnsureChildControls();
-                return this._ButtonList.ButtonSeparator;
+                return this.buttonList.ButtonSeparator;
             }
 
             set
             {
                 this.EnsureChildControls();
-                this._ButtonList.ButtonSeparator = value;
+                this.buttonList.ButtonSeparator = value;
             }
         }
 
@@ -177,10 +177,10 @@ namespace DotNetNuke.UI.Containers
         {
             base.CreateChildControls();
 
-            this._ButtonList = new ActionButtonList();
-            this._ButtonList.Action += this.Action_Click;
+            this.buttonList = new ActionButtonList();
+            this.buttonList.Action += this.Action_Click;
 
-            this.Controls.Add(this._ButtonList);
+            this.Controls.Add(this.buttonList);
         }
 
         /// -----------------------------------------------------------------------------

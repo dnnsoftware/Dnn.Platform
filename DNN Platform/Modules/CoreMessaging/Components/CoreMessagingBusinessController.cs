@@ -26,13 +26,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
         /// <summary>
         /// Runs upgrade logic upon module upgrade.
         /// </summary>
-        /// <param name="Version">The version we are upgrading to.</param>
+        /// <param name="version">The version we are upgrading to.</param>
         /// <returns>"Success" or "Failed".</returns>
-        public string UpgradeModule(string Version)
+        public string UpgradeModule(string version)
         {
             try
             {
-                switch (Version)
+                switch (version)
                 {
                     case "06.02.00":
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");

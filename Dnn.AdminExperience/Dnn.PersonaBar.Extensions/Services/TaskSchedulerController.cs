@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
         private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
-        private Components.TaskSchedulerController _controller = new Components.TaskSchedulerController();
+        private Components.TaskSchedulerController controller = new Components.TaskSchedulerController();
 
         /// GET: api/TaskScheduler/GetServers
         /// <summary>
@@ -40,6 +40,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         /// <param></param>
         /// <returns>List of servers.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetServers()
         {
             try
@@ -81,11 +82,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         /// <param name="serverName"></param>
         /// <returns>List of schedule items.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetScheduleItems(string serverName = "")
         {
             try
             {
-                var scheduleviews = this._controller.GetScheduleItems(null, serverName);
+                var scheduleviews = this.controller.GetScheduleItems(null, serverName);
                 var arrSchedule = scheduleviews.ToArray();
                 var response = new
                 {
@@ -95,9 +97,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         v.ScheduleID,
                         v.FriendlyName,
                         v.Enabled,
-                        RetryTimeLapse = this._controller.GetTimeLapse(v.RetryTimeLapse, v.RetryTimeLapseMeasurement),
-                        NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : "",
-                        Frequency = this._controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement),
+                        RetryTimeLapse = this.controller.GetTimeLapse(v.RetryTimeLapse, v.RetryTimeLapseMeasurement),
+                        NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : string.Empty,
+                        Frequency = this.controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement),
                     }),
                     TotalResults = arrSchedule.Count(),
                 };
@@ -117,6 +119,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         /// <param></param>
         /// <returns>scheduler settings.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetSchedulerSettings()
         {
             try
@@ -155,6 +158,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateSchedulerSettings(UpdateSettingsRequest request)
         {
             try
@@ -216,9 +220,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                 history.Server,
                                 ElapsedTime = Math.Round(history.ElapsedTime, 3),
                                 history.Succeeded,
-                                StartDate = !Null.IsNull(history.StartDate) ? history.StartDate.ToString() : "",
-                                EndDate = !Null.IsNull(history.EndDate) ? history.EndDate.ToString() : "",
-                                NextStart = !Null.IsNull(history.NextStart) ? history.NextStart.ToString() : "",
+                                StartDate = !Null.IsNull(history.StartDate) ? history.StartDate.ToString() : string.Empty,
+                                EndDate = !Null.IsNull(history.EndDate) ? history.EndDate.ToString() : string.Empty,
+                                NextStart = !Null.IsNull(history.NextStart) ? history.NextStart.ToString() : string.Empty,
                             };
 
                 var response = new
@@ -249,7 +253,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 ScheduleItem scheduleItem = SchedulingProvider.Instance().GetSchedule(scheduleId);
 
-                var recommendedServers = this._controller.GetRecommendedServers(scheduleItem.ScheduleID);
+                var recommendedServers = this.controller.GetRecommendedServers(scheduleItem.ScheduleID);
 
                 var response = new
                 {
@@ -260,7 +264,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         scheduleItem.FriendlyName,
                         scheduleItem.TypeFullName,
                         scheduleItem.Enabled,
-                        ScheduleStartDate = !Null.IsNull(scheduleItem.ScheduleStartDate) ? scheduleItem.ScheduleStartDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern) : "",
+                        ScheduleStartDate = !Null.IsNull(scheduleItem.ScheduleStartDate) ? scheduleItem.ScheduleStartDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern) : string.Empty,
                         Locale = CultureInfo.CurrentCulture.TwoLetterISOLanguageName,
                         scheduleItem.TimeLapse,
                         scheduleItem.TimeLapseMeasurement,
@@ -306,7 +310,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
 
-                var scheduleItem = this._controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
+                var scheduleItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 SchedulingProvider.Instance().AddSchedule(scheduleItem);
@@ -344,7 +348,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
                 var existingItem = SchedulingProvider.Instance().GetSchedule(scheduleDto.ScheduleID);
 
-                var updatedItem = this._controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
+                var updatedItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
@@ -362,7 +366,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 else
                 {
                     SchedulingProvider.Instance().UpdateScheduleWithoutExecution(updatedItem);
-
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -381,6 +384,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         /// <param></param>
         /// <returns>schedule status.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetScheduleStatus()
         {
             try
@@ -394,7 +398,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                      {
                                          item.ScheduleID,
                                          item.TypeFullName,
-                                         StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : "",
+                                         StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : string.Empty,
                                          ElapsedTime = Math.Round(item.ElapsedTime, 3),
                                          item.ObjectDependencies,
                                          ScheduleSource = item.ScheduleSource.ToString(),
@@ -409,7 +413,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                                 {
                                     item.ScheduleID,
                                     item.FriendlyName,
-                                    NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : "",
+                                    NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : string.Empty,
                                     item.Overdue,
                                     RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
                                     RemainingSeconds = item.RemainingTime,
@@ -498,7 +502,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                this._controller.StopSchedule();
+                this.controller.StopSchedule();
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -516,11 +520,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage RunSchedule(ScheduleDto scheduleDto)
         {
             try
             {
-                var scheduleItem = this._controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
+                var scheduleItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 scheduleItem.ScheduleID = scheduleDto.ScheduleID;
@@ -530,6 +535,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 {
                     SchedulingProvider.Instance().ReStart("Change made to schedule.");
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -564,7 +570,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         private static DateTime CalculateTime(int lapse, string measurement)
         {
-            var nextTime = new DateTime();
+            var nextTime = default(DateTime);
             switch (measurement)
             {
                 case "s":
@@ -589,6 +595,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     nextTime = DateTime.Now.AddYears(lapse);
                     break;
             }
+
             return nextTime;
         }
 
@@ -604,20 +611,26 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 return $"{time.Days} {Localization.GetString(time.Days == 1 ? "DaySingular" : "DayPlural", localResourcesFile)}";
             }
+
             if (time.Hours > 0)
             {
                 return $"{time.Hours} {Localization.GetString(time.Hours == 1 ? "HourSingular" : "HourPlural", localResourcesFile)}";
             }
+
             if (time.Minutes > 0)
             {
                 return $"{time.Minutes} {Localization.GetString(time.Minutes == 1 ? "MinuteSingular" : "MinutePlural", localResourcesFile)}";
             }
+
             return Localization.GetString("LessThanMinute", localResourcesFile);
         }
 
         private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
         {
-            if (retryTimeLapse == 0) return true;
+            if (retryTimeLapse == 0)
+            {
+                return true;
+            }
 
             var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
             var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
@@ -625,6 +638,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 return false;
             }
+
             return true;
         }
     }

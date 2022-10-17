@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.Containers
 
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -34,6 +35,7 @@ namespace DotNetNuke.UI.Containers
             this.titleLabel.UpdateLabel += this.UpdateTitle;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.ISerializationManager' instead. Scheduled for removal in v11.0.0.")]
     public partial class SerializationController
     {
-        static ISerializationManager SerializationManager =>
+        private static ISerializationManager SerializationManager =>
             Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
 
         [Obsolete("Deprecated in 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.ISerializationManager' instead. Scheduled for removal in v11.0.0.")]

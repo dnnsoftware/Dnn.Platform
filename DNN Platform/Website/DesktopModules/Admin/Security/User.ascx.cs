@@ -293,12 +293,13 @@ namespace DotNetNuke.Modules.Admin.Users
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.cmdDelete.Click += this.cmdDelete_Click;
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdRemove.Click += this.cmdRemove_Click;
-            this.cmdRestore.Click += this.cmdRestore_Click;
+            this.cmdDelete.Click += this.CmdDelete_Click;
+            this.cmdUpdate.Click += this.CmdUpdate_Click;
+            this.cmdRemove.Click += this.CmdRemove_Click;
+            this.cmdRestore.Click += this.CmdRestore_Click;
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
@@ -415,7 +416,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private bool Validate()
         {
             // Check User Editor
-            bool _IsValid = this.userForm.IsValid;
+            bool isValid = this.userForm.IsValid;
 
             // Check Password is valid
             if (this.AddUser && this.ShowPassword)
@@ -469,18 +470,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 if (this.CreateStatus != UserCreateStatus.AddUser)
                 {
-                    _IsValid = false;
+                    isValid = false;
                 }
             }
 
-            return _IsValid;
+            return isValid;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdDelete_Click runs when the delete Button is clicked.
         /// </summary>
-        private void cmdDelete_Click(object sender, EventArgs e)
+        private void CmdDelete_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -500,7 +501,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdRestore_Click(object sender, EventArgs e)
+        private void CmdRestore_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -521,7 +522,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdRemove_Click(object sender, EventArgs e)
+        private void CmdRemove_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -545,7 +546,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdUpdate_Click runs when the Update Button is clicked.
         /// </summary>
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdate_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {

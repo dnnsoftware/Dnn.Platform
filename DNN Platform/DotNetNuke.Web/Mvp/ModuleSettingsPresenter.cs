@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.Mvp
     public class ModuleSettingsPresenterBase<TView> : ModulePresenterBase<TView>
         where TView : class, ISettingsView
     {
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPresenterBase{TView}"/> class.</summary>
+        /// <param name="view">The view.</param>
         public ModuleSettingsPresenterBase(TView view)
             : base(view)
         {

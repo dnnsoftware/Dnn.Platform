@@ -10,13 +10,13 @@ using System.Web;
 
 public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, string>>
 {
-    private OrderedDictionary _dictionary = null;
+    private OrderedDictionary dictionary = null;
 
     internal OrderedDictionary Dictionary
     {
         get
         {
-            return this._dictionary ?? (this._dictionary = new OrderedDictionary());
+            return this.dictionary ?? (this.dictionary = new OrderedDictionary());
         }
     }
 
@@ -111,7 +111,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
     /// <inheritdoc/>
     public override string ToString()
     {
-        return this._dictionary == null ? string.Empty : this._dictionary.ToString();
+        return this.dictionary == null ? string.Empty : this.dictionary.ToString();
     }
 
     private static string ToJsonString(IEnumerable<KeyValuePair<string, string>> methods)

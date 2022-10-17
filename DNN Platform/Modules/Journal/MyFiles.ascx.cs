@@ -14,6 +14,7 @@ namespace DotNetNuke.Modules.Journal
 
     public partial class MyFiles : PortalModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();

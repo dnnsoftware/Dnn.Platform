@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Helpers
 
     public class SetupCachingProviderHelper
     {
+
         public static void SetupCachingProvider(Mock<CachingProvider> mockCachingProvider)
         {
             mockCachingProvider.Setup(c => c.GetItem(It.IsAny<string>()))

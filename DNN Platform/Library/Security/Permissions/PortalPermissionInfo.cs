@@ -23,10 +23,10 @@ namespace DotNetNuke.Security.Permissions
     [XmlRoot("permission")]
     public class PortalPermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int _PortalID;
+        private int portalID;
 
         // local property declarations
-        private int _PortalPermissionID;
+        private int portalPermissionID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -36,8 +36,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public PortalPermissionInfo()
         {
-            this._PortalPermissionID = Null.NullInteger;
-            this._PortalID = Null.NullInteger;
+            this.portalPermissionID = Null.NullInteger;
+            this.portalID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -68,12 +68,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._PortalPermissionID;
+                return this.portalPermissionID;
             }
 
             set
             {
-                this._PortalPermissionID = value;
+                this.portalPermissionID = value;
             }
         }
 
@@ -88,12 +88,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._PortalID;
+                return this.portalID;
             }
 
             set
             {
-                this._PortalID = value;
+                this.portalID = value;
             }
         }
 

@@ -20,16 +20,16 @@ namespace DotNetNuke.Services.Sitemap
 
     public class SitemapBuilder
     {
-        private const int SITEMAP_MAXURLS = 50000;
+        private const int SitemapMaxUrls = 50000;
 
-        private const string SITEMAP_VERSION = "0.9";
-        private static readonly object _lock = new object();
+        private const string SitemapVersion = "0.9";
+        private static readonly object Lock = new object();
 
-        private static List<SitemapProvider> _providers;
+        private static List<SitemapProvider> providers;
 
-        private readonly PortalSettings PortalSettings;
-        private string _cacheFileName;
-        private string _cacheIndexFileNameFormat;
+        private readonly PortalSettings portalSettings;
+        private string cacheFileName;
+        private string cacheIndexFileNameFormat;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public SitemapBuilder(PortalSettings ps)
         {
-            this.PortalSettings = ps;
+            this.portalSettings = ps;
 
             LoadProviders();
         }
@@ -49,18 +49,18 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                if (string.IsNullOrEmpty(this._cacheFileName))
+                if (string.IsNullOrEmpty(this.cacheFileName))
                 {
-                    var currentCulture = this.PortalSettings.CultureCode?.ToLowerInvariant();
+                    var currentCulture = this.portalSettings.CultureCode?.ToLowerInvariant();
                     if (string.IsNullOrEmpty(currentCulture))
                     {
-                        currentCulture = Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+                        currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
                     }
 
-                    this._cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);
+                    this.cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);
                 }
 
-                return this._cacheFileName;
+                return this.cacheFileName;
             }
         }
 
@@ -68,13 +68,13 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                if (string.IsNullOrEmpty(this._cacheIndexFileNameFormat))
+                if (string.IsNullOrEmpty(this.cacheIndexFileNameFormat))
                 {
-                    var currentCulture = Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
-                    this._cacheIndexFileNameFormat = string.Format("sitemap_{{0}}" + ".{0}.xml", currentCulture);
+                    var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+                    this.cacheIndexFileNameFormat = string.Format("sitemap_{{0}}" + ".{0}.xml", currentCulture);
                 }
 
-                return this._cacheIndexFileNameFormat;
+                return this.cacheIndexFileNameFormat;
             }
         }
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                return _providers;
+                return providers;
             }
         }
 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void BuildSiteMap(TextWriter output)
         {
-            int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.PortalSettings.PortalId, "1"));
+            int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.portalSettings.PortalId, "1"));
             bool cached = cacheDays > 0;
 
             if (cached && this.CacheIsValid())
@@ -106,37 +106,37 @@ namespace DotNetNuke.Services.Sitemap
 
             // excluded urls by priority
             float excludePriority = 0;
-            excludePriority = float.Parse(PortalController.GetPortalSetting("SitemapExcludePriority", this.PortalSettings.PortalId, "0"), NumberFormatInfo.InvariantInfo);
+            excludePriority = float.Parse(PortalController.GetPortalSetting("SitemapExcludePriority", this.portalSettings.PortalId, "0"), NumberFormatInfo.InvariantInfo);
 
             // get all urls
             bool isProviderEnabled = false;
             bool isProviderPriorityOverrided = false;
             float providerPriorityValue = 0;
 
-            foreach (SitemapProvider _provider in this.Providers)
+            foreach (SitemapProvider provider in this.Providers)
             {
-                isProviderEnabled = bool.Parse(PortalController.GetPortalSetting(_provider.Name + "Enabled", this.PortalSettings.PortalId, "True"));
+                isProviderEnabled = bool.Parse(PortalController.GetPortalSetting(provider.Name + "Enabled", this.portalSettings.PortalId, "True"));
 
                 if (isProviderEnabled)
                 {
                     // check if we should override the priorities
-                    isProviderPriorityOverrided = bool.Parse(PortalController.GetPortalSetting(_provider.Name + "Override", this.PortalSettings.PortalId, "False"));
+                    isProviderPriorityOverrided = bool.Parse(PortalController.GetPortalSetting(provider.Name + "Override", this.portalSettings.PortalId, "False"));
 
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
-                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", this.PortalSettings.PortalId, "50")) / 100;
+                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(provider.Name + "Value", this.portalSettings.PortalId, "50")) / 100;
 
                     // Get all urls from provider
                     List<SitemapUrl> urls = new List<SitemapUrl>();
                     try
                     {
-                        urls = _provider.GetUrls(this.PortalSettings.PortalId, this.PortalSettings, SITEMAP_VERSION);
+                        urls = provider.GetUrls(this.portalSettings.PortalId, this.portalSettings, SitemapVersion);
                     }
                     catch (Exception ex)
                     {
                         Services.Exceptions.Exceptions.LogException(new Exception(Localization.GetExceptionMessage(
                             "SitemapProviderError",
                             "URL sitemap provider '{0}' failed with error: {1}",
-                            _provider.Name, ex.Message)));
+                            provider.Name, ex.Message)));
                     }
 
                     foreach (SitemapUrl url in urls)
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.Sitemap
                 }
             }
 
-            if (allUrls.Count > SITEMAP_MAXURLS)
+            if (allUrls.Count > SitemapMaxUrls)
             {
                 // create a sitemap index file
 
@@ -162,12 +162,12 @@ namespace DotNetNuke.Services.Sitemap
                 if (!cached)
                 {
                     cached = true;
-                    PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "SitemapCacheDays", "1");
+                    PortalController.UpdatePortalSetting(this.portalSettings.PortalId, "SitemapCacheDays", "1");
                 }
 
                 // create all the files
                 int index = 0;
-                int numFiles = (allUrls.Count / SITEMAP_MAXURLS) + 1;
+                int numFiles = (allUrls.Count / SitemapMaxUrls) + 1;
                 int elementsInFile = allUrls.Count / numFiles;
 
                 for (index = 1; index <= numFiles; index++)
@@ -212,24 +212,24 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void GetSitemapIndexFile(string index, TextWriter output)
         {
-            var currentCulture = Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+            var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
             this.WriteSitemapFileToOutput(string.Format("sitemap_{0}.{1}.xml", index, currentCulture), output);
         }
 
         private static void LoadProviders()
         {
             // Avoid claiming lock if providers are already loaded
-            if (_providers == null)
+            if (providers == null)
             {
-                lock (_lock)
+                lock (Lock)
                 {
-                    _providers = new List<SitemapProvider>();
+                    providers = new List<SitemapProvider>();
 
                     foreach (KeyValuePair<string, SitemapProvider> comp in ComponentFactory.GetComponents<SitemapProvider>())
                     {
                         comp.Value.Name = comp.Key;
                         comp.Value.Description = comp.Value.Description;
-                        _providers.Add(comp.Value);
+                        providers.Add(comp.Value);
                     }
 
                     // 'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
@@ -257,13 +257,13 @@ namespace DotNetNuke.Services.Sitemap
             {
                 if (cached)
                 {
-                    if (!Directory.Exists(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap"))
+                    if (!Directory.Exists(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap"))
                     {
-                        Directory.CreateDirectory(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
+                        Directory.CreateDirectory(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap");
                     }
 
                     var cachedFile = (index > 0) ? string.Format(this.CacheIndexFileNameFormat, index) : this.CacheFileName;
-                    sitemapOutput = new StreamWriter(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
+                    sitemapOutput = new StreamWriter(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
                 }
 
                 // Initialize writer
@@ -275,10 +275,10 @@ namespace DotNetNuke.Services.Sitemap
                 using (var writer = XmlWriter.Create(sitemapOutput, settings))
                 {
                     // build header
-                    writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
+                    writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion);
                     writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
                     writer.WriteAttributeString("xmlns", "xhtml", null, "http://www.w3.org/1999/xhtml");
-                    var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION;
+                    var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion;
                     writer.WriteAttributeString("xsi", "schemaLocation", null, string.Format("{0} {0}/sitemap.xsd", schemaLocation));
 
                     // write urls to output
@@ -314,7 +314,7 @@ namespace DotNetNuke.Services.Sitemap
         private void WriteSitemapIndex(TextWriter output, int totalFiles)
         {
             TextWriter sitemapOutput;
-            using (sitemapOutput = new StreamWriter(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + this.CacheFileName, false, Encoding.UTF8))
+            using (sitemapOutput = new StreamWriter(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + this.CacheFileName, false, Encoding.UTF8))
             {
                 // Initialize writer
                 var settings = new XmlWriterSettings();
@@ -325,7 +325,7 @@ namespace DotNetNuke.Services.Sitemap
                 using (var writer = XmlWriter.Create(sitemapOutput, settings))
                 {
                     // build header
-                    writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
+                    writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion);
 
                     // write urls to output
                     for (int index = 1; index <= totalFiles; index++)
@@ -333,9 +333,9 @@ namespace DotNetNuke.Services.Sitemap
                         string url = null;
 
                         url = "~/Sitemap.aspx?i=" + index;
-                        if (this.IsChildPortal(this.PortalSettings, HttpContext.Current))
+                        if (this.IsChildPortal(this.portalSettings, HttpContext.Current))
                         {
-                            url += "&portalid=" + this.PortalSettings.PortalId;
+                            url += "&portalid=" + this.portalSettings.PortalId;
                         }
 
                         writer.WriteStartElement("sitemap");
@@ -387,15 +387,15 @@ namespace DotNetNuke.Services.Sitemap
         /// <returns>True is the cached file exists and is still valid, false otherwise.</returns>
         private bool CacheIsValid()
         {
-            int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.PortalSettings.PortalId, "1"));
-            var isValid = File.Exists(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + this.CacheFileName);
+            int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.portalSettings.PortalId, "1"));
+            var isValid = File.Exists(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + this.CacheFileName);
 
             if (!isValid)
             {
                 return isValid;
             }
 
-            DateTime lastmod = File.GetLastWriteTime(this.PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + this.CacheFileName);
+            DateTime lastmod = File.GetLastWriteTime(this.portalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + this.CacheFileName);
             if (lastmod.AddDays(cacheDays) < DateTime.Now)
             {
                 isValid = false;
@@ -411,13 +411,13 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name = "output">The output stream.</param>
         private void WriteSitemapFileToOutput(string file, TextWriter output)
         {
-            if (!File.Exists(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + file))
+            if (!File.Exists(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + file))
             {
                 return;
             }
 
             // write the cached file to output
-            using (var reader = new StreamReader(this.PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8))
+            using (var reader = new StreamReader(this.portalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8))
             {
                 output.Write(reader.ReadToEnd());
 

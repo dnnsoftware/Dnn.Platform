@@ -55,6 +55,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public uint Order { get; set; }
 
+        /// <inheritdoc/>
         public void ConvertToLocal(UserInfo userInfo)
         {
             // Nothing to convert.

@@ -132,7 +132,7 @@ namespace DotNetNuke.Entities.Portals
         {
             // Add Alias
             var dataProvider = DataProvider.Instance();
-            int Id = dataProvider.AddPortalAlias(
+            int id = dataProvider.AddPortalAlias(
                 portalAlias.PortalId,
                 portalAlias.HttpAlias.ToLowerInvariant().Trim('/'),
                 portalAlias.CultureCode,
@@ -147,7 +147,7 @@ namespace DotNetNuke.Entities.Portals
             // clear portal alias cache
             ClearCache(true);
 
-            return Id;
+            return id;
         }
 
         /// <inheritdoc />

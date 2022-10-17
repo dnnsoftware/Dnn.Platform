@@ -9,14 +9,14 @@ namespace DotNetNuke.Services.Journal.Internal
 
     public class InternalJournalControllerImpl : IInternalJournalController
     {
-        private readonly IJournalDataService _dataService;
+        private readonly IJournalDataService dataService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InternalJournalControllerImpl"/> class.
         /// </summary>
         public InternalJournalControllerImpl()
         {
-            this._dataService = JournalDataService.Instance;
+            this.dataService = JournalDataService.Instance;
         }
 
         /// <inheritdoc/>
@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                            int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this.dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
                                                                                     profileId, rowIndex, maxRows));
         }
 
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Journal.Internal
                                                          int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this.dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
                                                                                   groupId, rowIndex, maxRows));
         }
 
@@ -42,20 +42,20 @@ namespace DotNetNuke.Services.Journal.Internal
                                                   int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
+                CBO.FillCollection<JournalItem>(this.dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
                                                                                     rowIndex, maxRows));
         }
 
         /// <inheritdoc/>
         public void DeleteFilters(int portalId, int moduleId)
         {
-            this._dataService.Journal_TypeFilters_Delete(portalId, moduleId);
+            this.dataService.Journal_TypeFilters_Delete(portalId, moduleId);
         }
 
         /// <inheritdoc/>
         public void SaveFilters(int portalId, int moduleId, int journalTypeId)
         {
-            this._dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);
+            this.dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);
         }
     }
 }

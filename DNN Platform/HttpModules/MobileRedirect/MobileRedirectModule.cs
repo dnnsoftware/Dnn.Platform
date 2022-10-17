@@ -16,16 +16,16 @@ namespace DotNetNuke.HttpModules
 
     public class MobileRedirectModule : IHttpModule
     {
-        private readonly IList<string> _specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
-        private readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
-        private IRedirectionController _redirectionController;
+        private readonly IList<string> specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
+        private readonly Regex mvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
+        private IRedirectionController redirectionController;
 
         public string ModuleName => "MobileRedirectModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
-            this._redirectionController = new RedirectionController();
+            this.redirectionController = new RedirectionController();
             application.BeginRequest += this.OnBeginRequest;
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.HttpModules
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
                     || ServicesModule.ServiceApi.IsMatch(rawUrl)
-                    || this.MvcServicePath.IsMatch(rawUrl)
+                    || this.mvcServicePath.IsMatch(rawUrl)
                     || this.IsSpecialPage(rawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(rawUrl, app, portalSettings)))
             {
@@ -53,12 +53,12 @@ namespace DotNetNuke.HttpModules
 
             // Check if redirection has been disabled for the session
             // This method inspects cookie and query string. It can also setup / clear cookies.
-            if (this._redirectionController != null &&
+            if (this.redirectionController != null &&
                 portalSettings?.ActiveTab != null &&
                 !string.IsNullOrEmpty(app.Request.UserAgent) &&
-                this._redirectionController.IsRedirectAllowedForTheSession(app))
+                this.redirectionController.IsRedirectAllowedForTheSession(app))
             {
-                var redirectUrl = this._redirectionController.GetRedirectUrl(app.Request.UserAgent);
+                var redirectUrl = this.redirectionController.GetRedirectUrl(app.Request.UserAgent);
                 if (!string.IsNullOrEmpty(redirectUrl))
                 {
                     // append the query string from original url
@@ -103,7 +103,7 @@ namespace DotNetNuke.HttpModules
                 tabPath = tabPath.Replace(alias.Substring(idx), string.Empty);
             }
 
-            return this._specialPages.Contains(tabPath);
+            return this.specialPages.Contains(tabPath);
         }
     }
 }

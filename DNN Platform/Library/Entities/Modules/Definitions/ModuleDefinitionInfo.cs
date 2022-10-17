@@ -25,8 +25,8 @@ namespace DotNetNuke.Entities.Modules.Definitions
     [Serializable]
     public class ModuleDefinitionInfo : IXmlSerializable, IHydratable
     {
-        private Dictionary<string, ModuleControlInfo> _ModuleControls;
-        private string _definitionName;
+        private Dictionary<string, ModuleControlInfo> moduleControls;
+        private string definitionName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleDefinitionInfo"/> class.
@@ -48,12 +48,12 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             get
             {
-                if (this._ModuleControls == null)
+                if (this.moduleControls == null)
                 {
                     this.LoadControls();
                 }
 
-                return this._ModuleControls;
+                return this.moduleControls;
             }
         }
 
@@ -96,15 +96,18 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             get
             {
-                if (string.IsNullOrEmpty(this._definitionName))
+                if (string.IsNullOrEmpty(this.definitionName))
                 {
                     return this.FriendlyName;
                 }
 
-                return this._definitionName;
+                return this.definitionName;
             }
 
-            set { this._definitionName = value; }
+            set
+            {
+                this.definitionName = value;
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -256,7 +259,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         public void LoadControls()
         {
-            this._ModuleControls = this.ModuleDefID > Null.NullInteger ? ModuleControlController.GetModuleControlsByModuleDefinitionID(this.ModuleDefID) : new Dictionary<string, ModuleControlInfo>();
+            this.moduleControls = this.ModuleDefID > Null.NullInteger ? ModuleControlController.GetModuleControlsByModuleDefinitionID(this.ModuleDefID) : new Dictionary<string, ModuleControlInfo>();
         }
 
         /// -----------------------------------------------------------------------------

@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
     [Serializable]
     public class OAuthConfigBase : AuthenticationConfigBase
     {
-        private const string _cacheKey = "Authentication";
+        private const string CacheKey = "Authentication";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OAuthConfigBase"/> class.
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private static string GetCacheKey(string service, int portalId)
         {
-            return _cacheKey + "." + service + "_" + portalId;
+            return CacheKey + "." + service + "_" + portalId;
         }
     }
 }

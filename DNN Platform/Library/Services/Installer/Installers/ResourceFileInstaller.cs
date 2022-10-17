@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         public const string DEFAULT_MANIFESTEXT = ".manifest";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
-        private string _Manifest;
+        private string manifest;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return this._Manifest;
+                return this.manifest;
             }
         }
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddInfo(Util.FILES_Expanding);
 
                 // Create the folder for destination
-                this._Manifest = insFile.Name + ".manifest";
+                this.manifest = insFile.Name + ".manifest";
                 if (!Directory.Exists(this.PhysicalBasePath))
                 {
                     Directory.CreateDirectory(this.PhysicalBasePath);
@@ -208,11 +208,11 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             InstallFile insFile = base.ReadManifestItem(nav, checkFileExists);
 
-            this._Manifest = Util.ReadElement(nav, "manifest");
+            this.manifest = Util.ReadElement(nav, "manifest");
 
-            if (string.IsNullOrEmpty(this._Manifest))
+            if (string.IsNullOrEmpty(this.manifest))
             {
-                this._Manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
+                this.manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
             }
 
             // Call base method
@@ -251,7 +251,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <inheritdoc/>
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
-            this._Manifest = unInstallFile.Name + ".manifest";
+            this.manifest = unInstallFile.Name + ".manifest";
             var doc = new XPathDocument(Path.Combine(this.PhysicalBasePath, this.Manifest));
 
             foreach (XPathNavigator fileNavigator in doc.CreateNavigator().Select("dotnetnuke/files/file"))

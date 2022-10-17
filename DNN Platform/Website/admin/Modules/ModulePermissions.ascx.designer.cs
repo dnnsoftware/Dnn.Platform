@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
     
     
     public partial class ModulePermissions {
-        
         /// <summary>
         /// permissionsRow control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl permissionsRow;
-        
         /// <summary>
         /// dgPermissions control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Security.Permissions.Controls.ModulePermissionsGrid dgPermissions;
-        
         /// <summary>
         /// cmdUpdate control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        
         /// <summary>
         /// cancelHyperLink control.
         /// </summary>

@@ -40,10 +40,10 @@ namespace DotNetNuke.Entities.Modules
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
-        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly Lazy<ServiceScopeContainer> _serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
-        private string _localResourceFile;
-        private ModuleInstanceContext _moduleContext;
+        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
+        private string localResourceFile;
+        private ModuleInstanceContext moduleContext;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -194,12 +194,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._moduleContext == null)
+                if (this.moduleContext == null)
                 {
-                    this._moduleContext = new ModuleInstanceContext(this);
+                    this.moduleContext = new ModuleInstanceContext(this);
                 }
 
-                return this._moduleContext;
+                return this.moduleContext;
             }
         }
 
@@ -338,13 +338,13 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -352,7 +352,7 @@ namespace DotNetNuke.Entities.Modules
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -363,7 +363,7 @@ namespace DotNetNuke.Entities.Modules
         /// <value>
         /// The Dependency Service.
         /// </value>
-        protected IServiceProvider DependencyProvider => this._serviceScopeContainer.Value.ServiceScope.ServiceProvider;
+        protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -374,37 +374,37 @@ namespace DotNetNuke.Entities.Modules
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string ControlKey)
+        public string EditUrl(string controlKey)
         {
-            return this.ModuleContext.EditUrl(ControlKey);
+            return this.ModuleContext.EditUrl(controlKey);
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string KeyName, string KeyValue)
+        public string EditUrl(string keyName, string keyValue)
         {
-            return this.ModuleContext.EditUrl(KeyName, KeyValue);
+            return this.ModuleContext.EditUrl(keyName, keyValue);
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string KeyName, string KeyValue, string ControlKey)
+        public string EditUrl(string keyName, string keyValue, string controlKey)
         {
-            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
+            return this.ModuleContext.EditUrl(keyName, keyValue, controlKey);
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string KeyName, string KeyValue, string ControlKey, params string[] AdditionalParameters)
+        public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
         {
-            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
+            return this.ModuleContext.EditUrl(keyName, keyValue, controlKey, additionalParameters);
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(int TabID, string ControlKey, bool PageRedirect, params string[] AdditionalParameters)
+        public string EditUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
         {
-            return this.ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);
+            return this.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, additionalParameters);
         }
 
         public int GetNextActionID()
@@ -416,9 +416,9 @@ namespace DotNetNuke.Entities.Modules
         public override void Dispose()
         {
             base.Dispose();
-            if (this._serviceScopeContainer.IsValueCreated)
+            if (this.serviceScopeContainer.IsValueCreated)
             {
-                this._serviceScopeContainer.Value.Dispose();
+                this.serviceScopeContainer.Value.Dispose();
             }
         }
 
@@ -449,30 +449,30 @@ namespace DotNetNuke.Entities.Modules
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+                this.tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             }
 
             base.OnInit(e);
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+                this.tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             }
         }
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+                this.tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             }
 
             base.OnLoad(e);
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+                this.tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             }
         }
 
@@ -486,10 +486,10 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         protected void AddActionHandler(ActionEventHandler e)
         {
-            UI.Skins.Skin ParentSkin = UI.Skins.Skin.GetParentSkin(this);
-            if (ParentSkin != null)
+            UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);
+            if (parentSkin != null)
             {
-                ParentSkin.RegisterModuleActionEvent(this.ModuleId, e);
+                parentSkin.RegisterModuleActionEvent(this.ModuleId, e);
             }
         }
 

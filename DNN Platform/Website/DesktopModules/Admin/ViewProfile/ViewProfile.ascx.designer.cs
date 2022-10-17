@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile {
     
     
     public partial class ViewProfile {
-        
         /// <summary>
         /// profileOutput control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileOutput;
-        
         /// <summary>
         /// noPropertiesLabel control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label noPropertiesLabel;
-        
         /// <summary>
         /// buttonPanel control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl buttonPanel;
-        
         /// <summary>
         /// editLink control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink editLink;
-        
         /// <summary>
         /// pnlScripts control.
         /// </summary>

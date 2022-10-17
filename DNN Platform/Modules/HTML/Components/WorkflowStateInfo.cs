@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Html
     public class WorkflowStateInfo
     {
         // local property declarations
-        private bool _IsActive = true;
+        private bool isActive = true;
 
         // public properties
         public int PortalID { get; set; }
@@ -46,12 +46,12 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return this._IsActive;
+                return this.isActive;
             }
 
             set
             {
-                this._IsActive = value;
+                this.isActive = value;
             }
         }
     }

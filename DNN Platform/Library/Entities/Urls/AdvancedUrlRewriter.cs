@@ -30,13 +30,13 @@ namespace DotNetNuke.Entities.Urls
 
     public class AdvancedUrlRewriter : UrlRewriterBase
     {
-        private const string _productName = "AdvancedUrlRewriter";
+        private const string ProductName = "AdvancedUrlRewriter";
         private static readonly Regex DefaultPageRegex = new Regex(@"(?<!(\?.+))/" + Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex AumDebugRegex = new Regex(@"(&|\?)_aumdebug=[A-Z]+(?:&|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-        private FriendlyUrlSettings _settings;
+        private FriendlyUrlSettings settings;
 
         public void ProcessTestRequestWithContext(
             HttpContext context,
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Urls
             FriendlyUrlSettings settings)
         {
             Guid parentTraceId = Guid.Empty;
-            this._settings = settings;
+            this.settings = settings;
             this.ProcessRequest(
                 context,
                 requestUri,
@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (ignoreForInstall == false)
                 {
-                    this._settings = new FriendlyUrlSettings(-1);
+                    this.settings = new FriendlyUrlSettings(-1);
 
                     this.SecurityCheck(app);
                 }
@@ -205,7 +205,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     ShowDebugData(app.Context, app.Request.Url.AbsoluteUri, null, ex);
                     var action = new UrlAction(app.Request) { Action = ActionType.Output404 };
-                    Handle404OrException(this._settings, app.Context, ex, action, false, debug);
+                    Handle404OrException(this.settings, app.Context, ex, action, false, debug);
                 }
                 else
                 {
@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Urls
                     app.Context.Request.Url,
                     Host.UseFriendlyUrls,
                     result,
-                    this._settings,
+                    this.settings,
                     true,
                     parentTraceId);
             }
@@ -408,7 +408,7 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 response.AppendHeader(
-                    "X-" + _productName + "-Debug",
+                    "X-" + ProductName + "-Debug",
                     string.Format(debugMsg, requestUri, finalUrl, rewritePath, action, productVer,
                                                     portalSettings, browser));
                 int msgNum = 1;
@@ -416,14 +416,14 @@ namespace DotNetNuke.Entities.Urls
                 {
                     foreach (string msg in result.DebugMessages)
                     {
-                        response.AppendHeader("X-" + _productName + "-Debug-" + msgNum.ToString("00"), msg);
+                        response.AppendHeader("X-" + ProductName + "-Debug-" + msgNum.ToString("00"), msg);
                         msgNum++;
                     }
                 }
 
                 if (ex != null)
                 {
-                    response.AppendHeader("X-" + _productName + "-Ex", ex.Message);
+                    response.AppendHeader("X-" + ProductName + "-Ex", ex.Message);
                 }
             }
         }
@@ -1235,7 +1235,6 @@ namespace DotNetNuke.Entities.Urls
         /// Checks to see whether the specified alias is a customTabAlias for the TabId in result.
         /// </summary>
         /// <param name="result"></param>
-        /// <param name="httpAlias"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
         private static bool CheckIfAliasIsCurrentTabCustomTabAlias(ref UrlAction result, FriendlyUrlSettings settings)
@@ -1263,6 +1262,7 @@ namespace DotNetNuke.Entities.Urls
                 result.Action = ActionType.Redirect301;
                 result.Reason = RedirectReason.Wrong_Portal_Alias;
             }
+
             return isCurrentTabCustomTabAlias;
         }
 

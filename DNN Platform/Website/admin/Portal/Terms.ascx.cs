@@ -11,6 +11,7 @@ namespace DotNetNuke.Common.Controls
 
     public partial class Terms : PortalModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

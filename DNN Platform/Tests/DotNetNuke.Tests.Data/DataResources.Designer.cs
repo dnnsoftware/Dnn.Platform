@@ -27,15 +27,11 @@ namespace DotNetNuke.Tests.Data {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class DataResources {
-        
         private static global::System.Resources.ResourceManager resourceMan;
-        
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal DataResources() {
         }
-        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -49,7 +45,6 @@ namespace DotNetNuke.Tests.Data {
                 return resourceMan;
             }
         }
-        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -63,7 +58,6 @@ namespace DotNetNuke.Tests.Data {
                 resourceCulture = value;
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Data Source={0};Integrated Security=True.
         /// </summary>
@@ -72,7 +66,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("AdminConnectionString", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Data Source={0};Integrated Security=True;Initial Catalog={1}.
         /// </summary>
@@ -81,7 +74,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("ConnectionString", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to SELECT {0} FROM {1} WHERE {2} = {3}.
         /// </summary>
@@ -90,7 +82,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("GetFieldValue", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to SELECT MAX({1}) FROM {0}.
         /// </summary>
@@ -99,7 +90,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("GetLastAddedRecordID", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to SELECT COUNT(*) FROM {0} WHERE {1} = {2}.
         /// </summary>
@@ -108,7 +98,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("GetRecordCountByField", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to SELECT * FROM {0} WHERE {1} = {2}.
         /// </summary>
@@ -117,7 +106,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("GetRecordsByField", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to SELECT * FROM {0}.
         /// </summary>
@@ -126,7 +114,6 @@ namespace DotNetNuke.Tests.Data {
                 return ResourceManager.GetString("GetTable", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to SELECT COUNT(*) FROM {0}.
         /// </summary>

@@ -16,6 +16,7 @@ namespace Dnn.PersonaBar.Servers.Components.Log
 
     public class LogController
     {
+
         public List<LogFile> GetLogFilesList()
         {
             var logPath = Globals.ApplicationMapPath + @"\portals\_default\logs";

@@ -20,6 +20,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ModulePresenterBase<TView> : Presenter<TView>
         where TView : class, IModuleViewBase
     {
+        /// <summary>Initializes a new instance of the <see cref="ModulePresenterBase{TView}"/> class.</summary>
+        /// <param name="view">The view.</param>
         protected ModulePresenterBase(TView view)
             : base(view)
         {

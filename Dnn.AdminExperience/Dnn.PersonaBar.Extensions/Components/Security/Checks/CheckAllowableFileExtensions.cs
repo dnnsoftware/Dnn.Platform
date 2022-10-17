@@ -10,10 +10,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckAllowableFileExtensions : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckAllowableFileExtensions";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -35,6 +38,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 throw;
             }
+
             return result;
         }
     }

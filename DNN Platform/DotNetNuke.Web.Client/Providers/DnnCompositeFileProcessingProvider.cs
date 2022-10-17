@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.Client.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override string MinifyFile(Stream fileStream, ClientDependencyType type)
         {
             Func<Stream, string> streamToString = stream =>
@@ -65,6 +66,7 @@ namespace DotNetNuke.Web.Client.Providers
             }
         }
 
+        /// <inheritdoc/>
         public override string MinifyFile(string fileContents, ClientDependencyType type)
         {
             switch (type)

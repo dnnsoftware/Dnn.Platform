@@ -25,23 +25,23 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "Search.ascx";
 
-        private readonly INavigationManager _navigationManager;
-        private bool _showSite = true;
-        private bool _showWeb = true;
-        private string _siteIconURL;
-        private string _siteText;
-        private string _siteToolTip;
-        private string _siteURL;
-        private string _webIconURL;
-        private string _webText;
-        private string _webToolTip;
-        private string _webURL;
+        private readonly INavigationManager navigationManager;
+        private bool showSite = true;
+        private bool showWeb = true;
+        private string siteIconURL;
+        private string siteText;
+        private string siteToolTip;
+        private string siteURL;
+        private string webIconURL;
+        private string webText;
+        private string webToolTip;
+        private string webURL;
 
-        private bool _enableWildSearch = true;
+        private bool enableWildSearch = true;
 
         public Search()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string SeeMoreText
@@ -92,12 +92,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._showSite;
+                return this.showSite;
             }
 
             set
             {
-                this._showSite = value;
+                this.showSite = value;
             }
         }
 
@@ -110,12 +110,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._showWeb;
+                return this.showWeb;
             }
 
             set
             {
-                this._showWeb = value;
+                this.showWeb = value;
             }
         }
 
@@ -130,17 +130,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._siteIconURL))
+                if (string.IsNullOrEmpty(this.siteIconURL))
                 {
                     return IconController.IconURL("DnnSearch");
                 }
 
-                return this._siteIconURL;
+                return this.siteIconURL;
             }
 
             set
             {
-                this._siteIconURL = value;
+                this.siteIconURL = value;
             }
         }
 
@@ -154,17 +154,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._siteText))
+                if (string.IsNullOrEmpty(this.siteText))
                 {
                     return Localization.GetString("Site", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                return this._siteText;
+                return this.siteText;
             }
 
             set
             {
-                this._siteText = value;
+                this.siteText = value;
             }
         }
 
@@ -178,17 +178,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._siteToolTip))
+                if (string.IsNullOrEmpty(this.siteToolTip))
                 {
                     return Localization.GetString("Site.ToolTip", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                return this._siteToolTip;
+                return this.siteToolTip;
             }
 
             set
             {
-                this._siteToolTip = value;
+                this.siteToolTip = value;
             }
         }
 
@@ -204,17 +204,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._siteURL))
+                if (string.IsNullOrEmpty(this.siteURL))
                 {
                     return Localization.GetString("URL", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                return this._siteURL;
+                return this.siteURL;
             }
 
             set
             {
-                this._siteURL = value;
+                this.siteURL = value;
             }
         }
 
@@ -252,17 +252,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._webIconURL))
+                if (string.IsNullOrEmpty(this.webIconURL))
                 {
                     return IconController.IconURL("GoogleSearch");
                 }
 
-                return this._webIconURL;
+                return this.webIconURL;
             }
 
             set
             {
-                this._webIconURL = value;
+                this.webIconURL = value;
             }
         }
 
@@ -276,17 +276,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._webText))
+                if (string.IsNullOrEmpty(this.webText))
                 {
                     return Localization.GetString("Web", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                return this._webText;
+                return this.webText;
             }
 
             set
             {
-                this._webText = value;
+                this.webText = value;
             }
         }
 
@@ -300,17 +300,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._webToolTip))
+                if (string.IsNullOrEmpty(this.webToolTip))
                 {
                     return Localization.GetString("Web.ToolTip", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                return this._webToolTip;
+                return this.webToolTip;
             }
 
             set
             {
-                this._webToolTip = value;
+                this.webToolTip = value;
             }
         }
 
@@ -327,17 +327,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this._webURL))
+                if (string.IsNullOrEmpty(this.webURL))
                 {
                     return Localization.GetString("URL", Localization.GetResourceFile(this, MyFileName));
                 }
 
-                return this._webURL;
+                return this.webURL;
             }
 
             set
             {
-                this._webURL = value;
+                this.webURL = value;
             }
         }
 
@@ -356,8 +356,8 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public bool EnableWildSearch
         {
-            get { return this._enableWildSearch; }
-            set { this._enableWildSearch = value; }
+            get { return this.enableWildSearch; }
+            set { this.enableWildSearch = value; }
         }
 
         protected int PortalId { get; set; }
@@ -405,11 +405,11 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             if (Host.UseFriendlyUrls)
                             {
-                                this.Response.Redirect(this._navigationManager.NavigateURL(searchTabId) + "?Search=" + this.Server.UrlEncode(searchText));
+                                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId) + "?Search=" + this.Server.UrlEncode(searchText));
                             }
                             else
                             {
-                                this.Response.Redirect(this._navigationManager.NavigateURL(searchTabId) + "&Search=" + this.Server.UrlEncode(searchText));
+                                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId) + "&Search=" + this.Server.UrlEncode(searchText));
                             }
                         }
 
@@ -431,11 +431,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (Host.UseFriendlyUrls)
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL(searchTabId));
+                    this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
                 }
                 else
                 {
-                    this.Response.Redirect(this._navigationManager.NavigateURL(searchTabId));
+                    this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
                 }
             }
         }
@@ -571,11 +571,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
                 if (arrModules.Count > 1)
                 {
-                    foreach (ModuleInfo SearchModule in arrModules)
+                    foreach (ModuleInfo searchModule in arrModules)
                     {
-                        if (SearchModule.CultureCode == this.PortalSettings.CultureCode)
+                        if (searchModule.CultureCode == this.PortalSettings.CultureCode)
                         {
-                            searchTabId = SearchModule.TabID;
+                            searchTabId = searchModule.TabID;
                         }
                     }
                 }

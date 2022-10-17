@@ -27,15 +27,11 @@ namespace Dnn.ExportImport.App_LocalResources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ExportImport {
-        
         private static global::System.Resources.ResourceManager resourceMan;
-        
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal ExportImport() {
         }
-        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -49,7 +45,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return resourceMan;
             }
         }
-        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -63,7 +58,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 resourceCulture = value;
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Invalid portal..
         /// </summary>
@@ -72,7 +66,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("InvalidPortal.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to No such job!.
         /// </summary>
@@ -81,7 +74,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobNotExist.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
@@ -90,7 +82,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobStatus_Cancelled.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Failed.
         /// </summary>
@@ -99,7 +90,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobStatus_DoneFailure.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Successful.
         /// </summary>
@@ -108,7 +98,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobStatus_DoneSuccess.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to In Progress.
         /// </summary>
@@ -117,7 +106,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobStatus_InProgress.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Submitted.
         /// </summary>
@@ -126,7 +114,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobStatus_Submitted.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Site Export.
         /// </summary>
@@ -135,7 +122,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobType_Export.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to Site Import.
         /// </summary>
@@ -144,7 +130,6 @@ namespace Dnn.ExportImport.App_LocalResources {
                 return ResourceManager.GetString("JobType_Import.Text", resourceCulture);
             }
         }
-        
         /// <summary>
         ///   Looks up a localized string similar to User is not a portal administrator.
         /// </summary>

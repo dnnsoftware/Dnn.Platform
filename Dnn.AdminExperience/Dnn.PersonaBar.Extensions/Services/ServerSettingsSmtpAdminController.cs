@@ -32,6 +32,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
 
         [HttpGet]
+
         public HttpResponseMessage GetSmtpSettings()
         {
             try
@@ -66,6 +67,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateSmtpSettings(UpdateSmtpSettingsRequest request)
         {
             try
@@ -107,6 +109,7 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage SendTestEmail(SendTestEmailRequest request)
         {
             try
@@ -115,7 +118,8 @@ namespace Dnn.PersonaBar.Servers.Services
                 var mailFrom = smtpHostMode ? Host.HostEmail : this.PortalSettings.Email;
                 var mailTo = this.UserInfo.Email;
 
-                var errMessage = Mail.SendMail(mailFrom,
+                var errMessage = Mail.SendMail(
+                    mailFrom,
                     mailTo,
                     string.Empty,
                     string.Empty,

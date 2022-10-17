@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Data
             var context = (PetaPocoDataContext)DataContext.Instance();
 
             // Assert
-            Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
+            Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Data
             var context = (PetaPocoDataContext)DataContext.Instance(name);
 
             // Assert
-            Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
+            Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }
 

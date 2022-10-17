@@ -18,17 +18,20 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class MyWork : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MyWork"/> class.
+        /// </summary>
         public MyWork()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string FormatURL(object dataItem)
         {
             var objHtmlTextUser = (HtmlTextUserInfo)dataItem;
-            return "<a href=\"" + this._navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
+            return "<a href=\"" + this.navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace DotNetNuke.Modules.Html
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
+            this.hlCancel.NavigateUrl = this.navigationManager.NavigateURL();
 
             try
             {

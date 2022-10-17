@@ -18,8 +18,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnFormEditor : WebControl, INamingContainer
     {
-        private object _dataSource;
-        private int _itemCount;
+        private object dataSource;
+        private int itemCount;
 
         public DnnFormEditor()
         {
@@ -54,14 +54,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._dataSource;
+                return this.dataSource;
             }
 
             set
             {
-                if (this._dataSource != value)
+                if (this.dataSource != value)
                 {
-                    this._dataSource = value;
+                    this.dataSource = value;
                     if (this.Page.IsPostBack)
                     {
                         this.DataBindItems(false);
@@ -146,7 +146,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             // Create the items only if there is view state
             // corresponding to the children.
-            if (this._itemCount > 0)
+            if (this.itemCount > 0)
             {
                 this.CreateControlHierarchy(false);
             }
@@ -170,7 +170,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (state != null)
             {
-                this._itemCount = (int)state;
+                this.itemCount = (int)state;
             }
         }
 
@@ -228,7 +228,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         protected override object SaveControlState()
         {
-            return this._itemCount > 0 ? (object)this._itemCount : null;
+            return this.itemCount > 0 ? (object)this.itemCount : null;
         }
 
         private List<DnnFormItemBase> GetAllItems()
@@ -352,7 +352,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
 
-            this._itemCount = this.GetAllItems().Count;
+            this.itemCount = this.GetAllItems().Count;
         }
     }
 }

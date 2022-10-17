@@ -30,8 +30,8 @@ namespace DotNetNuke.UI.WebControls
     public class DNNListEditControl : EditControl, IPostBackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNListEditControl));
-        private List<ListEntryInfo> _listEntries;
-        private string _listName = string.Empty;
+        private List<ListEntryInfo> listEntries;
+        private string listName = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DNNListEditControl"/> class.
@@ -96,20 +96,20 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._listEntries == null)
+                if (this.listEntries == null)
                 {
                     var listController = new ListController();
                     if (this.SortAlphabetically)
                     {
-                        this._listEntries = listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                        this.listEntries = listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
                     }
                     else
                     {
-                        this._listEntries = listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).ToList();
+                        this.listEntries = listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).ToList();
                     }
                 }
 
-                return this._listEntries;
+                return this.listEntries;
             }
         }
 
@@ -188,17 +188,17 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._listName == Null.NullString)
+                if (this.listName == Null.NullString)
                 {
-                    this._listName = this.DataField;
+                    this.listName = this.DataField;
                 }
 
-                return this._listName;
+                return this.listName;
             }
 
             set
             {
-                this._listName = value;
+                this.listName = value;
             }
         }
 

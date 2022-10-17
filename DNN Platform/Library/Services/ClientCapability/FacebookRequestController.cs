@@ -13,27 +13,27 @@ namespace DotNetNuke.Services.ClientCapability
 
     internal struct Page
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public bool liked { get; set; }
+        public bool Liked { get; set; }
 
-        public bool admin { get; set; }
+        public bool Admin { get; set; }
     }
 
     internal struct Age
     {
-        public long min { get; set; }
+        public long Min { get; set; }
 
-        public long max { get; set; }
+        public long Max { get; set; }
     }
 
     internal struct User
     {
-        public string locale { get; set; }
+        public string Locale { get; set; }
 
-        public string country { get; set; }
+        public string Country { get; set; }
 
-        public Age age { get; set; }
+        public Age Age { get; set; }
     }
 
     /// <summary>
@@ -61,19 +61,19 @@ namespace DotNetNuke.Services.ClientCapability
 
         public bool IsValid { get; set; }
 
-        public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
+        public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest request)
         {
-            if (Request == null)
+            if (request == null)
             {
                 return null;
             }
 
-            if (Request.RequestType != "POST")
+            if (request.RequestType != "POST")
             {
                 return null;
             }
 
-            string rawSignedRequest = Request[SignedRequestParameter];
+            string rawSignedRequest = request[SignedRequestParameter];
             return GetFacebookDetailsFromRequest(rawSignedRequest);
         }
 
@@ -100,25 +100,25 @@ namespace DotNetNuke.Services.ClientCapability
                 var encoding = new UTF8Encoding();
                 FaceBookData faceBookData = encoding.GetString(base64JsonArray).FromJson<FaceBookData>();
 
-                if (faceBookData.algorithm == "HMAC-SHA256")
+                if (faceBookData.Algorithm == "HMAC-SHA256")
                 {
                     facebookRequest.IsValid = true;
-                    facebookRequest.Algorithm = faceBookData.algorithm;
-                    facebookRequest.ProfileId = faceBookData.profile_id;
-                    facebookRequest.AppData = faceBookData.app_data;
-                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.oauth_token) ? faceBookData.oauth_token : string.Empty;
-                    facebookRequest.Expires = ConvertToTimestamp(faceBookData.expires);
-                    facebookRequest.IssuedAt = ConvertToTimestamp(faceBookData.issued_at);
-                    facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.user_id) ? faceBookData.user_id : string.Empty;
+                    facebookRequest.Algorithm = faceBookData.Algorithm;
+                    facebookRequest.ProfileId = faceBookData.Profile_id;
+                    facebookRequest.AppData = faceBookData.App_data;
+                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.Oauth_token) ? faceBookData.Oauth_token : string.Empty;
+                    facebookRequest.Expires = ConvertToTimestamp(faceBookData.Expires);
+                    facebookRequest.IssuedAt = ConvertToTimestamp(faceBookData.Issued_at);
+                    facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.User_id) ? faceBookData.User_id : string.Empty;
 
-                    facebookRequest.PageId = faceBookData.page.id;
-                    facebookRequest.PageLiked = faceBookData.page.liked;
-                    facebookRequest.PageUserAdmin = faceBookData.page.admin;
+                    facebookRequest.PageId = faceBookData.Page.Id;
+                    facebookRequest.PageLiked = faceBookData.Page.Liked;
+                    facebookRequest.PageUserAdmin = faceBookData.Page.Admin;
 
-                    facebookRequest.UserLocale = faceBookData.user.locale;
-                    facebookRequest.UserCountry = faceBookData.user.country;
-                    facebookRequest.UserMinAge = faceBookData.user.age.min;
-                    facebookRequest.UserMaxAge = faceBookData.user.age.max;
+                    facebookRequest.UserLocale = faceBookData.User.Locale;
+                    facebookRequest.UserCountry = faceBookData.User.Country;
+                    facebookRequest.UserMinAge = faceBookData.User.Age.Min;
+                    facebookRequest.UserMaxAge = faceBookData.User.Age.Max;
                 }
 
                 return facebookRequest;
@@ -199,22 +199,22 @@ namespace DotNetNuke.Services.ClientCapability
 
     internal struct FaceBookData
     {
-        public User user { get; set; }
+        public User User { get; set; }
 
-        public string algorithm { get; set; }
+        public string Algorithm { get; set; }
 
-        public long issued_at { get; set; }
+        public long Issued_at { get; set; }
 
-        public string user_id { get; set; }
+        public string User_id { get; set; }
 
-        public string oauth_token { get; set; }
+        public string Oauth_token { get; set; }
 
-        public long expires { get; set; }
+        public long Expires { get; set; }
 
-        public string app_data { get; set; }
+        public string App_data { get; set; }
 
-        public Page page { get; set; }
+        public Page Page { get; set; }
 
-        public long profile_id { get; set; }
+        public long Profile_id { get; set; }
     }
 }

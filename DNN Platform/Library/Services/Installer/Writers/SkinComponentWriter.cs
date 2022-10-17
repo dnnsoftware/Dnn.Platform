@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinComponentWriter : FileComponentWriter
     {
-        private readonly string _SkinName;
+        private readonly string skinName;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Installer.Writers
         public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {
-            this._SkinName = skinName;
+            this.skinName = skinName;
         }
 
         /// -----------------------------------------------------------------------------
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {
-            writer.WriteElementString(this.SkinNameNodeName, this._SkinName);
+            writer.WriteElementString(this.SkinNameNodeName, this.skinName);
         }
     }
 }

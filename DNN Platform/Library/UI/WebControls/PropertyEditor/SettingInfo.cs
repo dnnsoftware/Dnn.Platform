@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.WebControls
     public class SettingInfo
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
-        private Type _Type;
+        private Type type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SettingInfo"/> class.
@@ -32,22 +32,22 @@ namespace DotNetNuke.UI.WebControls
         {
             this.Name = Convert.ToString(name);
             this.Value = value;
-            this._Type = value.GetType();
+            this.type = value.GetType();
             this.Editor = EditorInfo.GetEditor(-1);
             string strValue = Convert.ToString(value);
-            bool IsFound = false;
-            if (this._Type.IsEnum)
+            bool isFound = false;
+            if (this.type.IsEnum)
             {
-                IsFound = true;
+                isFound = true;
             }
 
-            if (!IsFound)
+            if (!isFound)
             {
                 try
                 {
                     bool boolValue = bool.Parse(strValue);
                     this.Editor = EditorInfo.GetEditor("Checkbox");
-                    IsFound = true;
+                    isFound = true;
                 }
                 catch (Exception exc)
                 {
@@ -55,13 +55,13 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
 
-            if (!IsFound)
+            if (!isFound)
             {
                 try
                 {
                     int intValue = int.Parse(strValue);
                     this.Editor = EditorInfo.GetEditor("Integer");
-                    IsFound = true;
+                    isFound = true;
                 }
                 catch (Exception exc)
                 {
@@ -80,12 +80,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._Type;
+                return this.type;
             }
 
             set
             {
-                this._Type = value;
+                this.type = value;
             }
         }
     }

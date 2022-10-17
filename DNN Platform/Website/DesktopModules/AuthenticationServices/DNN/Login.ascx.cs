@@ -30,11 +30,14 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     public partial class Login : AuthenticationLoginBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Login"/> class.
+        /// </summary>
         public Login()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// <summary>
@@ -60,6 +63,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -84,7 +88,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
-            var returnUrl = this._navigationManager.NavigateURL();
+            var returnUrl = this.navigationManager.NavigateURL();
             string url;
             if (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
             {
@@ -114,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                url = this._navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                url = this.navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
                 this.passwordLink.NavigateUrl = url;
                 if (this.PortalSettings.EnablePopUps)
                 {
@@ -145,13 +149,13 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                         if (this.Request.IsAuthenticated)
                         {
-                            this.Response.Redirect(this._navigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : this.PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
+                            this.Response.Redirect(this.navigationManager.NavigateURL(redirectTabId > 0 ? redirectTabId : this.PortalSettings.HomeTabId, string.Empty, "VerificationSuccess=true"), true);
                         }
                         else
                         {
                             if (redirectTabId > 0)
                             {
-                                var redirectUrl = this._navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
+                                var redirectUrl = this.navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias), string.Empty);
                                 this.Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
@@ -231,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
             if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
             {
-                redirectUrl = this._navigationManager.NavigateURL(redirectAfterLogin);
+                redirectUrl = this.navigationManager.NavigateURL(redirectAfterLogin);
             }
             else
             {
@@ -258,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page
-                    redirectUrl = this._navigationManager.NavigateURL();
+                    redirectUrl = this.navigationManager.NavigateURL();
                 }
             }
 

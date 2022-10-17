@@ -34,6 +34,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
+
         public HttpResponseMessage UploadFile()
         {
             var statuses = new List<FilesStatus>();

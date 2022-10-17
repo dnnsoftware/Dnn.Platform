@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Exceptions {
     
     
     public partial class ErrorPage {
-        
         /// <summary>
         /// Title control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Services.Exceptions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected new global::System.Web.UI.HtmlControls.HtmlGenericControl Title;
-        
         /// <summary>
         /// DefaultStylesheet control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Services.Exceptions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DefaultStylesheet;
-        
         /// <summary>
         /// InstallStylesheet control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Services.Exceptions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl InstallStylesheet;
-        
         /// <summary>
         /// Form control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Services.Exceptions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected new global::System.Web.UI.HtmlControls.HtmlForm Form;
-        
         /// <summary>
         /// headerImage control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Services.Exceptions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image headerImage;
-        
         /// <summary>
         /// ErrorPlaceHolder control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Services.Exceptions {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder ErrorPlaceHolder;
-        
         /// <summary>
         /// hypReturn control.
         /// </summary>

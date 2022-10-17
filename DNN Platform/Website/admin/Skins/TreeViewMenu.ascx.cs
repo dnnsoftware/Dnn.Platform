@@ -24,28 +24,28 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class TreeViewMenu : NavObjectBase
     {
         private const string MyFileName = "TreeViewMenu.ascx";
-        private string _bodyCssClass = string.Empty;
-        private string _cssClass = string.Empty;
-        private string _headerCssClass = string.Empty;
-        private string _headerText = string.Empty;
-        private string _headerTextCssClass = "Head";
-        private bool _includeHeader = true;
-        private string _nodeChildCssClass = "Normal";
-        private string _nodeClosedImage = "~/images/folderclosed.gif";
-        private string _nodeCollapseImage = "~/images/min.gif";
-        private string _nodeCssClass = "Normal";
-        private string _nodeExpandImage = "~/images/max.gif";
-        private string _nodeLeafImage = "~/images/file.gif";
-        private string _nodeOpenImage = "~/images/folderopen.gif";
-        private string _nodeOverCssClass = "Normal";
-        private string _nodeSelectedCssClass = "Normal";
-        private string _resourceKey = string.Empty;
-        private string _treeCssClass = string.Empty;
-        private string _treeGoUpImage = "~/images/folderup.gif";
-        private int _treeIndentWidth = 10;
-        private string _width = "100%";
+        private string bodyCssClass = string.Empty;
+        private string cssClass = string.Empty;
+        private string headerCssClass = string.Empty;
+        private string headerText = string.Empty;
+        private string headerTextCssClass = "Head";
+        private bool includeHeader = true;
+        private string nodeChildCssClass = "Normal";
+        private string nodeClosedImage = "~/images/folderclosed.gif";
+        private string nodeCollapseImage = "~/images/min.gif";
+        private string nodeCssClass = "Normal";
+        private string nodeExpandImage = "~/images/max.gif";
+        private string nodeLeafImage = "~/images/file.gif";
+        private string nodeOpenImage = "~/images/folderopen.gif";
+        private string nodeOverCssClass = "Normal";
+        private string nodeSelectedCssClass = "Normal";
+        private string resourceKey = string.Empty;
+        private string treeCssClass = string.Empty;
+        private string treeGoUpImage = "~/images/folderup.gif";
+        private int treeIndentWidth = 10;
+        private string width = "100%";
 
-        private enum eImageType
+        private enum EImageType
         {
             FolderClosed = 0,
             FolderOpen = 1,
@@ -57,12 +57,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._bodyCssClass;
+                return this.bodyCssClass;
             }
 
             set
             {
-                this._bodyCssClass = value;
+                this.bodyCssClass = value;
             }
         }
 
@@ -70,12 +70,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._cssClass;
+                return this.cssClass;
             }
 
             set
             {
-                this._cssClass = value;
+                this.cssClass = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._headerCssClass;
+                return this.headerCssClass;
             }
 
             set
             {
-                this._headerCssClass = value;
+                this.headerCssClass = value;
             }
         }
 
@@ -96,12 +96,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._headerTextCssClass;
+                return this.headerTextCssClass;
             }
 
             set
             {
-                this._headerTextCssClass = value;
+                this.headerTextCssClass = value;
             }
         }
 
@@ -109,12 +109,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._headerText;
+                return this.headerText;
             }
 
             set
             {
-                this._headerText = value;
+                this.headerText = value;
             }
         }
 
@@ -122,12 +122,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._includeHeader;
+                return this.includeHeader;
             }
 
             set
             {
-                this._includeHeader = value;
+                this.includeHeader = value;
             }
         }
 
@@ -135,12 +135,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeChildCssClass;
+                return this.nodeChildCssClass;
             }
 
             set
             {
-                this._nodeChildCssClass = value;
+                this.nodeChildCssClass = value;
             }
         }
 
@@ -148,12 +148,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeClosedImage;
+                return this.nodeClosedImage;
             }
 
             set
             {
-                this._nodeClosedImage = value;
+                this.nodeClosedImage = value;
             }
         }
 
@@ -161,12 +161,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeCollapseImage;
+                return this.nodeCollapseImage;
             }
 
             set
             {
-                this._nodeCollapseImage = value;
+                this.nodeCollapseImage = value;
             }
         }
 
@@ -174,12 +174,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeCssClass;
+                return this.nodeCssClass;
             }
 
             set
             {
-                this._nodeCssClass = value;
+                this.nodeCssClass = value;
             }
         }
 
@@ -187,12 +187,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeExpandImage;
+                return this.nodeExpandImage;
             }
 
             set
             {
-                this._nodeExpandImage = value;
+                this.nodeExpandImage = value;
             }
         }
 
@@ -200,12 +200,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeLeafImage;
+                return this.nodeLeafImage;
             }
 
             set
             {
-                this._nodeLeafImage = value;
+                this.nodeLeafImage = value;
             }
         }
 
@@ -213,12 +213,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeOpenImage;
+                return this.nodeOpenImage;
             }
 
             set
             {
-                this._nodeOpenImage = value;
+                this.nodeOpenImage = value;
             }
         }
 
@@ -226,12 +226,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeOverCssClass;
+                return this.nodeOverCssClass;
             }
 
             set
             {
-                this._nodeOverCssClass = value;
+                this.nodeOverCssClass = value;
             }
         }
 
@@ -239,12 +239,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._nodeSelectedCssClass;
+                return this.nodeSelectedCssClass;
             }
 
             set
             {
-                this._nodeSelectedCssClass = value;
+                this.nodeSelectedCssClass = value;
             }
         }
 
@@ -254,12 +254,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._resourceKey;
+                return this.resourceKey;
             }
 
             set
             {
-                this._resourceKey = value;
+                this.resourceKey = value;
             }
         }
 
@@ -267,12 +267,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._treeCssClass;
+                return this.treeCssClass;
             }
 
             set
             {
-                this._treeCssClass = value;
+                this.treeCssClass = value;
             }
         }
 
@@ -280,12 +280,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._treeGoUpImage;
+                return this.treeGoUpImage;
             }
 
             set
             {
-                this._treeGoUpImage = value;
+                this.treeGoUpImage = value;
             }
         }
 
@@ -293,12 +293,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._treeIndentWidth;
+                return this.treeIndentWidth;
             }
 
             set
             {
-                this._treeIndentWidth = value;
+                this.treeIndentWidth = value;
             }
         }
 
@@ -306,12 +306,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._width;
+                return this.width;
             }
 
             set
             {
-                this._width = value;
+                this.width = value;
             }
         }
 
@@ -402,6 +402,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeTree();

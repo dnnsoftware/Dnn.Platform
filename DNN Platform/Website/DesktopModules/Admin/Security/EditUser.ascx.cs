@@ -33,16 +33,14 @@ namespace DotNetNuke.Modules.Admin.Users
     /// <summary>
     /// The ManageUsers UserModuleBase is used to manage Users.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class EditUser : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
         public EditUser()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// -----------------------------------------------------------------------------
@@ -53,13 +51,13 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                int _PageNo = 0;
+                int pageNo = 0;
                 if (this.ViewState["PageNo"] != null && !this.IsPostBack)
                 {
-                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
+                    pageNo = Convert.ToInt32(this.ViewState["PageNo"]);
                 }
 
-                return _PageNo;
+                return pageNo;
             }
 
             set
@@ -91,39 +89,39 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                string _RedirectURL = string.Empty;
+                string redirectURL = string.Empty;
 
                 if (this.PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (this.Request.QueryString["returnurl"] != null)
                     {
                         // return to the url passed to register
-                        _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
+                        redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
                         // clean the return url to avoid possible XSS attack.
-                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+                        redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
 
-                        if (_RedirectURL.Contains("?returnurl"))
+                        if (redirectURL.Contains("?returnurl"))
                         {
-                            string baseURL = _RedirectURL.Substring(0, _RedirectURL.IndexOf("?returnurl"));
-                            string returnURL = _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl") + 11);
+                            string baseURL = redirectURL.Substring(0, redirectURL.IndexOf("?returnurl"));
+                            string returnURL = redirectURL.Substring(redirectURL.IndexOf("?returnurl") + 11);
 
-                            _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                            redirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
 
-                    if (string.IsNullOrEmpty(_RedirectURL))
+                    if (string.IsNullOrEmpty(redirectURL))
                     {
                         // redirect to current page
-                        _RedirectURL = this._navigationManager.NavigateURL();
+                        redirectURL = this.navigationManager.NavigateURL();
                     }
                 }
                 else // redirect to after registration page
                 {
-                    _RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
+                    redirectURL = this.navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
 
-                return _RedirectURL;
+                return redirectURL;
             }
         }
 
@@ -135,7 +133,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return this._navigationManager.NavigateURL(this.TabId, string.Empty, !string.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : string.Empty);
+                return this.navigationManager.NavigateURL(this.TabId, string.Empty, !string.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : string.Empty);
             }
         }
 
@@ -280,7 +278,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             // DNN-26777
             PortalSecurity.Instance.SignOut();
-            this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId));
+            this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId));
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
@@ -484,7 +482,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         if (!PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName))
                         {
                             // Display current user's profile
-                            this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "UserID=" + this.UserInfo.UserID), true);
+                            this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "UserID=" + this.UserInfo.UserID), true);
                         }
                     }
                     else

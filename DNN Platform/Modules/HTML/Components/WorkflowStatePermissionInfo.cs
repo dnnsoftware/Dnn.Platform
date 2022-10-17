@@ -24,8 +24,8 @@ namespace DotNetNuke.Security.Permissions
     public class WorkflowStatePermissionInfo : PermissionInfoBase, IHydratable
     {
         // local property declarations
-        private int _StateID;
-        private int _WorkflowStatePermissionID;
+        private int stateID;
+        private int workflowStatePermissionID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -35,8 +35,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo()
         {
-            this._WorkflowStatePermissionID = Null.NullInteger;
-            this._StateID = Null.NullInteger;
+            this.workflowStatePermissionID = Null.NullInteger;
+            this.stateID = Null.NullInteger;
         }
 
         // New
@@ -68,12 +68,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._WorkflowStatePermissionID;
+                return this.workflowStatePermissionID;
             }
 
             set
             {
-                this._WorkflowStatePermissionID = value;
+                this.workflowStatePermissionID = value;
             }
         }
 
@@ -87,12 +87,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._StateID;
+                return this.stateID;
             }
 
             set
             {
-                this._StateID = value;
+                this.stateID = value;
             }
         }
 
@@ -164,11 +164,12 @@ namespace DotNetNuke.Security.Permissions
             return (this.AllowAccess == other.AllowAccess) && (this.StateID == other.StateID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             unchecked
             {
-                return (this._StateID * 397) ^ this._WorkflowStatePermissionID;
+                return (this.stateID * 397) ^ this.workflowStatePermissionID;
             }
         }
 

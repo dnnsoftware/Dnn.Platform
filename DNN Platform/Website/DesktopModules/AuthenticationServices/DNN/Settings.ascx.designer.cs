@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Authentication {
     
     
     public partial class Settings {
-        
         /// <summary>
         /// SettingsEditor control.
         /// </summary>

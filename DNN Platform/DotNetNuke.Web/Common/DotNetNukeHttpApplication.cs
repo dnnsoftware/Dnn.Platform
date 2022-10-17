@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Services.OutputCache;
     using DotNetNuke.Services.Scheduling;
@@ -36,7 +37,6 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Tokens;
-    using DotNetNuke.Services.Mail;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
     /// <summary>

@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:EnumEditControl runat=server></{0}:EnumEditControl>")]
     public class EnumEditControl : EditControl
     {
-        private readonly Type EnumType;
+        private readonly Type enumType;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
         public EnumEditControl(string type)
         {
             this.SystemType = type;
-            this.EnumType = Type.GetType(type);
+            this.enumType = Type.GetType(type);
         }
 
         /// -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.WebControls
             int intOldValue = Convert.ToInt32(this.OldValue);
 
             var args = new PropertyEditorEventArgs(this.Name)
-            { Value = Enum.ToObject(this.EnumType, intValue), OldValue = Enum.ToObject(this.EnumType, intOldValue) };
+            { Value = Enum.ToObject(this.enumType, intValue), OldValue = Enum.ToObject(this.enumType, intOldValue) };
 
             this.OnValueChanged(args);
         }
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int propValue = Convert.ToInt32(this.Value);
-            Array enumValues = Enum.GetValues(this.EnumType);
+            Array enumValues = Enum.GetValues(this.enumType);
 
             // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
@@ -102,10 +102,10 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
-            for (int I = 0; I <= enumValues.Length - 1; I++)
+            for (int i = 0; i <= enumValues.Length - 1; i++)
             {
-                int enumValue = Convert.ToInt32(enumValues.GetValue(I));
-                string enumName = Enum.GetName(this.EnumType, enumValue);
+                int enumValue = Convert.ToInt32(enumValues.GetValue(i));
+                string enumName = Enum.GetName(this.enumType, enumValue);
                 enumName = Localization.GetString(enumName, this.LocalResourceFile);
 
                 // Add the Value Attribute
@@ -136,7 +136,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             int propValue = Convert.ToInt32(this.Value);
-            string enumValue = Enum.Format(this.EnumType, propValue, "G");
+            string enumValue = Enum.Format(this.enumType, propValue, "G");
 
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);

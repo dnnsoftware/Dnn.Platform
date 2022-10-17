@@ -13,12 +13,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Services.Log.EventLog;
 
     [ConsoleCommand("clear-log", Constants.PortalCategory, "Prompt_ClearLog_Description")]
+
     public class ClearLog : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearLog));
 
+        /// <inheritdoc/>
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
+        /// <inheritdoc/>
         public override ConsoleResultModel Run()
         {
             try
@@ -30,8 +33,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
                 Logger.Error(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearLog_Error"));
             }
-            return new ConsoleResultModel(this.LocalizeString("Prompt_ClearLog_Success"));
 
+            return new ConsoleResultModel(this.LocalizeString("Prompt_ClearLog_Success"));
         }
     }
 }

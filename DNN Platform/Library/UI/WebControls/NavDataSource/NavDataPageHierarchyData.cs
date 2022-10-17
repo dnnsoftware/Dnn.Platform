@@ -9,7 +9,7 @@ namespace DotNetNuke.UI.WebControls
 
     public class NavDataPageHierarchyData : IHierarchyData, INavigateUIData
     {
-        private readonly DNNNode m_objNode;
+        private readonly DNNNode objNode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavDataPageHierarchyData"/> class.
@@ -17,14 +17,14 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="obj"></param>
         public NavDataPageHierarchyData(DNNNode obj)
         {
-            this.m_objNode = obj;
+            this.objNode = obj;
         }
 
         /// <summary>
         /// Gets nodes image.
         /// </summary>
         /// <value>
-        /// <placeholder>Returns nodes image</placeholder>
+        /// Returns nodes image.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -32,13 +32,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (string.IsNullOrEmpty(this.m_objNode.Image) || this.m_objNode.Image.StartsWith("/"))
+                if (string.IsNullOrEmpty(this.objNode.Image) || this.objNode.Image.StartsWith("/"))
                 {
-                    return this.m_objNode.Image;
+                    return this.objNode.Image;
                 }
                 else
                 {
-                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.m_objNode.Image;
+                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.objNode.Image;
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
         /// </summary>
         /// <value>
-        /// <placeholder>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</placeholder>
+        /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.m_objNode.HasNodes;
+                return this.objNode.HasNodes;
             }
         }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the hierarchical path of the node.
         /// </summary>
         /// <value>
-        /// <placeholder>The hierarchical path of the node.</placeholder>
+        /// The hierarchical path of the node.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetValuePath(this.m_objNode);
+                return this.GetValuePath(this.objNode);
             }
         }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the hierarchical data node that the IHierarchyData object represents.
         /// </summary>
         /// <value>
-        /// <placeholder>The hierarchical data node that the IHierarchyData object represents.</placeholder>
+        /// The hierarchical data node that the IHierarchyData object represents.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.m_objNode;
+                return this.objNode;
             }
         }
 
@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets the name of the type of Object contained in the Item property.
         /// </summary>
         /// <value>
-        /// <placeholder>The name of the type of Object contained in the Item property.</placeholder>
+        /// The name of the type of Object contained in the Item property.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -111,7 +111,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets node name.
         /// </summary>
         /// <value>
-        /// <placeholder>Returns node name</placeholder>
+        /// Returns node name.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.Text, string.Empty);
+                return this.GetSafeValue(this.objNode.Text, string.Empty);
             }
         }
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets value path of node.
         /// </summary>
         /// <value>
-        /// <placeholder>Returns value path of node</placeholder>
+        /// Returns value path of node.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -135,7 +135,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetValuePath(this.m_objNode);
+                return this.GetValuePath(this.objNode);
             }
         }
 
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets node navigation url.
         /// </summary>
         /// <value>
-        /// <placeholder>Returns node navigation url</placeholder>
+        /// Returns node navigation url.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.NavigateURL, string.Empty);
+                return this.GetSafeValue(this.objNode.NavigateURL, string.Empty);
             }
         }
 
@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets node description.
         /// </summary>
         /// <value>
-        /// <placeholder>Returns Node description</placeholder>
+        /// Returns Node description.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.ToolTip, string.Empty);
+                return this.GetSafeValue(this.objNode.ToolTip, string.Empty);
             }
         }
 
@@ -179,9 +179,9 @@ namespace DotNetNuke.UI.WebControls
         public virtual IHierarchicalEnumerable GetChildren()
         {
             var objNodes = new NavDataPageHierarchicalEnumerable();
-            if (this.m_objNode != null)
+            if (this.objNode != null)
             {
-                foreach (DNNNode objNode in this.m_objNode.DNNNodes)
+                foreach (DNNNode objNode in this.objNode.DNNNodes)
                 {
                     objNodes.Add(new NavDataPageHierarchyData(objNode));
                 }
@@ -197,9 +197,9 @@ namespace DotNetNuke.UI.WebControls
         /// <remarks></remarks>
         public virtual IHierarchyData GetParent()
         {
-            if (this.m_objNode != null)
+            if (this.objNode != null)
             {
-                return new NavDataPageHierarchyData(this.m_objNode.ParentNode);
+                return new NavDataPageHierarchyData(this.objNode.ParentNode);
             }
             else
             {
@@ -210,25 +210,25 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public override string ToString()
         {
-            return this.m_objNode.Text;
+            return this.objNode.Text;
         }
 
         /// <summary>
         /// Helper function to handle cases where property is null (Nothing).
         /// </summary>
-        /// <param name="Value">Value to evaluate for null.</param>
-        /// <param name="Def">If null, return this default.</param>
+        /// <param name="value">Value to evaluate for null.</param>
+        /// <param name="def">If null, return this default.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        private string GetSafeValue(string Value, string Def)
+        private string GetSafeValue(string value, string def)
         {
-            if (Value != null)
+            if (value != null)
             {
-                return Value;
+                return value;
             }
             else
             {
-                return Def;
+                return def;
             }
         }
 

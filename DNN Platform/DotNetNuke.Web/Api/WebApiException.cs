@@ -27,6 +27,10 @@ namespace DotNetNuke.Web.Api
             this.Result = result;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="WebApiException"/> class.</summary>
+        /// <param name="innerException">The original exception.</param>
+        /// <param name="result">The result of the request.</param>
+        /// <param name="body">The body from the GET response.</param>
         public WebApiException(Exception innerException, HttpResponseMessage result, string body)
             : this(innerException, result)
         {

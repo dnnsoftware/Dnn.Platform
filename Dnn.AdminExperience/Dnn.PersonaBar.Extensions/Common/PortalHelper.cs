@@ -8,8 +8,9 @@ namespace Dnn.PersonaBar.Prompt.Common
 
     using DotNetNuke.Entities.Portals;
 
-    class PortalHelper
+    internal class PortalHelper
     {
+
         internal static bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)
         {
             const int NO_SITE_GROUPID = -1;

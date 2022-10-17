@@ -28,11 +28,11 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionsMenu : Control, IActionControl
     {
-        private ActionManager _ActionManager;
-        private ModuleAction _ActionRoot;
-        private int _ExpandDepth = -1;
-        private NavigationProvider _ProviderControl;
-        private string _ProviderName = "DNNMenuNavigationProvider";
+        private ActionManager actionManager;
+        private ModuleAction actionRoot;
+        private int expandDepth = -1;
+        private NavigationProvider providerControl;
+        private string providerName = "DNNMenuNavigationProvider";
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
@@ -47,12 +47,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._ActionManager == null)
+                if (this.actionManager == null)
                 {
-                    this._ActionManager = new ActionManager(this);
+                    this.actionManager = new ActionManager(this);
                 }
 
-                return this._ActionManager;
+                return this.actionManager;
             }
         }
 
@@ -71,12 +71,12 @@ namespace DotNetNuke.UI.Containers
                     return -1;
                 }
 
-                return this._ExpandDepth;
+                return this.expandDepth;
             }
 
             set
             {
-                this._ExpandDepth = value;
+                this.expandDepth = value;
             }
         }
 
@@ -106,12 +106,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._ProviderName;
+                return this.providerName;
             }
 
             set
             {
-                this._ProviderName = value;
+                this.providerName = value;
             }
         }
 
@@ -133,12 +133,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._ActionRoot == null)
+                if (this.actionRoot == null)
                 {
-                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
+                    this.actionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
                 }
 
-                return this._ActionRoot;
+                return this.actionRoot;
             }
         }
 
@@ -152,7 +152,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._ProviderControl;
+                return this.providerControl;
             }
         }
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
-            this._ProviderControl = NavigationProvider.Instance(this.ProviderName);
+            this.providerControl = NavigationProvider.Instance(this.ProviderName);
             this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
             base.OnInit(e);
             this.ProviderControl.ControlID = "ctl" + this.ID;

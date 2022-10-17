@@ -12,15 +12,18 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
     public class PlatformMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             return DotNetNukeContext.Current.Application.SKU == "DNN";
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

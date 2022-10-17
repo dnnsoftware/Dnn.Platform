@@ -27,8 +27,8 @@ namespace DotNetNuke.Entities.Urls
         public string ReplaceChars;
         public bool ReplaceDoubleChars;
         public string SpaceEncoding;
-        private static readonly object _regexLookupLock = new object();
-        private static readonly Dictionary<string, Regex> _regexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
+        private static readonly object RegexLookupLock = new object();
+        private static readonly Dictionary<string, Regex> RegexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
 
         public bool CanGenerateNonStandardPath
         {
@@ -79,19 +79,19 @@ namespace DotNetNuke.Entities.Urls
         private static Regex GetRegex(string regexText)
         {
             Regex compiledRegex;
-            if (_regexLookup.TryGetValue(regexText, out compiledRegex))
+            if (RegexLookup.TryGetValue(regexText, out compiledRegex))
             {
                 return compiledRegex;
             }
 
-            lock (_regexLookupLock)
+            lock (RegexLookupLock)
             {
-                if (_regexLookup.TryGetValue(regexText, out compiledRegex))
+                if (RegexLookup.TryGetValue(regexText, out compiledRegex))
                 {
                     return compiledRegex;
                 }
 
-                return _regexLookup[regexText] = RegexUtils.GetCachedRegex(regexText, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                return RegexLookup[regexText] = RegexUtils.GetCachedRegex(regexText, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
         }
     }

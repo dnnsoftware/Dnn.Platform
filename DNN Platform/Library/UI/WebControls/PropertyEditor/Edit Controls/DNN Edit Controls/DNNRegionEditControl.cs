@@ -31,13 +31,13 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
-        private DropDownList _Regions;
+        private DropDownList regions;
 
-        private TextBox _Region;
+        private TextBox region;
 
-        private HtmlInputHidden _InitialValue;
+        private HtmlInputHidden initialValue;
 
-        private List<ListEntryInfo> _listEntries;
+        private List<ListEntryInfo> listEntries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.
@@ -74,13 +74,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._listEntries == null)
+                if (this.listEntries == null)
                 {
                     var listController = new ListController();
-                    this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                    this.listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
                 }
 
-                return this._listEntries;
+                return this.listEntries;
             }
         }
 
@@ -106,19 +106,22 @@ namespace DotNetNuke.UI.WebControls
                 return strValue;
             }
 
-            set { this.Value = value; }
+            set
+            {
+                this.Value = value;
+            }
         }
 
         private DropDownList Regions
         {
             get
             {
-                if (this._Regions == null)
+                if (this.regions == null)
                 {
-                    this._Regions = new DropDownList();
+                    this.regions = new DropDownList();
                 }
 
-                return this._Regions;
+                return this.regions;
             }
         }
 
@@ -126,12 +129,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._Region == null)
+                if (this.region == null)
                 {
-                    this._Region = new TextBox();
+                    this.region = new TextBox();
                 }
 
-                return this._Region;
+                return this.region;
             }
         }
 
@@ -139,12 +142,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._InitialValue == null)
+                if (this.initialValue == null)
                 {
-                    this._InitialValue = new HtmlInputHidden();
+                    this.initialValue = new HtmlInputHidden();
                 }
 
-                return this._InitialValue;
+                return this.initialValue;
             }
         }
 
@@ -179,7 +182,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         var listAtt = (ListAttribute)attribute;
                         this.ParentKey = listAtt.ParentKey;
-                        this._listEntries = null;
+                        this.listEntries = null;
                         break;
                     }
                 }

@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     public class MessageFileView
     {
         /// <summary>The _size.</summary>
-        private string _size;
+        private string size;
 
         /// <summary>Gets or sets the file identifier.</summary>
         /// <value>The file identifier.</value>
@@ -30,7 +30,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         /// <value>The size.</value>
         public string Size
         {
-            get { return this._size; }
+            get
+            {
+                return this.size;
+            }
 
             set
             {
@@ -43,19 +46,18 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
                 const int scale = 1024;
                 var orders = new[] { "GB", "MB", "KB", "B" };
                 var max = (long)Math.Pow(scale, orders.Length - 1);
-
                 foreach (var order in orders)
                 {
                     if (bytes > max)
                     {
-                        this._size = string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
+                        this.size = string.Format("{0:##.##} {1}", decimal.Divide(bytes, max), order);
                         return;
                     }
 
                     max /= scale;
                 }
 
-                this._size = "0 B";
+                this.size = "0 B";
             }
         }
 

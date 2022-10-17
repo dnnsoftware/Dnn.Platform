@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Html {
     
     
     public partial class Settings {
-        
         /// <summary>
         /// customJS control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude customJS;
-        
         /// <summary>
         /// plReplaceTokens control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plReplaceTokens;
-        
         /// <summary>
         /// chkReplaceTokens control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkReplaceTokens;
-        
         /// <summary>
         /// plDecorate control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plDecorate;
-        
         /// <summary>
         /// cbDecorate control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbDecorate;
-        
         /// <summary>
         /// plSearchDescLength control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plSearchDescLength;
-        
         /// <summary>
         /// txtSearchDescLength control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSearchDescLength;
-        
         /// <summary>
         /// RegularExpressionValidator1 control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
-        
         /// <summary>
         /// plWorkflow control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plWorkflow;
-        
         /// <summary>
         /// cboWorkflow control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboWorkflow;
-        
         /// <summary>
         /// lblDescription control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDescription;
-        
         /// <summary>
         /// divApplyTo control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divApplyTo;
-        
         /// <summary>
         /// plApplyTo control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plApplyTo;
-        
         /// <summary>
         /// rblApplyTo control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rblApplyTo;
-        
         /// <summary>
         /// chkReplace control.
         /// </summary>

@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal alias collection.</returns>
         IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId);
 
-        PortalInfo GetPortalByPortalAliasID(int PortalAliasId);
+        PortalInfo GetPortalByPortalAliasID(int portalAliasId);
 
         /// <summary>
         /// Updates the portal alias info.

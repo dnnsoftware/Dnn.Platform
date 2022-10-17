@@ -540,6 +540,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
+
         public void GetFileUrl_WhenCurrentPortalSettingsReturnsNull_DontThrow()
         {
             // arrange
@@ -573,6 +574,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("(")]
         [TestCase(")")]
         [TestCase("")]
+
         public void GetFileUrl_ReturnsStandardUrl_WhenFileUrlDoesNotContainInvalidCharactes(string fileNameChar)
         {
             // Arrange
@@ -600,6 +602,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("$")]
         [TestCase(",")]
         [TestCase("%")]
+
         public void GetFileUrl_ReturnsLinkclickUrl_WhenFileUrlContainsInvalidCharactes(string fileNameChar)
         {
             // Arrange

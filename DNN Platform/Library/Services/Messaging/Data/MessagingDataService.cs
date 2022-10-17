@@ -19,15 +19,15 @@ namespace DotNetNuke.Services.Messaging.Data
         }
 
         /// <inheritdoc/>
-        public IDataReader GetUserInbox(int PortalID, int UserID, int PageNumber, int PageSize)
+        public IDataReader GetUserInbox(int portalID, int userID, int pageNumber, int pageSize)
         {
-            return this.provider.ExecuteReader("Messaging_GetInbox", PortalID, UserID, PageNumber, PageSize);
+            return this.provider.ExecuteReader("Messaging_GetInbox", portalID, userID, pageNumber, pageSize);
         }
 
         /// <inheritdoc/>
-        public int GetInboxCount(int PortalID, int UserID)
+        public int GetInboxCount(int portalID, int userID)
         {
-            return this.provider.ExecuteScalar<int>("Messaging_GetInboxCount", PortalID, UserID);
+            return this.provider.ExecuteScalar<int>("Messaging_GetInboxCount", portalID, userID);
         }
 
         /// <inheritdoc/>
@@ -50,21 +50,21 @@ namespace DotNetNuke.Services.Messaging.Data
         }
 
         /// <inheritdoc/>
-        public int GetNewMessageCount(int PortalID, int UserID)
+        public int GetNewMessageCount(int portalID, int userID)
         {
-            return this.provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", PortalID, UserID);
+            return this.provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", portalID, userID);
         }
 
         /// <inheritdoc/>
-        public IDataReader GetNextMessageForDispatch(Guid SchedulerInstance)
+        public IDataReader GetNextMessageForDispatch(Guid schedulerInstance)
         {
-            return this.provider.ExecuteReader("Messaging_GetNextMessageForDispatch", SchedulerInstance);
+            return this.provider.ExecuteReader("Messaging_GetNextMessageForDispatch", schedulerInstance);
         }
 
         /// <inheritdoc/>
-        public void MarkMessageAsDispatched(int MessageID)
+        public void MarkMessageAsDispatched(int messageID)
         {
-            this.provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", MessageID);
+            this.provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", messageID);
         }
 
         /// <inheritdoc/>

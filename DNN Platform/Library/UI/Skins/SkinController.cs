@@ -344,21 +344,20 @@ namespace DotNetNuke.UI.Skins
             string strExtension;
             string strFileName;
             FileStream objFileStream;
-            int intSize = 2048;
             var arrData = new byte[2048];
             string strMessage = string.Empty;
             var arrSkinFiles = new ArrayList();
 
             // Localized Strings
-            PortalSettings ResourcePortalSettings = Globals.GetPortalSettings();
-            string BEGIN_MESSAGE = Localization.GetString("BeginZip", ResourcePortalSettings);
-            string CREATE_DIR = Localization.GetString("CreateDir", ResourcePortalSettings);
-            string WRITE_FILE = Localization.GetString("WriteFile", ResourcePortalSettings);
-            string FILE_ERROR = Localization.GetString("FileError", ResourcePortalSettings);
-            string END_MESSAGE = Localization.GetString("EndZip", ResourcePortalSettings);
-            string FILE_RESTICTED = Localization.GetString("FileRestricted", ResourcePortalSettings);
+            PortalSettings resourcePortalSettings = Globals.GetPortalSettings();
+            string bEGIN_MESSAGE = Localization.GetString("BeginZip", resourcePortalSettings);
+            string cREATE_DIR = Localization.GetString("CreateDir", resourcePortalSettings);
+            string wRITE_FILE = Localization.GetString("WriteFile", resourcePortalSettings);
+            string fILE_ERROR = Localization.GetString("FileError", resourcePortalSettings);
+            string eND_MESSAGE = Localization.GetString("EndZip", resourcePortalSettings);
+            string fILE_RESTICTED = Localization.GetString("FileRestricted", resourcePortalSettings);
 
-            strMessage += FormatMessage(BEGIN_MESSAGE, skinName, -1, false);
+            strMessage += FormatMessage(bEGIN_MESSAGE, skinName, -1, false);
 
             foreach (var objZipEntry in objZipInputStream.FileEntries())
             {
@@ -393,7 +392,7 @@ namespace DotNetNuke.UI.Skins
                         // create the directory if it does not exist
                         if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
                         {
-                            strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
+                            strMessage += FormatMessage(cREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
                             Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
                         }
 
@@ -408,7 +407,7 @@ namespace DotNetNuke.UI.Skins
                         objFileStream = File.Create(strFileName);
 
                         // unzip the file
-                        strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
+                        strMessage += FormatMessage(wRITE_FILE, Path.GetFileName(strFileName), 2, false);
                         objZipEntry.Open().CopyToStream(objFileStream, 25000);
                         objFileStream.Close();
 
@@ -432,16 +431,16 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    strMessage += string.Format(FILE_RESTICTED, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
+                    strMessage += string.Format(fILE_RESTICTED, objZipEntry.FullName, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
                 }
             }
 
-            strMessage += FormatMessage(END_MESSAGE, skinName + ".zip", 1, false);
+            strMessage += FormatMessage(eND_MESSAGE, skinName + ".zip", 1, false);
             objZipInputStream.Dispose();
 
             // process the list of skin files
-            var NewSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
-            strMessage += NewSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
+            var newSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
+            strMessage += newSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
 
             // log installation event
             try

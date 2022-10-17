@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Urls
         private const string HomePageSkinsKey = "url_HomePageSkins_{0}";
         private const string TabPathsKey = "url_TabPathsKey_{0}";
         private static CacheItemRemovedReason cacheItemRemovedReason;
-        private static bool LogRemovedReason;
+        private static bool logRemovedReason;
         private CacheItemRemovedCallback onRemovePageIndex;
 
         public static void FlushFriendlyUrlSettingsFromCache()
@@ -152,7 +152,7 @@ namespace DotNetNuke.Entities.Urls
         {
             cacheItemRemovedReason = r;
 #if DEBUG
-            if (LogRemovedReason)
+            if (logRemovedReason)
             {
                 var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
 
@@ -826,7 +826,7 @@ namespace DotNetNuke.Entities.Urls
                 this.onRemovePageIndex = null;
             }
 
-            LogRemovedReason = settings.LogCacheMessages;
+            logRemovedReason = settings.LogCacheMessages;
 
             SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
             SetPageCache(UrlPortalsKey, urlPortals, settings);
@@ -874,7 +874,7 @@ namespace DotNetNuke.Entities.Urls
 
             SetPageCache(PageIndexDepthKey, portalDepthInfo, settings);
 
-            LogRemovedReason = settings.LogCacheMessages;
+            logRemovedReason = settings.LogCacheMessages;
 
             if (settings.LogCacheMessages)
             {

@@ -53,11 +53,11 @@ namespace DotNetNuke.Services.Localization
     public class Localization
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
-        private static string _defaultKeyName = "resourcekey";
+        private static string defaultKeyName = "resourcekey";
 
         // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
-        private static bool? _showMissingKeys;
+        private static bool? showMissingKeys;
 
         /// <summary>
         /// Gets ~/App_GlobalResources.
@@ -129,19 +129,19 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                if (_showMissingKeys == null)
+                if (showMissingKeys == null)
                 {
                     if (Config.GetSetting("ShowMissingKeys") == null)
                     {
-                        _showMissingKeys = false;
+                        showMissingKeys = false;
                     }
                     else
                     {
-                        _showMissingKeys = bool.Parse(Config.GetSetting("ShowMissingKeys".ToLowerInvariant()));
+                        showMissingKeys = bool.Parse(Config.GetSetting("ShowMissingKeys".ToLowerInvariant()));
                     }
                 }
 
-                return _showMissingKeys.Value;
+                return showMissingKeys.Value;
             }
         }
 
@@ -180,15 +180,15 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _defaultKeyName;
+                return defaultKeyName;
             }
 
             set
             {
-                _defaultKeyName = value;
-                if (string.IsNullOrEmpty(_defaultKeyName))
+                defaultKeyName = value;
+                if (string.IsNullOrEmpty(defaultKeyName))
                 {
-                    _defaultKeyName = "resourcekey";
+                    defaultKeyName = "resourcekey";
                 }
             }
         }

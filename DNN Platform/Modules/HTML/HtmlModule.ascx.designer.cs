@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Html {
     
     
     public partial class HtmlModule {
-        
         /// <summary>
         /// lblContent control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNLabelEdit lblContent;
-        
         /// <summary>
         /// editorDnnToobar control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBar editorDnnToobar;
-        
         /// <summary>
         /// tbEdit control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbEdit;
-        
         /// <summary>
         /// tbSave control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbSave;
-        
         /// <summary>
         /// tbCancel control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbCancel;
-        
         /// <summary>
         /// tbBold control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbBold;
-        
         /// <summary>
         /// tbItalic control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbItalic;
-        
         /// <summary>
         /// tbUnderline control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbUnderline;
-        
         /// <summary>
         /// tbJustifyLeft control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbJustifyLeft;
-        
         /// <summary>
         /// tbJustifyCenter control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbJustifyCenter;
-        
         /// <summary>
         /// tbJustifyRight control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbJustifyRight;
-        
         /// <summary>
         /// tbOrderedList control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbOrderedList;
-        
         /// <summary>
         /// tbUnorderedList control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbUnorderedList;
-        
         /// <summary>
         /// tbOutdent control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbOutdent;
-        
         /// <summary>
         /// tbIndent control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.DNNToolBarButton tbIndent;
-        
         /// <summary>
         /// tbCreateLink control.
         /// </summary>

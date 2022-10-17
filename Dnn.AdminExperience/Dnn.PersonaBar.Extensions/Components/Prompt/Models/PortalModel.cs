@@ -12,7 +12,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         {
         }
 
-        public PortalModel(PortalInfo portal) : base(portal)
+        public PortalModel(PortalInfo portal)
+            : base(portal)
         {
             // get portal settings for specified portal
             var ps = new PortalSettings(portal);

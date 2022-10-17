@@ -61,9 +61,9 @@ namespace DotNetNuke.UI.Skins
     {
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
-        private ArrayList _actionEventListeners;
-        private Control _controlPanel;
-        private Dictionary<string, Pane> _panes;
+        private ArrayList actionEventListeners;
+        private Control controlPanel;
+        private Dictionary<string, Pane> panes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Skin"/> class.
@@ -85,7 +85,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._panes ?? (this._panes = new Dictionary<string, Pane>());
+                return this.panes ?? (this.panes = new Dictionary<string, Pane>());
             }
         }
 
@@ -112,12 +112,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._actionEventListeners ?? (this._actionEventListeners = new ArrayList());
+                return this.actionEventListeners ?? (this.actionEventListeners = new ArrayList());
             }
 
             set
             {
-                this._actionEventListeners = value;
+                this.actionEventListeners = value;
             }
         }
 
@@ -140,7 +140,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._controlPanel ?? (this._controlPanel = this.FindControl("ControlPanel"));
+                return this.controlPanel ?? (this.controlPanel = this.FindControl("ControlPanel"));
             }
         }
 
@@ -153,7 +153,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this._communicator;
+                return this.communicator;
             }
         }
 
@@ -440,7 +440,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     var skin = new InstalledSkinInfo();
                     skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
-                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
+                    skin.InUse = IsFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
                     list.Add(skin);
                 }
             }
@@ -715,7 +715,7 @@ namespace DotNetNuke.UI.Skins
             return ctlSkin;
         }
 
-        private static bool isFallbackSkin(string skinPath)
+        private static bool IsFallbackSkin(string skinPath)
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
             string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", "\\");
@@ -839,7 +839,7 @@ namespace DotNetNuke.UI.Skins
                             else
                             {
                                 // Control Panel pane
-                                this._controlPanel = objPaneControl;
+                                this.controlPanel = objPaneControl;
                             }
 
                             break;
@@ -1048,11 +1048,14 @@ namespace DotNetNuke.UI.Skins
         }
 
         // ReSharper disable InconsistentNaming
+
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+
         public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+
         public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
-        private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
+        private readonly ModuleCommunicate communicator = new ModuleCommunicate();
 
         // ReSharper restore InconsistentNaming
     }

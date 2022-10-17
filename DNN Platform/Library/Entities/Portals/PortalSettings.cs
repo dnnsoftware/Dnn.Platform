@@ -265,6 +265,7 @@ namespace DotNetNuke.Entities.Portals
          * (and make the output smaller)
          *
          */
+
         /// <inheritdoc/>
         public bool InjectModuleHyperLink
         {
@@ -279,20 +280,21 @@ namespace DotNetNuke.Entities.Portals
          *
 
          */
+
         /// <inheritdoc/>
         public string AddCompatibleHttpHeader
         {
             get
             {
-                string CompatibleHttpHeader = "IE=edge";
+                string compatibleHttpHeader = "IE=edge";
                 string setting;
                 if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
-                    CompatibleHttpHeader = (setting == "false") ? string.Empty : setting;
+                    compatibleHttpHeader = (setting == "false") ? string.Empty : setting;
                 }
 
-                return CompatibleHttpHeader;
+                return compatibleHttpHeader;
             }
         }
 

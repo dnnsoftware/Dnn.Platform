@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.Journal.Controls
     {
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+
         public PortalSettings portalSettings
         {
             get
@@ -72,6 +73,7 @@ namespace DotNetNuke.Modules.Journal.Controls
 
         public int CurrentIndex { get; set; }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter output)
         {
             if (this.Enabled)

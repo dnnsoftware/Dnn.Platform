@@ -23,14 +23,18 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     public partial class Purchase : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
-        private int RoleID = -1;
+        private readonly INavigationManager navigationManager;
+        private int roleID = -1;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Purchase"/> class.
+        /// </summary>
         public Purchase()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -38,12 +42,13 @@ namespace DotNetNuke.Modules.Admin.Sales
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            this.cmdPurchase.Click += this.cmdPurchase_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdPurchase.Click += this.CmdPurchase_Click;
+            this.cmdCancel.Click += this.CmdCancel_Click;
 
             try
             {
@@ -52,14 +57,14 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                 if (this.Request.QueryString["RoleID"] != null)
                 {
-                    this.RoleID = int.Parse(this.Request.QueryString["RoleID"]);
+                    this.roleID = int.Parse(this.Request.QueryString["RoleID"]);
                 }
 
                 if (this.Page.IsPostBack == false)
                 {
-                    if (this.RoleID != -1)
+                    if (this.roleID != -1)
                     {
-                        RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == this.RoleID);
+                        RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == this.roleID);
 
                         if (objRole.RoleID != -1)
                         {
@@ -69,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 this.lblDescription.Text = objRole.Description;
                             }
 
-                            if (this.RoleID == this.PortalSettings.AdministratorRoleId)
+                            if (this.roleID == this.PortalSettings.AdministratorRoleId)
                             {
                                 if (!Null.IsNull(this.PortalSettings.HostFee))
                                 {
@@ -99,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else // security violation attempt to access item not related to this Module
                         {
-                            this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                            this.Response.Redirect(this.navigationManager.NavigateURL(), true);
                         }
                     }
 
@@ -114,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                 }
 
-                if (this.RoleID == this.PortalSettings.AdministratorRoleId)
+                if (this.roleID == this.PortalSettings.AdministratorRoleId)
                 {
                     strCurrency = Host.HostCurrency;
                 }
@@ -139,7 +144,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
         }
 
-        private void cmdPurchase_Click(object sender, EventArgs e)
+        private void CmdPurchase_Click(object sender, EventArgs e)
         {
             try
             {
@@ -165,7 +170,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         strPayPalURL = strPayPalURL + "&item_name=" +
                                        Globals.HTTPPOSTEncode(this.PortalSettings.PortalName + " - " + this.lblDescription.Text + " ( " + this.txtUnits.Text + " units @ " + this.lblFee.Text + " " + this.lblFeeCurrency.Text +
                                                               " per " + this.lblFrequency.Text + " )");
-                        strPayPalURL = strPayPalURL + "&item_number=" + Globals.HTTPPOSTEncode(Convert.ToString(this.RoleID));
+                        strPayPalURL = strPayPalURL + "&item_number=" + Globals.HTTPPOSTEncode(Convert.ToString(this.roleID));
                         strPayPalURL = strPayPalURL + "&quantity=1";
                         strPayPalURL = strPayPalURL + "&custom=" + Globals.HTTPPOSTEncode(this.UserInfo.UserID.ToString());
                         strPayPalURL = strPayPalURL + "&amount=" + Globals.HTTPPOSTEncode(this.lblTotal.Text);
@@ -186,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             }
         }
 
-        private void cmdCancel_Click(object sender, EventArgs e)
+        private void CmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
@@ -198,9 +203,9 @@ namespace DotNetNuke.Modules.Admin.Sales
             }
         }
 
-        private double ConvertCurrency(string Amount, string FromCurrency, string ToCurrency)
+        private double ConvertCurrency(string amount, string fromCurrency, string toCurrency)
         {
-            string strPost = "Amount=" + Amount + "&From=" + FromCurrency + "&To=" + ToCurrency;
+            string strPost = "Amount=" + amount + "&From=" + fromCurrency + "&To=" + toCurrency;
             double retValue = 0;
             try
             {
@@ -219,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 using (var sr = new StreamReader(objResponse.GetResponseStream()))
                 {
                     string strResponse = sr.ReadToEnd();
-                    int intPos1 = strResponse.IndexOf(ToCurrency + "</B>");
+                    int intPos1 = strResponse.IndexOf(toCurrency + "</B>");
                     int intPos2 = strResponse.LastIndexOf("<B>", intPos1);
 
                     retValue = Convert.ToDouble(strResponse.Substring(intPos2 + 3, (intPos1 - intPos2) - 4));

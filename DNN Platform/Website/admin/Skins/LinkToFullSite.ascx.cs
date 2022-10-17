@@ -23,21 +23,22 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "LinkToFullSite.ascx";
 
-        private string _localResourcesFile;
+        private string localResourcesFile;
 
         private string LocalResourcesFile
         {
             get
             {
-                if (string.IsNullOrEmpty(this._localResourcesFile))
+                if (string.IsNullOrEmpty(this.localResourcesFile))
                 {
-                    this._localResourcesFile = Localization.GetResourceFile(this, MyFileName);
+                    this.localResourcesFile = Localization.GetResourceFile(this, MyFileName);
                 }
 
-                return this._localResourcesFile;
+                return this.localResourcesFile;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

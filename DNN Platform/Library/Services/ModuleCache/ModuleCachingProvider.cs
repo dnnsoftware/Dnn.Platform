@@ -16,9 +16,9 @@ namespace DotNetNuke.Services.ModuleCache
             return ComponentFactory.GetComponents<ModuleCachingProvider>();
         }
 
-        public static ModuleCachingProvider Instance(string FriendlyName)
+        public static ModuleCachingProvider Instance(string friendlyName)
         {
-            return ComponentFactory.GetComponent<ModuleCachingProvider>(FriendlyName);
+            return ComponentFactory.GetComponent<ModuleCachingProvider>(friendlyName);
         }
 
         public static void RemoveItemFromAllProviders(int tabModuleId)

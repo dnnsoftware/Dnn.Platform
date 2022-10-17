@@ -49,13 +49,13 @@ namespace DesktopModules.Admin.Security
         {
             get
             {
-                UserProfile _Profile = null;
+                UserProfile profile = null;
                 if (this.User != null)
                 {
-                    _Profile = this.User.Profile;
+                    profile = this.User.Profile;
                 }
 
-                return _Profile;
+                return profile;
             }
         }
 
@@ -171,7 +171,7 @@ namespace DesktopModules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            this.cmdUpdate.Click += this.CmdUpdate_Click;
         }
 
         /// -----------------------------------------------------------------------------
@@ -181,7 +181,7 @@ namespace DesktopModules.Admin.Security
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdate_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false && this.UserId == Null.NullInteger)
             {

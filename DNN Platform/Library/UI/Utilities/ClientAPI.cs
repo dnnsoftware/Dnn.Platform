@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Utilities
     /// </remarks>
     public class DNNClientAPI
     {
-        private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
+        private static readonly Hashtable ObjEnabledClientPersonalizationKeys = new Hashtable();
 
         public enum MinMaxPersistanceType
         {
@@ -90,18 +90,18 @@ namespace DotNetNuke.UI.Utilities
         /// </summary>
         /// <param name="objTitle">Title element that responds to the click and dragged.</param>
         /// <param name="objContainer">Container.</param>
-        /// <param name="ModuleID">Module ID.</param>
+        /// <param name="moduleID">Module ID.</param>
         /// <remarks>
         /// This sub also will send down information to notify the client of the panes that have been defined in the current skin.
         /// </remarks>
-        public static void EnableContainerDragAndDrop(Control objTitle, Control objContainer, int ModuleID)
+        public static void EnableContainerDragAndDrop(Control objTitle, Control objContainer, int moduleID)
         {
             if (ClientAPI.ClientAPIDisabled() == false && ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))
             {
                 EnableDragDrop(objTitle.Page);
 
                 JavaScript.RegisterClientReference(objTitle.Page, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
-                ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + ModuleID + ";", false);
+                ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + moduleID + ";", false);
                 string strPanes = string.Empty;
                 string strPaneNames = string.Empty;
                 var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
@@ -386,11 +386,11 @@ namespace DotNetNuke.UI.Utilities
 
                 // in order to limit the keys that can be accessed and written we are storing the enabled keys
                 // in this shared hash table
-                lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
+                lock (ObjEnabledClientPersonalizationKeys.SyncRoot)
                 {
                     if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
                     {
-                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
+                        ObjEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
                     }
                 }
 
@@ -402,7 +402,7 @@ namespace DotNetNuke.UI.Utilities
 
         public static bool IsPersonalizationKeyRegistered(string strKey)
         {
-            return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
+            return ObjEnabledClientPersonalizationKeys.ContainsKey(strKey);
         }
 
         private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)

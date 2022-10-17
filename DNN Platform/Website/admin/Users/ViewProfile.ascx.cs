@@ -14,6 +14,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     public partial class ViewProfile : UserModuleBase
     {
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -28,6 +29,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlProfile.UserId = this.UserId;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

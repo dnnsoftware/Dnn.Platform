@@ -23,10 +23,10 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int _moduleID;
+        private int moduleID;
 
         // local property declarations
-        private int _modulePermissionID;
+        private int modulePermissionID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -36,8 +36,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo()
         {
-            this._modulePermissionID = Null.NullInteger;
-            this._moduleID = Null.NullInteger;
+            this.modulePermissionID = Null.NullInteger;
+            this.moduleID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -68,12 +68,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._modulePermissionID;
+                return this.modulePermissionID;
             }
 
             set
             {
-                this._modulePermissionID = value;
+                this.modulePermissionID = value;
             }
         }
 
@@ -88,12 +88,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._moduleID;
+                return this.moduleID;
             }
 
             set
             {
-                this._moduleID = value;
+                this.moduleID = value;
             }
         }
 
@@ -199,7 +199,7 @@ namespace DotNetNuke.Security.Permissions
         {
             unchecked
             {
-                return (this._moduleID * 397) ^ this._modulePermissionID;
+                return (this.moduleID * 397) ^ this.modulePermissionID;
             }
         }
     }

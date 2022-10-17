@@ -97,6 +97,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private LuceneControllerImpl luceneController;
 
         [SetUp]
+
         public void SetUp()
         {
             // Arrange
@@ -163,6 +164,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
 
         [Test]
+
         public void GetSearchResultsDetailed()
         {
             const string keyword = "super";
@@ -216,6 +218,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
 
         [Test]
+
         public void GetSearchResultsBasic()
         {
             const string keyword = "awesome";
@@ -266,6 +269,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
 
         [Test]
+
         public void ModifyingDocumentsDoesNotCreateDuplicates()
         {
             // Arrange

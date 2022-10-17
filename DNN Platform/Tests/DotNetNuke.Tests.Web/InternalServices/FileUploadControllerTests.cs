@@ -52,6 +52,7 @@
 
         [Test]
         [SetCulture("tr-TR")]
+
         public async Task UploadFromLocal_ShouldUploadFile_WithTrCultureAsync()
         {
             var formDataContent = new MultipartFormDataContent();

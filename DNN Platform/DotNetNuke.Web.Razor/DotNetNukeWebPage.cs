@@ -14,13 +14,13 @@ namespace DotNetNuke.Web.Razor
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public abstract class DotNetNukeWebPage : WebPageBase
     {
-        private dynamic _model;
+        private dynamic model;
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public dynamic Model
         {
-            get { return this._model ?? (this._model = this.PageContext.Model); }
-            set { this._model = value; }
+            get { return this.model ?? (this.model = this.PageContext.Model); }
+            set { this.model = value; }
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -32,6 +32,7 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal UrlHelper Url { get; internal set; }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void ConfigurePage(WebPageBase parentPage)
         {
@@ -46,7 +47,7 @@ namespace DotNetNuke.Web.Razor
     public abstract class DotNetNukeWebPage<TModel> : DotNetNukeWebPage
         where TModel : class
     {
-        private TModel _model;
+        private TModel model;
 
         public DotNetNukeWebPage()
         {
@@ -57,8 +58,8 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
-            get { return this.PageContext?.Model as TModel ?? this._model; }
-            set { this._model = value; }
+            get { return this.PageContext?.Model as TModel ?? this.model; }
+            set { this.model = value; }
         }
     }
 }

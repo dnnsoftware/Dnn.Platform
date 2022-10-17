@@ -4,10 +4,10 @@
 
 namespace DotNetNuke.Services.Log.EventLog
 {
-    using DotNetNuke.Abstractions.Logging;
-
     using System.Collections;
     using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions.Logging;
 
     public interface ILogController
     {

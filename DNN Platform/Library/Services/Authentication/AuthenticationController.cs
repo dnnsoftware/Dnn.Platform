@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Authentication
     public class AuthenticationController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
-        private static readonly DataProvider provider = DataProvider.Instance();
+        private static readonly DataProvider Provider = DataProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Authentication
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
-            return provider.AddAuthentication(
+            return Provider.AddAuthentication(
                 authSystem.PackageID,
                 authSystem.AuthenticationType,
                 authSystem.IsEnabled,
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Authentication
                     PortalController.Instance.GetCurrentPortalSettings(),
                     UserController.Instance.GetCurrentUserInfo().UserID,
                     EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
+                return Provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -95,12 +95,12 @@ namespace DotNetNuke.Services.Authentication
         public static UserAuthenticationInfo GetUserAuthentication(int userID)
         {
             // Go to database
-            return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
+            return CBO.FillObject<UserAuthenticationInfo>(Provider.GetUserAuthentication(userID));
         }
 
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
-            provider.DeleteAuthentication(authSystem.AuthenticationID);
+            Provider.DeleteAuthentication(authSystem.AuthenticationID);
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.Authentication
             if (authInfo == null)
             {
                 // Go to database
-                return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationService(authenticationID));
+                return CBO.FillObject<AuthenticationInfo>(Provider.GetAuthenticationService(authenticationID));
             }
 
             return authInfo;
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.Authentication
             if (authInfo == null)
             {
                 // Go to database
-                return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByPackageID(packageID));
+                return CBO.FillObject<AuthenticationInfo>(Provider.GetAuthenticationServiceByPackageID(packageID));
             }
 
             return authInfo;
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Authentication
             if (authInfo == null)
             {
                 // Go to database
-                return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByType(authenticationType));
+                return CBO.FillObject<AuthenticationInfo>(Provider.GetAuthenticationServiceByType(authenticationType));
             }
 
             return authInfo;
@@ -289,7 +289,7 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
-            string _RedirectURL = string.Empty;
+            string redirectURL = string.Empty;
             if (settings.Registration.RedirectAfterLogout == Null.NullInteger)
             {
                 if (TabPermissionController.CanViewPage())
@@ -297,29 +297,29 @@ namespace DotNetNuke.Services.Authentication
                     // redirect to current page (or home page if current page is a profile page to reduce redirects)
                     if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
                     {
-                        _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
+                        redirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                     }
                     else
                     {
-                        _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
+                        redirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
                     }
                 }
                 else if (settings.HomeTabId != -1)
                 {
                     // redirect to portal home page specified
-                    _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
+                    redirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                 }
                 else // redirect to default portal root
                 {
-                    _RedirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
+                    redirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
                 }
             }
             else // redirect to after logout page
             {
-                _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
+                redirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
 
-            return _RedirectURL;
+            return redirectURL;
         }
 
         /// -----------------------------------------------------------------------------
@@ -333,31 +333,31 @@ namespace DotNetNuke.Services.Authentication
             SetAuthenticationType(value, false);
         }
 
-        public static void SetAuthenticationType(string value, bool CreatePersistentCookie)
+        public static void SetAuthenticationType(string value, bool createPersistentCookie)
         {
             try
             {
-                int PersistentCookieTimeout = Config.GetPersistentCookieTimeout();
-                HttpResponse Response = HttpContext.Current.Response;
-                if (Response == null)
+                int persistentCookieTimeout = Config.GetPersistentCookieTimeout();
+                HttpResponse response = HttpContext.Current.Response;
+                if (response == null)
                 {
                     return;
                 }
 
                 // save the authenticationmethod as a cookie
                 HttpCookie cookie = null;
-                cookie = Response.Cookies.Get("authentication");
+                cookie = response.Cookies.Get("authentication");
                 if (cookie == null)
                 {
                     if (!string.IsNullOrEmpty(value))
                     {
                         cookie = new HttpCookie("authentication", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
-                        if (CreatePersistentCookie)
+                        if (createPersistentCookie)
                         {
-                            cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
+                            cookie.Expires = DateTime.Now.AddMinutes(persistentCookieTimeout);
                         }
 
-                        Response.Cookies.Add(cookie);
+                        response.Cookies.Add(cookie);
                     }
                 }
                 else
@@ -365,16 +365,16 @@ namespace DotNetNuke.Services.Authentication
                     cookie.Value = value;
                     if (!string.IsNullOrEmpty(value))
                     {
-                        if (CreatePersistentCookie)
+                        if (createPersistentCookie)
                         {
-                            cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
+                            cookie.Expires = DateTime.Now.AddMinutes(persistentCookieTimeout);
                         }
 
-                        Response.Cookies.Set(cookie);
+                        response.Cookies.Set(cookie);
                     }
                     else
                     {
-                        Response.Cookies.Remove("authentication");
+                        response.Cookies.Remove("authentication");
                     }
                 }
             }
@@ -392,7 +392,7 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static void UpdateAuthentication(AuthenticationInfo authSystem)
         {
-            provider.UpdateAuthentication(
+            Provider.UpdateAuthentication(
                 authSystem.AuthenticationID,
                 authSystem.PackageID,
                 authSystem.AuthenticationType,
@@ -406,7 +406,7 @@ namespace DotNetNuke.Services.Authentication
 
         private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
+            return CBO.FillCollection<AuthenticationInfo>(Provider.GetAuthenticationServices());
         }
     }
 }

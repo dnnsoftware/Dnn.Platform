@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                                      || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
         }
 
+        /// <inheritdoc/>
         public virtual void OnAuthorization(AuthorizationContext filterContext)
         {
             Requires.NotNull("filterContext", filterContext);

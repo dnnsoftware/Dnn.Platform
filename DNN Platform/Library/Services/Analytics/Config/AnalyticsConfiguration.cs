@@ -20,19 +20,19 @@ namespace DotNetNuke.Services.Analytics.Config
     public class AnalyticsConfiguration
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));
-        private AnalyticsRuleCollection _rules;
-        private AnalyticsSettingCollection _settings;
+        private AnalyticsRuleCollection rules;
+        private AnalyticsSettingCollection settings;
 
         public AnalyticsSettingCollection Settings
         {
             get
             {
-                return this._settings;
+                return this.settings;
             }
 
             set
             {
-                this._settings = value;
+                this.settings = value;
             }
         }
 
@@ -40,12 +40,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return this._rules;
+                return this.rules;
             }
 
             set
             {
-                this._rules = value;
+                this.rules = value;
             }
         }
 
@@ -53,16 +53,16 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             string cacheKey = analyticsEngineName + "." + PortalSettings.Current.PortalId;
 
-            var Config = new AnalyticsConfiguration();
-            Config.Rules = new AnalyticsRuleCollection();
-            Config.Settings = new AnalyticsSettingCollection();
+            var config = new AnalyticsConfiguration();
+            config.Rules = new AnalyticsRuleCollection();
+            config.Settings = new AnalyticsSettingCollection();
 
             FileStream fileReader = null;
             string filePath = string.Empty;
             try
             {
-                Config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
-                if (Config == null)
+                config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
+                if (config == null)
                 {
                     filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
 
@@ -75,9 +75,9 @@ namespace DotNetNuke.Services.Analytics.Config
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
                     var doc = new XPathDocument(fileReader);
-                    Config = new AnalyticsConfiguration();
-                    Config.Rules = new AnalyticsRuleCollection();
-                    Config.Settings = new AnalyticsSettingCollection();
+                    config = new AnalyticsConfiguration();
+                    config.Rules = new AnalyticsRuleCollection();
+                    config.Settings = new AnalyticsSettingCollection();
 
                     var allSettings = new Hashtable();
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Settings/AnalyticsSetting"))
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Analytics.Config
                         var setting = new AnalyticsSetting();
                         setting.SettingName = nav.SelectSingleNode("SettingName").Value;
                         setting.SettingValue = nav.SelectSingleNode("SettingValue")?.Value;
-                        Config.Settings.Add(setting);
+                        config.Settings.Add(setting);
                     }
 
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Rules/AnalyticsRule"))
@@ -100,13 +100,13 @@ namespace DotNetNuke.Services.Analytics.Config
                             rule.Value = valueNode.Value;
                         }
 
-                        Config.Rules.Add(rule);
+                        config.Rules.Add(rule);
                     }
 
                     if (File.Exists(filePath))
                     {
                         // Set back into Cache
-                        DataCache.SetCache(cacheKey, Config, new DNNCacheDependency(filePath));
+                        DataCache.SetCache(cacheKey, config, new DNNCacheDependency(filePath));
                     }
                 }
             }
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 }
             }
 
-            return Config;
+            return config;
         }
 
         public static void SaveConfig(string analyticsEngineName, AnalyticsConfiguration config)

@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Social.Messaging
     [Serializable]
     public class MessageAttachment : BaseEntityInfo, IHydratable
     {
-        private int _messageattachmentID = -1;
+        private int messageattachmentID = -1;
 
         /// <summary>
         /// Gets or sets messageAttachmentID - The primary key.
@@ -33,12 +33,12 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return this._messageattachmentID;
+                return this.messageattachmentID;
             }
 
             set
             {
-                this._messageattachmentID = value;
+                this.messageattachmentID = value;
             }
         }
 

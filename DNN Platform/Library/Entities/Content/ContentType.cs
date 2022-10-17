@@ -21,13 +21,13 @@ namespace DotNetNuke.Entities.Content
     [Serializable]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
-        private const string desktopModuleContentTypeName = "DesktopModule";
-        private const string moduleContentTypeName = "Module";
-        private const string tabContentTypeName = "Tab";
+        private const string DesktopModuleContentTypeName = "DesktopModule";
+        private const string ModuleContentTypeName = "Module";
+        private const string TabContentTypeName = "Tab";
 
-        private static ContentType _desktopModule;
-        private static ContentType _module;
-        private static ContentType _tab;
+        private static ContentType desktopModule;
+        private static ContentType module;
+        private static ContentType tab;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentType"/> class.
@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == desktopModuleContentTypeName));
+                return desktopModule ?? (desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == DesktopModuleContentTypeName));
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == moduleContentTypeName));
+                return module ?? (module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == ModuleContentTypeName));
             }
         }
 
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == tabContentTypeName));
+                return tab ?? (tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
 

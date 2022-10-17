@@ -19,6 +19,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -26,6 +27,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

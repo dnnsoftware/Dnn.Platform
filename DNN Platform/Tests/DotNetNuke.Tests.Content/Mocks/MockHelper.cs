@@ -26,6 +26,7 @@ namespace DotNetNuke.Tests.Content.Mocks
 
     public static class MockHelper
     {
+
         internal static IQueryable<Vocabulary> TestVocabularies
         {
             get

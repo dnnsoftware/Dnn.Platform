@@ -13,6 +13,14 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project and is now a Property Attribute called CommandParameter. Will be removed in DNN 11.", false)]
     public class FlagParameterAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
+        /// <param name="defaultValue"></param>
+        /// <param name="required"></param>
         public FlagParameterAttribute(string flag, string description, string type, string defaultValue, bool required)
         {
             this.Flag = flag;
@@ -22,16 +30,36 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
             this.Description = description;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
+        /// <param name="defaultValue"></param>
         public FlagParameterAttribute(string flag, string description, string type, string defaultValue)
             : this(flag, description, type, defaultValue, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
         public FlagParameterAttribute(string flag, string description, string type)
             : this(flag, description, type, string.Empty, false)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
+        /// <param name="required"></param>
         public FlagParameterAttribute(string flag, string description, string type, bool required)
             : this(flag, description, type, string.Empty, required)
         {

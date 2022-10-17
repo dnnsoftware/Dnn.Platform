@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.CoreMessaging {
     
     
     public partial class Subscriptions {
-        
         /// <summary>
         /// ScopeWrapper control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.CoreMessaging {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel ScopeWrapper;
-        
         /// <summary>
         /// lblSubscriptionsHelp control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.CoreMessaging {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSubscriptionsHelp;
-        
         /// <summary>
         /// lblNotificationFreq control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.CoreMessaging {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblNotificationFreq;
-        
         /// <summary>
         /// lblMessageFreq control.
         /// </summary>

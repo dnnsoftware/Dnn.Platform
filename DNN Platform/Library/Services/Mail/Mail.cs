@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Mail
             return HtmlUtils.StripTags(styleLessHtml, true);
         }
 
-        public static bool IsValidEmailAddress(string Email, int portalid)
+        public static bool IsValidEmailAddress(string email, int portalid)
         {
             string pattern = Null.NullString;
 
@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Mail
             }
 
             pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
-            return Regex.Match(Email, pattern).Success;
+            return Regex.Match(email, pattern).Success;
         }
 
         public static void SendEmail(string fromAddress, string toAddress, string subject, string body)

@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Packages
     /// -----------------------------------------------------------------------------
     public class PackageCreatedEventArgs : EventArgs
     {
-        private readonly PackageInfo _Package;
+        private readonly PackageInfo package;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// -----------------------------------------------------------------------------
         public PackageCreatedEventArgs(PackageInfo package)
         {
-            this._Package = package;
+            this.package = package;
         }
 
         /// -----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return this._Package;
+                return this.package;
             }
         }
     }

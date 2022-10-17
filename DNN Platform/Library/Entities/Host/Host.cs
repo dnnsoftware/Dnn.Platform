@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Host
     [Serializable]
     public class Host : BaseEntityInfo
     {
-        private static Globals.PerformanceSettings? _performanceSetting;
+        private static Globals.PerformanceSettings? performanceSetting;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1645,7 +1645,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                if (!_performanceSetting.HasValue)
+                if (!performanceSetting.HasValue)
                 {
                     var s = HostController.Instance.GetString("PerformanceSetting");
                     if (string.IsNullOrEmpty(s))
@@ -1653,13 +1653,16 @@ namespace DotNetNuke.Entities.Host
                         return Globals.PerformanceSettings.ModerateCaching;
                     }
 
-                    _performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
+                    performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
                 }
 
-                return _performanceSetting.Value;
+                return performanceSetting.Value;
             }
 
-            set { _performanceSetting = value; }
+            set
+            {
+                performanceSetting = value;
+            }
         }
 
         /// -----------------------------------------------------------------------------

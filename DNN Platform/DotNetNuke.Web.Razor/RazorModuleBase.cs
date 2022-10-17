@@ -38,6 +38,7 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
+        /// <inheritdoc/>
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnPreRender(EventArgs e)
         {

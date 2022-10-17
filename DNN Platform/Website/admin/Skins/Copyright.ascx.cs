@@ -18,6 +18,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

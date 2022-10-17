@@ -17,13 +17,14 @@ namespace Dnn.PersonaBar.Pages.Components
     public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
-        private readonly ITabController _tabController;
+        private readonly ITabController tabController;
 
         public PageManagementController()
         {
-            this._tabController = TabController.Instance;
+            this.tabController = TabController.Instance;
         }
 
+        /// <inheritdoc/>
         public string GetCreatedInfo(TabInfo tab)
         {
             var createdBy = tab.CreatedByUser(PortalSettings.Current.PortalId);
@@ -36,18 +37,21 @@ namespace Dnn.PersonaBar.Pages.Components
             return displayName;
         }
 
+        /// <inheritdoc/>
         public bool TabHasChildren(TabInfo tabInfo)
         {
             var children = TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID);
             return children != null && children.Count >= 1;
         }
 
+        /// <inheritdoc/>
         public string GetTabHierarchy(TabInfo tab)
         {
-            this._tabController.PopulateBreadCrumbs(ref tab);
+            this.tabController.PopulateBreadCrumbs(ref tab);
             return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
         }
 
+        /// <inheritdoc/>
         public string GetTabUrl(TabInfo tab)
         {
             var url = string.Empty;
@@ -71,20 +75,22 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.Current.PortalId);
                 var baseUrl = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
-                var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
-                                                                            baseUrl,
-                                                                            Globals.glbDefaultPage,
-                                                                            PortalSettings.Current.PortalAlias.HTTPAlias,
-                                                                            false, // dnndev-27493 :we want any custom Urls that apply
-                                                                            friendlyUrlSettings,
-                                                                            Guid.Empty);
+                var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                    tab,
+                    baseUrl,
+                    Globals.glbDefaultPage,
+                    PortalSettings.Current.PortalAlias.HTTPAlias,
+                    false, // dnndev-27493 :we want any custom Urls that apply
+                    friendlyUrlSettings,
+                    Guid.Empty);
 
-                url = path.Replace(Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias), "");
+                url = path.Replace(Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias), string.Empty);
             }
 
             return url;
         }
 
+        /// <inheritdoc/>
         protected override Func<IPageManagementController> GetFactory()
         {
             return () => new PageManagementController();

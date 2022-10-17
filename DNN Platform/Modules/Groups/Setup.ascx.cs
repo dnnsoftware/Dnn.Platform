@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class Setup : GroupsModuleBase
     {
+
         public void btGo_Click(object sender, EventArgs e)
         {
             // Setup Child Page - Main View/Activity

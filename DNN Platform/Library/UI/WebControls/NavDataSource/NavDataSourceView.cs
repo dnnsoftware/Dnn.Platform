@@ -8,8 +8,8 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
     public class NavDataSourceView : HierarchicalDataSourceView
     {
-        private readonly string m_sKey;
-        private string m_sNamespace = "MyNS";
+        private readonly string sKey;
+        private string sNamespace = "MyNS";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NavDataSourceView"/> class.
@@ -19,15 +19,15 @@ namespace DotNetNuke.UI.WebControls
         {
             if (string.IsNullOrEmpty(viewPath))
             {
-                this.m_sKey = string.Empty;
+                this.sKey = string.Empty;
             }
             else if (viewPath.IndexOf("\\") > -1)
             {
-                this.m_sKey = viewPath.Substring(viewPath.LastIndexOf("\\") + 1);
+                this.sKey = viewPath.Substring(viewPath.LastIndexOf("\\") + 1);
             }
             else
             {
-                this.m_sKey = viewPath;
+                this.sKey = viewPath;
             }
         }
 
@@ -35,12 +35,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.m_sNamespace;
+                return this.sNamespace;
             }
 
             set
             {
-                this.m_sNamespace = value;
+                this.sNamespace = value;
             }
         }
 
@@ -56,10 +56,10 @@ namespace DotNetNuke.UI.WebControls
         {
             var objPages = new NavDataPageHierarchicalEnumerable();
             DNNNodeCollection objNodes;
-            objNodes = Navigation.GetNavigationNodes(this.m_sNamespace);
-            if (!string.IsNullOrEmpty(this.m_sKey))
+            objNodes = Navigation.GetNavigationNodes(this.sNamespace);
+            if (!string.IsNullOrEmpty(this.sKey))
             {
-                objNodes = objNodes.FindNodeByKey(this.m_sKey).DNNNodes;
+                objNodes = objNodes.FindNodeByKey(this.sKey).DNNNodes;
             }
 
             foreach (DNNNode objNode in objNodes)

@@ -23,27 +23,31 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
     public partial class Export : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
-        private TabInfo _tab;
+        private readonly INavigationManager navigationManager;
+        private TabInfo tab;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Export"/> class.
+        /// </summary>
         public Export()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public TabInfo Tab
         {
             get
             {
-                if (this._tab == null)
+                if (this.tab == null)
                 {
-                    this._tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
+                    this.tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
                 }
 
-                return this._tab;
+                return this.tab;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -54,6 +58,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -67,7 +72,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     return;
                 }
 
-                this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
+                this.cmdCancel.NavigateUrl = this.navigationManager.NavigateURL();
                 var folderPath = "Templates/";
                 var templateFolder = FolderManager.Instance.GetFolder(this.UserInfo.PortalID, folderPath);
                 this.cboFolders.Services.Parameters.Add("permission", "ADD");

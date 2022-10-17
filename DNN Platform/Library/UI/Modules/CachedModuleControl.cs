@@ -20,8 +20,8 @@ namespace DotNetNuke.UI.Modules
     /// -----------------------------------------------------------------------------
     public class CachedModuleControl : Literal, IModuleControl
     {
-        private string _localResourceFile;
-        private ModuleInstanceContext _moduleContext;
+        private string localResourceFile;
+        private ModuleInstanceContext moduleContext;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -87,12 +87,12 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                if (this._moduleContext == null)
+                if (this.moduleContext == null)
                 {
-                    this._moduleContext = new ModuleInstanceContext(this);
+                    this.moduleContext = new ModuleInstanceContext(this);
                 }
 
-                return this._moduleContext;
+                return this.moduleContext;
             }
         }
 
@@ -108,13 +108,13 @@ namespace DotNetNuke.UI.Modules
             {
                 string fileRoot;
 
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = this.ControlPath + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -122,7 +122,7 @@ namespace DotNetNuke.UI.Modules
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
     }

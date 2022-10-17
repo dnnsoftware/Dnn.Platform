@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Groups.Components
 
     public class GroupsBusinessController : IUpgradeable
     {
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             switch (version)

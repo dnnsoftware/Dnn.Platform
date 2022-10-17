@@ -300,7 +300,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             base.OnLoad(e);
 
-            this.cmdRSVP.Click += this.cmdRSVP_Click;
+            this.cmdRSVP.Click += this.CmdRSVP_Click;
             this.grdServices.ItemCommand += this.grdServices_ItemCommand;
             this.lblRSVP.Text = string.Empty;
         }
@@ -408,7 +408,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdRSVP_Click(object sender, EventArgs e)
+        private void CmdRSVP_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {

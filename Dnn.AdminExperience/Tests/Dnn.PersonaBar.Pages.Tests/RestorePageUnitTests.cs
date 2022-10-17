@@ -51,6 +51,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_RestorePage_WithValidCommand_ShouldReturnSuccessResponse()
         {
             // Arrange
@@ -66,6 +67,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_RestorePage_WithValidCommandForNonExistingTab_ShouldReturnErrorResponse()
         {
             // Arrange
@@ -84,6 +86,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_RestorePage_WithValidCommandForRequestedPortalNotAllowed_ShouldReturnErrorResponse()
         {
             // Arrange
@@ -100,6 +103,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         }
 
         [Test]
+
         public void Run_RestorePage_WithValidCommandForNotRestoreTab_ShouldReturnErrorResponse()
         {
             // Arrange

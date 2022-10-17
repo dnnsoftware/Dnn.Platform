@@ -27,11 +27,11 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
         public Toast()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected string ServiceModuleName { get; private set; }
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string GetMessageLink()
         {
-            return this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId));
+            return this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId));
         }
 
         public string GetMessageLabel()
@@ -64,6 +64,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return Localization.GetString("SeeAllNotification", Localization.GetResourceFile(this, MyFileName));
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -78,6 +79,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         // This method is copied from user skin object
+
         private int GetMessageTab()
         {
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
@@ -98,6 +100,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         // This method is copied from user skin object
+
         private int FindMessageTab()
         {
             // On brand new install the new Message Center Module is on the child page of User Profile Page

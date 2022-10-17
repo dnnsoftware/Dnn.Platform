@@ -53,6 +53,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private DataTable _dtNotificationActions;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -188,6 +189,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationType_By_Id_Gets_Object_From_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -197,6 +199,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationType_By_Id_Calls_DataService_GetNotificationType_When_Object_Is_Not_In_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -214,6 +217,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationType_By_Id_Returns_Valid_Object()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -241,12 +245,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void GetNotificationType_By_Name_Throws_On_Null_Or_Empty_Name(string name)
         {
             Assert.Throws<ArgumentException>(() => this._notificationsController.GetNotificationType(name));
         }
 
         [Test]
+
         public void GetNotificationType_By_Name_Gets_Object_From_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -256,6 +262,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationType_By_Name_Calls_DataService_GetNotificationTypeByName_When_Object_Is_Not_In_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -271,6 +278,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationType_By_Name_Returns_Valid_Object()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -328,6 +336,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SetNotificationTypeActions_Calls_DataService_AddNotificationTypeAction_For_Each_Of_Two_Actions()
         {
             this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
@@ -358,6 +367,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SetNotificationTypeActions_Sets_NotificationTypeActionId_And_NotificationTypeId()
         {
             var expectedNotificationTypeAction = CreateValidNotificationTypeAction();
@@ -403,6 +413,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeAction_By_Id_Gets_Object_From_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -412,6 +423,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeAction_By_Id_Calls_DataService_GetNotificationTypeAction_When_Object_Is_Not_In_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -427,6 +439,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeAction_By_Id_Returns_Valid_Object()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -456,12 +469,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         [TestCase(null)]
         [TestCase("")]
+
         public void GetNotificationTypeAction_By_Name_Throws_On_Null_Or_Empty_Name(string name)
         {
             Assert.Throws<ArgumentException>(() => this._notificationsController.GetNotificationTypeAction(Constants.Messaging_NotificationTypeId, name));
         }
 
         [Test]
+
         public void GetNotificationTypeAction_By_Name_Gets_Object_From_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -471,6 +486,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeAction_By_Name_Calls_DataService_GetNotificationTypeActionByName_When_Object_Is_Not_In_Cache()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -488,6 +504,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeAction_By_Name_Returns_Valid_Object()
         {
             this._cachingProvider.Object.PurgeCache();
@@ -517,6 +534,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeActions_Calls_DataService_GetNotificationTypeActions()
         {
             this._mockDataService
@@ -530,6 +548,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotificationTypeActions_Returns_Valid_Object()
         {
             var expectedNotificationTypeAction = CreateValidNotificationTypeAction();
@@ -554,6 +573,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Sets_Empty_SenderUserId_With_Admin()
         {
             var adminUser = new UserInfo
@@ -588,6 +608,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TestCase(null, "")]
         [TestCase("", null)]
         [TestCase("", "")]
+
         public void SendNotification_Throws_On_Null_Or_Empty_Subject_And_Body(string subject, string body)
         {
             var notification = CreateUnsavedNotification();
@@ -601,6 +622,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Throws_On_Null_Roles_And_Users()
         {
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
@@ -610,6 +632,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Throws_On_Large_Subject()
         {
             var notification = CreateUnsavedNotification();
@@ -628,6 +651,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Throws_On_Roles_And_Users_With_No_DisplayNames()
         {
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
@@ -637,6 +661,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Throws_On_Large_To_List()
         {
             var roles = new List<RoleInfo>();
@@ -655,6 +680,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Calls_DataService_On_Valid_Notification()
         {
             var adminUser = new UserInfo
@@ -700,6 +726,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Calls_DataService_On_Valid_Notification_When_Portal_Is_In_Group()
         {
             var adminUser = new UserInfo
@@ -749,6 +776,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Calls_Messaging_DataService_CreateSocialMessageRecipientsForRole_When_Passing_Roles()
         {
             var adminUser = new UserInfo
@@ -801,6 +829,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Calls_Messaging_DataService_SaveSocialMessageRecipient_When_Passing_Users()
         {
             var adminUser = new UserInfo
@@ -862,6 +891,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void SendNotification_Returns_Valid_Object()
         {
             var expectedNotification = CreateValidNotification();
@@ -946,6 +976,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotifications_Calls_DataService_GetNotifications()
         {
             this._mockDataService
@@ -961,6 +992,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotifications_Calls_DataService_GetNotifications_When_Portal_Is_In_Group()
         {
             this._mockDataService
@@ -979,6 +1011,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetNotifications_Calls_DataService_GetNotificationByContext()
         {
             this._mockDataService
@@ -1008,6 +1041,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void DeleteNotificationRecipientByContext_Calls_DeleteMessageRecipient()
         {
             this._mockNotificationsController.Setup(mc => mc.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();

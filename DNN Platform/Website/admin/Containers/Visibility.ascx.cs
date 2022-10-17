@@ -30,8 +30,8 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public partial class Visibility : SkinObjectBase
     {
-        private int _animationFrames = 5;
-        private Panel _pnlModuleContent;
+        private int animationFrames = 5;
+        private Panel pnlModuleContent;
 
         public string ResourceFile
         {
@@ -45,12 +45,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._animationFrames;
+                return this.animationFrames;
             }
 
             set
             {
-                this._animationFrames = value;
+                this.animationFrames = value;
             }
         }
 
@@ -122,16 +122,16 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._pnlModuleContent == null)
+                if (this.pnlModuleContent == null)
                 {
                     Control objCtl = this.Parent.FindControl("ModuleContent");
                     if (objCtl != null)
                     {
-                        this._pnlModuleContent = (Panel)objCtl;
+                        this.pnlModuleContent = (Panel)objCtl;
                     }
                 }
 
-                return this._pnlModuleContent;
+                return this.pnlModuleContent;
             }
         }
 
@@ -143,11 +143,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            this.cmdVisibility.Click += this.cmdVisibility_Click;
+            this.cmdVisibility.Click += this.CmdVisibility_Click;
 
             try
             {
@@ -218,6 +219,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -241,7 +243,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        private void cmdVisibility_Click(object sender, EventArgs e)
+        private void CmdVisibility_Click(object sender, EventArgs e)
         {
             try
             {

@@ -29,12 +29,12 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "ItemID">The Id of the Item.</param>
+        /// <param name = "itemID">The Id of the Item.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public ArrayList GetHtmlTextLog(int ItemID)
+        public ArrayList GetHtmlTextLog(int itemID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextLog(ItemID), typeof(HtmlTextLogInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextLog(itemID), typeof(HtmlTextLogInfo));
         }
 
         /// -----------------------------------------------------------------------------

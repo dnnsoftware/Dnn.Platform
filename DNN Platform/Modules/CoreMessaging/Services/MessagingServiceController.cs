@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="numberOfRecords">How many messges to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Inbox(int afterMessageId, int numberOfRecords)
         {
             try
@@ -70,6 +71,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Sentbox(int afterMessageId, int numberOfRecords)
         {
             try
@@ -96,6 +98,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Archived(int afterMessageId, int numberOfRecords)
         {
             try
@@ -123,6 +126,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageThreadsView"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage Thread(int conversationId, int afterMessageId, int numberOfRecords)
         {
             try
@@ -151,6 +155,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>Information about the conversation and message thread.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage Reply(ReplyDTO postData)
         {
             try
@@ -182,6 +187,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A "success" result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkArchived(ConversationDTO postData)
         {
             try
@@ -204,6 +210,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A "success" result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkUnArchived(ConversationDTO postData)
         {
             try
@@ -226,6 +233,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkRead(ConversationDTO postData)
         {
             try
@@ -248,6 +256,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage MarkUnRead(ConversationDTO postData)
         {
             try
@@ -270,6 +279,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A "success" Result or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeleteUserFromConversation(ConversationDTO postData)
         {
             try
@@ -292,6 +302,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="numberOfRecords">How many notifications to get.</param>
         /// <returns>A see <see cref="NotificationViewModel"/> object.</returns>
         [HttpGet]
+
         public HttpResponseMessage Notifications(int afterNotificationId, int numberOfRecords)
         {
             try
@@ -389,6 +400,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// </summary>
         /// <returns>A number representing the notification count.</returns>
         [HttpGet]
+
         public HttpResponseMessage CountNotifications()
         {
             try
@@ -410,6 +422,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// </summary>
         /// <returns>The number of unread messages.</returns>
         [HttpGet]
+
         public HttpResponseMessage CountUnreadMessages()
         {
             try
@@ -431,6 +444,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// </summary>
         /// <returns><see cref="TotalsViewModel"/>.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetTotals()
         {
             try
@@ -458,6 +472,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A "success" Result and a deleteCount representing how many notifications where deleted.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DismissAllNotifications()
         {
             try

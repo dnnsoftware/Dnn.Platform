@@ -14,10 +14,11 @@ namespace DotNetNuke.Services.Exceptions
     public class SecurityException : BasePortalException
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityException));
-        private string m_IP;
-        private string m_Querystring;
+        private string ip;
+        private string querystring;
 
         // default constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityException"/> class.
         /// </summary>
@@ -26,6 +27,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityException"/> class.
         /// </summary>
@@ -33,10 +35,11 @@ namespace DotNetNuke.Services.Exceptions
         public SecurityException(string message)
             : base(message)
         {
-            this.InitilizePrivateVariables();
+            this.InitializePrivateVariables();
         }
 
         // constructor with message and inner exception
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityException"/> class.
         /// </summary>
@@ -45,7 +48,7 @@ namespace DotNetNuke.Services.Exceptions
         public SecurityException(string message, Exception inner)
             : base(message, inner)
         {
-            this.InitilizePrivateVariables();
+            this.InitializePrivateVariables();
         }
 
         /// <summary>
@@ -56,9 +59,9 @@ namespace DotNetNuke.Services.Exceptions
         protected SecurityException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.InitilizePrivateVariables();
-            this.m_IP = info.GetString("m_IP");
-            this.m_Querystring = info.GetString("m_Querystring");
+            this.InitializePrivateVariables();
+            this.ip = info.GetString("m_IP");
+            this.querystring = info.GetString("m_Querystring");
         }
 
         [XmlElement("IP")]
@@ -66,7 +69,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_IP;
+                return this.ip;
             }
         }
 
@@ -75,11 +78,11 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return this.m_Querystring;
+                return this.querystring;
             }
         }
 
-        private void InitilizePrivateVariables()
+        private void InitializePrivateVariables()
         {
             // Try and get the Portal settings from httpcontext
             try
@@ -89,15 +92,15 @@ namespace DotNetNuke.Services.Exceptions
 
                 if (ipAddress != null)
                 {
-                    this.m_IP = ipAddress;
+                    this.ip = ipAddress;
                 }
 
-                this.m_Querystring = HttpContext.Current.Request.MapPath(this.Querystring, HttpContext.Current.Request.ApplicationPath, false);
+                this.querystring = HttpContext.Current.Request.MapPath(this.Querystring, HttpContext.Current.Request.ApplicationPath, false);
             }
             catch (Exception exc)
             {
-                this.m_IP = string.Empty;
-                this.m_Querystring = string.Empty;
+                this.ip = string.Empty;
+                this.querystring = string.Empty;
                 Logger.Error(exc);
             }
         }

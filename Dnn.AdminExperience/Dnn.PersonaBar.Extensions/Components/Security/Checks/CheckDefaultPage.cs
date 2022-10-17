@@ -14,10 +14,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckDefaultPage : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckDefaultPage";
 
+        /// <inheritdoc/>
         public bool LazyLoad => false;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -54,6 +57,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 throw;
             }
+
             return result;
         }
 

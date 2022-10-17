@@ -22,12 +22,13 @@ namespace DotNetNuke.Services.Exceptions
     public class BasePortalException : Exception
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
-        private string m_InnerExceptionString;
-        private string m_Message;
-        private string m_Source;
-        private string m_StackTrace;
+        private string innerExceptionString;
+        private string message;
+        private string source;
+        private string stackTrace;
 
         // default constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BasePortalException"/> class.
         /// </summary>
@@ -36,6 +37,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BasePortalException"/> class.
         /// </summary>
@@ -47,6 +49,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with message and inner exception
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BasePortalException"/> class.
         /// </summary>
@@ -80,14 +83,14 @@ namespace DotNetNuke.Services.Exceptions
             this.UserAgent = info.GetString("m_UserAgent");
             this.DefaultDataProvider = info.GetString("m_DefaultDataProvider");
             this.ExceptionGUID = info.GetString("m_ExceptionGUID");
-            this.m_InnerExceptionString = info.GetString("m_InnerExceptionString");
+            this.innerExceptionString = info.GetString("m_InnerExceptionString");
             this.FileName = info.GetString("m_FileName");
             this.FileLineNumber = info.GetInt32("m_FileLineNumber");
             this.FileColumnNumber = info.GetInt32("m_FileColumnNumber");
             this.Method = info.GetString("m_Method");
-            this.m_StackTrace = info.GetString("m_StackTrace");
-            this.m_Message = info.GetString("m_Message");
-            this.m_Source = info.GetString("m_Source");
+            this.stackTrace = info.GetString("m_StackTrace");
+            this.message = info.GetString("m_Message");
+            this.source = info.GetString("m_Source");
         }
 
         [XmlIgnore]
@@ -142,7 +145,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 var context = HttpContext.Current;
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                var innerException = new Exception(this.Message, this);
+                var innerException = new Exception(this.message, this);
                 while (innerException.InnerException != null)
                 {
                     innerException = innerException.InnerException;
@@ -230,35 +233,35 @@ namespace DotNetNuke.Services.Exceptions
 
                 try
                 {
-                    this.m_StackTrace = this.StackTrace;
+                    this.stackTrace = this.StackTrace;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    this.m_StackTrace = string.Empty;
+                    this.stackTrace = string.Empty;
                 }
 
                 try
                 {
-                    this.m_Message = this.Message;
+                    this.message = this.Message;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    this.m_Message = string.Empty;
+                    this.message = string.Empty;
                 }
 
                 try
                 {
-                    this.m_Source = this.Source;
+                    this.source = this.Source;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    this.m_Source = string.Empty;
+                    this.source = string.Empty;
                 }
             }
             catch (Exception exc)
@@ -278,9 +281,9 @@ namespace DotNetNuke.Services.Exceptions
                 this.FileLineNumber = -1;
                 this.FileColumnNumber = -1;
                 this.Method = string.Empty;
-                this.m_StackTrace = string.Empty;
-                this.m_Message = string.Empty;
-                this.m_Source = string.Empty;
+                this.stackTrace = string.Empty;
+                this.message = string.Empty;
+                this.source = string.Empty;
                 Logger.Error(exc);
             }
         }

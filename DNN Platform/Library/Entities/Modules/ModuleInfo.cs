@@ -39,20 +39,20 @@ namespace DotNetNuke.Entities.Modules
     public class ModuleInfo : ContentItem, IPropertyAccess
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInfo));
-        private string _authorizedEditRoles;
-        private string _authorizedViewRoles;
-        private string _cultureCode;
-        private Guid _defaultLanguageGuid;
-        private ModuleInfo _defaultLanguageModule;
-        private DesktopModuleInfo _desktopModule;
-        private Dictionary<string, ModuleInfo> _localizedModules;
-        private Guid _localizedVersionGuid;
-        private ModuleControlInfo _moduleControl;
-        private ModuleDefinitionInfo _moduleDefinition;
-        private ModulePermissionCollection _modulePermissions;
-        private TabInfo _parentTab;
-        private Hashtable _moduleSettings;
-        private Hashtable _tabModuleSettings;
+        private string authorizedEditRoles;
+        private string authorizedViewRoles;
+        private string cultureCode;
+        private Guid defaultLanguageGuid;
+        private ModuleInfo defaultLanguageModule;
+        private DesktopModuleInfo desktopModule;
+        private Dictionary<string, ModuleInfo> localizedModules;
+        private Guid localizedVersionGuid;
+        private ModuleControlInfo moduleControl;
+        private ModuleDefinitionInfo moduleDefinition;
+        private ModulePermissionCollection modulePermissions;
+        private TabInfo parentTab;
+        private Hashtable moduleSettings;
+        private Hashtable tabModuleSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleInfo"/> class.
@@ -68,8 +68,8 @@ namespace DotNetNuke.Entities.Modules
             this.ModuleDefID = Null.NullInteger;
             this.ModuleTitle = Null.NullString;
             this.ModuleVersion = Null.NullInteger;
-            this._authorizedEditRoles = Null.NullString;
-            this._authorizedViewRoles = Null.NullString;
+            this.authorizedEditRoles = Null.NullString;
+            this.authorizedViewRoles = Null.NullString;
             this.Alignment = Null.NullString;
             this.Color = Null.NullString;
             this.Border = Null.NullString;
@@ -86,10 +86,10 @@ namespace DotNetNuke.Entities.Modules
             // Guid, Version Guid, and Localized Version Guid should be initialised to a new value
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
-            this._localizedVersionGuid = Guid.NewGuid();
+            this.localizedVersionGuid = Guid.NewGuid();
 
             // Default Language Guid should be initialised to a null Guid
-            this._defaultLanguageGuid = Null.NullGuid;
+            this.defaultLanguageGuid = Null.NullGuid;
         }
 
         /// -----------------------------------------------------------------------------
@@ -104,8 +104,8 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._desktopModule ??
-                       (this._desktopModule = this.DesktopModuleID > Null.NullInteger
+                return this.desktopModule ??
+                       (this.desktopModule = this.DesktopModuleID > Null.NullInteger
                             ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID)
                             : new DesktopModuleInfo());
             }
@@ -140,8 +140,8 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._moduleControl ??
-                       (this._moduleControl = this.ModuleControlId > Null.NullInteger
+                return this.moduleControl ??
+                       (this.moduleControl = this.ModuleControlId > Null.NullInteger
                             ? ModuleControlController.GetModuleControl(this.ModuleControlId)
                             : new ModuleControlInfo());
             }
@@ -159,8 +159,8 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._moduleDefinition ??
-                       (this._moduleDefinition = this.ModuleDefID > Null.NullInteger
+                return this.moduleDefinition ??
+                       (this.moduleDefinition = this.ModuleDefID > Null.NullInteger
                             ? ModuleDefinitionController.GetModuleDefinitionByID(this.ModuleDefID)
                             : new ModuleDefinitionInfo());
             }
@@ -172,19 +172,19 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._moduleSettings == null)
+                if (this.moduleSettings == null)
                 {
                     if (this.ModuleID == Null.NullInteger)
                     {
-                        this._moduleSettings = new Hashtable();
+                        this.moduleSettings = new Hashtable();
                     }
                     else
                     {
-                        this._moduleSettings = new ModuleController().GetModuleSettings(this.ModuleID, this.TabID);
+                        this.moduleSettings = new ModuleController().GetModuleSettings(this.ModuleID, this.TabID);
                     }
                 }
 
-                return this._moduleSettings;
+                return this.moduleSettings;
             }
         }
 
@@ -194,19 +194,19 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._tabModuleSettings == null)
+                if (this.tabModuleSettings == null)
                 {
                     if (this.TabModuleID == Null.NullInteger)
                     {
-                        this._tabModuleSettings = new Hashtable();
+                        this.tabModuleSettings = new Hashtable();
                     }
                     else
                     {
-                        this._tabModuleSettings = new ModuleController().GetTabModuleSettings(this.TabModuleID, this.TabID);
+                        this.tabModuleSettings = new ModuleController().GetTabModuleSettings(this.TabModuleID, this.TabID);
                     }
                 }
 
-                return this._tabModuleSettings;
+                return this.tabModuleSettings;
             }
         }
 
@@ -216,13 +216,13 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._defaultLanguageModule == null && (!this.DefaultLanguageGuid.Equals(Null.NullGuid)) && this.ParentTab != null && this.ParentTab.DefaultLanguageTab != null &&
+                if (this.defaultLanguageModule == null && (!this.DefaultLanguageGuid.Equals(Null.NullGuid)) && this.ParentTab != null && this.ParentTab.DefaultLanguageTab != null &&
                     this.ParentTab.DefaultLanguageTab.ChildModules != null)
                 {
-                    this._defaultLanguageModule = (from kvp in this.ParentTab.DefaultLanguageTab.ChildModules where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
+                    this.defaultLanguageModule = (from kvp in this.ParentTab.DefaultLanguageTab.ChildModules where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
 
-                return this._defaultLanguageModule;
+                return this.defaultLanguageModule;
             }
         }
 
@@ -280,24 +280,24 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._localizedModules == null && this.DefaultLanguageGuid.Equals(Null.NullGuid) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
+                if (this.localizedModules == null && this.DefaultLanguageGuid.Equals(Null.NullGuid) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
                 {
                     // Cycle through all localized tabs looking for this module
-                    this._localizedModules = new Dictionary<string, ModuleInfo>();
+                    this.localizedModules = new Dictionary<string, ModuleInfo>();
                     foreach (TabInfo t in this.ParentTab.LocalizedTabs.Values)
                     {
                         foreach (ModuleInfo m in t.ChildModules.Values)
                         {
                             ModuleInfo tempModuleInfo;
-                            if (m.DefaultLanguageGuid == this.UniqueId && !m.IsDeleted && !this._localizedModules.TryGetValue(m.CultureCode, out tempModuleInfo))
+                            if (m.DefaultLanguageGuid == this.UniqueId && !m.IsDeleted && !this.localizedModules.TryGetValue(m.CultureCode, out tempModuleInfo))
                             {
-                                this._localizedModules.Add(m.CultureCode, m);
+                                this.localizedModules.Add(m.CultureCode, m);
                             }
                         }
                     }
                 }
 
-                return this._localizedModules;
+                return this.localizedModules;
             }
         }
 
@@ -305,20 +305,20 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._parentTab == null)
+                if (this.parentTab == null)
                 {
                     if (this.PortalID == Null.NullInteger || string.IsNullOrEmpty(this.CultureCode))
                     {
-                        this._parentTab = TabController.Instance.GetTab(this.TabID, this.PortalID, false);
+                        this.parentTab = TabController.Instance.GetTab(this.TabID, this.PortalID, false);
                     }
                     else
                     {
                         Locale locale = LocaleController.Instance.GetLocale(this.CultureCode);
-                        this._parentTab = TabController.Instance.GetTabByCulture(this.TabID, this.PortalID, locale);
+                        this.parentTab = TabController.Instance.GetTabByCulture(this.TabID, this.PortalID, locale);
                     }
                 }
 
-                return this._parentTab;
+                return this.parentTab;
             }
         }
 
@@ -447,15 +447,15 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._modulePermissions ??
-                    (this._modulePermissions = this.ModuleID > 0
+                return this.modulePermissions ??
+                    (this.modulePermissions = this.ModuleID > 0
                             ? new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabID))
                             : new ModulePermissionCollection());
             }
 
             set
             {
-                this._modulePermissions = value;
+                this.modulePermissions = value;
             }
         }
 
@@ -516,12 +516,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._cultureCode;
+                return this.cultureCode;
             }
 
             set
             {
-                this._cultureCode = value;
+                this.cultureCode = value;
             }
         }
 
@@ -530,12 +530,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._defaultLanguageGuid;
+                return this.defaultLanguageGuid;
             }
 
             set
             {
-                this._defaultLanguageGuid = value;
+                this.defaultLanguageGuid = value;
             }
         }
 
@@ -544,12 +544,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._localizedVersionGuid;
+                return this.localizedVersionGuid;
             }
 
             set
             {
-                this._localizedVersionGuid = value;
+                this.localizedVersionGuid = value;
             }
         }
 

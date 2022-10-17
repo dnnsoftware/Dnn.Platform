@@ -43,6 +43,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 installedPackageTypes[packageType.PackageType] = packageType;
             }
+
             return installedPackageTypes;
         }
 
@@ -79,6 +80,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     rootPath = string.Empty;
                     break;
             }
+
             if (!string.IsNullOrEmpty(type) && Directory.Exists(rootPath) &&
                 (Directory.GetFiles(rootPath, "*.zip").Length > 0 ||
                     Directory.GetFiles(rootPath, "*.resources").Length > 0))
@@ -104,6 +106,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     {
                         AddModulesToList(portalId, typePackages);
                     }
+
                     break;
                 case "skin":
                 case "container":
@@ -147,6 +150,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     InvalidPackages = invalidPackages,
                 });
             }
+
             return packages;
         }
 
@@ -157,6 +161,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 return tabs.Values.ToList();
             }
+
             return null;
         }
 
@@ -172,6 +177,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     returnValue.Append(" &gt; ");
                 }
+
                 if (index < tab.BreadCrumbs.Count - 1)
                 {
                     returnValue.AppendFormat("{0}", t.LocalizedTabName);
@@ -187,6 +193,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
                     returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
+
                 index = index + 1;
             }
 
@@ -200,7 +207,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return string.Empty;
             }
 
-            if ((packageInfo.PackageType.ToUpper() == "MODULE"))
+            if (packageInfo.PackageType.ToUpper() == "MODULE")
             {
                 if (portalId == Null.NullInteger)
                 {
@@ -211,21 +218,23 @@ namespace Dnn.PersonaBar.Extensions.Components
                     return GetPackagesInUse(false).ContainsKey(packageInfo.PackageID) ? "Yes" : "No";
                 }
             }
+
             return string.Empty;
         }
 
         internal static string UpgradeRedirect(Version version, string packageType, string packageName)
         {
-            return Upgrade.UpgradeRedirect(version, packageType, packageName, "");
+            return Upgrade.UpgradeRedirect(version, packageType, packageName, string.Empty);
         }
 
         internal static string UpgradeIndicator(Version version, string packageType, string packageName)
         {
-            var url = Upgrade.UpgradeIndicator(version, packageType, packageName, "", false, false); // last 2 params are unused
+            var url = Upgrade.UpgradeIndicator(version, packageType, packageName, string.Empty, false, false); // last 2 params are unused
             if (string.IsNullOrEmpty(url))
             {
                 url = Globals.ApplicationPath + "/images/spacer.gif";
             }
+
             return url;
         }
 
@@ -290,15 +299,17 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
             }
+
             return tabsInOrder;
         }
 
         private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
         {
-            if ((tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID)))
+            if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
             {
                 // add current tab
                 tabsInOrder.Add(currentTab.TabID, currentTab);
+
                 // add children of current tab
                 foreach (TabInfo tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {
@@ -323,7 +334,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 return false;
             }
-
         }
 
         private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
@@ -341,8 +351,8 @@ namespace Dnn.PersonaBar.Extensions.Components
                     var installedLanguages = installedPackages.Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID)).ToList();
                     foreach (XmlNode language in languages)
                     {
-                        string cultureCode = "";
-                        string version = "";
+                        string cultureCode = string.Empty;
+                        string version = string.Empty;
                         foreach (XmlNode child in language.ChildNodes)
                         {
                             if (child.Name == "culturecode")
@@ -355,6 +365,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                 version = child.InnerText;
                             }
                         }
+
                         if (!string.IsNullOrEmpty(cultureCode) && !string.IsNullOrEmpty(version) && version.Length == 6)
                         {
                             var myCIintl = new CultureInfo(cultureCode, true);

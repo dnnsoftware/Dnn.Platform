@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.RazorHost {
     
     
     public partial class EditScript {
-        
         /// <summary>
         /// scriptsLabel control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl scriptsLabel;
-        
         /// <summary>
         /// scriptList control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList scriptList;
-        
         /// <summary>
         /// cmdAdd control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAdd;
-        
         /// <summary>
         /// lblSourceFile control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSourceFile;
-        
         /// <summary>
         /// plSource control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl plSource;
-        
         /// <summary>
         /// txtSource control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSource;
-        
         /// <summary>
         /// currentScriptLabel control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl currentScriptLabel;
-        
         /// <summary>
         /// isCurrentScript control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox isCurrentScript;
-        
         /// <summary>
         /// cmdSave control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSave;
-        
         /// <summary>
         /// cmdSaveClose control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSaveClose;
-        
         /// <summary>
         /// cmdCancel control.
         /// </summary>

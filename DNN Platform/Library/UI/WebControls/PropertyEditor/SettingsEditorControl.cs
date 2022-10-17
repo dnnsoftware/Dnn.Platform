@@ -86,13 +86,13 @@ namespace DotNetNuke.UI.WebControls
         protected override bool GetRowVisibility(object obj)
         {
             var info = (SettingInfo)obj;
-            bool _IsVisible = true;
+            bool isVisible = true;
             if ((this.Visibility != null) && (this.Visibility[info.Name] != null))
             {
-                _IsVisible = Convert.ToBoolean(this.Visibility[info.Name]);
+                isVisible = Convert.ToBoolean(this.Visibility[info.Name]);
             }
 
-            return _IsVisible;
+            return isVisible;
         }
 
         /// -----------------------------------------------------------------------------

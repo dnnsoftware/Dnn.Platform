@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.UI
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
+
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -272,13 +273,12 @@ namespace DotNetNuke.Web.UI
 
         public static string GetViewStateAsString(object value, string defaultValue)
         {
-            string _Value = defaultValue;
             if (value != null)
             {
-                _Value = Convert.ToString(value);
+                return Convert.ToString(value);
             }
 
-            return _Value;
+            return defaultValue;
         }
 
         public static void RegisterAlertOnPageLoad(Control ctrl, string message)

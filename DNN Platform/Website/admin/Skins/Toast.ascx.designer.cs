@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Toast {
-        
         /// <summary>
         /// addtionalScripts control.
         /// </summary>

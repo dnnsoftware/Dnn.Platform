@@ -19,8 +19,8 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class SkinControlInstaller : ComponentInstallerBase
     {
-        private SkinControlInfo InstalledSkinControl;
-        private SkinControlInfo SkinControl;
+        private SkinControlInfo installedSkinControl;
+        private SkinControlInfo skinControl;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -56,19 +56,19 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Attempt to get the SkinControl
-                this.InstalledSkinControl = SkinControlController.GetSkinControlByKey(this.SkinControl.ControlKey);
+                this.installedSkinControl = SkinControlController.GetSkinControlByKey(this.skinControl.ControlKey);
 
-                if (this.InstalledSkinControl != null)
+                if (this.installedSkinControl != null)
                 {
-                    this.SkinControl.SkinControlID = this.InstalledSkinControl.SkinControlID;
+                    this.skinControl.SkinControlID = this.installedSkinControl.SkinControlID;
                 }
 
                 // Save SkinControl
-                this.SkinControl.PackageID = this.Package.PackageID;
-                this.SkinControl.SkinControlID = SkinControlController.SaveSkinControl(this.SkinControl);
+                this.skinControl.PackageID = this.Package.PackageID;
+                this.skinControl.SkinControlID = SkinControlController.SaveSkinControl(this.skinControl);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.SkinControl.ControlKey));
+                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.skinControl.ControlKey));
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the SkinControl from the manifest
-            this.SkinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
+            this.skinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
 
             if (this.Log.Valid)
             {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Rollback()
         {
             // If Temp SkinControl exists then we need to update the DataStore with this
-            if (this.InstalledSkinControl == null)
+            if (this.installedSkinControl == null)
             {
                 // No Temp SkinControl - Delete newly added SkinControl
                 this.DeleteSkinControl();
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Temp SkinControl - Rollback to Temp
-                SkinControlController.SaveSkinControl(this.InstalledSkinControl);
+                SkinControlController.SaveSkinControl(this.installedSkinControl);
             }
         }
 

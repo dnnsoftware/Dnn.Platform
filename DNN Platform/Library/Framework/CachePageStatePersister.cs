@@ -22,7 +22,7 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public class CachePageStatePersister : PageStatePersister
     {
-        private const string VIEW_STATE_CACHEKEY = "__VIEWSTATE_CACHEKEY";
+        private const string ViewStateCacheKey = "__VIEWSTATE_CACHEKEY";
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -43,12 +43,12 @@ namespace DotNetNuke.Framework
         public override void Load()
         {
             // Get the cache key from the web form data
-            string key = this.Page.Request.Params[VIEW_STATE_CACHEKEY];
+            string key = this.Page.Request.Params[ViewStateCacheKey];
 
             // Abort if cache key is not available or valid
             if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
             {
-                throw new ApplicationException("Missing valid " + VIEW_STATE_CACHEKEY);
+                throw new ApplicationException("Missing valid " + ViewStateCacheKey);
             }
 
             var state = DataCache.GetCache<Pair>(key);
@@ -96,7 +96,7 @@ namespace DotNetNuke.Framework
             DataCache.SetCache(key.ToString(), state, objDependency, DateTime.Now.AddMinutes(this.Page.Session.Timeout), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
             // Register hidden field to store cache key in
-            this.Page.ClientScript.RegisterHiddenField(VIEW_STATE_CACHEKEY, key.ToString());
+            this.Page.ClientScript.RegisterHiddenField(ViewStateCacheKey, key.ToString());
         }
     }
 }

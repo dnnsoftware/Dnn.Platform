@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class RelationshipType : BaseEntityInfo, IHydratable
     {
-        private int _relationshipTypeId = -1;
+        private int relationshipTypeId = -1;
 
         /// <summary>
         /// Gets or sets relationshipId - The primary key.
@@ -32,12 +32,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._relationshipTypeId;
+                return this.relationshipTypeId;
             }
 
             set
             {
-                this._relationshipTypeId = value;
+                this.relationshipTypeId = value;
             }
         }
 

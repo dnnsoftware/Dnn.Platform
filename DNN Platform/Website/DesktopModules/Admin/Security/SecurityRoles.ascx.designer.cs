@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Security {
     
     
     public partial class SecurityRoles {
-        
         /// <summary>
         /// pnlRoles control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlRoles;
-        
         /// <summary>
         /// lblTitle control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTitle;
-        
         /// <summary>
         /// plRoles control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plRoles;
-        
         /// <summary>
         /// plUsers control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plUsers;
-        
         /// <summary>
         /// plEffectiveDate control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plEffectiveDate;
-        
         /// <summary>
         /// plExpiryDate control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plExpiryDate;
-        
         /// <summary>
         /// placeIsOwnerHeader control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder placeIsOwnerHeader;
-        
         /// <summary>
         /// lblIsOwner control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblIsOwner;
-        
         /// <summary>
         /// txtUsers control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUsers;
-        
         /// <summary>
         /// cmdValidate control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdValidate;
-        
         /// <summary>
         /// cboUsers control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboUsers;
-        
         /// <summary>
         /// cboRoles control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboRoles;
-        
         /// <summary>
         /// effectiveDatePicker control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker effectiveDatePicker;
-        
         /// <summary>
         /// expiryDatePicker control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker expiryDatePicker;
-        
         /// <summary>
         /// placeIsOwner control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder placeIsOwner;
-        
         /// <summary>
         /// chkIsOwner control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkIsOwner;
-        
         /// <summary>
         /// cmdAdd control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAdd;
-        
         /// <summary>
         /// chkNotify control.
         /// </summary>
@@ -177,7 +159,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNotify;
-        
         /// <summary>
         /// valEffectiveDate control.
         /// </summary>
@@ -186,7 +167,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valEffectiveDate;
-        
         /// <summary>
         /// valExpiryDate control.
         /// </summary>
@@ -195,7 +175,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valExpiryDate;
-        
         /// <summary>
         /// valDates control.
         /// </summary>
@@ -204,7 +183,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valDates;
-        
         /// <summary>
         /// pnlUserRoles control.
         /// </summary>
@@ -213,7 +191,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlUserRoles;
-        
         /// <summary>
         /// grdUserRoles control.
         /// </summary>
@@ -222,7 +199,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataGrid grdUserRoles;
-        
         /// <summary>
         /// ctlPagingControl control.
         /// </summary>
@@ -231,7 +207,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.PagingControl ctlPagingControl;
-        
         /// <summary>
         /// actionsRow control.
         /// </summary>
@@ -240,7 +215,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl actionsRow;
-        
         /// <summary>
         /// cmdCancel control.
         /// </summary>

@@ -16,20 +16,20 @@ namespace DotNetNuke.Services.Journal
         /// This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
         /// </summary>
         /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
-        internal static int GetContentTypeID(string ContentTypeName)
+        internal static int GetContentTypeID(string contentTypeName)
         {
             var typeController = new ContentTypeController();
-            var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName select t;
+            var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeId;
 
             if (colContentTypes.Count() > 0)
             {
                 var contentType = colContentTypes.Single();
-                contentTypeId = contentType == null ? CreateContentType(ContentTypeName) : contentType.ContentTypeId;
+                contentTypeId = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
             }
             else
             {
-                contentTypeId = CreateContentType(ContentTypeName);
+                contentTypeId = CreateContentType(contentTypeName);
             }
 
             return contentTypeId;
@@ -136,10 +136,10 @@ namespace DotNetNuke.Services.Journal
         /// Creates a Content Type (for taxonomy) in the data store.
         /// </summary>
         /// <returns>The primary key value of the new ContentType.</returns>
-        private static int CreateContentType(string ContentTypeName)
+        private static int CreateContentType(string contentTypeName)
         {
             var typeController = new ContentTypeController();
-            var objContentType = new ContentType { ContentType = ContentTypeName };
+            var objContentType = new ContentType { ContentType = contentTypeName };
 
             return typeController.AddContentType(objContentType);
         }

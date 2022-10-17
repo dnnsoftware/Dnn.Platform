@@ -33,6 +33,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// </summary>
         public bool CheckPermissionForAdmin { get; set; }
 
+        /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var menuItem = this.GetMenuByIdentifier();

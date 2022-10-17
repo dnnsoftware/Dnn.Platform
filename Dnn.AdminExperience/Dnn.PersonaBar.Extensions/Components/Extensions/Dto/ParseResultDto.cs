@@ -20,7 +20,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         {
         }
 
-        public ParseResultDto(PackageInfo package) : base(Null.NullInteger, package)
+        public ParseResultDto(PackageInfo package)
+            : base(Null.NullInteger, package)
         {
         }
 
@@ -59,26 +60,27 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             this.Success = false;
             this.Message = Localization.GetString(message, Constants.SharedResources) ?? message;
             this.AddLogs(logs);
-            // UI devs asked for these to be non-null empty for moving to next step
-            this.Description = this.Description ?? "";
-            this.Email = this.Email ?? "";
-            this.FriendlyName = this.FriendlyName ?? "";
-            this.IsInUse = this.IsInUse ?? "";
-            this.License = this.License ?? "";
-            this.Name = this.Name ?? "";
-            this.Organization = this.Organization ?? "";
-            this.Owner = this.Owner ?? "";
-            this.PackageIcon = this.PackageIcon ?? "";
-            this.PackageType = this.PackageType ?? "";
-            this.ReleaseNotes = this.ReleaseNotes ?? "";
-            this.SiteSettingsLink = this.SiteSettingsLink ?? "";
-            this.UpgradeIndicator = this.UpgradeIndicator ?? "";
-            this.UpgradeUrl = this.UpgradeUrl ?? "";
-            this.Url = this.Url ?? "";
-            this.Version = this.Version ?? "";
 
-            this.LegacyError = this.LegacyError ?? "";
-            this.Message = this.Message ?? "";
+            // UI devs asked for these to be non-null empty for moving to next step
+            this.Description = this.Description ?? string.Empty;
+            this.Email = this.Email ?? string.Empty;
+            this.FriendlyName = this.FriendlyName ?? string.Empty;
+            this.IsInUse = this.IsInUse ?? string.Empty;
+            this.License = this.License ?? string.Empty;
+            this.Name = this.Name ?? string.Empty;
+            this.Organization = this.Organization ?? string.Empty;
+            this.Owner = this.Owner ?? string.Empty;
+            this.PackageIcon = this.PackageIcon ?? string.Empty;
+            this.PackageType = this.PackageType ?? string.Empty;
+            this.ReleaseNotes = this.ReleaseNotes ?? string.Empty;
+            this.SiteSettingsLink = this.SiteSettingsLink ?? string.Empty;
+            this.UpgradeIndicator = this.UpgradeIndicator ?? string.Empty;
+            this.UpgradeUrl = this.UpgradeUrl ?? string.Empty;
+            this.Url = this.Url ?? string.Empty;
+            this.Version = this.Version ?? string.Empty;
+
+            this.LegacyError = this.LegacyError ?? string.Empty;
+            this.Message = this.Message ?? string.Empty;
         }
 
         public void Succeed(IList<LogEntry> logs)
@@ -91,9 +93,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         public void AddLogs(IEnumerable<LogEntry> logs)
         {
             if (logs == null)
+            {
                 this.Logs = new List<InstallerLogEntry>();
+            }
             else
+            {
                 this.Logs = logs.Select(l => new InstallerLogEntry { Type = l.Type.ToString(), Description = l.Description }).ToList();
+            }
         }
     }
 }

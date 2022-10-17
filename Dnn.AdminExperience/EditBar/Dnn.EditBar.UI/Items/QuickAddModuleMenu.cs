@@ -7,6 +7,7 @@ namespace Dnn.EditBar.UI.Items
     using System;
     using System.Linq;
     using System.Net;
+
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
     using DotNetNuke.Entities.Portals;
@@ -18,8 +19,10 @@ namespace Dnn.EditBar.UI.Items
     {
         private const string LocalResourceFile = "~/DesktopModules/Admin/Dnn.EditBar/App_LocalResources/QuickAddModule.resx";
 
+        /// <inheritdoc/>
         public override string Name { get; } = "QuickAddModule";
 
+        /// <inheritdoc/>
         public override string Text
         {
             get
@@ -28,6 +31,7 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string CssClass
         {
             get
@@ -36,8 +40,10 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override bool CustomLayout => true;
 
+        /// <inheritdoc/>
         public override string Template
         {
             get
@@ -68,12 +74,16 @@ namespace Dnn.EditBar.UI.Items
             }
         }
 
+        /// <inheritdoc/>
         public override string Parent { get; } = Constants.LeftMenu;
 
+        /// <inheritdoc/>
         public override string Loader { get; } = "QuickAddModule";
 
+        /// <inheritdoc/>
         public override int Order { get; } = 4;
 
+        /// <inheritdoc/>
         public override bool Visible()
         {
             var portalSettings = PortalSettings.Current;

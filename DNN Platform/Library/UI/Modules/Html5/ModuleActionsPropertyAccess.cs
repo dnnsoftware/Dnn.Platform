@@ -39,8 +39,8 @@ namespace DotNetNuke.UI.Modules.Html5
 
     public class ModuleActionsPropertyAccess : JsonPropertyAccess<ModuleActionDto>
     {
-        private readonly ModuleActionCollection _moduleActions;
-        private readonly ModuleInstanceContext _moduleContext;
+        private readonly ModuleActionCollection moduleActions;
+        private readonly ModuleInstanceContext moduleContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleActionsPropertyAccess"/> class.
@@ -49,8 +49,8 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <param name="moduleActions"></param>
         public ModuleActionsPropertyAccess(ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
         {
-            this._moduleContext = moduleContext;
-            this._moduleActions = moduleActions;
+            this.moduleContext = moduleContext;
+            this.moduleActions = moduleActions;
         }
 
         /// <inheritdoc/>
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 }
             }
 
-            var moduleAction = new ModuleAction(this._moduleContext.GetNextActionID())
+            var moduleAction = new ModuleAction(this.moduleContext.GetNextActionID())
             {
                 Title = title,
                 Icon = model.Icon,
@@ -90,7 +90,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
             if (string.IsNullOrEmpty(model.Script))
             {
-                moduleAction.Url = this._moduleContext.EditUrl(model.ControlKey);
+                moduleAction.Url = this.moduleContext.EditUrl(model.ControlKey);
             }
             else
             {
@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.Modules.Html5
                                     string.Format("javascript:{0}", model.Script);
             }
 
-            this._moduleActions.Add(moduleAction);
+            this.moduleActions.Add(moduleAction);
 
             return string.Empty;
         }
