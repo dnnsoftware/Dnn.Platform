@@ -1,6 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
+using System.Web.UI;
+
 namespace DNNConnect.CKEditorProvider.Browser
 {
     using System;
@@ -1794,19 +1797,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private void LoadFavIcon()
         {
-            if (!File.Exists(Path.Combine(this.portalSettings.HomeDirectoryMapPath, "favicon.ico")))
-            {
-                return;
-            }
-
-            var faviconUrl = Path.Combine(this.portalSettings.HomeDirectory, "favicon.ico");
-
-            var objLink = new HtmlGenericSelfClosing("link");
-
-            objLink.Attributes["rel"] = "shortcut icon";
-            objLink.Attributes["href"] = faviconUrl;
-
-            this.favicon.Controls.Add(objLink);
+            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.portalSettings.PortalId)));
         }
 
         /// <summary>
