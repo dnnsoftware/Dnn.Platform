@@ -23,18 +23,29 @@ namespace PolyDeploy.DeployClient
 
         public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
         {
-            // TODO: actually show upload progress
-            await this.console.Progress()
-                .StartAsync(async context =>
-                {
-                    await Task.WhenAll(uploads.Select(async upload =>
+            if (this.console.Profile.Capabilities.Interactive)
+            {
+                // TODO: actually show upload progress
+                await this.console.Progress()
+                    .StartAsync(async context =>
                     {
-                        var progressTask = context.AddTask(upload.file);
-                        await upload.uploadTask;
-                        progressTask.Increment(100);
-                        progressTask.StopTask();
-                    }));
-                });
+                        await Task.WhenAll(uploads.Select(async upload =>
+                        {
+                            var progressTask = context.AddTask(upload.file);
+                            await upload.uploadTask;
+                            progressTask.Increment(100);
+                            progressTask.StopTask();
+                        }));
+                    });
+            }
+            else
+            {
+                await Task.WhenAll(uploads.Select(async upload =>
+                {
+                    await upload.uploadTask;
+                    this.console.Write(new Markup($"{upload.file} upload complete"));
+                }));
+            }
         }
 
         public void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles)
@@ -73,9 +84,9 @@ namespace PolyDeploy.DeployClient
                             continue;
                         }
 
-                        if (string.IsNullOrEmpty(dependency.PackageName))
+                        if (string.IsNullOrEmpty(dependency.DependencyVersion) && !dependency.IsPackageDependency)
                         {
-                            packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]Platform Version[/] [grey]{dependency.DependencyVersion}[/]"));
+                            packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
                         }
                         else
                         {
@@ -101,23 +112,16 @@ namespace PolyDeploy.DeployClient
             foreach (var file in packageFiles.Values)
             {
                 if (file?.Name is null) continue;
-                if (file.Attempted && !StartedPackageFiles.Contains(file.Name))
-                {
-                    this.console.Write(new Markup($"[aqua]{file.Name}[/] Started"));
-                    this.console.WriteLine();
-                    StartedPackageFiles.Add(file.Name);
-                }
-
                 if (file.Success && !SucceededPackageFiles.Contains(file.Name))
                 {
-                    this.console.Write(new Markup($"[aqua]{file.Name}[/] [green]Succeeded[/]"));
+                    this.console.Write(new Markup($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]"));
                     this.console.WriteLine();
                     SucceededPackageFiles.Add(file.Name);
                 }
 
                 if (file.Failures?.Any() == true && !FailedPackageFiles.Contains(file.Name))
                 {
-                    var failureTree = new Tree(new Markup($"[aqua]{file.Name}[/] [red]Failed[/]"));
+                    var failureTree = new Tree(new Markup($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
                     failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => f!));
                     this.console.Write(failureTree);
                     FailedPackageFiles.Add(file.Name);
@@ -131,7 +135,6 @@ namespace PolyDeploy.DeployClient
             this.console.WriteException(exception);
         }
 
-        private readonly HashSet<string> StartedPackageFiles = new HashSet<string>();
         private readonly HashSet<string> SucceededPackageFiles = new HashSet<string>();
         private readonly HashSet<string> FailedPackageFiles = new HashSet<string>();
     }

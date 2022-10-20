@@ -37,15 +37,42 @@
         }
 
         [Fact]
-        public async Task RenderFileUploadsAsync_RendersSomething()
+        public async Task RenderFileUploadsAsync_Interactive_RendersSomething()
         {
             var console = new TestConsole().Interactive();
 
             var renderer = new Renderer(console);
             await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
 
-            console.Output.ShouldContain("OpenContent_4.5.0_Install.zip");
-            console.Output.ShouldContain("100%");
+            console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "100%");
+        }
+        
+        [Fact]
+        public async Task RenderFileUploadsAsync_NonInteractive_RendersSomething()
+        {
+            var console = new TestConsole();
+
+            var renderer = new Renderer(console);
+            await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+
+            
+            console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "upload", "complete");
+        }
+        
+        [Fact]
+        public async Task RenderFileUploadsAsync_UploadTaskIsAwaited()
+        {
+            var console = new TestConsole();
+
+            var renderer = new Renderer(console);
+
+            var exception = await Should.ThrowAsync<Exception>(() =>  renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", UploadFile()), }));
+
+            exception.Message.ShouldBe("UploadFile() was called!");
+
+            static Task UploadFile() {
+                return Task.FromException(new Exception("UploadFile() was called!"));
+            }
         }
 
         [Fact]
@@ -128,32 +155,39 @@
                         Name = "Jamestown.zip",
                         Dependencies = new List<DependencyResponse?>
                         {
-                            new() { PackageName = null, DependencyVersion = "9.1.2" },
-                            new() { PackageName = null, DependencyVersion = "9.1.2" },
+                            new() { PackageName = "09.01.02", DependencyVersion = string.Empty, IsPackageDependency = false, },
                         }
                     }
                 },
             };
 
             renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
-            console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "Platform Version", "9.1.2" });
+            console.Output.ShouldContainStringsInOrder("Jamestown.zip", "Platform Version", "09.01.02");
         }
 
         [Fact]
-        public void RenderInstallationStatus_OutputsSessionResponse()
+        public void RenderInstallationOverview_WhenDependencyHasNoVersion_DisplaysDependencyName()
         {
             var console = new TestConsole().Interactive();
-            var renderer = new Renderer(console);
 
+            var renderer = new Renderer(console);
             var sessionResponse = new SessionResponse
             {
-                Name = "Jimmy",
-                Attempted = true,
-                Success = false
+                Packages = new List<PackageResponse?>
+                {
+                    new()
+                    {
+                        Name = "Jamestown.zip",
+                        Dependencies = new List<DependencyResponse?>
+                        {
+                            new() { PackageName = "DNNJWT", DependencyVersion = string.Empty, IsPackageDependency = true, },
+                        }
+                    }
+                },
             };
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
-            console.Output.ShouldContainStringsInOrder(new[] { "Jimmy", "Started" });
+            renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+            console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "DNNJWT" });
         }
 
         [Fact]
@@ -166,19 +200,19 @@
             {
                 Name = "Jimmy",
                 Attempted = true,
-                Success = false
+                Success = true,
             };
 
             var james = new SessionResponse
             {
                 Name = "James",
                 Attempted = false,
-                Success = false
+                Success = false,
             };
 
 
             renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
-            console.Output.ShouldContainStringsInOrder(new[] { "Jimmy", "Started" });
+            console.Output.ShouldContainStringsInOrder(new[] { "✅", "Jimmy", "Succeeded" });
             console.Output.ShouldNotContain("James");
         }
 
@@ -192,19 +226,19 @@
             {
                 Name = "Jimmy",
                 Attempted = true,
-                Success = false
+                Success = true,
             };
 
             var james = new SessionResponse
             {
                 Name = "James",
                 Attempted = true,
-                Success = false
+                Success = true,
             };
 
 
             renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
-            console.Output.ShouldContainStringsInOrder("Jimmy", "Started", "\n", "James", "Started", "\n");
+            console.Output.ShouldContainStringsInOrder("✅", "Jimmy", "Succeeded", "\n", "✅", "James", "Succeeded", "\n");
         }
 
         [Fact]
@@ -213,18 +247,11 @@
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
 
-            var jimmy = new SessionResponse
-            {
-                Name = "Jimmy",
-                Attempted = true,
-                Success = false
-            };
-
             var james = new SessionResponse
             {
                 Name = "James",
                 Attempted = true,
-                Success = false
+                Success = true,
             };
 
             var george = new SessionResponse
@@ -234,12 +261,11 @@
                 Success = false,
             };
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, { 3, george }, });
-            james = james with { Success = true };
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
             george = george with { Attempted = true, Failures = new List<string?> { "He hit the tree 🌴" }, };
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, { 3, george }, });
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, { 3, george }, });
-            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "Jimmy", "Started", "James", "Started", "James", "Succeeded", "George", "Started", "George", "Failed", "He hit the tree 🌴");
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "✅", "James", "Succeeded", "❌", "George", "Failed", "He hit the tree 🌴");
         }
 
         [Fact]
@@ -247,26 +273,19 @@
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
-
-            var jimmy = new SessionResponse
-            {
-                Name = "Jimmy",
-                Attempted = true,
-                Success = false
-            };
-
+            
             var james = new SessionResponse
             {
                 Name = "James",
-                Attempted = true,
+                Attempted = false,
                 Success = false
             };
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
-            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "Jimmy", "Started", "James", "Started");
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, });
+            console.Output.ShouldNotContainStringsInOrder("James");
             james = james with { Success = true };
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
-            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "Jimmy", "Started", "James", "Started", "James", "Succeeded");
+            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, });
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "✅", "James", "Succeeded");
         }
 
         [Fact]
@@ -290,8 +309,8 @@
             };
 
             renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
-            console.Output.ShouldNotContainStringsInOrder("James", "Failed");
-            console.Output.ShouldContainStringsInOrder("Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
+            console.Output.ShouldNotContainStringsInOrder("❌", "James", "Failed");
+            console.Output.ShouldContainStringsInOrder("❌", "Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
         }
         
         [Fact]
