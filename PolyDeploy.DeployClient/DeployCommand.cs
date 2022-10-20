@@ -5,10 +5,8 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    using Spectre.Cli;
+    using Spectre.Console.Cli;
     using Spectre.Console;
-
-    using ValidationResult = Spectre.Cli.ValidationResult;
 
     public class DeployCommand : AsyncCommand<DeployInput>
     {

@@ -1,10 +1,11 @@
+using Spectre.Console;
+
 namespace PolyDeploy.DeployClient
 {
     using System;
     using System.ComponentModel;
 
-    using Spectre.Cli;
-    using ValidationResult = Spectre.Cli.ValidationResult;
+    using Spectre.Console.Cli;
 
     public enum ExitCode
     {

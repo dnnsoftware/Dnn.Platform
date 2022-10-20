@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using PolyDeploy.DeployClient;
-using Spectre.Cli;
+using Spectre.Console.Cli;
 
 try
 {
