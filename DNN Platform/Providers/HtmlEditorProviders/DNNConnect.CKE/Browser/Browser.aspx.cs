@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.UI;
-
 namespace DNNConnect.CKEditorProvider.Browser
 {
     using System;
@@ -20,6 +18,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using System.Web;
     using System.Web.Script.Services;
     using System.Web.Services;
+    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
