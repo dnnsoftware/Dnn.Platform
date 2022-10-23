@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Element } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, Prop, Element } from '@stencil/core';
 import { GetFolderContentResponse, Item } from '../../services/ItemsClient';
 import state from '../../store/store';
 import { selectionUtilities } from '../../utilities/selection-utilities';
@@ -14,6 +14,9 @@ export class DnnRmItemsCardview {
   @Prop() currentItems!: GetFolderContentResponse;
 
   @Element() el: HTMLDnnRmItemsCardviewElement;
+
+  /** Fires when a folder is double-clicked and emits the folder ID into the event.detail */
+  @Event() dnnRmFolderDoubleClicked: EventEmitter<number>;
 
   componentWillLoad() {
     document.addEventListener("click", this.dismissContextMenu.bind(this));
@@ -48,6 +51,12 @@ export class DnnRmItemsCardview {
     return;
   }
 
+  private handleDoubleClick(item: Item): void {
+    if (item.isFolder) {
+      this.dnnRmFolderDoubleClicked.emit(item.itemId);
+    }
+  }
+
   render() {
     return (
       <Host>
@@ -58,6 +67,7 @@ export class DnnRmItemsCardview {
                 class="card"
                 onClick={() => selectionUtilities.toggleItemSelected(item)}
                 onContextMenu={e => this.handleContextMenu(e, item)}
+                onDblClick={() => this.handleDoubleClick(item)}
               >
                   <div class={selectionUtilities.isItemSelected(item) ? "radio selected" : "radio"}>
                     {selectionUtilities.isItemSelected(item) &&
