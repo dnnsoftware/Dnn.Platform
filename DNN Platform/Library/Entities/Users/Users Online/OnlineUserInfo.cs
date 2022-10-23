@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Users
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public class OnlineUserInfo : BaseUserInfo
     {
-        private int _UserID;
+        private int userID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -32,12 +32,12 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._UserID;
+                return this.userID;
             }
 
             set
             {
-                this._UserID = value;
+                this.userID = value;
             }
         }
     }

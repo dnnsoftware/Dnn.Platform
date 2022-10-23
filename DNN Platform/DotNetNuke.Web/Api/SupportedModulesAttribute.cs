@@ -12,11 +12,11 @@ namespace DotNetNuke.Web.Api
 
     public class SupportedModulesAttribute : AuthorizeAttributeBase
     {
-        private readonly string[] _supportedModules;
+        private readonly string[] supportedModules;
 
         public SupportedModulesAttribute(string supportedModules)
         {
-            this._supportedModules = supportedModules.Split(new[] { ',' });
+            this.supportedModules = supportedModules.Split(new[] { ',' });
         }
 
         /// <inheritdoc/>
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Api
 
         private bool ModuleIsSupported(ModuleInfo module)
         {
-            return this._supportedModules.Contains(module.DesktopModule.ModuleName);
+            return this.supportedModules.Contains(module.DesktopModule.ModuleName);
         }
     }
 }

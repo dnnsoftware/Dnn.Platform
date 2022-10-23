@@ -39,13 +39,13 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                string _Name = Null.NullString;
+                string name = Null.NullString;
                 if (this.Culture != null)
                 {
-                    _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.EnglishName);
+                    name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.EnglishName);
                 }
 
-                return _Name;
+                return name;
             }
         }
 
@@ -53,13 +53,13 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                Locale _FallbackLocale = null;
+                Locale fallbackLocale = null;
                 if (!string.IsNullOrEmpty(this.Fallback))
                 {
-                    _FallbackLocale = LocaleController.Instance.GetLocale(this.PortalId, this.Fallback);
+                    fallbackLocale = LocaleController.Instance.GetLocale(this.PortalId, this.Fallback);
                 }
 
-                return _FallbackLocale;
+                return fallbackLocale;
             }
         }
 
@@ -67,13 +67,13 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                string _Name = Null.NullString;
+                string name = Null.NullString;
                 if (this.Culture != null)
                 {
-                    _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.NativeName);
+                    name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.NativeName);
                 }
 
-                return _Name;
+                return name;
             }
         }
 

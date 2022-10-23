@@ -26,16 +26,16 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         internal const string WebConfig = "Web.config";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
-        private const string CONFIG_EXT = ".config";
-        private const string ROBOTS_EXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
+        private const string CONFIGEXT = ".config";
+        private const string ROBOTSEXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
 
         public IEnumerable<string> GetConfigFilesList()
         {
             var files = Directory
                 .EnumerateFiles(Globals.ApplicationMapPath)
-                .Where(file => file.ToLower().EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTS_EXT, StringComparison.InvariantCultureIgnoreCase))
+                .Where(file => file.ToLower().EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTSEXT, StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
-            IEnumerable<string> fileList = (from file in files select Path.GetFileName(file));
+            IEnumerable<string> fileList = from file in files select Path.GetFileName(file);
             return fileList;
         }
 
@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(configFile);
 
-            if (configFile.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            if (configFile.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = Config.Load(configFile);
                 using (var txtWriter = new StringWriter())
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(fileName);
 
-            if (fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            if (fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = new XmlDocument { XmlResolver = null };
                 configDoc.LoadXml(fileContent);
@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         {
             this.ValidateFilePath(fileName);
 
-            if (!fileName.EndsWith(CONFIG_EXT, StringComparison.InvariantCultureIgnoreCase))
+            if (!fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 return new string[0];
             }
@@ -156,6 +156,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             {
                 return false;
             }
+
             // TODO: Add more checks here
             return true;
         }

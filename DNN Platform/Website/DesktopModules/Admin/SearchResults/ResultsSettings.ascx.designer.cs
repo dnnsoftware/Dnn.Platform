@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.SearchResults {
     
     
     public partial class ResultsSettings {
-        
         /// <summary>
         /// plTitleLinkTarget control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTitleLinkTarget;
-        
         /// <summary>
         /// comboBoxLinkTarget control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox comboBoxLinkTarget;
-        
         /// <summary>
         /// divPortalGroup control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPortalGroup;
-        
         /// <summary>
         /// plResultsScopeForPortals control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plResultsScopeForPortals;
-        
         /// <summary>
         /// comboBoxPortals control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox comboBoxPortals;
-        
         /// <summary>
         /// portalsRequiedValidator control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator portalsRequiedValidator;
-        
         /// <summary>
         /// plResultsScopeForFilters control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plResultsScopeForFilters;
-        
         /// <summary>
         /// comboBoxFilters control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox comboBoxFilters;
-        
         /// <summary>
         /// filtersRequiredFieldValidator control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator filtersRequiredFieldValidator;
-        
         /// <summary>
         /// plResultsScopeForRoles control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plResultsScopeForRoles;
-        
         /// <summary>
         /// comboBoxRoles control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox comboBoxRoles;
-        
         /// <summary>
         /// plEnableWildSearch control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plEnableWildSearch;
-        
         /// <summary>
         /// chkEnableWildSearch control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkEnableWildSearch;
-        
         /// <summary>
         /// plShowDescription control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plShowDescription;
-        
         /// <summary>
         /// chkShowDescription control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowDescription;
-        
         /// <summary>
         /// plMaxDescriptionLength control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plMaxDescriptionLength;
-        
         /// <summary>
         /// txtMaxDescriptionLength control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMaxDescriptionLength;
-        
         /// <summary>
         /// plShowSnippet control.
         /// </summary>
@@ -177,7 +159,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plShowSnippet;
-        
         /// <summary>
         /// chkShowSnippet control.
         /// </summary>
@@ -186,7 +167,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowSnippet;
-        
         /// <summary>
         /// plShowFriendlyTitle control.
         /// </summary>
@@ -195,7 +175,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plShowFriendlyTitle;
-        
         /// <summary>
         /// chkShowFriendlyTitle control.
         /// </summary>
@@ -204,7 +183,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowFriendlyTitle;
-        
         /// <summary>
         /// plShowLastUpdated control.
         /// </summary>
@@ -213,7 +191,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plShowLastUpdated;
-        
         /// <summary>
         /// chkShowLastUpdated control.
         /// </summary>
@@ -222,7 +199,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowLastUpdated;
-        
         /// <summary>
         /// plShowSource control.
         /// </summary>
@@ -231,7 +207,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plShowSource;
-        
         /// <summary>
         /// chkShowSource control.
         /// </summary>
@@ -240,7 +215,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShowSource;
-        
         /// <summary>
         /// plShowTags control.
         /// </summary>
@@ -249,7 +223,6 @@ namespace DotNetNuke.Modules.SearchResults {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plShowTags;
-        
         /// <summary>
         /// chkShowTags control.
         /// </summary>

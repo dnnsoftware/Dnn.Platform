@@ -31,11 +31,11 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class User : SkinObjectBase
     {
         private const string MyFileName = "User.ascx";
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
         public User()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.ShowUnreadMessages = true;
             this.ShowAvatar = true;
             this.LegacyMode = true;
@@ -61,6 +61,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public bool ShowInErrorPage { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -68,6 +69,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Visible = !this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -134,7 +136,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         this.registerLink.NavigateUrl = !string.IsNullOrEmpty(this.URL)
                                             ? this.URL
-                                            : Globals.RegisterURL(HttpUtility.UrlEncode(this._navigationManager.NavigateURL()), Null.NullString);
+                                            : Globals.RegisterURL(HttpUtility.UrlEncode(this.navigationManager.NavigateURL()), Null.NullString);
                         this.enhancedRegisterLink.NavigateUrl = this.registerLink.NavigateUrl;
 
                         if (this.PortalSettings.EnablePopUps && this.PortalSettings.RegisterTabId == Null.NullInteger
@@ -172,8 +174,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.messageLink.Text = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
                             this.notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
-                            this.messageLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID));
-                            this.notificationLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID), "view=notifications", "action=notifications");
+                            this.messageLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID));
+                            this.notificationLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID), "view=notifications", "action=notifications");
                             this.notificationLink.ToolTip = Localization.GetString("CheckNotifications", Localization.GetResourceFile(this, MyFileName));
                             this.messageLink.ToolTip = Localization.GetString("CheckMessages", Localization.GetResourceFile(this, MyFileName));
                             this.messageGroup.Visible = true;

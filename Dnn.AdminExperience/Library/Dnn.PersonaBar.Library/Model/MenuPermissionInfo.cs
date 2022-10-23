@@ -24,10 +24,10 @@ namespace Dnn.PersonaBar.Library.Model
     [Serializable]
     public class MenuPermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int _menuId;
+        private int menuId;
 
         // local property declarations
-        private int _menuPermissionId;
+        private int menuPermissionId;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -37,8 +37,8 @@ namespace Dnn.PersonaBar.Library.Model
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo()
         {
-            this._menuPermissionId = Null.NullInteger;
-            this._menuId = Null.NullInteger;
+            this.menuPermissionId = Null.NullInteger;
+            this.menuId = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -69,12 +69,12 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                return this._menuPermissionId;
+                return this.menuPermissionId;
             }
 
             set
             {
-                this._menuPermissionId = value;
+                this.menuPermissionId = value;
             }
         }
 
@@ -89,12 +89,12 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                return this._menuId;
+                return this.menuId;
             }
 
             set
             {
-                this._menuId = value;
+                this.menuId = value;
             }
         }
 
@@ -199,11 +199,12 @@ namespace Dnn.PersonaBar.Library.Model
             return this.Equals((MenuPermissionInfo)obj);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             unchecked
             {
-                return (this._menuId * 397) ^ this._menuPermissionId;
+                return (this.menuId * 397) ^ this.menuPermissionId;
             }
         }
     }

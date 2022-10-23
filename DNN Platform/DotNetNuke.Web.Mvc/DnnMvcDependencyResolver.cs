@@ -18,6 +18,8 @@ namespace DotNetNuke.Web.Mvc
     {
         private readonly IServiceProvider serviceProvider;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnMvcDependencyResolver"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
         public DnnMvcDependencyResolver(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));

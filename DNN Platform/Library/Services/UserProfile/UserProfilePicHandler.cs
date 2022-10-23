@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.UserProfile
 
     public class UserProfilePicHandler : IHttpHandler
     {
-        private static object _locker = new object();
+        private static object locker = new object();
 
         /// <inheritdoc/>
         public bool IsReusable
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.UserProfile
                 var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
-                    lock (_locker)
+                    lock (locker)
                     {
                         if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                         {
@@ -153,6 +153,7 @@ namespace DotNetNuke.Services.UserProfile
         }
 
         // whether current user has permission to view target user's photo.
+
         private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
         {
             bool isVisible = false;

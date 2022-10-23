@@ -13,7 +13,12 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
     public class PagePermissions : Permissions
     {
-        public PagePermissions(bool needDefinitions) : base(needDefinitions)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PagePermissions"/> class.
+        /// </summary>
+        /// <param name="needDefinitions"></param>
+        public PagePermissions(bool needDefinitions)
+            : base(needDefinitions)
         {
             foreach (var role in PermissionProvider.Instance().ImplicitRolesForPages(PortalSettings.Current.PortalId))
             {
@@ -21,6 +26,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             }
         }
 
+        /// <inheritdoc/>
         protected override void LoadPermissionDefinitions()
         {
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByTab())

@@ -36,6 +36,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// </summary>
         public string Exclude { get; set; }
 
+        /// <inheritdoc/>
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var authenticated = Thread.CurrentPrincipal.Identity.IsAuthenticated;

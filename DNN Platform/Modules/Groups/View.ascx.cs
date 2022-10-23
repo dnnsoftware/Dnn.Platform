@@ -24,13 +24,17 @@ namespace DotNetNuke.Modules.Groups
     /// -----------------------------------------------------------------------------
     public partial class View : GroupsModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="View"/> class.
+        /// </summary>
         public View()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -56,7 +60,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                     {
-                        this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
+                        this.Response.Redirect(this.navigationManager.NavigateURL(this.GroupListTabId));
                     }
                 }
 

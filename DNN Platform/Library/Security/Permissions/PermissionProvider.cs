@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Linq;
-using DotNetNuke.Abstractions.Portals;
-
 namespace DotNetNuke.Security.Permissions
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -63,7 +62,7 @@ namespace DotNetNuke.Security.Permissions
         private const string TopPagePermissionKey = "ADDTOPLEVELPAGE";
         private const string PageAdminPermissionKey = "PAGEADMIN";
 
-        private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
+        private static SharedDictionary<int, DNNCacheDependency> cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
@@ -101,16 +100,16 @@ namespace DotNetNuke.Security.Permissions
             // first execute the cache clear action then check the dependency change
             cacehClearAction.Invoke();
             DNNCacheDependency dependency;
-            using (_cacheDependencyDict.GetReadLock())
+            using (cacheDependencyDict.GetReadLock())
             {
-                _cacheDependencyDict.TryGetValue(portalId, out dependency);
+                cacheDependencyDict.TryGetValue(portalId, out dependency);
             }
 
             if (dependency != null)
             {
-                using (_cacheDependencyDict.GetWriteLock())
+                using (cacheDependencyDict.GetWriteLock())
                 {
-                    _cacheDependencyDict.Remove(portalId);
+                    cacheDependencyDict.Remove(portalId);
                 }
 
                 dependency.Dispose();
@@ -134,9 +133,9 @@ namespace DotNetNuke.Security.Permissions
         private static DNNCacheDependency GetCacheDependency(int portalId)
         {
             DNNCacheDependency dependency;
-            using (_cacheDependencyDict.GetReadLock())
+            using (cacheDependencyDict.GetReadLock())
             {
-                _cacheDependencyDict.TryGetValue(portalId, out dependency);
+                cacheDependencyDict.TryGetValue(portalId, out dependency);
             }
 
             if (dependency == null)
@@ -145,9 +144,9 @@ namespace DotNetNuke.Security.Permissions
                 var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
                 DataCache.SetCache(cacheKey, portalId); // no expiration set for this
                 dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
-                using (_cacheDependencyDict.GetWriteLock())
+                using (cacheDependencyDict.GetWriteLock())
                 {
-                    _cacheDependencyDict[portalId] = dependency;
+                    cacheDependencyDict[portalId] = dependency;
                 }
             }
 
@@ -596,7 +595,7 @@ namespace DotNetNuke.Security.Permissions
             this.dataProvider.DeleteFolderPermissionsByUserID(objUser.PortalID, objUser.UserID);
         }
 
-        public virtual FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int PortalID, string Folder)
+        public virtual FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int portalID, string folder)
         {
 #if fale
             string dictionaryKey = Folder;
@@ -617,18 +616,18 @@ namespace DotNetNuke.Security.Permissions
             }
             return folderPermissions;
 #else
-            var cacheKey = string.Format(DataCache.FolderPathPermissionCacheKey, PortalID, Folder);
+            var cacheKey = string.Format(DataCache.FolderPathPermissionCacheKey, portalID, folder);
             return CBO.GetCachedObject<FolderPermissionCollection>(
                 new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority)
                 {
-                    CacheDependency = GetCacheDependency(PortalID),
+                    CacheDependency = GetCacheDependency(portalID),
                 },
                 _ =>
                 {
                     var collection = new FolderPermissionCollection();
                     try
                     {
-                        using (var dr = this.dataProvider.GetFolderPermissionsByPortalAndPath(PortalID, Folder))
+                        using (var dr = this.dataProvider.GetFolderPermissionsByPortalAndPath(portalID, folder))
                         {
                             while (dr.Read())
                             {
@@ -647,9 +646,9 @@ namespace DotNetNuke.Security.Permissions
 #endif
         }
 
-        public virtual bool HasFolderPermission(FolderPermissionCollection objFolderPermissions, string PermissionKey)
+        public virtual bool HasFolderPermission(FolderPermissionCollection objFolderPermissions, string permissionKey)
         {
-            return PortalSecurity.IsInRoles(objFolderPermissions.ToString(PermissionKey));
+            return PortalSecurity.IsInRoles(objFolderPermissions.ToString(permissionKey));
         }
 
         /// <summary>
@@ -1331,7 +1330,6 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>
         /// GetPortalPermissions gets a PortalPermissionCollection.
         /// </summary>
-        /// <param name="portalId">The ID of the portal.</param>
         /// <param name="portalId">The ID of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------

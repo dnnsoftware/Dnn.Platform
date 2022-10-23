@@ -26,11 +26,11 @@ namespace DotNetNuke.Security.Roles
     [Serializable]
     public class RoleGroupInfo : BaseEntityInfo, IHydratable, IXmlSerializable
     {
-        private string _Description;
-        private int _PortalID = Null.NullInteger;
-        private int _RoleGroupID = Null.NullInteger;
-        private string _RoleGroupName;
-        private Dictionary<string, RoleInfo> _Roles;
+        private string description;
+        private int portalID = Null.NullInteger;
+        private int roleGroupID = Null.NullInteger;
+        private string roleGroupName;
+        private Dictionary<string, RoleInfo> roles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleGroupInfo"/> class.
@@ -47,8 +47,8 @@ namespace DotNetNuke.Security.Roles
         /// <param name="loadRoles"></param>
         public RoleGroupInfo(int roleGroupID, int portalID, bool loadRoles)
         {
-            this._PortalID = portalID;
-            this._RoleGroupID = roleGroupID;
+            this.portalID = portalID;
+            this.roleGroupID = roleGroupID;
             if (loadRoles)
             {
                 this.GetRoles();
@@ -65,12 +65,12 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                if (this._Roles == null && this.RoleGroupID > Null.NullInteger)
+                if (this.roles == null && this.RoleGroupID > Null.NullInteger)
                 {
                     this.GetRoles();
                 }
 
-                return this._Roles;
+                return this.roles;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                return this._RoleGroupID;
+                return this.roleGroupID;
             }
 
             set
             {
-                this._RoleGroupID = value;
+                this.roleGroupID = value;
             }
         }
 
@@ -103,12 +103,12 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                return this._PortalID;
+                return this.portalID;
             }
 
             set
             {
-                this._PortalID = value;
+                this.portalID = value;
             }
         }
 
@@ -122,12 +122,12 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                return this._RoleGroupName;
+                return this.roleGroupName;
             }
 
             set
             {
-                this._RoleGroupName = value;
+                this.roleGroupName = value;
             }
         }
 
@@ -141,12 +141,12 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                return this._Description;
+                return this.description;
             }
 
             set
             {
-                this._Description = value;
+                this.description = value;
             }
         }
 
@@ -284,10 +284,10 @@ namespace DotNetNuke.Security.Roles
 
         private void GetRoles()
         {
-            this._Roles = new Dictionary<string, RoleInfo>();
+            this.roles = new Dictionary<string, RoleInfo>();
             foreach (var role in RoleController.Instance.GetRoles(this.PortalID, r => r.RoleGroupID == this.RoleGroupID))
             {
-                this._Roles[role.RoleName] = role;
+                this.roles[role.RoleName] = role;
             }
         }
 
@@ -300,13 +300,13 @@ namespace DotNetNuke.Security.Roles
         private void ReadRoles(XmlReader reader)
         {
             reader.ReadStartElement("roles");
-            this._Roles = new Dictionary<string, RoleInfo>();
+            this.roles = new Dictionary<string, RoleInfo>();
             do
             {
                 reader.ReadStartElement("role");
                 var role = new RoleInfo();
                 role.ReadXml(reader);
-                this._Roles.Add(role.RoleName, role);
+                this.roles.Add(role.RoleName, role);
             }
             while (reader.ReadToNextSibling("role"));
         }

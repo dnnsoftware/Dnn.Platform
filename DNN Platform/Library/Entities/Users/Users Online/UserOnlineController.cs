@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Users
     public class UserOnlineController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserOnlineController));
-        private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
+        private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
         private static readonly object Locker = new object();
         private static readonly string CacheKey = "OnlineUserList";
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Users
             bool isOnline = false;
             if (this.IsEnabled())
             {
-                isOnline = memberProvider.IsUserOnline(user);
+                isOnline = MemberProvider.IsUserOnline(user);
             }
 
             return isOnline;
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Users
             // Persist the current User List
             try
             {
-                memberProvider.UpdateUsersOnline(listToProcess);
+                MemberProvider.UpdateUsersOnline(listToProcess);
             }
             catch (Exception exc)
             {
@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Users
             }
 
             // Remove users that have expired
-            memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
+            MemberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }
 
         /// -----------------------------------------------------------------------------

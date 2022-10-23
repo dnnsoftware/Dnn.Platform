@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage Create(CreateDTO postData)
         {
             try
@@ -55,11 +56,11 @@ namespace DotNetNuke.Modules.Journal
                     postData.ProfileId = userId;
                 }
 
-                this.checkProfileAccess(postData.ProfileId, this.UserInfo);
+                this.CheckProfileAccess(postData.ProfileId, this.UserInfo);
 
-                this.checkGroupAccess(postData);
+                this.CheckGroupAccess(postData);
 
-                var journalItem = this.prepareJournalItem(postData, mentionedUsers);
+                var journalItem = this.PrepareJournalItem(postData, mentionedUsers);
 
                 JournalController.Instance.SaveJournalItem(journalItem, this.ActiveModule);
 
@@ -78,6 +79,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage Delete(JournalIdDTO postData)
         {
             try
@@ -108,6 +110,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage SoftDelete(JournalIdDTO postData)
         {
             try
@@ -138,6 +141,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
+
         public HttpResponseMessage PreviewUrl(PreviewDTO postData)
         {
             try
@@ -154,6 +158,7 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
         {
             try
@@ -171,6 +176,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage Like(JournalIdDTO postData)
         {
             try
@@ -193,6 +199,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage CommentSave(CommentSaveDTO postData)
         {
             try
@@ -224,6 +231,7 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage CommentDelete(CommentDeleteDTO postData)
         {
             try
@@ -258,6 +266,7 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpGet]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
+
         public HttpResponseMessage GetSuggestions(string keyword)
         {
             try
@@ -321,7 +330,8 @@ namespace DotNetNuke.Modules.Journal
         }
 
         // Check if a user can post content on a specific profile's page
-        private void checkProfileAccess(int profileId, UserInfo currentUser)
+
+        private void CheckProfileAccess(int profileId, UserInfo currentUser)
         {
             if (profileId != currentUser.UserID)
             {
@@ -333,7 +343,7 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        private void checkGroupAccess(CreateDTO postData)
+        private void CheckGroupAccess(CreateDTO postData)
         {
             if (postData.GroupId > 0)
             {
@@ -355,7 +365,7 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        private JournalItem prepareJournalItem(CreateDTO postData, IDictionary<string, UserInfo> mentionedUsers)
+        private JournalItem PrepareJournalItem(CreateDTO postData, IDictionary<string, UserInfo> mentionedUsers)
         {
             var journalTypeId = 1;
             switch (postData.JournalType)

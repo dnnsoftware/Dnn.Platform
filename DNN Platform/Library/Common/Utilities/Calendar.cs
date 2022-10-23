@@ -17,48 +17,48 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Opens a popup Calendar.
         /// </summary>
-        /// <param name="Field">TextBox to return the date value.</param>
+        /// <param name="field">TextBox to return the date value.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static string InvokePopupCal(TextBox Field)
+        public static string InvokePopupCal(TextBox field)
         {
             // Define character array to trim from language strings
-            char[] TrimChars = { ',', ' ' };
+            char[] trimChars = { ',', ' ' };
 
             // Get culture array of month names and convert to string for
             // passing to the popup calendar
             var monthBuilder = new StringBuilder();
-            foreach (string Month in DateTimeFormatInfo.CurrentInfo.MonthNames)
+            foreach (string month in DateTimeFormatInfo.CurrentInfo.MonthNames)
             {
-                monthBuilder.AppendFormat("{0},", Month);
+                monthBuilder.AppendFormat("{0},", month);
             }
 
-            var MonthNameString = monthBuilder.ToString().TrimEnd(TrimChars);
+            var monthNameString = monthBuilder.ToString().TrimEnd(trimChars);
 
             // Get culture array of day names and convert to string for
             // passing to the popup calendar
             var dayBuilder = new StringBuilder();
-            foreach (string Day in DateTimeFormatInfo.CurrentInfo.AbbreviatedDayNames)
+            foreach (string day in DateTimeFormatInfo.CurrentInfo.AbbreviatedDayNames)
             {
-                dayBuilder.AppendFormat("{0},", Day);
+                dayBuilder.AppendFormat("{0},", day);
             }
 
-            var DayNameString = dayBuilder.ToString().TrimEnd(TrimChars);
+            var dayNameString = dayBuilder.ToString().TrimEnd(trimChars);
 
             // Get the short date pattern for the culture
-            string FormatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
-            if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PopupCalendar.js"))
+            string formatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
+            if (!field.Page.ClientScript.IsClientScriptIncludeRegistered("PopupCalendar.js"))
             {
-                ScriptManager.RegisterClientScriptInclude(Field.Page, Field.Page.GetType(), "PopupCalendar.js", ClientAPI.ScriptPath + "PopupCalendar.js");
+                ScriptManager.RegisterClientScriptInclude(field.Page, field.Page.GetType(), "PopupCalendar.js", ClientAPI.ScriptPath + "PopupCalendar.js");
             }
 
             string strToday = ClientAPI.GetSafeJSString(Localization.GetString("Today"));
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
-            return string.Concat("javascript:popupCal('Cal','", Field.ClientID, "','", FormatString, "','",
-                MonthNameString, "','", DayNameString, "','", strToday, "','", strClose, "','", strCalendar, "',",
+            return string.Concat("javascript:popupCal('Cal','", field.ClientID, "','", formatString, "','",
+                monthNameString, "','", dayNameString, "','", strToday, "','", strClose, "','", strCalendar, "',",
                 (int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek, ");");
         }
     }

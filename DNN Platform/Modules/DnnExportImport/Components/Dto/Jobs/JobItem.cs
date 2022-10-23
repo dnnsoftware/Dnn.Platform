@@ -45,6 +45,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         // public IEnumerable<LogItem> Summary { get; set; }
         public ImportExportSummary Summary { get; set; }
 
+        /// <inheritdoc/>
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null)

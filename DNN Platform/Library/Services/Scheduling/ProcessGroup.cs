@@ -55,28 +55,28 @@ namespace DotNetNuke.Services.Scheduling
         public void Run(ScheduleHistoryItem objScheduleHistoryItem)
         {
             IServiceScope serviceScope = null;
-            SchedulerClient Process = null;
+            SchedulerClient process = null;
             try
             {
                 // This is called from RunPooledThread()
                 ticksElapsed = Environment.TickCount - ticksElapsed;
                 serviceScope = Globals.DependencyProvider.CreateScope();
-                Process = this.GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
-                Process.ScheduleHistoryItem = objScheduleHistoryItem;
+                process = this.GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
+                process.ScheduleHistoryItem = objScheduleHistoryItem;
 
                 // Set up the handlers for the CoreScheduler
-                Process.ProcessStarted += Scheduler.CoreScheduler.WorkStarted;
-                Process.ProcessProgressing += Scheduler.CoreScheduler.WorkProgressing;
-                Process.ProcessCompleted += Scheduler.CoreScheduler.WorkCompleted;
-                Process.ProcessErrored += Scheduler.CoreScheduler.WorkErrored;
+                process.ProcessStarted += Scheduler.CoreScheduler.WorkStarted;
+                process.ProcessProgressing += Scheduler.CoreScheduler.WorkProgressing;
+                process.ProcessCompleted += Scheduler.CoreScheduler.WorkCompleted;
+                process.ProcessErrored += Scheduler.CoreScheduler.WorkErrored;
 
                 // This kicks off the DoWork method of the class
                 // type specified in the configuration.
-                Process.Started();
+                process.Started();
                 try
                 {
-                    Process.ScheduleHistoryItem.Succeeded = false;
-                    Process.DoWork();
+                    process.ScheduleHistoryItem.Succeeded = false;
+                    process.DoWork();
                 }
                 catch (Exception exc)
                 {
@@ -85,20 +85,20 @@ namespace DotNetNuke.Services.Scheduling
                     // make sure we fire the Errored event
                     Logger.Error(exc);
 
-                    if (Process != null)
+                    if (process != null)
                     {
-                        if (Process.ScheduleHistoryItem != null)
+                        if (process.ScheduleHistoryItem != null)
                         {
-                            Process.ScheduleHistoryItem.Succeeded = false;
+                            process.ScheduleHistoryItem.Succeeded = false;
                         }
 
-                        Process.Errored(ref exc);
+                        process.Errored(ref exc);
                     }
                 }
 
-                if (Process.ScheduleHistoryItem.Succeeded)
+                if (process.ScheduleHistoryItem.Succeeded)
                 {
-                    Process.Completed();
+                    process.Completed();
                 }
 
                 // If all processes in this ProcessGroup have
@@ -124,14 +124,14 @@ namespace DotNetNuke.Services.Scheduling
                 // in case the scheduler client
                 // didn't have proper exception handling
                 // make sure we fire the Errored event
-                if (Process != null)
+                if (process != null)
                 {
-                    if (Process.ScheduleHistoryItem != null)
+                    if (process.ScheduleHistoryItem != null)
                     {
-                        Process.ScheduleHistoryItem.Succeeded = false;
+                        process.ScheduleHistoryItem.Succeeded = false;
                     }
 
-                    Process.Errored(ref exc);
+                    process.Errored(ref exc);
                 }
                 else
                 {

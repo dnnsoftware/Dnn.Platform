@@ -25,8 +25,8 @@ namespace DotNetNuke.Entities.Modules.Definitions
     /// -----------------------------------------------------------------------------
     public class ModuleDefinitionController
     {
-        private const string key = "ModuleDefID";
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
+        private const string Key = "ModuleDefID";
+        private static readonly DataProvider DataProvider = DataProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -143,7 +143,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             if (moduleDefinitionID == Null.NullInteger)
             {
                 // Add new Module Definition
-                moduleDefinitionID = dataProvider.AddModuleDefinition(
+                moduleDefinitionID = DataProvider.AddModuleDefinition(
                     moduleDefinition.DesktopModuleID,
                     moduleDefinition.FriendlyName,
                     moduleDefinition.DefinitionName,
@@ -153,7 +153,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             else
             {
                 // Upgrade Module Definition
-                dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
+                DataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             if (saveChildren)
@@ -226,7 +226,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 permissionController.DeletePermission(permission.PermissionID);
             }
 
-            dataProvider.DeleteModuleDefinition(moduleDefinitionId);
+            DataProvider.DeleteModuleDefinition(moduleDefinitionId);
             DataCache.ClearHostCache(true);
 
             // queue remove module definition from search index
@@ -248,7 +248,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillDictionary(key, dataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
+            return CBO.FillDictionary(Key, DataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
         }
     }
 }

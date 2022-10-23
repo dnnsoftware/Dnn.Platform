@@ -13,7 +13,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         {
         }
 
-        public ExtensionLanguagePackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        public ExtensionLanguagePackageDetailDto(int portalId, PackageInfo package)
+            : base(portalId, package)
         {
         }
 

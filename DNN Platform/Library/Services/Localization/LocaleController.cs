@@ -65,9 +65,9 @@ namespace DotNetNuke.Services.Localization
         /// <summary>
         /// Gets the current locale for current request to the portal.
         /// </summary>
-        /// <param name="PortalId">The portal id.</param>
+        /// <param name="portalId">The portal id.</param>
         /// <returns></returns>
-        public Locale GetCurrentLocale(int PortalId)
+        public Locale GetCurrentLocale(int portalId)
         {
             Locale locale = null;
 
@@ -76,9 +76,9 @@ namespace DotNetNuke.Services.Localization
                 locale = this.GetLocale(HttpContext.Current.Request.QueryString["language"]);
             }
 
-            return locale ?? ((PortalId == Null.NullInteger)
+            return locale ?? ((portalId == Null.NullInteger)
                                 ? this.GetLocale(Localization.SystemLocale)
-                                : this.GetDefaultLocale(PortalId));
+                                : this.GetDefaultLocale(portalId));
         }
 
         /// <summary>

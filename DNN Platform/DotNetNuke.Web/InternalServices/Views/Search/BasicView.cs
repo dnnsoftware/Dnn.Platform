@@ -10,6 +10,9 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     /// </summary>
     public class BasicView
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicView"/> class.
+        /// </summary>
         public BasicView()
         {
             this.Attributes = new Dictionary<string, string>();

@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Tokens
     using DotNetNuke.Common.Utilities;
 
     /// <summary>
-    /// The BaseTokenReplace class provides the tokenization of tokens formatted  
+    /// The BaseTokenReplace class provides the tokenization of tokens formatted
     /// [object:property] or [object:property|format|ifEmpty] or [custom:no] within a string
     /// with the appropriate current property/custom values.
     /// </summary>
@@ -30,9 +30,8 @@ namespace DotNetNuke.Services.Tokens
         private const string TokenReplaceCacheKeyDefault = "TokenReplaceRegEx_Default";
         private const string TokenReplaceCacheKeyObjectless = "TokenReplaceRegEx_Objectless";
 
-
-        private CultureInfo _formatProvider;
-        private string _language;
+        private CultureInfo formatProvider;
+        private string language;
 
         /// <summary>
         /// Gets the Format provider as Culture info from stored language or current culture.
@@ -40,7 +39,7 @@ namespace DotNetNuke.Services.Tokens
         /// <value>An CultureInfo.</value>
         protected virtual CultureInfo FormatProvider
         {
-            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
+            get { return this.formatProvider ?? (this.formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
@@ -51,13 +50,13 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                return this._language;
+                return this.language;
             }
 
             set
             {
-                this._language = value;
-                this._formatProvider = new CultureInfo(this._language);
+                this.language = value;
+                this.formatProvider = new CultureInfo(this.language);
             }
         }
 

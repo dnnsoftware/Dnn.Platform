@@ -32,16 +32,16 @@ namespace DotNetNuke.Services.Installer
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));
 
-        private static string AdminModules =
+        private static string adminModules =
             "Adsense, MarketShare, Authentication, Banners, FeedExplorer, FileManager, HostSettings, Lists, LogViewer, Newsletters, PortalAliases, Portals, RecycleBin, Scheduler, SearchAdmin, SearchInput, SearchResults, Security, SiteLog, SiteWizard, SQL, Tabs, Vendors,";
 
-        private static string CoreModules =
+        private static string coreModules =
             "DNN_Announcements, Blog, DNN_Documents, DNN_Events, DNN_FAQs, DNN_Feedback, DNN_Forum, Help, DNN_HTML, DNN_IFrame, DNN_Links, DNN_Media, DNN_NewsFeeds, DNN_Reports, Repository, Repository Dashboard, Store Admin, Store Account, Store Catalog, Store Mini Cart, Store Menu, DNN_Survey, DNN_UserDefinedTable, DNN_UsersOnline, Wiki, DNN_XML,";
 
-        private static string KnownSkinObjects =
+        private static string knownSkinObjects =
             "ACTIONBUTTON, ACTIONS, BANNER, BREADCRUMB, COPYRIGHT, CURRENTDATE, DOTNETNUKE, DROPDOWNACTIONS, HELP, HOSTNAME, ICON, LANGUAGE, LINKACTIONS, LINKS, LOGIN, LOGO, MENU, NAV, PRINTMODULE, PRIVACY, SEARCH, SIGNIN, STYLES, TERMS, TEXT, TITLE, TREEVIEW, USER, VISIBILITY,";
 
-        private static string KnownSkins = "DNN-Blue, DNN-Gray, MinimalExtropy,";
+        private static string knownSkins = "DNN-Blue, DNN-Gray, MinimalExtropy,";
 
         public static string CreateSkinManifest(string skinFolder, string skinType, string tempInstallFolder)
         {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer
                 ParsePackageName(package, "_");
             }
 
-            if ((package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && AdminModules.Contains(package.Name + ",")) || (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && CoreModules.Contains(package.Name + ",")) || ((package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)) && KnownSkins.Contains(package.Name + ",")) || (package.PackageType.Equals("SkinObject", StringComparison.OrdinalIgnoreCase) && KnownSkinObjects.Contains(package.Name + ",")))
+            if ((package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && adminModules.Contains(package.Name + ",")) || (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && coreModules.Contains(package.Name + ",")) || ((package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)) && knownSkins.Contains(package.Name + ",")) || (package.PackageType.Equals("SkinObject", StringComparison.OrdinalIgnoreCase) && knownSkinObjects.Contains(package.Name + ",")))
             {
                 if (string.IsNullOrEmpty(package.Owner))
                 {

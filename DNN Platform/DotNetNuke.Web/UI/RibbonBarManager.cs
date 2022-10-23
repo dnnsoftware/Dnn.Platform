@@ -342,9 +342,9 @@ namespace DotNetNuke.Web.UI
                         }
                     }
 
-                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    if (_PortalSettings.ContentLocalizationEnabled)
+                    if (portalSettings.ContentLocalizationEnabled)
                     {
                         Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(tab.PortalID);
                         tab.CultureCode = defaultLocale.Code;
@@ -367,7 +367,7 @@ namespace DotNetNuke.Web.UI
                         tab.TabID = TabController.Instance.AddTab(tab);
                     }
 
-                    if (_PortalSettings.ContentLocalizationEnabled)
+                    if (portalSettings.ContentLocalizationEnabled)
                     {
                         TabController.Instance.CreateLocalizedCopies(tab);
                     }
@@ -508,34 +508,50 @@ namespace DotNetNuke.Web.UI
 
     public class DotNetNukeException : Exception
     {
-        private readonly DotNetNukeErrorCode _ErrorCode = DotNetNukeErrorCode.NotSet;
+        private readonly DotNetNukeErrorCode errorCode = DotNetNukeErrorCode.NotSet;
 
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
         public DotNetNukeException()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
+        /// <param name="message">The message.</param>
         public DotNetNukeException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public DotNetNukeException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="errorCode">The error code.</param>
         public DotNetNukeException(string message, DotNetNukeErrorCode errorCode)
             : base(message)
         {
-            this._ErrorCode = errorCode;
+            this.errorCode = errorCode;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        /// <param name="errorCode">The error code.</param>
         public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode)
             : base(message, innerException)
         {
-            this._ErrorCode = errorCode;
+            this.errorCode = errorCode;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The streaming context.</param>
         public DotNetNukeException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -545,7 +561,7 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return this._ErrorCode;
+                return this.errorCode;
             }
         }
     }

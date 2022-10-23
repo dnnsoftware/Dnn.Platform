@@ -37,11 +37,16 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExportImportScheduler"/> class.
+        /// </summary>
+        /// <param name="objScheduleHistoryItem"></param>
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
+        /// <inheritdoc/>
         public override void DoWork()
         {
             try

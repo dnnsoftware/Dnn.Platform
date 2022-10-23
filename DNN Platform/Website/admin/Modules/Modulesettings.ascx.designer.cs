@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
     
     
     public partial class ModuleSettingsPage {
-        
         /// <summary>
         /// specificSettingsTab control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl specificSettingsTab;
-        
         /// <summary>
         /// hlSpecificSettings control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hlSpecificSettings;
-        
         /// <summary>
         /// cultureRow control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cultureRow;
-        
         /// <summary>
         /// cultureLabel control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl cultureLabel;
-        
         /// <summary>
         /// cultureLanguageLabel control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLanguageLabel cultureLanguageLabel;
-        
         /// <summary>
         /// plFriendlyName control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFriendlyName;
-        
         /// <summary>
         /// txtFriendlyName control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFriendlyName;
-        
         /// <summary>
         /// plTitle control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTitle;
-        
         /// <summary>
         /// txtTitle control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
-        
         /// <summary>
         /// plTags control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTags;
-        
         /// <summary>
         /// termsSelector control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.TermsSelector termsSelector;
-        
         /// <summary>
         /// rowAllTabs control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rowAllTabs;
-        
         /// <summary>
         /// plAllTabs control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAllTabs;
-        
         /// <summary>
         /// chkAllTabs control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAllTabs;
-        
         /// <summary>
         /// trnewPages control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl trnewPages;
-        
         /// <summary>
         /// plNewTabs control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plNewTabs;
-        
         /// <summary>
         /// chkNewTabs control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNewTabs;
-        
         /// <summary>
         /// allowIndexRow control.
         /// </summary>
@@ -177,7 +159,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl allowIndexRow;
-        
         /// <summary>
         /// AllowIndexLabel control.
         /// </summary>
@@ -186,7 +167,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl AllowIndexLabel;
-        
         /// <summary>
         /// chkAllowIndex control.
         /// </summary>
@@ -195,7 +175,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAllowIndex;
-        
         /// <summary>
         /// isShareableRow control.
         /// </summary>
@@ -204,7 +183,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl isShareableRow;
-        
         /// <summary>
         /// isShareableLabel control.
         /// </summary>
@@ -213,7 +191,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl isShareableLabel;
-        
         /// <summary>
         /// isShareableCheckBox control.
         /// </summary>
@@ -222,7 +199,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox isShareableCheckBox;
-        
         /// <summary>
         /// isShareableViewOnlyLabel control.
         /// </summary>
@@ -231,7 +207,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl isShareableViewOnlyLabel;
-        
         /// <summary>
         /// isShareableViewOnlyCheckBox control.
         /// </summary>
@@ -240,7 +215,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox isShareableViewOnlyCheckBox;
-        
         /// <summary>
         /// plAdminBorder control.
         /// </summary>
@@ -249,7 +223,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAdminBorder;
-        
         /// <summary>
         /// chkAdminBorder control.
         /// </summary>
@@ -258,7 +231,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAdminBorder;
-        
         /// <summary>
         /// plHeader control.
         /// </summary>
@@ -267,7 +239,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plHeader;
-        
         /// <summary>
         /// txtHeader control.
         /// </summary>
@@ -276,7 +247,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHeader;
-        
         /// <summary>
         /// plFooter control.
         /// </summary>
@@ -285,7 +255,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFooter;
-        
         /// <summary>
         /// txtFooter control.
         /// </summary>
@@ -294,7 +263,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFooter;
-        
         /// <summary>
         /// plStartDate control.
         /// </summary>
@@ -303,7 +271,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plStartDate;
-        
         /// <summary>
         /// startDatePicker control.
         /// </summary>
@@ -312,7 +279,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker startDatePicker;
-        
         /// <summary>
         /// plEndDate control.
         /// </summary>
@@ -321,7 +287,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plEndDate;
-        
         /// <summary>
         /// endDatePicker control.
         /// </summary>
@@ -330,7 +295,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker endDatePicker;
-        
         /// <summary>
         /// plMoniker control.
         /// </summary>
@@ -339,7 +303,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plMoniker;
-        
         /// <summary>
         /// txtMoniker control.
         /// </summary>
@@ -348,7 +311,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMoniker;
-        
         /// <summary>
         /// dgOnTabs control.
         /// </summary>
@@ -357,7 +319,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgOnTabs;
-        
         /// <summary>
         /// permissionsRow control.
         /// </summary>
@@ -366,7 +327,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl permissionsRow;
-        
         /// <summary>
         /// dgPermissions control.
         /// </summary>
@@ -375,7 +335,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Security.Permissions.Controls.ModulePermissionsGrid dgPermissions;
-        
         /// <summary>
         /// chkInheritPermissions control.
         /// </summary>
@@ -384,7 +343,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkInheritPermissions;
-        
         /// <summary>
         /// plIcon control.
         /// </summary>
@@ -393,7 +351,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plIcon;
-        
         /// <summary>
         /// ctlIcon control.
         /// </summary>
@@ -402,7 +359,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnUrlControl ctlIcon;
-        
         /// <summary>
         /// plAlign control.
         /// </summary>
@@ -411,7 +367,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAlign;
-        
         /// <summary>
         /// cboAlign control.
         /// </summary>
@@ -420,7 +375,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList cboAlign;
-        
         /// <summary>
         /// plColor control.
         /// </summary>
@@ -429,7 +383,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plColor;
-        
         /// <summary>
         /// txtColor control.
         /// </summary>
@@ -438,7 +391,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtColor;
-        
         /// <summary>
         /// plBorder control.
         /// </summary>
@@ -447,7 +399,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plBorder;
-        
         /// <summary>
         /// txtBorder control.
         /// </summary>
@@ -456,7 +407,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBorder;
-        
         /// <summary>
         /// valBorder control.
         /// </summary>
@@ -465,7 +415,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valBorder;
-        
         /// <summary>
         /// plVisibility control.
         /// </summary>
@@ -474,7 +423,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plVisibility;
-        
         /// <summary>
         /// cboVisibility control.
         /// </summary>
@@ -483,7 +431,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList cboVisibility;
-        
         /// <summary>
         /// plDisplayTitle control.
         /// </summary>
@@ -492,7 +439,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDisplayTitle;
-        
         /// <summary>
         /// chkDisplayTitle control.
         /// </summary>
@@ -501,7 +447,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisplayTitle;
-        
         /// <summary>
         /// plDisplayPrint control.
         /// </summary>
@@ -510,7 +455,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDisplayPrint;
-        
         /// <summary>
         /// chkDisplayPrint control.
         /// </summary>
@@ -519,7 +463,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisplayPrint;
-        
         /// <summary>
         /// plDisplaySyndicate control.
         /// </summary>
@@ -528,7 +471,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDisplaySyndicate;
-        
         /// <summary>
         /// chkDisplaySyndicate control.
         /// </summary>
@@ -537,7 +479,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDisplaySyndicate;
-        
         /// <summary>
         /// plWebSlice control.
         /// </summary>
@@ -546,7 +487,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSlice;
-        
         /// <summary>
         /// chkWebSlice control.
         /// </summary>
@@ -555,7 +495,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkWebSlice;
-        
         /// <summary>
         /// webSliceTitle control.
         /// </summary>
@@ -564,7 +503,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl webSliceTitle;
-        
         /// <summary>
         /// plWebSliceTitle control.
         /// </summary>
@@ -573,7 +511,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSliceTitle;
-        
         /// <summary>
         /// txtWebSliceTitle control.
         /// </summary>
@@ -582,7 +519,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWebSliceTitle;
-        
         /// <summary>
         /// webSliceExpiry control.
         /// </summary>
@@ -591,7 +527,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl webSliceExpiry;
-        
         /// <summary>
         /// plWebSliceExpiry control.
         /// </summary>
@@ -600,7 +535,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSliceExpiry;
-        
         /// <summary>
         /// diWebSliceExpiry control.
         /// </summary>
@@ -609,7 +543,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker diWebSliceExpiry;
-        
         /// <summary>
         /// valWebSliceExpiry control.
         /// </summary>
@@ -618,7 +551,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valWebSliceExpiry;
-        
         /// <summary>
         /// webSliceTTL control.
         /// </summary>
@@ -627,7 +559,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl webSliceTTL;
-        
         /// <summary>
         /// plWebSliceTTL control.
         /// </summary>
@@ -636,7 +567,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plWebSliceTTL;
-        
         /// <summary>
         /// txtWebSliceTTL control.
         /// </summary>
@@ -645,7 +575,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWebSliceTTL;
-        
         /// <summary>
         /// valWebSliceTTL control.
         /// </summary>
@@ -654,7 +583,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valWebSliceTTL;
-        
         /// <summary>
         /// plModuleContainer control.
         /// </summary>
@@ -663,7 +591,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plModuleContainer;
-        
         /// <summary>
         /// moduleContainerCombo control.
         /// </summary>
@@ -672,7 +599,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnSkinComboBox moduleContainerCombo;
-        
         /// <summary>
         /// lblCacheProvider control.
         /// </summary>
@@ -681,7 +607,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheProvider;
-        
         /// <summary>
         /// cboCacheProvider control.
         /// </summary>
@@ -690,7 +615,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboCacheProvider;
-        
         /// <summary>
         /// lblCacheInherited control.
         /// </summary>
@@ -699,7 +623,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCacheInherited;
-        
         /// <summary>
         /// divCacheDuration control.
         /// </summary>
@@ -708,7 +631,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCacheDuration;
-        
         /// <summary>
         /// cacheWarningRow control.
         /// </summary>
@@ -717,7 +639,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel cacheWarningRow;
-        
         /// <summary>
         /// lblCacheDurationWarning control.
         /// </summary>
@@ -726,7 +647,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCacheDurationWarning;
-        
         /// <summary>
         /// lblCacheDuration control.
         /// </summary>
@@ -735,7 +655,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblCacheDuration;
-        
         /// <summary>
         /// txtCacheDuration control.
         /// </summary>
@@ -744,7 +663,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCacheDuration;
-        
         /// <summary>
         /// valCacheTime control.
         /// </summary>
@@ -753,7 +671,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CompareValidator valCacheTime;
-        
         /// <summary>
         /// plDefault control.
         /// </summary>
@@ -762,7 +679,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plDefault;
-        
         /// <summary>
         /// chkDefault control.
         /// </summary>
@@ -771,7 +687,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkDefault;
-        
         /// <summary>
         /// plAllModules control.
         /// </summary>
@@ -780,7 +695,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAllModules;
-        
         /// <summary>
         /// chkAllModules control.
         /// </summary>
@@ -789,7 +703,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAllModules;
-        
         /// <summary>
         /// rowTab control.
         /// </summary>
@@ -798,7 +711,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rowTab;
-        
         /// <summary>
         /// plTab control.
         /// </summary>
@@ -807,7 +719,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTab;
-        
         /// <summary>
         /// cboTab control.
         /// </summary>
@@ -816,7 +727,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboTab;
-        
         /// <summary>
         /// fsSpecific control.
         /// </summary>
@@ -825,7 +735,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl fsSpecific;
-        
         /// <summary>
         /// pnlSpecific control.
         /// </summary>
@@ -834,7 +743,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSpecific;
-        
         /// <summary>
         /// cmdUpdate control.
         /// </summary>
@@ -843,7 +751,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        
         /// <summary>
         /// cmdDelete control.
         /// </summary>
@@ -852,7 +759,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
-        
         /// <summary>
         /// cancelHyperLink control.
         /// </summary>
@@ -861,7 +767,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink cancelHyperLink;
-        
         /// <summary>
         /// ctlAudit control.
         /// </summary>

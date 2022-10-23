@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.Containers.EventListeners
     /// -----------------------------------------------------------------------------
     public class ContainerEventArgs : EventArgs
     {
-        private readonly Container _Container;
+        private readonly Container container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainerEventArgs"/> class.
@@ -21,14 +21,14 @@ namespace DotNetNuke.UI.Containers.EventListeners
         /// <param name="container"></param>
         public ContainerEventArgs(Container container)
         {
-            this._Container = container;
+            this.container = container;
         }
 
         public Container Container
         {
             get
             {
-                return this._Container;
+                return this.container;
             }
         }
     }

@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const bool ConstAscending = true;
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
-        private readonly IDataService _dataService;
+        private readonly IDataService dataService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingController"/> class.
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Social.Messaging
             // Argument Contract
             Requires.NotNull("dataService", dataService);
 
-            this._dataService = dataService;
+            this.dataService = dataService;
         }
 
         /// <inheritdoc/>
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Social.Messaging
             message.SenderUserID = sender.UserID;
             message.From = sender.DisplayName;
 
-            message.MessageID = this._dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
+            message.MessageID = this.dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
 
             // associate attachments
             if (fileIDs != null)
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 {
                     if (this.CanViewFile(attachment.FileID))
                     {
-                        this._dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
+                        this.dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                     }
                 }
             }
@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Social.Messaging
                     .Aggregate(roleIds, (current, roleId) => current + (roleId + ","))
                     .Trim(',');
 
-                this._dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // send message to each User - this should be called after CreateMessageRecipientsForRole.
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             foreach (var recipient in from user in users where InternalMessagingController.Instance.GetMessageRecipient(message.MessageID, user.UserID) == null select new MessageRecipient { MessageID = message.MessageID, UserID = user.UserID, Read = false, RecipientID = Null.NullInteger })
             {
-                this._dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             if (users.All(u => u.UserID != sender.UserID))
@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 {
                     // add sender as a recipient of the message
                     recipient = new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger };
-                    recipient.RecipientID = this._dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
+                    recipient.RecipientID = this.dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
 
                 InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, recipient.RecipientID);

@@ -7,8 +7,8 @@ namespace DotNetNuke.ComponentModel
 
     internal class ComponentType
     {
-        private readonly Type _BaseType;
-        private readonly ComponentBuilderCollection _ComponentBuilders = new ComponentBuilderCollection();
+        private readonly Type baseType;
+        private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ComponentType"/> class.
@@ -16,14 +16,14 @@ namespace DotNetNuke.ComponentModel
         /// <param name="baseType">The base type of Components of this ComponentType.</param>
         public ComponentType(Type baseType)
         {
-            this._BaseType = baseType;
+            this.baseType = baseType;
         }
 
         public Type BaseType
         {
             get
             {
-                return this._BaseType;
+                return this.baseType;
             }
         }
 
@@ -31,7 +31,7 @@ namespace DotNetNuke.ComponentModel
         {
             get
             {
-                return this._ComponentBuilders;
+                return this.componentBuilders;
             }
         }
     }

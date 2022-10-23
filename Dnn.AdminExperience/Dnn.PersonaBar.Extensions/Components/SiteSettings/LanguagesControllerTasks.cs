@@ -43,6 +43,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                         ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLanguage),
                             defaultLanguage, languageCounter, languageCount, progress);
                     }
+
                     PublishLanguage(defaultLanguage, portalId, true);
 
                     PortalController.UpdatePortalSetting(portalId, "ContentLocalizationEnabled", "True");
@@ -193,9 +194,10 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 progress.SecondaryValue = stepNo;
                 progress.SecondaryPercent = Convert.ToInt32((float)stepNo / total * 100);
                 progress.PrimaryPercent =
-                    Convert.ToInt32((languageCount + (float)stepNo / total) / totalLanguages * 100);
+                    Convert.ToInt32((languageCount + ((float)stepNo / total)) / totalLanguages * 100);
 
-                progress.CurrentOperationText = string.Format(Localization.GetString(
+                progress.CurrentOperationText = string.Format(
+                    Localization.GetString(
                     "ProcessingPage", LocalResourcesFile), locale.Code, stepNo, total, currentTab.TabName);
 
                 progress.TimeEstimated = (total - stepNo) * 100;
@@ -212,6 +214,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     {
                         TabController.Instance.LocalizeTab(currentTab, LocaleController.Instance.GetLocale(defaultLocale), true);
                     }
+
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
             }

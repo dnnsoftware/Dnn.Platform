@@ -49,18 +49,18 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     public class Term : BaseEntityInfo, IHydratable
     {
         private static readonly PortalSecurity Security = PortalSecurity.Instance;
-        private readonly List<string> _synonyms = new List<string>();
+        private readonly List<string> synonyms = new List<string>();
 
-        private List<Term> _childTerms;
-        private string _description;
-        private int _left;
-        private string _name;
-        private int? _parentTermId;
-        private int _right;
-        private int _termId;
-        private Vocabulary _vocabulary;
-        private int _vocabularyId;
-        private int _weight;
+        private List<Term> childTerms;
+        private string description;
+        private int left;
+        private string name;
+        private int? parentTermId;
+        private int right;
+        private int termId;
+        private Vocabulary vocabulary;
+        private int vocabularyId;
+        private int weight;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Term"/> class.
@@ -108,12 +108,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             this.Description = description;
             this.Name = name;
-            this._vocabularyId = vocabularyId;
+            this.vocabularyId = vocabularyId;
 
             this.ParentTermId = null;
             this.TermId = Null.NullInteger;
-            this._left = 0;
-            this._right = 0;
+            this.left = 0;
+            this.right = 0;
             this.Weight = 0;
         }
 
@@ -124,12 +124,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                if (this._childTerms == null)
+                if (this.childTerms == null)
                 {
-                    this._childTerms = this.GetChildTerms(this._termId, this._vocabularyId);
+                    this.childTerms = this.GetChildTerms(this.termId, this.vocabularyId);
                 }
 
-                return this._childTerms;
+                return this.childTerms;
             }
         }
 
@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._left;
+                return this.left;
             }
         }
 
@@ -162,7 +162,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._right;
+                return this.right;
             }
         }
 
@@ -173,7 +173,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._synonyms;
+                return this.synonyms;
             }
         }
 
@@ -184,12 +184,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                if (this._vocabulary == null && this._vocabularyId > Null.NullInteger)
+                if (this.vocabulary == null && this.vocabularyId > Null.NullInteger)
                 {
-                    this._vocabulary = this.GetVocabulary(this._vocabularyId);
+                    this.vocabulary = this.GetVocabulary(this.vocabularyId);
                 }
 
-                return this._vocabulary;
+                return this.vocabulary;
             }
         }
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._vocabularyId;
+                return this.vocabularyId;
             }
         }
 
@@ -211,12 +211,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._description;
+                return this.description;
             }
 
             set
             {
-                this._description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this.description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -227,7 +227,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._name;
+                return this.name;
             }
 
             set
@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                     value = System.Net.WebUtility.HtmlDecode(value);
                 }
 
-                this._name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this.name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -253,12 +253,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._parentTermId;
+                return this.parentTermId;
             }
 
             set
             {
-                this._parentTermId = value;
+                this.parentTermId = value;
             }
         }
 
@@ -269,12 +269,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._termId;
+                return this.termId;
             }
 
             set
             {
-                this._termId = value;
+                this.termId = value;
             }
         }
 
@@ -285,12 +285,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return this._weight;
+                return this.weight;
             }
 
             set
             {
-                this._weight = value;
+                this.weight = value;
             }
         }
 
@@ -315,16 +315,16 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.Name = Null.SetNullString(dr["Name"]);
             this.Description = Null.SetNullString(dr["Description"]);
             this.Weight = Null.SetNullInteger(dr["Weight"]);
-            this._vocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
+            this.vocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
 
             if (dr["TermLeft"] != DBNull.Value)
             {
-                this._left = Convert.ToInt32(dr["TermLeft"]);
+                this.left = Convert.ToInt32(dr["TermLeft"]);
             }
 
             if (dr["TermRight"] != DBNull.Value)
             {
-                this._right = Convert.ToInt32(dr["TermRight"]);
+                this.right = Convert.ToInt32(dr["TermRight"]);
             }
 
             if (dr["ParentTermID"] != DBNull.Value)

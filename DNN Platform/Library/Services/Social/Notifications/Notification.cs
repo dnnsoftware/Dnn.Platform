@@ -25,8 +25,8 @@ namespace DotNetNuke.Services.Social.Notifications
     [Serializable]
     public class Notification : BaseEntityInfo, IHydratable
     {
-        private int _notificationID = -1;
-        private string _displayDate;
+        private int notificationID = -1;
+        private string displayDate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Notification"/> class.
@@ -45,12 +45,12 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayDate))
+                if (string.IsNullOrEmpty(this.displayDate))
                 {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
+                    this.displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
 
-                return this._displayDate;
+                return this.displayDate;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return this._notificationID;
+                return this.notificationID;
             }
 
             set
             {
-                this._notificationID = value;
+                this.notificationID = value;
             }
         }
 

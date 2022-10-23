@@ -71,13 +71,14 @@ namespace DotNetNuke.Admin.Containers
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             this.ID = "ModuleActions";
 
-            this.actionButton.Click += this.actionButton_Click;
+            this.actionButton.Click += this.ActionButton_Click;
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
@@ -88,6 +89,7 @@ namespace DotNetNuke.Admin.Containers
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -182,6 +184,7 @@ namespace DotNetNuke.Admin.Containers
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);
@@ -192,7 +195,7 @@ namespace DotNetNuke.Admin.Containers
             }
         }
 
-        private void actionButton_Click(object sender, EventArgs e)
+        private void ActionButton_Click(object sender, EventArgs e)
         {
             this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
         }

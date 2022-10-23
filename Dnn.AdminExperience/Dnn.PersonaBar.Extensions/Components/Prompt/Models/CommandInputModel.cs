@@ -14,8 +14,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
             get
             {
                 var tokenEx = new Regex("[^\\s\"]+|\"[^\"]*\"");
+
                 // Matches (1 or more chars that are NOT space or ") or (" any # of chars not a " followed by a ")
-                return tokenEx.Matches(this.CmdLine).Cast<Match>().Select(m => m.Value.Replace("\"", "")).ToArray();
+                return tokenEx.Matches(this.CmdLine).Cast<Match>().Select(m => m.Value.Replace("\"", string.Empty)).ToArray();
             }
         }
 

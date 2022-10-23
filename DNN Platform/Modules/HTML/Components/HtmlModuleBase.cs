@@ -13,22 +13,25 @@ namespace DotNetNuke.Modules.Html.Components
 
     public class HtmlModuleBase : PortalModuleBase
     {
-        private HtmlModuleSettings _settings;
+        private HtmlModuleSettings settings;
 
         public new HtmlModuleSettings Settings
         {
             get
             {
-                if (this._settings == null)
+                if (this.settings == null)
                 {
                     var repo = new HtmlModuleSettingsRepository();
-                    this._settings = repo.GetSettings(this.ModuleConfiguration);
+                    this.settings = repo.GetSettings(this.ModuleConfiguration);
                 }
 
-                return this._settings;
+                return this.settings;
             }
 
-            set { this._settings = value; }
+            set
+            {
+                this.settings = value;
+            }
         }
     }
 }

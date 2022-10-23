@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class EditUser {
-        
         /// <summary>
         /// dnnEditUser control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dnnEditUser;
-        
         /// <summary>
         /// adminTabNav control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminTabNav;
-        
         /// <summary>
         /// servicesTab control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl servicesTab;
-        
         /// <summary>
         /// userForm control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormEditor userForm;
-        
         /// <summary>
         /// userNameReadOnly control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem userNameReadOnly;
-        
         /// <summary>
         /// displayName control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem displayName;
-        
         /// <summary>
         /// email control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormTextBoxItem email;
-        
         /// <summary>
         /// VanityUrlRow control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel VanityUrlRow;
-        
         /// <summary>
         /// VanityUrlLabel control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl VanityUrlLabel;
-        
         /// <summary>
         /// VanityUrl control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label VanityUrl;
-        
         /// <summary>
         /// VanityUrlPanel control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl VanityUrlPanel;
-        
         /// <summary>
         /// VanityUrlHeader control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label VanityUrlHeader;
-        
         /// <summary>
         /// VanityUrlAlias control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label VanityUrlAlias;
-        
         /// <summary>
         /// VanityUrlTextBox control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox VanityUrlTextBox;
-        
         /// <summary>
         /// ctlPassword control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.Admin.Users.Password ctlPassword;
-        
         /// <summary>
         /// ctlMembership control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.Admin.Users.Membership ctlMembership;
-        
         /// <summary>
         /// actionsRow control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl actionsRow;
-        
         /// <summary>
         /// cmdUpdate control.
         /// </summary>
@@ -177,7 +159,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        
         /// <summary>
         /// cmdDelete control.
         /// </summary>
@@ -186,7 +167,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdDelete;
-        
         /// <summary>
         /// dnnProfileDetails control.
         /// </summary>
@@ -195,7 +175,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel dnnProfileDetails;
-        
         /// <summary>
         /// ctlProfile control.
         /// </summary>
@@ -204,7 +183,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DesktopModules.Admin.Security.DNNProfile ctlProfile;
-        
         /// <summary>
         /// UserSubscriptions control.
         /// </summary>
@@ -213,7 +191,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.CoreMessaging.Subscriptions UserSubscriptions;
-        
         /// <summary>
         /// dnnServicesDetails control.
         /// </summary>
@@ -222,7 +199,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl dnnServicesDetails;
-        
         /// <summary>
         /// ctlServices control.
         /// </summary>

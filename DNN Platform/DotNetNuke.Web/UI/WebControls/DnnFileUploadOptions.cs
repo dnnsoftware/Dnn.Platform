@@ -46,14 +46,14 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "height")]
         public int Height;
 
-        private Dictionary<string, string> _parameters;
+        private Dictionary<string, string> parameters;
 
         [DataMember(Name = "parameters")]
         public Dictionary<string, string> Parameters
         {
             get
             {
-                return this._parameters ?? (this._parameters = new Dictionary<string, string>());
+                return this.parameters ?? (this.parameters = new Dictionary<string, string>());
             }
         }
 

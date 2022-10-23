@@ -17,6 +17,10 @@ namespace DotNetNuke.Modules.Groups.Components
 
     public class GroupItemTokenReplace : Services.Tokens.BaseCustomTokenReplace
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GroupItemTokenReplace"/> class.
+        /// </summary>
+        /// <param name="groupInfo"></param>
         public GroupItemTokenReplace(RoleInfo groupInfo)
         {
             this.PropertySource["groupitem"] = groupInfo;

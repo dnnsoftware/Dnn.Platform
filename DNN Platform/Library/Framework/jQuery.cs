@@ -33,23 +33,23 @@ namespace DotNetNuke.Framework
         public const string DefaultHostedUrl = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
 
         public const string DefaultUIHostedUrl = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js";
-        private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
-        private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
-        private const string jQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
-        private const string jQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
-        private const string jQueryVersionKey = "jQueryVersionKey";
-        private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
+        private const string JQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
+        private const string JQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
+        private const string JQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
+        private const string JQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
+        private const string JQueryVersionKey = "jQueryVersionKey";
+        private const string JQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
 
-        private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
-        private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
-        private const string jQueryUIVersionKey = "jQueryUIVersionKey";
-        private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
+        private const string JQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
+        private const string JQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
+        private const string JQueryUIVersionKey = "jQueryUIVersionKey";
+        private const string JQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
 
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
         /// </summary>
         /// <value>
-        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery script.</placeholder>
+        /// The HostSetting for the URL of the hosted version of the jQuery script.
         /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
@@ -71,7 +71,7 @@ namespace DotNetNuke.Framework
         /// Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.
         /// </summary>
         /// <value>
-        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery migrated script.</placeholder>
+        /// The HostSetting for the URL of the hosted version of the jQuery migrated script.
         /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
@@ -93,7 +93,7 @@ namespace DotNetNuke.Framework
         /// Gets the HostSetting for the URL of the hosted version of the jQuery UI script.
         /// </summary>
         /// <value>
-        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery UI script.</placeholder>
+        /// The HostSetting for the URL of the hosted version of the jQuery UI script.
         /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property.</remarks>
@@ -183,7 +183,7 @@ namespace DotNetNuke.Framework
         /// Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
         /// </summary>
         /// <value>
-        /// <placeholder>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</placeholder>
+        /// The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
         /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryDebug property.</remarks>
@@ -205,7 +205,7 @@ namespace DotNetNuke.Framework
         /// Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.
         /// </summary>
         /// <value>
-        /// <placeholder>The HostSetting to determine if we should use a hosted version of the jQuery script.</placeholder>
+        /// The HostSetting to determine if we should use a hosted version of the jQuery script.
         /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryHosted property.</remarks>
@@ -227,7 +227,7 @@ namespace DotNetNuke.Framework
         /// Gets the version string for the local jQuery script.
         /// </summary>
         /// <value>
-        /// <placeholder>The version string for the local jQuery script</placeholder>
+        /// The version string for the local jQuery script.
         /// </value>
         /// <returns></returns>
         /// <remarks>
@@ -238,16 +238,16 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string ver = Convert.ToString(DataCache.GetCache(jQueryVersionKey));
+                string ver = Convert.ToString(DataCache.GetCache(JQueryVersionKey));
                 if (string.IsNullOrEmpty(ver))
                 {
                     if (IsInstalled)
                     {
                         string jqueryFileName = JQueryFileMapPath(false);
                         string jfiletext = File.ReadAllText(jqueryFileName);
-                        Match verMatch = Regex.Match(jfiletext, jQueryVersionMatch);
+                        Match verMatch = Regex.Match(jfiletext, JQueryVersionMatch);
                         ver = verMatch.Value;
-                        DataCache.SetCache(jQueryVersionKey, ver, new CacheDependency(jqueryFileName));
+                        DataCache.SetCache(JQueryVersionKey, ver, new CacheDependency(jqueryFileName));
                     }
                     else
                     {
@@ -263,7 +263,7 @@ namespace DotNetNuke.Framework
         /// Gets the version string for the local jQuery UI script.
         /// </summary>
         /// <value>
-        /// <placeholder>The version string for the local jQuery UI script</placeholder>
+        /// The version string for the local jQuery UI script.
         /// </value>
         /// <returns></returns>
         /// <remarks>
@@ -274,16 +274,16 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string ver = Convert.ToString(DataCache.GetCache(jQueryUIVersionKey));
+                string ver = Convert.ToString(DataCache.GetCache(JQueryUIVersionKey));
                 if (string.IsNullOrEmpty(ver))
                 {
                     if (IsUIInstalled)
                     {
                         string jqueryUIFileName = JQueryUIFileMapPath(false);
                         string jfiletext = File.ReadAllText(jqueryUIFileName);
-                        Match verMatch = Regex.Match(jfiletext, jQueryUIVersionMatch);
+                        Match verMatch = Regex.Match(jfiletext, JQueryUIVersionMatch);
                         ver = verMatch.Value;
-                        DataCache.SetCache(jQueryUIVersionKey, ver, new CacheDependency(jqueryUIFileName));
+                        DataCache.SetCache(JQueryUIVersionKey, ver, new CacheDependency(jqueryUIFileName));
                     }
                     else
                     {
@@ -310,10 +310,10 @@ namespace DotNetNuke.Framework
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryFile(bool getMinFile)
         {
-            string jfile = jQueryDebugFile;
+            string jfile = JQueryDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryMinFile;
+                jfile = JQueryMinFile;
             }
 
             return jfile;
@@ -322,10 +322,10 @@ namespace DotNetNuke.Framework
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryMigrateFile(bool getMinFile)
         {
-            string jfile = jQueryMigrateDebugFile;
+            string jfile = JQueryMigrateDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryMigrateMinFile;
+                jfile = JQueryMigrateMinFile;
             }
 
             return jfile;
@@ -334,10 +334,10 @@ namespace DotNetNuke.Framework
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryUIFile(bool getMinFile)
         {
-            string jfile = jQueryUIDebugFile;
+            string jfile = JQueryUIDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryUIMinFile;
+                jfile = JQueryUIMinFile;
             }
 
             return jfile;

@@ -46,8 +46,8 @@ namespace DotNetNuke.Security.Membership
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetMembershipProvider));
         private static Random random = new Random();
 
-        private readonly DataProvider _dataProvider = DataProvider.Instance();
-        private readonly IEnumerable<string> _socialAuthProviders = new List<string>() { "Facebook", "Google", "Twitter", "LiveID" };
+        private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IEnumerable<string> socialAuthProviders = new List<string>() { "Facebook", "Google", "Twitter", "LiveID" };
 
         /// <inheritdoc/>
         public override bool CanEditProviderProperties
@@ -58,7 +58,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override int MaxInvalidPasswordAttempts
         {
-            get { return System.Web.Security.Membership.MaxInvalidPasswordAttempts; }
+            get
+            {
+                return System.Web.Security.Membership.MaxInvalidPasswordAttempts;
+            }
 
             set
             {
@@ -70,7 +73,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override int MinNonAlphanumericCharacters
         {
-            get { return System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters; }
+            get
+            {
+                return System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters;
+            }
 
             set
             {
@@ -82,7 +88,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override int MinPasswordLength
         {
-            get { return System.Web.Security.Membership.MinRequiredPasswordLength; }
+            get
+            {
+                return System.Web.Security.Membership.MinRequiredPasswordLength;
+            }
 
             set
             {
@@ -94,7 +103,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override int PasswordAttemptWindow
         {
-            get { return System.Web.Security.Membership.PasswordAttemptWindow; }
+            get
+            {
+                return System.Web.Security.Membership.PasswordAttemptWindow;
+            }
 
             set
             {
@@ -129,7 +141,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override bool PasswordResetEnabled
         {
-            get { return System.Web.Security.Membership.EnablePasswordReset; }
+            get
+            {
+                return System.Web.Security.Membership.EnablePasswordReset;
+            }
 
             set
             {
@@ -141,7 +156,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override bool PasswordRetrievalEnabled
         {
-            get { return System.Web.Security.Membership.EnablePasswordRetrieval; }
+            get
+            {
+                return System.Web.Security.Membership.EnablePasswordRetrieval;
+            }
 
             set
             {
@@ -153,7 +171,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override string PasswordStrengthRegularExpression
         {
-            get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
+            get
+            {
+                return System.Web.Security.Membership.PasswordStrengthRegularExpression;
+            }
 
             set
             {
@@ -165,7 +186,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override bool RequiresQuestionAndAnswer
         {
-            get { return System.Web.Security.Membership.RequiresQuestionAndAnswer; }
+            get
+            {
+                return System.Web.Security.Membership.RequiresQuestionAndAnswer;
+            }
 
             set
             {
@@ -177,7 +201,10 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override bool RequiresUniqueEmail
         {
-            get { return System.Web.Security.Membership.Provider.RequiresUniqueEmail; }
+            get
+            {
+                return System.Web.Security.Membership.Provider.RequiresUniqueEmail;
+            }
 
             set
             {
@@ -219,7 +246,7 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
-            IDataReader dr = this._dataProvider.GetUserByAuthToken(portalId, userToken, authType);
+            IDataReader dr = this.dataProvider.GetUserByAuthToken(portalId, userToken, authType);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }
@@ -233,7 +260,7 @@ namespace DotNetNuke.Security.Membership
         {
             Requires.NotNullOrEmpty("portalId", portalId.ToString());
             Requires.NotNullOrEmpty("userId", userId.ToString());
-            this._dataProvider.AddUserPortal(portalId, userId);
+            this.dataProvider.AddUserPortal(portalId, userId);
         }
 
         /// <summary>
@@ -283,7 +310,7 @@ namespace DotNetNuke.Security.Membership
                 }
             }
 
-            this._dataProvider.ChangeUsername(userId, userName);
+            this.dataProvider.ChangeUsername(userId, userName);
 
             EventLogController.Instance.AddLog(
                 "userId",
@@ -469,7 +496,7 @@ namespace DotNetNuke.Security.Membership
             bool retValue = true;
             try
             {
-                this._dataProvider.DeleteUserFromPortal(user.UserID, user.PortalID);
+                this.dataProvider.DeleteUserFromPortal(user.UserID, user.PortalID);
             }
             catch (Exception ex)
             {
@@ -492,7 +519,7 @@ namespace DotNetNuke.Security.Membership
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DeleteUsersOnline(int timeWindow)
         {
-            this._dataProvider.DeleteUsersOnline(timeWindow);
+            this.dataProvider.DeleteUsersOnline(timeWindow);
         }
 
         /// -----------------------------------------------------------------------------
@@ -521,7 +548,7 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc/>
         public override ArrayList GetDeletedUsers(int portalId)
         {
-            return FillUserCollection(portalId, this._dataProvider.GetDeletedUsers(portalId));
+            return FillUserCollection(portalId, this.dataProvider.GetDeletedUsers(portalId));
         }
 
         /// -----------------------------------------------------------------------------
@@ -535,7 +562,7 @@ namespace DotNetNuke.Security.Membership
         public override ArrayList GetOnlineUsers(int portalId)
         {
             int totalRecords = 0;
-            return FillUserCollection(portalId, this._dataProvider.GetOnlineUsers(portalId), ref totalRecords);
+            return FillUserCollection(portalId, this.dataProvider.GetOnlineUsers(portalId), ref totalRecords);
         }
 
         /// -----------------------------------------------------------------------------
@@ -571,7 +598,7 @@ namespace DotNetNuke.Security.Membership
         {
             return FillUserCollection(
                 portalId,
-                this._dataProvider.GetUnAuthorizedUsers(portalId, includeDeleted, superUsersOnly));
+                this.dataProvider.GetUnAuthorizedUsers(portalId, includeDeleted, superUsersOnly));
         }
 
         /// -----------------------------------------------------------------------------
@@ -586,7 +613,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUser(int portalId, int userId)
         {
-            IDataReader dr = this._dataProvider.GetUser(portalId, userId);
+            IDataReader dr = this.dataProvider.GetUser(portalId, userId);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }
@@ -603,7 +630,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
-            IDataReader dr = this._dataProvider.GetUserByDisplayName(portalId, displayName);
+            IDataReader dr = this.dataProvider.GetUserByDisplayName(portalId, displayName);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }
@@ -646,7 +673,7 @@ namespace DotNetNuke.Security.Membership
             UserInfo user = null;
             if (!string.IsNullOrEmpty(vanityUrl))
             {
-                IDataReader dr = this._dataProvider.GetUserByVanityUrl(portalId, vanityUrl);
+                IDataReader dr = this.dataProvider.GetUserByVanityUrl(portalId, vanityUrl);
                 user = FillUserInfo(portalId, dr, true);
             }
 
@@ -668,7 +695,7 @@ namespace DotNetNuke.Security.Membership
             UserInfo user = null;
             if (!string.IsNullOrEmpty(resetToken))
             {
-                IDataReader dr = this._dataProvider.GetUserByPasswordResetToken(portalId, resetToken);
+                IDataReader dr = this.dataProvider.GetUserByPasswordResetToken(portalId, resetToken);
                 user = FillUserInfo(portalId, dr, true);
             }
 
@@ -704,7 +731,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override int GetUserCountByPortal(int portalId)
         {
-            return this._dataProvider.GetUserCountByPortal(portalId);
+            return this.dataProvider.GetUserCountByPortal(portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -765,7 +792,7 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId, this._dataProvider.GetAllUsers(portalId, pageIndex, pageSize, includeDeleted,
+            return FillUserCollection(portalId, this.dataProvider.GetAllUsers(portalId, pageIndex, pageSize, includeDeleted,
                                                                 superUsersOnly), ref totalRecords);
         }
 
@@ -795,7 +822,7 @@ namespace DotNetNuke.Security.Membership
         {
             return FillUserList(
                 portalId,
-                this._dataProvider.GetUsersAdvancedSearch(portalId, userId, filterUserId, filterRoleId,
+                this.dataProvider.GetUsersAdvancedSearch(portalId, userId, filterUserId, filterRoleId,
                                                                      relationshipTypeId, isAdmin, pageIndex, pageSize,
                                                                      sortColumn, sortAscending, propertyNames,
                                                                      propertyValues));
@@ -817,7 +844,7 @@ namespace DotNetNuke.Security.Membership
                                                             bool sortAscending, string propertyName,
                                                             string propertyValue)
         {
-            return FillUserList(portalId, this._dataProvider.GetUsersBasicSearch(portalId, pageIndex, pageSize,
+            return FillUserList(portalId, this.dataProvider.GetUsersBasicSearch(portalId, pageIndex, pageSize,
                                                                             sortColumn, sortAscending, propertyName,
                                                                             propertyValue));
         }
@@ -867,7 +894,7 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this._dataProvider.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize,
+                this.dataProvider.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize,
                                                                     includeDeleted, superUsersOnly), ref totalRecords);
         }
 
@@ -916,7 +943,7 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this._dataProvider.GetUsersByUsername(portalId, userNameToMatch, pageIndex, pageSize,
+                this.dataProvider.GetUsersByUsername(portalId, userNameToMatch, pageIndex, pageSize,
                                                                        includeDeleted, superUsersOnly), ref totalRecords);
         }
 
@@ -946,7 +973,7 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this._dataProvider.GetUsersByDisplayname(portalId, nameToMatch, pageIndex, pageSize,
+                this.dataProvider.GetUsersByDisplayname(portalId, nameToMatch, pageIndex, pageSize,
                                                                        includeDeleted, superUsersOnly), ref totalRecords);
         }
 
@@ -1001,7 +1028,7 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this._dataProvider.GetUsersByProfileProperty(portalId, propertyName, propertyValue,
+                this.dataProvider.GetUsersByProfileProperty(portalId, propertyName, propertyValue,
                                                                               pageIndex, pageSize, includeDeleted,
                                                                               superUsersOnly), ref totalRecords);
         }
@@ -1031,7 +1058,7 @@ namespace DotNetNuke.Security.Membership
                 else
                 {
                     // Next try the Database
-                    onlineUser = CBO.FillObject<OnlineUserInfo>(this._dataProvider.GetOnlineUser(user.UserID));
+                    onlineUser = CBO.FillObject<OnlineUserInfo>(this.dataProvider.GetOnlineUser(user.UserID));
                     if (onlineUser != null)
                     {
                         isOnline = true;
@@ -1054,7 +1081,7 @@ namespace DotNetNuke.Security.Membership
                     RelationshipController.Instance.DeleteUserRelationship(relationship);
                 }
 
-                this._dataProvider.RemoveUser(user.UserID, user.PortalID);
+                this.dataProvider.RemoveUser(user.UserID, user.PortalID);
 
                 // Prior to removing membership, ensure user is not present in any other portal
                 UserInfo otherUser = this.GetUserByUserNameFromDataStore(Null.NullInteger, user.Username);
@@ -1129,7 +1156,7 @@ namespace DotNetNuke.Security.Membership
 
             try
             {
-                this._dataProvider.RestoreUser(user.UserID, user.PortalID);
+                this.dataProvider.RestoreUser(user.UserID, user.PortalID);
             }
             catch (Exception ex)
             {
@@ -1172,7 +1199,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void UserAgreedToTerms(UserInfo user)
         {
-            this._dataProvider.UserAgreedToTerms(PortalController.GetEffectivePortalId(user.PortalID), user.UserID);
+            this.dataProvider.UserAgreedToTerms(PortalController.GetEffectivePortalId(user.PortalID), user.UserID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1185,7 +1212,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void ResetTermsAgreement(int portalId)
         {
-            this._dataProvider.ResetTermsAgreement(portalId);
+            this.dataProvider.ResetTermsAgreement(portalId);
         }
 
         /// <summary>
@@ -1195,7 +1222,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="remove">True if user requests removal, false if the value needs to be reset.</param>
         public override void UserRequestsRemoval(UserInfo user, bool remove)
         {
-            this._dataProvider.UserRequestsRemoval(user.PortalID, user.UserID, remove);
+            this.dataProvider.UserRequestsRemoval(user.PortalID, user.UserID, remove);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1255,7 +1282,7 @@ namespace DotNetNuke.Security.Membership
             UpdateUserMembership(user);
 
             // Persist the DNN User to the Database
-            this._dataProvider.UpdateUser(
+            this.dataProvider.UpdateUser(
                 user.UserID,
                 user.PortalID,
                 firstName,
@@ -1287,7 +1314,7 @@ namespace DotNetNuke.Security.Membership
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void UpdateUsersOnline(Hashtable userList)
         {
-            this._dataProvider.UpdateUsersOnline(userList);
+            this.dataProvider.UpdateUsersOnline(userList);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1365,7 +1392,7 @@ namespace DotNetNuke.Security.Membership
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
                     // Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
-                    if (this._socialAuthProviders.Contains(authType) && string.IsNullOrEmpty(verificationCode))
+                    if (this.socialAuthProviders.Contains(authType) && string.IsNullOrEmpty(verificationCode))
                     {
                         if (PortalController.Instance.GetCurrentPortalSettings().UserRegistration ==
                             (int)Globals.PortalRegistrationType.PublicRegistration)
@@ -1936,7 +1963,7 @@ namespace DotNetNuke.Security.Membership
             try
             {
                 user.UserID =
-                    Convert.ToInt32(this._dataProvider.AddUser(
+                    Convert.ToInt32(this.dataProvider.AddUser(
                         user.PortalID,
                         user.Username,
                         user.FirstName,
@@ -2030,7 +2057,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
         {
-            using (var dr = this._dataProvider.GetUserByUsername(portalId, username))
+            using (var dr = this.dataProvider.GetUserByUsername(portalId, username))
             {
                 return FillUserInfo(portalId, dr, true);
             }

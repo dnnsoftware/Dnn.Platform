@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net.Http;
     using System.Runtime.Serialization;
     using System.Web.Http;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.DataStructures;
@@ -151,7 +152,7 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
         public HttpResponseMessage GetPortalsInGroup(int sortOrder = 0)
         {
-            var sites = GetPortalGroup(sortOrder);
+            var sites = this.GetPortalGroup(sortOrder);
             var portalId = this.PortalSettings.PortalId;
             return this.Request.CreateResponse(HttpStatusCode.OK, new { sites, portalId });
         }
@@ -292,11 +293,11 @@ namespace DotNetNuke.Web.InternalServices
                 q = q.Replace(",", string.Empty).Replace("'", string.Empty);
                 if (q.Length == 0)
                 {
-                    return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                    return this.Request.CreateResponse<object>(HttpStatusCode.OK, null);
                 }
 
                 var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
-                    .Select(user => new SearchResult
+                    .Select(user => new
                     {
                         id = user.UserID,
                         name = user.DisplayName,
@@ -722,7 +723,7 @@ namespace DotNetNuke.Web.InternalServices
             bool includeHostPages = false, string roles = "")
         {
             var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var portals = GetPortalGroup(sortOrder);
+            var portals = this.GetPortalGroup(sortOrder);
             treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             foreach (var child in treeNode.Children)
             {
@@ -748,7 +749,7 @@ namespace DotNetNuke.Web.InternalServices
                 return treeNode;
             }
 
-            var portals = GetPortalGroup(sortOrder);
+            var portals = this.GetPortalGroup(sortOrder);
             treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
 
             if (!openedNode.HasChildren())
@@ -794,7 +795,7 @@ namespace DotNetNuke.Web.InternalServices
                 return treeNode;
             }
 
-            var portals = GetPortalGroup(sortOrder);
+            var portals = this.GetPortalGroup(sortOrder);
             treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             if (openedNode.HasChildren())
             {
@@ -951,7 +952,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (includePortalTree)
             {
-                var myGroup = GetMyPortalGroup();
+                var myGroup = this.GetMyPortalGroup();
                 var portalTree = myGroup.Select(
                     portal => new NTree<ItemDto>
                     {
@@ -1402,7 +1403,7 @@ namespace DotNetNuke.Web.InternalServices
                 return false;
             }
 
-            var mygroup = GetMyPortalGroup();
+            var mygroup = this.GetMyPortalGroup();
             return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
         }
 
@@ -1451,21 +1452,6 @@ namespace DotNetNuke.Web.InternalServices
         {
             [DataMember(Name = "id")]
             public string Id { get; set; }
-        }
-
-        /// <summary>
-        /// This class stores a single search result needed by jQuery Tokeninput.
-        /// </summary>
-        private class SearchResult
-        {
-            // ReSharper disable InconsistentNaming
-            // ReSharper disable NotAccessedField.Local
-            public int id;
-            public string name;
-            public string iconfile;
-
-            // ReSharper restore NotAccessedField.Local
-            // ReSharper restore InconsistentNaming
         }
     }
 }

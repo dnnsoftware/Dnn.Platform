@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.FileSystem
     public abstract class FolderProvider
     {
         private const string SettingsControlId = "Settings.ascx";
-        private string _providerName;
+        private string providerName;
 
         /// <summary>
         /// Gets a value indicating whether gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.FileSystem
 
             foreach (var key in providerList.Keys)
             {
-                providerList[key]._providerName = key;
+                providerList[key].providerName = key;
             }
 
             return providerList;
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var provider = ComponentFactory.GetComponent<FolderProvider>(friendlyName);
 
-            provider._providerName = friendlyName;
+            provider.providerName = friendlyName;
 
             return provider;
         }
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </remarks>
         public virtual string GetSettingsControlVirtualPath()
         {
-            var provider = Config.GetProvider("folder", this._providerName);
+            var provider = Config.GetProvider("folder", this.providerName);
 
             if (provider != null)
             {

@@ -10,8 +10,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBarGroup : WebControl
     {
-        private bool _CheckToolVisibility = true;
-        private HtmlGenericControl _contentContainer;
+        private bool checkToolVisibility = true;
+        private HtmlGenericControl contentContainer;
 
         public DnnRibbonBarGroup()
             : base("div")
@@ -39,12 +39,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._CheckToolVisibility;
+                return this.checkToolVisibility;
             }
 
             set
             {
-                this._CheckToolVisibility = value;
+                this.checkToolVisibility = value;
             }
         }
 
@@ -81,22 +81,22 @@ namespace DotNetNuke.Web.UI.WebControls
             HtmlGenericControl bottomRight = new HtmlGenericControl("div");
             bottomRight.Attributes.Add("class", "bottomRight");
 
-            this._contentContainer = new HtmlGenericControl("div");
-            this._contentContainer.Attributes.Add("class", "content");
+            this.contentContainer = new HtmlGenericControl("div");
+            this.contentContainer.Attributes.Add("class", "content");
 
             HtmlGenericControl footerContainer = new HtmlGenericControl("div");
             footerContainer.Attributes.Add("class", "footer");
 
             this.Controls.Add(topLeft);
             this.Controls.Add(topRight);
-            this.Controls.Add(this._contentContainer);
+            this.Controls.Add(this.contentContainer);
             this.Controls.Add(footerContainer);
             this.Controls.Add(bottomLeft);
             this.Controls.Add(bottomRight);
 
             if (this.Content != null)
             {
-                this.Content.InstantiateIn(this._contentContainer);
+                this.Content.InstantiateIn(this.contentContainer);
             }
 
             if (this.Footer != null)
@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 // Hide group if all tools are invisible
                 bool foundTool = false;
-                ControlCollection controls = this._contentContainer.Controls;
+                ControlCollection controls = this.contentContainer.Controls;
                 returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);
             }
 

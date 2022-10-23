@@ -14,9 +14,9 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     public class ImageCommandColumn : TemplateColumn
     {
-        private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;
-        private bool _showImage = true;
-        private string _imageURL = string.Empty;
+        private ImageCommandColumnEditMode editMode = ImageCommandColumnEditMode.Command;
+        private bool showImage = true;
+        private string imageURL = string.Empty;
 
         /// <summary>
         /// Gets or sets the CommandName for the Column.
@@ -30,8 +30,8 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String.</value>
         public ImageCommandColumnEditMode EditMode
         {
-            get { return this._editMode; }
-            set { this._editMode = value; }
+            get { return this.editMode; }
+            set { this.editMode = value; }
         }
 
         /// <summary>
@@ -42,15 +42,18 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (!string.IsNullOrEmpty(this._imageURL))
+                if (!string.IsNullOrEmpty(this.imageURL))
                 {
-                    return this._imageURL;
+                    return this.imageURL;
                 }
 
                 return IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
             }
 
-            set { this._imageURL = value; }
+            set
+            {
+                this.imageURL = value;
+            }
         }
 
         /// <summary>
@@ -105,8 +108,8 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A Boolean.</value>
         public bool ShowImage
         {
-            get { return this._showImage; }
-            set { this._showImage = value; }
+            get { return this.showImage; }
+            set { this.showImage = value; }
         }
 
         /// <summary>

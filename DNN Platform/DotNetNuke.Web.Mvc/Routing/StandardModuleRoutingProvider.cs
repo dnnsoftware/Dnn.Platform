@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         protected INavigationManager NavigationManager { get; }
 
+        /// <inheritdoc/>
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
             // Look for a module control
@@ -53,6 +54,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             return url;
         }
 
+        /// <inheritdoc/>
         public override RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl)
         {
             var segments = moduleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');

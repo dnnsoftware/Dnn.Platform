@@ -10,10 +10,13 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     /// </summary>
     public class GroupedBasicView
     {
+        /// <summary>Initializes a new instance of the <see cref="GroupedBasicView"/> class.</summary>
         public GroupedBasicView()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="GroupedBasicView"/> class.</summary>
+        /// <param name="basic">The basic view.</param>
         public GroupedBasicView(BasicView basic)
         {
             this.DocumentTypeName = basic.DocumentTypeName;

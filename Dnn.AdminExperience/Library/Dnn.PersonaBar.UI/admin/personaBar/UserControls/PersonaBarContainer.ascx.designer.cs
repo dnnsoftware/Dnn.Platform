@@ -15,7 +15,6 @@ namespace Dnn.PersonaBar.UI.UserControls {
     
     
     public partial class PersonaBarContainer {
-        
         /// <summary>
         /// PersonaBarPanel control.
         /// </summary>

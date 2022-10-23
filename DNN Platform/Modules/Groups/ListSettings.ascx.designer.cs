@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class ListSettings {
-        
         /// <summary>
         /// chkUserGroups control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkUserGroups;
-        
         /// <summary>
         /// drpRoleGroup control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpRoleGroup;
-        
         /// <summary>
         /// drpViewMode control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpViewMode;
-        
         /// <summary>
         /// drpGroupViewPage control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpGroupViewPage;
-        
         /// <summary>
         /// txtListTemplate control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtListTemplate;
-        
         /// <summary>
         /// txtViewTemplate control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtViewTemplate;
-        
         /// <summary>
         /// lstSortField control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList lstSortField;
-        
         /// <summary>
         /// radSortDirection control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList radSortDirection;
-        
         /// <summary>
         /// txtPageSize control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPageSize;
-        
         /// <summary>
         /// rangePageSize control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator rangePageSize;
-        
         /// <summary>
         /// chkEnableSearch control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkEnableSearch;
-        
         /// <summary>
         /// chkGroupModeration control.
         /// </summary>

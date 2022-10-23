@@ -37,8 +37,8 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
-        private static Hashtable _moduleSearchControllers = new Hashtable();
-        private static object _threadLock = new object();
+        private static Hashtable moduleSearchControllers = new Hashtable();
+        private static object threadLock = new object();
 
         /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
@@ -90,6 +90,7 @@ namespace DotNetNuke.Services.Search.Controllers
         }
 
         // Returns the URL to the first instance of the module the user has access to view
+
         /// <inheritdoc/>
         public override string GetDocUrl(SearchResult searchResult)
         {
@@ -174,19 +175,19 @@ namespace DotNetNuke.Services.Search.Controllers
                 return null;
             }
 
-            if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+            if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
             {
-                lock (_threadLock)
+                lock (threadLock)
                 {
-                    if (!_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+                    if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
                     {
                         var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
-                        _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
+                        moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
                     }
                 }
             }
 
-            return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
+            return moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
         }
 
         private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)

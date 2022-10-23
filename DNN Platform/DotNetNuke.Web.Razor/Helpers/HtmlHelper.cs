@@ -12,26 +12,26 @@ namespace DotNetNuke.Web.Razor.Helpers
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class HtmlHelper
     {
-        private readonly string _resourceFile;
-        private ModuleInstanceContext _context;
+        private readonly string resourceFile;
+        private ModuleInstanceContext context;
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public HtmlHelper(ModuleInstanceContext context, string resourcefile)
         {
-            this._context = context;
-            this._resourceFile = resourcefile;
+            this.context = context;
+            this.resourceFile = resourcefile;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public object GetLocalizedString(string key)
         {
-            return Localization.GetString(key, this._resourceFile);
+            return Localization.GetString(key, this.resourceFile);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public object GetLocalizedString(string key, string culture)
         {
-            return Localization.GetString(key, this._resourceFile, culture);
+            return Localization.GetString(key, this.resourceFile, culture);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]

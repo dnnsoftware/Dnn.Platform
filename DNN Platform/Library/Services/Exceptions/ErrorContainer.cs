@@ -37,10 +37,10 @@ namespace DotNetNuke.Services.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorContainer"/> class.
         /// </summary>
-        /// <param name="_PortalSettings"></param>
+        /// <param name="portalSettings"></param>
         /// <param name="strError"></param>
         /// <param name="exc"></param>
-        public ErrorContainer(PortalSettings _PortalSettings, string strError, Exception exc)
+        public ErrorContainer(PortalSettings portalSettings, string strError, Exception exc)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)

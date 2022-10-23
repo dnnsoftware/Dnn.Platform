@@ -13,10 +13,10 @@ namespace DotNetNuke.Services.Localization
     [Serializable]
     public class LanguagePackInfo : BaseEntityInfo, IHydratable
     {
-        private int _DependentPackageID = Null.NullInteger;
-        private int _LanguageID = Null.NullInteger;
-        private int _LanguagePackID = Null.NullInteger;
-        private int _PackageID = Null.NullInteger;
+        private int dependentPackageID = Null.NullInteger;
+        private int languageID = Null.NullInteger;
+        private int languagePackID = Null.NullInteger;
+        private int packageID = Null.NullInteger;
 
         public LanguagePackType PackageType
         {
@@ -37,12 +37,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return this._LanguagePackID;
+                return this.languagePackID;
             }
 
             set
             {
-                this._LanguagePackID = value;
+                this.languagePackID = value;
             }
         }
 
@@ -50,12 +50,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return this._LanguageID;
+                return this.languageID;
             }
 
             set
             {
-                this._LanguageID = value;
+                this.languageID = value;
             }
         }
 
@@ -63,12 +63,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return this._PackageID;
+                return this.packageID;
             }
 
             set
             {
-                this._PackageID = value;
+                this.packageID = value;
             }
         }
 
@@ -76,12 +76,12 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return this._DependentPackageID;
+                return this.dependentPackageID;
             }
 
             set
             {
-                this._DependentPackageID = value;
+                this.dependentPackageID = value;
             }
         }
 

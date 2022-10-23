@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.RazorHost {
     
     
     public partial class AddScript {
-        
         /// <summary>
         /// createNewScriptLabel control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label createNewScriptLabel;
-        
         /// <summary>
         /// fileTypeLabel control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl fileTypeLabel;
-        
         /// <summary>
         /// scriptFileType control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList scriptFileType;
-        
         /// <summary>
         /// fileNameLabel control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl fileNameLabel;
-        
         /// <summary>
         /// fileName control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fileName;
-        
         /// <summary>
         /// fileExtension control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label fileExtension;
-        
         /// <summary>
         /// cmdAdd control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.RazorHost {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAdd;
-        
         /// <summary>
         /// cmdCancel control.
         /// </summary>

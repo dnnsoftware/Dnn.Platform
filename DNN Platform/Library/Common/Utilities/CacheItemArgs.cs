@@ -20,7 +20,7 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class CacheItemArgs
     {
-        private ArrayList _paramList;
+        private ArrayList paramList;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -101,21 +101,21 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                if (this._paramList == null)
+                if (this.paramList == null)
                 {
-                    this._paramList = new ArrayList();
+                    this.paramList = new ArrayList();
 
                     // add additional params to this list if its not null
                     if (this.Params != null)
                     {
                         foreach (object param in this.Params)
                         {
-                            this._paramList.Add(param);
+                            this.paramList.Add(param);
                         }
                     }
                 }
 
-                return this._paramList;
+                return this.paramList;
             }
         }
 

@@ -17,6 +17,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     /// </summary>
     public class ModuleActionAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleActionAttribute"/> class.
+        /// </summary>
         public ModuleActionAttribute()
         {
             this.SecurityAccessLevel = SecurityAccessLevel.Edit;
@@ -47,6 +50,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// </summary>
         public string TitleKey { get; set; }
 
+        /// <inheritdoc/>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;

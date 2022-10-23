@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
     [Serializable]
     public class RibbonBarToolInfo
     {
+        /// <summary>Initializes a new instance of the <see cref="RibbonBarToolInfo"/> class.</summary>
         public RibbonBarToolInfo()
         {
             this.ControlKey = string.Empty;
@@ -16,6 +17,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ToolName = string.Empty;
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RibbonBarToolInfo"/> class.</summary>
+        /// <param name="toolName">The tool name.</param>
+        /// <param name="isHostTool"><see langword="true"/> if this is a host-level tool, otherwise <see langword="false"/>.</param>
+        /// <param name="useButton"><see langword="true"/> if this tool uses a button, otherwise <see langword="false"/>.</param>
+        /// <param name="linkWindowTarget">The window name of the target of the link.</param>
+        /// <param name="moduleFriendlyName">The friendly name of the module.</param>
+        /// <param name="controlKey">The control key.</param>
+        /// <param name="showAsPopUp"><see langword="true"/> if this tool should display in a pop-up, otherwise <see langword="false"/>.</param>
         public RibbonBarToolInfo(string toolName, bool isHostTool, bool useButton, string linkWindowTarget, string moduleFriendlyName, string controlKey, bool showAsPopUp)
         {
             this.ToolName = toolName;

@@ -24,11 +24,11 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private static readonly object EventSelectionChanged = new object();
 
-        private readonly Lazy<DnnDropDownListOptions> _options =
+        private readonly Lazy<DnnDropDownListOptions> options =
             new Lazy<DnnDropDownListOptions>(() => new DnnDropDownListOptions());
 
-        private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
-        private HtmlAnchor _selectedValue;
+        private DnnGenericHiddenField<DnnDropDownListState> stateControl;
+        private HtmlAnchor selectedValue;
 
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
@@ -241,7 +241,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._options.Value;
+                return this.options.Value;
             }
         }
 
@@ -250,7 +250,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 this.EnsureChildControls();
-                return this._stateControl;
+                return this.stateControl;
             }
         }
 
@@ -259,7 +259,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 this.EnsureChildControls();
-                return this._selectedValue;
+                return this.selectedValue;
             }
         }
 
@@ -303,15 +303,15 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var selectedItemPanel = new Panel { CssClass = "selected-item" };
 
-            this._selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
-            this._selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
-            this._selectedValue.ViewStateMode = ViewStateMode.Disabled;
-            selectedItemPanel.Controls.Add(this._selectedValue);
+            this.selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
+            this.selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
+            this.selectedValue.ViewStateMode = ViewStateMode.Disabled;
+            selectedItemPanel.Controls.Add(this.selectedValue);
             this.Controls.Add(selectedItemPanel);
 
-            this._stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
-            this._stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
-            this.Controls.Add(this._stateControl);
+            this.stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
+            this.stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
+            this.Controls.Add(this.stateControl);
         }
 
         /// <inheritdoc/>

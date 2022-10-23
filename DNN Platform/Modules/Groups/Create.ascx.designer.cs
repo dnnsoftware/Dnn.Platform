@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class Create {
-        
         /// <summary>
         /// txtGroupName control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtGroupName;
-        
         /// <summary>
         /// reqGroupName control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator reqGroupName;
-        
         /// <summary>
         /// valGroupName control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator valGroupName;
-        
         /// <summary>
         /// lblInvalidGroupName control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblInvalidGroupName;
-        
         /// <summary>
         /// txtDescription control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
-        
         /// <summary>
         /// inpFile control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload inpFile;
-        
         /// <summary>
         /// rdAccessTypePublic control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdAccessTypePublic;
-        
         /// <summary>
         /// chkMemberApproved control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkMemberApproved;
-        
         /// <summary>
         /// rdAccessTypePrivate control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdAccessTypePrivate;
-        
         /// <summary>
         /// btnCreate control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnCreate;
-        
         /// <summary>
         /// btnCancel control.
         /// </summary>

@@ -34,14 +34,14 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "rootId")]
         public string RootId = "Root"; // should not be (-1), as (-1) can be treated as Null.Integer
 
-        private Dictionary<string, string> _parameters;
+        private Dictionary<string, string> parameters;
 
         [DataMember(Name = "parameters")]
         public Dictionary<string, string> Parameters
         {
             get
             {
-                return this._parameters ?? (this._parameters = new Dictionary<string, string>());
+                return this.parameters ?? (this.parameters = new Dictionary<string, string>());
             }
         }
     }

@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Common.Utilities;
@@ -25,7 +24,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     public class PortalPermissionController
     {
-        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
         /// <summary>
         /// Returns a flag indicating whether the current user can add top level pages on the current portal.
@@ -43,7 +42,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAddTopLevel(int portalId)
         {
-            return _provider.CanAddTopLevel(portalId);
+            return Provider.CanAddTopLevel(portalId);
         }
 
         /// <summary>
@@ -62,7 +61,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAdminPages(int portalId)
         {
-            return _provider.IsPageAdmin(portalId);
+            return Provider.IsPageAdmin(portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -73,7 +72,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeletePortalPermissionsByUser(UserInfo user)
         {
-            _provider.DeletePortalPermissionsByUser(user);
+            Provider.DeletePortalPermissionsByUser(user);
             EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
             DataCache.ClearPortalPermissionsCache(user.PortalID);
         }
@@ -87,7 +86,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static PortalPermissionCollection GetPortalPermissions(int portalId)
         {
-            return _provider.GetPortalPermissions(portalId);
+            return Provider.GetPortalPermissions(portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -116,7 +115,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasPortalPermission(PortalPermissionCollection portalPermissions, string permissionKey)
         {
-            return _provider.HasPortalPermission(portalPermissions, permissionKey);
+            return Provider.HasPortalPermission(portalPermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -127,7 +126,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void SavePortalPermissions(PortalInfo portal)
         {
-            _provider.SavePortalPermissions(portal);
+            Provider.SavePortalPermissions(portal);
             EventLogController.Instance.AddLog(portal, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_UPDATED);
             DataCache.ClearPortalPermissionsCache(portal.PortalID);
         }

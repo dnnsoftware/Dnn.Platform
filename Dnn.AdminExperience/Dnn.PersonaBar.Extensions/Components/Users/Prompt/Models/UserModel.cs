@@ -32,7 +32,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         {
         }
 
-        public UserModel(UserInfo user) : base(user)
+        public UserModel(UserInfo user)
+            : base(user)
         {
             this.LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
             this.DisplayName = user.DisplayName;

@@ -28,6 +28,7 @@ namespace DotNetNuke.UI.Containers
 
         public string CssClass { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

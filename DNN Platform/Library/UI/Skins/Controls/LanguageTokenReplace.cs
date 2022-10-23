@@ -24,6 +24,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public class LanguageTokenReplace : TokenReplace
     {
         // see http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=6505
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageTokenReplace"/> class.
         /// </summary>
@@ -41,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string FlagIconPhysicalLocation = @"~\images\Flags";
         private const string NonExistingFlagIconFileName = "none.gif";
-        public LanguageTokenReplace objParent;
+        public LanguageTokenReplace ObjParent;
         private readonly PortalSettings objPortal;
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
             this.objPortal = settings;
-            this.objParent = parent;
+            this.ObjParent = parent;
         }
 
         /// <inheritdoc/>
@@ -65,19 +66,19 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
             {
                 case "url":
-                    return this.NewUrl(this.objParent.Language);
+                    return this.NewUrl(this.ObjParent.Language);
                 case "flagsrc":
-                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{this.objParent.Language}.gif");
-                    return File.Exists(mappedGifFile) ? $"/{this.objParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
+                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{this.ObjParent.Language}.gif");
+                    return File.Exists(mappedGifFile) ? $"/{this.ObjParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
                 case "selected":
-                    return (this.objParent.Language == CultureInfo.CurrentCulture.Name).ToString();
+                    return (this.ObjParent.Language == CultureInfo.CurrentCulture.Name).ToString();
                 case "label":
-                    return Localization.GetString("Label", this.objParent.resourceFile);
+                    return Localization.GetString("Label", this.ObjParent.resourceFile);
                 case "i":
                     return Globals.ResolveUrl("~/images/Flags");
                 case "p":
@@ -87,7 +88,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 case "g":
                     return Globals.ResolveUrl("~/portals/" + Globals.glbHostSkinFolder);
                 default:
-                    PropertyNotFound = true;
+                    propertyNotFound = true;
                     return string.Empty;
             }
         }
@@ -126,11 +127,11 @@ namespace DotNetNuke.UI.Skins.Controls
                         case "moduleid": // start of patch (Manzoni Fausto) gemini 14205
                             if (isLocalized)
                             {
-                                string ModuleIdKey = arrKeys[i].ToLowerInvariant();
+                                string moduleIdKey = arrKeys[i].ToLowerInvariant();
                                 int moduleID;
                                 int tabid;
 
-                                int.TryParse(queryStringCollection[ModuleIdKey], out moduleID);
+                                int.TryParse(queryStringCollection[moduleIdKey], out moduleID);
                                 int.TryParse(queryStringCollection["tabid"], out tabid);
                                 ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
                                 if (localizedModule != null)
@@ -140,7 +141,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                         returnValue += "&";
                                     }
 
-                                    returnValue += ModuleIdKey + "=" + localizedModule.ModuleID;
+                                    returnValue += moduleIdKey + "=" + localizedModule.ModuleID;
                                 }
                             }
 

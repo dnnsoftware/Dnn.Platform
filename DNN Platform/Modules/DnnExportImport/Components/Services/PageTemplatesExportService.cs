@@ -22,15 +22,20 @@ namespace Dnn.ExportImport.Components.Services
 
     public class PageTemplatesExportService : AssetsExportService
     {
+
         private readonly string templatesFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_Templates;
 
+        /// <inheritdoc/>
         public override string ParentCategory => null;
 
+        /// <inheritdoc/>
         public override uint Priority => 10;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -112,6 +117,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -180,6 +186,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPageTemplate>();

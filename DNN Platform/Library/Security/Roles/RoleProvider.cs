@@ -56,9 +56,9 @@ namespace DotNetNuke.Security.Roles
 
         public abstract bool AddUserToRole(int portalId, UserInfo user, UserRoleInfo userRole);
 
-        public abstract UserRoleInfo GetUserRole(int PortalId, int UserId, int RoleId);
+        public abstract UserRoleInfo GetUserRole(int portalId, int userId, int roleId);
 
-        public abstract ArrayList GetUserRoles(int portalId, string Username, string Rolename);
+        public abstract ArrayList GetUserRoles(int portalId, string username, string rolename);
 
         public abstract ArrayList GetUsersByRoleName(int portalId, string roleName);
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Security.Roles
 
         public abstract void UpdateUserRole(UserRoleInfo userRole);
 
-        public virtual RoleGroupInfo GetRoleGroupByName(int PortalID, string RoleGroupName)
+        public virtual RoleGroupInfo GetRoleGroupByName(int portalID, string roleGroupName)
         {
             return null;
         }

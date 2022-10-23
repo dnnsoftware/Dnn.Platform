@@ -22,10 +22,10 @@ namespace DotNetNuke.Services.FileSystem
     public class FolderInfo : BaseEntityInfo, IHydratable, IFolderInfo
     {
         // local property declarations
-        private string _displayName;
-        private string _displayPath;
-        private FolderPermissionCollection _folderPermissions;
-        private int _folderMappingId;
+        private string displayName;
+        private string displayPath;
+        private FolderPermissionCollection folderPermissions;
+        private int folderMappingId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderInfo"/> class.
@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.FileSystem
             this.WorkflowID = Null.NullInteger;
             if (initialiseEmptyPermissions)
             {
-                this._folderPermissions = new FolderPermissionCollection();
+                this.folderPermissions = new FolderPermissionCollection();
             }
         }
 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                return this._folderPermissions ?? (this._folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
+                return this.folderPermissions ?? (this.folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
             }
         }
 
@@ -208,24 +208,23 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("folderid")]
         public int FolderID { get; set; }
 
-
         /// <inheritdoc/>
         [XmlElement("displayname")]
         public string DisplayName
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayName))
+                if (string.IsNullOrEmpty(this.displayName))
                 {
-                    this._displayName = this.FolderName;
+                    this.displayName = this.FolderName;
                 }
 
-                return this._displayName;
+                return this.displayName;
             }
 
             set
             {
-                this._displayName = value;
+                this.displayName = value;
             }
         }
 
@@ -239,17 +238,17 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (string.IsNullOrEmpty(this._displayPath))
+                if (string.IsNullOrEmpty(this.displayPath))
                 {
-                    this._displayPath = this.FolderPath;
+                    this.displayPath = this.FolderPath;
                 }
 
-                return this._displayPath;
+                return this.displayPath;
             }
 
             set
             {
-                this._displayPath = value;
+                this.displayPath = value;
             }
         }
 
@@ -273,43 +272,41 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("mappedpath")]
         public string MappedPath { get; set; }
 
-
         /// <inheritdoc/>
         [XmlIgnore]
         [JsonIgnore]
         public DateTime LastUpdated { get; set; }
-
 
         /// <inheritdoc/>
         public int FolderMappingID
         {
             get
             {
-                if (this._folderMappingId == 0)
+                if (this.folderMappingId == 0)
                 {
                     switch (this.StorageLocation)
                     {
                         case (int)FolderController.StorageLocationTypes.InsecureFileSystem:
-                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Standard").FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Standard").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Secure").FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Secure").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Database").FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Database").FolderMappingID;
                             break;
                         default:
-                            this._folderMappingId = FolderMappingController.Instance.GetDefaultFolderMapping(this.PortalID).FolderMappingID;
+                            this.folderMappingId = FolderMappingController.Instance.GetDefaultFolderMapping(this.PortalID).FolderMappingID;
                             break;
                     }
                 }
 
-                return this._folderMappingId;
+                return this.folderMappingId;
             }
 
             set
             {
-                this._folderMappingId = value;
+                this.folderMappingId = value;
             }
         }
 

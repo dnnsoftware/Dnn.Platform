@@ -54,12 +54,12 @@ namespace DotNetNuke.Security.Permissions
         /// Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.
         /// </summary>
         /// <param name="portalPermissions"></param>
-        /// <param name="PortalId"></param>
-        public PortalPermissionCollection(ArrayList portalPermissions, int PortalId)
+        /// <param name="portalId"></param>
+        public PortalPermissionCollection(ArrayList portalPermissions, int portalId)
         {
             foreach (PortalPermissionInfo permission in portalPermissions)
             {
-                if (permission.PortalID == PortalId)
+                if (permission.PortalID == portalId)
                 {
                     this.Add(permission);
                 }

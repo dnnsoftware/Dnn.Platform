@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class UserAndLogin {
-        
         /// <summary>
         /// registerLink control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink registerLink;
-        
         /// <summary>
         /// loginLink control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink loginLink;
-        
         /// <summary>
         /// viewProfileLink control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink viewProfileLink;
-        
         /// <summary>
         /// messagesLink control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink messagesLink;
-        
         /// <summary>
         /// messageCount control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label messageCount;
-        
         /// <summary>
         /// notificationsLink control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink notificationsLink;
-        
         /// <summary>
         /// notificationCount control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label notificationCount;
-        
         /// <summary>
         /// accountLink control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink accountLink;
-        
         /// <summary>
         /// editProfileLink control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink editProfileLink;
-        
         /// <summary>
         /// logoffLink control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink logoffLink;
-        
         /// <summary>
         /// viewProfileImageLink control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink viewProfileImageLink;
-        
         /// <summary>
         /// profilePicture control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image profilePicture;
-        
         /// <summary>
         /// messages control.
         /// </summary>

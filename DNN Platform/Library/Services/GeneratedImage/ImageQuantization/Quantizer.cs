@@ -17,9 +17,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <summary>
         /// Flag used to indicate whether a single pass or two passes are needed for quantization.
         /// </summary>
-        private bool _singlePass;
+        private bool singlePass;
 
-        private int _pixelSize;
+        private int pixelSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Quantizer"/> class.
@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// </remarks>
         public Quantizer(bool singlePass)
         {
-            this._singlePass = singlePass;
-            this._pixelSize = Marshal.SizeOf(typeof(Color32));
+            this.singlePass = singlePass;
+            this.pixelSize = Marshal.SizeOf(typeof(Color32));
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Call the FirstPass function if not a single pass algorithm.
                 // For something like an octree quantizer, this will run through
                 // all image pixels, build a data structure, and create a palette.
-                if (!this._singlePass)
+                if (!this.singlePass)
                 {
                     this.FirstPass(sourceData, width, height);
                 }
@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 for (int col = 0; col < width; col++)
                 {
                     this.InitialQuantizePixel(new Color32(pSourcePixel));
-                    pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
+                    pSourcePixel = (IntPtr)((long)pSourcePixel + this.pixelSize);
                 } // Now I have the pixel, call the FirstPassQuantize function...
 
                 // Add the stride to the source row
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         // And set the pixel in the output
                         Marshal.WriteByte(pDestinationPixel, pixelValue);
 
-                        pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
+                        pSourcePixel = (IntPtr)((long)pSourcePixel + this.pixelSize);
                         pDestinationPixel = (IntPtr)((long)pDestinationPixel + 1);
                     }
 

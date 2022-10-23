@@ -50,12 +50,16 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("IsSuperUser", typeof(bool)),
         };
 
+        /// <inheritdoc/>
         public override string Category => Constants.Category_UsersData;
 
+        /// <inheritdoc/>
         public override string ParentCategory => Constants.Category_Users;
 
+        /// <inheritdoc/>
         public override uint Priority => 10;
 
+        /// <inheritdoc/>
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             this.CheckPoint.Progress += 100;
@@ -67,6 +71,7 @@ namespace Dnn.ExportImport.Components.Services
             // No implementation required in export users child as everything is exported in parent service.
         }
 
+        /// <inheritdoc/>
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -268,6 +273,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        /// <inheritdoc/>
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportUser>();

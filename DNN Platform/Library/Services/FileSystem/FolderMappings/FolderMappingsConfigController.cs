@@ -16,10 +16,10 @@ namespace DotNetNuke.Services.FileSystem
 
     public class FolderMappingsConfigController : ServiceLocator<IFolderMappingsConfigController, FolderMappingsConfigController>, IFolderMappingsConfigController
     {
-        private const string configNode = "folderMappingsSettings";
+        private const string ConfigNodeValue = "folderMappingsSettings";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderMappingsConfigController));
-        private static readonly string defaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
+        private static readonly string DefaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderMappingsConfigController"/> class.
@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public string ConfigNode
         {
-            get { return configNode; }
+            get { return ConfigNodeValue; }
         }
 
         /// <inheritdoc/>
@@ -47,10 +47,10 @@ namespace DotNetNuke.Services.FileSystem
         {
             try
             {
-                if (File.Exists(defaultConfigFilePath))
+                if (File.Exists(DefaultConfigFilePath))
                 {
                     var configDocument = new XmlDocument { XmlResolver = null };
-                    configDocument.Load(defaultConfigFilePath);
+                    configDocument.Load(DefaultConfigFilePath);
                     this.FillFolderMappings(configDocument);
                     this.FillFolderTypes(configDocument);
                 }
@@ -64,10 +64,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public void SaveConfig(string folderMappinsSettings)
         {
-            if (!File.Exists(defaultConfigFilePath))
+            if (!File.Exists(DefaultConfigFilePath))
             {
                 var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
-                File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
+                File.AppendAllText(DefaultConfigFilePath, folderMappingsConfigContent);
                 var configDocument = new XmlDocument { XmlResolver = null };
                 configDocument.LoadXml(folderMappingsConfigContent);
                 this.FillFolderMappings(configDocument);

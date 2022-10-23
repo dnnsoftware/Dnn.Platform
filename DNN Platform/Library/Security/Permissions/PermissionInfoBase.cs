@@ -32,24 +32,24 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public abstract class PermissionInfoBase : PermissionInfo
     {
-        private bool _AllowAccess;
-        private string _DisplayName;
-        private int _RoleID;
-        private string _RoleName;
-        private int _UserID;
-        private string _Username;
+        private bool allowAccess;
+        private string displayName;
+        private int roleID;
+        private string roleName;
+        private int userID;
+        private string username;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionInfoBase"/> class.
         /// </summary>
         public PermissionInfoBase()
         {
-            this._RoleID = int.Parse(Globals.glbRoleNothing);
-            this._AllowAccess = false;
-            this._RoleName = Null.NullString;
-            this._UserID = Null.NullInteger;
-            this._Username = Null.NullString;
-            this._DisplayName = Null.NullString;
+            this.roleID = int.Parse(Globals.glbRoleNothing);
+            this.allowAccess = false;
+            this.roleName = Null.NullString;
+            this.userID = Null.NullInteger;
+            this.username = Null.NullString;
+            this.displayName = Null.NullString;
         }
 
         /// -----------------------------------------------------------------------------
@@ -63,12 +63,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._AllowAccess;
+                return this.allowAccess;
             }
 
             set
             {
-                this._AllowAccess = value;
+                this.allowAccess = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._DisplayName;
+                return this.displayName;
             }
 
             set
             {
-                this._DisplayName = value;
+                this.displayName = value;
             }
         }
 
@@ -103,12 +103,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._RoleID;
+                return this.roleID;
             }
 
             set
             {
-                this._RoleID = value;
+                this.roleID = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._RoleName;
+                return this.roleName;
             }
 
             set
             {
-                this._RoleName = value;
+                this.roleName = value;
             }
         }
 
@@ -143,12 +143,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._UserID;
+                return this.userID;
             }
 
             set
             {
-                this._UserID = value;
+                this.userID = value;
             }
         }
 
@@ -163,12 +163,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._Username;
+                return this.username;
             }
 
             set
             {
-                this._Username = value;
+                this.username = value;
             }
         }
 

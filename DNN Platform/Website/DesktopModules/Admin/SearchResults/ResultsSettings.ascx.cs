@@ -20,6 +20,7 @@ namespace DotNetNuke.Modules.SearchResults
 
     public partial class ResultsSettings : ModuleSettingsBase
     {
+        /// <inheritdoc/>
         public override void LoadSettings()
         {
             try
@@ -114,6 +115,7 @@ namespace DotNetNuke.Modules.SearchResults
             }
         }
 
+        /// <inheritdoc/>
         public override void UpdateSettings()
         {
             try

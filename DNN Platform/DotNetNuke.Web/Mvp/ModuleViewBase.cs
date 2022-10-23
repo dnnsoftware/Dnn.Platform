@@ -49,8 +49,8 @@ namespace DotNetNuke.Web.Mvp
         protected T DataItem<T>()
             where T : class, new()
         {
-            var _T = this.Page.GetDataItem() as T ?? new T();
-            return _T;
+            var t = this.Page.GetDataItem() as T ?? new T();
+            return t;
         }
 
         protected T DataValue<T>()

@@ -48,5 +48,4 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Dto
         [DataMember(Name = "friendlyLastModifiedOnDate")]
         public string FriendlyLastModifiedOnDate { get; set; }
     }
-
 }

@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Search
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
-        private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
+        private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleIndexer"/> class.
@@ -55,17 +55,17 @@ namespace DotNetNuke.Services.Search
         /// <param name="needSearchModules"></param>
         public ModuleIndexer(bool needSearchModules)
         {
-            this._searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
+            this.searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
 
             if (needSearchModules)
             {
                 var portals = PortalController.Instance.GetPortals();
                 foreach (var portal in portals.Cast<PortalInfo>())
                 {
-                    this._searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
+                    this.searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
                 }
 
-                this._searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
+                this.searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
             }
         }
 
@@ -85,8 +85,8 @@ namespace DotNetNuke.Services.Search
             var totalIndexed = 0;
             startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this._searchModules.ContainsKey(portalId)
-                ? this._searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
+            var searchModuleCollection = this.searchModules.ContainsKey(portalId)
+                ? this.searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
                 : this.GetSearchModules(portalId);
 
             // Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
@@ -151,8 +151,8 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this._searchModules.ContainsKey(portalId) ?
-                                            this._searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
+            var searchModuleCollection = this.searchModules.ContainsKey(portalId) ?
+                                            this.searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try

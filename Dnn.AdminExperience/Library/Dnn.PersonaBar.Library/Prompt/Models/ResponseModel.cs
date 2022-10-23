@@ -10,6 +10,11 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         public string Message;
         public string Data;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResponseModel"/> class.
+        /// </summary>
+        /// <param name="err"></param>
+        /// <param name="msg"></param>
         public ResponseModel(bool err, string msg)
         {
             this.IsError = err;
@@ -17,6 +22,12 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
             this.Data = string.Empty;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResponseModel"/> class.
+        /// </summary>
+        /// <param name="err"></param>
+        /// <param name="msg"></param>
+        /// <param name="data"></param>
         public ResponseModel(bool err, string msg, string data)
         {
             this.IsError = err;

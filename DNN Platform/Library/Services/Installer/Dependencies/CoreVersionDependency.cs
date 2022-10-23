@@ -32,13 +32,13 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                bool _IsValid = true;
+                bool isValid = true;
                 if (Assembly.GetExecutingAssembly().GetName().Version < this.minVersion)
                 {
-                    _IsValid = false;
+                    isValid = false;
                 }
 
-                return _IsValid;
+                return isValid;
             }
         }
 

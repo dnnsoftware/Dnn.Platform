@@ -10,9 +10,10 @@ namespace DotNetNuke.Services.Exceptions
 #pragma warning disable 0618
     public class SearchException : BasePortalException
     {
-        private readonly SearchItemInfo m_SearchItem;
+        private readonly SearchItemInfo searchItem;
 
         // default constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchException"/> class.
         /// </summary>
@@ -29,14 +30,14 @@ namespace DotNetNuke.Services.Exceptions
         public SearchException(string message, Exception inner, SearchItemInfo searchItem)
             : base(message, inner)
         {
-            this.m_SearchItem = searchItem;
+            this.searchItem = searchItem;
         }
 
         public SearchItemInfo SearchItem
         {
             get
             {
-                return this.m_SearchItem;
+                return this.searchItem;
             }
         }
     }

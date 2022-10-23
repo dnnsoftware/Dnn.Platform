@@ -27,10 +27,10 @@ namespace DotNetNuke.Web.UI.WebControls
         protected Label FoldersLabel;
         protected DnnFileUpload FileUploadControl;
         private const string MyFileName = "filepickeruploader.ascx";
-        private int? _portalId = null;
-        private string _fileFilter;
-        private string _folderPath = string.Empty;
-        private bool _folderPathSet = false;
+        private int? portalId = null;
+        private string fileFilter;
+        private string folderPath = string.Empty;
+        private bool folderPathSet = false;
 
         public bool UsePersonalFolder { get; set; }
 
@@ -98,8 +98,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._folderPathSet
-                            ? this._folderPath
+                return this.folderPathSet
+                            ? this.folderPath
                             : this.FoldersComboBox.SelectedFolder != null
                                 ? this.FoldersComboBox.SelectedFolder.FolderPath
                                 : string.Empty;
@@ -107,8 +107,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
             set
             {
-                this._folderPath = value;
-                this._folderPathSet = true;
+                this.folderPath = value;
+                this.folderPathSet = true;
             }
         }
 
@@ -117,12 +117,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._fileFilter;
+                return this.fileFilter;
             }
 
             set
             {
-                this._fileFilter = value;
+                this.fileFilter = value;
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.FileUploadControl.Options.Extensions = value.Split(',').ToList();
@@ -142,12 +142,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return !this._portalId.HasValue ? PortalSettings.Current.PortalId : this._portalId.Value;
+                return !this.portalId.HasValue ? PortalSettings.Current.PortalId : this.portalId.Value;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 

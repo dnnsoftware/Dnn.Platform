@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Sites.Components
     {
         internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
-        private readonly TabsController _tabsController = new TabsController();
+        private readonly TabsController tabsController = new TabsController();
 
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
@@ -97,6 +97,7 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 strDate = dateTime.ToShortDateString();
             }
+
             return strDate;
         }
 
@@ -125,8 +126,8 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 if (this.DisplayType == 0)
                 {
-                    var _ViewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId));
-                    switch (_ViewType)
+                    var viewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId));
+                    switch (viewType)
                     {
                         case "NATIVE":
                             this.DisplayType = CultureDropDownTypes.NativeName;
@@ -161,17 +162,18 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 match = defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2)));
             }
+
             if (match == null)
             {
                 match = defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode));
             }
 
-            return match != null ? string.Format("{0}|{1}", Path.GetFileName(match.TemplateFilePath), match.CultureCode) : "";
+            return match != null ? string.Format("{0}|{1}", Path.GetFileName(match.TemplateFilePath), match.CultureCode) : string.Empty;
         }
 
         public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
         {
-            return this._tabsController.GetTabByCulture(tabId, portalId, cultureCode);
+            return this.tabsController.GetTabByCulture(tabId, portalId, cultureCode);
         }
 
         public string ExportPortalTemplate(ExportTemplateRequest request, UserInfo userInfo, out bool success)
@@ -185,8 +187,11 @@ namespace Dnn.PersonaBar.Sites.Components
             foreach (var page in pages)
             {
                 if (page.ParentTabId != Null.NullInteger && pages.All(p => p.TabId != page.ParentTabId.ToString(CultureInfo.InvariantCulture)))
+                {
                     isValid = false;
+                }
             }
+
             if (!isValid)
             {
                 return Localization.GetString("ErrorAncestorPages", this.LocalResourcesFile);
@@ -260,6 +265,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     // Finish and Close Zip file
                     resourcesFile.Dispose();
                 }
+
                 writer.WriteEndElement();
                 writer.Close();
             }
@@ -285,6 +291,7 @@ namespace Dnn.PersonaBar.Sites.Components
             var strChildPath = string.Empty;
             var closePopUpStr = string.Empty;
             var intPortalId = -1;
+
             // check template validity
             var schemaFilename = HttpContext.Current.Server.MapPath("~/DesktopModules/Admin/Portals/portal.template.xsd");
             var xmlFilename = template.TemplateFilePath;
@@ -296,7 +303,7 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             // Set Portal Name
-            siteAlias = siteAlias.ToLowerInvariant().Replace("http://", "").Replace("https://", "");
+            siteAlias = siteAlias.ToLowerInvariant().Replace("http://", string.Empty).Replace("https://", string.Empty);
 
             // Validate Portal Name
             var strPortalAlias = isChildSite
@@ -324,7 +331,11 @@ namespace Dnn.PersonaBar.Sites.Components
             if (password != confirm)
             {
                 error = true;
-                if (!string.IsNullOrEmpty(message)) message += "<br/>";
+                if (!string.IsNullOrEmpty(message))
+                {
+                    message += "<br/>";
+                }
+
                 message += Localization.GetString("InvalidPassword", this.LocalResourcesFile);
             }
 
@@ -348,7 +359,7 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             // Get Home Directory
-            var homeDir = homeDirectory != @"Portals/[PortalID]" ? homeDirectory : "";
+            var homeDir = homeDirectory != @"Portals/[PortalID]" ? homeDirectory : string.Empty;
 
             // Validate Home Folder
             if (!string.IsNullOrEmpty(homeDir))
@@ -359,6 +370,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     error = true;
                     message = string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error", this.LocalResourcesFile), homeDir);
                 }
+
                 if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.ToLowerInvariant() == "portals/")
                 {
                     error = true;
@@ -396,7 +408,8 @@ namespace Dnn.PersonaBar.Sites.Components
                     if (useCurrent)
                     {
                         adminUser = PortalSettings.Current.UserInfo;
-                        intPortalId = PortalController.Instance.CreatePortal(siteName,
+                        intPortalId = PortalController.Instance.CreatePortal(
+                            siteName,
                             adminUser.UserID,
                             siteDescription,
                             siteKeywords,
@@ -427,11 +440,12 @@ namespace Dnn.PersonaBar.Sites.Components
                             Profile =
                             {
                                 FirstName = firstname,
-                                LastName = lastname
+                                LastName = lastname,
                             },
                         };
 
-                        intPortalId = PortalController.Instance.CreatePortal(siteName,
+                        intPortalId = PortalController.Instance.CreatePortal(
+                            siteName,
                             adminUser,
                             siteDescription,
                             siteKeywords,
@@ -479,17 +493,18 @@ namespace Dnn.PersonaBar.Sites.Components
                     {
                         message = string.IsNullOrEmpty(Host.HostEmail)
                             ? string.Format(Localization.GetString("UnknownEmailAddress.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr)
-                            : Mail.SendMail(Host.HostEmail,
+                            : Mail.SendMail(
+                                Host.HostEmail,
                                 email,
                                 Host.HostEmail,
                                 Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
                                 Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "");
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty);
                     }
                     catch (Exception exc)
                     {
@@ -498,9 +513,9 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
 
                     // mark default language as published if content localization is enabled
-                    var ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId,
+                    var contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId,
                         false);
-                    if (ContentLocalizationEnabled)
+                    if (contentLocalizationEnabled)
                     {
                         var lc = new LocaleController();
                         lc.PublishLanguage(intPortalId, objPortal.DefaultLanguage, true);
@@ -527,12 +542,13 @@ namespace Dnn.PersonaBar.Sites.Components
         {
             if (tabsCollection == null)
             {
-                var tab = this._tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
+                var tab = this.tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
                 tabsCollection = tab.ChildTabs;
                 tab.ChildTabs = null;
                 tab.HasChildren = false;
                 tabsCollection.Add(tab);
             }
+
             var selectedTabs = userSelection as List<TabDto> ?? userSelection.ToList();
             foreach (var tab in tabsCollection)
             {
@@ -559,7 +575,7 @@ namespace Dnn.PersonaBar.Sites.Components
                         checkedState = NodeCheckedState.Checked;
                     }
 
-                    var descendants = this._tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
+                    var descendants = this.tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
                         isMultiLanguage).ToList();
                     descendants.ForEach(x => { x.CheckedState = checkedState; });
 
@@ -567,6 +583,7 @@ namespace Dnn.PersonaBar.Sites.Components
                         descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
                 }
             }
+
             return selectedTabs;
         }
 
@@ -696,26 +713,31 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 writer.WriteElementString("skinsrc", setting);
             }
+
             settingsDictionary.TryGetValue("DefaultAdminSkin", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
                 writer.WriteElementString("skinsrcadmin", setting);
             }
+
             settingsDictionary.TryGetValue("DefaultPortalContainer", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
                 writer.WriteElementString("containersrc", setting);
             }
+
             settingsDictionary.TryGetValue("DefaultAdminContainer", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
                 writer.WriteElementString("containersrcadmin", setting);
             }
+
             settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
                 writer.WriteElementString("enableskinwidgets", setting);
             }
+
             settingsDictionary.TryGetValue("portalaliasmapping", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
@@ -775,11 +797,13 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 writer.WriteElementString("pageheadtext", setting);
             }
+
             settingsDictionary.TryGetValue("InjectModuleHyperLink", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
                 writer.WriteElementString("injectmodulehyperlink", setting);
             }
+
             settingsDictionary.TryGetValue("AddCompatibleHttpHeader", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
@@ -840,7 +864,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteElementString("showquickmoduleaddmenu", setting);
             }
 
-            //End Portal Settings
+            // End Portal Settings
             writer.WriteEndElement();
         }
 
@@ -937,6 +961,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
                 writer.WriteEndElement();
             }
+
             writer.WriteEndElement();
         }
 
@@ -1000,6 +1025,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
                 writer.WriteEndElement();
             }
+
             writer.WriteEndElement();
         }
 
@@ -1022,6 +1048,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.WriteElementString("defaultvisibility", Convert.ToInt32(objProfileProperty.DefaultVisibility).ToString(CultureInfo.InvariantCulture));
                 writer.WriteEndElement();
             }
+
             writer.WriteEndElement();
         }
 
@@ -1112,7 +1139,9 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
 
                     if (tabNode != null)
+                    {
                         tabNode.WriteTo(writer);
+                    }
                 }
             }
         }
@@ -1185,7 +1214,6 @@ namespace Dnn.PersonaBar.Sites.Components
         //        Logger.Error(ex);
         //    }
         // }
-
         private class TemplateDisplayComparer : IComparer<PortalController.PortalTemplateInfo>
         {
             public int Compare(PortalController.PortalTemplateInfo x, PortalController.PortalTemplateInfo y)

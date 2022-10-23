@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationSettingsBase : PortalModuleBase
     {
-        private string _AuthenticationType = Null.NullString;
+        private string authenticationType = Null.NullString;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -25,12 +25,12 @@ namespace DotNetNuke.Services.Authentication
         {
             get
             {
-                return this._AuthenticationType;
+                return this.authenticationType;
             }
 
             set
             {
-                this._AuthenticationType = value;
+                this.authenticationType = value;
             }
         }
 

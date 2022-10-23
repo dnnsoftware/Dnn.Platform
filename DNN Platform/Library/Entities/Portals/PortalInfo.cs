@@ -54,12 +54,12 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalInfo : BaseEntityInfo, IHydratable, IPortalInfo
     {
-        private string _administratorRoleName;
-        private int _pages = Null.NullInteger;
-        private string _registeredRoleName;
+        private string administratorRoleName;
+        private int pages = Null.NullInteger;
+        private string registeredRoleName;
         private PortalPermissionCollection permissions;
 
-        private int _users;
+        private int users;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalInfo"/> class.
@@ -269,7 +269,7 @@ namespace DotNetNuke.Entities.Portals
         /// Gets or sets payment Processor userId.
         /// </summary>
         /// <value>
-        /// <placeholder>Payment Processor userId</placeholder>
+        /// Payment Processor userId.
         /// </value>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0.")]
         [XmlElement("processoruserid")]
@@ -337,15 +337,18 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (this._users < 0)
+                if (this.users < 0)
                 {
-                    this._users = UserController.GetUserCountByPortal(this.ThisAsInterface.PortalId);
+                    this.users = UserController.GetUserCountByPortal(this.ThisAsInterface.PortalId);
                 }
 
-                return this._users;
+                return this.users;
             }
 
-            set { this._users = value; }
+            set
+            {
+                this.users = value;
+            }
         }
 
         /// <summary>
@@ -362,22 +365,22 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (this._administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
+                if (this.administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
                 {
                     // Get Role Name
                     RoleInfo adminRole = RoleController.Instance.GetRole(this.ThisAsInterface.PortalId, r => r.RoleID == this.AdministratorRoleId);
                     if (adminRole != null)
                     {
-                        this._administratorRoleName = adminRole.RoleName;
+                        this.administratorRoleName = adminRole.RoleName;
                     }
                 }
 
-                return this._administratorRoleName;
+                return this.administratorRoleName;
             }
 
             set
             {
-                this._administratorRoleName = value;
+                this.administratorRoleName = value;
             }
         }
 
@@ -391,17 +394,17 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (this._pages < 0)
+                if (this.pages < 0)
                 {
-                    this._pages = TabController.Instance.GetUserTabsByPortal(this.ThisAsInterface.PortalId).Count;
+                    this.pages = TabController.Instance.GetUserTabsByPortal(this.ThisAsInterface.PortalId).Count;
                 }
 
-                return this._pages;
+                return this.pages;
             }
 
             set
             {
-                this._pages = value;
+                this.pages = value;
             }
         }
 
@@ -411,22 +414,22 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (this._registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
+                if (this.registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
                 {
                     // Get Role Name
                     RoleInfo regUsersRole = RoleController.Instance.GetRole(this.ThisAsInterface.PortalId, r => r.RoleID == this.RegisteredRoleId);
                     if (regUsersRole != null)
                     {
-                        this._registeredRoleName = regUsersRole.RoleName;
+                        this.registeredRoleName = regUsersRole.RoleName;
                     }
                 }
 
-                return this._registeredRoleName;
+                return this.registeredRoleName;
             }
 
             set
             {
-                this._registeredRoleName = value;
+                this.registeredRoleName = value;
             }
         }
 

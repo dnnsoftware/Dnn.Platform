@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;

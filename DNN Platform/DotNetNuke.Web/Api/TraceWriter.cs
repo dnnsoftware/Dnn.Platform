@@ -14,17 +14,17 @@ namespace DotNetNuke.Web.Api
     internal sealed class TraceWriter : ITraceWriter
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
-        private readonly bool _enabled;
+        private readonly bool enabled;
 
         public TraceWriter(bool isTracingEnabled)
         {
-            this._enabled = isTracingEnabled;
+            this.enabled = isTracingEnabled;
         }
 
         /// <inheritdoc/>
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
-            if (!this._enabled || level == TraceLevel.Off)
+            if (!this.enabled || level == TraceLevel.Off)
             {
                 return;
             }

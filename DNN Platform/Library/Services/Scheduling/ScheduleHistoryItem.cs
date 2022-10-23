@@ -13,25 +13,25 @@ namespace DotNetNuke.Services.Scheduling
     [Serializable]
     public class ScheduleHistoryItem : ScheduleItem
     {
-        private static readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger(typeof(ScheduleHistoryItem));
+        private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger(typeof(ScheduleHistoryItem));
 
-        private StringBuilder _LogNotes;
-        private int _ScheduleHistoryID;
-        private string _Server;
-        private DateTime _StartDate;
-        private bool _Succeeded;
+        private StringBuilder logNotes;
+        private int scheduleHistoryID;
+        private string server;
+        private DateTime startDate;
+        private bool succeeded;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.
         /// </summary>
         public ScheduleHistoryItem()
         {
-            this._ScheduleHistoryID = Null.NullInteger;
-            this._StartDate = Null.NullDate;
+            this.scheduleHistoryID = Null.NullInteger;
+            this.startDate = Null.NullDate;
             this.EndDate = Null.NullDate;
-            this._Succeeded = Null.NullBoolean;
-            this._LogNotes = new StringBuilder();
-            this._Server = Null.NullString;
+            this.succeeded = Null.NullBoolean;
+            this.logNotes = new StringBuilder();
+            this.server = Null.NullString;
         }
 
         /// <summary>
@@ -57,12 +57,12 @@ namespace DotNetNuke.Services.Scheduling
             this.TypeFullName = objScheduleItem.TypeFullName;
             this.Servers = objScheduleItem.Servers;
             this.FriendlyName = objScheduleItem.FriendlyName;
-            this._ScheduleHistoryID = Null.NullInteger;
-            this._StartDate = Null.NullDate;
+            this.scheduleHistoryID = Null.NullInteger;
+            this.startDate = Null.NullDate;
             this.EndDate = Null.NullDate;
-            this._Succeeded = Null.NullBoolean;
-            this._LogNotes = new StringBuilder();
-            this._Server = Null.NullString;
+            this.succeeded = Null.NullBoolean;
+            this.logNotes = new StringBuilder();
+            this.server = Null.NullString;
             this.ScheduleStartDate = objScheduleItem.ScheduleStartDate != Null.NullDate
                                     ? objScheduleItem.ScheduleStartDate
                                     : Null.NullDate;
@@ -74,13 +74,13 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    if (this.EndDate == Null.NullDate && this._StartDate != Null.NullDate)
+                    if (this.EndDate == Null.NullDate && this.startDate != Null.NullDate)
                     {
-                        return DateTime.Now.Subtract(this._StartDate).TotalSeconds;
+                        return DateTime.Now.Subtract(this.startDate).TotalSeconds;
                     }
-                    else if (this._StartDate != Null.NullDate)
+                    else if (this.startDate != Null.NullDate)
                     {
-                        return this.EndDate.Subtract(this._StartDate).TotalSeconds;
+                        return this.EndDate.Subtract(this.startDate).TotalSeconds;
                     }
                     else
                     {
@@ -162,12 +162,12 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                return this._LogNotes.ToString();
+                return this.logNotes.ToString();
             }
 
             set
             {
-                this._LogNotes = new StringBuilder(value);
+                this.logNotes = new StringBuilder(value);
             }
         }
 
@@ -175,12 +175,12 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                return this._ScheduleHistoryID;
+                return this.scheduleHistoryID;
             }
 
             set
             {
-                this._ScheduleHistoryID = value;
+                this.scheduleHistoryID = value;
             }
         }
 
@@ -188,12 +188,12 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                return this._Server;
+                return this.server;
             }
 
             set
             {
-                this._Server = value;
+                this.server = value;
             }
         }
 
@@ -201,12 +201,12 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                return this._StartDate;
+                return this.startDate;
             }
 
             set
             {
-                this._StartDate = value;
+                this.startDate = value;
             }
         }
 
@@ -214,25 +214,25 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                return this._Succeeded;
+                return this.succeeded;
             }
 
             set
             {
-                this._Succeeded = value;
-                if (_tracelLogger.IsDebugEnabled)
+                this.succeeded = value;
+                if (TracelLogger.IsDebugEnabled)
                 {
-                    _tracelLogger.Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {this.FriendlyName}");
+                    TracelLogger.Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {this.FriendlyName}");
                 }
             }
         }
 
         public virtual void AddLogNote(string notes)
         {
-            this._LogNotes.Append(notes);
-            if (_tracelLogger.IsTraceEnabled)
+            this.logNotes.Append(notes);
+            if (TracelLogger.IsTraceEnabled)
             {
-                _tracelLogger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
+                TracelLogger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
             }
         }
 

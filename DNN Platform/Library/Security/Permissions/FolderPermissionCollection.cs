@@ -41,12 +41,12 @@ namespace DotNetNuke.Security.Permissions
         /// Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.
         /// </summary>
         /// <param name="folderPermissions"></param>
-        /// <param name="FolderPath"></param>
-        public FolderPermissionCollection(ArrayList folderPermissions, string FolderPath)
+        /// <param name="folderPath"></param>
+        public FolderPermissionCollection(ArrayList folderPermissions, string folderPath)
         {
             foreach (FolderPermissionInfo permission in folderPermissions)
             {
-                if (permission.FolderPath.Equals(FolderPath, StringComparison.InvariantCultureIgnoreCase))
+                if (permission.FolderPath.Equals(folderPath, StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.Add(permission);
                 }

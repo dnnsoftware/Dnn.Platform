@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class Membership {
-        
         /// <summary>
         /// membershipForm control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormEditor membershipForm;
-        
         /// <summary>
         /// createdDate control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem createdDate;
-        
         /// <summary>
         /// lastLoginDate control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem lastLoginDate;
-        
         /// <summary>
         /// lastActivityDate control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem lastActivityDate;
-        
         /// <summary>
         /// lastPasswordChangeDate control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem lastPasswordChangeDate;
-        
         /// <summary>
         /// lastLockoutDate control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem lastLockoutDate;
-        
         /// <summary>
         /// isOnLine control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem isOnLine;
-        
         /// <summary>
         /// lockedOut control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem lockedOut;
-        
         /// <summary>
         /// approved control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem approved;
-        
         /// <summary>
         /// updatePassword control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem updatePassword;
-        
         /// <summary>
         /// isDeleted control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem isDeleted;
-        
         /// <summary>
         /// userFolder control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFormLiteralItem userFolder;
-        
         /// <summary>
         /// actionsRow control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl actionsRow;
-        
         /// <summary>
         /// cmdAuthorize control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAuthorize;
-        
         /// <summary>
         /// cmdUnAuthorize control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUnAuthorize;
-        
         /// <summary>
         /// cmdUnLock control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUnLock;
-        
         /// <summary>
         /// cmdPassword control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdPassword;
-        
         /// <summary>
         /// cmdToggleSuperuser control.
         /// </summary>

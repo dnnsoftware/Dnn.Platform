@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Social.Messaging
     [Serializable]
     public class MessageRecipient : BaseEntityInfo, IHydratable
     {
-        private int _recipientID = -1;
+        private int recipientID = -1;
 
         /// <summary>
         /// Gets or sets recipientID - The primary key.
@@ -34,12 +34,12 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return this._recipientID;
+                return this.recipientID;
             }
 
             set
             {
-                this._recipientID = value;
+                this.recipientID = value;
             }
         }
 

@@ -25,8 +25,8 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public abstract class SkinThumbNailControl : UserControlBase
     {
-        protected HtmlGenericControl ControlContainer;
-        protected RadioButtonList OptSkin;
+        protected HtmlGenericControl controlContainer;
+        protected RadioButtonList optSkin;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
 
         public string Border
@@ -41,10 +41,10 @@ namespace DotNetNuke.UI.Skins
                 this.ViewState["SkinControlBorder"] = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.ControlContainer.Style.Add("border-top", value);
-                    this.ControlContainer.Style.Add("border-bottom", value);
-                    this.ControlContainer.Style.Add("border-left", value);
-                    this.ControlContainer.Style.Add("border-right", value);
+                    this.controlContainer.Style.Add("border-top", value);
+                    this.controlContainer.Style.Add("border-bottom", value);
+                    this.controlContainer.Style.Add("border-left", value);
+                    this.controlContainer.Style.Add("border-right", value);
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.Skins
                 this.ViewState["SkinControlColumns"] = value;
                 if (value > 0)
                 {
-                    this.OptSkin.RepeatColumns = value;
+                    this.optSkin.RepeatColumns = value;
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.Skins
                 this.ViewState["SkinControlHeight"] = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.ControlContainer.Style.Add("height", value);
+                    this.controlContainer.Style.Add("height", value);
                 }
             }
         }
@@ -100,18 +100,18 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this.OptSkin.SelectedItem != null ? this.OptSkin.SelectedItem.Value : string.Empty;
+                return this.optSkin.SelectedItem != null ? this.optSkin.SelectedItem.Value : string.Empty;
             }
 
             set
             {
                 // select current skin
                 int intIndex;
-                for (intIndex = 0; intIndex <= this.OptSkin.Items.Count - 1; intIndex++)
+                for (intIndex = 0; intIndex <= this.optSkin.Items.Count - 1; intIndex++)
                 {
-                    if (this.OptSkin.Items[intIndex].Value == value)
+                    if (this.optSkin.Items[intIndex].Value == value)
                     {
-                        this.OptSkin.Items[intIndex].Selected = true;
+                        this.optSkin.Items[intIndex].Selected = true;
                         break;
                     }
                 }
@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.Skins
                 this.ViewState["SkinControlWidth"] = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.ControlContainer.Style.Add("width", value);
+                    this.controlContainer.Style.Add("width", value);
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void Clear()
         {
-            this.OptSkin.Items.Clear();
+            this.optSkin.Items.Clear();
         }
 
         /// -----------------------------------------------------------------------------
@@ -379,7 +379,7 @@ namespace DotNetNuke.UI.Skins
         {
             var strDefault = Localization.GetString("Not_Specified") + "<br />";
             strDefault += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
-            this.OptSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
+            this.optSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
         }
 
         /// -----------------------------------------------------------------------------
@@ -405,7 +405,7 @@ namespace DotNetNuke.UI.Skins
                 strImage += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
             }
 
-            this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
+            this.optSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
         }
     }
 }

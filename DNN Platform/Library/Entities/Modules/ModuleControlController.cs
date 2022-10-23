@@ -22,8 +22,8 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class ModuleControlController
     {
-        private const string key = "ModuleControlID";
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
+        private const string Key = "ModuleControlID";
+        private static readonly DataProvider DataProvider = DataProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public static void DeleteModuleControl(int moduleControlID)
         {
-            dataProvider.DeleteModuleControl(moduleControlID);
+            DataProvider.DeleteModuleControl(moduleControlID);
             DataCache.ClearHostCache(true);
         }
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Modules
             if (moduleControlID == Null.NullInteger)
             {
                 // Add new Module Definition
-                moduleControlID = dataProvider.AddModuleControl(
+                moduleControlID = DataProvider.AddModuleControl(
                     moduleControl.ModuleDefID,
                     moduleControl.ControlKey,
                     moduleControl.ControlTitle,
@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Modules
             else
             {
                 // Upgrade Module Control
-                dataProvider.UpdateModuleControl(
+                DataProvider.UpdateModuleControl(
                     moduleControl.ModuleControlID,
                     moduleControl.ModuleDefID,
                     moduleControl.ControlKey,
@@ -183,7 +183,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillDictionary(key, dataProvider.GetModuleControls(), new Dictionary<int, ModuleControlInfo>());
+            return CBO.FillDictionary(Key, DataProvider.GetModuleControls(), new Dictionary<int, ModuleControlInfo>());
         }
     }
 }

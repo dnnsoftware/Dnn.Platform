@@ -31,8 +31,11 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "itemList")]
         public ItemListOptions ItemList;
 
-        private List<string> _onClientSelectionChanged;
+        private List<string> onClientSelectionChanged;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnDropDownListOptions"/> class.
+        /// </summary>
         public DnnDropDownListOptions()
         {
             this.SelectedItemCss = "selected-item";
@@ -46,7 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._onClientSelectionChanged ?? (this._onClientSelectionChanged = new List<string>());
+                return this.onClientSelectionChanged ?? (this.onClientSelectionChanged = new List<string>());
             }
         }
     }

@@ -23,8 +23,8 @@ namespace DotNetNuke.UI.UserControls
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;
-        private string MyFileName = "Help.ascx";
-        private string _key;
+        private string myFileName = "Help.ascx";
+        private string key;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.UserControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdCancel.Click += this.CmdCancel_Click;
             int moduleControlId = Null.NullInteger;
 
             if (this.Request.QueryString["ctlid"] != null)
@@ -64,16 +64,16 @@ namespace DotNetNuke.UI.UserControls
                     }
                     else
                     {
-                        this.lblHelp.Text = Localization.GetString("lblHelp.Text", Localization.GetResourceFile(this, this.MyFileName));
+                        this.lblHelp.Text = Localization.GetString("lblHelp.Text", Localization.GetResourceFile(this, this.myFileName));
                     }
                 }
 
-                this._key = objModuleControl.ControlKey;
+                this.key = objModuleControl.ControlKey;
 
                 // display module info to Host users
                 if (this.UserInfo.IsSuperUser)
                 {
-                    string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, this.MyFileName));
+                    string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, this.myFileName));
                     strInfo = strInfo.Replace("[CONTROL]", objModuleControl.ControlKey);
                     strInfo = strInfo.Replace("[SRC]", objModuleControl.ControlSrc);
                     ModuleDefinitionInfo objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        protected void cmdCancel_Click(object sender, EventArgs e)
+        protected void CmdCancel_Click(object sender, EventArgs e)
         {
             try
             {

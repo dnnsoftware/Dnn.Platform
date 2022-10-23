@@ -20,10 +20,18 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     [JsonObject]
     public class PackageInfoDto
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInfoDto"/> class.
+        /// </summary>
         public PackageInfoDto()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInfoDto"/> class.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="package"></param>
         public PackageInfoDto(int portalId, PackageInfo package)
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

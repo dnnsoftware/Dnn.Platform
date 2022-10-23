@@ -23,11 +23,13 @@ namespace Dnn.EditBar.UI.Controllers
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
+        /// <inheritdoc/>
         public string CultureName
         {
             get { return Thread.CurrentThread.CurrentUICulture.Name; }
         }
 
+        /// <inheritdoc/>
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
         {
             Requires.NotNullOrEmpty("resourceFile", resourceFile);
@@ -42,6 +44,7 @@ namespace Dnn.EditBar.UI.Controllers
             return dictionary;
         }
 
+        /// <inheritdoc/>
         protected override Func<ILocalizationController> GetFactory()
         {
             return () => new LocalizationController();

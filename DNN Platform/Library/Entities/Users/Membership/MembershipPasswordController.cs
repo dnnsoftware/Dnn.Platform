@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
     public class MembershipPasswordController
     {
-        private readonly DataProvider _dataProvider = DataProvider.Instance();
+        private readonly DataProvider dataProvider = DataProvider.Instance();
 
         /// <summary>
         /// returns the password history of the supplied user.
@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Users.Membership
         {
             var settings = new MembershipPasswordSettings(portalId);
             List<PasswordHistory> history =
-                CBO.FillCollection<PasswordHistory>(this._dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
+                CBO.FillCollection<PasswordHistory>(this.dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
             return history;
         }
 
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Users.Membership
                 byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
                 string hashedPassword = Convert.ToBase64String(bhashedPassword);
 
-                this._dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
+                this.dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
             }
         }
 

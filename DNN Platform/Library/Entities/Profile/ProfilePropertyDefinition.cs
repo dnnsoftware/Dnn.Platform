@@ -30,27 +30,27 @@ namespace DotNetNuke.Entities.Profile
     [Serializable]
     public class ProfilePropertyDefinition : BaseEntityInfo
     {
-        private int _dataType = Null.NullInteger;
-        private string _defaultValue;
-        private UserVisibilityMode _defaultVisibility = UserVisibilityMode.AdminOnly;
-        private bool _deleted;
-        private int _length;
-        private int _moduleDefId = Null.NullInteger;
-        private int _portalId;
+        private int dataType = Null.NullInteger;
+        private string defaultValue;
+        private UserVisibilityMode defaultVisibility = UserVisibilityMode.AdminOnly;
+        private bool deleted;
+        private int length;
+        private int moduleDefId = Null.NullInteger;
+        private int portalId;
 
-        private ProfileVisibility _profileVisibility = new ProfileVisibility
+        private ProfileVisibility profileVisibility = new ProfileVisibility
         {
             VisibilityMode = UserVisibilityMode.AdminOnly,
         };
 
-        private string _propertyCategory;
-        private string _propertyName;
-        private string _propertyValue;
-        private bool _readOnly;
-        private bool _required;
-        private string _ValidationExpression;
-        private int _viewOrder;
-        private bool _visible;
+        private string propertyCategory;
+        private string propertyName;
+        private string propertyValue;
+        private bool readOnly;
+        private bool required;
+        private string validationExpression;
+        private int viewOrder;
+        private bool visible;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.
@@ -60,8 +60,8 @@ namespace DotNetNuke.Entities.Profile
             this.PropertyDefinitionId = Null.NullInteger;
 
             // Get the default PortalSettings
-            PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
-            this.PortalId = _Settings.PortalId;
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            this.PortalId = settings.PortalId;
         }
 
         /// <summary>
@@ -90,17 +90,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._dataType;
+                return this.dataType;
             }
 
             set
             {
-                if (this._dataType != value)
+                if (this.dataType != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._dataType = value;
+                this.dataType = value;
             }
         }
 
@@ -116,17 +116,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._defaultValue;
+                return this.defaultValue;
             }
 
             set
             {
-                if (this._defaultValue != value)
+                if (this.defaultValue != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._defaultValue = value;
+                this.defaultValue = value;
             }
         }
 
@@ -142,17 +142,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._defaultVisibility;
+                return this.defaultVisibility;
             }
 
             set
             {
-                if (this._defaultVisibility != value)
+                if (this.defaultVisibility != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._defaultVisibility = value;
+                this.defaultVisibility = value;
             }
         }
 
@@ -168,12 +168,12 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._deleted;
+                return this.deleted;
             }
 
             set
             {
-                this._deleted = value;
+                this.deleted = value;
             }
         }
 
@@ -198,17 +198,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._length;
+                return this.length;
             }
 
             set
             {
-                if (this._length != value)
+                if (this.length != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._length = value;
+                this.length = value;
             }
         }
 
@@ -224,12 +224,12 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._moduleDefId;
+                return this.moduleDefId;
             }
 
             set
             {
-                this._moduleDefId = value;
+                this.moduleDefId = value;
             }
         }
 
@@ -245,12 +245,12 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
@@ -266,17 +266,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._propertyCategory;
+                return this.propertyCategory;
             }
 
             set
             {
-                if (this._propertyCategory != value)
+                if (this.propertyCategory != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._propertyCategory = value;
+                this.propertyCategory = value;
             }
         }
 
@@ -304,17 +304,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._propertyName;
+                return this.propertyName;
             }
 
             set
             {
-                if (this._propertyName != value)
+                if (this.propertyName != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._propertyName = value;
+                this.propertyName = value;
             }
         }
 
@@ -330,17 +330,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._propertyValue;
+                return this.propertyValue;
             }
 
             set
             {
-                if (this._propertyValue != value)
+                if (this.propertyValue != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._propertyValue = value;
+                this.propertyValue = value;
             }
         }
 
@@ -356,17 +356,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._readOnly;
+                return this.readOnly;
             }
 
             set
             {
-                if (this._readOnly != value)
+                if (this.readOnly != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._readOnly = value;
+                this.readOnly = value;
             }
         }
 
@@ -382,17 +382,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._required;
+                return this.required;
             }
 
             set
             {
-                if (this._required != value)
+                if (this.required != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._required = value;
+                this.required = value;
             }
         }
 
@@ -408,17 +408,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._ValidationExpression;
+                return this.validationExpression;
             }
 
             set
             {
-                if (this._ValidationExpression != value)
+                if (this.validationExpression != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._ValidationExpression = value;
+                this.validationExpression = value;
             }
         }
 
@@ -435,17 +435,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._viewOrder;
+                return this.viewOrder;
             }
 
             set
             {
-                if (this._viewOrder != value)
+                if (this.viewOrder != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._viewOrder = value;
+                this.viewOrder = value;
             }
         }
 
@@ -461,17 +461,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._visible;
+                return this.visible;
             }
 
             set
             {
-                if (this._visible != value)
+                if (this.visible != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._visible = value;
+                this.visible = value;
             }
         }
 
@@ -487,17 +487,17 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return this._profileVisibility;
+                return this.profileVisibility;
             }
 
             set
             {
-                if (this._profileVisibility != value)
+                if (this.profileVisibility != value)
                 {
                     this.IsDirty = true;
                 }
 
-                this._profileVisibility = value;
+                this.profileVisibility = value;
             }
         }
 

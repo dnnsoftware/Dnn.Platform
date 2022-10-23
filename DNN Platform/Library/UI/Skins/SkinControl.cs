@@ -22,23 +22,23 @@ namespace DotNetNuke.UI.Skins
         protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
-        private string _DefaultKey = "System";
-        private string _SkinRoot;
-        private string _SkinSrc;
-        private string _Width = string.Empty;
-        private string _localResourceFile;
-        private PortalInfo _objPortal;
+        private string defaultKey = "System";
+        private string skinRoot;
+        private string skinSrc;
+        private string width = string.Empty;
+        private string localResourceFile;
+        private PortalInfo objPortal;
 
         public string DefaultKey
         {
             get
             {
-                return this._DefaultKey;
+                return this.defaultKey;
             }
 
             set
             {
-                this._DefaultKey = value;
+                this.defaultKey = value;
             }
         }
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Skins
 
             set
             {
-                this._Width = value;
+                this.width = value;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.Skins
 
             set
             {
-                this._SkinRoot = value;
+                this.skinRoot = value;
             }
         }
 
@@ -84,7 +84,7 @@ namespace DotNetNuke.UI.Skins
 
             set
             {
-                this._SkinSrc = value;
+                this.skinSrc = value;
             }
         }
 
@@ -93,13 +93,13 @@ namespace DotNetNuke.UI.Skins
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/SkinControl.ascx";
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.Skins
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -118,37 +118,37 @@ namespace DotNetNuke.UI.Skins
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.optHost.CheckedChanged += this.optHost_CheckedChanged;
-            this.optSite.CheckedChanged += this.optSite_CheckedChanged;
-            this.cmdPreview.Click += this.cmdPreview_Click;
+            this.optHost.CheckedChanged += this.OptHost_CheckedChanged;
+            this.optSite.CheckedChanged += this.OptSite_CheckedChanged;
+            this.cmdPreview.Click += this.CmdPreview_Click;
             try
             {
                 if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
+                    this.objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
 
                 if (!this.Page.IsPostBack)
                 {
                     // save persistent values
-                    this.ViewState["SkinControlWidth"] = this._Width;
-                    this.ViewState["SkinRoot"] = this._SkinRoot;
-                    this.ViewState["SkinSrc"] = this._SkinSrc;
+                    this.ViewState["SkinControlWidth"] = this.width;
+                    this.ViewState["SkinRoot"] = this.skinRoot;
+                    this.ViewState["SkinSrc"] = this.skinSrc;
 
                     // set width of control
-                    if (!string.IsNullOrEmpty(this._Width))
+                    if (!string.IsNullOrEmpty(this.width))
                     {
-                        this.cboSkin.Width = Unit.Parse(this._Width);
+                        this.cboSkin.Width = Unit.Parse(this.width);
                     }
 
                     // set selected skin
-                    if (!string.IsNullOrEmpty(this._SkinSrc))
+                    if (!string.IsNullOrEmpty(this.skinSrc))
                     {
-                        switch (this._SkinSrc.Substring(0, 3))
+                        switch (this.skinSrc.Substring(0, 3))
                         {
                             case "[L]":
                                 this.optHost.Checked = false;
@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.Skins
                     else
                     {
                         // no skin selected, initialized to site skin if any exists
-                        string strRoot = this._objPortal.HomeDirectoryMapPath + this.SkinRoot;
+                        string strRoot = this.objPortal.HomeDirectoryMapPath + this.SkinRoot;
                         if (Directory.Exists(strRoot) && Directory.GetDirectories(strRoot).Length > 0)
                         {
                             this.optHost.Checked = false;
@@ -180,17 +180,17 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        protected void optHost_CheckedChanged(object sender, EventArgs e)
+        protected void OptHost_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
         }
 
-        protected void optSite_CheckedChanged(object sender, EventArgs e)
+        protected void OptSite_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
         }
 
-        protected void cmdPreview_Click(object sender, EventArgs e)
+        protected void CmdPreview_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(this.SkinSrc))
             {
@@ -217,18 +217,18 @@ namespace DotNetNuke.UI.Skins
             if (this.optHost.Checked)
             {
                 // load host skins
-                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Host))
+                foreach (KeyValuePair<string, string> skin in SkinController.GetSkins(this.objPortal, this.SkinRoot, SkinScope.Host))
                 {
-                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
+                    this.cboSkin.Items.Add(new ListItem(skin.Key, skin.Value));
                 }
             }
 
             if (this.optSite.Checked)
             {
                 // load portal skins
-                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Site))
+                foreach (KeyValuePair<string, string> skin in SkinController.GetSkins(this.objPortal, this.SkinRoot, SkinScope.Site))
                 {
-                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
+                    this.cboSkin.Items.Add(new ListItem(skin.Key, skin.Value));
                 }
             }
 

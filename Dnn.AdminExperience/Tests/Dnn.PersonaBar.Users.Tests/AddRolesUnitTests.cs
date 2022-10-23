@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.Users.Tests
     using NUnit.Framework;
 
     [TestFixture]
+
     public class AddRolesUnitTests : CommandTests<AddRoles>
     {
         private Mock<IUserValidator> _userValidatorMock;
@@ -29,6 +30,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [TestCase]
+
         public void Run_AddRolesWithValidArguments_ReturnSuccessResponse()
         {
             // Arrange
@@ -77,6 +79,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [TestCase]
+
         public void Run_AddRolesWhenUserNotValid_ReturnErrorResponse()
         {
             // Arrange
@@ -97,6 +100,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [TestCase]
+
         public void Run_AddRolesWhenRoleNotValid_ThrowsException()
         {
             // Arrange

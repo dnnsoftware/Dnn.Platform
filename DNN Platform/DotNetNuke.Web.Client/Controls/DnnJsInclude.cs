@@ -22,6 +22,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.ForceProvider = ClientResourceManager.DefaultJsProvider;
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
             base.OnLoad(e);
@@ -29,6 +30,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)

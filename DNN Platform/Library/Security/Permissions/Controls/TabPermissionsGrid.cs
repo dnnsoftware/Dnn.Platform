@@ -20,9 +20,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class TabPermissionsGrid : PermissionsGrid
     {
-        private List<PermissionInfoBase> _PermissionsList;
-        private int _TabID = -1;
-        private TabPermissionCollection _TabPermissions;
+        private List<PermissionInfoBase> permissionsList;
+        private int tabID = -1;
+        private TabPermissionCollection tabPermissions;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this.UpdatePermissions();
 
                 // Return the TabPermissions
-                return this._TabPermissions;
+                return this.tabPermissions;
             }
         }
 
@@ -50,12 +50,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this._TabID;
+                return this.tabID;
             }
 
             set
             {
-                this._TabID = value;
+                this.tabID = value;
                 if (!this.Page.IsPostBack)
                 {
                     this.GetTabPermissions();
@@ -68,12 +68,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                if (this._PermissionsList == null && this._TabPermissions != null)
+                if (this.permissionsList == null && this.tabPermissions != null)
                 {
-                    this._PermissionsList = this._TabPermissions.ToList();
+                    this.permissionsList = this.tabPermissions.ToList();
                 }
 
-                return this._PermissionsList;
+                return this.permissionsList;
             }
         }
 
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += this.RolePermissionsGrid_ItemDataBound;
         }
 
         /// <inheritdoc/>
@@ -118,10 +118,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             objPermission.AllowAccess = allowAccess;
             objPermission.UserID = userId;
             objPermission.DisplayName = displayName;
-            this._TabPermissions.Add(objPermission, true);
+            this.tabPermissions.Add(objPermission, true);
 
             // Clear Permission List
-            this._PermissionsList = null;
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -135,7 +135,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             // Search TabPermission Collection for the user
             bool isMatch = false;
-            foreach (TabPermissionInfo objTabPermission in this._TabPermissions)
+            foreach (TabPermissionInfo objTabPermission in this.tabPermissions)
             {
                 if (objTabPermission.UserID == user.UserID)
                 {
@@ -167,7 +167,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             // Search TabPermission Collection for the user
-            if (this._TabPermissions.Cast<TabPermissionInfo>().Any(objTabPermission => objTabPermission.RoleID == role.RoleID))
+            if (this.tabPermissions.Cast<TabPermissionInfo>().Any(objTabPermission => objTabPermission.RoleID == role.RoleID))
             {
                 return;
             }
@@ -262,7 +262,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load TabPermissions
                 if (myState[2] != null)
                 {
-                    this._TabPermissions = new TabPermissionCollection();
+                    this.tabPermissions = new TabPermissionCollection();
                     string state = Convert.ToString(myState[2]);
                     if (!string.IsNullOrEmpty(state))
                     {
@@ -270,8 +270,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
-                            string[] Settings = key.Split('|');
-                            this._TabPermissions.Add(this.ParseKeys(Settings));
+                            string[] settings = key.Split('|');
+                            this.tabPermissions.Add(this.ParseKeys(settings));
                         }
                     }
                 }
@@ -281,10 +281,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
-            this._TabPermissions.Remove(permissionID, roleID, userID);
+            this.tabPermissions.Remove(permissionID, roleID, userID);
 
             // Clear Permission List
-            this._PermissionsList = null;
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -305,10 +305,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Persist the TabPermisisons
             var sb = new StringBuilder();
-            if (this._TabPermissions != null)
+            if (this.tabPermissions != null)
             {
                 bool addDelimiter = false;
-                foreach (TabPermissionInfo objTabPermission in this._TabPermissions)
+                foreach (TabPermissionInfo objTabPermission in this.tabPermissions)
                 {
                     if (addDelimiter)
                     {
@@ -352,29 +352,29 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         private void GetTabPermissions()
         {
-            this._TabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
-            this._PermissionsList = null;
+            this.tabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Parse the Permission Keys used to persist the Permissions in the ViewState.
         /// </summary>
-        /// <param name="Settings">A string array of settings.</param>
+        /// <param name="settings">A string array of settings.</param>
         /// -----------------------------------------------------------------------------
-        private TabPermissionInfo ParseKeys(string[] Settings)
+        private TabPermissionInfo ParseKeys(string[] settings)
         {
             var objTabPermission = new TabPermissionInfo();
 
             // Call base class to load base properties
-            this.ParsePermissionKeys(objTabPermission, Settings);
-            if (string.IsNullOrEmpty(Settings[2]))
+            this.ParsePermissionKeys(objTabPermission, settings);
+            if (string.IsNullOrEmpty(settings[2]))
             {
                 objTabPermission.TabPermissionID = -1;
             }
             else
             {
-                objTabPermission.TabPermissionID = Convert.ToInt32(Settings[2]);
+                objTabPermission.TabPermissionID = Convert.ToInt32(settings[2]);
             }
 
             objTabPermission.TabID = this.TabID;
@@ -382,7 +382,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             return objTabPermission;
         }
 
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        private void RolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
 

@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Login {
-        
         /// <summary>
         /// loginLink control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink loginLink;
-        
         /// <summary>
         /// loginGroup control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl loginGroup;
-        
         /// <summary>
         /// enhancedLoginLink control.
         /// </summary>

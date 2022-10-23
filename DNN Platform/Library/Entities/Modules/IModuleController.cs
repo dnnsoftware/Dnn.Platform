@@ -28,8 +28,8 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Clears the module cache based on the page (tabid).
         /// </summary>
-        /// <param name="TabId">The tab id.</param>
-        void ClearCache(int TabId);
+        /// <param name="tabId">The tab id.</param>
+        void ClearCache(int tabId);
 
         /// <summary>
         /// Copies the module to a new page.
@@ -144,12 +144,12 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         ///   get Module by specific locale.
         /// </summary>
-        /// <param name = "ModuleId">ID of the module.</param>
+        /// <param name = "moduleId">ID of the module.</param>
         /// <param name = "tabid">ID of the tab.</param>
         /// <param name = "portalId">ID of the portal.</param>
         /// <param name = "locale">The wanted locale.</param>
         /// <returns>ModuleInfo associated to submitted locale.</returns>
-        ModuleInfo GetModuleByCulture(int ModuleId, int tabid, int portalId, Locale locale);
+        ModuleInfo GetModuleByCulture(int moduleId, int tabid, int portalId, Locale locale);
 
         /// <summary>
         /// Get ModuleInfo object of first module instance with a given name of the module definition.
@@ -249,11 +249,11 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// set/change the module position within a pane on a page.
         /// </summary>
-        /// <param name="TabId">ID of the page.</param>
-        /// <param name="ModuleId">ID of the module on the page.</param>
-        /// <param name="ModuleOrder">position within the controls list on page, -1 if to be added at the end.</param>
-        /// <param name="PaneName">name of the pane, the module is placed in on the page.</param>
-        void UpdateModuleOrder(int TabId, int ModuleId, int ModuleOrder, string PaneName);
+        /// <param name="tabId">ID of the page.</param>
+        /// <param name="moduleId">ID of the module on the page.</param>
+        /// <param name="moduleOrder">position within the controls list on page, -1 if to be added at the end.</param>
+        /// <param name="paneName">name of the pane, the module is placed in on the page.</param>
+        void UpdateModuleOrder(int tabId, int moduleId, int moduleOrder, string paneName);
 
         /// <summary>
         /// Adds or updates a module's setting value.
@@ -267,8 +267,8 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// set/change all module's positions within a page.
         /// </summary>
-        /// <param name="TabId">ID of the page.</param>
-        void UpdateTabModuleOrder(int TabId);
+        /// <param name="tabId">ID of the page.</param>
+        void UpdateTabModuleOrder(int tabId);
 
         /// <summary>
         /// Adds or updates a tab module's setting value.

@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public LocalizationProgress Reset()
         {
             this.InProgress = false;
-            this.CurrentOperationText = "";
+            this.CurrentOperationText = string.Empty;
             return this;
         }
     }

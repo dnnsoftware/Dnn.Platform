@@ -102,6 +102,5 @@ namespace DotNetNuke.Services.Search.Internals
             KeywordsPrefixTag + CommentsTag,
             KeywordsPrefixTag + AuthorNameTag,
         };
-
     }
 }

@@ -15,8 +15,8 @@ namespace DotNetNuke.Services.Scheduling
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
         private static readonly DateTime MinNextTime = DateTime.Now;
-        private DateTime? _NextStart;
-        private Hashtable _ScheduleItemSettings;
+        private DateTime? nextStart;
+        private Hashtable scheduleItemSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleItem"/> class.
@@ -54,17 +54,17 @@ namespace DotNetNuke.Services.Scheduling
         {
             get
             {
-                if (!this._NextStart.HasValue)
+                if (!this.nextStart.HasValue)
                 {
-                    this._NextStart = MinNextTime;
+                    this.nextStart = MinNextTime;
                 }
 
-                return this._NextStart.Value > MinNextTime ? this._NextStart.Value : MinNextTime;
+                return this.nextStart.Value > MinNextTime ? this.nextStart.Value : MinNextTime;
             }
 
             set
             {
-                this._NextStart = value;
+                this.NextStart = value;
             }
         }
 
@@ -135,21 +135,21 @@ namespace DotNetNuke.Services.Scheduling
             return false;
         }
 
-        public void AddSetting(string Key, string Value)
+        public void AddSetting(string key, string value)
         {
-            this._ScheduleItemSettings.Add(Key, Value);
+            this.scheduleItemSettings.Add(key, value);
         }
 
-        public virtual string GetSetting(string Key)
+        public virtual string GetSetting(string key)
         {
-            if (this._ScheduleItemSettings == null)
+            if (this.scheduleItemSettings == null)
             {
                 this.GetSettings();
             }
 
-            if (this._ScheduleItemSettings != null && this._ScheduleItemSettings.ContainsKey(Key))
+            if (this.scheduleItemSettings != null && this.scheduleItemSettings.ContainsKey(key))
             {
-                return Convert.ToString(this._ScheduleItemSettings[Key]);
+                return Convert.ToString(this.scheduleItemSettings[key]);
             }
             else
             {
@@ -159,8 +159,8 @@ namespace DotNetNuke.Services.Scheduling
 
         public virtual Hashtable GetSettings()
         {
-            this._ScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(this.ScheduleID);
-            return this._ScheduleItemSettings;
+            this.scheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(this.ScheduleID);
+            return this.scheduleItemSettings;
         }
 
         /// <inheritdoc/>

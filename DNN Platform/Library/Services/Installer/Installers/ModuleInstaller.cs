@@ -24,11 +24,11 @@ using DotNetNuke.Services.EventQueue;
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    public class ModuleInstaller : ComponentInstallerBase
+public class ModuleInstaller : ComponentInstallerBase
     {
-        private DesktopModuleInfo _desktopModule;
-        private EventMessage _eventMessage;
-        private DesktopModuleInfo _installedDesktopModule;
+        private DesktopModuleInfo desktopModule;
+        private EventMessage eventMessage;
+        private DesktopModuleInfo installedDesktopModule;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -53,12 +53,12 @@ using DotNetNuke.Services.EventQueue;
         public override void Commit()
         {
             // Add CodeSubDirectory
-            if (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory))
+            if (!string.IsNullOrEmpty(this.desktopModule.CodeSubDirectory))
             {
-                Config.AddCodeSubDirectory(this._desktopModule.CodeSubDirectory);
+                Config.AddCodeSubDirectory(this.desktopModule.CodeSubDirectory);
             }
 
-            if (this._desktopModule.SupportedFeatures == Null.NullInteger)
+            if (this.desktopModule.SupportedFeatures == Null.NullInteger)
             {
                 // Set an Event Message so the features are loaded by reflection on restart
                 var oAppStartMessage = new EventMessage
@@ -72,63 +72,63 @@ using DotNetNuke.Services.EventQueue;
                 };
 
                 // Add custom Attributes for this message
-                oAppStartMessage.Attributes.Add("BusinessControllerClass", this._desktopModule.BusinessControllerClass);
-                oAppStartMessage.Attributes.Add("desktopModuleID", this._desktopModule.DesktopModuleID.ToString());
+                oAppStartMessage.Attributes.Add("BusinessControllerClass", this.desktopModule.BusinessControllerClass);
+                oAppStartMessage.Attributes.Add("desktopModuleID", this.desktopModule.DesktopModuleID.ToString());
 
                 // send it to occur on next App_Start Event
                 EventQueueController.SendMessage(oAppStartMessage, "Application_Start_FirstRequest");
             }
 
             // Add Event Message
-            if (this._eventMessage != null)
+            if (this.eventMessage != null)
             {
-                if (!string.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
+                if (!string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
                 {
-                    this._eventMessage.Attributes.Set("desktopModuleID", this._desktopModule.DesktopModuleID.ToString());
-                    EventQueueController.SendMessage(this._eventMessage, "Application_Start");
+                    this.eventMessage.Attributes.Set("desktopModuleID", this.desktopModule.DesktopModuleID.ToString());
+                    EventQueueController.SendMessage(this.eventMessage, "Application_Start");
                 }
             }
 
             // Add DesktopModule to all portals
-            if (!this._desktopModule.IsPremium)
+            if (!this.desktopModule.IsPremium)
             {
-                DesktopModuleController.AddDesktopModuleToPortals(this._desktopModule.DesktopModuleID);
+                DesktopModuleController.AddDesktopModuleToPortals(this.desktopModule.DesktopModuleID);
             }
 
             // Add DesktopModule to all portals
-            if (!string.IsNullOrEmpty(this._desktopModule.AdminPage))
+            if (!string.IsNullOrEmpty(this.desktopModule.AdminPage))
             {
                 foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
                     bool createdNewPage = false, addedNewModule = false;
-                    DesktopModuleController.AddDesktopModulePageToPortal(this._desktopModule, this._desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+                    DesktopModuleController.AddDesktopModulePageToPortal(this.desktopModule, this.desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
 
                     if (createdNewPage)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, this._desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, this.desktopModule.AdminPage, portal.PortalID));
                     }
 
                     if (addedNewModule)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this._desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this.desktopModule.AdminPage, portal.PortalID));
                     }
                 }
             }
 
             // Add host items
-            if (this._desktopModule.Page != null && !string.IsNullOrEmpty(this._desktopModule.HostPage))
+            if (this.desktopModule.Page != null && !string.IsNullOrEmpty(this.desktopModule.HostPage))
             {
                 bool createdNewPage = false, addedNewModule = false;
-                DesktopModuleController.AddDesktopModulePageToPortal(this._desktopModule, this._desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
+                DesktopModuleController.AddDesktopModulePageToPortal(this.desktopModule, this.desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);
 
                 if (createdNewPage)
                 {
-                    this.Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, this._desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, this.desktopModule.HostPage));
                 }
 
                 if (addedNewModule)
                 {
-                    this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, this._desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, this.desktopModule.HostPage));
                 }
             }
         }
@@ -143,14 +143,14 @@ using DotNetNuke.Services.EventQueue;
             try
             {
                 // Attempt to get the Desktop Module
-                this._installedDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this._desktopModule.ModuleName, this.Package.InstallerInfo.PortalID);
+                this.installedDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.desktopModule.ModuleName, this.Package.InstallerInfo.PortalID);
 
-                if (this._installedDesktopModule != null)
+                if (this.installedDesktopModule != null)
                 {
-                    this._desktopModule.DesktopModuleID = this._installedDesktopModule.DesktopModuleID;
+                    this.desktopModule.DesktopModuleID = this.installedDesktopModule.DesktopModuleID;
 
                     // save the module's category
-                    this._desktopModule.Category = this._installedDesktopModule.Category;
+                    this.desktopModule.Category = this.installedDesktopModule.Category;
                 }
 
                 // Clear ModuleControls and Module Definitions caches in case script has modifed the contents
@@ -158,11 +158,11 @@ using DotNetNuke.Services.EventQueue;
                 DataCache.RemoveCache(DataCache.ModuleControlsCacheKey);
 
                 // Save DesktopModule and child objects to database
-                this._desktopModule.PackageID = this.Package.PackageID;
-                this._desktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(this._desktopModule, true, false);
+                this.desktopModule.PackageID = this.Package.PackageID;
+                this.desktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(this.desktopModule, true, false);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this._desktopModule.ModuleName));
+                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.desktopModule.ModuleName));
             }
             catch (Exception ex)
             {
@@ -178,32 +178,32 @@ using DotNetNuke.Services.EventQueue;
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the Desktop Module from the manifest
-            this._desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
+            this.desktopModule = CBO.DeserializeObject<DesktopModuleInfo>(new StringReader(manifestNav.InnerXml));
 
             // Allow a <component type="Module"> (i.e. a DesktopModule) to have its own friendlyname / description.
             // This allows multiple DesktopModules in one Package, allowing large MVC packages which share one assembly
             // but have many functions.
-            if (this._desktopModule.FriendlyName == null || this._desktopModule.FriendlyName.Trim().Length == 0)
+            if (this.desktopModule.FriendlyName == null || this.desktopModule.FriendlyName.Trim().Length == 0)
             {
-                this._desktopModule.FriendlyName = this.Package.FriendlyName;
+                this.desktopModule.FriendlyName = this.Package.FriendlyName;
             }
 
-            if (this._desktopModule.Description == null || this._desktopModule.Description.Trim().Length == 0)
+            if (this.desktopModule.Description == null || this.desktopModule.Description.Trim().Length == 0)
             {
-                this._desktopModule.Description = this.Package.Description;
+                this.desktopModule.Description = this.Package.Description;
             }
 
-            this._desktopModule.Version = Globals.FormatVersion(this.Package.Version, "00", 4, ".");
-            this._desktopModule.CompatibleVersions = Null.NullString;
-            this._desktopModule.Dependencies = Null.NullString;
-            this._desktopModule.Permissions = Null.NullString;
-            if (string.IsNullOrEmpty(this._desktopModule.BusinessControllerClass))
+            this.desktopModule.Version = Globals.FormatVersion(this.Package.Version, "00", 4, ".");
+            this.desktopModule.CompatibleVersions = Null.NullString;
+            this.desktopModule.Dependencies = Null.NullString;
+            this.desktopModule.Permissions = Null.NullString;
+            if (string.IsNullOrEmpty(this.desktopModule.BusinessControllerClass))
             {
-                this._desktopModule.SupportedFeatures = 0;
+                this.desktopModule.SupportedFeatures = 0;
             }
 
-            this._eventMessage = this.ReadEventMessageNode(manifestNav);
-			
+            this.eventMessage = this.ReadEventMessageNode(manifestNav);
+
             // Load permissions (to add)
             foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))
             {
@@ -214,7 +214,7 @@ using DotNetNuke.Services.EventQueue;
                     permission.PermissionCode = Util.ReadAttribute(permissionNav, "code");
                     permission.PermissionKey = Util.ReadAttribute(permissionNav, "key");
                     permission.PermissionName = Util.ReadAttribute(permissionNav, "name");
-                    ModuleDefinitionInfo moduleDefinition = this._desktopModule.ModuleDefinitions[friendlyName];
+                    ModuleDefinitionInfo moduleDefinition = this.desktopModule.ModuleDefinitions[friendlyName];
                     if (moduleDefinition != null)
                     {
                         moduleDefinition.Permissions.Add(permission.PermissionKey, permission);
@@ -237,7 +237,7 @@ using DotNetNuke.Services.EventQueue;
         public override void Rollback()
         {
             // If Temp Module exists then we need to update the DataStore with this
-            if (this._installedDesktopModule == null)
+            if (this.installedDesktopModule == null)
             {
                 // No Temp Module - Delete newly added module
                 this.DeleteModule();
@@ -245,7 +245,7 @@ using DotNetNuke.Services.EventQueue;
             else
             {
                 // Temp Module - Rollback to Temp
-                DesktopModuleController.SaveDesktopModule(this._installedDesktopModule, true, false);
+                DesktopModuleController.SaveDesktopModule(this.installedDesktopModule, true, false);
             }
         }
 
@@ -275,9 +275,9 @@ using DotNetNuke.Services.EventQueue;
                     var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
 
                     // Remove CodeSubDirectory
-                    if ((this._desktopModule != null) && (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory)))
+                    if ((this.desktopModule != null) && (!string.IsNullOrEmpty(this.desktopModule.CodeSubDirectory)))
                     {
-                        Config.RemoveCodeSubDirectory(this._desktopModule.CodeSubDirectory);
+                        Config.RemoveCodeSubDirectory(this.desktopModule.CodeSubDirectory);
                     }
 
                     var controller = new DesktopModuleController();

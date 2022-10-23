@@ -34,6 +34,7 @@ namespace DotNetNuke.Tests.Core.Common
         private INavigationManager navigationManager;
 
         [OneTimeSetUp]
+
         public void Setup()
         {
             this.navigationManager = new NavigationManager(PortalControllerMock());

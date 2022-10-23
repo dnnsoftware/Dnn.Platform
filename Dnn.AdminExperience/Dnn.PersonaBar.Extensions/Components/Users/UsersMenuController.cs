@@ -16,15 +16,18 @@ namespace Dnn.PersonaBar.Users.Components
 
     public class UsersMenuController : IMenuItemController
     {
+        /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
+        /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class DataConsent {
-        
         /// <summary>
         /// chkAgree control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAgree;
-        
         /// <summary>
         /// pnlNoAgreement control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlNoAgreement;
-        
         /// <summary>
         /// cmdSubmit control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdSubmit;
-        
         /// <summary>
         /// cmdCancel control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button cmdCancel;
-        
         /// <summary>
         /// cmdDeleteMe control.
         /// </summary>

@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         where TOwner : Control
         where TChildren : Control
     {
-        private readonly TOwner _owner;
+        private readonly TOwner owner;
 
+        /// <summary>Initializes a new instance of the <see cref="UniformControlCollection{TOwner, TChildren}"/> class.</summary>
+        /// <param name="owner">The owner control.</param>
         internal UniformControlCollection(TOwner owner)
         {
-            this._owner = owner;
+            this.owner = owner;
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._owner.HasControls() ? this._owner.Controls.Count : 0;
+                return this.owner.HasControls() ? this.owner.Controls.Count : 0;
             }
         }
 
@@ -67,7 +69,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._owner.Controls[index] as TChildren;
+                return this.owner.Controls[index] as TChildren;
             }
 
             set
@@ -79,7 +81,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void AddAt(int index, TChildren childControl)
         {
-            this._owner.Controls.AddAt(index, childControl);
+            this.owner.Controls.AddAt(index, childControl);
         }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </param>
         public int IndexOf(TChildren item)
         {
-            return this._owner.Controls.IndexOf(item);
+            return this.owner.Controls.IndexOf(item);
         }
 
         /// <summary>
@@ -112,7 +114,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </exception>
         public void Insert(int index, TChildren item)
         {
-            this._owner.Controls.AddAt(index, item);
+            this.owner.Controls.AddAt(index, item);
         }
 
         /// <summary>
@@ -128,7 +130,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </exception>
         public void RemoveAt(int index)
         {
-            this._owner.Controls.RemoveAt(index);
+            this.owner.Controls.RemoveAt(index);
         }
 
         /// <summary>
@@ -145,7 +147,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </exception>
         public bool Remove(TChildren item)
         {
-            this._owner.Controls.Remove(item);
+            this.owner.Controls.Remove(item);
             return true;
         }
 
@@ -158,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <filterpriority>1.</filterpriority>
         public IEnumerator<TChildren> GetEnumerator()
         {
-            var enumerator = this._owner.Controls.GetEnumerator();
+            var enumerator = this.owner.Controls.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 yield return enumerator.Current as TChildren;
@@ -173,9 +175,9 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </exception>
         public void Clear()
         {
-            if (this._owner.HasControls())
+            if (this.owner.HasControls())
             {
-                this._owner.Controls.Clear();
+                this.owner.Controls.Clear();
             }
         }
 
@@ -190,7 +192,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </exception>
         public void Add(TChildren item)
         {
-            this._owner.Controls.Add(item);
+            this.owner.Controls.Add(item);
         }
 
         /// <summary>
@@ -234,7 +236,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </param>
         public bool Contains(TChildren item)
         {
-            return this._owner.Controls.Contains(item);
+            return this.owner.Controls.Contains(item);
         }
 
         /// <inheritdoc/>
@@ -252,7 +254,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <filterpriority>2.</filterpriority>
         private IEnumerator EnumerableGetEnumerator()
         {
-            return this._owner.Controls.GetEnumerator();
+            return this.owner.Controls.GetEnumerator();
         }
     }
 }

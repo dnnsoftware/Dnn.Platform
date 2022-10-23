@@ -25,6 +25,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+
         public PortalSettings PortalSettings
         {
             get

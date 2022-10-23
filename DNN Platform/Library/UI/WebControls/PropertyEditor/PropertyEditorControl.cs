@@ -32,8 +32,8 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class PropertyEditorControl : WebControl, INamingContainer
     {
-        private bool _itemChanged;
-        private Hashtable _sections;
+        private bool itemChanged;
+        private Hashtable sections;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyEditorControl"/> class.
@@ -569,12 +569,12 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(panel);
 
             // Get the Hashtable
-            if (this._sections == null)
+            if (this.sections == null)
             {
-                this._sections = new Hashtable();
+                this.sections = new Hashtable();
             }
 
-            this._sections[icon] = tbl;
+            this.sections[icon] = tbl;
         }
 
         /// -----------------------------------------------------------------------------
@@ -857,7 +857,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
-            if (this._itemChanged)
+            if (this.itemChanged)
             {
                 // Rebind the control to the DataSource to make sure that the dependent
                 // editors are updated
@@ -870,9 +870,9 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Find the Min/Max buttons
-            if (this.GroupByMode == GroupByMode.Section && (this._sections != null))
+            if (this.GroupByMode == GroupByMode.Section && (this.sections != null))
             {
-                foreach (DictionaryEntry key in this._sections)
+                foreach (DictionaryEntry key in this.sections)
                 {
                     var tbl = (Table)key.Value;
                     var icon = (Image)key.Key;
@@ -920,7 +920,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
-            this._itemChanged = true;
+            this.itemChanged = true;
         }
 
         /// -----------------------------------------------------------------------------

@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.ModuleCache
 
     public class MemoryProvider : ModuleCachingProvider
     {
-        private const string cachePrefix = "ModuleCache:";
+        private const string CachePrefix = "ModuleCache:";
 
         /// <inheritdoc/>
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.ModuleCache
                 }
             }
 
-            return string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());
+            return string.Concat(CachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());
         }
 
         /// <inheritdoc/>
@@ -46,13 +46,13 @@ namespace DotNetNuke.Services.ModuleCache
         /// <inheritdoc/>
         public override void PurgeCache(int portalId)
         {
-            DataCache.ClearCache(cachePrefix);
+            DataCache.ClearCache(CachePrefix);
         }
 
         /// <inheritdoc/>
         public override void Remove(int tabModuleId)
         {
-            DataCache.ClearCache(string.Concat(cachePrefix, "|", tabModuleId.ToString()));
+            DataCache.ClearCache(string.Concat(CachePrefix, "|", tabModuleId.ToString()));
         }
 
         /// <inheritdoc/>
@@ -71,12 +71,12 @@ namespace DotNetNuke.Services.ModuleCache
         private List<string> GetCacheKeys(int tabModuleId)
         {
             var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
-            while (CacheEnum.MoveNext())
+            IDictionaryEnumerator cacheEnum = CachingProvider.Instance().GetEnumerator();
+            while (cacheEnum.MoveNext())
             {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
+                if (cacheEnum.Key.ToString().StartsWith(string.Concat(CachePrefix, "|", tabModuleId.ToString(), "|")))
                 {
-                    keys.Add(CacheEnum.Key.ToString());
+                    keys.Add(cacheEnum.Key.ToString());
                 }
             }
 

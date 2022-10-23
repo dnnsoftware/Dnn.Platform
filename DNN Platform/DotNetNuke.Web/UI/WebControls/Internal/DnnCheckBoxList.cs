@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnCheckBoxList : CheckBoxList
     {
-        private string _initValue;
+        private string initValue;
 
         /// <inheritdoc/>
         public override string SelectedValue
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 if (this.RequiresDataBinding)
                 {
-                    this._initValue = value;
+                    this.initValue = value;
                 }
                 else
                 {
@@ -42,9 +42,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <inheritdoc/>
         public override void DataBind()
         {
-            if (!string.IsNullOrEmpty(this._initValue))
+            if (!string.IsNullOrEmpty(this.initValue))
             {
-                this.DataBind(this._initValue);
+                this.DataBind(this.initValue);
             }
             else
             {

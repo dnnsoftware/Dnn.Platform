@@ -11,11 +11,9 @@ namespace DotNetNuke.Services.Search
     /// Class:      SearchContentModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchContentModuleInfo class represents an extendension (by containment)
-    /// of ModuleInfo to add a parametere that determines whether a module is Searchable.
+    /// The SearchContentModuleInfo class represents an extension (by containment)
+    /// of ModuleInfo to add a parameter that determines whether a module is Searchable.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SearchContentModuleInfo
     {

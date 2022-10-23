@@ -123,7 +123,9 @@ namespace DotNetNuke.Services.Tokens
         private void DetermineModule(int moduleID)
         {
             if (moduleID != Null.NullInteger)
+            {
                 this.ModuleId = moduleID;
+            }
         }
 
         /// <summary>
@@ -148,14 +150,20 @@ namespace DotNetNuke.Services.Tokens
         private ModuleInfo GetModule(int moduleId)
         {
             if (moduleId == this.TokenContext.Module?.ModuleID)
+            {
                 return this.TokenContext.Module;
+            }
 
             if (moduleId <= 0)
+            {
                 return null;
+            }
 
             var tab = this.TokenContext.Tab ?? this.PortalSettings?.ActiveTab;
             if (tab != null && tab.TabID > 0)
+            {
                 return ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
+            }
 
             return ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
         }

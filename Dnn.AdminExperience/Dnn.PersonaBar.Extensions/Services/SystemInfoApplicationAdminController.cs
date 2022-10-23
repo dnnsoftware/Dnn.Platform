@@ -28,10 +28,12 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 return input;
             }
-            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+
+            return input.First().ToString().ToUpper() + string.Join(string.Empty, input.Skip(1));
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetApplicationInfo()
         {
             try

@@ -20,15 +20,15 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public class PermissionsDependency : DependencyBase
     {
-        private string Permission = Null.NullString;
-        private string Permissions;
+        private string permission = Null.NullString;
+        private string permissions;
 
         /// <inheritdoc/>
         public override string ErrorMessage
         {
             get
             {
-                return Util.INSTALL_Permissions + " - " + Localization.GetString(this.Permission, Localization.GlobalResourceFile);
+                return Util.INSTALL_Permissions + " - " + Localization.GetString(this.permission, Localization.GlobalResourceFile);
             }
         }
 
@@ -37,14 +37,14 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return SecurityPolicy.HasPermissions(this.Permissions, ref this.Permission);
+                return SecurityPolicy.HasPermissions(this.permissions, ref this.permission);
             }
         }
 
         /// <inheritdoc/>
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            this.Permissions = dependencyNav.Value;
+            this.permissions = dependencyNav.Value;
         }
     }
 }

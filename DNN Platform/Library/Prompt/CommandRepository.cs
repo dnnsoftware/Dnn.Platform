@@ -1,21 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Abstractions.Prompt;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Services.Localization;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Web.Caching;
-
 namespace DotNetNuke.Prompt
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
+
+    using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Localization;
+
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
         /// <inheritdoc/>
@@ -39,6 +39,7 @@ namespace DotNetNuke.Prompt
             {
                 return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
             }
+
             return null;
         }
 
@@ -78,6 +79,7 @@ namespace DotNetNuke.Prompt
                     TypeFullName = cmd.AssemblyQualifiedName,
                 });
             }
+
             return commands;
         }
 
@@ -85,7 +87,8 @@ namespace DotNetNuke.Prompt
         public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
-            return DataCache.GetCachedData<ICommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
+            return DataCache.GetCachedData<ICommandHelp>(
+                new CacheItemArgs(cacheKey, CacheItemPriority.Low),
                 c => this.GetCommandHelpInternal(consoleCommand));
         }
 
@@ -113,12 +116,14 @@ namespace DotNetNuke.Prompt
                     }).ToList();
                     commandHelp.Options = options;
                 }
+
                 commandHelp.ResultHtml = consoleCommand.ResultHtml;
             }
             else
             {
                 commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
             }
+
             return commandHelp;
         }
 

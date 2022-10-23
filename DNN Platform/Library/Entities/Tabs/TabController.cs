@@ -1741,7 +1741,7 @@ namespace DotNetNuke.Entities.Tabs
             var currentTab = this.GetTab(tabId, portalId, false);
             var workingTab = currentTab;
             var locales = LocaleController.Instance.GetLocales(portalId);
-            var LocaleCount = locales.Count;
+            var localeCount = locales.Count;
             if (currentTab.DefaultLanguageTab != null)
             {
                 workingTab = currentTab.DefaultLanguageTab;
@@ -1751,7 +1751,7 @@ namespace DotNetNuke.Entities.Tabs
                                  locales.Values.Where(locale => !LocaleController.Instance.IsDefaultLanguage(locale.Code))
                                         .Count(locale => workingTab.LocalizedTabs.Values.Any(localizedTab => localizedTab.CultureCode == locale.Code));
 
-            return (LocaleCount - localizedCount) != 0;
+            return (localeCount - localizedCount) != 0;
         }
 
         /// <summary>

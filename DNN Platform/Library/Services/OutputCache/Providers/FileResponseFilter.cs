@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     public class FileResponseFilter : OutputCacheResponseFilter
     {
         // Private _content As StringBuilder
-        private DateTime _cacheExpiration;
+        private DateTime cacheExpiration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileResponseFilter"/> class.
@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     throw;
                 }
 
-                this._cacheExpiration = DateTime.UtcNow.Add(cacheDuration);
+                this.cacheExpiration = DateTime.UtcNow.Add(cacheDuration);
                 this.HasErrored = false;
             }
         }
@@ -74,12 +74,12 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             get
             {
-                return this._cacheExpiration;
+                return this.cacheExpiration;
             }
 
             set
             {
-                this._cacheExpiration = value;
+                this.cacheExpiration = value;
             }
         }
 
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 File.Move(this.CachedOutputTempFileName, this.CachedOutputFileName);
 
                 StreamWriter oWrite = File.CreateText(this.CachedOutputAttribFileName);
-                oWrite.WriteLine(this._cacheExpiration.ToString(CultureInfo.InvariantCulture));
+                oWrite.WriteLine(this.cacheExpiration.ToString(CultureInfo.InvariantCulture));
                 oWrite.Close();
             }
 

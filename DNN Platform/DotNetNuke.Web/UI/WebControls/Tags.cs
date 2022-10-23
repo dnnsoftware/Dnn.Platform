@@ -17,10 +17,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class Tags : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-        private string _RepeatDirection = "Horizontal";
-        private string _Separator = ",&nbsp;";
+        private string repeatDirection = "Horizontal";
+        private string separator = ",&nbsp;";
 
-        private string _Tags;
+        private string tags;
 
         public event EventHandler<EventArgs> TagsUpdated;
 
@@ -36,13 +36,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                bool _IsEditMode = false;
+                bool isEditMode = false;
                 if (this.ViewState["IsEditMode"] != null)
                 {
-                    _IsEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
+                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
                 }
 
-                return _IsEditMode;
+                return isEditMode;
             }
 
             set
@@ -57,12 +57,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._RepeatDirection;
+                return this.repeatDirection;
             }
 
             set
             {
-                this._RepeatDirection = value;
+                this.repeatDirection = value;
             }
         }
 
@@ -72,12 +72,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this._Separator;
+                return this.separator;
             }
 
             set
             {
-                this._Separator = value;
+                this.separator = value;
             }
         }
 
@@ -208,7 +208,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            this._Tags = postCollection[postDataKey];
+            this.tags = postCollection[postDataKey];
 
             return true;
         }
@@ -274,11 +274,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string LocalizeString(string key)
         {
-            string LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            string localResourceFile = Utilities.GetLocalResourceFile(this);
             string localizedString = null;
-            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(LocalResourceFile))
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(localResourceFile))
             {
-                localizedString = Localization.GetString(key, LocalResourceFile);
+                localizedString = Localization.GetString(key, localResourceFile);
             }
             else
             {
@@ -323,7 +323,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void SaveTags()
         {
-            string tags = this._Tags;
+            string tags = this.tags;
 
             if (!string.IsNullOrEmpty(tags))
             {

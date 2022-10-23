@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.ControlPanels
     /// -----------------------------------------------------------------------------
     public class ControlPanelBase : UserControl
     {
-        private string _localResourceFile;
+        private string localResourceFile;
 
         protected enum ViewPermissionType
         {
@@ -56,13 +56,13 @@ namespace DotNetNuke.UI.ControlPanels
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this.localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
                 }
                 else
                 {
-                    fileRoot = this._localResourceFile;
+                    fileRoot = this.localResourceFile;
                 }
 
                 return fileRoot;
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.ControlPanels
 
             set
             {
-                this._localResourceFile = value;
+                this.localResourceFile = value;
             }
         }
 
@@ -123,7 +123,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         internal static bool IsModuleAdminInternal()
         {
-            bool _IsModuleAdmin = Null.NullBoolean;
+            bool isModuleAdmin = Null.NullBoolean;
             foreach (ModuleInfo objModule in TabController.CurrentPage.Modules)
             {
                 if (!objModule.IsDeleted)
@@ -131,25 +131,25 @@ namespace DotNetNuke.UI.ControlPanels
                     bool blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, objModule);
                     if (blnHasModuleEditPermissions)
                     {
-                        _IsModuleAdmin = true;
+                        isModuleAdmin = true;
                         break;
                     }
                 }
             }
 
-            return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
+            return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
 
         internal static bool IsPageAdminInternal()
         {
-            bool _IsPageAdmin = Null.NullBoolean;
+            bool isPageAdmin = Null.NullBoolean;
             if (TabPermissionController.CanAddContentToPage() || TabPermissionController.CanAddPage() || TabPermissionController.CanAdminPage() || TabPermissionController.CanCopyPage() ||
                 TabPermissionController.CanDeletePage() || TabPermissionController.CanExportPage() || TabPermissionController.CanImportPage() || TabPermissionController.CanManagePage())
             {
-                _IsPageAdmin = true;
+                isPageAdmin = true;
             }
 
-            return _IsPageAdmin;
+            return isPageAdmin;
         }
 
         protected bool IsModuleAdmin()
@@ -176,11 +176,11 @@ namespace DotNetNuke.UI.ControlPanels
         {
             ModuleInfo objModule;
 
-            int UserId = -1;
+            int userId = -1;
             if (this.Request.IsAuthenticated)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-                UserId = objUserInfo.UserID;
+                userId = objUserInfo.UserID;
             }
 
             objModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
                 ModuleController.Instance.AddModule(objClone);
-                EventLogController.Instance.AddLog(objClone, this.PortalSettings, UserId, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(objClone, this.PortalSettings, userId, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 
@@ -225,11 +225,11 @@ namespace DotNetNuke.UI.ControlPanels
                 Exceptions.LogException(ex);
             }
 
-            int UserId = -1;
+            int userId = -1;
             if (this.Request.IsAuthenticated)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-                UserId = objUserInfo.UserID;
+                userId = objUserInfo.UserID;
             }
 
             foreach (ModuleDefinitionInfo objModuleDefinition in
@@ -360,17 +360,17 @@ namespace DotNetNuke.UI.ControlPanels
         /// <summary>
         /// Builds a URL.
         /// </summary>
-        /// <param name="FriendlyName">The friendly name of the Module.</param>
-        /// <param name="PortalID">The ID of the portal.</param>
+        /// <param name="friendlyName">The friendly name of the Module.</param>
+        /// <param name="portalID">The ID of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        protected string BuildURL(int PortalID, string FriendlyName)
+        protected string BuildURL(int portalID, string friendlyName)
         {
             string strURL = "~/" + Globals.glbDefaultPage;
-            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(PortalID, FriendlyName);
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
             if (objModule != null)
             {
-                if (PortalID == Null.NullInteger)
+                if (portalID == Null.NullInteger)
                 {
                     strURL = TestableGlobals.Instance.NavigateURL(objModule.TabID, true);
                 }
@@ -383,16 +383,16 @@ namespace DotNetNuke.UI.ControlPanels
             return strURL;
         }
 
-        protected bool GetModulePermission(int PortalID, string FriendlyName)
+        protected bool GetModulePermission(int portalID, string friendlyName)
         {
-            bool AllowAccess = Null.NullBoolean;
-            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(PortalID, FriendlyName);
+            bool allowAccess = Null.NullBoolean;
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
             if (objModule != null)
             {
-                AllowAccess = ModulePermissionController.CanViewModule(objModule);
+                allowAccess = ModulePermissionController.CanViewModule(objModule);
             }
 
-            return AllowAccess;
+            return allowAccess;
         }
 
         /// -----------------------------------------------------------------------------

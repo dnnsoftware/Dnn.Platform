@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     using DotNetNuke.Services.Localization;
 
     [ConsoleCommand("reload", Constants.GeneralCategory, "Prompt_Reload_Description")]
+
     public class Reload : IConsoleCommand
     {
         public string LocalResourceFile => Constants.LocalResourcesFile;

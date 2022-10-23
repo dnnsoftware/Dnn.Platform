@@ -10,6 +10,9 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     /// </summary>
     public class GroupedDetailView
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GroupedDetailView"/> class.
+        /// </summary>
         public GroupedDetailView()
         {
             this.Results = new List<DetailedView>();

@@ -16,9 +16,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class DesktopModulePermissionsGrid : PermissionsGrid
     {
-        private DesktopModulePermissionCollection _DesktopModulePermissions;
-        private List<PermissionInfoBase> _PermissionsList;
-        private int _PortalDesktopModuleID = -1;
+        private DesktopModulePermissionCollection desktopModulePermissions;
+        private List<PermissionInfoBase> permissionsList;
+        private int portalDesktopModuleID = -1;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -33,7 +33,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this.UpdatePermissions();
 
                 // Return the DesktopModulePermissions
-                return this._DesktopModulePermissions;
+                return this.desktopModulePermissions;
             }
         }
 
@@ -46,14 +46,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this._PortalDesktopModuleID;
+                return this.portalDesktopModuleID;
             }
 
             set
             {
-                int oldValue = this._PortalDesktopModuleID;
-                this._PortalDesktopModuleID = value;
-                if (this._DesktopModulePermissions == null || oldValue != value)
+                int oldValue = this.portalDesktopModuleID;
+                this.portalDesktopModuleID = value;
+                if (this.desktopModulePermissions == null || oldValue != value)
                 {
                     this.GetDesktopModulePermissions();
                 }
@@ -65,19 +65,19 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                if (this._PermissionsList == null && this._DesktopModulePermissions != null)
+                if (this.permissionsList == null && this.desktopModulePermissions != null)
                 {
-                    this._PermissionsList = this._DesktopModulePermissions.ToList();
+                    this.permissionsList = this.desktopModulePermissions.ToList();
                 }
 
-                return this._PermissionsList;
+                return this.permissionsList;
             }
         }
 
         public void ResetPermissions()
         {
             this.GetDesktopModulePermissions();
-            this._PermissionsList = null;
+            this.permissionsList = null;
         }
 
         /// <inheritdoc/>
@@ -95,10 +95,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             objPermission.AllowAccess = allowAccess;
             objPermission.UserID = userId;
             objPermission.DisplayName = displayName;
-            this._DesktopModulePermissions.Add(objPermission, true);
+            this.desktopModulePermissions.Add(objPermission, true);
 
             // Clear Permission List
-            this._PermissionsList = null;
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -112,7 +112,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             // Search DesktopModulePermission Collection for the user
             bool isMatch = false;
-            foreach (DesktopModulePermissionInfo objDesktopModulePermission in this._DesktopModulePermissions)
+            foreach (DesktopModulePermissionInfo objDesktopModulePermission in this.desktopModulePermissions)
             {
                 if (objDesktopModulePermission.UserID == user.UserID)
                 {
@@ -144,7 +144,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             // Search TabPermission Collection for the user
-            if (this._DesktopModulePermissions.Cast<DesktopModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
+            if (this.desktopModulePermissions.Cast<DesktopModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;
             }
@@ -198,7 +198,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load DesktopModulePermissions
                 if (myState[2] != null)
                 {
-                    this._DesktopModulePermissions = new DesktopModulePermissionCollection();
+                    this.desktopModulePermissions = new DesktopModulePermissionCollection();
                     string state = Convert.ToString(myState[2]);
                     if (!string.IsNullOrEmpty(state))
                     {
@@ -206,8 +206,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
-                            string[] Settings = key.Split('|');
-                            this._DesktopModulePermissions.Add(this.ParseKeys(Settings));
+                            string[] settings = key.Split('|');
+                            this.desktopModulePermissions.Add(this.ParseKeys(settings));
                         }
                     }
                 }
@@ -217,10 +217,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <inheritdoc/>
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
-            this._DesktopModulePermissions.Remove(permissionID, roleID, userID);
+            this.desktopModulePermissions.Remove(permissionID, roleID, userID);
 
             // Clear Permission List
-            this._PermissionsList = null;
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -241,10 +241,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Persist the DesktopModulePermisisons
             var sb = new StringBuilder();
-            if (this._DesktopModulePermissions != null)
+            if (this.desktopModulePermissions != null)
             {
                 bool addDelimiter = false;
-                foreach (DesktopModulePermissionInfo objDesktopModulePermission in this._DesktopModulePermissions)
+                foreach (DesktopModulePermissionInfo objDesktopModulePermission in this.desktopModulePermissions)
                 {
                     if (addDelimiter)
                     {
@@ -288,28 +288,28 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         private void GetDesktopModulePermissions()
         {
-            this._DesktopModulePermissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
+            this.desktopModulePermissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Parse the Permission Keys used to persist the Permissions in the ViewState.
         /// </summary>
-        /// <param name="Settings">A string array of settings.</param>
+        /// <param name="settings">A string array of settings.</param>
         /// -----------------------------------------------------------------------------
-        private DesktopModulePermissionInfo ParseKeys(string[] Settings)
+        private DesktopModulePermissionInfo ParseKeys(string[] settings)
         {
             var objDesktopModulePermission = new DesktopModulePermissionInfo();
 
             // Call base class to load base properties
-            this.ParsePermissionKeys(objDesktopModulePermission, Settings);
-            if (string.IsNullOrEmpty(Settings[2]))
+            this.ParsePermissionKeys(objDesktopModulePermission, settings);
+            if (string.IsNullOrEmpty(settings[2]))
             {
                 objDesktopModulePermission.DesktopModulePermissionID = -1;
             }
             else
             {
-                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(Settings[2]);
+                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(settings[2]);
             }
 
             objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;
