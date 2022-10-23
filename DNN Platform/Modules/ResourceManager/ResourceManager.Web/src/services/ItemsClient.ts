@@ -19,6 +19,29 @@ export class ItemsClient{
         this.requestUrl = `${this.sf.getServiceRoot("ResourceManager")}Items/`
     }
 
+    public getSettings() {
+        return new Promise<GetSettingsResponse>((resolve, reject) => {
+            const url = `${this.requestUrl}GetSettings`;
+            const headers = this.sf.getModuleHeaders();
+            headers.append("groupId", this.getGroupId());
+            fetch(url, {
+                headers,
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json()
+                    .then(data => {
+                        resolve(data);
+                    });
+                }
+                else{
+                    response.json().then(error => reject(error));
+                }
+            })
+            .catch(error => reject(error));
+        });
+    }
+
     /**
      * Gets a specific folder contents.
      * @param folderId Gets the content of a folder.
@@ -520,6 +543,29 @@ export class ItemsClient{
 
         return result;
     }
+}
+
+/** Represents the module settings. */
+export interface GetSettingsResponse{
+        /** The name of the root folder (could be an actual folder name or "Site Assets" or "Global Assets") */
+        HomeFolderName: string;
+        
+        /** The ID of the home folder configures in the settings */
+        HomeFolderId: number;
+    
+        /** The current module mode configured in the settings */
+        Mode: ModuleMode;
+}
+
+export enum ModuleMode{
+    /** Normal mode is when the module is used to manage site or host files. */
+    Normal = 0,
+
+    /** User mode is for when a module is used for a specific user to manage his files. */
+    User = 1,
+
+    /** Group mode is for when the module is used by a social group. */
+    Group = 2,
 }
 
 export interface GetFolderContentResponse{

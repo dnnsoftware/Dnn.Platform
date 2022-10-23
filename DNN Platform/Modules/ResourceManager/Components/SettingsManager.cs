@@ -3,14 +3,18 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.Modules.ResourceManager.Components
 {
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     using Dnn.Modules.ResourceManager.Exceptions;
-
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
 
     using static Dnn.Modules.ResourceManager.Components.Constants;
 
@@ -27,7 +31,9 @@ namespace Dnn.Modules.ResourceManager.Components
         /// </summary>
         /// <param name="moduleId">The id of the module.</param>
         /// <param name="groupId">The id of the group.</param>
-        public SettingsManager(int moduleId, int groupId)
+        public SettingsManager(
+            int moduleId,
+            int groupId)
         {
             this.groupId = groupId;
             var moduleController = new ModuleController();
@@ -43,6 +49,11 @@ namespace Dnn.Modules.ResourceManager.Components
         public int HomeFolderId { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the home folder.
+        /// </summary>
+        public string HomeFolderName { get; set; }
+
+        /// <summary>
         /// Gets or sets the module mode, <see cref="Constants.ModuleModes"/>.
         /// </summary>
         public int Mode { get; set; }
@@ -52,6 +63,51 @@ namespace Dnn.Modules.ResourceManager.Components
             this.Mode = this.GetSettingIntValueOrDefault(ModeSettingName, DefaultMode);
             this.ValidateMode(this.Mode);
             this.HomeFolderId = this.GetHomeFolderId(this.Mode);
+            this.HomeFolderName = this.GetHomeFolderName(this.HomeFolderId);
+        }
+
+        private string GetHomeFolderName(int homeFolderId)
+        {
+            var folder = FolderManager.Instance.GetFolder(homeFolderId);
+
+            if (folder.PortalID == Null.NullInteger && folder.ParentID == Null.NullInteger)
+            {
+                return Localization.GetString(
+                    "GlobalAssets",
+                    Constants.ViewResourceFileName);
+            }
+
+            if (folder.ParentID == Null.NullInteger)
+            {
+                return Localization.GetString(
+                    "SiteAssets",
+                    Constants.ViewResourceFileName);
+            }
+
+            if (this.groupId > 0)
+            {
+                var socialRole = RoleController.Instance.GetRole(folder.PortalID, r => r.RoleID == this.groupId);
+                var template = Localization.GetString(
+                    "GroupAssets",
+                    Constants.ViewResourceFileName);
+                return string.Format(template, socialRole.RoleName);
+            }
+
+            if (this.Mode == (int)ModuleModes.User)
+            {
+                var user = UserController.Instance.GetCurrentUserInfo();
+                if (user.UserID < 0)
+                {
+                    throw new ModeValidationException("UserModeError");
+                }
+
+                var template = Localization.GetString(
+                    "UserAssets",
+                    Constants.ViewResourceFileName);
+                return string.Format(template, user.DisplayName);
+            }
+
+            return folder.FolderName;
         }
 
         private int GetSettingIntValueOrDefault(string settingName, int defaultValue = -1)

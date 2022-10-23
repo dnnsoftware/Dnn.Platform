@@ -101,6 +101,19 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         /// <summary>
+        /// Gets the module settings.
+        /// </summary>
+        /// <returns><see cref="SettingsManager"/>.</returns>
+        [HttpGet]
+        public IHttpActionResult GetSettings()
+        {
+            var groupId = this.FindGroupId(this.Request);
+            var moduleId = this.Request.FindModuleId();
+            var settings = new SettingsManager(moduleId, groupId);
+            return this.Ok(settings);
+        }
+
+        /// <summary>
         /// Gets an item representation for a provided folder ID.
         /// </summary>
         /// <param name="folderId">The ID of the folder to get.</param>
