@@ -1,7 +1,7 @@
 import { createStore } from "@stencil/store";
 import { SortFieldInfo } from "../enums/SortField";
 import { GetFoldersResponse } from "../services/InternalServicesClient";
-import { GetFolderContentResponse, Item } from "../services/ItemsClient";
+import { GetFolderContentResponse, GetSettingsResponse, Item } from "../services/ItemsClient";
 import { LocalizedStrings } from "../services/LocalizationClient";
 
 const { state } = createStore<{
@@ -15,6 +15,7 @@ const { state } = createStore<{
     lastSearchRequestedPage: number;
     sortField?: SortFieldInfo;
     selectedItems: Item[];
+    settings?: GetSettingsResponse;
 }>({
     moduleId: -1,
     layout: "list",

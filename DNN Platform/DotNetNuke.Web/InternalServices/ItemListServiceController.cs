@@ -197,12 +197,12 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        public HttpResponseMessage GetFolders(int sortOrder = 0, string permission = null, int portalId = -1)
+        public HttpResponseMessage GetFolders(int sortOrder = 0, string permission = null, int portalId = -1, int parentFolderId = -1)
         {
             var response = new
             {
                 Success = true,
-                Tree = this.GetFoldersInternal(portalId, sortOrder, permission),
+                Tree = this.GetFoldersInternal(portalId, sortOrder, permission, parentFolderId),
                 IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -1004,10 +1004,10 @@ namespace DotNetNuke.Web.InternalServices
             return filterTabs;
         }
 
-        private NTree<ItemDto> GetFoldersInternal(int portalId, int sortOrder, string permissions)
+        private NTree<ItemDto> GetFoldersInternal(int portalId, int sortOrder, string permissions, int parentFolderId = -1)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var children = ApplySort(this.GetFolderDescendantsInternal(portalId, -1, sortOrder, string.Empty, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            var children = ApplySort(this.GetFolderDescendantsInternal(portalId, parentFolderId, sortOrder, string.Empty, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             tree.Children = children;
             foreach (var child in tree.Children)
             {

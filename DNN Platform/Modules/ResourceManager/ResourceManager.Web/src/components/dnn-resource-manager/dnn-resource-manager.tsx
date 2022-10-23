@@ -2,6 +2,7 @@ import { Component, Element, Host, h, State, Watch, Prop } from '@stencil/core';
 import state from "../../store/store";
 import { LocalizationClient } from "../../services/LocalizationClient";
 import { sortField } from '../../enums/SortField';
+import { ItemsClient } from '../../services/ItemsClient';
 
 const localStorageSplitWidthKey = "dnn-resource-manager-last-folders-width";
 @Component({
@@ -14,9 +15,15 @@ export class DnnResourceManager {
   /** The ID of the module. */
   @Prop() moduleId!: number;
   
+  private splitView: HTMLDnnVerticalSplitviewElement;
+  private localizationClient: LocalizationClient;
+  private folderMappingsModal: HTMLDnnModalElement;
+  private itemsClient: ItemsClient;
+  
   constructor() {
     state.moduleId = this.moduleId;
     this.localizationClient = new LocalizationClient(this.moduleId);
+    this.itemsClient = new ItemsClient(this.moduleId);
   }
   
   @Element() el: HTMLDnnResourceManagerElement;
@@ -33,26 +40,28 @@ export class DnnResourceManager {
     this.splitView.setSplitWidthPercentage(0);
   }
   
-  
   componentWillLoad() {
-    return new Promise<void>((resolve, reject) => {
-      this.localizationClient.getResources()
-      .then(resources =>
-        {
-          state.localization = resources;
-          state.sortField = sortField.itemName; 
-        resolve();
-      })
-      .catch(error => {
-        console.error(error);
-        reject();
-      });
+    const getResourcesPromise = this.localizationClient.getResources()
+    .then(resources =>
+    {
+      state.localization = resources;
+      state.sortField = sortField.itemName; 
     })
+    .catch(error => {
+      console.error(error);
+    });
+
+    const getSettingsPromise = this.itemsClient.getSettings()
+    .then(settings => {
+      state.settings = settings;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+    return Promise.all([getResourcesPromise, getSettingsPromise]);
   }
-  
-  private splitView: HTMLDnnVerticalSplitviewElement;
-  private localizationClient: LocalizationClient;
-  private folderMappingsModal: HTMLDnnModalElement;
+
 
   private handleSplitWidthChanged(event: CustomEvent<number>){
     if (event.detail != 0){

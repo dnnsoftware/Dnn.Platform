@@ -84,7 +84,7 @@ export class DnnRmActionsBar {
 
   private getFolders() {
     return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders()
+      this.internalServicesClient.getFolders(state.settings.HomeFolderId)
       .then(data => {
         state.rootFolders = data;
         resolve(data);
