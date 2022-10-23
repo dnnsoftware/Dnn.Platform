@@ -38,7 +38,6 @@ export class DnnRmFolderListItem {
       this.dnnRmFolderListItemClicked.emit(this.folder);
       this.handleUserExpanded();
       this.expanded = true;
-      console.log(e);
     }
   }
 
