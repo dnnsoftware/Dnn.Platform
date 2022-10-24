@@ -32,6 +32,15 @@ export class DnnRmFolderListItem {
     }
   }
 
+  @Listen("dnnRmFolderDoubleClicked", {target: "document"})
+  handleFolderDoubleClicked(e: CustomEvent<number>) {
+    if (e.detail == Number.parseInt(this.folder.data.key)) {
+      this.dnnRmFolderListItemClicked.emit(this.folder);
+      this.handleUserExpanded();
+      this.expanded = true;
+    }
+  }
+
   @State() folderIconUrl: string;
 
   @Element() el!: HTMLDnnRmFolderListItemElement;
