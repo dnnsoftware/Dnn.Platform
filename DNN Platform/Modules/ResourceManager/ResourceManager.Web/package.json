@@ -30,7 +30,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.15.1",
+    "@dnncommunity/dnn-elements": "^0.15.2",
     "@stencil/sass": "^2.0.0",
     "@stencil/store": "^2.0.1"
   }
