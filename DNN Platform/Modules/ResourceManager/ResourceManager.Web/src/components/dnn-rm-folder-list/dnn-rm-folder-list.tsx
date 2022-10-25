@@ -92,7 +92,6 @@ export class DnnRmFolderList {
             <dnn-rm-folder-list-item
               folder={item}
               parentFolderId={Number.parseInt(state.rootFolders.Tree.data.key)}
-              expanded
               onDnnRmFolderListItemClicked={e => this.handleFolderPicked(e)}
               selectedFolder={this.selectedFolder}
             >
