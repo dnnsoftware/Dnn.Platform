@@ -255,7 +255,7 @@ class BasicSettingsPanelBody extends Component {
                         folderName={state.basicSettings.LogoFile ? state.basicSettings.LogoFile.FolderName : null}
                         validationCode={state.basicSettings.ValidationCode}
                         onSelectFile={this.onSettingChange.bind(this, "LogoFile") }
-                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg", "image/svg+xml"]}
+                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg", "image/svg+xml", "image/webp"]}
                         browseButtonText={resx.get("BrowseButton")}
                         uploadButtonText={resx.get("UploadButton")}
                         linkButtonText={resx.get("LinkButton")}
