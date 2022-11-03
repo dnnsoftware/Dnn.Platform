@@ -1,8 +1,8 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace PolyDeploy.Encryption
+﻿namespace PolyDeploy.Encryption
 {
+    using System.Security.Cryptography;
+    using System.Text;
+
     /// <summary>
     /// Provides useful utility methods which may not easily be grouped
     /// elsewhere.

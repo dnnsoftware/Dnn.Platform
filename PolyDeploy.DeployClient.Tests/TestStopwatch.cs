@@ -1,9 +1,9 @@
+namespace PolyDeploy.DeployClient.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Shouldly;
 
-namespace PolyDeploy.DeployClient.Tests;
 public class TestStopwatch : IStopwatch
 {
     private readonly IReadOnlyList<TimeSpan> timeSpans;

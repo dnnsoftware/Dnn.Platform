@@ -1,5 +1,4 @@
 using Spectre.Console;
-
 namespace PolyDeploy.DeployClient
 {
     using System;
@@ -33,21 +32,10 @@ namespace PolyDeploy.DeployClient
         [DefaultValue(60)]
         public int InstallationStatusTimeout { get; set; }
 
+        [CommandOption("-d|--packages-directory")]
+        [Description("Defines the directory that contains the to install packages.")]
+        public string PackagesDirectoryPath { get; set; } = string.Empty;
+
         public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
-
-        public override ValidationResult Validate()
-        {
-            if (!Uri.TryCreate(this.TargetUri, UriKind.Absolute, out _))
-            {
-                return ValidationResult.Error("--target-uri must be a valid URI");
-            }
-
-            if (this.InstallationStatusTimeout < 0)
-            {
-                return ValidationResult.Error("--installation-status-timeout must be non-negative");
-            }
-
-            return ValidationResult.Success();
-        }
     }
 }

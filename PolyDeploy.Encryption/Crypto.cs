@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace PolyDeploy.Encryption
+﻿namespace PolyDeploy.Encryption
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+
     // This implementation is almost entirely based on the answer found on Stack Overflow here:
     // https://stackoverflow.com/questions/10168240/encrypting-decrypting-a-string-in-c-sharp
     //

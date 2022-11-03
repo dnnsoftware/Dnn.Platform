@@ -1,7 +1,6 @@
-using System.Net.Http;
-
 namespace PolyDeploy.DeployClient.Tests
 {
+    using System.Net.Http;
     using System;
     using System.Collections.Generic;
     using System.IO;

@@ -1,7 +1,6 @@
-using System;
-
 namespace PolyDeploy.DeployClient
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
