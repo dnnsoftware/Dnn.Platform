@@ -5,7 +5,7 @@ namespace PolyDeploy.DeployClient
 
     public interface IPackageFileSource
     {
-        IReadOnlyCollection<string> GetPackageFiles();
+        IReadOnlyCollection<string> GetPackageFiles(string path);
 
         Stream GetFileStream(string fileName);
     }

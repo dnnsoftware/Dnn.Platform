@@ -27,7 +27,7 @@ namespace PolyDeploy.DeployClient
             {
                 this.renderer.Welcome();
 
-                var packageFiles = this.packageFileSource.GetPackageFiles();
+                var packageFiles = this.packageFileSource.GetPackageFiles(options.PackagesDirectoryPath);
                 this.renderer.RenderListOfFiles(packageFiles);
 
                 var sessionId = await this.installer.StartSessionAsync(options);

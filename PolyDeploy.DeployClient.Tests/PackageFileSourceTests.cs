@@ -12,19 +12,21 @@ namespace PolyDeploy.DeployClient.Tests
 
     public class PackageFileSourceTests
     {
-        [Fact]
-        public void GetPackageFiles_GetsTheZipFilesInTheCurrentDirectory()
+        [InlineData("")]
+        [InlineData("path/to/packages")]
+        [Theory]
+        public void GetPackageFiles_GetsTheZipFilesInTheGivenDirectory(string path)
         {
             var fileSystem = A.Fake<IFileSystem>();
 
-            A.CallTo(() => fileSystem.Directory.GetFiles(A<string>._, "*.zip")).Returns(new[] { "package1.zip", "package2.zip" });
+            A.CallTo(() => fileSystem.Directory.GetFiles(path, "*.zip")).Returns(new[] { "package1.zip", "package2.zip" });
 
             var fileSource = new PackageFileSource(fileSystem);
-            var files = fileSource.GetPackageFiles();
+            var files = fileSource.GetPackageFiles(path);
 
             files.ShouldBe(new[] { "package1.zip", "package2.zip" }, ignoreOrder: true);
         }
-
+        
         [Fact]
         public void GetFileStream_ReturnsStream()
         {

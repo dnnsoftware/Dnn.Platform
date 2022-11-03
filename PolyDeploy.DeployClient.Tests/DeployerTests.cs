@@ -34,7 +34,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var renderer = A.Fake<IRenderer>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(Array.Empty<string>());
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(Array.Empty<string>());
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -52,7 +52,7 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => renderer.RenderListOfFiles(A<IEnumerable<string>>._))
              .Invokes((IEnumerable<string> files) => actualFiles.AddRange(files));
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Another Package.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -79,7 +79,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Another Package.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
             var package1Stream = new MemoryStream(Encoding.UTF8.GetBytes("This is a zip file"));
             A.CallTo(() => packageFileSource.GetFileStream("Package 1.zip")).Returns(package1Stream);
             var anotherPackageStream = new MemoryStream(Encoding.UTF8.GetBytes("This is another zip file"));
@@ -118,7 +118,7 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => renderer.RenderFileUploadsAsync(A<IEnumerable<(string, Task)>>._))
              .Invokes((IEnumerable<(string, Task)> theUploads) => uploads = theUploads);
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Install.zip", });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Install.zip", });
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.GetSessionAsync(options, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
@@ -136,7 +136,7 @@ namespace PolyDeploy.DeployClient.Tests
             var sessionId = Guid.NewGuid().ToString();
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", });
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
@@ -155,7 +155,7 @@ namespace PolyDeploy.DeployClient.Tests
             var sessionId = Guid.NewGuid().ToString();
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", });
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
@@ -173,7 +173,7 @@ namespace PolyDeploy.DeployClient.Tests
             var sessionId = Guid.NewGuid().ToString();
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options))
@@ -200,7 +200,7 @@ namespace PolyDeploy.DeployClient.Tests
             var sessionId = Guid.NewGuid().ToString();
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options))
@@ -230,7 +230,7 @@ namespace PolyDeploy.DeployClient.Tests
             var sessionId = Guid.NewGuid().ToString();
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options))
@@ -254,7 +254,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
             var installer = A.Fake<IInstaller>();
             var innerException = A.Dummy<HttpRequestException>();
@@ -275,7 +275,7 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var options = A.Dummy<DeployInput>();
             var packageFileSource = A.Fake<IPackageFileSource>();
-            A.CallTo(() => packageFileSource.GetPackageFiles()).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options))
@@ -288,6 +288,21 @@ namespace PolyDeploy.DeployClient.Tests
             exitCode.ShouldBe(ExitCode.UnexpectedError);
             fakeRenderer.ErrorMessage.ShouldBe("An unexpected error occurred.");
             fakeRenderer.ErrorException.ShouldBeOfType<HttpRequestException>();
+        }
+        
+        [Fact]
+        public async Task StartAsync_PackagesDirectoryPath_UsedToGetPackageFiles()
+        {
+            var options = TestHelpers.CreateDeployInput(packagesDirectoryPath: "path/to/packages");
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
+
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
+            await deployer.StartAsync(options);
+            
+            A.CallTo(() => packageFileSource.GetPackageFiles("path/to/packages")).MustHaveHappened();
         }
 
         private static void SimulateResponses(IInstaller fakeInstaller, DeployInput options, String sessionId, params SessionResponse?[] responses)

@@ -13,9 +13,9 @@ namespace PolyDeploy.DeployClient
             this.fileSystem = fileSystem;
         }
 
-        public IReadOnlyCollection<string> GetPackageFiles()
+        public IReadOnlyCollection<string> GetPackageFiles(string path)
         {
-            return this.fileSystem.Directory.GetFiles(".", "*.zip");
+            return this.fileSystem.Directory.GetFiles(path, "*.zip");
         }
 
         public Stream GetFileStream(string fileName)
