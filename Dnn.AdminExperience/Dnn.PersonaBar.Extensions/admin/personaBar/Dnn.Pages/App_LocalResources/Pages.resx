@@ -828,6 +828,9 @@
   <data name="addTagsPlaceholder.Text" xml:space="preserve">
     <value>Add Tags</value>
   </data>
+  <data name="searchTagsPlaceholder.Text" xml:space="preserve">
+    <value>Begin typing to search tags</value>
+  </data>
   <data name="On.Text" xml:space="preserve">
     <value>On</value>
   </data>
