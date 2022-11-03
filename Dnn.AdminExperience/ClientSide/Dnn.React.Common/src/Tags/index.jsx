@@ -186,7 +186,7 @@ Tags.propTypes = {
 
 Tags.defaultProps = {
     addTagsPlaceholder: "{Localization.get("addTagsPlaceholder")}",
-    searchTagsPlaceholder: "Begin typing to search tags",
+    searchTagsPlaceholder: "{Localization.get("searchTagsPlaceholder")}",
     enabled: true,
     autoSuggest: false,
     suggestions: []
