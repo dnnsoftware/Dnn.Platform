@@ -1,7 +1,8 @@
 namespace PolyDeploy.DeployClient.Tests
 {
+    using Spectre.Console;
+    using Spectre.Console.Cli;
     using System.IO.Abstractions;
-    using Spectre.Cli;
 
     using FakeItEasy;
 
