@@ -31,10 +31,6 @@ namespace DotNetNuke.Services.UserRequest
             {
                 userIPAddress = request.Headers[userRequestIPHeader];
                 userIPAddress = userIPAddress.Split(',')[0];
-                if (userIPAddress.Contains(':'))
-                {
-                    userIPAddress = userIPAddress.Split(':')[0];
-                }
             }
 
             if (string.IsNullOrEmpty(userIPAddress))
@@ -72,6 +68,11 @@ namespace DotNetNuke.Services.UserRequest
 
         private bool ValidateIP(string ipString, IPAddressFamily ipFamily)
         {
+            if (ipFamily == IPAddressFamily.IPv4 && ipString.Contains(':'))
+            {
+                ipString = ipString.Split(':')[0];
+            }
+
             IPAddress address;
             if (IPAddress.TryParse(ipString, out address))
             {
