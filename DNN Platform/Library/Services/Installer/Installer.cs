@@ -491,6 +491,11 @@ namespace DotNetNuke.Services.Installer
             // Read the root node to determine what version the manifest is
             XPathNavigator rootNav = doc.CreateNavigator();
             rootNav.MoveToFirstChild();
+            while (rootNav.NodeType == XPathNodeType.Comment)
+            {
+                rootNav.MoveToNext();
+            }
+
             string packageType = Null.NullString;
 
             if (rootNav.Name == "dotnetnuke")
