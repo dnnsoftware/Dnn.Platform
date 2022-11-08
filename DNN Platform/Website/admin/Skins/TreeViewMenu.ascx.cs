@@ -466,8 +466,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 objNodes.InsertBefore(0, objParentNode);
             }
 
-            foreach (DNNNode objPNode in objNodes) // clean up to do in processnodes???
+            foreach (DNNNode objPNode in objNodes)
             {
+                // clean up to do in processnodes???
                 this.ProcessNodes(objPNode);
             }
 
@@ -480,8 +481,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (objTree.SelectedTreeNodes.Count > 0)
                 {
                     var objTNode = (TreeNode)objTree.SelectedTreeNodes[1];
-                    if (objTNode.DNNNodes.Count > 0) // only expand it if nodes are not pending
+                    if (objTNode.DNNNodes.Count > 0)
                     {
+                        // only expand it if nodes are not pending
                         objTNode.Expand();
                     }
                 }
@@ -493,8 +495,9 @@ namespace DotNetNuke.UI.Skins.Controls
             if (!string.IsNullOrEmpty(objParent.Image))
             {
             }
-            else if (objParent.HasNodes) // imagepath applied in provider...
+            else if (objParent.HasNodes)
             {
+                // imagepath applied in provider...
                 objParent.Image = this.ResolveUrl(this.NodeClosedImage);
             }
             else

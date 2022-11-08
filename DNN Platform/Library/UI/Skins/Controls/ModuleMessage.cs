@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.lblHeading.Text = this.Heading;
                 }
             }
-            catch (Exception exc) // Control failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc, false);
             }

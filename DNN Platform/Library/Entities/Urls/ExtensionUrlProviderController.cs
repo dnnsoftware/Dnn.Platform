@@ -551,8 +551,9 @@ namespace DotNetNuke.Entities.Urls
                             ref messages,
                             out status,
                             out location);
-                        if (status == 0 || status == 200) // either not set, or set to '200 OK'.
+                        if (status == 0 || status == 200)
                         {
+                            // either not set, or set to '200 OK'.
                             if (!string.IsNullOrEmpty(queryString) && queryString != newUrl)
                             {
                                 rewriteDone = true;
@@ -694,9 +695,8 @@ namespace DotNetNuke.Entities.Urls
                     out definitelyNoProvider,
                     parentTraceId);
                 if (definitelyNoProvider == false && providersToCall == null)
-
-                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                 {
+                    // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                     // get all providers for the portal
                     var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
 

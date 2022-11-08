@@ -472,8 +472,9 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
                 }
-                catch (Exception exc) // an unexpected error occurred
+                catch (Exception exc)
                 {
+                    // an unexpected error occurred
                     Exceptions.LogException(exc);
                     createStatus = UserCreateStatus.UnexpectedError;
                 }

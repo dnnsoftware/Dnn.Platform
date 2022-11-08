@@ -163,7 +163,8 @@ namespace DotNetNuke.Entities.Urls
                             portalDepths[portalId] = depthInfo;
                         }
 
-                        if (bypassCache == false) // only cache if bypass not switched on
+                        // only cache if bypass not switched on
+                        if (bypassCache == false)
                         {
                             reason += "Portal " + portalId + " added to index;";
                             using (dict.GetReadLock())
@@ -666,8 +667,9 @@ namespace DotNetNuke.Entities.Urls
             Dictionary<string, DupKeyCheck> dupCheck,
             ICollection<string> usingHttpAliases)
         {
-            foreach (PortalAliasInfo alias in chosenAliases) // and that is once per portal alias per portal
+            foreach (PortalAliasInfo alias in chosenAliases)
             {
+                // and that is once per portal alias per portal
                 string httpAlias = alias.HTTPAlias;
 
                 // check to see if there is a parameter rewrite rule that allows for parameters on the site root
@@ -829,10 +831,9 @@ namespace DotNetNuke.Entities.Urls
             // DNN-6186: add expired pages in dictionary as admin/host user should able to visit/edit them.
             bool isDeleted = tab.IsDeleted || tab.DisableLink;
             if (isDeleted)
-
-            // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted &&
-            // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
             {
+                // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted &&
+                // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
                 // 777: force 404 result for all deleted pages instead of relying on 'not found'
                 // 838 : separate handling for disabled pages
                 ActionType action = settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error
@@ -910,9 +911,8 @@ namespace DotNetNuke.Entities.Urls
                 // this entry is the 'original' (spaces removed) version ie mypage
                 string substituteRewritePath = rewritePath;
                 if (!isDeleted)
-
-                // if it is deleted, we don't care if the spaces were replaced, or anything else, just take care in deleted handling
                 {
+                    // if it is deleted, we don't care if the spaces were replaced, or anything else, just take care in deleted handling
                     string replaceSpaceWith = string.Empty;
                     if (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                     {
@@ -1214,7 +1214,8 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    if (replaceTab && !isDeleted) // don't replace if the incoming tab is deleted
+                    // don't replace if the incoming tab is deleted
+                    if (replaceTab && !isDeleted)
                     {
                         // remove the previous one
                         tabIndex.Remove(tabKey);
@@ -1234,17 +1235,16 @@ namespace DotNetNuke.Entities.Urls
             if (dupCheckDict.ContainsKey(dupKey))
             {
                 DupKeyCheck foundTAb = dupCheckDict[dupKey];
+
+                // -1 tabs are login, register, privacy etc
                 if ((foundTAb.IsDeleted == false && isDeleted == false) // found is not deleted, this tab is not deleted
                     && keyDupAction == UrlEnums.TabKeyPreference.TabOK
                     && foundTAb.TabIdOriginal != "-1")
-
-                // -1 tabs are login, register, privacy etc
                 {
                     // check whether to log for this or not
                     if (checkForDupUrls && foundTAb.TabIdOriginal != tabId.ToString())
-
-                    // dont' show message for where same tab is being added twice)
                     {
+                        // dont' show message for where same tab is being added twice)
                         // there is a naming conflict where this alias/tab path could be mistaken
                         int tabIdOriginal;
                         string tab1Name = string.Empty, tab2Name = string.Empty;
@@ -1525,9 +1525,8 @@ namespace DotNetNuke.Entities.Urls
                                     // this is a language-specific alias that's different to the culture for this alias
                                     && !string.IsNullOrEmpty(tabCulture) // and the tab culture is set
                                     && aliasSpecificCultures.Contains(tabCulture))
-
-                                // and there is a specific alias for this tab culture
                                 {
+                                    // and there is a specific alias for this tab culture
                                     ignoreTabWrongCulture = true;
                                 }
                             }
@@ -1580,9 +1579,9 @@ namespace DotNetNuke.Entities.Urls
                                             ref customHttpAliasesUsed,
                                             tab.IsDeleted,
                                             parentTraceId);
-                                        if (rewritePath != rewritePathKeep)
 
                                         // check to see the rewrite path is still the same, or did it get changed?
+                                        if (rewritePath != rewritePathKeep)
                                         {
                                             // OK, the rewrite path was modifed by the custom redirects dictionary add
                                             excludeFriendlyUrls = false;

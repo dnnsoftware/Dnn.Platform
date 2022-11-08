@@ -689,10 +689,8 @@ namespace DotNetNuke.Services.Scheduling
                             // to loop.
                             // refreshQueueSchedule can get set to true near bottom of loop
                             // not sure why R# thinks it is always false
-                            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                             while (FreeThreads > 0 && !refreshQueueSchedule && KeepRunning && !forceReloadSchedule)
-
-                            // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
                                 // Fire off the events that need running.
                                 if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)

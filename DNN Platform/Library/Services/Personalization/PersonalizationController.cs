@@ -126,8 +126,9 @@ namespace DotNetNuke.Services.Personalization
                 {
                     returnValue = dr["ProfileData"].ToString();
                 }
-                else // does not exist
+                else
                 {
+                    // does not exist
                     DataProvider.Instance().AddProfile(userId, portalId);
                 }
             }

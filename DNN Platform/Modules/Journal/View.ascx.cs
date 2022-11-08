@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.Journal
 
                 this.ctlJournalList.PageSize = this.PageSize;
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

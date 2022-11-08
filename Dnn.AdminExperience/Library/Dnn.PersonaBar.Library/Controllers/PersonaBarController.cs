@@ -121,8 +121,9 @@ namespace Dnn.PersonaBar.Library.Controllers
                         filterItems.Add(cloneItem);
                     }
                 }
-                catch (Exception e) // Ignore the failure and still load personaBar
+                catch (Exception e)
                 {
+                    // Ignore the failure and still load personaBar
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
                 }
             }

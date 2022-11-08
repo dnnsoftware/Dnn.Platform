@@ -374,11 +374,12 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
                 this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
-            catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
+            catch (ThreadAbortException exc)
             {
+                // Do nothing if ThreadAbort as this is caused by a redirect
                 Logger.Debug(exc);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -594,8 +595,9 @@ namespace DotNetNuke.Modules.Admin.Security
                     expiryDate = objUserRole.ExpiryDate;
                 }
             }
-            else // new role assignment
+            else
             {
+                // new role assignment
                 RoleInfo objRole = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
 
                 if (objRole.BillingPeriod > 0)
@@ -749,7 +751,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 this.BindGrid();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -788,7 +790,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 item.Cells[5].Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

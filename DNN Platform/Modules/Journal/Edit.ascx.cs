@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Journal
             {
                 // Implement your edit logic for your module
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

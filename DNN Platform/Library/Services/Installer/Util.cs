@@ -386,8 +386,9 @@ namespace DotNetNuke.Services.Installer
                 }
             }
 
-            if (tuple != null && tuple.Item1 != null) // Dispose of resources now (don't wait the GC).
+            if (tuple != null && tuple.Item1 != null)
             {
+                // Dispose of resources now (don't wait the GC).
                 tuple.Item1.Dispose();
                 tuple.Item2.Dispose();
             }

@@ -147,8 +147,9 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 int portalID;
-                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) // if we are in host filemanager then we need to pass a null portal id
+                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID))
                 {
+                    // if we are in host filemanager then we need to pass a null portal id
                     portalID = Null.NullInteger;
                 }
                 else

@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ShowUpdatedString(isCreatorAndUpdater);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

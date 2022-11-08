@@ -272,8 +272,9 @@ namespace Dnn.PersonaBar.Security.Components
             }
 
             var file = new FileInfo(name);
-            if (file.Length > MaxFileSize) // when file large than 10M, then don't read it.
+            if (file.Length > MaxFileSize)
             {
+                // when file large than 10M, then don't read it.
                 return false;
             }
 

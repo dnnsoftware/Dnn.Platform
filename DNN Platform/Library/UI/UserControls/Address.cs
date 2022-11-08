@@ -569,7 +569,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.UpdateRequiredFields();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

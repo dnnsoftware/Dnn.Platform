@@ -253,13 +253,15 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             // in case someone is being redirected to here from an e-mail link action we need to process that here
             var action = this.Request.QueryString["action"];
 
-            if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // action requested but not logged in.
+            if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action))
             {
+                // action requested but not logged in.
                 string loginUrl = Common.Globals.LoginURL(this.Request.RawUrl, false);
                 this.Response.Redirect(loginUrl);
             }
 
-            if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // only process this for authenticated requests
+            // only process this for authenticated requests
+            if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action))
             {
                 // current user, i.e. the one that the request was for
                 var currentUser = UserController.Instance.GetCurrentUserInfo();

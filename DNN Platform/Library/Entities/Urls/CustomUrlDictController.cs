@@ -44,9 +44,8 @@ namespace DotNetNuke.Entities.Urls
             if (urlDict != null && forceRebuild == false && bypassCache == false)
             {
                 if (urlPortals == null)
-
-                // no portals retrieved from cache, but was a dictionary.  Bit weird, but we'll run with it
                 {
+                    // no portals retrieved from cache, but was a dictionary.  Bit weird, but we'll run with it
                     urlPortals = new ConcurrentBag<int>();
                 }
 
@@ -66,12 +65,15 @@ namespace DotNetNuke.Entities.Urls
                         "Portal Id " + portalId.ToString() + " added to index.");
                 }
             }
-            else // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache
+            else
             {
+                // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache
                 // rebuild the dictionary for this portal
                 urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
                 urlPortals = new ConcurrentBag<int> { portalId }; // always rebuild the portal list
-                if (bypassCache == false) // if we are to cache this item (byPassCache = false)
+
+                // if we are to cache this item (byPassCache = false)
+                if (bypassCache == false)
                 {
                     // cache these items
                     string reason = forceRebuild ? "Force Rebuild of Index" : "Index not in cache";

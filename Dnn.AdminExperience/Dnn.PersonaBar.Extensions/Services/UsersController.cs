@@ -336,8 +336,9 @@ namespace Dnn.PersonaBar.Users.Services
                     return httpResponseMessage;
                 }
 
-                if (user.Membership.Approved == authorized) // Do nothing if the new status is same as current status.
+                if (user.Membership.Approved == authorized)
                 {
+                    // Do nothing if the new status is same as current status.
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
 

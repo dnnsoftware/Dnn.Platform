@@ -148,9 +148,8 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
-
-                                // if portal specific, all rules are assumed to belong to the portal
                                 {
+                                    // if portal specific, all rules are assumed to belong to the portal
                                     string tabIdRaw = rdr.GetAttribute("tabIds");
                                     string tabNames = rdr.GetAttribute("tabNames");
                                     string name = rdr.GetAttribute("name");

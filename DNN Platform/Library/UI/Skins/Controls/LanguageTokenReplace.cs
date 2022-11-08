@@ -172,8 +172,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
                                 // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content
                                 // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
-                                else // if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
+                                else
                                 {
+                                    // if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
                                     string[] arrValues = queryStringCollection.GetValues(i);
                                     if (arrValues != null)
                                     {

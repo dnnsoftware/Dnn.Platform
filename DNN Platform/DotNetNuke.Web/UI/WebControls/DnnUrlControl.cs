@@ -611,7 +611,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     // ViewState("IsUrlControlLoaded") = "Loaded"
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -779,8 +779,9 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.chkTrack.Checked = objUrlTracking.TrackClicks;
                     this.chkLog.Checked = objUrlTracking.LogActivity;
                 }
-                else // the url does not exist in the tracking table
+                else
                 {
+                    // the url does not exist in the tracking table
                     this.chkTrack.Checked = false;
                     this.chkLog.Checked = false;
                 }

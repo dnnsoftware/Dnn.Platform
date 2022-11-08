@@ -233,8 +233,9 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         {
             var redirectUrl = string.Empty;
             var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
-            if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
+            if (checkSettings && redirectAfterLogin > 0)
             {
+                // redirect to after registration page
                 redirectUrl = this.navigationManager.NavigateURL(redirectAfterLogin);
             }
             else

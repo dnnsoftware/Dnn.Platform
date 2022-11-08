@@ -442,16 +442,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 this.ShowPanel();
             }
-            else // user is already authenticated
+            else
             {
+                // user is already authenticated
                 // if a Login Page has not been specified for the portal
                 if (Globals.IsAdminControl())
                 {
                     // redirect browser
                     this.Response.Redirect(this.RedirectURL, true);
                 }
-                else // make module container invisible if user is not a page admin
+                else
                 {
+                    // make module container invisible if user is not a page admin
                     var path = this.RedirectURL.Split('?')[0];
                     if (this.NeedRedirectAfterLogin && path != this.navigationManager.NavigateURL() && path != this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
                     {
@@ -754,7 +756,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

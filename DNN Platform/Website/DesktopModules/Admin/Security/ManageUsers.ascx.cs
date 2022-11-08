@@ -168,8 +168,9 @@ namespace DotNetNuke.Modules.Admin.Users
                         redirectURL = this.navigationManager.NavigateURL();
                     }
                 }
-                else // redirect to after registration page
+                else
                 {
+                    // redirect to after registration page
                     redirectURL = this.navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
 
@@ -335,7 +336,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -389,7 +390,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -687,7 +688,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -713,7 +714,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -739,7 +740,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -764,7 +765,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -788,7 +789,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.AddModuleMessage("UserUnLocked", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -917,7 +918,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -935,7 +936,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.Response.Redirect(this.ReturnUrl, true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

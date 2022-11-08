@@ -108,8 +108,9 @@ namespace DotNetNuke.Services.Log.EventLog
                         }
                         catch (Exception)
                         {
-                            if (Globals.Status != Globals.UpgradeStatus.Upgrade) // this may caught exception during upgrade because old logging provider has problem in it.
+                            if (Globals.Status != Globals.UpgradeStatus.Upgrade)
                             {
+                                // this may caught exception during upgrade because old logging provider has problem in it.
                                 throw;
                             }
                         }
@@ -313,8 +314,8 @@ namespace DotNetNuke.Services.Log.EventLog
                 WriteLog(f, logInfo.Serialize());
             }
 
-            // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception exc) // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper disable once EmptyGeneralCatchClause
+            catch (Exception exc)
             {
                 Logger.Error(exc);
             }

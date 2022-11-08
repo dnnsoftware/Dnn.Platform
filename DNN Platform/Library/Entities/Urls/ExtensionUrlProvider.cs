@@ -146,7 +146,8 @@ namespace DotNetNuke.Entities.Urls
                 var qs = new StringBuilder(urlParms.GetUpperBound(0));
                 foreach (string urlPathPart in urlParms)
                 {
-                    if (i > skipUpToPosition) // skip over the parts we don't want
+                    // skip over the parts we don't want
+                    if (i > skipUpToPosition)
                     {
                         if (odd)
                         {

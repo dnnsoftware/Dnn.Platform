@@ -139,7 +139,7 @@ namespace DotNetNuke.UI.UserControls
                     this.HelpText = helpText;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

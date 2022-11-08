@@ -142,8 +142,9 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             // call ReplyMessage
             var messageId = this.dataService.CreateMessageReply(conversationId, PortalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
-            if (messageId == -1) // Parent message was not found or Recipient was not found in the message
+            if (messageId == -1)
             {
+                // Parent message was not found or Recipient was not found in the message
                 throw new MessageOrRecipientNotFoundException(Localization.GetString("MsgMessageOrRecipientNotFound", Localization.ExceptionsResourceFile));
             }
 

@@ -301,8 +301,9 @@ namespace DotNetNuke.Entities.Portals
                     // try alias without the "www." prefix
                     strPortalAlias = httpAlias.Replace("www.", string.Empty);
                 }
-                else // try the alias with the "www." prefix
+                else
                 {
+                    // try the alias with the "www." prefix
                     strPortalAlias = string.Concat("www.", httpAlias);
                 }
 
@@ -318,8 +319,9 @@ namespace DotNetNuke.Entities.Portals
                 {
                     strPortalAlias = httpAlias.Substring(httpAlias.IndexOf(".", StringComparison.Ordinal) + 1);
                 }
-                else // be sure we have a clean string (without leftovers from preceding 'if' block)
+                else
                 {
+                    // be sure we have a clean string (without leftovers from preceding 'if' block)
                     strPortalAlias = httpAlias;
                 }
 

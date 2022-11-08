@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Redirect to upadte page
                 this.Response.Redirect(this.Request.RawUrl, true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -311,7 +311,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.BindGrid();
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

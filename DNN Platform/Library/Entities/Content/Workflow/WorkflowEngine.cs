@@ -99,8 +99,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
 
             // Send notifications to stater
-            if (workflow.WorkflowID != this.systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) // This notification is not sent in Direct Publish WF
+            if (workflow.WorkflowID != this.systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID)
             {
+                // This notification is not sent in Direct Publish WF
                 this.SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);
             }
 

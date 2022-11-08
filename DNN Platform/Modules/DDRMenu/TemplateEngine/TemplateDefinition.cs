@@ -121,10 +121,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
                 var resolver = new PathResolver(baseDef.Folder);
 
-                // ReSharper disable PossibleNullReferenceException
+                // ReSharper disable once PossibleNullReferenceException
                 foreach (XmlNode node in xml.DocumentElement.ChildNodes)
-
-                // ReSharper restore PossibleNullReferenceException
                 {
                     if (node.NodeType == XmlNodeType.Element)
                     {

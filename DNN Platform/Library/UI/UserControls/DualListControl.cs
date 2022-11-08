@@ -176,7 +176,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ViewState[this.ClientID + "_ListBoxHeight"] = this.ListBoxHeight;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

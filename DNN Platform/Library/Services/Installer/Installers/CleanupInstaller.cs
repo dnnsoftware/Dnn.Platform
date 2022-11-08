@@ -96,8 +96,9 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(this.fileName) && string.IsNullOrEmpty(this.glob)) // No attribute: use the xml files definition.
+                if (string.IsNullOrEmpty(this.fileName) && string.IsNullOrEmpty(this.glob))
                 {
+                    // No attribute: use the xml files definition.
                     foreach (InstallFile file in this.Files)
                     {
                         bSuccess = this.CleanupFile(file);
@@ -112,12 +113,14 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.CleanupFolder(folder);
                     }
                 }
-                else if (!string.IsNullOrEmpty(this.fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
+                else if (!string.IsNullOrEmpty(this.fileName))
                 {
+                    // Cleanup file provided: clean each file in the cleanup text file line one by one.
                     bSuccess = this.ProcessCleanupFile();
                 }
-                else if (!string.IsNullOrEmpty(this.glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
+                else if (!string.IsNullOrEmpty(this.glob))
                 {
+                    // A globbing pattern was provided, use it to find the files and delete what matches.
                     bSuccess = this.ProcessGlob();
                 }
 

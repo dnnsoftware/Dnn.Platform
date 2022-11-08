@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.BindDropDown();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.Containers
                     this.ProcessAction(cboActions.SelectedItem.Value);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

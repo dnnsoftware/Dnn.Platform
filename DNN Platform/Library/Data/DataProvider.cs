@@ -252,10 +252,8 @@ namespace DotNetNuke.Data
             {
                 path = HostingEnvironment.MapPath(path);
 
-                // ReSharper disable AssignNullToNotNullAttribute
+                // ReSharper disable once AssignNullToNotNullAttribute
                 if (Directory.Exists(path))
-
-                // ReSharper restore AssignNullToNotNullAttribute
                 {
                     if (!this.IsConnectionValid)
                     {
@@ -4311,8 +4309,9 @@ namespace DotNetNuke.Data
                 for (int i = 0; i <= ex.Errors.Count - 1; i++)
                 {
                     SqlError sqlError = ex.Errors[i];
-                    if (sqlError.Number == 2812 && sqlError.Class == 16) // 2812 - 16 means SP could not be found
+                    if (sqlError.Number == 2812 && sqlError.Class == 16)
                     {
+                        // 2812 - 16 means SP could not be found
                         noStoredProc = true;
                         break;
                     }

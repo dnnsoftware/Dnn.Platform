@@ -106,8 +106,9 @@ namespace DotNetNuke.Services.Cryptography
                         strValue = objEncoding.GetString(objMemoryStream.ToArray());
                     }
                 }
-                catch // decryption error
+                catch
                 {
+                    // decryption error
                     strValue = string.Empty;
                 }
             }

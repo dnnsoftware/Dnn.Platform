@@ -182,9 +182,8 @@ namespace DotNetNuke.Entities.Urls
             customHttpAlias = null;
             isCustomPath = false;
             if (homePageSiteRoot && isHomeTab && !hasPath)
-
-            // && !isDefaultCultureCode - not working for non-language specifc custom root urls
             {
+                // && !isDefaultCultureCode - not working for non-language specifc custom root urls
                 newTabPath = "/"; // site root for home page
             }
             else

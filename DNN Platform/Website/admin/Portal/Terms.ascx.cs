@@ -32,7 +32,7 @@ namespace DotNetNuke.Common.Controls
                     this.lblTerms.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_TERMS");
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

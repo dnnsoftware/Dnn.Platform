@@ -514,8 +514,9 @@ namespace DotNetNuke.Entities.Portals.Templates
             var portal = PortalController.Instance.GetPortal(portalId);
             if (!string.IsNullOrEmpty(strName))
             {
-                if (!isNewPortal) // running from wizard: try to find the tab by path
+                if (!isNewPortal)
                 {
+                    // running from wizard: try to find the tab by path
                     string parenttabname = string.Empty;
                     if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))
                     {
@@ -978,8 +979,9 @@ namespace DotNetNuke.Entities.Portals.Templates
                 {
                     ParseProfileDefinitions(node, portalId);
                 }
-                else // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
+                else
                 {
+                    // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
                     ProfileController.AddDefaultDefinitions(portalId);
                 }
             }
@@ -1236,8 +1238,9 @@ namespace DotNetNuke.Entities.Portals.Templates
 
                     fileManager.UpdateFile(file);
                 }
-                catch (InvalidFileExtensionException ex) // when the file is not allowed, we should not break parse process, but just log the error.
+                catch (InvalidFileExtensionException ex)
                 {
+                    // when the file is not allowed, we should not break parse process, but just log the error.
                     Logger.Error(ex.Message);
                 }
             }

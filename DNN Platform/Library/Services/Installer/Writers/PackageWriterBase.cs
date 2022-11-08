@@ -485,8 +485,9 @@ namespace DotNetNuke.Services.Installer.Writers
                 // Get the Project File in the folder
                 FileInfo[] files = folderInfo.GetFiles("*.??proj");
 
-                if (files.Length == 0) // Assume Dynamic (App_Code based) Module
+                if (files.Length == 0)
                 {
+                    // Assume Dynamic (App_Code based) Module
                     // Add the files in the DesktopModules Folder
                     this.ParseFolder(baseFolder, baseFolder);
 
@@ -497,8 +498,9 @@ namespace DotNetNuke.Services.Installer.Writers
                         this.ParseFolder(appCodeFolder, appCodeFolder);
                     }
                 }
-                else // WAP Project File is present
+                else
                 {
+                    // WAP Project File is present
                     this.HasProjectFile = true;
 
                     // Parse the Project files (probably only one)

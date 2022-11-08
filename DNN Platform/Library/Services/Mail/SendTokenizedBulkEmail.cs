@@ -473,8 +473,9 @@ namespace DotNetNuke.Services.Mail
             {
                 // send to recipients
                 string body = this.body;
-                if (this.BodyFormat == MailFormat.Html) // Add Base Href for any images inserted in to the email.
+                if (this.BodyFormat == MailFormat.Html)
                 {
+                    // Add Base Href for any images inserted in to the email.
                     var host = this.PortalAlias.Contains("/") ? this.PortalAlias.Substring(0, this.PortalAlias.IndexOf('/')) : this.PortalAlias;
                     body = "<html><head><base href='http://" + host + "'><title>" + this.Subject + "</title></head><body>" + body + "</body></html>";
                 }
@@ -625,8 +626,9 @@ namespace DotNetNuke.Services.Mail
 
                 this.SendConfirmationMail(recipients, messagesSent, errors, subject, startedAt, mailErrors.ToString(), mailRecipients.ToString());
             }
-            catch (Exception exc) // send mail failure
+            catch (Exception exc)
             {
+                // send mail failure
                 Logger.Error(exc);
 
                 Debug.Write(exc.Message);

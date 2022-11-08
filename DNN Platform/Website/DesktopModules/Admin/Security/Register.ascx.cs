@@ -282,8 +282,9 @@ namespace DotNetNuke.Modules.Admin.Users
                     // redirect to current page
                     this.Response.Redirect(this.navigationManager.NavigateURL(), true);
                 }
-                else // make module container invisible if user is not a page admin
+                else
                 {
+                    // make module container invisible if user is not a page admin
                     if (!TabPermissionController.CanAdminPage())
                     {
                         this.ContainerControl.Visible = false;
@@ -525,7 +526,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -771,8 +772,9 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             var redirectUrl = string.Empty;
             var redirectAfterRegistration = this.PortalSettings.Registration.RedirectAfterRegistration;
-            if (checkSetting && redirectAfterRegistration > 0) // redirect to after registration page
+            if (checkSetting && redirectAfterRegistration > 0)
             {
+                // redirect to after registration page
                 redirectUrl = this.navigationManager.NavigateURL(redirectAfterRegistration);
             }
             else

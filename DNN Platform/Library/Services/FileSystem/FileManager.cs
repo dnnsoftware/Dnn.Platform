@@ -1807,7 +1807,8 @@ namespace DotNetNuke.Services.FileSystem
 
             if (folderWorkflow != null && this.StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
-                if (!fileExists) // if file exists it could have been published. So We don't have to update the field
+                // if file exists it could have been published. So We don't have to update the field
+                if (!fileExists)
                 {
                     // Maybe here we can set HasBeenPublished as 0
                     DataProvider.Instance().SetFileHasBeenPublished(file.FileId, false);
@@ -2017,8 +2018,9 @@ namespace DotNetNuke.Services.FileSystem
                 return file.FileName;
             }
 
-            if (workflowCompleted) // We assume User can add content to folder
+            if (workflowCompleted)
             {
+                // We assume User can add content to folder
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 

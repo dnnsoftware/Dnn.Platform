@@ -323,8 +323,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static JavaScriptLibrary GetHighestVersionLibrary(string jsname)
         {
-            if (Globals.Status == Globals.UpgradeStatus.Install) // if in install process, then do not use JSL but all use the legacy versions.
+            if (Globals.Status == Globals.UpgradeStatus.Install)
             {
+                // if in install process, then do not use JSL but all use the legacy versions.
                 return null;
             }
 

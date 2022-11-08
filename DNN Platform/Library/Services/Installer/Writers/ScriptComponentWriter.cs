@@ -81,23 +81,27 @@ namespace DotNetNuke.Services.Installer.Writers
             string type = "Install";
             string version = Null.NullString;
             string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase)) // UnInstall.SqlDataprovider
+            if (fileName.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
             {
+                // UnInstall.SqlDataprovider
                 type = "UnInstall";
                 version = this.Package.Version.ToString(3);
             }
-            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase)) // Install.SqlDataprovider
+            else if (fileName.Equals("install", StringComparison.InvariantCultureIgnoreCase))
             {
+                // Install.SqlDataprovider
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);
             }
-            else if (fileName.StartsWith("Install")) // Install.xx.xx.xx.SqlDataprovider
+            else if (fileName.StartsWith("Install"))
             {
+                // Install.xx.xx.xx.SqlDataprovider
                 type = "Install";
                 version = fileName.Replace("Install.", string.Empty);
             }
-            else // xx.xx.xx.SqlDataprovider
+            else
             {
+                // xx.xx.xx.SqlDataprovider
                 type = "Install";
                 version = fileName;
             }

@@ -229,8 +229,9 @@ namespace DotNetNuke.Web.UI.WebControls
                         Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
                     };
                 }
-                else if (this.UsePersonalFolder) // if UserPersonalFolder is true, make sure the file is under the user folder.
+                else if (this.UsePersonalFolder)
                 {
+                    // if UserPersonalFolder is true, make sure the file is under the user folder.
                     this.FoldersComboBox.SelectedItem = new ListItem
                     {
                         Text = FolderManager.Instance.MyFolderName,

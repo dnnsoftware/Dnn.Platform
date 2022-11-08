@@ -226,7 +226,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lblTitle.Attributes["resourcekey"] = this.ResourceKey;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -257,7 +257,7 @@ namespace DotNetNuke.UI.UserControls
                 // optionlly show hr
                 this.pnlRule.Visible = this.includeRule;
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

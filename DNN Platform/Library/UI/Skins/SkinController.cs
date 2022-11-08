@@ -84,8 +84,9 @@ namespace DotNetNuke.UI.Skins
                 skinType = "S";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
-            else // to be compliant with all versions
+            else
             {
+                // to be compliant with all versions
                 skinType = "L";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }

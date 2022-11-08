@@ -174,8 +174,9 @@ namespace DotNetNuke.UI.Skins
                     this.LoadSkins();
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
