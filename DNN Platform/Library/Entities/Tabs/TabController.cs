@@ -1071,7 +1071,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
 
-                // for newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+                // For newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
                 this.UpdateChildTabLocalizedParents(portalId, tabId);
             }
         }
@@ -1231,6 +1231,9 @@ namespace DotNetNuke.Entities.Tabs
                     this.CreateLocalizedCopyInternal(originalTab, subLocale, false, true);
                 }
             }
+
+            // For newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+            this.UpdateChildTabLocalizedParents(originalTab.PortalID, originalTab.TabID);
         }
 
         /// <summary>
@@ -1242,6 +1245,9 @@ namespace DotNetNuke.Entities.Tabs
         public void CreateLocalizedCopy(TabInfo originalTab, Locale locale, bool clearCache)
         {
             this.CreateLocalizedCopyInternal(originalTab, locale, true, clearCache);
+
+            // For newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+            this.UpdateChildTabLocalizedParents(originalTab.PortalID, originalTab.TabID);
         }
 
         /// <summary>
