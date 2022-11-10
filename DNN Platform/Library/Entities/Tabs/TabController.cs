@@ -1070,8 +1070,12 @@ namespace DotNetNuke.Entities.Tabs
                         }
                     }
                 }
+
+                // for newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+                this.UpdateChildTabLocalizedParents(portalId, tabId);
             }
         }
+
 
         /// <summary>
         /// Adds a tab.
@@ -2684,6 +2688,42 @@ namespace DotNetNuke.Entities.Tabs
             if (clearCache)
             {
                 this.ClearCache(originalTab.PortalID);
+            }
+        }
+
+
+        /// <summary>
+        /// If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="parentTabId"></param>
+        private void UpdateChildTabLocalizedParents(int portalId, int parentTabId)
+        {
+            var childTabs = GetTabsByParent(parentTabId, portalId);
+
+            foreach (var childTab in childTabs)
+            {
+                if (childTab.CultureCode == null)
+                {
+                    continue;
+                }
+
+                var locale = LocaleController.Instance.GetLocale(portalId, childTab.CultureCode);
+
+                if (locale == null)
+                {
+                    continue;
+                }
+
+                TabInfo localizedParent = this.GetTabByCulture(parentTabId, portalId, locale);
+                if (childTab.ParentId != localizedParent.TabID)
+                {
+                    childTab.ParentId = localizedParent.TabID;
+
+                    this.UpdateTab(childTab);
+
+                    this.UpdateChildTabLocalizedParents(portalId, childTab.TabID);
+                }
             }
         }
 
