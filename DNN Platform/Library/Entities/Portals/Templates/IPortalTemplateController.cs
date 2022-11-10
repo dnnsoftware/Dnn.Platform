@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Portals.Templates
         /// <remarks>
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
-        void ParseTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection);
+        void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
         string ExportPortalTemplate(UserInfo userInfo, out bool success);
     }

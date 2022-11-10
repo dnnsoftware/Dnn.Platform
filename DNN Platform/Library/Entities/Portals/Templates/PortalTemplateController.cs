@@ -19,9 +19,10 @@
             throw new NotImplementedException();
         }
 
-        public void ParseTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
+        public void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            throw new NotImplementedException();
+            var importer = new PortalTemplateImporter(template);
+            importer.ParseTemplate(portalId, administratorId, mergeTabs, isNewPortal);
         }
     }
 }
