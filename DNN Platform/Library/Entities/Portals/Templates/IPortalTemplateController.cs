@@ -1,5 +1,7 @@
 ﻿using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetNuke.Entities.Portals.Templates
 {
@@ -21,6 +23,6 @@ namespace DotNetNuke.Entities.Portals.Templates
         /// </remarks>
         void ApplyPortalTemplate(int portalId, IPortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
-        string ExportPortalTemplate(UserInfo userInfo, out bool success);
+        Tuple<bool, string> ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
     }
 }
