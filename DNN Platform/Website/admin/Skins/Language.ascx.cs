@@ -151,17 +151,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(this.SelectedItemTemplate))
+                if (string.IsNullOrEmpty(this.selectedItemTemplate))
                 {
-                    this.SelectedItemTemplate = Localization.GetString("SelectedItemTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
+                    this.selectedItemTemplate = Localization.GetString("SelectedItemTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
 
-                return this.SelectedItemTemplate;
+                return this.selectedItemTemplate;
             }
 
             set
             {
-                this.SelectedItemTemplate = value;
+                this.selectedItemTemplate = value;
             }
         }
 
