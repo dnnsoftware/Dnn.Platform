@@ -182,12 +182,12 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                return this.SelectedUserID;
+                return this.selectedUserID;
             }
 
             set
             {
-                this.SelectedUserID = value;
+                this.selectedUserID = value;
             }
         }
 
