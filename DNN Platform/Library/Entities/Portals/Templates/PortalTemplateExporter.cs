@@ -91,7 +91,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 if (includeFiles)
                 {
                     // Create Zip File to hold files
-                    var resourcesFile = new ZipArchive(File.Create(filename + ".resources"));
+                    var resourcesFile = new ZipArchive(File.Create(filename + ".resources"), ZipArchiveMode.Create, true);
 
                     // Serialize folders (while adding files to zip file)
                     this.SerializeFolders(writer, portal, ref resourcesFile);
