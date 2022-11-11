@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (this.AuthSystem == null)
+                if (this.authSystem == null)
                 {
                     this.authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
                 }
