@@ -1,6 +1,6 @@
 [![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/dnnsoftware.Dnn.Platform?branchName=develop)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=145&branchName=develop)
 
-![DNN Platform At A Glance](dnnplatform.png)
+![DNN Platform At A Glance](dnnplatform.png) test
 
 # Project Description
 
