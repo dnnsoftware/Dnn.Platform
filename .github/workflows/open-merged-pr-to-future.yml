@@ -20,7 +20,7 @@ jobs:
           branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
 
       - name: Create Pull Request
-        uses: repo-sync/pull-request@v2.8
+        uses: repo-sync/pull-request@v2.9
         with:
           source_branch: v10/${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
           destination_branch: release/10.0.0
