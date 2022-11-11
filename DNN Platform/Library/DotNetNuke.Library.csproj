@@ -230,7 +230,6 @@
     <Compile Include="Entities\Portals\Templates\PortalTemplateEventArgs.cs" />
     <Compile Include="Entities\Portals\Templates\IPortalTemplateController.cs" />
     <Compile Include="Entities\Portals\Templates\IPortalTemplateInfo.cs" />
-    <Compile Include="Entities\Portals\Templates\PortalTemplate.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateController.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateExporter.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateImporter.cs" />
