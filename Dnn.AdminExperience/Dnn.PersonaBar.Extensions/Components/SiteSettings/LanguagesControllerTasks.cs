@@ -131,7 +131,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         internal static LocalizationProgress ReadProgressFile()
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-#if true
+#if false
             var text = File.ReadAllText(path);
             return JsonConvert.DeserializeObject<LocalizationProgress>(text);
 #else
@@ -228,7 +228,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             // this could have file locking issues from multiple threads
             File.WriteAllText(path, text);
 #else
-            using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 256))
+            using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, 256))
             {
                 var bytes = Encoding.UTF8.GetBytes(text);
                 file.Write(bytes, 0, bytes.Length);
