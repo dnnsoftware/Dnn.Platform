@@ -131,10 +131,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         internal static LocalizationProgress ReadProgressFile()
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-#if false
-            var text = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
-#else
             using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
             {
                 var bytes = new byte[file.Length];
@@ -142,7 +138,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 var text = Encoding.UTF8.GetString(bytes);
                 return JsonConvert.DeserializeObject<LocalizationProgress>(text);
             }
-#endif
         }
 
         private static IList<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
@@ -224,17 +219,12 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
             var text = JsonConvert.SerializeObject(progress);
-#if false
-            // this could have file locking issues from multiple threads
-            File.WriteAllText(path, text);
-#else
             using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, 256))
             {
                 var bytes = Encoding.UTF8.GetBytes(text);
                 file.Write(bytes, 0, bytes.Length);
                 file.Flush();
             }
-#endif
         }
 
         private static IList<TabInfo> GetPages(int portalId)
