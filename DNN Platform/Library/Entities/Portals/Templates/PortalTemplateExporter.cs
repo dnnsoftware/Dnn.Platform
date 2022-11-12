@@ -32,13 +32,11 @@ namespace DotNetNuke.Entities.Portals.Templates
     {
         private string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
-        internal Tuple<bool, string> ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles)
+        internal (bool success, string message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles)
         {
-            var success = false;
-
             if (!exportTabIds.Any())
             {
-                return Tuple.Create(false, Localization.GetString("ErrorPages", this.LocalResourcesFile));
+                return (false, Localization.GetString("ErrorPages", this.LocalResourcesFile));
             }
 
             var xmlSettings = new XmlWriterSettings
@@ -115,8 +113,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 TemplatePath = filename,
             });
 
-            success = true;
-            return Tuple.Create(success, string.Format(Localization.GetString("ExportedMessage", this.LocalResourcesFile), filename));
+            return (true, string.Format(Localization.GetString("ExportedMessage", this.LocalResourcesFile), filename));
         }
 
         private void SerializePortalSettings(XmlWriter writer, PortalInfo portal, bool isMultilanguage)

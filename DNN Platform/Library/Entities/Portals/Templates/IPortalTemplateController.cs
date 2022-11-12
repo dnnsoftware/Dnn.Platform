@@ -1,6 +1,5 @@
 ﻿namespace DotNetNuke.Entities.Portals.Templates
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -41,7 +40,7 @@
         /// <param name="includeModules">Whether to include modules.</param>
         /// <param name="includeProfile">Whether to include user profile settings.</param>
         /// <param name="includeRoles">Whether to include the portal's roles.</param>
-        /// <returns>A tuple with a boolean (success = true) and a string (error or success message).</returns>
-        Tuple<bool, string> ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
+        /// <returns>A boolean indicating success and a string with an (success or error) message.</returns>
+        (bool success, string message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
     }
 }
