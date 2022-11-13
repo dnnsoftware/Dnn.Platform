@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
 
+    [Obsolete("Scheduled to become internal in v11.0.0.")]
     public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
         /// <inheritdoc/>

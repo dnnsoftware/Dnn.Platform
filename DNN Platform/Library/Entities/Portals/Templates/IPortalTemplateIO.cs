@@ -4,9 +4,11 @@
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
 
+    [Obsolete("Scheduled to become internal in v11.0.0.")]
     public interface IPortalTemplateIO
     {
         IEnumerable<string> EnumerateTemplates();

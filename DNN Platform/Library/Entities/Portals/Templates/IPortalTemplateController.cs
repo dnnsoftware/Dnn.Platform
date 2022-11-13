@@ -42,5 +42,19 @@
         /// <param name="includeRoles">Whether to include the portal's roles.</param>
         /// <returns>A boolean indicating success and a string with an (success or error) message.</returns>
         (bool success, string message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
+
+        /// <summary>
+        /// Load info for a portal template.
+        /// </summary>
+        /// <param name="templatePath">Full path to the portal template.</param>
+        /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
+        /// <returns>A portal template.</returns>
+        PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode);
+
+        /// <summary>
+        /// Get all the available portal templates grouped by culture.
+        /// </summary>
+        /// <returns>List of PortalTemplateInfo objects.</returns>
+        IList<PortalTemplateInfo> GetPortalTemplates();
     }
 }

@@ -4,10 +4,13 @@
 
 namespace DotNetNuke.Entities.Portals.Templates
 {
+    using DotNetNuke.Entities.Portals.Internal;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
     using System;
     using System.Collections.Generic;
-
-    using DotNetNuke.Framework;
+    using System.IO;
+    using System.Linq;
 
     /// <inheritdoc/>
     public class PortalTemplateController : ServiceLocator<IPortalTemplateController, PortalTemplateController>, IPortalTemplateController
@@ -26,6 +29,47 @@ namespace DotNetNuke.Entities.Portals.Templates
             return exporter.ExportPortalTemplate(portalId, fileName, description, isMultiLanguage, locales, localizationCulture, exportTabIds, includeContent, includeFiles, includeModules, includeProfile, includeRoles);
         }
 
+        /// <inheritdoc/>
+        public PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
+        {
+            var template = new PortalTemplateInfo(templatePath, cultureCode);
+
+            if (!string.IsNullOrEmpty(cultureCode) && template.CultureCode != cultureCode)
+            {
+                return null;
+            }
+
+            return template;
+        }
+
+        public IList<PortalTemplateInfo> GetPortalTemplates()
+        {
+            var list = new List<PortalTemplateInfo>();
+
+            var templateFilePaths = PortalTemplateIO.Instance.EnumerateTemplates();
+            var languageFileNames = PortalTemplateIO.Instance.EnumerateLanguageFiles().Select(Path.GetFileName).ToList();
+
+            foreach (string templateFilePath in templateFilePaths)
+            {
+                var currentFileName = Path.GetFileName(templateFilePath);
+                var langs = languageFileNames.Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => this.GetCultureCode(x)).Distinct().ToList();
+
+                if (langs.Any())
+                {
+                    langs.ForEach(x => list.Add(new PortalTemplateInfo(templateFilePath, x)));
+                }
+                else
+                {
+                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
+                    var portalSettings = PortalSettings.Current;
+                    var cultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                    list.Add(new PortalTemplateInfo(templateFilePath, cultureCode));
+                }
+            }
+
+            return list;
+        }
+
         /// <summary>
         /// Instantiates a new instance of the PortalTemplateController.
         /// </summary>
@@ -33,6 +77,18 @@ namespace DotNetNuke.Entities.Portals.Templates
         protected override Func<IPortalTemplateController> GetFactory()
         {
             return () => new PortalTemplateController();
+        }
+
+        private string GetTemplateName(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetFileNameFromLocalizedResxFile();
+        }
+
+        private string GetCultureCode(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetLocaleCodeFromFileName();
         }
     }
 }

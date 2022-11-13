@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Portals
                         string templateFile, string homeDirectory, string portalAlias,
                         string serverPath, string childPath, bool isChildPortal)
         {
-            var template = this.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
+            var template = PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
 
             return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
                                 serverPath, childPath, isChildPortal);
