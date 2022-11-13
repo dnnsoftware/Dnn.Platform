@@ -1932,13 +1932,6 @@
   <PropertyGroup>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
   </PropertyGroup>
-  <Target Name="AfterBuild" DependsOnTargets="CopyBin">
-  </Target>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsitePath)\bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsitePath)\bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsitePath)\bin" />
-  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
