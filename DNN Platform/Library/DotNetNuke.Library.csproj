@@ -224,10 +224,16 @@
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
     <Compile Include="Entities\Portals\IPortalSettingHandlers.cs" />
-    <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
+    <Compile Include="Entities\Portals\Templates\IPortalTemplateEventHandlers.cs" />
     <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
     <Compile Include="Entities\Portals\PortalSettingUpdatedEventArgs.cs" />
-    <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateEventArgs.cs" />
+    <Compile Include="Entities\Portals\Templates\IPortalTemplateController.cs" />
+    <Compile Include="Entities\Portals\Templates\IPortalTemplateInfo.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateController.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateExporter.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateImporter.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateInfo.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidUserRegisterException.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
@@ -489,8 +495,8 @@
     <Compile Include="Obsolete\PortalAliasController.cs" />
     <Compile Include="Obsolete\PortalController.cs" />
     <Compile Include="Entities\Portals\IPortalAliasController.cs" />
-    <Compile Include="Entities\Portals\Internal\IPortalTemplateIO.cs" />
-    <Compile Include="Entities\Portals\Internal\PortalTemplateIO.cs" />
+    <Compile Include="Entities\Portals\Templates\IPortalTemplateIO.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateIO.cs" />
     <Compile Include="Obsolete\RoleController.cs" />
     <Compile Include="Obsolete\TabController.cs" />
     <Compile Include="Obsolete\TestablePortalController.cs" />
@@ -1084,8 +1090,8 @@
     <Compile Include="Entities\Portals\PortalSettings.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Entities\Portals\PortalTemplateModuleAction.cs" />
-    <Compile Include="Entities\Portals\PortalTemplateValidator.cs">
+    <Compile Include="Entities\Portals\Templates\PortalTemplateModuleAction.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateValidator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Portals\UserCopiedCallback.cs" />
