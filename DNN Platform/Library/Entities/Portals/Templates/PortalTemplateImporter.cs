@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -529,7 +530,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
                 if (tab == null || isNewPortal)
                 {
-                    tab = TabController.DeserializeTab(nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs, hModules);
+                    tab = TabController.DeserializeTab(nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs.ToOldEnum(), hModules);
                 }
 
                 // when processing the template we should try and identify the Admin tab

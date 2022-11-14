@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Linq;
     using System.Xml.Linq;
 
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;

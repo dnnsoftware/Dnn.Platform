@@ -1,4 +1,8 @@
-﻿namespace DotNetNuke.Entities.Portals.Templates
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace DotNetNuke.Abstractions.Portals.Templates
 {
     using System.Collections.Generic;
 
@@ -49,12 +53,12 @@
         /// <param name="templatePath">Full path to the portal template.</param>
         /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
         /// <returns>A portal template.</returns>
-        PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode);
+        IPortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode);
 
         /// <summary>
         /// Get all the available portal templates grouped by culture.
         /// </summary>
         /// <returns>List of PortalTemplateInfo objects.</returns>
-        IList<PortalTemplateInfo> GetPortalTemplates();
+        IList<IPortalTemplateInfo> GetPortalTemplates();
     }
 }

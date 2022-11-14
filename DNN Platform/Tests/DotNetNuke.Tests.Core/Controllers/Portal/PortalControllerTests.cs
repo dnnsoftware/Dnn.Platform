@@ -7,7 +7,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
-
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Portals.Templates;
@@ -259,7 +259,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             AssertTemplateInfo(StaticExpectations, template);
         }
 
-        private static void AssertTemplateInfo(Dictionary<string, string> expectations, PortalTemplateInfo templateInfo)
+        private static void AssertTemplateInfo(Dictionary<string, string> expectations, IPortalTemplateInfo templateInfo)
         {
             AssertTemplateField(expectations, "Name", templateInfo.Name);
             AssertTemplateField(expectations, "TemplateFilePath", templateInfo.TemplateFilePath);

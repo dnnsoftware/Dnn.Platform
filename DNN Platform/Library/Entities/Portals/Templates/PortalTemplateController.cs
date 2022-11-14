@@ -4,13 +4,15 @@
 
 namespace DotNetNuke.Entities.Portals.Templates
 {
-    using DotNetNuke.Entities.Portals.Internal;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Localization;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
+    using DotNetNuke.Abstractions.Portals.Templates;
+    using DotNetNuke.Entities.Portals.Internal;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
 
     /// <inheritdoc/>
     public class PortalTemplateController : ServiceLocator<IPortalTemplateController, PortalTemplateController>, IPortalTemplateController
@@ -30,7 +32,7 @@ namespace DotNetNuke.Entities.Portals.Templates
         }
 
         /// <inheritdoc/>
-        public PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
+        public IPortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
         {
             var template = new PortalTemplateInfo(templatePath, cultureCode);
 
@@ -42,9 +44,9 @@ namespace DotNetNuke.Entities.Portals.Templates
             return template;
         }
 
-        public IList<PortalTemplateInfo> GetPortalTemplates()
+        public IList<IPortalTemplateInfo> GetPortalTemplates()
         {
-            var list = new List<PortalTemplateInfo>();
+            var list = new List<IPortalTemplateInfo>();
 
             var templateFilePaths = PortalTemplateIO.Instance.EnumerateTemplates();
             var languageFileNames = PortalTemplateIO.Instance.EnumerateLanguageFiles().Select(Path.GetFileName).ToList();

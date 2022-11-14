@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
-
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -919,7 +919,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template,
+        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             // Attempt to create a new portal
@@ -995,7 +995,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template,
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             // Attempt to create a new portal
@@ -1449,7 +1449,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
             var portalTemplateImporter = new PortalTemplateImporter(t);
-            portalTemplateImporter.ParseTemplate(portalId, administratorId, mergeTabs, isNewPortal);
+            portalTemplateImporter.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         /// <summary>
@@ -1980,7 +1980,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template,
+        private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
                                  string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
         {
             // Add default workflows
@@ -2103,7 +2103,7 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         this.CreatePredefinedFolderTypes(portalId);
-                        portalTemplateImporter.ParseTemplateInternal(portalId, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
+                        portalTemplateImporter.ParseTemplateInternal(portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
                     }
                     catch (Exception exc1)
                     {

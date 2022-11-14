@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Web;
     using System.Xml;
     using System.Xml.XPath;
-
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -2191,7 +2191,7 @@ namespace DotNetNuke.Services.Upgrade
             return adminUser;
         }
 
-        internal static PortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
+        internal static IPortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
         {
             if (string.IsNullOrEmpty(currentCulture))
             {
@@ -2222,7 +2222,7 @@ namespace DotNetNuke.Services.Upgrade
             return match;
         }
 
-        internal static PortalTemplateInfo FindBestTemplate(string templateFileName)
+        internal static IPortalTemplateInfo FindBestTemplate(string templateFileName)
         {
             // Load Template
             var installTemplate = new XmlDocument { XmlResolver = null };
