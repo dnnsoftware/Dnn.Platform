@@ -60,10 +60,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 }
                 else
                 {
-                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
-                    var portalSettings = PortalSettings.Current;
-                    var cultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
-                    list.Add(new PortalTemplateInfo(templateFilePath, cultureCode));
+                    list.Add(new PortalTemplateInfo(templateFilePath, string.Empty));
                 }
             }
 

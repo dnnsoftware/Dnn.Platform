@@ -1080,7 +1080,11 @@ namespace DotNetNuke.Entities.Portals
             foreach (string templateFilePath in templateFilePaths)
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
-                var langs = languageFileNames.Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => this.GetCultureCode(x)).Distinct().ToList();
+                var langs = languageFileNames
+                                .Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase))
+                                .Select(x => this.GetCultureCode(x))
+                                .Distinct()
+                                .ToList();
 
                 if (langs.Any())
                 {
@@ -1088,10 +1092,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
-                    var portalSettings = PortalSettings.Current;
-                    var cultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
-                    list.Add(new PortalTemplateInfo(templateFilePath, cultureCode));
+                    list.Add(new PortalTemplateInfo(templateFilePath, string.Empty));
                 }
             }
 
@@ -2525,18 +2526,18 @@ namespace DotNetNuke.Entities.Portals
 
             private void InitLocalizationFields(string cultureCode)
             {
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    var locales = new List<string>();
+                    (cultureCode, locales) = PortalTemplateIO.Instance.GetTemplateLanguages(this.TemplateFilePath);
+                    if (string.IsNullOrEmpty(cultureCode))
+                    {
+                        var portalSettings = PortalSettings.Current;
+                        cultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                    }
+                }
                 this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
-                if (!string.IsNullOrEmpty(this.LanguageFilePath))
-                {
-                    this.CultureCode = cultureCode;
-                }
-                else
-                {
-                    var portalSettings = PortalSettings.Current;
-
-                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
-                    this.CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
-                }
+                this.CultureCode = cultureCode;
             }
         }
     }
