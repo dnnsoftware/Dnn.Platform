@@ -9,6 +9,8 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections.Generic;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Portals.Templates;
+    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Users;
 
     /// <summary>
@@ -40,14 +42,32 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="adminUserId">The obj admin user.</param>
         /// <param name="description">The description.</param>
         /// <param name="keyWords">The key words.</param>
-        /// <param name="template"> </param>
+        /// <param name="template">Template to use for creating the new portal.</param>
         /// <param name="homeDirectory">The home directory.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template,
+                                            string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+
+        /// <summary>
+        /// Creates the portal.
+        /// </summary>
+        /// <param name="portalName">Name of the portal.</param>
+        /// <param name="adminUserId">The obj admin user.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="keyWords">The key words.</param>
+        /// <param name="template">Template to use for creating the new portal.</param>
+        /// <param name="homeDirectory">The home directory.</param>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <param name="childPath">The child path.</param>
+        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <returns>Portal id.</returns>
+        int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template,
                                             string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>
@@ -57,20 +77,39 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="adminUser">The obj admin user.</param>
         /// <param name="description">The description.</param>
         /// <param name="keyWords">The key words.</param>
-        /// <param name="template"> </param>
+        /// <param name="template">Template to use for creating the new portal.</param>
         /// <param name="homeDirectory">The home directory.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template,
+                         string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
+
+        /// <summary>
+        /// Creates the portal.
+        /// </summary>
+        /// <param name="portalName">Name of the portal.</param>
+        /// <param name="adminUser">The obj admin user.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="keyWords">The key words.</param>
+        /// <param name="template">Template to use for creating the new portal.</param>
+        /// <param name="homeDirectory">The home directory.</param>
+        /// <param name="portalAlias">The portal alias.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <param name="childPath">The child path.</param>
+        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <returns>Portal id.</returns>
+        int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
                          string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
         /// <summary>
         /// Get all the available portal templates grouped by culture.
         /// </summary>
         /// <returns>List of PortalTemplateInfo objects.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplates instead. Scheduled removal in v11.0.0.")]
         IList<PortalController.PortalTemplateInfo> GetAvailablePortalTemplates();
 
         /// <summary>
@@ -149,6 +188,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="templateFileName">The file name of the portal template.</param>
         /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
         /// <returns>A portal template.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplate instead. Scheduled removal in v11.0.0.")]
         PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
         /// <summary>
@@ -186,6 +226,7 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks>
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead. Scheduled removal in v11.0.0.")]
         void ParseTemplate(int portalId, PortalController.PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal);
 
         /// <summary>

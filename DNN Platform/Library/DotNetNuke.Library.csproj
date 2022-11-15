@@ -228,10 +228,9 @@
     <Compile Include="Entities\Portals\PortalAliasExtensions.cs" />
     <Compile Include="Entities\Portals\PortalSettingUpdatedEventArgs.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateEventArgs.cs" />
-    <Compile Include="Entities\Portals\Templates\IPortalTemplateController.cs" />
-    <Compile Include="Entities\Portals\Templates\IPortalTemplateInfo.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateController.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateExporter.cs" />
+    <Compile Include="Entities\Portals\Templates\PortalTemplateExtensions.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateImporter.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateInfo.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidPasswordException.cs" />

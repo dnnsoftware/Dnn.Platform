@@ -8,12 +8,14 @@ namespace Dnn.PersonaBar.Sites.Components
     using Dnn.PersonaBar.Sites.Components.Dto;
     using Dnn.PersonaBar.Sites.Services.Dto;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
@@ -94,19 +96,19 @@ namespace Dnn.PersonaBar.Sites.Components
             return strDate;
         }
 
-        public IList<PortalController.PortalTemplateInfo> GetPortalTemplates()
+        public IList<IPortalTemplateInfo> GetPortalTemplates()
         {
-            var templates = PortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalTemplateController.Instance.GetPortalTemplates();
             templates = templates.OrderBy(x => x, new TemplateDisplayComparer()).ToList();
             return templates;
         }
 
-        public PortalController.PortalTemplateInfo GetPortalTemplate(string fileName, string cultureCode)
+        public IPortalTemplateInfo GetPortalTemplate(string fileName, string cultureCode)
         {
-            return PortalController.Instance.GetPortalTemplate(fileName, cultureCode);
+            return PortalTemplateController.Instance.GetPortalTemplate(fileName, cultureCode);
         }
 
-        public ListItem CreateListItem(PortalController.PortalTemplateInfo template)
+        public ListItem CreateListItem(IPortalTemplateInfo template)
         {
             string text, value;
             var fileName = Path.GetFileName(template.TemplateFilePath);
@@ -524,10 +526,10 @@ namespace Dnn.PersonaBar.Sites.Components
             return selectedTabs;
         }
 
-        private PortalController.PortalTemplateInfo LoadPortalTemplateInfoForSelectedItem(string template)
+        private IPortalTemplateInfo LoadPortalTemplateInfoForSelectedItem(string template)
         {
             var values = template.Split('|');
-            return PortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+            return PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
         }
 
         private void TryDeleteCreatingPortal(string serverPath, string childPath)
@@ -573,9 +575,9 @@ namespace Dnn.PersonaBar.Sites.Components
             return Globals.ResolveUrl(imagePath);
         }
 
-        private class TemplateDisplayComparer : IComparer<PortalController.PortalTemplateInfo>
+        private class TemplateDisplayComparer : IComparer<IPortalTemplateInfo>
         {
-            public int Compare(PortalController.PortalTemplateInfo x, PortalController.PortalTemplateInfo y)
+            public int Compare(IPortalTemplateInfo x, IPortalTemplateInfo y)
             {
                 var cultureCompare = string.Compare(x.CultureCode, y.CultureCode, StringComparison.CurrentCulture);
                 if (cultureCompare == 0)

@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
-
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Lists;
@@ -919,7 +919,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template,
+        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             // Attempt to create a new portal
@@ -995,7 +995,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             // Attempt to create a new portal
@@ -1069,6 +1069,7 @@ namespace DotNetNuke.Entities.Portals
         /// Get all the available portal templates grouped by culture.
         /// </summary>
         /// <returns>List of PortalTemplateInfo objects.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplates instead. Scheduled removal in v11.0.0.")]
         public IList<PortalTemplateInfo> GetAvailablePortalTemplates()
         {
             var list = new List<PortalTemplateInfo>();
@@ -1079,7 +1080,11 @@ namespace DotNetNuke.Entities.Portals
             foreach (string templateFilePath in templateFilePaths)
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
-                var langs = languageFileNames.Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => this.GetCultureCode(x)).Distinct().ToList();
+                var langs = languageFileNames
+                                .Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase))
+                                .Select(x => this.GetCultureCode(x))
+                                .Distinct()
+                                .ToList();
 
                 if (langs.Any())
                 {
@@ -1087,10 +1092,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
-                    var portalSettings = PortalSettings.Current;
-                    var cultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
-                    list.Add(new PortalTemplateInfo(templateFilePath, cultureCode));
+                    list.Add(new PortalTemplateInfo(templateFilePath, string.Empty));
                 }
             }
 
@@ -1233,6 +1235,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="templatePath">Full path to the portal template.</param>
         /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
         /// <returns>A portal template.</returns>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.GetPortalTemplate instead. Scheduled removal in v11.0.0.")]
         public PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
         {
             var template = new PortalTemplateInfo(templatePath, cultureCode);
@@ -1441,11 +1444,12 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks>
         /// The roles and settings nodes will only be processed on the portal template file.
         /// </remarks>
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead. Scheduled removal in v11.0.0.")]
         public void ParseTemplate(int portalId, PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
             var portalTemplateImporter = new PortalTemplateImporter(t);
-            portalTemplateImporter.ParseTemplate(portalId, administratorId, mergeTabs, isNewPortal);
+            portalTemplateImporter.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         /// <summary>
@@ -1976,7 +1980,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
+        private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
                                  string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
         {
             // Add default workflows
@@ -1989,8 +1993,7 @@ namespace DotNetNuke.Entities.Portals
                 Exceptions.LogException(ex);
             }
 
-            var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
-            var portalTemplateImporter = new PortalTemplateImporter(t);
+            var portalTemplateImporter = new PortalTemplateImporter(template);
 
             if (string.IsNullOrEmpty(homeDirectory))
             {
@@ -2100,7 +2103,7 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         this.CreatePredefinedFolderTypes(portalId);
-                        portalTemplateImporter.ParseTemplateInternal(portalId, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
+                        portalTemplateImporter.ParseTemplateInternal(portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
                     }
                     catch (Exception exc1)
                     {
@@ -2400,10 +2403,24 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
         }
 
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
+        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        {
+            return this.CreatePortal(portalName, adminUserId, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+        }
+
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        {
+            return this.CreatePortal(portalName, adminUser, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+        }
+
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
         public class PortalTemplateInfo
         {
             private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
             private string resourceFilePath;
+            private string originalCultureCode;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.
@@ -2413,6 +2430,7 @@ namespace DotNetNuke.Entities.Portals
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
                 this.TemplateFilePath = templateFilePath;
+                this.originalCultureCode = cultureCode;
 
                 this.InitLocalizationFields(cultureCode);
                 this.InitNameAndDescription();
@@ -2440,6 +2458,10 @@ namespace DotNetNuke.Entities.Portals
             public string LanguageFilePath { get; private set; }
 
             public string Description { get; private set; }
+            internal DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo ToNewPortalTemplateInfo()
+            {
+                return new DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo(this.TemplateFilePath, this.originalCultureCode);
+            }
 
             private static string ReadLanguageFileValue(XDocument xmlDoc, string name)
             {
@@ -2505,17 +2527,18 @@ namespace DotNetNuke.Entities.Portals
             private void InitLocalizationFields(string cultureCode)
             {
                 this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
-                if (!string.IsNullOrEmpty(this.LanguageFilePath))
+                if (string.IsNullOrEmpty(this.LanguageFilePath))
                 {
-                    this.CultureCode = cultureCode;
+                    var locales = new List<string>();
+                    (cultureCode, locales) = PortalTemplateIO.Instance.GetTemplateLanguages(this.TemplateFilePath);
+                    if (string.IsNullOrEmpty(cultureCode))
+                    {
+                        var portalSettings = PortalSettings.Current;
+                        cultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                    }
                 }
-                else
-                {
-                    var portalSettings = PortalSettings.Current;
 
-                    // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
-                    this.CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
-                }
+                this.CultureCode = cultureCode;
             }
         }
     }

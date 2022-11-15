@@ -5,10 +5,12 @@
 namespace DotNetNuke.Entities.Portals.Templates
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
 
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
@@ -118,17 +120,18 @@ namespace DotNetNuke.Entities.Portals.Templates
         private void InitLocalizationFields(string cultureCode)
         {
             this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
-            if (!string.IsNullOrEmpty(this.LanguageFilePath))
+            if (string.IsNullOrEmpty(this.LanguageFilePath))
             {
-                this.CultureCode = cultureCode;
+                var locales = new List<string>();
+                (cultureCode, locales) = PortalTemplateIO.Instance.GetTemplateLanguages(this.TemplateFilePath);
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    var portalSettings = PortalSettings.Current;
+                    cultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                }
             }
-            else
-            {
-                var portalSettings = PortalSettings.Current;
 
-                // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
-                this.CultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
-            }
+            this.CultureCode = cultureCode;
         }
     }
 }
