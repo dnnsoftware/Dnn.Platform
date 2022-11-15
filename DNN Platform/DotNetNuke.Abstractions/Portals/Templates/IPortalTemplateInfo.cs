@@ -5,7 +5,7 @@
 namespace DotNetNuke.Abstractions.Portals.Templates
 {
     /// <summary>
-    /// Informational class for a Portal Template consisiting of a template file and (potentially) a resources file that correspond to the given culture code.
+    /// Informational class for a Portal Template consisting of a template file and (potentially) a resources file that correspond to the given culture code.
     /// </summary>
     public interface IPortalTemplateInfo
     {
