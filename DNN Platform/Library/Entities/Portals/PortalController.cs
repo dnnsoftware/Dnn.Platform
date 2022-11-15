@@ -2526,17 +2526,18 @@ namespace DotNetNuke.Entities.Portals
 
             private void InitLocalizationFields(string cultureCode)
             {
-                if (string.IsNullOrEmpty(cultureCode))
+                this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
+                if (string.IsNullOrEmpty(this.LanguageFilePath))
                 {
                     var locales = new List<string>();
                     (cultureCode, locales) = PortalTemplateIO.Instance.GetTemplateLanguages(this.TemplateFilePath);
                     if (string.IsNullOrEmpty(cultureCode))
                     {
                         var portalSettings = PortalSettings.Current;
-                        cultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                        cultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                     }
                 }
-                this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
+
                 this.CultureCode = cultureCode;
             }
         }

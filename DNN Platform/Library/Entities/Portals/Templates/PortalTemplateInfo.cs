@@ -119,7 +119,8 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         private void InitLocalizationFields(string cultureCode)
         {
-            if (string.IsNullOrEmpty(cultureCode))
+            this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
+            if (string.IsNullOrEmpty(this.LanguageFilePath))
             {
                 var locales = new List<string>();
                 (cultureCode, locales) = PortalTemplateIO.Instance.GetTemplateLanguages(this.TemplateFilePath);
@@ -129,7 +130,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     cultureCode = portalSettings != null ? PortalController.GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                 }
             }
-            this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
+
             this.CultureCode = cultureCode;
         }
     }
