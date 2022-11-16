@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.UI.WebControls;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -1063,14 +1064,39 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             missing = false;
                         }
-
-                        if (missing)
+                        bool isRootOrLocalizedParentExists = this.isRootPageOrLocalizedParentExists(workingTab, locale);
+                        if (missing && isRootOrLocalizedParentExists)
                         {
                             this.CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
+                        }
+                        if (missing && !isRootOrLocalizedParentExists)
+                        {
+                            addedAllMissingLanguages = false;
                         }
                     }
                 }
             }
+            return addedAllMissingLanguages;
+        }
+
+        /// <summary>
+        /// Checks if the page is root or has a localized parent.
+        /// If neither is true, then we cannot create localized version of the page for the given locale
+        /// </summary>
+        /// <param name="tab">The tab to be checked.</param>
+        /// <param name="locale">The locale to be checked.</param>
+        /// <returns></returns>
+        private bool isRootPageOrLocalizedParentExists(TabInfo tab, Locale locale)
+        {
+            // If root page, return true
+            if (Null.IsNull(tab.ParentId))
+            {
+                return true;
+            }
+            // Otherwise return true if localized parent is found
+            TabInfo parent = this.GetTab(tab.ParentId, tab.PortalID, false);
+            TabInfo localizedParent = this.GetTabByCulture(parent.TabID, parent.PortalID, locale);
+            return localizedParent != null;
         }
 
         /// <summary>

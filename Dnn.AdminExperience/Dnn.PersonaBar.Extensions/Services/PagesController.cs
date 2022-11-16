@@ -743,9 +743,9 @@ namespace Dnn.PersonaBar.Pages.Services
                     return this.GetForbiddenResponse();
                 }
 
-                this.tabController.AddMissingLanguages(this.PortalId, pageId);
+                bool allLanguagesAdded = this.tabController.AddMissingLanguages(this.PortalId, pageId);
                 this.tabController.ClearCache(this.PortalId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, AllLanguagesAdded = allLanguagesAdded });
             }
             catch (Exception ex)
             {
