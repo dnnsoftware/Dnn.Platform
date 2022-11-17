@@ -15,7 +15,7 @@
     </PackageReference>
     <PackageReference Include="Spectre.Console" Version="0.44.0" />
     <PackageReference Include="Spectre.Console.Analyzer" Version="0.44.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="17.0.21" />
+    <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
   </ItemGroup>
 
   <ItemGroup>
