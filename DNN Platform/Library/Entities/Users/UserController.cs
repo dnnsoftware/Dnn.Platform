@@ -670,12 +670,7 @@ namespace DotNetNuke.Entities.Users
             return GetUnAuthorizedUsers(portalId, false, false);
         }
 
-        /// <summary>
-        /// Gets a User from the DataStore.
-        /// </summary>
-        /// <param name="portalId">The id of the site (portal).</param>
-        /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a <see cref="UserInfo"/> object.</returns>
+        /// <inheritdoc cref="IUserController.GetUserById"/>
         public static UserInfo GetUserById(int portalId, int userId)
         {
             // stop any sql calls for guest users
@@ -1676,48 +1671,19 @@ namespace DotNetNuke.Entities.Users
             return GetAbsoluteUrl(portalId, relativePath);
         }
 
-        /// <summary>
-        /// Gets a user from the DataStore.
-        /// </summary>
-        /// <param name="portalId">The id of the site (portal).</param>
-        /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
-        /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
+        /// <inheritdoc />
         public UserInfo GetUser(int portalId, int userId)
         {
             return GetUserById(portalId, userId);
         }
 
-        /// <summary>
-        /// Gets a user by it's display name.
-        /// </summary>
-        /// <param name="portalId">The id of the site (portal).</param>
-        /// <param name="displayName">The display name to search.</param>
-        /// <returns>A user as a <see cref="UserInfo"/> object.</returns>
-        /// <remarks>
-        /// This method will return the first match, unless the settings require unique display names,
-        /// this method may return any user that matches that display name.
-        /// </remarks>
+        /// <inheritdoc />
         public UserInfo GetUserByDisplayname(int portalId, string displayName)
         {
             return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
         }
 
-        /// <summary>
-        /// Provides advanced paged search functionality for users.
-        /// </summary>
-        /// <param name="portalId">The site (portal) id to search in.</param>
-        /// <param name="userId">The requesting user id (for view permissions of the search).</param>
-        /// <param name="filterUserId">The user id for filtering relationships on, use <see cref="Null.NullInteger"/> to not use this filter.</param>
-        /// <param name="filterRoleId">The role id to filter on, use <see cref="Null.NullInteger"/> to not use this filter.</param>
-        /// <param name="relationTypeId">The relationship type id to filter on, use <see cref="Null.NullInteger"/> to not use this filter.</param>
-        /// <param name="isAdmin">A value indicating whether the requesting user is an administrator.</param>
-        /// <param name="pageIndex">The page to return.</param>
-        /// <param name="pageSize">The size of each page.</param>
-        /// <param name="sortColumn">The name of the column to sort on.</param>
-        /// <param name="sortAscending">A value indicating whether to sort ascending, will sort descending if false.</param>
-        /// <param name="propertyNames">A comma separated list of property names on which to search.</param>
-        /// <param name="propertyValues">A comma separated list of property values to search.</param>
-        /// <returns>An IList of <see cref="UserInfo"/> containing the search results.</returns>
+        /// <inheritdoc />
         public IList<UserInfo> GetUsersAdvancedSearch(
             int portalId,
             int userId,
@@ -1747,17 +1713,7 @@ namespace DotNetNuke.Entities.Users
                 propertyValues);
         }
 
-        /// <summary>
-        /// Provides basic paged search functionality for users.
-        /// </summary>
-        /// <param name="portalId">The site (portal) id on which to perform the user search.</param>
-        /// <param name="pageIndex">the page to get.</param>
-        /// <param name="pageSize">the size of each page.</param>
-        /// <param name="sortColumn">The name of the column to sort by.</param>
-        /// <param name="sortAscending">A value indicating whether to sort ascending, will sort descending if false.</param>
-        /// <param name="propertyName">The property name on which to filter by.</param>
-        /// <param name="propertyValue">The property value to filter the column by.</param>
-        /// <returns>An IList of <see cref="UserInfo"/> representing the found users.</returns>
+        /// <inheritdoc />
         public IList<UserInfo> GetUsersBasicSearch(
             int portalId,
             int pageIndex,
@@ -1777,16 +1733,7 @@ namespace DotNetNuke.Entities.Users
                 propertyValue);
         }
 
-        /// <summary>
-        /// Gets the user profile picture relative Url.
-        /// </summary>
-        /// <param name="userId">The id of the users to get the profile picture from.</param>
-        /// <param name="width">Width in pixels.</param>
-        /// <param name="height">Height in pixels.</param>
-        /// <returns>Relative url,  e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal.</returns>
-        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
-        /// code behind - avatar.ImageUrl = UserController.Instance.GetUserProfilePictureUrl(userInfo.UserID, 32, 32).
-        /// </remarks>
+        /// <inheritdoc />
         public string GetUserProfilePictureUrl(int userId, int width, int height)
         {
             var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
@@ -1799,17 +1746,7 @@ namespace DotNetNuke.Entities.Users
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
 
-        /// <summary>
-        /// Checks if a username is valid.
-        /// </summary>
-        /// <param name="userName">The username to check.</param>
-        /// <remarks>
-        /// Validate username against bad characters; it must not start or end with space,
-        /// must not contain control characters, and not contain special punctuations
-        /// Printable ASCII: " !\"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-        /// Fallback to default if there is no host setting configured.
-        /// </remarks>
-        /// <returns>A value indicating whether the username is valid.</returns>
+        /// <inheritdoc />
         public bool IsValidUserName(string userName)
         {
             char[] unallowedAscii = HostController.Instance.GetString("UsernameUnallowedCharacters", Globals.USERNAME_UNALLOWED_ASCII).ToCharArray();
@@ -1827,14 +1764,7 @@ namespace DotNetNuke.Entities.Users
                         userName.IndexOfAny(unallowedAscii) < 0;
         }
 
-        /// <summary>
-        /// Gets the user profile picture url.
-        /// </summary>
-        /// <param name="portalId">The portal id the user belongs to.</param>
-        /// <param name="userId">The id if the user to get the profile picture from.</param>
-        /// <param name="width">The width in pixels of the picture.</param>
-        /// <param name="height">The height in pixels of the picture.</param>
-        /// <returns>A url to the profile picture for the user.</returns>
+        /// <inheritdoc />
         public string GetUserProfilePictureUrl(int portalId, int userId, int width, int height)
         {
             var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
@@ -1862,21 +1792,13 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// <summary>
-        /// Gets the current user information.
-        /// </summary>
-        /// <returns>The user information in a <see cref="UserInfo"/> object.</returns>
+        /// <inheritdoc />
         UserInfo IUserController.GetCurrentUserInfo()
         {
             return GetCurrentUserInternal();
         }
 
-        /// <summary>
-        /// Gets a user by it's user id.
-        /// </summary>
-        /// <param name="portalId">The site (portal) id of the user.</param>
-        /// <param name="userId">The user id of the user.</param>
-        /// <returns>The user information in a <see cref="UserInfo"/> object.</returns>
+        /// <inheritdoc />
         UserInfo IUserController.GetUserById(int portalId, int userId)
         {
             return GetUserById(portalId, userId);

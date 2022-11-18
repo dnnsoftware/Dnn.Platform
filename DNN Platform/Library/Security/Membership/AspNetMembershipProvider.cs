@@ -618,16 +618,8 @@ namespace DotNetNuke.Security.Membership
             return objUserInfo;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUserByDisplayName retrieves a User from the DataStore.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="displayName">The displayName of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object.</returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
+
         public override UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
             IDataReader dr = this.dataProvider.GetUserByDisplayName(portalId, displayName);
@@ -796,22 +788,6 @@ namespace DotNetNuke.Security.Membership
                                                                 superUsersOnly), ref totalRecords);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="userId"></param>
-        /// <param name="filterUserId"></param>
-        /// <param name="filterRoleId"></param>
-        /// <param name="relationshipTypeId"> </param>
-        /// <param name="isAdmin"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="sortColumn"></param>
-        /// <param name="sortAscending"></param>
-        /// <param name="propertyNames"></param>
-        /// <param name="propertyValues"></param>
-        /// <returns></returns>
         /// <inheritdoc/>
         public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId,
                                                                int filterRoleId, int relationshipTypeId,
@@ -828,17 +804,6 @@ namespace DotNetNuke.Security.Membership
                                                                      propertyValues));
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="sortColumn"></param>
-        /// <param name="sortAscending"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="propertyValue"></param>
-        /// <returns></returns>
         /// <inheritdoc/>
         public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
                                                             bool sortAscending, string propertyName,
