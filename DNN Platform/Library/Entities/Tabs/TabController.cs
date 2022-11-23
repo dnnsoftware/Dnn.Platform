@@ -1036,8 +1036,10 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
-        public void AddMissingLanguages(int portalId, int tabId)
+        /// <returns>Whether all missing languages were added.</returns>
+        public bool AddMissingLanguages(int portalId, int tabId)
         {
+            var addedAllMissingLanguages = true;
             var currentTab = this.GetTab(tabId, portalId, false);
             if (currentTab.CultureCode != null)
             {
@@ -1064,40 +1066,26 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             missing = false;
                         }
-                        bool isRootOrLocalizedParentExists = this.isRootPageOrLocalizedParentExists(workingTab, locale);
-                        if (missing && isRootOrLocalizedParentExists)
+
+                        if (missing)
                         {
-                            this.CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
-                        }
-                        if (missing && !isRootOrLocalizedParentExists)
-                        {
-                            addedAllMissingLanguages = false;
+                            bool isRootOrLocalizedParentExists = this.CanLocalizeTabToLocale(workingTab, locale);
+                            if (isRootOrLocalizedParentExists)
+                            {
+                                this.CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
+                            }
+                            else
+                            {
+                                addedAllMissingLanguages = false;
+                            }
                         }
                     }
                 }
             }
+
             return addedAllMissingLanguages;
         }
 
-        /// <summary>
-        /// Checks if the page is root or has a localized parent.
-        /// If neither is true, then we cannot create localized version of the page for the given locale
-        /// </summary>
-        /// <param name="tab">The tab to be checked.</param>
-        /// <param name="locale">The locale to be checked.</param>
-        /// <returns></returns>
-        private bool isRootPageOrLocalizedParentExists(TabInfo tab, Locale locale)
-        {
-            // If root page, return true
-            if (Null.IsNull(tab.ParentId))
-            {
-                return true;
-            }
-            // Otherwise return true if localized parent is found
-            TabInfo parent = this.GetTab(tab.ParentId, tab.PortalID, false);
-            TabInfo localizedParent = this.GetTabByCulture(parent.TabID, parent.PortalID, locale);
-            return localizedParent != null;
-        }
 
         /// <summary>
         /// Adds a tab.
@@ -2420,6 +2408,8 @@ namespace DotNetNuke.Entities.Tabs
             objTabUrl.PortalAliasUsage = PortalAliasUsageType.Default;
         }
 
+
+
         private static int GetIndexOfTab(TabInfo objTab, IEnumerable<TabInfo> tabs)
         {
             return Null.NullInteger + tabs.TakeWhile(tab => tab.TabID != objTab.TabID).Count();
@@ -2508,6 +2498,27 @@ namespace DotNetNuke.Entities.Tabs
             {
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
+        }
+
+        /// <summary>
+        /// Checks if the page is root or has a localized parent.
+        /// If neither is true, then we cannot create localized version of the page for the given locale.
+        /// </summary>
+        /// <param name="tab">The tab to be checked.</param>
+        /// <param name="locale">The locale to be checked.</param>
+        /// <returns>Whether the tab can be localized to the locale.</returns>
+        private bool CanLocalizeTabToLocale(TabInfo tab, Locale locale)
+        {
+            // If root page, can be localized
+            if (Null.IsNull(tab.ParentId))
+            {
+                return true;
+            }
+
+            // Otherwise can be localized only if localized parent is found
+            TabInfo parent = this.GetTab(tab.ParentId, tab.PortalID, false);
+            TabInfo localizedParent = this.GetTabByCulture(parent.TabID, parent.PortalID, locale);
+            return localizedParent != null;
         }
 
         private bool IsAdminTab(TabInfo tab)
