@@ -722,6 +722,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIR))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIR))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostBrowserRootDir = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRID))))
             {
                 var settingValue =
@@ -738,6 +752,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         currentSettings.BrowserRootDirId = -1;
                     }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIRFORIMG))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTBROWSERROOTDIRFORIMG))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostBrowserRootDirForImg = settingValue;
                 }
             }
 
@@ -764,6 +792,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (
                 filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIR))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIR))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostUploadDir = settingValue;
+                }
+            }
+
+            if (
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID))))
             {
                 var settingValue =
@@ -780,6 +822,20 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         currentSettings.UploadDirId = -1;
                     }
+                }
+            }
+
+            if (
+                filteredSettings.Any(
+                    setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIRFORIMG))))
+            {
+                var settingValue =
+                    filteredSettings.FirstOrDefault(
+                        s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HOSTUPLOADDIRFORIMG))).Value;
+
+                if (!string.IsNullOrEmpty(settingValue))
+                {
+                    currentSettings.HostUploadDirForImg = settingValue;
                 }
             }
 

@@ -300,11 +300,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettings portalSettings)
         {
-            try
+            if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
                 folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
             }
-            catch (Exception)
+            else
             {
                 folderPath = folderPath.Replace("\\", "/");
             }

@@ -126,18 +126,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Gets or sets a value indicating whether [current portal only].</summary>
         /// <value><c>true</c> if [current portal only]; otherwise, <c>false</c>.</value>
-        public bool CurrentPortalOnly
-        {
-            get
-            {
-                return this.ViewState[KeyCurrentPortalOnly] != null && (bool)this.ViewState[KeyCurrentPortalOnly];
-            }
-
-            set
-            {
-                this.ViewState[KeyCurrentPortalOnly] = value;
-            }
-        }
+        public bool CurrentPortalOnly { get; set; }
 
         /// <summary>Gets or sets the Current or selected Tab ID.</summary>
         public int CurrentOrSelectedTabId
@@ -813,23 +802,51 @@ namespace DNNConnect.CKEditorProvider
 
             this.OverrideFileOnUpload.Checked = importedSettings.OverrideFileOnUpload;
 
+            this.HostBrowserRootFolderOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
+            if (this.HostBrowserRootFolderOption.Visible)
+            {
+                this.HostBrowserRootDir.Text = importedSettings.HostBrowserRootDir;
+            }
+
+            this.BrowserRootDirOption.Visible = !this.HostBrowserRootFolderOption.Visible;
             this.BrowserRootDir.SelectedValue =
                  this.BrowserRootDir.Items.FindByValue(importedSettings.BrowserRootDirId.ToString()) != null
                      ? importedSettings.BrowserRootDirId.ToString()
                      : "-1";
 
+            this.HostBrowserRootFolderForImgOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
+            if (this.HostBrowserRootFolderForImgOption.Visible)
+            {
+                this.HostBrowserRootDirForImg.Text = importedSettings.HostBrowserRootDirForImg;
+            }
+
+            this.BrowserRootDirForImgOption.Visible = !this.HostBrowserRootFolderForImgOption.Visible;
             this.BrowserRootDirForImg.SelectedValue =
                  this.BrowserRootDirForImg.Items.FindByValue(importedSettings.BrowserRootDirForImgId.ToString()) != null
                      ? importedSettings.BrowserRootDirForImgId.ToString()
                      : "-1";
 
+            this.HostUploadDirOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
+            if (this.HostUploadDirOption.Visible)
+            {
+                this.HostUploadDir.Text = importedSettings.HostUploadDir;
+            }
+
+            this.UploadDirOption.Visible = !this.HostUploadDirOption.Visible;
             this.UploadDir.SelectedValue = this.UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
                                            != null
                                                ? importedSettings.UploadDirId.ToString()
                                                : "-1";
 
+            this.HostUploadDirForImgOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
+            if (this.HostUploadDirForImgOption.Visible)
+            {
+                this.HostUploadDirForImg.Text = importedSettings.HostUploadDirForImg;
+            }
+
+            this.UploadDirForImgOption.Visible = !this.HostUploadDirForImgOption.Visible;
             this.UploadDirForImg.SelectedValue = this.UploadDirForImg.Items.FindByValue(importedSettings.UploadDirForImgId.ToString())
-                                           != null
+                                                 != null
                                                ? importedSettings.UploadDirForImgId.ToString()
                                                : "-1";
 
@@ -1055,17 +1072,17 @@ namespace DNNConnect.CKEditorProvider
 
             this.lblPortal.Text += !this.IsAllInstances ? this.portalSettings.PortalName : "Host";
 
-            ModuleDefinitionInfo moduleDefinitionInfo;
+            ModuleDefinitionInfo moduleDefinitionInfo = null;
             var portalId = this.portalSettings?.PortalId ?? Host.HostPortalID;
             var moduleInfo = new ModuleController().GetModuleByDefinition(
                 portalId, "User Accounts");
 
-            try
+            if (this.CurrentModule != null)
             {
                 moduleDefinitionInfo =
                     ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
-            catch (Exception)
+            if(moduleDefinitionInfo == null)
             {
                 moduleDefinitionInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
                     "User Accounts", moduleInfo.DesktopModuleID);
@@ -1096,14 +1113,7 @@ namespace DNNConnect.CKEditorProvider
                 this.lblModType.Text = string.Empty;
             }
 
-            try
-            {
-                this.lblModName.Text += this.CurrentModule.ModuleTitle;
-            }
-            catch (Exception)
-            {
-                this.lblModName.Text += moduleInfo.ModuleTitle;
-            }
+            this.lblModName.Text += this.CurrentModule?.ModuleTitle ?? moduleInfo.ModuleTitle;
 
             if (this.request.QueryString["minc"] != null)
             {
@@ -2737,9 +2747,13 @@ namespace DNNConnect.CKEditorProvider
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SHOWPAGELINKSTABFIRST}", this.ShowPageLinksTabFirst.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.OVERRIDEFILEONUPLOAD}", this.OverrideFileOnUpload.Checked.ToString());
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.SUBDIRS}", this.cbBrowserDirs.Checked.ToString());
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTBROWSERROOTDIR}", this.HostBrowserRootDir.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRID}", this.BrowserRootDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTBROWSERROOTDIRFORIMG}", this.HostBrowserRootDirForImg.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.BROWSERROOTDIRFORIMGID}", this.BrowserRootDirForImg.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTUPLOADDIR}", this.HostUploadDir.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRID}", this.UploadDir.SelectedValue);
+            EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.HOSTUPLOADDIRFORIMG}", this.HostUploadDirForImg.Text);
             EditorController.AddOrUpdateEditorHostSetting($"{key}{SettingConstants.UPLOADDIRFORIMGID}", this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
@@ -3387,9 +3401,13 @@ namespace DNNConnect.CKEditorProvider
             exportSettings.ShowPageLinksTabFirst = this.ShowPageLinksTabFirst.Checked;
             exportSettings.OverrideFileOnUpload = this.OverrideFileOnUpload.Checked;
             exportSettings.SubDirs = this.cbBrowserDirs.Checked;
+            exportSettings.HostBrowserRootDir = this.HostBrowserRootDir.Text;
             exportSettings.BrowserRootDirId = int.Parse(this.BrowserRootDir.SelectedValue);
+            exportSettings.HostBrowserRootDirForImg = this.HostBrowserRootDirForImg.Text;
             exportSettings.BrowserRootDirForImgId = int.Parse(this.BrowserRootDirForImg.SelectedValue);
+            exportSettings.HostUploadDir = this.HostUploadDir.Text;
             exportSettings.UploadDirId = int.Parse(this.UploadDir.SelectedValue);
+            exportSettings.HostUploadDirForImg = this.HostUploadDirForImg.Text;
             exportSettings.UploadDirForImgId = int.Parse(this.UploadDirForImg.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
