@@ -713,7 +713,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
                 var defaultLocale = this.localeController.GetDefaultLocale(this.PortalId);
                 this.tabController.LocalizeTab(currentTab, defaultLocale, true);
-                this.tabController.AddMissingLanguages(this.PortalId, pageId);
+                this.tabController.AddMissingLanguagesWithWarnings(this.PortalId, pageId);
                 this.tabController.ClearCache(this.PortalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -743,7 +743,7 @@ namespace Dnn.PersonaBar.Pages.Services
                     return this.GetForbiddenResponse();
                 }
 
-                bool allLanguagesAdded = this.tabController.AddMissingLanguages(this.PortalId, pageId);
+                bool allLanguagesAdded = this.tabController.AddMissingLanguagesWithWarnings(this.PortalId, pageId);
                 this.tabController.ClearCache(this.PortalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, AllLanguagesAdded = allLanguagesAdded });
             }

@@ -22,8 +22,15 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
+        void AddMissingLanguages(int portalId, int tabId);
+
+        /// <summary>
+        /// Adds localized copies of the page in all missing languages.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
         /// <returns>Whether all missing languages were added.</returns>
-        bool AddMissingLanguages(int portalId, int tabId);
+        bool AddMissingLanguagesWithWarnings(int portalId, int tabId);
 
         /// <summary>
         /// Adds a tab.
