@@ -118,7 +118,9 @@ class PageLocalization extends Component {
         const {tabId} = props.page;
         props.dispatch(LanguagesActions.addMissingLanguages(tabId, (data) => {
             if (data && data.Success && !data.AllLanguagesAdded) {
-                utils.notify('Success, but not all languages were added, because the parent page does not have them all.', 3000);
+                utils.notify(Localization.get("OnlyAddedSomeMissingLanguagesWarning"), { clickToClose: true });
+            } else if (!data || !data.Success) {
+                utils.notifyError(Localization.get("AnErrorOccurred"));
             }
             this.getLanguages();
         }));
