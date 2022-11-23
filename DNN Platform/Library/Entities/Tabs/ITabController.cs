@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -22,6 +23,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
+        [Obsolete("This has been deprecated in favor of AddMissingLanguagesWithWarnings. Scheduled for removal in v11.0.0")]
         void AddMissingLanguages(int portalId, int tabId);
 
         /// <summary>
