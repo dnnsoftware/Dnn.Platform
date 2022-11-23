@@ -2408,8 +2408,6 @@ namespace DotNetNuke.Entities.Tabs
             objTabUrl.PortalAliasUsage = PortalAliasUsageType.Default;
         }
 
-
-
         private static int GetIndexOfTab(TabInfo objTab, IEnumerable<TabInfo> tabs)
         {
             return Null.NullInteger + tabs.TakeWhile(tab => tab.TabID != objTab.TabID).Count();
