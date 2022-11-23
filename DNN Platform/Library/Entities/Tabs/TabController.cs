@@ -11,7 +11,6 @@ namespace DotNetNuke.Entities.Tabs
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.UI.WebControls;
     using System.Xml;
 
     using DotNetNuke.Common;
