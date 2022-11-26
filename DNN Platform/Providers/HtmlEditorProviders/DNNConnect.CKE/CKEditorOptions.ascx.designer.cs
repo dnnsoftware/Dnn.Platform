@@ -375,15 +375,6 @@ namespace DNNConnect.CKEditorProvider
         protected global::System.Web.UI.WebControls.CheckBoxList chblBrowsGr;
 
         /// <summary>
-        /// HostBrowserRootFolderOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HostBrowserRootFolderOption;
-
-        /// <summary>
         /// HostBrowserRootFolder control.
         /// </summary>
         /// <remarks>
@@ -400,15 +391,6 @@ namespace DNNConnect.CKEditorProvider
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox HostBrowserRootDir;
-
-        /// <summary>
-        /// BrowserRootDirOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl BrowserRootDirOption;
 
         /// <summary>
         /// BrowserRootFolder control.
@@ -429,15 +411,6 @@ namespace DNNConnect.CKEditorProvider
         protected global::System.Web.UI.WebControls.DropDownList BrowserRootDir;
 
         /// <summary>
-        /// HostBrowserRootFolderForImgOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HostBrowserRootFolderForImgOption;
-
-        /// <summary>
         /// HostBrowserRootFolderForImg control.
         /// </summary>
         /// <remarks>
@@ -454,15 +427,6 @@ namespace DNNConnect.CKEditorProvider
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox HostBrowserRootDirForImg;
-
-        /// <summary>
-        /// BrowserRootDirForImgOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl BrowserRootDirForImgOption;
 
         /// <summary>
         /// BrowserRootFolderForImg control.
@@ -501,15 +465,6 @@ namespace DNNConnect.CKEditorProvider
         protected global::System.Web.UI.WebControls.CheckBox cbBrowserDirs;
 
         /// <summary>
-        /// HostUploadDirOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HostUploadDirOption;
-
-        /// <summary>
         /// HostUploadFolderLabel control.
         /// </summary>
         /// <remarks>
@@ -528,15 +483,6 @@ namespace DNNConnect.CKEditorProvider
         protected global::System.Web.UI.WebControls.TextBox HostUploadDir;
 
         /// <summary>
-        /// UploadDirOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UploadDirOption;
-
-        /// <summary>
         /// UploadFolderLabel control.
         /// </summary>
         /// <remarks>
@@ -553,15 +499,6 @@ namespace DNNConnect.CKEditorProvider
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList UploadDir;
-
-        /// <summary>
-        /// HostUploadDirForImgOption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HostUploadDirForImgOption;
 
         /// <summary>
         /// HostUploadFolderLabelForImg control.

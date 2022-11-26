@@ -77,6 +77,11 @@ namespace DNNConnect.CKEditorProvider.Browser
         private EditorProviderSettings currentSettings = new EditorProviderSettings();
 
         /// <summary>
+        /// Settings Base for All Portals.
+        /// </summary>
+        private EditorProviderSettings allPortalsSettings = new EditorProviderSettings();
+
+        /// <summary>
         ///   The portal settings.
         /// </summary>
         private IPortalSettings portalSettings;
@@ -836,8 +841,14 @@ namespace DNNConnect.CKEditorProvider.Browser
             Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
-
             var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
+
+            this.allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
+                this.portalSettings,
+                this.currentSettings,
+                settingsDictionary,
+                "DNNCKP#-1#",
+                portalRoles);
 
             switch (this.currentSettings.SettingMode)
             {
@@ -1645,7 +1656,13 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             IFolderInfo startingFolderInfo = null;
 
-            if (this.browserModus == "Image" && !this.currentSettings.BrowserRootDirForImgId.Equals(-1))
+            if (this.browserModus == "Image" && !string.IsNullOrEmpty(this.allPortalsSettings.HostBrowserRootDirForImg))
+            {
+                startingFolderInfo = Utility.EnsureGetFolder(
+                    this.portalSettings.PortalId,
+                    this.allPortalsSettings.HostBrowserRootDirForImg);
+            }
+            else if (this.browserModus == "Image" && !this.currentSettings.BrowserRootDirForImgId.Equals(-1))
             {
                 var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirForImgId);
 
@@ -1654,9 +1671,14 @@ namespace DNNConnect.CKEditorProvider.Browser
                     startingFolderInfo = rootFolder;
                 }
             }
+            else if (!string.IsNullOrEmpty(this.allPortalsSettings.HostBrowserRootDir))
+            {
+                startingFolderInfo = Utility.EnsureGetFolder(
+                    this.portalSettings.PortalId,
+                    this.allPortalsSettings.HostBrowserRootDir);
+            }
             else if (!this.currentSettings.BrowserRootDirId.Equals(-1))
             {
-                // var rootFolder = new FolderController().GetFolderInfo(this.portalSettings.PortalId, this.currentSettings.BrowserRootDirId);
                 var rootFolder = FolderManager.Instance.GetFolder(this.currentSettings.BrowserRootDirId);
 
                 if (rootFolder != null)
@@ -2389,27 +2411,29 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 var currentFolderInfo = this.GetCurrentFolder();
 
-                if (command == "ImageUpload" && !this.currentSettings.UploadDirForImgId.Equals(-1) && !this.currentSettings.SubDirs)
+                IFolderInfo uploadFolder = null;
+                if (command == "ImageUpload" && !string.IsNullOrEmpty(this.allPortalsSettings.HostUploadDirForImg) && !this.currentSettings.SubDirs)
                 {
-                    var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirForImgId);
-
-                    if (uploadFolder != null)
-                    {
-                        uploadPhysicalPath = uploadFolder.PhysicalPath;
-
-                        currentFolderInfo = uploadFolder;
-                    }
+                    uploadFolder = Utility.EnsureGetFolder(this.portalSettings.PortalId, this.allPortalsSettings.HostUploadDirForImg);
+                }
+                else if (command == "ImageUpload" && !this.currentSettings.UploadDirForImgId.Equals(-1) && !this.currentSettings.SubDirs)
+                {
+                    uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirForImgId);
+                }
+                else if (!string.IsNullOrEmpty(this.allPortalsSettings.HostUploadDir) && !this.currentSettings.SubDirs)
+                {
+                    uploadFolder = Utility.EnsureGetFolder(this.portalSettings.PortalId, this.allPortalsSettings.HostUploadDir);
                 }
                 else if (!this.currentSettings.UploadDirId.Equals(-1) && !this.currentSettings.SubDirs)
                 {
-                    var uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirId);
+                    uploadFolder = FolderManager.Instance.GetFolder(this.currentSettings.UploadDirId);
+                }
 
-                    if (uploadFolder != null)
-                    {
-                        uploadPhysicalPath = uploadFolder.PhysicalPath;
+                if (uploadFolder != null)
+                {
+                    uploadPhysicalPath = uploadFolder.PhysicalPath;
 
-                        currentFolderInfo = uploadFolder;
-                    }
+                    currentFolderInfo = uploadFolder;
                 }
 
                 string sFilePath = Path.Combine(uploadPhysicalPath, fileName);
@@ -2419,7 +2443,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
                 }
 
-                if (bIsImage)
+                if (!bIsImage)
+                {
+                    FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                }
+                else
                 {
                     int maxWidth = this.currentSettings.ResizeWidthUpload;
                     int maxHeight = this.currentSettings.ResizeHeightUpload;

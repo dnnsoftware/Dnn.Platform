@@ -132,19 +132,19 @@
                         <asp:label id="lblBrowAllow" runat="server" CssClass="dnnLabel">File Browser Security</asp:label>
                         <asp:CheckBoxList ID="chblBrowsGr" runat="server"></asp:CheckBoxList>
 				    </div>
-				    <div class="dnnFormItem" runat="server" id="HostBrowserRootFolderOption">
-                        <asp:label id="HostBrowserRootFolder" runat="server" CssClass="dnnLabel">Browser Root Folder Name for all portals</asp:label>
+				    <div class="dnnFormItem">
+                        <asp:label id="HostBrowserRootFolder" runat="server" CssClass="dnnLabel">Browser Root Folder Name for all portals (overrides setting below)</asp:label>
                         <asp:TextBox ID="HostBrowserRootDir" runat="server"></asp:TextBox>
 				    </div>
-				    <div class="dnnFormItem" runat="server" id="BrowserRootDirOption">
+				    <div class="dnnFormItem">
                         <asp:label id="BrowserRootFolder" runat="server" CssClass="dnnLabel">Browser Root Folder</asp:label>
                         <asp:DropDownList ID="BrowserRootDir" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
-                    <div class="dnnFormItem" runat="server" id="HostBrowserRootFolderForImgOption">
-                        <asp:label id="HostBrowserRootFolderForImg" runat="server" CssClass="dnnLabel">Browser Images Root Folder Name for all portals</asp:label>
+                    <div class="dnnFormItem">
+                        <asp:label id="HostBrowserRootFolderForImg" runat="server" CssClass="dnnLabel">Browser Images Root Folder Name for all portals (overrides setting below)</asp:label>
                         <asp:TextBox ID="HostBrowserRootDirForImg" runat="server"></asp:TextBox>
                     </div>
-				    <div class="dnnFormItem" runat="server" id="BrowserRootDirForImgOption">
+				    <div class="dnnFormItem">
                         <asp:label id="BrowserRootFolderForImg" runat="server" CssClass="dnnLabel">Browser Root Folder for images</asp:label>
                         <asp:DropDownList ID="BrowserRootDirForImg" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
@@ -152,16 +152,16 @@
                         <asp:label id="lblBrowserDirs" runat="server" CssClass="dnnLabel">Use Subdirs for non Admins?</asp:label>
                         <asp:CheckBox ID="cbBrowserDirs" runat="server"></asp:CheckBox>
 				    </div>
-				    <div class="dnnFormItem" runat="server" id="HostUploadDirOption">
-                        <asp:label id="HostUploadFolderLabel" runat="server" CssClass="dnnLabel">Default Upload Folder for all portals</asp:label>
+				    <div class="dnnFormItem">
+                        <asp:label id="HostUploadFolderLabel" runat="server" CssClass="dnnLabel">Default Upload Folder for all portals (overrides setting below)</asp:label>
                         <asp:TextBox ID="HostUploadDir" runat="server"></asp:TextBox>
 				    </div>
-				    <div class="dnnFormItem" runat="server" id="UploadDirOption">
+				    <div class="dnnFormItem">
                         <asp:label id="UploadFolderLabel" runat="server" CssClass="dnnLabel">Default Upload Folder</asp:label>
                         <asp:DropDownList ID="UploadDir" runat="server" CssClass="DefaultDropDown"></asp:DropDownList>
 				    </div>
-				    <div class="dnnFormItem" runat="server" id="HostUploadDirForImgOption">
-                        <asp:label id="HostUploadFolderLabelForImg" runat="server" CssClass="dnnLabel">Default Upload Folder for images for all portals</asp:label>
+				    <div class="dnnFormItem">
+                        <asp:label id="HostUploadFolderLabelForImg" runat="server" CssClass="dnnLabel">Default Upload Folder for images for all portals (overrides setting below)</asp:label>
                         <asp:TextBox ID="HostUploadDirForImg" runat="server"></asp:TextBox>
 				    </div>
 				    <div class="dnnFormItem" runat="server" id="UploadDirForImgOption">

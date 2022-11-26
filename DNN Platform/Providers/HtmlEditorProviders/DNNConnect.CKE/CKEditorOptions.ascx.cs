@@ -802,49 +802,38 @@ namespace DNNConnect.CKEditorProvider
 
             this.OverrideFileOnUpload.Checked = importedSettings.OverrideFileOnUpload;
 
-            this.HostBrowserRootFolderOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
-            if (this.HostBrowserRootFolderOption.Visible)
-            {
-                this.HostBrowserRootDir.Text = importedSettings.HostBrowserRootDir;
-            }
+            // get the all-sites settings to be able to to show overridden values
+            // when we're not in all-sites mode
+            var allPortalsSettings = SettingsUtil.LoadEditorSettingsByKey(
+                this.portalSettings, this.currentSettings, EditorController.GetEditorHostSettings(), "DNNCKP#-1#", new List<RoleInfo>());
 
-            this.BrowserRootDirOption.Visible = !this.HostBrowserRootFolderOption.Visible;
+            this.HostBrowserRootDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostBrowserRootDir.Text = this.HostBrowserRootDir.ReadOnly ? allPortalsSettings.HostBrowserRootDir : importedSettings.HostBrowserRootDir;
+
             this.BrowserRootDir.SelectedValue =
                  this.BrowserRootDir.Items.FindByValue(importedSettings.BrowserRootDirId.ToString()) != null
                      ? importedSettings.BrowserRootDirId.ToString()
                      : "-1";
 
-            this.HostBrowserRootFolderForImgOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
-            if (this.HostBrowserRootFolderForImgOption.Visible)
-            {
-                this.HostBrowserRootDirForImg.Text = importedSettings.HostBrowserRootDirForImg;
-            }
+            this.HostBrowserRootDirForImg.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostBrowserRootDirForImg.Text = this.HostBrowserRootDirForImg.ReadOnly ? allPortalsSettings.HostBrowserRootDirForImg : importedSettings.HostBrowserRootDirForImg;
 
-            this.BrowserRootDirForImgOption.Visible = !this.HostBrowserRootFolderForImgOption.Visible;
             this.BrowserRootDirForImg.SelectedValue =
                  this.BrowserRootDirForImg.Items.FindByValue(importedSettings.BrowserRootDirForImgId.ToString()) != null
                      ? importedSettings.BrowserRootDirForImgId.ToString()
                      : "-1";
 
-            this.HostUploadDirOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
-            if (this.HostUploadDirOption.Visible)
-            {
-                this.HostUploadDir.Text = importedSettings.HostUploadDir;
-            }
+            this.HostUploadDir.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostUploadDir.Text = this.HostUploadDir.ReadOnly ? allPortalsSettings.HostUploadDir : importedSettings.HostUploadDir;
 
-            this.UploadDirOption.Visible = !this.HostUploadDirOption.Visible;
             this.UploadDir.SelectedValue = this.UploadDir.Items.FindByValue(importedSettings.UploadDirId.ToString())
                                            != null
                                                ? importedSettings.UploadDirId.ToString()
                                                : "-1";
 
-            this.HostUploadDirForImgOption.Visible = this.IsHostMode && !this.CurrentPortalOnly;
-            if (this.HostUploadDirForImgOption.Visible)
-            {
-                this.HostUploadDirForImg.Text = importedSettings.HostUploadDirForImg;
-            }
+            this.HostUploadDirForImg.ReadOnly = !this.IsHostMode || this.CurrentPortalOnly;
+            this.HostUploadDirForImg.Text = this.HostUploadDirForImg.ReadOnly ? allPortalsSettings.HostUploadDirForImg : importedSettings.HostUploadDirForImg;
 
-            this.UploadDirForImgOption.Visible = !this.HostUploadDirForImgOption.Visible;
             this.UploadDirForImg.SelectedValue = this.UploadDirForImg.Items.FindByValue(importedSettings.UploadDirForImgId.ToString())
                                                  != null
                                                ? importedSettings.UploadDirForImgId.ToString()
@@ -1920,9 +1909,9 @@ namespace DNNConnect.CKEditorProvider
             var portalRoles = RoleController.Instance.GetRoles(this.portalSettings?.PortalId ?? Host.HostPortalID);
 
             var hostKey = "DNNCKH#";
-            var portalKey = string.Format("DNNCKP#{0}#", this.portalSettings?.PortalId ?? Host.HostPortalID);
-            var pageKey = string.Format("DNNCKT#{0}#", this.CurrentOrSelectedTabId);
-            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", this.ModuleId, this.moduleInstanceName);
+            var portalKey = $"DNNCKP#{this.portalSettings?.PortalId ?? Host.HostPortalID}#";
+            var pageKey = $"DNNCKT#{this.CurrentOrSelectedTabId}#";
+            var moduleKey = $"DNNCKMI#{this.ModuleId}#INS#{this.moduleInstanceName}#";
 
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
             var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];

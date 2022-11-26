@@ -531,5 +531,28 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     return "https://";
             }
         }
+
+        public static IFolderInfo EnsureGetFolder(int portalId, string folderPath)
+        {
+            if (FolderManager.Instance.FolderExists(portalId, folderPath))
+            {
+                return FolderManager.Instance.GetFolder(portalId, folderPath);
+            }
+
+            if (!string.IsNullOrEmpty(folderPath))
+            {
+                var newFolderPath = "";
+                IFolderInfo retval = null;
+                foreach (var folderName in folderPath.Split('/'))
+                {
+                    newFolderPath = $"{newFolderPath}{folderName}/";
+                    retval = FolderManager.Instance.AddFolder(portalId, newFolderPath);
+                }
+
+                return retval;
+            }
+
+            return null;
+        }
     }
 }
