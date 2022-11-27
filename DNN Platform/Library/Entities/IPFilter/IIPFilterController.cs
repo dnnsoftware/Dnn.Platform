@@ -8,8 +8,7 @@ namespace DotNetNuke.Entities.Host
     using System.Collections.Generic;
 
     /// <summary>
-    /// Do not implement.  This interface is meant for reference and unit test purposes only.
-    /// There is no guarantee that this interface will not change.
+    /// Controller to manage IP Filters.
     /// </summary>
     public interface IIPFilterController
     {
