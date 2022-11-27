@@ -15,13 +15,11 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>
-    /// Do not implement.  This interface is meant for reference and unit test purposes only.
-    /// There is no guarantee that this interface will not change.
+    /// Controller to manage IP Filters.
     /// </summary>
     public class IPFilterController : ComponentBase<IIPFilterController, IPFilterController>, IIPFilterController
     {
