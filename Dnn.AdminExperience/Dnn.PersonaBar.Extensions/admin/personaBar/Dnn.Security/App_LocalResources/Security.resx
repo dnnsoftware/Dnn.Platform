@@ -243,6 +243,9 @@
   <data name="IpAddress.Header" xml:space="preserve">
     <value>IP ADDRESS</value>
   </data>
+  <data name="Notes.Header" xml:space="preserve">
+    <value>Notes</value>
+  </data>
   <data name="DeleteSuccess.Text" xml:space="preserve">
     <value>The IP filter has been deleted.</value>
   </data>
@@ -287,6 +290,12 @@
   </data>
   <data name="plSubnet.Help" xml:space="preserve">
     <value>The subnet mask will be combined with the first IP address to calculate a range of IP addresses for filtering.</value>
+  </data>
+  <data name="plNotes.Help" xml:space="preserve">
+    <value>Optional notes about this rule.</value>
+  </data>
+  <data name="plNotes.Text" xml:space="preserve">
+    <value>Notes</value>
   </data>
   <data name="IpFilterUpdateSuccess.Text" xml:space="preserve">
     <value>The IP filter has been updated.</value>

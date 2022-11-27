@@ -179,7 +179,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <summary>
         /// Gets list of IP filters.
         /// </summary>
-        /// <param></param>
         /// <returns>List of IP filters.</returns>
         [HttpGet]
         [RequireHost]
@@ -193,6 +192,7 @@ namespace Dnn.PersonaBar.Security.Services
                     v.IPFilterID,
                     IPFilter = NetworkUtils.FormatAsCidr(v.IPAddress, v.SubnetMask),
                     v.RuleType,
+                    v.Notes,
                 }).ToList();
                 var response = new
                 {
@@ -200,7 +200,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Filters = filters,
-                        EnableIPChecking = Host.EnableIPChecking,
+                        Host.EnableIPChecking,
                     },
                 };
 
@@ -217,7 +217,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <summary>
         /// Gets an IP filter.
         /// </summary>
-        /// <param name="filterId"></param>
+        /// <param name="filterId">The ID of the IP filter to get.</param>
         /// <returns>IP filter.</returns>
         [HttpGet]
         [RequireHost]
@@ -235,6 +235,7 @@ namespace Dnn.PersonaBar.Security.Services
                         filter.IPFilterID,
                         filter.RuleType,
                         filter.SubnetMask,
+                        filter.Notes,
                     },
                 };
 
@@ -251,8 +252,8 @@ namespace Dnn.PersonaBar.Security.Services
         /// <summary>
         /// Updates an IP filter.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request"><see cref="UpdateIpFilterRequest"/>.</param>
+        /// <returns>Ok or BadRequest or InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -264,6 +265,7 @@ namespace Dnn.PersonaBar.Security.Services
                 ipf.IPAddress = request.IPAddress;
                 ipf.SubnetMask = request.SubnetMask;
                 ipf.RuleType = request.RuleType;
+                ipf.Notes = request.Notes;
 
                 if ((ipf.IPAddress == "127.0.0.1" || ipf.IPAddress == "localhost" || ipf.IPAddress == "::1" || ipf.IPAddress == "*") && ipf.RuleType == 2)
                 {
