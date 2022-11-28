@@ -2419,7 +2419,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
                 }
 
-                if (bIsImage)
+                if (!bIsImage)
+                {
+                    FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                }
+                else
                 {
                     int maxWidth = this.currentSettings.ResizeWidthUpload;
                     int maxHeight = this.currentSettings.ResizeHeightUpload;
