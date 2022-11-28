@@ -19,13 +19,13 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class URLTrackingControl : UserControlBase
     {
-        protected Label label1;
-        protected Label label2;
-        protected Label label3;
-        protected Label label4;
-        protected Label label5;
-        protected Label label6;
-        protected Label label7;
+        protected Label Label1;
+        protected Label Label2;
+        protected Label Label3;
+        protected Label Label4;
+        protected Label Label5;
+        protected Label Label6;
+        protected Label Label7;
         protected LinkButton cmdDisplay;
         protected HyperLink cmdEndCalendar;
         protected HyperLink cmdStartCalendar;

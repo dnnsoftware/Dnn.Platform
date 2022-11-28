@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.UserControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.cmdCancel.Click += this.CmdCancel_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
             int moduleControlId = Null.NullInteger;
 
             if (this.Request.QueryString["ctlid"] != null)
@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        protected void CmdCancel_Click(object sender, EventArgs e)
+        protected void cmdCancel_Click(object sender, EventArgs e)
         {
             try
             {

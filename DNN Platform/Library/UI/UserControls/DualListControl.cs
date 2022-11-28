@@ -13,8 +13,8 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class DualListControl : UserControlBase
     {
-        protected Label label1;
-        protected Label label2;
+        protected Label Label1;
+        protected Label Label2;
         protected LinkButton cmdAdd;
         protected LinkButton cmdAddAll;
         protected LinkButton cmdRemove;
@@ -131,8 +131,8 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 // Localization
-                this.label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.myFileName));
-                this.label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.myFileName));
+                this.Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.myFileName));
+                this.Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.myFileName));
                 this.cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, this.myFileName));
                 this.cmdAddAll.ToolTip = Localization.GetString("AddAll", Localization.GetResourceFile(this, this.myFileName));
                 this.cmdRemove.ToolTip = Localization.GetString("Remove", Localization.GetResourceFile(this, this.myFileName));

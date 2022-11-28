@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string FlagIconPhysicalLocation = @"~\images\Flags";
         private const string NonExistingFlagIconFileName = "none.gif";
-        public LanguageTokenReplace ObjParent;
+        public LanguageTokenReplace objParent;
         private readonly PortalSettings objPortal;
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
             this.objPortal = settings;
-            this.ObjParent = parent;
+            this.objParent = parent;
         }
 
         /// <inheritdoc/>
@@ -71,14 +71,14 @@ namespace DotNetNuke.UI.Skins.Controls
             switch (propertyName.ToLowerInvariant())
             {
                 case "url":
-                    return this.NewUrl(this.ObjParent.Language);
+                    return this.NewUrl(this.objParent.Language);
                 case "flagsrc":
-                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{this.ObjParent.Language}.gif");
-                    return File.Exists(mappedGifFile) ? $"/{this.ObjParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
+                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{this.objParent.Language}.gif");
+                    return File.Exists(mappedGifFile) ? $"/{this.objParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
                 case "selected":
-                    return (this.ObjParent.Language == CultureInfo.CurrentCulture.Name).ToString();
+                    return (this.objParent.Language == CultureInfo.CurrentCulture.Name).ToString();
                 case "label":
-                    return Localization.GetString("Label", this.ObjParent.resourceFile);
+                    return Localization.GetString("Label", this.objParent.resourceFile);
                 case "i":
                     return Globals.ResolveUrl("~/images/Flags");
                 case "p":
