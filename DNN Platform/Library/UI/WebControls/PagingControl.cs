@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:PagingControl runat=server></{0}:PagingControl>")]
     public class PagingControl : WebControl, IPostBackEventHandler
     {
-        protected Repeater pageNumbers;
+        protected Repeater PageNumbers;
         protected TableCell cellDisplayLinks;
         protected TableCell cellDisplayStatus;
         protected Table tablePageNumbers;
@@ -133,9 +133,9 @@ namespace DotNetNuke.UI.WebControls
             // cellDisplayLinks.CssClass = "Normal";
             this.tablePageNumbers.CssClass = string.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
             var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
-            this.pageNumbers = new Repeater();
+            this.PageNumbers = new Repeater();
             var i = new PageNumberLinkTemplate(this);
-            this.pageNumbers.ItemTemplate = i;
+            this.PageNumbers.ItemTemplate = i;
             this.BindPageNumbers(this.TotalRecords, this.PageSize);
             this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
 
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         protected override void Render(HtmlTextWriter output)
         {
-            if (this.pageNumbers == null)
+            if (this.PageNumbers == null)
             {
                 this.CreateChildControls();
             }
@@ -176,7 +176,7 @@ namespace DotNetNuke.UI.WebControls
             str.Append(this.GetFirstLink() + "&nbsp;&nbsp;&nbsp;");
             str.Append(this.GetPreviousLink() + "&nbsp;&nbsp;&nbsp;");
             var result = new StringBuilder(1024);
-            this.pageNumbers.RenderControl(new HtmlTextWriter(new StringWriter(result)));
+            this.PageNumbers.RenderControl(new HtmlTextWriter(new StringWriter(result)));
             str.Append(result.ToString());
             str.Append(this.GetNextLink() + "&nbsp;&nbsp;&nbsp;");
             str.Append(this.GetLastLink() + "&nbsp;&nbsp;&nbsp;");
@@ -249,8 +249,8 @@ namespace DotNetNuke.UI.WebControls
                     ht.Rows.Add(tmpRow);
                 }
 
-                this.pageNumbers.DataSource = ht;
-                this.pageNumbers.DataBind();
+                this.PageNumbers.DataSource = ht;
+                this.PageNumbers.DataBind();
             }
         }
 

@@ -122,7 +122,7 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            this.cmdHelp.Click += this.CmdHelp_Click;
+            this.cmdHelp.Click += this.cmdHelp_Click;
 
             try
             {
@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        protected void CmdHelp_Click(object sender, EventArgs e)
+        protected void cmdHelp_Click(object sender, EventArgs e)
         {
             this.pnlHelp.Visible = true;
         }

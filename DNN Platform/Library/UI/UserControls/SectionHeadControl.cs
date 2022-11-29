@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        protected void ImgIcon_Click(object sender, ImageClickEventArgs e)
+        protected void imgIcon_Click(object sender, ImageClickEventArgs e)
         {
             var ctl = (HtmlControl)this.Parent.FindControl(this.Section);
             if (ctl != null)

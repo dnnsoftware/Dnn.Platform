@@ -26,13 +26,13 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class UrlControl : UserControlBase
     {
-        protected Panel errorRow;
-        protected Panel fileRow;
-        protected Panel imagesRow;
-        protected Panel tabRow;
-        protected Panel typeRow;
-        protected Panel urlRow;
-        protected Panel userRow;
+        protected Panel ErrorRow;
+        protected Panel FileRow;
+        protected Panel ImagesRow;
+        protected Panel TabRow;
+        protected Panel TypeRow;
+        protected Panel URLRow;
+        protected Panel UserRow;
         protected DropDownList cboFiles;
         protected DropDownList cboFolders;
         protected DropDownList cboImages;
@@ -516,7 +516,7 @@ namespace DotNetNuke.UI.UserControls
                             else
                             {
                                 this.lblMessage.Text = Localization.GetString("NoUser", this.LocalResourceFile);
-                                this.errorRow.Visible = true;
+                                this.ErrorRow.Visible = true;
                                 this.txtUser.Text = string.Empty;
                             }
                         }
@@ -602,16 +602,16 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            this.cboFolders.SelectedIndexChanged += this.CboFolders_SelectedIndexChanged;
-            this.optType.SelectedIndexChanged += this.OptType_SelectedIndexChanged;
-            this.cmdAdd.Click += this.CmdAdd_Click;
-            this.cmdCancel.Click += this.CmdCancel_Click;
-            this.cmdDelete.Click += this.CmdDelete_Click;
-            this.cmdSave.Click += this.CmdSave_Click;
-            this.cmdSelect.Click += this.CmdSelect_Click;
-            this.cmdUpload.Click += this.CmdUpload_Click;
+            this.cboFolders.SelectedIndexChanged += this.cboFolders_SelectedIndexChanged;
+            this.optType.SelectedIndexChanged += this.optType_SelectedIndexChanged;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdDelete.Click += this.cmdDelete_Click;
+            this.cmdSave.Click += this.cmdSave_Click;
+            this.cmdSelect.Click += this.cmdSelect_Click;
+            this.cmdUpload.Click += this.cmdUpload_Click;
 
-            this.errorRow.Visible = false;
+            this.ErrorRow.Visible = false;
 
             try
             {
@@ -687,7 +687,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        protected void CboFolders_SelectedIndexChanged(object sender, EventArgs e)
+        protected void cboFolders_SelectedIndexChanged(object sender, EventArgs e)
         {
             int portalId = Null.NullInteger;
 
@@ -746,7 +746,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void CmdAdd_Click(object sender, EventArgs e)
+        protected void cmdAdd_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = false;
             this.cmdSelect.Visible = true;
@@ -760,7 +760,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void CmdCancel_Click(object sender, EventArgs e)
+        protected void cmdCancel_Click(object sender, EventArgs e)
         {
             this.cboFiles.Visible = true;
             this.cmdUpload.Visible = true;
@@ -774,7 +774,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void CmdDelete_Click(object sender, EventArgs e)
+        protected void cmdDelete_Click(object sender, EventArgs e)
         {
             if (this.cboUrls.SelectedItem != null)
             {
@@ -790,7 +790,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void CmdSave_Click(object sender, EventArgs e)
+        protected void cmdSave_Click(object sender, EventArgs e)
         {
             this.cmdUpload.Visible = false;
 
@@ -817,7 +817,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 // trying to upload a file not allowed for current filter
                 this.lblMessage.Text = string.Format(Localization.GetString("UploadError", this.LocalResourceFile), this.FileFilter, strExtension);
-                this.errorRow.Visible = true;
+                this.ErrorRow.Visible = true;
             }
             else
             {
@@ -831,7 +831,7 @@ namespace DotNetNuke.UI.UserControls
                 var folderPath = Globals.GetSubFolderPath(parentFolderName.Replace("/", "\\") + fileName, portalID);
 
                 var folder = folderManager.GetFolder(portalID, folderPath);
-                this.errorRow.Visible = false;
+                this.ErrorRow.Visible = false;
 
                 try
                 {
@@ -840,22 +840,22 @@ namespace DotNetNuke.UI.UserControls
                 catch (Services.FileSystem.PermissionsNotMetException)
                 {
                     this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
-                    this.errorRow.Visible = true;
+                    this.ErrorRow.Visible = true;
                 }
                 catch (NoSpaceAvailableException)
                 {
                     this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
-                    this.errorRow.Visible = true;
+                    this.ErrorRow.Visible = true;
                 }
                 catch (InvalidFileExtensionException)
                 {
                     this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
-                    this.errorRow.Visible = true;
+                    this.ErrorRow.Visible = true;
                 }
                 catch (Exception)
                 {
                     this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
-                    this.errorRow.Visible = true;
+                    this.ErrorRow.Visible = true;
                 }
             }
 
@@ -866,7 +866,7 @@ namespace DotNetNuke.UI.UserControls
                 this.txtFile.Visible = false;
                 this.cmdSave.Visible = false;
                 this.cmdCancel.Visible = false;
-                this.errorRow.Visible = false;
+                this.ErrorRow.Visible = false;
 
                 var root = new DirectoryInfo(parentFolderName);
                 this.cboFiles.Items.Clear();
@@ -896,7 +896,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void CmdSelect_Click(object sender, EventArgs e)
+        protected void cmdSelect_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = true;
             this.cmdSelect.Visible = false;
@@ -917,7 +917,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void CmdUpload_Click(object sender, EventArgs e)
+        protected void cmdUpload_Click(object sender, EventArgs e)
         {
             string strSaveFolder = this.cboFolders.SelectedValue;
             this.LoadFolders("ADD");
@@ -952,7 +952,7 @@ namespace DotNetNuke.UI.UserControls
                     this.cmdSave.Visible = false;
                     this.cmdCancel.Visible = false;
                     this.lblMessage.Text = Localization.GetString("NoWritePermission", this.LocalResourceFile);
-                    this.errorRow.Visible = true;
+                    this.ErrorRow.Visible = true;
                 }
             }
 
@@ -963,7 +963,7 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
-        protected void OptType_SelectedIndexChanged(object sender, EventArgs e)
+        protected void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Type changed, render the correct control set
             this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
@@ -1270,11 +1270,11 @@ namespace DotNetNuke.UI.UserControls
                     this.doRenderTypeControls = true; // Type changed, re-draw
                 }
 
-                this.typeRow.Visible = this.optType.Items.Count > 1;
+                this.TypeRow.Visible = this.optType.Items.Count > 1;
             }
             else
             {
-                this.typeRow.Visible = false;
+                this.TypeRow.Visible = false;
             }
         }
 
@@ -1318,18 +1318,18 @@ namespace DotNetNuke.UI.UserControls
                 switch (this.optType.SelectedItem.Value)
                 {
                     case "N": // None
-                        this.urlRow.Visible = false;
-                        this.tabRow.Visible = false;
-                        this.fileRow.Visible = false;
-                        this.userRow.Visible = false;
-                        this.imagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
                         break;
                     case "I": // System Image
-                        this.urlRow.Visible = false;
-                        this.tabRow.Visible = false;
-                        this.fileRow.Visible = false;
-                        this.userRow.Visible = false;
-                        this.imagesRow.Visible = true;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = true;
 
                         this.cboImages.Items.Clear();
 
@@ -1349,11 +1349,11 @@ namespace DotNetNuke.UI.UserControls
                         break;
 
                     case "U": // Url
-                        this.urlRow.Visible = true;
-                        this.tabRow.Visible = false;
-                        this.fileRow.Visible = false;
-                        this.userRow.Visible = false;
-                        this.imagesRow.Visible = false;
+                        this.URLRow.Visible = true;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
                         if (string.IsNullOrEmpty(this.txtUrl.Text))
                         {
                             this.txtUrl.Text = url;
@@ -1373,11 +1373,11 @@ namespace DotNetNuke.UI.UserControls
                         this.cmdDelete.Visible = false;
                         break;
                     case "T": // tab
-                        this.urlRow.Visible = false;
-                        this.tabRow.Visible = true;
-                        this.fileRow.Visible = false;
-                        this.userRow.Visible = false;
-                        this.imagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = true;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
 
                         this.cboTabs.Items.Clear();
 
@@ -1396,11 +1396,11 @@ namespace DotNetNuke.UI.UserControls
 
                         break;
                     case "F": // file
-                        this.urlRow.Visible = false;
-                        this.tabRow.Visible = false;
-                        this.fileRow.Visible = true;
-                        this.userRow.Visible = false;
-                        this.imagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = true;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
 
                         if (this.ViewState["FoldersLoaded"] == null || this.doReloadFolders)
                         {
@@ -1411,8 +1411,8 @@ namespace DotNetNuke.UI.UserControls
                         if (this.cboFolders.Items.Count == 0)
                         {
                             this.lblMessage.Text = Localization.GetString("NoPermission", this.LocalResourceFile);
-                            this.errorRow.Visible = true;
-                            this.fileRow.Visible = false;
+                            this.ErrorRow.Visible = true;
+                            this.FileRow.Visible = false;
                             return;
                         }
 
@@ -1525,11 +1525,11 @@ namespace DotNetNuke.UI.UserControls
 
                         break;
                     case "M": // membership users
-                        this.urlRow.Visible = false;
-                        this.tabRow.Visible = false;
-                        this.fileRow.Visible = false;
-                        this.userRow.Visible = true;
-                        this.imagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = true;
+                        this.ImagesRow.Visible = false;
                         if (string.IsNullOrEmpty(this.txtUser.Text))
                         {
                             this.txtUser.Text = url;
@@ -1540,11 +1540,11 @@ namespace DotNetNuke.UI.UserControls
             }
             else
             {
-                this.urlRow.Visible = false;
-                this.imagesRow.Visible = false;
-                this.tabRow.Visible = false;
-                this.fileRow.Visible = false;
-                this.userRow.Visible = false;
+                this.URLRow.Visible = false;
+                this.ImagesRow.Visible = false;
+                this.TabRow.Visible = false;
+                this.FileRow.Visible = false;
+                this.UserRow.Visible = false;
             }
         }
     }

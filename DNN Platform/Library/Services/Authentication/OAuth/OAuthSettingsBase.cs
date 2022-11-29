@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
     public class OAuthSettingsBase : AuthenticationSettingsBase
     {
-        protected PropertyEditorControl settingsEditor;
+        protected PropertyEditorControl SettingsEditor;
 
         protected virtual string AuthSystemApplicationName
         {
@@ -20,9 +20,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         /// <inheritdoc/>
         public override void UpdateSettings()
         {
-            if (this.settingsEditor.IsValid && this.settingsEditor.IsDirty)
+            if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
             {
-                var config = (OAuthConfigBase)this.settingsEditor.DataSource;
+                var config = (OAuthConfigBase)this.SettingsEditor.DataSource;
                 OAuthConfigBase.UpdateConfig(config);
             }
         }
@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             base.OnLoad(e);
 
             OAuthConfigBase config = OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId);
-            this.settingsEditor.DataSource = config;
-            this.settingsEditor.DataBind();
+            this.SettingsEditor.DataSource = config;
+            this.SettingsEditor.DataBind();
         }
     }
 }

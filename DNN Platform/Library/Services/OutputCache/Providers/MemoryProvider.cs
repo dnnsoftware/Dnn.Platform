@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// </summary>
     public class MemoryProvider : OutputCachingProvider
     {
-        protected const string CachePrefixValue = "DNN_OUTPUT:";
+        protected const string cachePrefix = "DNN_OUTPUT:";
         private static System.Web.Caching.Cache runtimeCache;
 
         internal static System.Web.Caching.Cache Cache
@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             get
             {
-                return CachePrefixValue;
+                return cachePrefix;
             }
         }
 
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(CachePrefixValue)))
+                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(CachePrefixValue, tabId.ToString(), "_")))
+                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
 
-            return string.Concat(CachePrefixValue, cacheKey);
+            return string.Concat(cachePrefix, cacheKey);
         }
     }
 }
