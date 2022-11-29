@@ -58,26 +58,30 @@ namespace Dnn.Modules.ResourceManager.Components
         /// </summary>
         public int Mode { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the folder is in the host portal (i.e. <c>_default</c>, "Global Resources"), rather than the current portal.</summary>
+        public bool IsHostPortal { get; set; }
+
         private void LoadSettings()
         {
             this.Mode = this.GetSettingIntValueOrDefault(ModeSettingName, DefaultMode);
             this.ValidateMode(this.Mode);
             this.HomeFolderId = this.GetHomeFolderId(this.Mode);
-            this.HomeFolderName = this.GetHomeFolderName(this.HomeFolderId);
+
+            var homeFolder = FolderManager.Instance.GetFolder(this.HomeFolderId);
+            this.HomeFolderName = this.GetHomeFolderName(homeFolder);
+            this.IsHostPortal = homeFolder.PortalID == Null.NullInteger;
         }
 
-        private string GetHomeFolderName(int homeFolderId)
+        private string GetHomeFolderName(IFolderInfo homeFolder)
         {
-            var folder = FolderManager.Instance.GetFolder(homeFolderId);
-
-            if (folder.PortalID == Null.NullInteger && folder.ParentID == Null.NullInteger)
+            if (homeFolder.PortalID == Null.NullInteger && homeFolder.ParentID == Null.NullInteger)
             {
                 return Localization.GetString(
                     "GlobalAssets",
                     Constants.ViewResourceFileName);
             }
 
-            if (folder.ParentID == Null.NullInteger)
+            if (homeFolder.ParentID == Null.NullInteger)
             {
                 return Localization.GetString(
                     "SiteAssets",
@@ -86,7 +90,7 @@ namespace Dnn.Modules.ResourceManager.Components
 
             if (this.groupId > 0)
             {
-                var socialRole = RoleController.Instance.GetRole(folder.PortalID, r => r.RoleID == this.groupId);
+                var socialRole = RoleController.Instance.GetRole(homeFolder.PortalID, r => r.RoleID == this.groupId);
                 var template = Localization.GetString(
                     "GroupAssets",
                     Constants.ViewResourceFileName);
@@ -107,7 +111,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return string.Format(template, user.DisplayName);
             }
 
-            return folder.FolderName;
+            return homeFolder.FolderName;
         }
 
         private int GetSettingIntValueOrDefault(string settingName, int defaultValue = -1)
