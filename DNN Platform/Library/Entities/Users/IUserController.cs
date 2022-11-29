@@ -60,14 +60,14 @@ namespace DotNetNuke.Entities.Users
             string propertyNames,
             string propertyValues);
 
-        /// <summary>Searches for users via user fields and profile properties.</summary>
+        /// <summary>Searches for users via a user property.</summary>
         /// <param name="portalId">The portal ID in which to search for users.</param>
         /// <param name="pageIndex">The 0-based page index.</param>
         /// <param name="pageSize">The number of results to return in each page.</param>
         /// <param name="sortColumn">The name of the column/property to sort by. Sorts by <see cref="IUserInfo.UserID"/> if not supplied.</param>
         /// <param name="sortAscending">Whether the sort is ascending or descending.</param>
-        /// <param name="propertyName">A comma-delimited list of property names (e.g. <c>"Username,Street1"</c>).</param>
-        /// <param name="propertyValue">A comma-delimited list of property values (e.g. <c>"jane,123 Street"</c>).</param>
+        /// <param name="propertyName">A property name (i.e. a column from <c>vw_Users</c>, for example <c>"Username"</c>, <c>"DisplayName"</c> or <c>"Email"</c>).</param>
+        /// <param name="propertyValue">The value to search by, results will contain this text in the property.</param>
         /// <returns>A list of <see cref="UserInfo"/> instances.</returns>
         IList<UserInfo> GetUsersBasicSearch(
             int portalId,
