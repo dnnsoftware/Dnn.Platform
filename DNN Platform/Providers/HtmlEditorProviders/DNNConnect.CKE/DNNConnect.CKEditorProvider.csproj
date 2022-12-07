@@ -174,7 +174,6 @@
     <Compile Include="CKEditorOptions.ascx.designer.cs">
       <DependentUpon>CKEditorOptions.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HtmlGenericSelfClosing.cs" />
     <Compile Include="Objects\LinkItem.cs" />
     <Compile Include="Options.aspx.cs">
       <DependentUpon>Options.aspx</DependentUpon>
