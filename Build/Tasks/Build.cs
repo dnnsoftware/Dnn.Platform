@@ -19,6 +19,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to compile the platform.</summary>
     [IsDependentOn(typeof(CleanWebsite))]
     [IsDependentOn(typeof(RestoreNuGetPackages))]
+    [IsDependentOn(typeof(BuildNpmPackages))]
     public sealed class Build : FrostingTask<Context>
     {
         /// <inheritdoc/>
