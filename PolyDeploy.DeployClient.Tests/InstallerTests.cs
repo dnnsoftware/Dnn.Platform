@@ -2,7 +2,6 @@ namespace PolyDeploy.DeployClient.Tests
 {
     using System.Net;
     using System.Reflection;
-    using System.Text;
     using System.Text.Json;
 
     public class InstallerTests
@@ -56,7 +55,7 @@ namespace PolyDeploy.DeployClient.Tests
                 null);
             var installer = CreateInstaller(handler);
 
-            await installer.UploadPackageAsync(options, sessionId, new MemoryStream(Encoding.UTF8.GetBytes("XYZ")), "Jamestown_install_5.5.7.zip");
+            await installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip");
 
             handler.Request.ShouldNotBeNull();
             handler.Request.Method.ShouldBe(HttpMethod.Post);
@@ -78,7 +77,7 @@ namespace PolyDeploy.DeployClient.Tests
                 new HttpResponseMessage(HttpStatusCode.InternalServerError));
             var installer = CreateInstaller(handler);
 
-            var exception = await Should.ThrowAsync<InstallerException>(() => installer.UploadPackageAsync(options, sessionId, new MemoryStream(Encoding.UTF8.GetBytes("XYZ")), "Jamestown_install_5.5.7.zip"));
+            var exception = await Should.ThrowAsync<InstallerException>(() => installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip"));
 
             exception.Message.ShouldBe("An Error Occurred While Uploading the Packages");
         }
@@ -221,6 +220,25 @@ namespace PolyDeploy.DeployClient.Tests
 
             await Should.NotThrowAsync(() => installer.GetSessionAsync(options, sessionId));
             handler.Requests.Count.ShouldBe(3);
+        }
+
+        [Fact]
+        public async Task UploadPackageAsync_DoesNotRetryAfterFailure()
+        {
+            var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            var targetUri = new Uri("https://polydeploy.example.com/");
+            var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+            var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
+
+            var handler = new FakeMessageHandler(
+                new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+                new HttpResponseMessage(HttpStatusCode.NotFound));
+            handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.NotFound));
+            handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(@"{""Status"":1,""Response"":null}") });
+            var installer = CreateInstaller(handler, stopwatch);
+
+            await Should.ThrowAsync<InstallerException>(() => installer.UploadPackageAsync(options, sessionId, new MemoryStream("XYZ"u8.ToArray()), "Jamestown_install_5.5.7.zip"));
+            handler.Requests.Count.ShouldBe(1);
         }
 
         [Fact]

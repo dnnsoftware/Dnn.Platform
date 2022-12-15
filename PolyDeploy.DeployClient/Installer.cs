@@ -91,8 +91,11 @@ namespace PolyDeploy.DeployClient
         {
             try
             {
-                var form = new MultipartFormDataContent();
-                form.Add(new StreamContent(encryptedPackage), "none", Path.GetRelativePath(options.PackagesDirectoryPath, packageName));
+                var fileName = Path.GetRelativePath(options.PackagesDirectoryPath, packageName);
+                var form = new MultipartFormDataContent
+                {
+                    { new StreamContent(encryptedPackage), "none", fileName },
+                };
 
                 using var response = await this.SendRequestAsync(options, HttpMethod.Post, $"AddPackages?sessionGuid={sessionId}", form);
             }
@@ -124,7 +127,7 @@ namespace PolyDeploy.DeployClient
             var response = await SendRequest();
             while (!response.IsSuccessStatusCode)
             {
-                if (options.InstallationStatusTimeout <= stopwatch.Elapsed.TotalSeconds)
+                if (options.InstallationStatusTimeout <= stopwatch.Elapsed.TotalSeconds || content != null)
                 {
                     response.EnsureSuccessStatusCode();
                 }
