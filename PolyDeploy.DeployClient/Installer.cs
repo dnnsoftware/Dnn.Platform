@@ -95,7 +95,7 @@ namespace PolyDeploy.DeployClient
             try
             {
                 var form = new MultipartFormDataContent();
-                form.Add(new StreamContent(encryptedPackage), "none", packageName);
+                form.Add(new StreamContent(encryptedPackage), "none", Path.GetRelativePath(options.PackagesDirectoryPath, packageName));
 
                 using var response = await this.SendRequestAsync(options, HttpMethod.Post, $"AddPackages?sessionGuid={sessionId}", form);
             }

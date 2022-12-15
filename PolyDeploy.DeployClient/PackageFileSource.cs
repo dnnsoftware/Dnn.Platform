@@ -20,7 +20,7 @@ namespace PolyDeploy.DeployClient
 
         public Stream GetFileStream(string fileName)
         {
-            return this.fileSystem.File.Open(fileName, FileMode.Open);
+            return this.fileSystem.File.Open(fileName, FileMode.Open, FileAccess.Read);
         }
     }
 }
