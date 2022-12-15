@@ -1,9 +1,5 @@
 namespace PolyDeploy.DeployClient
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
     public class Deployer : IDeployer
     {
         private readonly IRenderer renderer;

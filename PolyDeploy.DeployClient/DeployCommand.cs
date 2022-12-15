@@ -1,8 +1,6 @@
 ﻿namespace PolyDeploy.DeployClient
 {
-    using System;
     using System.IO.Abstractions;
-    using System.Threading.Tasks;
 
     using Spectre.Console.Cli;
     using Spectre.Console;

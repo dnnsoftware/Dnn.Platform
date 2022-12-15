@@ -4,12 +4,6 @@ namespace PolyDeploy.DeployClient.Tests
     using Spectre.Console.Cli;
     using System.IO.Abstractions;
 
-    using FakeItEasy;
-
-    using Shouldly;
-
-    using Xunit;
-
     public class DeployInputTests
     {
         [InlineData("", false)]

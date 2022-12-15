@@ -1,7 +1,5 @@
 namespace PolyDeploy.DeployClient
 {
-    using System.Collections.Generic;
-
     public enum SessionStatus
     {
         NotStarted = 0,

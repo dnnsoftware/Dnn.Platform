@@ -1,19 +1,9 @@
 namespace PolyDeploy.DeployClient.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.IO;
     using System.Net;
-    using System.Net.Http;
+    using System.Reflection;
     using System.Text;
     using System.Text.Json;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FakeItEasy;
-    using Shouldly;
-    using Xunit;
-    using System.Reflection;
 
     public class InstallerTests
     {

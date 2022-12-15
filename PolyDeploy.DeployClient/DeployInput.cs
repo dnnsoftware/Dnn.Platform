@@ -1,8 +1,5 @@
-using System.IO;
-
 namespace PolyDeploy.DeployClient
 {
-    using System;
     using System.ComponentModel;
 
     using Spectre.Console.Cli;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO.Abstractions;
-using System.Threading.Tasks;
+﻿using System.IO.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using PolyDeploy.DeployClient;
 using Spectre.Console;

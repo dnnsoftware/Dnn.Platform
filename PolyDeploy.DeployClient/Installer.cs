@@ -4,11 +4,8 @@ namespace PolyDeploy.DeployClient
     using System.Reflection;
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Net.Http;
     using System.Text.Json;
-    using System.Threading.Tasks;
-
+    
     public class Installer : IInstaller
     {
         private readonly HttpClient httpClient;

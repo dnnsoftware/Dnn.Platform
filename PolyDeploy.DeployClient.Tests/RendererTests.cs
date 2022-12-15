@@ -1,15 +1,8 @@
 ﻿namespace PolyDeploy.DeployClient.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using FakeItEasy;
-    using Shouldly;
     using Spectre.Console;
     using Spectre.Console.Rendering;
     using Spectre.Console.Testing;
-    using Xunit;
 
     public class RendererTests
     {

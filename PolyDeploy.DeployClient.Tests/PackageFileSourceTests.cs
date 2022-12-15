@@ -1,14 +1,6 @@
 namespace PolyDeploy.DeployClient.Tests
 {
     using System.IO.Abstractions;
-    using System.IO;
-    using System.Threading.Tasks;
-
-    using FakeItEasy;
-
-    using Shouldly;
-
-    using Xunit;
 
     public class PackageFileSourceTests
     {

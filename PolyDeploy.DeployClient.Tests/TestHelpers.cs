@@ -1,5 +1,4 @@
 namespace PolyDeploy.DeployClient.Tests;
-using FakeItEasy;
 
 public static class TestHelpers
 {
