@@ -41,6 +41,11 @@ namespace PolyDeploy.DeployClient
             set => this.packagesDirectoryPath = ValidOrCurrentDirectory(value);
         }
 
+        [CommandOption("-l|--log-level")]
+        [Description("Defines the amount of logging.")]
+        [DefaultValue(LogLevel.Information)]
+        public LogLevel LogLevel { get; set; }
+
         public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
 
         private static string ValidOrCurrentDirectory(string path)

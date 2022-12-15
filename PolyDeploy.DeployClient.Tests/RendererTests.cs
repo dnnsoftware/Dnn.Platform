@@ -6,70 +6,145 @@
 
     public class RendererTests
     {
-        [Fact]
-        public void Welcome_DisplaysSomething()
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void Welcome_DisplaysSomething(LogLevel logLevel)
         {
             var console = new TestConsole();
 
             var renderer = new Renderer(console);
-            renderer.Welcome();
+            renderer.Welcome(logLevel);
 
             console.Output.ShouldNotBeNullOrWhiteSpace();
         }
 
-        [Fact]
-        public void RenderListOfFiles_GivenFiles_RendersTreeOfFiles()
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
+        [Theory]
+        public void Welcome_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
+        {
+            var console = new TestConsole();
+
+            var renderer = new Renderer(console);
+            renderer.Welcome(logLevel);
+
+            console.Output.ShouldBeEmpty();
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void RenderListOfFiles_DisplaysSomething(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
 
             var renderer = new Renderer(console);
-            renderer.RenderListOfFiles(new[] { "OpenContent_4.5.0_Install.zip", "2sxc_12.4.4_Install.zip", });
+            renderer.RenderListOfFiles(logLevel, new[] { "OpenContent_4.5.0_Install.zip", "2sxc_12.4.4_Install.zip", });
 
             console.Output.ShouldContain("OpenContent_4.5.0_Install.zip");
             console.Output.ShouldContain("2sxc_12.4.4_Install.zip");
         }
 
-        [Fact]
-        public async Task RenderFileUploadsAsync_Interactive_RendersSomething()
+
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
+        [Theory]
+        public void RenderListOfFiles_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
 
             var renderer = new Renderer(console);
-            await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+            renderer.RenderListOfFiles(logLevel, new[] { "OpenContent_4.5.0_Install.zip", "2sxc_12.4.4_Install.zip", });
+
+            console.Output.ShouldBeEmpty();
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public async Task RenderFileUploadsAsync_InteractiveWithLogging_RendersSomething(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+            await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
 
             console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "100%");
         }
-        
-        [Fact]
-        public async Task RenderFileUploadsAsync_NonInteractive_RendersSomething()
+
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
+        [Theory]
+        public async Task RenderFileUploadsAsync_InteractiveWithHighLogLevel_RendersNothing(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+            await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+
+            console.Output.ShouldBeEmpty();
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public async Task RenderFileUploadsAsync_NonInteractiveWIthLogging_RendersSomething(LogLevel logLevel)
         {
             var console = new TestConsole();
 
             var renderer = new Renderer(console);
-            await renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
+            await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
 
-            
+
             console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "upload", "complete");
         }
-        
-        [Fact]
-        public async Task RenderFileUploadsAsync_UploadTaskIsAwaited()
+
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
+        [Theory]
+        public async Task RenderFileUploadsAsync_NonInteractiveWithHighLogLevel_RendersNothing(LogLevel logLevel)
         {
             var console = new TestConsole();
 
             var renderer = new Renderer(console);
+            await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
 
-            var exception = await Should.ThrowAsync<Exception>(() =>  renderer.RenderFileUploadsAsync(new[] { ("OpenContent_4.5.0_Install.zip", UploadFile()), }));
+
+            console.Output.ShouldBeEmpty();
+        }
+
+        [MemberData(nameof(AllLogLevels))]
+        [Theory]
+        public async Task RenderFileUploadsAsync_Interactive_UploadTaskIsAwaited(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+
+            var renderer = new Renderer(console);
+
+            var exception = await Should.ThrowAsync<Exception>(() => renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", UploadFile()), }));
 
             exception.Message.ShouldBe("UploadFile() was called!");
 
-            static Task UploadFile() {
+            static Task UploadFile()
+            {
                 return Task.FromException(new Exception("UploadFile() was called!"));
             }
         }
 
-        [Fact]
-        public void RenderInstallationOverview_DisplaysTreeOfPackageDetails()
+        [MemberData(nameof(AllLogLevels))]
+        [Theory]
+        public async Task RenderFileUploadsAsync_UploadTaskIsAwaited(LogLevel logLevel)
+        {
+            var console = new TestConsole();
+
+            var renderer = new Renderer(console);
+
+            var exception = await Should.ThrowAsync<Exception>(() => renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", UploadFile()), }));
+
+            exception.Message.ShouldBe("UploadFile() was called!");
+
+            static Task UploadFile()
+            {
+                return Task.FromException(new Exception("UploadFile() was called!"));
+            }
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void RenderInstallationOverview_DisplaysTreeOfPackageDetails(LogLevel logLevel)
         {
             var packages = new SortedList<int, SessionResponse?>
             {
@@ -110,7 +185,7 @@
             var console = A.Fake<IAnsiConsole>();
             A.CallTo(() => console.Write(A<Tree>._)).Invokes((IRenderable? tree) => packagesTree = tree as Tree);
             var renderer = new Renderer(console);
-            renderer.RenderInstallationOverview(packages);
+            renderer.RenderInstallationOverview(logLevel, packages);
 
             // TODO: check the structure of the tree, maybe using reflection?
             packagesTree.ShouldNotBeNull();
@@ -133,8 +208,9 @@
                 });
         }
 
-        [Fact]
-        public void RenderInstallationOverview_DisplaysDnnPlatformVersionDependency()
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void RenderInstallationOverview_DisplaysDnnPlatformVersionDependency(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
 
@@ -154,12 +230,13 @@
                 },
             };
 
-            renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+            renderer.RenderInstallationOverview(logLevel, new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
             console.Output.ShouldContainStringsInOrder("Jamestown.zip", "Platform Version", "09.01.02");
         }
 
-        [Fact]
-        public void RenderInstallationOverview_WhenDependencyHasNoVersion_DisplaysDependencyName()
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void RenderInstallationOverview_WhenDependencyHasNoVersion_DisplaysDependencyName(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
 
@@ -179,12 +256,39 @@
                 },
             };
 
-            renderer.RenderInstallationOverview(new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+            renderer.RenderInstallationOverview(logLevel, new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
             console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "DNNJWT" });
         }
+        
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
+        [Theory]
+        public void RenderInstallationOverview_LogLevelAboveInformation_DoesNotRender(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
 
-        [Fact]
-        public void RenderInstallationStatus_OnlyOutputsAttemptedSessionResponses()
+            var renderer = new Renderer(console);
+            var sessionResponse = new SessionResponse
+            {
+                Packages = new List<PackageResponse?>
+                {
+                    new()
+                    {
+                        Name = "Jamestown.zip",
+                        Dependencies = new List<DependencyResponse?>
+                        {
+                            new() { PackageName = "DNNJWT", DependencyVersion = string.Empty, IsPackageDependency = true, },
+                        }
+                    }
+                },
+            };
+
+            renderer.RenderInstallationOverview(logLevel, new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+            console.Output.ShouldBeEmpty();
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Trace)]
+        [Theory]
+        public void RenderInstallationStatus_OnlyOutputsAttemptedSessionResponses(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
@@ -203,14 +307,14 @@
                 Success = false,
             };
 
-
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
             console.Output.ShouldContainStringsInOrder(new[] { "✅", "Jimmy", "Succeeded" });
             console.Output.ShouldNotContain("James");
         }
 
-        [Fact]
-        public void RenderInstallationStatus_OutputsMultipleResponsesOnDifferentLines()
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void RenderInstallationStatus_OutputsMultipleResponsesOnDifferentLines(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
@@ -230,12 +334,38 @@
             };
 
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
             console.Output.ShouldContainStringsInOrder("✅", "Jimmy", "Succeeded", "\n", "✅", "James", "Succeeded", "\n");
         }
 
-        [Fact]
-        public void RenderInstallationStatus_DoesNotOutputDuplicateInformation()
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
+        [Theory]
+        public void RenderInstallationStatus_ShouldNotRenderWarningOrHigher(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Success = true,
+            };
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = true,
+                Success = true,
+            };
+
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            console.Output.ShouldBeEmpty();
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Trace)]
+        [Theory]
+        public void RenderInstallationStatus_DoesNotOutputDuplicateInformation(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
@@ -254,19 +384,50 @@
                 Success = false,
             };
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
             george = george with { Attempted = true, Failures = new List<string?> { "He hit the tree 🌴" }, };
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
             console.Output.ShouldContainStringsInOrder(onlyOnce: true, "✅", "James", "Succeeded", "❌", "George", "Failed", "He hit the tree 🌴");
         }
 
-        [Fact]
-        public void RenderInstallationStatus_OutputsMessageWhenPackageIsSuccessful()
+        [Theory]
+        [InlineData(LogLevel.Warning)]
+        [InlineData(LogLevel.Error)]
+        public void RenderInstallationStatus_WhenErrorLevel_DoesNotOutputInformationLevel(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
-            
+
+            var james = new SessionResponse
+            {
+                Name = "James",
+                Attempted = true,
+                Success = true,
+            };
+
+            var george = new SessionResponse
+            {
+                Name = "George",
+                Attempted = false,
+                Success = false,
+            };
+
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            george = george with { Attempted = true, Failures = new List<string?> { "He hit the tree 🌴" }, };
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, { 3, george }, });
+            console.Output.ShouldNotContainStringsInOrder("✅", "James", "Succeeded");
+            console.Output.ShouldContainStringsInOrder(onlyOnce: true, "❌", "George", "Failed", "He hit the tree 🌴");
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
+        [Theory]
+        public void RenderInstallationStatus_OutputsMessageWhenPackageIsSuccessful(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
             var james = new SessionResponse
             {
                 Name = "James",
@@ -274,15 +435,16 @@
                 Success = false
             };
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, });
             console.Output.ShouldNotContainStringsInOrder("James");
             james = james with { Success = true };
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 2, james }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 2, james }, });
             console.Output.ShouldContainStringsInOrder(onlyOnce: true, "✅", "James", "Succeeded");
         }
 
-        [Fact]
-        public void RenderInstallationStatus_RendersFailures()
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Error)]
+        [Theory]
+        public void RenderInstallationStatus_RendersFailures(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
@@ -301,13 +463,14 @@
                 Success = false
             };
 
-            renderer.RenderInstallationStatus(new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, { 2, james }, });
             console.Output.ShouldNotContainStringsInOrder("❌", "James", "Failed");
             console.Output.ShouldContainStringsInOrder("❌", "Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
         }
-        
-        [Fact]
-        public void RenderError()
+
+        [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.None)]
+        [Theory]
+        public void RenderCriticalError_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
         {
             var console = new TestConsole().Interactive();
             var renderer = new Renderer(console);
@@ -318,10 +481,43 @@
             }
             catch (Exception exception)
             {
-                renderer.RenderError("An error occurred while uploading the packages", exception);
-                console.Output.ShouldContainStringsInOrder("An error occurred while uploading the packages",
-                    "Exception message", nameof(RendererTests), nameof(RenderError));
+                renderer.RenderCriticalError(logLevel, "An error occurred while uploading the packages", exception);
+                console.Output.ShouldBeEmpty();
             }
+        }
+
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Critical)]
+        [Theory]
+        public void RenderCriticalError(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            try
+            {
+                throw new Exception("Exception message");
+            }
+            catch (Exception exception)
+            {
+                renderer.RenderCriticalError(logLevel, "An error occurred while uploading the packages", exception);
+                console.Output.ShouldContainStringsInOrder("An error occurred while uploading the packages",
+                    "Exception message", nameof(RendererTests), nameof(RenderCriticalError));
+            }
+        }
+
+        public static IEnumerable<object[]> AllLogLevels()
+        {
+            return Enum.GetValues<LogLevel>().Select(logLevel => new object[] { logLevel });
+        }
+
+        public static IEnumerable<object[]> LogLevelsGreaterThanOrEqualTo(LogLevel minimumLevel)
+        {
+            return Enum.GetValues<LogLevel>().Where(logLevel => logLevel >= minimumLevel).Select(logLevel => new object[] { logLevel });
+        }
+
+        public static IEnumerable<object[]> LogLevelsLessThanOrEqualTo(LogLevel maximumLevel)
+        {
+            return Enum.GetValues<LogLevel>().Where(logLevel => logLevel <= maximumLevel).Select(logLevel => new object[] { logLevel });
         }
     }
 }

@@ -2,7 +2,7 @@ namespace PolyDeploy.DeployClient
 {
     using System.IO;
     using System.Threading.Tasks;
-    using PolyDeploy.Encryption;
+    using Encryption;
 
     public class Encryptor : IEncryptor
     {

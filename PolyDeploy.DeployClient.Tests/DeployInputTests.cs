@@ -53,6 +53,21 @@ namespace PolyDeploy.DeployClient.Tests
             validate.Message.ShouldBe(isSuccess ? null : "--packages-directory must be a valid path");
         }
 
+        [InlineData(LogLevel.Trace, true)]
+        [InlineData(LogLevel.Error, true)]
+        [InlineData((LogLevel)7, false)]
+        [InlineData((LogLevel)(-1), false)]
+        [Theory]
+        public void Validate_LogLevel(LogLevel logLevel, bool isSuccess)
+        {
+            var input = TestHelpers.CreateDeployInput(logLevel: logLevel);
+            var validate = ValidateInput(input);
+
+            validate.Successful.ShouldBe(isSuccess);
+
+            validate.Message.ShouldBe(isSuccess ? null : "--log-level must be a valid log level");
+        }
+
         private static ValidationResult ValidateInput(DeployInput input, IFileSystem? fileSystem = null)
         {
             if (fileSystem == null)

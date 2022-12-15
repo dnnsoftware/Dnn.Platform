@@ -6,11 +6,11 @@ namespace PolyDeploy.DeployClient
 
     public interface IRenderer
     {
-        void Welcome();
-        void RenderListOfFiles(IEnumerable<string> files);
-        Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads);
-        void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles);
-        void RenderInstallationStatus(SortedList<int, SessionResponse?> packageFiles);
-        void RenderError(string message, Exception exception);
+        void Welcome(LogLevel level);
+        void RenderListOfFiles(LogLevel level, IEnumerable<string> files);
+        Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string file, Task uploadTask)> uploads);
+        void RenderInstallationOverview(LogLevel level, SortedList<int, SessionResponse?> packageFiles);
+        void RenderInstallationStatus(LogLevel level, SortedList<int, SessionResponse?> packageFiles);
+        void RenderCriticalError(LogLevel level, string message, Exception exception);
     }
 }

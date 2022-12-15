@@ -1,7 +1,6 @@
 namespace PolyDeploy.DeployClient.Tests;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Shouldly;
 
 public class TestStopwatch : IStopwatch

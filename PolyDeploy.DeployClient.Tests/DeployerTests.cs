@@ -13,7 +13,7 @@ namespace PolyDeploy.DeployClient.Tests
             var deployer = new Deployer(renderer, A.Fake<IPackageFileSource>(), installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(A.Dummy<DeployInput>());
 
-            A.CallTo(() => renderer.Welcome()).MustHaveHappened();
+            A.CallTo(() => renderer.Welcome(A.Dummy<LogLevel>())).MustHaveHappened();
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace PolyDeploy.DeployClient.Tests
             var deployer = new Deployer(renderer, packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(A.Dummy<DeployInput>());
 
-            A.CallTo(() => renderer.RenderListOfFiles(Array.Empty<string>())).MustHaveHappened();
+            A.CallTo(() => renderer.RenderListOfFiles(A.Dummy<LogLevel>(), Array.Empty<string>())).MustHaveHappened();
         }
 
         [Fact]
@@ -36,8 +36,8 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var actualFiles = new List<string>();
             var renderer = A.Fake<IRenderer>();
-            A.CallTo(() => renderer.RenderListOfFiles(A<IEnumerable<string>>._))
-             .Invokes((IEnumerable<string> files) => actualFiles.AddRange(files));
+            A.CallTo(() => renderer.RenderListOfFiles(A<LogLevel>._, A<IEnumerable<string>>._))
+             .Invokes((LogLevel level, IEnumerable<string> files) => actualFiles.AddRange(files));
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
             var installer = A.Fake<IInstaller>();
@@ -102,8 +102,8 @@ namespace PolyDeploy.DeployClient.Tests
             IEnumerable<(string, Task)>? uploads = null;
             var options = A.Dummy<DeployInput>();
             var renderer = A.Fake<IRenderer>();
-            A.CallTo(() => renderer.RenderFileUploadsAsync(A<IEnumerable<(string, Task)>>._))
-             .Invokes((IEnumerable<(string, Task)> theUploads) => uploads = theUploads);
+            A.CallTo(() => renderer.RenderFileUploadsAsync(A<LogLevel>._, A<IEnumerable<(string, Task)>>._))
+             .Invokes((LogLevel _, IEnumerable<(string, Task)> theUploads) => uploads = theUploads);
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Install.zip", });
             var installer = A.Fake<IInstaller>();
@@ -325,19 +325,19 @@ namespace PolyDeploy.DeployClient.Tests
             fakeRenderer.ErrorMessage.ShouldBe("An unexpected error occurred.");
             fakeRenderer.ErrorException.ShouldBeOfType<HttpRequestException>();
         }
-        
+
         [Fact]
         public async Task StartAsync_PackagesDirectoryPath_UsedToGetPackageFiles()
         {
             var options = TestHelpers.CreateDeployInput(packagesDirectoryPath: "path/to/packages");
             var packageFileSource = A.Fake<IPackageFileSource>();
-            
+
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.GetSessionAsync(A<DeployInput>._, A<string>._)).Returns(new Session { Status = SessionStatus.Complete, });
 
             var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
             await deployer.StartAsync(options);
-            
+
             A.CallTo(() => packageFileSource.GetPackageFiles("path/to/packages")).MustHaveHappened();
         }
 
@@ -373,31 +373,31 @@ namespace PolyDeploy.DeployClient.Tests
             public Exception? ErrorException { get; private set; }
 
 
-            public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
+            public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string file, Task uploadTask)> uploads)
             {
                 await Task.WhenAll(uploads.Select(u => u.uploadTask));
             }
 
-            public void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles)
+            public void RenderInstallationOverview(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
             {
                 this.InstallationOverview = packageFiles;
             }
 
-            public void Welcome()
+            public void Welcome(LogLevel level)
             {
             }
 
-            public void RenderListOfFiles(IEnumerable<string> files)
+            public void RenderListOfFiles(LogLevel level, IEnumerable<string> files)
             {
             }
 
 
-            public void RenderInstallationStatus(SortedList<int, SessionResponse?> packageFiles)
+            public void RenderInstallationStatus(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
             {
                 this.InstallStatus.Add(packageFiles);
             }
 
-            public void RenderError(string message, Exception exception)
+            public void RenderCriticalError(LogLevel level, string message, Exception exception)
             {
                 this.ErrorMessage = message;
                 this.ErrorException = exception;

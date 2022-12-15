@@ -11,14 +11,19 @@ namespace PolyDeploy.DeployClient
             this.console = console;
         }
 
-        public void Welcome()
+        public void Welcome(LogLevel level)
         {
-            this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
+            var shouldLog = level <= LogLevel.Information;
+            if (shouldLog)
+            {
+                this.console.Write(new FigletText("PolyDeploy").Color(Color.Orange1));
+            }
         }
 
-        public async Task RenderFileUploadsAsync(IEnumerable<(string file, Task uploadTask)> uploads)
+        public async Task RenderFileUploadsAsync(LogLevel level, IEnumerable<(string file, Task uploadTask)> uploads)
         {
-            if (this.console.Profile.Capabilities.Interactive)
+            var shouldLog = level <= LogLevel.Information;
+            if (this.console.Profile.Capabilities.Interactive && shouldLog)
             {
                 // TODO: actually show upload progress
                 await this.console.Progress()
@@ -38,13 +43,21 @@ namespace PolyDeploy.DeployClient
                 await Task.WhenAll(uploads.Select(async upload =>
                 {
                     await upload.uploadTask;
-                    this.console.Write(new Markup($"{upload.file} upload complete"));
+                    if (shouldLog)
+                    {
+                        this.console.Write(new Markup($"{upload.file} upload complete"));
+                    }
                 }));
             }
         }
 
-        public void RenderInstallationOverview(SortedList<int, SessionResponse?> packageFiles)
+        public void RenderInstallationOverview(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
         {
+            if (level > LogLevel.Information)
+            {
+                return;
+            }
+            
             var tree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
             foreach (var packageFile in packageFiles.Values)
             {
@@ -94,38 +107,55 @@ namespace PolyDeploy.DeployClient
             this.console.Write(tree);
         }
 
-        public void RenderListOfFiles(IEnumerable<string> files)
+        public void RenderListOfFiles(LogLevel level, IEnumerable<string> files)
         {
-            var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
-            fileTree.AddNodes(files.Select(f => new Markup($":page_facing_up: [aqua]{f}[/]")));
+            var shouldLog = level <= LogLevel.Information;
+            if (shouldLog)
+            {
+                var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
+                fileTree.AddNodes(files.Select(f => new Markup($":page_facing_up: [aqua]{f}[/]")));
 
-            this.console.Write(fileTree);
+                this.console.Write(fileTree);
+            }
         }
 
-        public void RenderInstallationStatus(SortedList<int, SessionResponse?> packageFiles)
+        public void RenderInstallationStatus(LogLevel level, SortedList<int, SessionResponse?> packageFiles)
         {
             foreach (var file in packageFiles.Values)
             {
                 if (file?.Name is null) continue;
                 if (file.Success && !SucceededPackageFiles.Contains(file.Name))
                 {
-                    this.console.Write(new Markup($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]"));
-                    this.console.WriteLine();
+                    if (level <= LogLevel.Information)
+                    {
+                        this.console.Write(new Markup($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]"));
+                        this.console.WriteLine();
+                    }
+
                     SucceededPackageFiles.Add(file.Name);
                 }
 
                 if (file.Failures?.Any() == true && !FailedPackageFiles.Contains(file.Name))
                 {
-                    var failureTree = new Tree(new Markup($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
-                    failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => f!));
-                    this.console.Write(failureTree);
+                    if (level <= LogLevel.Error)
+                    {
+                        var failureTree = new Tree(new Markup($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
+                        failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => f!));
+                        this.console.Write(failureTree);
+                    }
+
                     FailedPackageFiles.Add(file.Name);
                 }
             }
         }
 
-        public void RenderError(string message, Exception exception)
+        public void RenderCriticalError(LogLevel level, string message, Exception exception)
         {
+            if (level > LogLevel.Critical)
+            {
+                return;
+            }
+            
             this.console.WriteLine(message);
             this.console.WriteException(exception);
         }

@@ -39,6 +39,11 @@
                 return ValidationResult.Error("--installation-status-timeout must be non-negative");
             }
 
+            if (!Enum.GetValues<LogLevel>().Contains(settings.LogLevel))
+            {
+                return ValidationResult.Error("--log-level must be a valid log level");
+            }
+
             return ValidationResult.Success();
         }
     }

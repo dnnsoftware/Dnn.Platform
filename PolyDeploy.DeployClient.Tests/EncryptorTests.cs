@@ -3,8 +3,7 @@ namespace PolyDeploy.DeployClient.Tests
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
-    using FakeItEasy;
-    using PolyDeploy.Encryption;
+    using Encryption;
     using Shouldly;
     using Xunit;
 

@@ -2,7 +2,7 @@ namespace PolyDeploy.DeployClient.Tests;
 
 public static class TestHelpers
 {
-    public static DeployInput CreateDeployInput(string? targetUri = null, string? apiKey = null, string? encryptionKey = null, int? installationStatusTimeout = null, string? packagesDirectoryPath = null)
+    public static DeployInput CreateDeployInput(string? targetUri = null, string? apiKey = null, string? encryptionKey = null, int? installationStatusTimeout = null, string? packagesDirectoryPath = null, LogLevel? logLevel = null)
     {
         return new DeployInput
         {
@@ -10,7 +10,8 @@ public static class TestHelpers
             ApiKey = apiKey ?? A.Dummy<string>(),
             EncryptionKey = encryptionKey ?? A.Dummy<string>(),
             InstallationStatusTimeout = installationStatusTimeout ?? 0,
-            PackagesDirectoryPath = packagesDirectoryPath ?? A.Dummy<string>()
+            PackagesDirectoryPath = packagesDirectoryPath ?? A.Dummy<string>(),
+            LogLevel = logLevel ?? A.Dummy<LogLevel>()
         };
     }
 }
