@@ -54,7 +54,7 @@ jobs:
         run: nuget restore
 
       - name: Build and package the application
-        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true
+        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true /p:VersionSuffix=alpha-${{ github.run_number }}
         env:
           Configuration: ${{ matrix.configuration }}
 
@@ -63,6 +63,9 @@ jobs:
 
       - name: Publish Deploy Client
         run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
+
+      - name: Pack Deploy Client
+        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3.1.1

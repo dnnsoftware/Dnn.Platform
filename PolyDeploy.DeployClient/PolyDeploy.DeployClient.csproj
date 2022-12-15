@@ -6,6 +6,10 @@
 		<Nullable>enable</Nullable>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<LangVersion>latest</LangVersion>
+
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>polydeploy</ToolCommandName>
+		<VersionPrefix>1.0.0</VersionPrefix>
 	</PropertyGroup>
 
 	<ItemGroup>
