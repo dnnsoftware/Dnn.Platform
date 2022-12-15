@@ -18,29 +18,20 @@
         public static byte[] GenerateRandomBytes(int length)
         {
             // Create a new byte array of the size required.
-            byte[] bytes = new byte[length];
+            var bytes = new byte[length];
 
-            using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
-            {
-                // Fill it with random bytes.
-                rngCsp.GetBytes(bytes);
-            }
+            using RNGCryptoServiceProvider rngCsp = new();
+            // Fill it with random bytes.
+            rngCsp.GetBytes(bytes);
 
             return bytes;
         }
 
         public static string SHA256HashString(string value)
         {
-            byte[] bytes = SHA256HashBytes(value);
+            var bytes = SHA256HashBytes(value);
 
-            string hash = "";
-
-            for(int i = 0; i< bytes.Length; i++)
-            {
-                hash = string.Format("{0}{1:X2}", hash, bytes[i]);
-            }
-
-            return hash;
+            return bytes.Aggregate("", (current, part) => $"{current}{part:X2}");
         }
 
         /// <summary>
@@ -51,15 +42,11 @@
         public static byte[] SHA256HashBytes(string value)
         {
             // Convert string to byte array.
-            byte[] bytes = Encoding.UTF8.GetBytes(value);
+            var bytes = Encoding.UTF8.GetBytes(value);
 
-            byte[] hashedBytes;
-
-            using (SHA256 sha = new SHA256Managed())
-            {
-                // Hash bytes.
-                hashedBytes = sha.ComputeHash(bytes);
-            }
+            using SHA256 sha = new SHA256Managed();
+            // Hash bytes.
+            var hashedBytes = sha.ComputeHash(bytes);
 
             return hashedBytes;
         }

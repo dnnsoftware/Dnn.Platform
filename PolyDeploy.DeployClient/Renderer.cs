@@ -124,7 +124,7 @@ namespace PolyDeploy.DeployClient
             foreach (var file in packageFiles.Values)
             {
                 if (file?.Name is null) continue;
-                if (file.Success && !SucceededPackageFiles.Contains(file.Name))
+                if (file.Success && !succeededPackageFiles.Contains(file.Name))
                 {
                     if (level <= LogLevel.Information)
                     {
@@ -132,10 +132,10 @@ namespace PolyDeploy.DeployClient
                         this.console.WriteLine();
                     }
 
-                    SucceededPackageFiles.Add(file.Name);
+                    succeededPackageFiles.Add(file.Name);
                 }
 
-                if (file.Failures?.Any() == true && !FailedPackageFiles.Contains(file.Name))
+                if (file.Failures?.Any() == true && !failedPackageFiles.Contains(file.Name))
                 {
                     if (level <= LogLevel.Error)
                     {
@@ -144,7 +144,7 @@ namespace PolyDeploy.DeployClient
                         this.console.Write(failureTree);
                     }
 
-                    FailedPackageFiles.Add(file.Name);
+                    failedPackageFiles.Add(file.Name);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace PolyDeploy.DeployClient
             this.console.WriteException(exception);
         }
 
-        private readonly HashSet<string> SucceededPackageFiles = new HashSet<string>();
-        private readonly HashSet<string> FailedPackageFiles = new HashSet<string>();
+        private readonly HashSet<string> succeededPackageFiles = new();
+        private readonly HashSet<string> failedPackageFiles = new();
     }
 }

@@ -12,7 +12,7 @@ namespace PolyDeploy.DeployClient
 
         private readonly IStopwatch stopwatch;
 
-        private static readonly string deployClientVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
+        private static readonly string DeployClientVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
 
         public Installer(HttpClient httpClient, IStopwatch stopwatch)
         {
@@ -119,7 +119,7 @@ namespace PolyDeploy.DeployClient
                 };
 
                 request.Headers.Add("x-api-key", options.ApiKey);
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", deployClientVersion));
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", DeployClientVersion));
 
                 return await this.httpClient.SendAsync(request);
             }

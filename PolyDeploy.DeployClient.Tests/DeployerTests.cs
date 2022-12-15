@@ -37,7 +37,7 @@ namespace PolyDeploy.DeployClient.Tests
             var actualFiles = new List<string>();
             var renderer = A.Fake<IRenderer>();
             A.CallTo(() => renderer.RenderListOfFiles(A<LogLevel>._, A<IEnumerable<string>>._))
-             .Invokes((LogLevel level, IEnumerable<string> files) => actualFiles.AddRange(files));
+             .Invokes((LogLevel _, IEnumerable<string> files) => actualFiles.AddRange(files));
             var packageFileSource = A.Fake<IPackageFileSource>();
             A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Another Package.zip" });
             var installer = A.Fake<IInstaller>();
@@ -83,7 +83,7 @@ namespace PolyDeploy.DeployClient.Tests
             var installer = A.Fake<IInstaller>();
             A.CallTo(() => installer.StartSessionAsync(options)).Returns(sessionId);
             A.CallTo(() => installer.UploadPackageAsync(A<DeployInput>._, sessionId, A<Stream>._, A<string>._))
-                .Invokes((DeployInput DeployInput, string sessionId, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
+                .Invokes((DeployInput _, string _, Stream encryptedStream, string packageName) => actualFiles[packageName] = new StreamReader(encryptedStream).ReadToEnd());
             A.CallTo(() => installer.GetSessionAsync(options, sessionId)).Returns(new Session { Status = SessionStatus.Complete, });
 
             var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, encryptor, A.Fake<IDelayer>());
@@ -290,7 +290,6 @@ namespace PolyDeploy.DeployClient.Tests
             A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
 
             var installer = A.Fake<IInstaller>();
-            var innerException = A.Dummy<HttpRequestException>();
             A.CallTo(() => installer.StartSessionAsync(options))
                 .Returns(sessionId);
             

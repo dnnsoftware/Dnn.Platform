@@ -1,7 +1,5 @@
 namespace PolyDeploy.DeployClient
 {
-    using Microsoft.Extensions.Logging;
-
     public class Deployer : IDeployer
     {
         private readonly IRenderer renderer;

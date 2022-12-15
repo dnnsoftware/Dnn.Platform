@@ -12,7 +12,7 @@ public class TestStopwatch : IStopwatch
         this.timeSpans = timeSpans;
     }
 
-    private int elapsedCalled = 0;
+    private int elapsedCalled;
 
     public TimeSpan Elapsed
     {
