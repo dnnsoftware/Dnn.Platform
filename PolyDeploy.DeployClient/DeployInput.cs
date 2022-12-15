@@ -10,6 +10,7 @@ namespace PolyDeploy.DeployClient
     {
         Success = 0,
         InstallerError = 1,
+        PackageError = 2,
         UnexpectedError = int.MaxValue
     }
 

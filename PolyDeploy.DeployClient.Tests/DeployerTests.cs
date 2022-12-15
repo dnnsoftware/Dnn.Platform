@@ -271,6 +271,55 @@ namespace PolyDeploy.DeployClient.Tests
         }
 
         [Fact]
+        public async Task StartAsync_InstallCompleteWithoutFailure_ExitsWithFailure()
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+
+            var installer = A.Fake<IInstaller>();
+            A.CallTo(() => installer.StartSessionAsync(options))
+                .Returns(sessionId);
+
+            SimulateResponses(
+                installer,
+                options,
+                sessionId,
+                CreateSessionResponse(success: false, failures: new List<string?> { "bad" }));
+
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
+            var exitCode = await deployer.StartAsync(options);
+
+            exitCode.ShouldBe(ExitCode.PackageError);
+        }
+
+        [Fact]
+        public async Task StartAsync_InstallCompleteWithFailure_ExitsSuccessfully()
+        {
+            var sessionId = Guid.NewGuid().ToString();
+            var options = A.Dummy<DeployInput>();
+            var packageFileSource = A.Fake<IPackageFileSource>();
+            A.CallTo(() => packageFileSource.GetPackageFiles(A<string>._)).Returns(new[] { "Package 1.zip", "Package 2.zip" });
+
+            var installer = A.Fake<IInstaller>();
+            var innerException = A.Dummy<HttpRequestException>();
+            A.CallTo(() => installer.StartSessionAsync(options))
+                .Returns(sessionId);
+            
+            SimulateResponses(
+                installer,
+                options,
+                sessionId,
+                CreateSessionResponse());
+
+            var deployer = new Deployer(new FakeRenderer(), packageFileSource, installer, A.Fake<IEncryptor>(), A.Fake<IDelayer>());
+            var exitCode = await deployer.StartAsync(options);
+
+            exitCode.ShouldBe(ExitCode.Success);
+        }
+
+        [Fact]
         public async Task StartAsync_ExceptionThrown_RendersMessage()
         {
             var options = A.Dummy<DeployInput>();

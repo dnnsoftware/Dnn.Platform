@@ -54,13 +54,16 @@ namespace PolyDeploy.DeployClient
 
                     if (session?.Status == SessionStatus.Complete)
                     {
-                        break;
+                        if (session.Responses?.Any(r => !r.Value?.Success == true) == true)
+                        {
+                            return ExitCode.PackageError;
+                        }
+
+                        return ExitCode.Success;
                     }
 
                     await this.delayer.Delay(TimeSpan.FromSeconds(1));
                 }
-
-                return ExitCode.Success;
             }
             catch (InstallerException e)
             {
