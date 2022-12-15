@@ -41,7 +41,9 @@ namespace PolyDeploy.DeployClient.Tests
         public void Validate_PackagesDirectoryPath(string packagesDirectoryPath, bool isSuccess)
         {
             var fileSystem = A.Fake<IFileSystem>();
+            var currentDirectory = Directory.GetCurrentDirectory();
             A.CallTo(() => fileSystem.Directory.Exists("Dir/Blah")).Returns(true);
+            A.CallTo(() => fileSystem.Directory.Exists(currentDirectory)).Returns(true);
 
             var input = TestHelpers.CreateDeployInput(packagesDirectoryPath: packagesDirectoryPath);
             var validate = ValidateInput(input, fileSystem);
@@ -53,9 +55,14 @@ namespace PolyDeploy.DeployClient.Tests
 
         private static ValidationResult ValidateInput(DeployInput input, IFileSystem? fileSystem = null)
         {
-            var command = new DeployCommand(
-                A.Fake<IDeployer>(), 
-                fileSystem ?? A.Fake<IFileSystem>());
+            if (fileSystem == null)
+            {
+                fileSystem = A.Fake<IFileSystem>();
+                var currentDirectory = Directory.GetCurrentDirectory();
+                A.CallTo(() => fileSystem.Directory.Exists(currentDirectory)).Returns(true);
+            }
+
+            var command = new DeployCommand(A.Fake<IDeployer>(), fileSystem);
             return command.Validate(A.Dummy<CommandContext>(), input);
         }
     }

@@ -25,7 +25,7 @@ namespace PolyDeploy.DeployClient.Tests
             var fileSystem = A.Fake<IFileSystem>();
 
             var stream = new MemoryStream();
-            A.CallTo(() => fileSystem.File.Open("package1.zip", FileMode.Open)).Returns(stream);
+            A.CallTo(() => fileSystem.File.Open("package1.zip", FileMode.Open, FileAccess.Read)).Returns(stream);
 
             var fileSource = new PackageFileSource(fileSystem);
             var fileStream = fileSource.GetFileStream("package1.zip");
