@@ -65,7 +65,7 @@ jobs:
         run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 
       - name: Pack Deploy Client
-        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
+        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/ --version-suffix alpha-${{ github.run_number }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3.1.1
