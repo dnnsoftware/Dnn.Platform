@@ -60,11 +60,7 @@ namespace PolyDeploy.DeployClient.Tests
         private static ValidationResult ValidateInput(DeployInput input, IFileSystem? fileSystem = null)
         {
             var command = new DeployCommand(
-                A.Fake<IRenderer>(), 
-                A.Fake<IPackageFileSource>(), 
-                A.Fake<IInstaller>(),
-                A.Fake<IEncryptor>(), 
-                A.Fake<IDelayer>(), 
+                A.Fake<IDeployer>(), 
                 fileSystem ?? A.Fake<IFileSystem>());
             return command.Validate(A.Dummy<CommandContext>(), input);
         }

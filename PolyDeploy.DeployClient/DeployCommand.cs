@@ -2,8 +2,6 @@
 {
     using System;
     using System.IO.Abstractions;
-    using System.Linq;
-    using System.Net.Http;
     using System.Threading.Tasks;
 
     using Spectre.Console.Cli;
@@ -11,43 +9,18 @@
 
     public class DeployCommand : AsyncCommand<DeployInput>
     {
-        private readonly IRenderer renderer;
-        private readonly IPackageFileSource packageFileSource;
-        private readonly IInstaller installer;
-        private readonly IEncryptor encryptor;
-        private readonly IDelayer delayer;
         private readonly IFileSystem fileSystem;
+        private readonly IDeployer deployer;
 
-        public DeployCommand(IRenderer renderer, IPackageFileSource packageFileSource, IInstaller installer, IEncryptor encryptor, IDelayer delayer, IFileSystem fileSystem)
+        public DeployCommand(IDeployer deployer, IFileSystem fileSystem)
         {
-            this.renderer = renderer;
-            this.packageFileSource = packageFileSource;
-            this.installer = installer;
-            this.encryptor = encryptor;
-            this.delayer = delayer;
+            this.deployer = deployer;
             this.fileSystem = fileSystem;
-        }
-
-        public DeployCommand()
-            : this(
-                new Renderer(AnsiConsole.Console),
-                new PackageFileSource(new FileSystem()),
-                new Installer(new HttpClient(), new Stopwatch()),
-                new Encryptor(),
-                new Delayer(),
-                new FileSystem())
-        {
         }
 
         public override async Task<int> ExecuteAsync(CommandContext context, DeployInput input)
         {
-            var deployer = new Deployer(
-                this.renderer,
-                this.packageFileSource,
-                this.installer,
-                this.encryptor,
-                this.delayer);
-            var exitCode = await deployer.StartAsync(input);
+            var exitCode = await this.deployer.StartAsync(input);
             return (int)exitCode;
         }
 
