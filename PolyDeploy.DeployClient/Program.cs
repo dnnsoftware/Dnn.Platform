@@ -8,11 +8,10 @@ try
 {
     var services = new ServiceCollection();
     services.AddTransient(_ => AnsiConsole.Console);
-    services.AddHttpClient();
+    services.AddHttpClient<IInstaller, Installer>();
     services.AddTransient<IFileSystem, FileSystem>();
     services.AddTransient<IRenderer, Renderer>();
     services.AddTransient<IPackageFileSource, PackageFileSource>();
-    services.AddTransient<IInstaller, Installer>();
     services.AddTransient<IStopwatch, Stopwatch>();
     services.AddTransient<IEncryptor, Encryptor>();
     services.AddTransient<IDelayer, Delayer>();
