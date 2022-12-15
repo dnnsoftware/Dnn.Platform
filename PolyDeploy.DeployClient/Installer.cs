@@ -15,7 +15,7 @@ namespace PolyDeploy.DeployClient
 
         private readonly IStopwatch stopwatch;
 
-        private static string deployClientVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
+        private static readonly string deployClientVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
 
         public Installer(HttpClient httpClient, IStopwatch stopwatch)
         {
@@ -27,7 +27,7 @@ namespace PolyDeploy.DeployClient
         {
             try
             {
-                var response =
+                using var response =
                     await this.SendRequestAsync(options, HttpMethod.Get, $"GetSession?sessionGuid={sessionId}");
 
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace PolyDeploy.DeployClient
         {
             try
             {
-                await this.SendRequestAsync(options, HttpMethod.Get, $"Install?sessionGuid={sessionId}");
+                using var response = await this.SendRequestAsync(options, HttpMethod.Get, $"Install?sessionGuid={sessionId}");
             }
             catch (Exception e)
             {
@@ -74,7 +74,7 @@ namespace PolyDeploy.DeployClient
         {
             try
             {
-                var response = await this.SendRequestAsync(options, HttpMethod.Get, "CreateSession");
+                using var response = await this.SendRequestAsync(options, HttpMethod.Get, "CreateSession");
                 var responseStream = await response.Content.ReadAsStreamAsync();
                 var responseBody = await JsonSerializer.DeserializeAsync<CreateSessionResponse>(responseStream);
                 if (string.IsNullOrWhiteSpace(responseBody?.Guid))
@@ -97,7 +97,7 @@ namespace PolyDeploy.DeployClient
                 var form = new MultipartFormDataContent();
                 form.Add(new StreamContent(encryptedPackage), "none", packageName);
 
-                await this.SendRequestAsync(options, HttpMethod.Post, $"AddPackages?sessionGuid={sessionId}", form);
+                using var response = await this.SendRequestAsync(options, HttpMethod.Post, $"AddPackages?sessionGuid={sessionId}", form);
             }
             catch (Exception e)
             {
