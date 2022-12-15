@@ -24,13 +24,20 @@ namespace PolyDeploy.DeployClient.Tests
         {
             var fileSystem = A.Fake<IFileSystem>();
 
-            var stream = new MemoryStream();
+            var stream = new FakeStream();
             A.CallTo(() => fileSystem.File.Open("package1.zip", FileMode.Open, FileAccess.Read)).Returns(stream);
 
             var fileSource = new PackageFileSource(fileSystem);
             var fileStream = fileSource.GetFileStream("package1.zip");
 
             fileStream.ShouldBe(stream);
+        }
+
+        private class FakeStream : FileSystemStream
+        {
+            public FakeStream(Stream? stream = null, string? path = null, bool isAsync = false) : base(stream ?? new MemoryStream(), path ?? ".", isAsync)
+            {
+            }
         }
     }
 }
