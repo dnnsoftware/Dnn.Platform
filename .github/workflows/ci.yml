@@ -6,10 +6,14 @@ on:
     branches: [master, develop]
   pull_request:
     branches: [master, develop]
+  release:
 
 defaults:
   run:
     shell: pwsh
+
+env:
+    VERSION_SUFFIX: alpha-${{ github.run_number }}
 
 jobs:
   build:
@@ -21,6 +25,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Set VERSION_SUFFIX
+        if: github.event_name == 'release' && github.event.action == 'created'
+        run: "'VERSION_SUFFIX=' >> $env:GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v3.1.0
 
@@ -54,7 +62,7 @@ jobs:
         run: nuget restore
 
       - name: Build and package the application
-        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true /p:VersionSuffix=alpha-${{ github.run_number }}
+        run: msbuild PolyDeploy.sln /m /p:Configuration=$env:Configuration /p:ContinuousIntegrationBuild=true /p:VersionSuffix=${{ env.VERSION_SUFFIX }}
         env:
           Configuration: ${{ matrix.configuration }}
 
@@ -65,7 +73,7 @@ jobs:
         run: dotnet publish PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/
 
       - name: Pack Deploy Client
-        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/ --version-suffix alpha-${{ github.run_number }}
+        run: dotnet pack PolyDeploy.DeployClient/PolyDeploy.DeployClient.csproj --configuration ${{ matrix.configuration }} --no-build --output dist/ --version-suffix ${{ env.VERSION_SUFFIX }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3.1.1
