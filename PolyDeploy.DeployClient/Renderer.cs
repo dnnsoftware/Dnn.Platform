@@ -46,6 +46,7 @@ namespace PolyDeploy.DeployClient
                     if (shouldLog)
                     {
                         this.console.Write(new Markup($"{upload.file} upload complete"));
+                        this.console.WriteLine();
                     }
                 }));
             }

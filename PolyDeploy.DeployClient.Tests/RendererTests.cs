@@ -90,7 +90,7 @@
             await renderer.RenderFileUploadsAsync(logLevel, new[] { ("OpenContent_4.5.0_Install.zip", Task.CompletedTask), });
 
 
-            console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "upload", "complete");
+            console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "upload", "complete", "\n");
         }
 
         [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
