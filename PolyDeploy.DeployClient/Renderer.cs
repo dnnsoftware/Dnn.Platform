@@ -1,4 +1,4 @@
-namespace PolyDeploy.DeployClient
+﻿namespace PolyDeploy.DeployClient
 {
     using Spectre.Console;
 
@@ -45,8 +45,7 @@ namespace PolyDeploy.DeployClient
                     await upload.uploadTask;
                     if (shouldLog)
                     {
-                        this.console.Write(new Markup($"{upload.file} upload complete"));
-                        this.console.WriteLine();
+                        this.console.MarkupLineInterpolated($"{upload.file} upload complete");
                     }
                 }));
             }
@@ -67,7 +66,7 @@ namespace PolyDeploy.DeployClient
                     continue;
                 }
 
-                var fileNode = tree.AddNode(new Markup($":page_facing_up: [aqua]{packageFile.Name}[/]"));
+                var fileNode = tree.AddNode(Markup.FromInterpolated($":page_facing_up: [aqua]{packageFile.Name}[/]"));
                 if (packageFile.Packages == null)
                 {
                     continue;
@@ -80,7 +79,7 @@ namespace PolyDeploy.DeployClient
                         continue;
                     }
 
-                    var packageNode = fileNode.AddNode(new Markup($":wrapped_gift: [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
+                    var packageNode = fileNode.AddNode(Markup.FromInterpolated($":wrapped_gift: [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
                     if (package.Dependencies == null)
                     {
                         continue;
@@ -95,11 +94,11 @@ namespace PolyDeploy.DeployClient
 
                         if (string.IsNullOrEmpty(dependency.DependencyVersion) && !dependency.IsPackageDependency)
                         {
-                            packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :wrapped_gift: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
                         }
                         else
                         {
-                            packageNode.AddNode(new Markup($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
                         }
                     }
                 }
@@ -114,7 +113,7 @@ namespace PolyDeploy.DeployClient
             if (shouldLog)
             {
                 var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
-                fileTree.AddNodes(files.Select(f => new Markup($":page_facing_up: [aqua]{f}[/]")));
+                fileTree.AddNodes(files.Select(f => Markup.FromInterpolated($":page_facing_up: [aqua]{f}[/]")));
 
                 this.console.Write(fileTree);
             }
@@ -129,8 +128,7 @@ namespace PolyDeploy.DeployClient
                 {
                     if (level <= LogLevel.Information)
                     {
-                        this.console.Write(new Markup($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]"));
-                        this.console.WriteLine();
+                        this.console.MarkupLineInterpolated($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]");
                     }
 
                     succeededPackageFiles.Add(file.Name);
@@ -140,7 +138,7 @@ namespace PolyDeploy.DeployClient
                 {
                     if (level <= LogLevel.Error)
                     {
-                        var failureTree = new Tree(new Markup($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
+                        var failureTree = new Tree(Markup.FromInterpolated($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
                         failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => f!));
                         this.console.Write(failureTree);
                     }
