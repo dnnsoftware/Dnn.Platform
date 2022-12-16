@@ -94,7 +94,7 @@
 
                         if (string.IsNullOrEmpty(dependency.DependencyVersion) && !dependency.IsPackageDependency)
                         {
-                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :wrapped_gift: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :radioactive: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
                         }
                         else
                         {
