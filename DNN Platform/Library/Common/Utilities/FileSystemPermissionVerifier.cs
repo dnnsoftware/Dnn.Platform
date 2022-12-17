@@ -18,9 +18,9 @@ namespace DotNetNuke.Common.Utilities
     public class FileSystemPermissionVerifier
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
-        private readonly string _basePath;
+        private readonly string basePath;
 
-        private int _retryTimes = 30;
+        private int retryTimes = 30;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.
@@ -28,7 +28,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="basePath"></param>
         public FileSystemPermissionVerifier(string basePath)
         {
-            this._basePath = basePath;
+            this.basePath = basePath;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace DotNetNuke.Common.Utilities
         public FileSystemPermissionVerifier(string basePath, int retryTimes)
             : this(basePath)
         {
-            this._retryTimes = retryTimes;
+            this.retryTimes = retryTimes;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._basePath;
+                return this.basePath;
             }
         }
 
@@ -95,7 +95,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFileCreate()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
+            string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
             bool verified = true;
 
             // Attempt to create the File
@@ -119,7 +119,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFileDelete()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
+            string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
             bool verified = true;
 
             // Attempt to delete the File
@@ -143,7 +143,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderCreate()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify");
+            string verifyPath = Path.Combine(this.basePath, "Verify");
             bool verified = true;
 
             // Attempt to create the Directory
@@ -167,7 +167,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderDelete()
         {
-            string verifyPath = Path.Combine(this._basePath, "Verify");
+            string verifyPath = Path.Combine(this.basePath, "Verify");
             bool verified = true;
 
             // Attempt to delete the Directory
@@ -186,7 +186,7 @@ namespace DotNetNuke.Common.Utilities
 
         private void Try(Action action, string description)
         {
-            new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
+            new RetryableAction(action, description, this.retryTimes, TimeSpan.FromSeconds(1)).TryIt();
         }
     }
 }

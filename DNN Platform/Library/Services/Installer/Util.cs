@@ -395,79 +395,79 @@ namespace DotNetNuke.Services.Installer
             return result;
         }
 
-        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,
-                                                    string Referer, out string Filename)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent,
+                                                    string referer, out string filename)
         {
-            return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
+            return GetExternalRequest(url, data, username, password, domain, proxyAddress, proxyPort, doPOST, userAgent, referer, out filename, Host.WebRequestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,
-                                                    string Referer, out string Filename, int requestTimeout)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent,
+                                                    string referer, out string filename, int requestTimeout)
         {
-            return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, string.Empty, string.Empty, DoPOST, UserAgent, Referer, out Filename, requestTimeout);
+            return GetExternalRequest(url, data, username, password, domain, proxyAddress, proxyPort, string.Empty, string.Empty, doPOST, userAgent, referer, out filename, requestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort,
-                                                    string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort,
+                                                    string proxyUsername, string proxyPassword, bool doPOST, string userAgent, string referer, out string filename)
         {
-            return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
+            return GetExternalRequest(url, data, username, password, domain, proxyAddress, proxyPort, proxyUsername, proxyPassword, doPOST, userAgent, referer, out filename, Host.WebRequestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort,
-                                                    string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename, int requestTimeout)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort,
+                                                    string proxyUsername, string proxyPassword, bool doPOST, string userAgent, string referer, out string filename, int requestTimeout)
         {
-            if (!DoPOST && Data != null && Data.Length > 0)
+            if (!doPOST && data != null && data.Length > 0)
             {
-                string restoftheurl = Encoding.ASCII.GetString(Data);
-                if (URL != null && URL.IndexOf("?") <= 0)
+                string restoftheurl = Encoding.ASCII.GetString(data);
+                if (url != null && url.IndexOf("?") <= 0)
                 {
-                    URL = URL + "?";
+                    url = url + "?";
                 }
 
-                URL = URL + restoftheurl;
+                url = url + restoftheurl;
             }
 
-            var wreq = (HttpWebRequest)WebRequest.Create(URL);
-            wreq.UserAgent = UserAgent;
-            wreq.Referer = Referer;
+            var wreq = (HttpWebRequest)WebRequest.Create(url);
+            wreq.UserAgent = userAgent;
+            wreq.Referer = referer;
             wreq.Method = "GET";
-            if (DoPOST)
+            if (doPOST)
             {
                 wreq.Method = "POST";
             }
 
             wreq.Timeout = requestTimeout;
 
-            if (!string.IsNullOrEmpty(ProxyAddress))
+            if (!string.IsNullOrEmpty(proxyAddress))
             {
-                var proxy = new WebProxy(ProxyAddress, ProxyPort);
-                if (!string.IsNullOrEmpty(ProxyUsername))
+                var proxy = new WebProxy(proxyAddress, proxyPort);
+                if (!string.IsNullOrEmpty(proxyUsername))
                 {
-                    var proxyCredentials = new NetworkCredential(ProxyUsername, ProxyPassword);
+                    var proxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
                     proxy.Credentials = proxyCredentials;
                 }
 
                 wreq.Proxy = proxy;
             }
 
-            if (Username != null && Password != null && Domain != null && Username.Trim() != string.Empty && Password.Trim() != null && Domain.Trim() != null)
+            if (username != null && password != null && domain != null && username.Trim() != string.Empty && password.Trim() != null && domain.Trim() != null)
             {
-                wreq.Credentials = new NetworkCredential(Username, Password, Domain);
+                wreq.Credentials = new NetworkCredential(username, password, domain);
             }
-            else if (Username != null && Password != null && Username.Trim() != string.Empty && Password.Trim() != null)
+            else if (username != null && password != null && username.Trim() != string.Empty && password.Trim() != null)
             {
-                wreq.Credentials = new NetworkCredential(Username, Password);
+                wreq.Credentials = new NetworkCredential(username, password);
             }
 
-            if (DoPOST && Data != null && Data.Length > 0)
+            if (doPOST && data != null && data.Length > 0)
             {
                 wreq.ContentType = "application/x-www-form-urlencoded";
                 Stream request = wreq.GetRequestStream();
-                request.Write(Data, 0, Data.Length);
+                request.Write(data, 0, data.Length);
                 request.Close();
             }
 
-            Filename = string.Empty;
+            filename = string.Empty;
             WebResponse wrsp = wreq.GetResponse();
             string cd = wrsp.Headers["Content-Disposition"];
             if (cd != null && cd.Trim() != string.Empty && cd.StartsWith("attachment"))
@@ -478,11 +478,11 @@ namespace DotNetNuke.Services.Installer
 
                     if (filenameParam.IndexOf("\"") > -1)
                     {
-                        Filename = filenameParam.Substring(filenameParam.IndexOf("\"") + 1).TrimEnd(Convert.ToChar("\"")).TrimEnd(Convert.ToChar("\\"));
+                        filename = filenameParam.Substring(filenameParam.IndexOf("\"") + 1).TrimEnd(Convert.ToChar("\"")).TrimEnd(Convert.ToChar("\\"));
                     }
                     else
                     {
-                        Filename = filenameParam.Substring(filenameParam.IndexOf("=") + 1);
+                        filename = filenameParam.Substring(filenameParam.IndexOf("=") + 1);
                     }
                 }
             }

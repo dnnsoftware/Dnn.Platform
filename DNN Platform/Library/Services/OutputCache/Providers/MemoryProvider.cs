@@ -120,12 +120,12 @@ namespace DotNetNuke.Services.OutputCache.Providers
         internal static List<string> GetCacheKeys()
         {
             var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = Cache.GetEnumerator();
-            while (CacheEnum.MoveNext())
+            IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
+            while (cacheEnum.MoveNext())
             {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
+                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
                 {
-                    keys.Add(CacheEnum.Key.ToString());
+                    keys.Add(cacheEnum.Key.ToString());
                 }
             }
 
@@ -135,26 +135,26 @@ namespace DotNetNuke.Services.OutputCache.Providers
         internal static List<string> GetCacheKeys(int tabId)
         {
             var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = Cache.GetEnumerator();
-            while (CacheEnum.MoveNext())
+            IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
+            while (cacheEnum.MoveNext())
             {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
+                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
                 {
-                    keys.Add(CacheEnum.Key.ToString());
+                    keys.Add(cacheEnum.Key.ToString());
                 }
             }
 
             return keys;
         }
 
-        private string GetCacheKey(string CacheKey)
+        private string GetCacheKey(string cacheKey)
         {
-            if (string.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(cacheKey))
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
 
-            return string.Concat(cachePrefix, CacheKey);
+            return string.Concat(cachePrefix, cacheKey);
         }
     }
 }

@@ -21,18 +21,18 @@ namespace DotNetNuke.Web.InternalServices
     [DnnPageEditor]
     public class PageServiceController : DnnApiController
     {
-        private int? _portalId;
+        private int? portalId;
 
         protected int PortalId
         {
             get
             {
-                if (!this._portalId.HasValue)
+                if (!this.portalId.HasValue)
                 {
-                    this._portalId = this.PortalSettings.ActiveTab.IsSuperTab ? -1 : this.PortalSettings.PortalId;
+                    this.portalId = this.PortalSettings.ActiveTab.IsSuperTab ? -1 : this.PortalSettings.PortalId;
                 }
 
-                return this._portalId.Value;
+                return this.portalId.Value;
             }
         }
 

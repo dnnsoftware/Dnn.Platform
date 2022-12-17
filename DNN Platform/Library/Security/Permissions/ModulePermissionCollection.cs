@@ -53,12 +53,12 @@ namespace DotNetNuke.Security.Permissions
         /// Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.
         /// </summary>
         /// <param name="modulePermissions"></param>
-        /// <param name="ModuleID"></param>
-        public ModulePermissionCollection(ArrayList modulePermissions, int ModuleID)
+        /// <param name="moduleID"></param>
+        public ModulePermissionCollection(ArrayList modulePermissions, int moduleID)
         {
             foreach (ModulePermissionInfo permission in modulePermissions)
             {
-                if (permission.ModuleID == ModuleID)
+                if (permission.ModuleID == moduleID)
                 {
                     this.Add(permission);
                 }

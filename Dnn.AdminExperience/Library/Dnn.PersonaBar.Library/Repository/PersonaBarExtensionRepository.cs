@@ -19,11 +19,12 @@ namespace Dnn.PersonaBar.Library.Repository
     {
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-        private readonly IDataService _dataService = new DataService();
+        private readonly IDataService dataService = new DataService();
 
+        /// <inheritdoc/>
         public void SaveExtension(PersonaBarExtension extension)
         {
-            this._dataService.SavePersonaBarExtension(
+            this.dataService.SavePersonaBarExtension(
                 extension.Identifier,
                 extension.MenuId,
                 extension.FolderName,
@@ -37,18 +38,21 @@ namespace Dnn.PersonaBar.Library.Repository
             this.ClearCache();
         }
 
+        /// <inheritdoc/>
         public void DeleteExtension(PersonaBarExtension extension)
         {
             this.DeleteExtension(extension.Identifier);
         }
 
+        /// <inheritdoc/>
         public void DeleteExtension(string identifier)
         {
-            this._dataService.DeletePersonaBarExtension(identifier);
+            this.dataService.DeletePersonaBarExtension(identifier);
 
             this.ClearCache();
         }
 
+        /// <inheritdoc/>
         public IList<PersonaBarExtension> GetExtensions()
         {
             var extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
@@ -59,7 +63,7 @@ namespace Dnn.PersonaBar.Library.Repository
                     extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
                     if (extensions == null)
                     {
-                        extensions = CBO.FillCollection<PersonaBarExtension>(this._dataService.GetPersonaBarExtensions())
+                        extensions = CBO.FillCollection<PersonaBarExtension>(this.dataService.GetPersonaBarExtensions())
                             .OrderBy(e => e.Order).ToList();
 
                         DataCache.SetCache(PersonaBarExtensionsCacheKey, extensions);
@@ -70,11 +74,13 @@ namespace Dnn.PersonaBar.Library.Repository
             return extensions;
         }
 
+        /// <inheritdoc/>
         public IList<PersonaBarExtension> GetExtensions(int menuId)
         {
             return this.GetExtensions().Where(t => t.MenuId == menuId).ToList();
         }
 
+        /// <inheritdoc/>
         protected override Func<IPersonaBarExtensionRepository> GetFactory()
         {
             return () => new PersonaBarExtensionRepository();

@@ -239,6 +239,7 @@ namespace DotNetNuke.Services.Install
         /// Runs the intaller.
         /// </summary>
         [System.Web.Services.WebMethod]
+
         public static void RunInstall()
         {
             installerRunning = false;

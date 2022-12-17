@@ -23,6 +23,7 @@
             <ComponentsSource Include="$(MSBuildProjectDirectory)\ResourceManager.Web\dist\dnn-resource-manager\**\*" />
         </ItemGroup>
         <RemoveDir Directories="$(ComponentsDestinationFolder)" />
+        <MakeDir Directories="$(ComponentsDestinationFolder)" Condition="!Exists('$(ComponentsDestinationFolder)')"/>
         <Copy SourceFiles="@(ComponentsSource)" DestinationFolder="$(ComponentsDestinationFolder)" />
     </Target>
     <Target Name="UpdateFiles">

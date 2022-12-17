@@ -7,7 +7,7 @@ namespace DNNConnect.CKEditorProvider.Services
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-    
+
     using DotNetNuke.Web.Api;
 
     /// <summary>

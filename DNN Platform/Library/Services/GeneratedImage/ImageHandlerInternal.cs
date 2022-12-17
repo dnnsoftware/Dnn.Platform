@@ -28,9 +28,9 @@ namespace DotNetNuke.Services.GeneratedImage
     {
         private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
 
-        private TimeSpan _clientCacheExpiration = defaultClientCacheExpiration;
-        private IImageStore _imageStore;
-        private DateTime? _now;
+        private TimeSpan clientCacheExpiration = defaultClientCacheExpiration;
+        private IImageStore imageStore;
+        private DateTime? now;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.
@@ -51,15 +51,15 @@ namespace DotNetNuke.Services.GeneratedImage
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
             : this()
         {
-            this._imageStore = imageStore;
-            this._now = now;
+            this.imageStore = imageStore;
+            this.now = now;
         }
 
         public TimeSpan ClientCacheExpiration
         {
             get
             {
-                return this._clientCacheExpiration;
+                return this.clientCacheExpiration;
             }
 
             set
@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
                 }
 
-                this._clientCacheExpiration = value;
+                this.clientCacheExpiration = value;
                 this.EnableClientCache = true;
             }
         }
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return this._now ?? DateTime.Now;
+                return this.now ?? DateTime.Now;
             }
         }
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                return this._imageStore ?? DiskImageStore.Instance;
+                return this.imageStore ?? DiskImageStore.Instance;
             }
         }
 

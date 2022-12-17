@@ -40,33 +40,33 @@ namespace DotNetNuke.Services.Scheduling
             //
             // This class can also react to the three
             // scheduler events (Started, Progressing and Completed)
-            private static bool _threadPoolInitialized;
+            private static bool threadPoolInitialized;
 
             // The MaxThreadCount establishes the maximum
             // threads you want running simultaneously
             // for spawning SchedulerClient processes
-            private static int _maxThreadCount;
-            private static int _activeThreadCount;
+            private static int maxThreadCount;
+            private static int activeThreadCount;
 
             // If KeepRunning gets switched to false,
             // the scheduler stops running.
-            private static bool _forceReloadSchedule;
-            private static bool _debug;
+            private static bool forceReloadSchedule;
+            private static bool debug;
 
-            private static int _numberOfProcessGroups;
+            private static int numberOfProcessGroups;
 
             // This is our array that holds the process group
             // where our threads will be kicked off.
-            private static ProcessGroup[] _processGroup;
+            private static ProcessGroup[] processGroup;
 
             // A ReaderWriterLockSlim will protect our objects
             // in memory from being corrupted by simultaneous
             // thread operations.  This block of code below
             // establishes variables to help keep track
             // of the ReaderWriter locks.
-            private static int _readerTimeouts;
-            private static int _writerTimeouts;
-            private static ScheduleStatus _status = ScheduleStatus.STOPPED;
+            private static int readerTimeouts;
+            private static int writerTimeouts;
+            private static ScheduleStatus status = ScheduleStatus.STOPPED;
 
             static CoreScheduler()
             {
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 get
                 {
-                    return _maxThreadCount - _activeThreadCount;
+                    return maxThreadCount - activeThreadCount;
                 }
             }
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Scheduling
                     catch (ApplicationException ex)
                     {
                         // The writer lock request timed out.
-                        Interlocked.Increment(ref _writerTimeouts);
+                        Interlocked.Increment(ref writerTimeouts);
                         Exceptions.Exceptions.LogException(ex);
                     }
                 }
@@ -197,7 +197,7 @@ namespace DotNetNuke.Services.Scheduling
                             delegateFunc.BeginInvoke(scheduleHistoryItem, null, null);
                             Thread.Sleep(1000);
 
-                            _processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
+                            CoreScheduler.processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
 
                             LogEventAddedToProcessGroup(scheduleItem);
                             numRun += 1;
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.Scheduling
 
             public static int GetActiveThreadCount()
             {
-                return _activeThreadCount;
+                return activeThreadCount;
             }
 
             public static int GetFreeThreadCount()
@@ -222,7 +222,7 @@ namespace DotNetNuke.Services.Scheduling
 
             public static int GetMaxThreadCount()
             {
-                return _maxThreadCount;
+                return maxThreadCount;
             }
 
             /// <summary>
@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
 
@@ -272,7 +272,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     if (Logger.IsDebugEnabled)
                     {
                         Logger.Debug(ex);
@@ -306,7 +306,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 catch (ApplicationException ex)
                 {
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
 
@@ -332,7 +332,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     return 0;
                 }
             }
@@ -346,7 +346,7 @@ namespace DotNetNuke.Services.Scheduling
                         try
                         {
                             // ScheduleStatus is a value type a copy is returned (enumeration)
-                            return _status;
+                            return status;
                         }
                         finally
                         {
@@ -357,7 +357,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                 }
 
                 return ScheduleStatus.NOT_SET;
@@ -395,7 +395,7 @@ namespace DotNetNuke.Services.Scheduling
                     Thread.Sleep(1000);
                 }
 
-                _activeThreadCount = 0;
+                activeThreadCount = 0;
             }
 
             public static bool HasDependenciesConflict(ScheduleItem scheduleItem)
@@ -421,7 +421,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     if (Logger.IsDebugEnabled)
                     {
                         Logger.Debug(ex);
@@ -472,7 +472,7 @@ namespace DotNetNuke.Services.Scheduling
 
             public static void LoadQueueFromTimer()
             {
-                _forceReloadSchedule = false;
+                forceReloadSchedule = false;
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
                 if (Logger.IsDebugEnabled)
@@ -525,7 +525,7 @@ namespace DotNetNuke.Services.Scheduling
 
             public static void ReloadSchedule()
             {
-                _forceReloadSchedule = true;
+                forceReloadSchedule = true;
             }
 
             /// <summary>
@@ -549,7 +549,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The writer lock request timed out.
-                    Interlocked.Increment(ref _writerTimeouts);
+                    Interlocked.Increment(ref writerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
             }
@@ -579,7 +579,7 @@ namespace DotNetNuke.Services.Scheduling
                             FireEvents();
                         }
 
-                        if (_writerTimeouts > 20 || _readerTimeouts > 20)
+                        if (writerTimeouts > 20 || readerTimeouts > 20)
                         {
                             // Wait for 10 minutes so we don't fill up the logs
                             Thread.Sleep(TimeSpan.FromMinutes(10));
@@ -616,7 +616,7 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             // It is safe for this thread to read or write
                             // from the shared resource.
-                            _status = newStatus;
+                            status = newStatus;
                         }
                         finally
                         {
@@ -628,7 +628,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The writer lock request timed out.
-                    Interlocked.Increment(ref _writerTimeouts);
+                    Interlocked.Increment(ref writerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
             }
@@ -639,11 +639,11 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
 
-                    _activeThreadCount = 0;
+                    activeThreadCount = 0;
 
                     // This is where the action begins.
                     // Loop until KeepRunning = false
-                    if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
+                    if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || debug)
                     {
                         var log = new LogInfo();
                         log.LogTypeKey = "SCHEDULER_STARTED";
@@ -690,7 +690,7 @@ namespace DotNetNuke.Services.Scheduling
                             // refreshQueueSchedule can get set to true near bottom of loop
                             // not sure why R# thinks it is always false
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                            while (FreeThreads > 0 && !refreshQueueSchedule && KeepRunning && !_forceReloadSchedule)
+                            while (FreeThreads > 0 && !refreshQueueSchedule && KeepRunning && !forceReloadSchedule)
 
                             // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
@@ -716,7 +716,7 @@ namespace DotNetNuke.Services.Scheduling
                                     return;
                                 }
 
-                                if (_writerTimeouts > 20 || _readerTimeouts > 20)
+                                if (writerTimeouts > 20 || readerTimeouts > 20)
                                 {
                                     // Some kind of deadlock on a resource.
                                     // Wait for 10 minutes so we don't fill up the logs
@@ -743,7 +743,7 @@ namespace DotNetNuke.Services.Scheduling
 
                                     // Refresh queue from database every 10 minutes
                                     // if there are no items currently in progress
-                                    if ((lastQueueRefresh.AddMinutes(10) <= DateTime.Now || _forceReloadSchedule) && FreeThreads == _maxThreadCount)
+                                    if ((lastQueueRefresh.AddMinutes(10) <= DateTime.Now || forceReloadSchedule) && FreeThreads == maxThreadCount)
                                     {
                                         refreshQueueSchedule = true;
                                         break;
@@ -786,7 +786,7 @@ namespace DotNetNuke.Services.Scheduling
                         SetScheduleStatus(ScheduleStatus.WAITING_FOR_REQUEST);
                     }
 
-                    if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
+                    if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || debug)
                     {
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_STOPPED" };
                         LogController.Instance.AddLog(log);
@@ -817,7 +817,7 @@ namespace DotNetNuke.Services.Scheduling
 
                     // A SchedulerClient is notifying us that their
                     // process has completed.  Decrease our ActiveThreadCount
-                    Interlocked.Decrement(ref _activeThreadCount);
+                    Interlocked.Decrement(ref activeThreadCount);
 
                     // Update the schedule item object property
                     // to note the end time and next start
@@ -906,10 +906,10 @@ namespace DotNetNuke.Services.Scheduling
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
                         log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
                         log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
                         log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
                         log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
                         LogController.Instance.AddLog(log);
@@ -935,7 +935,7 @@ namespace DotNetNuke.Services.Scheduling
 
                     // A SchedulerClient is notifying us that their
                     // process has errored.  Decrease our ActiveThreadCount
-                    Interlocked.Decrement(ref _activeThreadCount);
+                    Interlocked.Decrement(ref activeThreadCount);
 
                     Exceptions.Exceptions.ProcessSchedulerException(exception);
 
@@ -1001,10 +1001,10 @@ namespace DotNetNuke.Services.Scheduling
 
                         log.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
                         log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
                         log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
                         log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
                         log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
                         LogController.Instance.AddLog(log);
@@ -1029,10 +1029,10 @@ namespace DotNetNuke.Services.Scheduling
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", schedulerClient.GetType().FullName);
                         log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
                         log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
                         log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
                         log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
                         LogController.Instance.AddLog(log);
@@ -1063,7 +1063,7 @@ namespace DotNetNuke.Services.Scheduling
 
                     // A SchedulerClient is notifying us that their
                     // process has started.  Increase our ActiveThreadCount
-                    Interlocked.Increment(ref _activeThreadCount);
+                    Interlocked.Increment(ref activeThreadCount);
                     activeThreadCountIncremented = true;
 
                     // Update the schedule item
@@ -1078,10 +1078,10 @@ namespace DotNetNuke.Services.Scheduling
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
                         log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
                         log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
                         log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
                         LogController.Instance.AddLog(log);
@@ -1095,7 +1095,7 @@ namespace DotNetNuke.Services.Scheduling
                     // no tasks are being executed.
                     if (activeThreadCountIncremented)
                     {
-                        Interlocked.Decrement(ref _activeThreadCount);
+                        Interlocked.Decrement(ref activeThreadCount);
                     }
 
                     Exceptions.Exceptions.ProcessSchedulerException(exc);
@@ -1119,7 +1119,7 @@ namespace DotNetNuke.Services.Scheduling
 
                         // A SchedulerClient is notifying us that their
                         // process has completed.  Decrease our ActiveThreadCount
-                        Interlocked.Decrement(ref _activeThreadCount);
+                        Interlocked.Decrement(ref activeThreadCount);
 
                         // Update the schedule item object property
                         // to note the end time and next start
@@ -1242,7 +1242,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     return false;
                 }
             }
@@ -1263,23 +1263,23 @@ namespace DotNetNuke.Services.Scheduling
 
             internal static void InitializeThreadPool(bool boolDebug, int maxThreads)
             {
-                _debug = boolDebug;
+                debug = boolDebug;
                 lock (typeof(CoreScheduler))
                 {
-                    if (!_threadPoolInitialized)
+                    if (!threadPoolInitialized)
                     {
-                        _threadPoolInitialized = true;
+                        threadPoolInitialized = true;
                         if (maxThreads == -1)
                         {
                             maxThreads = 1;
                         }
 
-                        _numberOfProcessGroups = maxThreads;
-                        _maxThreadCount = maxThreads;
-                        for (int i = 0; i < _numberOfProcessGroups; i++)
+                        numberOfProcessGroups = maxThreads;
+                        maxThreadCount = maxThreads;
+                        for (int i = 0; i < numberOfProcessGroups; i++)
                         {
-                            Array.Resize(ref _processGroup, i + 1);
-                            _processGroup[i] = new ProcessGroup();
+                            Array.Resize(ref processGroup, i + 1);
+                            processGroup[i] = new ProcessGroup();
                         }
                     }
                 }
@@ -1307,7 +1307,7 @@ namespace DotNetNuke.Services.Scheduling
                     catch (ApplicationException ex)
                     {
                         // The writer lock request timed out.
-                        Interlocked.Increment(ref _writerTimeouts);
+                        Interlocked.Increment(ref writerTimeouts);
                         Exceptions.Exceptions.LogException(ex);
                     }
                 }
@@ -1317,7 +1317,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 // return a random process group
                 var r = new Random();
-                return r.Next(0, _numberOfProcessGroups - 1);
+                return r.Next(0, numberOfProcessGroups - 1);
             }
 
             private static bool IsInProgress(ScheduleItem scheduleItem)
@@ -1332,7 +1332,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     if (Logger.IsDebugEnabled)
                     {
                         Logger.Debug(ex);
@@ -1363,7 +1363,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The writer lock request timed out.
-                    Interlocked.Increment(ref _writerTimeouts);
+                    Interlocked.Increment(ref writerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
             }
@@ -1386,7 +1386,7 @@ namespace DotNetNuke.Services.Scheduling
                 catch (ApplicationException ex)
                 {
                     // The writer lock request timed out.
-                    Interlocked.Increment(ref _writerTimeouts);
+                    Interlocked.Increment(ref writerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
 
@@ -1404,7 +1404,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 catch (ApplicationException ex)
                 {
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                     return false;
                 }
@@ -1421,7 +1421,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 catch (ApplicationException ex)
                 {
-                    Interlocked.Increment(ref _readerTimeouts);
+                    Interlocked.Increment(ref readerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                     return false;
                 }
@@ -1429,7 +1429,7 @@ namespace DotNetNuke.Services.Scheduling
 
             private static void LogWhyTaskNotRun(ScheduleItem scheduleItem)
             {
-                if (_debug)
+                if (debug)
                 {
                     bool appended = false;
                     var strDebug = new StringBuilder("Task not run because ");
@@ -1482,7 +1482,7 @@ namespace DotNetNuke.Services.Scheduling
 
             private static void LogEventAddedToProcessGroup(ScheduleItem scheduleItem)
             {
-                if (_debug)
+                if (debug)
                 {
                     var log = new LogInfo();
                     log.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);

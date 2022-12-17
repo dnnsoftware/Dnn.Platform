@@ -37,6 +37,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void AnonymousUser_IsNotAllowed_If_AllowAnonymousAtribute_IsNotPresent()
         {
             // Arrange
@@ -58,6 +59,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtControllerLevel()
         {
             // Arrange
@@ -78,6 +80,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtActionLevel()
         {
             // Arrange
@@ -96,6 +99,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void RegisteredUser_IsAllowed_ByDefault()
         {
             // Arrange
@@ -118,6 +122,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void RegisteredUser_IsDenied_If_IncludedIn_DeniedRoles()
         {
             // Arrange
@@ -146,6 +151,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void RegisteredUser_IsAllowed_If_IncludedIn_DeniedRoles_But_IsSuperUser()
         {
             // Arrange
@@ -174,6 +180,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
+
         public void RegisteredUser_IsDenied_If_IncludedIn_StaticRoles()
         {
             // Arrange

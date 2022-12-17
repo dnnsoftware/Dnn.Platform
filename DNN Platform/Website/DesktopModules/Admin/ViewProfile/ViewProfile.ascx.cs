@@ -28,13 +28,17 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     /// </summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ViewProfile"/> class.
+        /// </summary>
         public ViewProfile()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         public override bool DisplayModule
         {
             get
@@ -59,6 +63,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
         public string ProfileProperties { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -99,8 +104,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     template = Localization.GetString("DefaultTemplate", this.LocalResourceFile);
                 }
 
-                var editUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=1");
-                var profileUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=2");
+                var editUrl = this.navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=1");
+                var profileUrl = this.navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=2");
 
                 if (template.Contains("[BUTTON:EDITPROFILE]"))
                 {
@@ -232,7 +237,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
             if (homeTabId > Null.NullInteger)
             {
-                redirectUrl = this._navigationManager.NavigateURL(homeTabId);
+                redirectUrl = this.navigationManager.NavigateURL(homeTabId);
             }
             else
             {

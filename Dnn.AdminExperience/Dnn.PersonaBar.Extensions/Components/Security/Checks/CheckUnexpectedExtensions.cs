@@ -10,10 +10,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckUnexpectedExtensions : IAuditCheck
     {
+        /// <inheritdoc/>
         public string Id => "CheckUnexpectedExtensions";
 
+        /// <inheritdoc/>
         public bool LazyLoad => true;
 
+        /// <inheritdoc/>
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -34,9 +37,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
             if (invalidFolders.Count > 0)
             {
-                var folders = string.Join("", invalidFolders.Select(f => $"<p>{f}</p>").ToArray());
+                var folders = string.Join(string.Empty, invalidFolders.Select(f => $"<p>{f}</p>").ToArray());
                 result.Notes.Add($"<p>The following folders are inaccessible due to permission restrictions:</p>{folders}");
             }
+
             return result;
         }
     }

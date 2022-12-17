@@ -29,14 +29,14 @@ namespace DotNetNuke.Common.Utils
         /// <summary>
         /// Gets the address.
         /// </summary>
-        /// <param name="Host">The host.</param>
-        /// <param name="AddressFormat">The address format.</param>
+        /// <param name="host">The host.</param>
+        /// <param name="addressFormat">The address format.</param>
         /// <returns>Returns IP address.</returns>
         /// <remarks><seealso cref="AddressType"></seealso></remarks>
-        public static string GetAddress(string Host, AddressType AddressFormat)
+        public static string GetAddress(string host, AddressType addressFormat)
         {
             AddressFamily addrFamily = AddressFamily.InterNetwork;
-            switch (AddressFormat)
+            switch (addressFormat)
             {
                 case AddressType.IPv4:
                     addrFamily = AddressFamily.InterNetwork;
@@ -46,17 +46,17 @@ namespace DotNetNuke.Common.Utils
                     break;
             }
 
-            IPHostEntry IPE = Dns.GetHostEntry(Host);
-            if (Host != IPE.HostName)
+            IPHostEntry entry = Dns.GetHostEntry(host);
+            if (host != entry.HostName)
             {
-                IPE = Dns.GetHostEntry(IPE.HostName);
+                entry = Dns.GetHostEntry(entry.HostName);
             }
 
-            foreach (IPAddress IPA in IPE.AddressList)
+            foreach (IPAddress address in entry.AddressList)
             {
-                if (IPA.AddressFamily == addrFamily)
+                if (address.AddressFamily == addrFamily)
                 {
-                    return IPA.ToString();
+                    return address.ToString();
                 }
             }
 

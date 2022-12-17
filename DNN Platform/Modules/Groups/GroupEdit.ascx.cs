@@ -17,13 +17,17 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class GroupEdit : GroupsModuleBase
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GroupEdit"/> class.
+        /// </summary>
         public GroupEdit()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -139,20 +143,20 @@ namespace DotNetNuke.Modules.Groups
 
                     if (this.inpFile.PostedFile.ContentLength > 0)
                     {
-                        IFileManager _fileManager = FileManager.Instance;
-                        IFolderManager _folderManager = FolderManager.Instance;
+                        IFileManager fileManager = FileManager.Instance;
+                        IFolderManager folderManager = FolderManager.Instance;
                         var rootFolderPath = PathUtils.Instance.FormatFolderPath(this.PortalSettings.HomeDirectory);
 
-                        IFolderInfo groupFolder = _folderManager.GetFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                        IFolderInfo groupFolder = folderManager.GetFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                         if (groupFolder == null)
                         {
-                            groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                            groupFolder = folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                         }
 
                         if (groupFolder != null)
                         {
                             var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
-                            var fileInfo = _fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true);
+                            var fileInfo = fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true);
                             roleInfo.IconFile = "FileID=" + fileInfo.FileId;
                             RoleController.Instance.UpdateRole(roleInfo);
                         }
@@ -162,7 +166,7 @@ namespace DotNetNuke.Modules.Groups
                     DataCache.RemoveCache("GetRoles");
                 }
 
-                this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, new string[] { "groupid=" + this.GroupId.ToString() }));
+                this.Response.Redirect(this.navigationManager.NavigateURL(this.TabId, string.Empty, new string[] { "groupid=" + this.GroupId.ToString() }));
             }
         }
     }

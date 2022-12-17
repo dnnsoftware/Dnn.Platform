@@ -21,10 +21,10 @@ namespace DotNetNuke.Services.Search
     public class SearchConfig
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
-        private readonly bool _SearchIncludeCommon;
-        private readonly bool _SearchIncludeNumeric;
-        private readonly int _SearchMaxWordlLength;
-        private readonly int _SearchMinWordlLength;
+        private readonly bool searchIncludeCommon;
+        private readonly bool searchIncludeNumeric;
+        private readonly int searchMaxWordlLength;
+        private readonly int searchMinWordlLength;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchConfig"/> class.
@@ -41,15 +41,15 @@ namespace DotNetNuke.Services.Search
         /// <param name="settings"></param>
         public SearchConfig(Dictionary<string, string> settings)
         {
-            this._SearchIncludeCommon = this.GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);
-            this._SearchIncludeNumeric = this.GetSettingAsBoolean("SearchIncludeNumeric", settings, Host.SearchIncludeNumeric);
-            this._SearchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
-            this._SearchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
+            this.searchIncludeCommon = this.GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);
+            this.searchIncludeNumeric = this.GetSettingAsBoolean("SearchIncludeNumeric", settings, Host.SearchIncludeNumeric);
+            this.searchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
+            this.searchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
+        /// Gets a value indicating whether gets whether to include Common Words in the Search Index.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
@@ -57,13 +57,13 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return this._SearchIncludeCommon;
+                return this.searchIncludeCommon;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
+        /// Gets a value indicating whether gets whether to include Numbers in the Search Index.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return this._SearchIncludeNumeric;
+                return this.searchIncludeNumeric;
             }
         }
 
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return this._SearchMaxWordlLength;
+                return this.searchMaxWordlLength;
             }
         }
 
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return this._SearchMinWordlLength;
+                return this.searchMinWordlLength;
             }
         }
 

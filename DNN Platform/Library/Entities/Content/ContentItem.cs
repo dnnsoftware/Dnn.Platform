@@ -61,13 +61,13 @@ namespace DotNetNuke.Entities.Content
     [Serializable]
     public class ContentItem : BaseEntityInfo, IHydratable
     {
-        private NameValueCollection _metadata;
+        private NameValueCollection metadata;
 
-        private List<Term> _terms;
+        private List<Term> terms;
 
-        private List<IFileInfo> _files;
-        private List<IFileInfo> _videos;
-        private List<IFileInfo> _images;
+        private List<IFileInfo> files;
+        private List<IFileInfo> videos;
+        private List<IFileInfo> images;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentItem"/> class.
@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return this._metadata ?? (this._metadata = this.GetMetaData(this.ContentItemId));
+                return this.metadata ?? (this.metadata = this.GetMetaData(this.ContentItemId));
             }
         }
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return this._terms ?? (this._terms = this.GetTerms(this.ContentItemId));
+                return this.terms ?? (this.terms = this.GetTerms(this.ContentItemId));
             }
         }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public List<IFileInfo> Files
         {
-            get { return this._files ?? (this._files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
+            get { return this.files ?? (this.files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public List<IFileInfo> Videos
         {
-            get { return this._videos ?? (this._videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
+            get { return this.videos ?? (this.videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public List<IFileInfo> Images
         {
-            get { return this._images ?? (this._images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
+            get { return this.images ?? (this.images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
         }
 
         /// <summary>

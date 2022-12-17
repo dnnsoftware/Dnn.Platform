@@ -18,7 +18,7 @@ namespace DotNetNuke.Common.Utilities
 
     public class UrlUtils
     {
-        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
         public static string Combine(string baseUrl, string relativeUrl)
         {
@@ -402,7 +402,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {
-                response.Redirect(_navigationManager.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
+                response.Redirect(NavigationManager.NavigateURL(portalSetting.ErrorPage404, string.Empty, "status=404"));
             }
             else
             {

@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Containers {
     
     
     public partial class Icon {
-        
         /// <summary>
         /// imgIcon control.
         /// </summary>

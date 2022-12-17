@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdateUserSettings(IDictionary<string, object> settings)
         {
             try

@@ -1,4 +1,6 @@
-﻿using DotNetNuke.Abstractions.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
@@ -11,6 +13,7 @@ namespace DotNetNuke.Entities.Users
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Users;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -36,11 +39,11 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo
     {
-        private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
-        private string _administratorRoleName;
-        private UserMembership _membership;
-        private UserProfile _profile;
-        private string[] _roles;
+        private readonly ConcurrentDictionary<int, UserSocial> social = new ConcurrentDictionary<int, UserSocial>();
+        private string administratorRoleName;
+        private UserMembership membership;
+        private UserProfile profile;
+        private string[] roles;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
@@ -81,7 +84,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this._social.GetOrAdd(this.PortalID, i => new UserSocial(this));
+                return this.social.GetOrAdd(this.PortalID, i => new UserSocial(this));
             }
         }
 
@@ -184,19 +187,22 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (this._membership == null)
+                if (this.membership == null)
                 {
-                    this._membership = new UserMembership(this);
+                    this.membership = new UserMembership(this);
                     if ((this.Username != null) && (!string.IsNullOrEmpty(this.Username)))
                     {
                         UserController.GetUserMembership(this);
                     }
                 }
 
-                return this._membership;
+                return this.membership;
             }
 
-            set { this._membership = value; }
+            set
+            {
+                this.membership = value;
+            }
         }
 
         /// <summary>
@@ -253,17 +259,20 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (this._profile == null)
+                if (this.profile == null)
                 {
-                    this._profile = new UserProfile(this);
+                    this.profile = new UserProfile(this);
                     UserInfo userInfo = this;
                     ProfileController.GetUserProfile(ref userInfo);
                 }
 
-                return this._profile;
+                return this.profile;
             }
 
-            set { this._profile = value; }
+            set
+            {
+                this.profile = value;
+            }
         }
 
         /// <inheritdoc/>
@@ -272,16 +281,16 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (this._roles == null)
+                if (this.roles == null)
                 {
                     var socialRoles = this.Social.Roles;
                     if (socialRoles.Count == 0)
                     {
-                        this._roles = new string[0];
+                        this.roles = new string[0];
                     }
                     else
                     {
-                        this._roles = (from r in this.Social.Roles
+                        this.roles = (from r in this.Social.Roles
                                 where
                                     r.Status == RoleStatus.Approved &&
                                     (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
@@ -291,10 +300,12 @@ namespace DotNetNuke.Entities.Users
                     }
                 }
 
-                return this._roles;
+                return this.roles;
             }
 
-            set { }
+            set
+            {
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -336,7 +347,7 @@ namespace DotNetNuke.Entities.Users
             {
                 internScope = Scope.Configuration; // anonymous users only get access to displayname
             }
-            else if (this.UserID != accessingUser.UserID && !this.isAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
+            else if (this.UserID != accessingUser.UserID && !this.IsAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
             {
                 internScope = Scope.DefaultSettings; // registerd users can access username and userID as well
             }
@@ -545,20 +556,20 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <param name="accessingUser">userinfo of the user to query.</param>
         /// <returns>true, if user is portal administrator or superuser.</returns>
-        private bool isAdminUser(ref UserInfo accessingUser)
+        private bool IsAdminUser(ref UserInfo accessingUser)
         {
             if (accessingUser == null || accessingUser.UserID == -1)
             {
                 return false;
             }
 
-            if (string.IsNullOrEmpty(this._administratorRoleName))
+            if (string.IsNullOrEmpty(this.administratorRoleName))
             {
                 PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
-                this._administratorRoleName = ps.AdministratorRoleName;
+                this.administratorRoleName = ps.AdministratorRoleName;
             }
 
-            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
+            return accessingUser.IsInRole(this.administratorRoleName) || accessingUser.IsSuperUser;
         }
 
         private string GetMembershipUserId()

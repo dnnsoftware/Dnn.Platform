@@ -18,21 +18,21 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Links : SkinObjectBase
     {
         private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private string _alignment;
-        private bool _forceLinks = true;
-        private bool _includeActiveTab = true;
-        private string _level;
+        private string alignment;
+        private bool forceLinks = true;
+        private bool includeActiveTab = true;
+        private string level;
 
         public string Alignment
         {
             get
             {
-                return this._alignment;
+                return this.alignment;
             }
 
             set
             {
-                this._alignment = value.ToLowerInvariant();
+                this.alignment = value.ToLowerInvariant();
             }
         }
 
@@ -42,12 +42,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._level;
+                return this.level;
             }
 
             set
             {
-                this._level = value.ToLowerInvariant();
+                this.level = value.ToLowerInvariant();
             }
         }
 
@@ -59,12 +59,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._forceLinks;
+                return this.forceLinks;
             }
 
             set
             {
-                this._forceLinks = value;
+                this.forceLinks = value;
             }
         }
 
@@ -72,15 +72,16 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._includeActiveTab;
+                return this.includeActiveTab;
             }
 
             set
             {
-                this._includeActiveTab = value;
+                this.includeActiveTab = value;
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -35,13 +35,13 @@ namespace DotNetNuke.Security.Roles
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
         private static readonly string[] UserRoleActionsCaption = { "ASSIGNMENT", "UPDATE", "UNASSIGNMENT" };
-        private static readonly RoleProvider provider = RoleProvider.Instance();
+        private static readonly RoleProvider Provider = RoleProvider.Instance();
 
         private enum UserRoleActions
         {
-            add = 0,
-            update = 1,
-            delete = 2,
+            Add = 0,
+            Update = 1,
+            Delete = 2,
         }
 
         /// -----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
-            var id = provider.CreateRoleGroup(objRoleGroupInfo);
+            var id = Provider.CreateRoleGroup(objRoleGroupInfo);
             EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
             return id;
@@ -85,7 +85,7 @@ namespace DotNetNuke.Security.Roles
                 // send notification
                 if (notifyUser)
                 {
-                    SendNotification(user, role, portalSettings, UserRoleActions.@add);
+                    SendNotification(user, role, portalSettings, UserRoleActions.Add);
                 }
             }
             else
@@ -94,7 +94,7 @@ namespace DotNetNuke.Security.Roles
                 if (notifyUser)
                 {
                     RoleController.Instance.GetUserRole(portalSettings.PortalId, user.UserID, role.RoleID);
-                    SendNotification(user, role, portalSettings, UserRoleActions.update);
+                    SendNotification(user, role, portalSettings, UserRoleActions.Update);
                 }
             }
 
@@ -110,17 +110,17 @@ namespace DotNetNuke.Security.Roles
         /// Roles such as "Registered Users" and "Administrators" can only
         /// be removed in certain circumstances.
         /// </remarks>
-        /// <param name="PortalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings.</param>
-        /// <param name="UserId">The Id of the User that should be checked for role removability.</param>
-        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
+        /// <param name="portalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings.</param>
+        /// <param name="userId">The Id of the User that should be checked for role removability.</param>
+        /// <param name="roleId">The Id of the Role that should be checked for removability.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public static bool CanRemoveUserFromRole(PortalSettings PortalSettings, int UserId, int RoleId)
+        public static bool CanRemoveUserFromRole(PortalSettings portalSettings, int userId, int roleId)
         {
             // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
             // HACK: Duplicated in CanRemoveUserFromRole(PortalInfo, Integer, Integer) method below
             // changes to this method should be reflected in the other method as well
-            return !((PortalSettings.AdministratorId == UserId && PortalSettings.AdministratorRoleId == RoleId) || PortalSettings.RegisteredRoleId == RoleId);
+            return !((portalSettings.AdministratorId == userId && portalSettings.AdministratorRoleId == roleId) || portalSettings.RegisteredRoleId == roleId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -131,17 +131,17 @@ namespace DotNetNuke.Security.Roles
         /// Roles such as "Registered Users" and "Administrators" can only
         /// be removed in certain circumstances.
         /// </remarks>
-        /// <param name="PortalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal.</param>
-        /// <param name="UserId">The Id of the User.</param>
-        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
+        /// <param name="portalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal.</param>
+        /// <param name="userId">The Id of the User.</param>
+        /// <param name="roleId">The Id of the Role that should be checked for removability.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public static bool CanRemoveUserFromRole(PortalInfo PortalInfo, int UserId, int RoleId)
+        public static bool CanRemoveUserFromRole(PortalInfo portalInfo, int userId, int roleId)
         {
             // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
             // HACK: Duplicated in CanRemoveUserFromRole(PortalSettings, Integer, Integer) method above
             // changes to this method should be reflected in the other method as well
-            return !((PortalInfo.AdministratorId == UserId && PortalInfo.AdministratorRoleId == RoleId) || PortalInfo.RegisteredRoleId == RoleId);
+            return !((portalInfo.AdministratorId == userId && portalInfo.AdministratorRoleId == roleId) || portalInfo.RegisteredRoleId == roleId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -149,9 +149,9 @@ namespace DotNetNuke.Security.Roles
         /// Deletes a Role Group.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public static void DeleteRoleGroup(int PortalID, int RoleGroupId)
+        public static void DeleteRoleGroup(int portalID, int roleGroupId)
         {
-            DeleteRoleGroup(GetRoleGroup(PortalID, RoleGroupId));
+            DeleteRoleGroup(GetRoleGroup(portalID, roleGroupId));
         }
 
         /// -----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
-            provider.DeleteRoleGroup(objRoleGroupInfo);
+            Provider.DeleteRoleGroup(objRoleGroupInfo);
             EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_DELETED);
         }
 
@@ -181,7 +181,7 @@ namespace DotNetNuke.Security.Roles
             {
                 if (notifyUser)
                 {
-                    SendNotification(objUser, role, portalSettings, UserRoleActions.delete);
+                    SendNotification(objUser, role, portalSettings, UserRoleActions.Delete);
                 }
             }
 
@@ -199,7 +199,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
-            return provider.GetRoleGroup(portalId, roleGroupId);
+            return Provider.GetRoleGroup(portalId, roleGroupId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -213,19 +213,19 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
-            return provider.GetRoleGroupByName(portalId, roleGroupName);
+            return Provider.GetRoleGroupByName(portalId, roleGroupName);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets an ArrayList of RoleGroups.
         /// </summary>
-        /// <param name="PortalID">The Id of the Portal.</param>
+        /// <param name="portalID">The Id of the Portal.</param>
         /// <returns>An ArrayList of RoleGroups.</returns>
         /// -----------------------------------------------------------------------------
-        public static ArrayList GetRoleGroups(int PortalID)
+        public static ArrayList GetRoleGroups(int portalID)
         {
-            return provider.GetRoleGroups(PortalID);
+            return Provider.GetRoleGroups(portalID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -267,7 +267,7 @@ namespace DotNetNuke.Security.Roles
 
         public static void UpdateRoleGroup(RoleGroupInfo roleGroup, bool includeRoles)
         {
-            provider.UpdateRoleGroup(roleGroup);
+            Provider.UpdateRoleGroup(roleGroup);
             EventLogController.Instance.AddLog(roleGroup, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
             if (includeRoles)
             {
@@ -303,7 +303,7 @@ namespace DotNetNuke.Security.Roles
                     EffectiveDate = effectiveDate,
                     ExpiryDate = expiryDate,
                 };
-                provider.AddUserToRole(portalId, user, userRole);
+                Provider.AddUserToRole(portalId, user, userRole);
                 EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
             }
             else
@@ -312,7 +312,7 @@ namespace DotNetNuke.Security.Roles
                 userRole.IsOwner = isOwner;
                 userRole.EffectiveDate = effectiveDate;
                 userRole.ExpiryDate = expiryDate;
-                provider.UpdateUserRole(userRole);
+                Provider.UpdateUserRole(userRole);
                 EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
             }
 
@@ -345,14 +345,14 @@ namespace DotNetNuke.Security.Roles
                 // remove group artifacts
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                IFileManager _fileManager = FileManager.Instance;
-                IFolderManager _folderManager = FolderManager.Instance;
+                IFileManager fileManager = FileManager.Instance;
+                IFolderManager folderManager = FolderManager.Instance;
 
-                IFolderInfo groupFolder = _folderManager.GetFolder(portalSettings.PortalId, "Groups/" + role.RoleID);
+                IFolderInfo groupFolder = folderManager.GetFolder(portalSettings.PortalId, "Groups/" + role.RoleID);
                 if (groupFolder != null)
                 {
-                    _fileManager.DeleteFiles(_folderManager.GetFiles(groupFolder));
-                    _folderManager.DeleteFolder(groupFolder);
+                    fileManager.DeleteFiles(folderManager.GetFiles(groupFolder));
+                    folderManager.DeleteFolder(groupFolder);
                 }
 
                 JournalController.Instance.SoftDeleteJournalItemByGroupId(portalSettings.PortalId, role.RoleID);
@@ -361,7 +361,7 @@ namespace DotNetNuke.Security.Roles
             // Get users before deleting role
             var users = role.UserCount > 0 ? this.GetUsersByRole(role.PortalID, role.RoleName) : Enumerable.Empty<UserInfo>();
 
-            provider.DeleteRole(role);
+            Provider.DeleteRole(role);
 
             EventManager.Instance.OnRoleDeleted(new RoleEventArgs() { Role = role });
 
@@ -408,7 +408,7 @@ namespace DotNetNuke.Security.Roles
             var cacheKey = string.Format(DataCache.RolesCacheKey, portalId);
             return CBO.GetCachedObject<IList<RoleInfo>>(
                 new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
-                c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
+                c => Provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
         }
 
         /// <inheritdoc/>
@@ -420,13 +420,13 @@ namespace DotNetNuke.Security.Roles
         /// <inheritdoc/>
         public IList<RoleInfo> GetRolesBasicSearch(int portalId, int pageSize, string filterBy)
         {
-            return provider.GetRolesBasicSearch(portalId, pageSize, filterBy);
+            return Provider.GetRolesBasicSearch(portalId, pageSize, filterBy);
         }
 
         /// <inheritdoc/>
         public IDictionary<string, string> GetRoleSettings(int roleId)
         {
-            return provider.GetRoleSettings(roleId);
+            return Provider.GetRoleSettings(roleId);
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace DotNetNuke.Security.Roles
         /// <returns>A UserRoleInfo object.</returns>
         public UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {
-            return provider.GetUserRole(portalId, userId, roleId);
+            return Provider.GetUserRole(portalId, userId, roleId);
         }
 
         /// <summary>
@@ -449,19 +449,19 @@ namespace DotNetNuke.Security.Roles
         /// <returns>A list of UserRoleInfo objects.</returns>
         public IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
         {
-            return provider.GetUserRoles(user, includePrivate);
+            return Provider.GetUserRoles(user, includePrivate);
         }
 
         /// <inheritdoc/>
         public IList<UserRoleInfo> GetUserRoles(int portalId, string userName, string roleName)
         {
-            return provider.GetUserRoles(portalId, userName, roleName).Cast<UserRoleInfo>().ToList();
+            return Provider.GetUserRoles(portalId, userName, roleName).Cast<UserRoleInfo>().ToList();
         }
 
         /// <inheritdoc/>
         public IList<UserInfo> GetUsersByRole(int portalId, string roleName)
         {
-            return provider.GetUsersByRoleName(portalId, roleName).Cast<UserInfo>().ToList();
+            return Provider.GetUsersByRoleName(portalId, roleName).Cast<UserInfo>().ToList();
         }
 
         /// <inheritdoc/>
@@ -469,7 +469,7 @@ namespace DotNetNuke.Security.Roles
         {
             Requires.NotNull("role", role);
 
-            provider.UpdateRole(role);
+            Provider.UpdateRole(role);
             this.AddMessage(role, EventLogController.EventLogType.ROLE_UPDATED);
 
             if (addToExistUsers)
@@ -483,7 +483,7 @@ namespace DotNetNuke.Security.Roles
         /// <inheritdoc/>
         public void UpdateRoleSettings(RoleInfo role, bool clearCache)
         {
-            provider.UpdateRoleSettings(role);
+            Provider.UpdateRoleSettings(role);
 
             if (clearCache)
             {
@@ -504,7 +504,7 @@ namespace DotNetNuke.Security.Roles
                     userRole.ExpiryDate = DateTime.Now.AddDays(-1);
                     userRole.Status = status;
                     userRole.IsOwner = isOwner;
-                    provider.UpdateUserRole(userRole);
+                    Provider.UpdateUserRole(userRole);
                     EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
                 }
                 else
@@ -521,85 +521,85 @@ namespace DotNetNuke.Security.Roles
             }
             else
             {
-                int UserRoleId = -1;
-                DateTime ExpiryDate = DateTime.Now;
-                DateTime EffectiveDate = Null.NullDate;
-                bool IsTrialUsed = false;
-                int Period = 0;
-                string Frequency = string.Empty;
+                int userRoleId = -1;
+                DateTime expiryDate = DateTime.Now;
+                DateTime effectiveDate = Null.NullDate;
+                bool isTrialUsed = false;
+                int period = 0;
+                string frequency = string.Empty;
                 if (userRole != null)
                 {
-                    UserRoleId = userRole.UserRoleID;
-                    EffectiveDate = userRole.EffectiveDate;
-                    ExpiryDate = userRole.ExpiryDate;
-                    IsTrialUsed = userRole.IsTrialUsed;
+                    userRoleId = userRole.UserRoleID;
+                    effectiveDate = userRole.EffectiveDate;
+                    expiryDate = userRole.ExpiryDate;
+                    isTrialUsed = userRole.IsTrialUsed;
                 }
 
                 RoleInfo role = Instance.GetRole(portalId, r => r.RoleID == roleId);
                 if (role != null)
                 {
-                    if (IsTrialUsed == false && role.TrialFrequency != "N")
+                    if (isTrialUsed == false && role.TrialFrequency != "N")
                     {
-                        Period = role.TrialPeriod;
-                        Frequency = role.TrialFrequency;
+                        period = role.TrialPeriod;
+                        frequency = role.TrialFrequency;
                     }
                     else
                     {
-                        Period = role.BillingPeriod;
-                        Frequency = role.BillingFrequency;
+                        period = role.BillingPeriod;
+                        frequency = role.BillingFrequency;
                     }
                 }
 
-                if (EffectiveDate < DateTime.Now)
+                if (effectiveDate < DateTime.Now)
                 {
-                    EffectiveDate = Null.NullDate;
+                    effectiveDate = Null.NullDate;
                 }
 
-                if (ExpiryDate < DateTime.Now)
+                if (expiryDate < DateTime.Now)
                 {
-                    ExpiryDate = DateTime.Now;
+                    expiryDate = DateTime.Now;
                 }
 
-                if (Period == Null.NullInteger)
+                if (period == Null.NullInteger)
                 {
-                    ExpiryDate = Null.NullDate;
+                    expiryDate = Null.NullDate;
                 }
                 else
                 {
-                    switch (Frequency)
+                    switch (frequency)
                     {
                         case "N":
-                            ExpiryDate = Null.NullDate;
+                            expiryDate = Null.NullDate;
                             break;
                         case "O":
-                            ExpiryDate = new DateTime(9999, 12, 31);
+                            expiryDate = new DateTime(9999, 12, 31);
                             break;
                         case "D":
-                            ExpiryDate = ExpiryDate.AddDays(Period);
+                            expiryDate = expiryDate.AddDays(period);
                             break;
                         case "W":
-                            ExpiryDate = ExpiryDate.AddDays(Period * 7);
+                            expiryDate = expiryDate.AddDays(period * 7);
                             break;
                         case "M":
-                            ExpiryDate = ExpiryDate.AddMonths(Period);
+                            expiryDate = expiryDate.AddMonths(period);
                             break;
                         case "Y":
-                            ExpiryDate = ExpiryDate.AddYears(Period);
+                            expiryDate = expiryDate.AddYears(period);
                             break;
                     }
                 }
 
-                if (UserRoleId != -1 && userRole != null)
+                if (userRoleId != -1 && userRole != null)
                 {
-                    userRole.ExpiryDate = ExpiryDate;
+                    userRole.ExpiryDate = expiryDate;
                     userRole.Status = status;
                     userRole.IsOwner = isOwner;
-                    provider.UpdateUserRole(userRole);
+                    Provider.UpdateUserRole(userRole);
                     EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
                 }
                 else
                 {
-                    this.AddUserRole(portalId, userId, roleId, status, isOwner, EffectiveDate, ExpiryDate);
+                    this.AddUserRole(portalId, userId, roleId, status, isOwner, effectiveDate, expiryDate);
                 }
             }
 
@@ -620,7 +620,7 @@ namespace DotNetNuke.Security.Roles
             var userRoles = ctrl.GetUserRoles(user, true);
             foreach (var ur in userRoles.Where(r => r.PortalID == user.PortalID))
             {
-                provider.RemoveUserFromRole(user.PortalID, user, ur);
+                Provider.RemoveUserFromRole(user.PortalID, user, ur);
             }
         }
 
@@ -640,7 +640,7 @@ namespace DotNetNuke.Security.Roles
             {
                 if (CanRemoveUserFromRole(portal, userId, roleId))
                 {
-                    provider.RemoveUserFromRole(portalId, user, userRole);
+                    Provider.RemoveUserFromRole(portalId, user, userRole);
                     EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
 
                     // Remove the UserInfo from the Cache, as it has been modified
@@ -658,53 +658,53 @@ namespace DotNetNuke.Security.Roles
             return delete;
         }
 
-        private static void SendNotification(UserInfo objUser, RoleInfo objRole, PortalSettings PortalSettings, UserRoleActions Action)
+        private static void SendNotification(UserInfo objUser, RoleInfo objRole, PortalSettings portalSettings, UserRoleActions action)
         {
-            var Custom = new ArrayList { objRole.RoleName, objRole.Description };
-            switch (Action)
+            var custom = new ArrayList { objRole.RoleName, objRole.Description };
+            switch (action)
             {
-                case UserRoleActions.add:
-                case UserRoleActions.update:
+                case UserRoleActions.Add:
+                case UserRoleActions.Update:
                     string preferredLocale = objUser.Profile.PreferredLocale;
                     if (string.IsNullOrEmpty(preferredLocale))
                     {
-                        preferredLocale = PortalSettings.DefaultLanguage;
+                        preferredLocale = portalSettings.DefaultLanguage;
                     }
 
                     var ci = new CultureInfo(preferredLocale);
-                    UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalSettings.PortalId, objUser.UserID, objRole.RoleID);
-                    Custom.Add(Null.IsNull(objUserRole.EffectiveDate)
+                    UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(portalSettings.PortalId, objUser.UserID, objRole.RoleID);
+                    custom.Add(Null.IsNull(objUserRole.EffectiveDate)
                                    ? DateTime.Today.ToString("g", ci)
                                    : objUserRole.EffectiveDate.ToString("g", ci));
-                    Custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
+                    custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
                     break;
-                case UserRoleActions.delete:
-                    Custom.Add(string.Empty);
+                case UserRoleActions.Delete:
+                    custom.Add(string.Empty);
                     break;
             }
 
-            var _message = new Message
+            var message = new Message
             {
-                FromUserID = PortalSettings.AdministratorId,
+                FromUserID = portalSettings.AdministratorId,
                 ToUserID = objUser.UserID,
                 Subject =
-                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, PortalSettings,
+                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, portalSettings,
                                                   "EMAIL_ROLE_" +
-                                                  UserRoleActionsCaption[(int)Action] +
+                                                  UserRoleActionsCaption[(int)action] +
                                                   "_SUBJECT", objUser),
                 Body = Localization.GetSystemMessage(
                     objUser.Profile.PreferredLocale,
-                    PortalSettings,
+                    portalSettings,
                     "EMAIL_ROLE_" +
-                                                     UserRoleActionsCaption[(int)Action] + "_BODY",
+                                                     UserRoleActionsCaption[(int)action] + "_BODY",
                     objUser,
                     Localization.GlobalResourceFile,
-                    Custom),
+                    custom),
                 Status = MessageStatusType.Unread,
             };
 
             // _messagingController.SaveMessage(_message);
-            Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
+            Mail.SendEmail(portalSettings.Email, objUser.Email, message.Subject, message.Body);
         }
 
         /// <inheritdoc/>
@@ -713,7 +713,7 @@ namespace DotNetNuke.Security.Roles
             Requires.NotNull("role", role);
 
             var roleId = -1;
-            if (provider.CreateRole(role))
+            if (Provider.CreateRole(role))
             {
                 this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
                 if (addToExistUsers)

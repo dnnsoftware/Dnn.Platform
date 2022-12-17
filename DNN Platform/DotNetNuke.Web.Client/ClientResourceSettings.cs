@@ -23,23 +23,23 @@ namespace DotNetNuke.Web.Client
         public static readonly string OverrideDefaultSettingsKey = "CrmUseApplicationSettings";
         public static readonly string VersionKey = "CrmVersion";
 
-        private static readonly Type _portalControllerType;
-        private static readonly Type _portalAliasControllerType;
-        private static readonly Type _hostControllerType;
-        private static readonly Type _commonGlobalsType;
+        private static readonly Type PortalControllerType;
+        private static readonly Type PortalAliasControllerType;
+        private static readonly Type HostControllerType;
+        private static readonly Type CommonGlobalsType;
 
-        private bool _statusChecked;
-        private UpgradeStatus _status;
+        private bool statusChecked;
+        private UpgradeStatus status;
 
         static ClientResourceSettings()
         {
             try
             {
                 // all these types are part of the same library, so we don't need a separate catch for each one
-                _commonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
-                _portalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
-                _portalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
-                _hostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
+                CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
+                PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
+                PortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
+                HostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
             }
             catch (Exception)
             {
@@ -80,13 +80,13 @@ namespace DotNetNuke.Web.Client
         {
             get
             {
-                if (!this._statusChecked)
+                if (!this.statusChecked)
                 {
-                    this._status = this.GetStatusByReflection();
-                    this._statusChecked = true;
+                    this.status = this.GetStatusByReflection();
+                    this.statusChecked = true;
                 }
 
-                return this._status;
+                return this.status;
             }
         }
 
@@ -213,7 +213,7 @@ namespace DotNetNuke.Web.Client
             {
                 if (portalId.HasValue)
                 {
-                    var method = _portalControllerType.GetMethod("GetPortalSettingsDictionary");
+                    var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary");
                     var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
                     string value;
                     if (dictionary.TryGetValue(settingKey, out value))
@@ -234,7 +234,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = _portalAliasControllerType.GetMethod("GetPortalAliasInfo");
+                var method = PortalAliasControllerType.GetMethod("GetPortalAliasInfo");
                 var portalAliasInfo = HttpContext.Current != null ? method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host }) : null;
                 if (portalAliasInfo != null)
                 {
@@ -254,8 +254,8 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = _hostControllerType.GetMethod("GetSettingsDictionary");
-                var property = _hostControllerType.BaseType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
+                var method = HostControllerType.GetMethod("GetSettingsDictionary");
+                var property = HostControllerType.BaseType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
                 var instance = property.GetValue(null, Type.EmptyTypes);
                 var dictionary = (Dictionary<string, string>)method.Invoke(instance, Type.EmptyTypes);
                 string value;
@@ -304,7 +304,7 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var property = _commonGlobalsType.GetProperty("Status", BindingFlags.Static | BindingFlags.Public);
+                var property = CommonGlobalsType.GetProperty("Status", BindingFlags.Static | BindingFlags.Public);
                 var status = (UpgradeStatus)property.GetValue(null, null);
                 return status;
             }

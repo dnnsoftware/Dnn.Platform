@@ -36,15 +36,18 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class SendPassword : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
-        private UserInfo _user;
-        private int _userCount = Null.NullInteger;
-        private string _ipAddress;
+        private UserInfo user;
+        private int userCount = Null.NullInteger;
+        private string ipAddress;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SendPassword"/> class.
+        /// </summary>
         public SendPassword()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// <summary>
@@ -54,13 +57,13 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                var _RedirectURL = string.Empty;
+                var redirectURL = string.Empty;
 
                 object setting = GetSetting(this.PortalId, "Redirect_AfterRegistration");
 
                 if (Convert.ToInt32(setting) > 0) // redirect to after registration page
                 {
-                    _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+                    redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
                 {
@@ -69,36 +72,36 @@ namespace DotNetNuke.Modules.Admin.Security
                         if (this.Request.QueryString["returnurl"] != null)
                         {
                             // return to the url passed to register
-                            _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
+                            redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
                             // clean the return url to avoid possible XSS attack.
-                            _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+                            redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
 
-                            if (_RedirectURL.Contains("?returnurl"))
+                            if (redirectURL.Contains("?returnurl"))
                             {
-                                string baseURL = _RedirectURL.Substring(
+                                string baseURL = redirectURL.Substring(
                                     0,
-                                    _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
+                                    redirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
                                 string returnURL =
-                                    _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+                                    redirectURL.Substring(redirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
 
-                                _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                                redirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                             }
                         }
 
-                        if (string.IsNullOrEmpty(_RedirectURL))
+                        if (string.IsNullOrEmpty(redirectURL))
                         {
                             // redirect to current page
-                            _RedirectURL = this._navigationManager.NavigateURL();
+                            redirectURL = this.navigationManager.NavigateURL();
                         }
                     }
                     else // redirect to after registration page
                     {
-                        _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+                        redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
                 }
 
-                return _RedirectURL;
+                return redirectURL;
             }
         }
 
@@ -130,6 +133,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -177,9 +181,9 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             this.cmdSendPassword.Click += this.OnSendPasswordClick;
-            this.lnkCancel.NavigateUrl = this._navigationManager.NavigateURL();
+            this.lnkCancel.NavigateUrl = this.navigationManager.NavigateURL();
 
-            this._ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
+            this.ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
             this.divEmail.Visible = this.ShowEmailField;
             this.divUsername.Visible = !this.UsernameDisabled;
@@ -244,28 +248,28 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (canSend)
                 {
                     this.GetUser();
-                    if (this._user != null)
+                    if (this.user != null)
                     {
-                        if (this._user.IsDeleted)
+                        if (this.user.IsDeleted)
                         {
                             canSend = false;
                         }
                         else
                         {
-                            if (this._user.Membership.Approved == false)
+                            if (this.user.Membership.Approved == false)
                             {
-                                Mail.SendMail(this._user, MessageType.PasswordReminderUserIsNotApproved, this.PortalSettings);
+                                Mail.SendMail(this.user, MessageType.PasswordReminderUserIsNotApproved, this.PortalSettings);
                                 canSend = false;
                             }
 
                             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                             {
-                                UserController.ResetPasswordToken(this._user);
+                                UserController.ResetPasswordToken(this.user);
                             }
 
                             if (canSend)
                             {
-                                if (Mail.SendMail(this._user, MessageType.PasswordReminder, this.PortalSettings) != string.Empty)
+                                if (Mail.SendMail(this.user, MessageType.PasswordReminder, this.PortalSettings) != string.Empty)
                                 {
                                     canSend = false;
                                 }
@@ -274,7 +278,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else
                     {
-                        if (this._userCount > 1)
+                        if (this.userCount > 1)
                         {
                             message = Localization.GetString("MultipleUsers", this.LocalResourceFile);
                         }
@@ -310,15 +314,15 @@ namespace DotNetNuke.Modules.Admin.Security
             ArrayList arrUsers;
             if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
             {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
+                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this.userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
                 {
-                    this._user = (UserInfo)arrUsers[0];
+                    this.user = (UserInfo)arrUsers[0];
                 }
             }
             else
             {
-                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
+                this.user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
 
@@ -354,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-            log.AddProperty("IP", this._ipAddress);
+            log.AddProperty("IP", this.ipAddress);
 
             LogController.Instance.AddLog(log);
         }

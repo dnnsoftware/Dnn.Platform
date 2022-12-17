@@ -96,6 +96,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [SetUp]
+
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();

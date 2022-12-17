@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
@@ -69,7 +70,7 @@ namespace DotNetNuke.Entities.Portals
                         string templateFile, string homeDirectory, string portalAlias,
                         string serverPath, string childPath, bool isChildPortal)
         {
-            var template = this.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
+            var template = PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
 
             return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
                                 serverPath, childPath, isChildPortal);
@@ -92,14 +93,16 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
+            var importer = new PortalTemplateImporter(templatePath, templateFile);
+            importer.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
-            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            var importer = new PortalTemplateImporter(templatePath, templateFile);
+            importer.ParseTemplateInternal(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal, out localeCollection);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

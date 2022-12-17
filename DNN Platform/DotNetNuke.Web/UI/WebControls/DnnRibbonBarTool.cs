@@ -27,9 +27,9 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
     {
-        private IDictionary<string, RibbonBarToolInfo> _allTools;
-        private DnnTextLink _dnnLink;
-        private DnnTextButton _dnnLinkButton;
+        private IDictionary<string, RibbonBarToolInfo> allTools;
+        private DnnTextLink dnnLink;
+        private DnnTextButton dnnLinkButton;
 
         public DnnRibbonBarTool()
         {
@@ -133,13 +133,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._dnnLinkButton == null)
+                if (this.dnnLinkButton == null)
                 {
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
-                    this._dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
+                    this.dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
                 }
 
-                return this._dnnLinkButton;
+                return this.dnnLinkButton;
             }
         }
 
@@ -147,12 +147,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._dnnLink == null)
+                if (this.dnnLink == null)
                 {
-                    this._dnnLink = new DnnTextLink();
+                    this.dnnLink = new DnnTextLink();
                 }
 
-                return this._dnnLink;
+                return this.dnnLink;
             }
         }
 
@@ -160,9 +160,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (this._allTools == null)
+                if (this.allTools == null)
                 {
-                    this._allTools = new Dictionary<string, RibbonBarToolInfo>
+                    this.allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
                                         // Framework
                                         { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, string.Empty, string.Empty, string.Empty, true) },
@@ -186,7 +186,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     };
                 }
 
-                return this._allTools;
+                return this.allTools;
             }
         }
 

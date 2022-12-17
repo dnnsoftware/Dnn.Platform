@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class Password {
-        
         /// <summary>
         /// CannotChangePasswordMessage control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel CannotChangePasswordMessage;
-        
         /// <summary>
         /// pnlChange control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlChange;
-        
         /// <summary>
         /// lblChangePasswordHeading control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChangePasswordHeading;
-        
         /// <summary>
         /// lblChangeHelp control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChangeHelp;
-        
         /// <summary>
         /// oldPasswordRow control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl oldPasswordRow;
-        
         /// <summary>
         /// plOldPassword control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plOldPassword;
-        
         /// <summary>
         /// txtOldPassword control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtOldPassword;
-        
         /// <summary>
         /// plNewPassword control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plNewPassword;
-        
         /// <summary>
         /// passwordContainer control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel passwordContainer;
-        
         /// <summary>
         /// txtNewPassword control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNewPassword;
-        
         /// <summary>
         /// plNewConfirm control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plNewConfirm;
-        
         /// <summary>
         /// txtNewConfirm control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNewConfirm;
-        
         /// <summary>
         /// captchaRow control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl captchaRow;
-        
         /// <summary>
         /// captchaLabel control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl captchaLabel;
-        
         /// <summary>
         /// ctlCaptcha control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.WebControls.CaptchaControl ctlCaptcha;
-        
         /// <summary>
         /// cmdUpdate control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        
         /// <summary>
         /// pnlReset control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlReset;
-        
         /// <summary>
         /// lblResetHeading control.
         /// </summary>
@@ -177,7 +159,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblResetHeading;
-        
         /// <summary>
         /// lblResetHelp control.
         /// </summary>
@@ -186,7 +167,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblResetHelp;
-        
         /// <summary>
         /// questionRow control.
         /// </summary>
@@ -195,7 +175,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl questionRow;
-        
         /// <summary>
         /// plQuestion control.
         /// </summary>
@@ -204,7 +183,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plQuestion;
-        
         /// <summary>
         /// lblQuestion control.
         /// </summary>
@@ -213,7 +191,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblQuestion;
-        
         /// <summary>
         /// answerRow control.
         /// </summary>
@@ -222,7 +199,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl answerRow;
-        
         /// <summary>
         /// plAnswer control.
         /// </summary>
@@ -231,7 +207,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plAnswer;
-        
         /// <summary>
         /// txtAnswer control.
         /// </summary>
@@ -240,7 +215,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnswer;
-        
         /// <summary>
         /// pnlQA control.
         /// </summary>
@@ -249,7 +223,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlQA;
-        
         /// <summary>
         /// lblChangeQA control.
         /// </summary>
@@ -258,7 +231,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChangeQA;
-        
         /// <summary>
         /// lblQAHelp control.
         /// </summary>
@@ -267,7 +239,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblQAHelp;
-        
         /// <summary>
         /// plQAPassword control.
         /// </summary>
@@ -276,7 +247,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plQAPassword;
-        
         /// <summary>
         /// txtQAPassword control.
         /// </summary>
@@ -285,7 +255,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtQAPassword;
-        
         /// <summary>
         /// plEditQuestion control.
         /// </summary>
@@ -294,7 +263,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plEditQuestion;
-        
         /// <summary>
         /// txtEditQuestion control.
         /// </summary>
@@ -303,7 +271,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditQuestion;
-        
         /// <summary>
         /// plEditAnswer control.
         /// </summary>
@@ -312,7 +279,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plEditAnswer;
-        
         /// <summary>
         /// txtEditAnswer control.
         /// </summary>
@@ -321,7 +287,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditAnswer;
-        
         /// <summary>
         /// plLastChanged control.
         /// </summary>
@@ -330,7 +295,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plLastChanged;
-        
         /// <summary>
         /// lblLastChanged control.
         /// </summary>
@@ -339,7 +303,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblLastChanged;
-        
         /// <summary>
         /// plExpires control.
         /// </summary>
@@ -348,7 +311,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plExpires;
-        
         /// <summary>
         /// lblExpires control.
         /// </summary>
@@ -357,7 +319,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblExpires;
-        
         /// <summary>
         /// cmdReset control.
         /// </summary>
@@ -366,7 +327,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdReset;
-        
         /// <summary>
         /// cmdUserReset control.
         /// </summary>
@@ -375,7 +335,6 @@ namespace DotNetNuke.Modules.Admin.Users {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUserReset;
-        
         /// <summary>
         /// cmdUpdateQA control.
         /// </summary>

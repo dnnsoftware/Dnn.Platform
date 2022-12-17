@@ -975,17 +975,17 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         ///   get Module by specific locale.
         /// </summary>
-        /// <param name = "ModuleId">ID of the module.</param>
+        /// <param name = "moduleId">ID of the module.</param>
         /// <param name = "tabid">ID of the tab.</param>
         /// <param name = "portalId">ID of the portal.</param>
         /// <param name = "locale">The wanted locale.</param>
         /// <returns>ModuleInfo associated to submitted locale.</returns>
-        public ModuleInfo GetModuleByCulture(int ModuleId, int tabid, int portalId, Locale locale)
+        public ModuleInfo GetModuleByCulture(int moduleId, int tabid, int portalId, Locale locale)
         {
             ModuleInfo localizedModule = null;
 
             // Get Module specified by Id
-            ModuleInfo originalModule = this.GetModule(ModuleId, tabid, false);
+            ModuleInfo originalModule = this.GetModule(moduleId, tabid, false);
 
             if (locale != null && originalModule != null)
             {
@@ -1884,17 +1884,17 @@ namespace DotNetNuke.Entities.Modules
         private static bool CheckIsInstance(int templateModuleID, Hashtable hModules)
         {
             // will be instance or module?
-            bool IsInstance = false;
+            bool isInstance = false;
             if (templateModuleID > 0)
             {
                 if (hModules[templateModuleID] != null)
                 {
                     // this module has already been processed -> process as instance
-                    IsInstance = true;
+                    isInstance = true;
                 }
             }
 
-            return IsInstance;
+            return isInstance;
         }
 
         private static void ClearModuleSettingsCache(int moduleId)
@@ -2094,9 +2094,9 @@ namespace DotNetNuke.Entities.Modules
             return moduleFound;
         }
 
-        private static void GetModuleContent(XmlNode nodeModule, int ModuleId, int TabId, int PortalId)
+        private static void GetModuleContent(XmlNode nodeModule, int moduleId, int tabId, int portalId)
         {
-            ModuleInfo module = Instance.GetModule(ModuleId, TabId, true);
+            ModuleInfo module = Instance.GetModule(moduleId, tabId, true);
             if (nodeModule != null)
             {
                 // ReSharper disable PossibleNullReferenceException
@@ -2105,7 +2105,7 @@ namespace DotNetNuke.Entities.Modules
                 content = content.Substring(9, content.Length - 12);
                 if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !string.IsNullOrEmpty(content))
                 {
-                    var portal = PortalController.Instance.GetPortal(PortalId);
+                    var portal = PortalController.Instance.GetPortal(portalId);
 
                     // Determine if the Module is copmpletely installed
                     // (ie are we running in the same request that installed the module).

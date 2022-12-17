@@ -2422,9 +2422,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         internal class MoveFoldersInfo
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MoveFoldersInfo"/> class.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="MoveFoldersInfo"/> class.</summary>
             /// <param name="source">The source folder.</param>
             /// <param name="target">The destination folder.</param>
             public MoveFoldersInfo(string source, string target)
@@ -2433,15 +2431,10 @@ namespace DotNetNuke.Services.FileSystem
                 this.Target = target;
             }
 
-            /// <summary>
-            /// Gets the Source folder.
-
-            /// </summary>
+            /// <summary>Gets the Source folder.</summary>
             public string Source { get; private set; }
 
-            /// <summary>
-            /// Gets the target folder.
-            /// </summary>
+            /// <summary>Gets the target folder.</summary>
             public string Target { get; private set; }
         }
     }

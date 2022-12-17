@@ -28,8 +28,8 @@ namespace DotNetNuke.UI.UserControls
         protected Image imgHelp;
         protected Label lblHelp;
         protected Panel pnlHelp;
-        private string _HelpKey;
-        private string _ResourceKey;
+        private string helpKey;
+        private string resourceKey;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -53,12 +53,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._HelpKey;
+                return this.helpKey;
             }
 
             set
             {
-                this._HelpKey = value;
+                this.helpKey = value;
             }
         }
 
@@ -102,12 +102,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._ResourceKey;
+                return this.resourceKey;
             }
 
             set
             {
-                this._ResourceKey = value;
+                this.resourceKey = value;
             }
         }
 
@@ -127,13 +127,13 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
-                if (string.IsNullOrEmpty(this._HelpKey))
+                if (string.IsNullOrEmpty(this.helpKey))
                 {
                     // Set Help Key to the Resource Key plus ".Help"
-                    this._HelpKey = this._ResourceKey + ".Help";
+                    this.helpKey = this.ResourceKey + ".Help";
                 }
 
-                string helpText = Localization.GetString(this._HelpKey, this);
+                string helpText = Localization.GetString(this.helpKey, this);
                 if (!string.IsNullOrEmpty(helpText))
                 {
                     this.HelpText = helpText;

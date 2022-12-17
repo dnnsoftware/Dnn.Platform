@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.GeneratedImage
         };
 
         private static readonly int DefaultDimension = 10;
-        private string _defaultImageFile = string.Empty;
+        private string defaultImageFile = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnImageHandler"/> class.
@@ -71,21 +71,21 @@ namespace DotNetNuke.Services.GeneratedImage
                 emptyBmp.MakeTransparent();
                 this.ContentType = ImageFormat.Png;
 
-                if (string.IsNullOrEmpty(this._defaultImageFile))
+                if (string.IsNullOrEmpty(this.defaultImageFile))
                 {
                     return emptyBmp;
                 }
 
                 try
                 {
-                    var fullFilePath = HttpContext.Current.Server.MapPath(this._defaultImageFile);
+                    var fullFilePath = HttpContext.Current.Server.MapPath(this.defaultImageFile);
 
-                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(this._defaultImageFile))
+                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(this.defaultImageFile))
                     {
                         return emptyBmp;
                     }
 
-                    var fi = new System.IO.FileInfo(this._defaultImageFile);
+                    var fi = new System.IO.FileInfo(this.defaultImageFile);
                     this.ContentType = GetImageFormat(fi.Extension);
 
                     using (var stream = new FileStream(fullFilePath, FileMode.Open))
@@ -102,6 +102,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         // Add image generation logic here and return an instance of ImageInfo
+
         /// <inheritdoc/>
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
@@ -131,7 +132,7 @@ namespace DotNetNuke.Services.GeneratedImage
             string text = string.IsNullOrEmpty(parameters["text"]) ? string.Empty : parameters["text"];
 
             // Default Image
-            this._defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
+            this.defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
 
             // Do we override caching for this image ?
             if (!string.IsNullOrEmpty(parameters["NoCache"]))

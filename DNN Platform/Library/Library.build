@@ -8,5 +8,8 @@
   <Target Name="DebugProject">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Extensions.FileSystemGlobbing.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\BouncyCastle.Crypto.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
 </Project>

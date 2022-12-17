@@ -81,16 +81,16 @@ namespace DotNetNuke.Security.Membership
 
         // Users Online
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public abstract void DeleteUsersOnline(int TimeWindow);
+        public abstract void DeleteUsersOnline(int timeWindow);
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public abstract ArrayList GetOnlineUsers(int PortalId);
+        public abstract ArrayList GetOnlineUsers(int portalId);
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public abstract bool IsUserOnline(UserInfo user);
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public abstract void UpdateUsersOnline(Hashtable UserList);
+        public abstract void UpdateUsersOnline(Hashtable userList);
 
         // Legacy
         public virtual void TransferUsersToMembershipProvider()
@@ -114,6 +114,7 @@ namespace DotNetNuke.Security.Membership
 
         public abstract ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords);
 
+        /// <inheritdoc cref="IUserController.GetUserByDisplayname"/>
         public virtual UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
             return null;
@@ -174,6 +175,7 @@ namespace DotNetNuke.Security.Membership
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc cref="IUserController.GetUsersAdvancedSearch" />
         public virtual IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
                                                     bool isAdmin, int pageIndex, int pageSize, string sortColumn,
                                                     bool sortAscending, string propertyNames, string propertyValues)
@@ -181,6 +183,7 @@ namespace DotNetNuke.Security.Membership
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc cref="IUserController.GetUsersBasicSearch" />
         public virtual IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
                                             bool sortAscending, string propertyName, string propertyValue)
         {

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +9,6 @@
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dnn.PersonaBar.Extensions</RootNamespace>
@@ -700,8 +700,8 @@
     <Content Include="SqlDataProvider\09.04.01.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -748,6 +748,7 @@
     <None Include="packages.config" />
     <Content Include="web.config" />
     <Content Include="SqlDataProvider\09.11.00.SqlDataProvider" />
+    <Content Include="SqlDataProvider\09.11.01.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -774,4 +775,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="Module.build" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props'))" />
+    <Error Condition="!Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets')" />
 </Project>

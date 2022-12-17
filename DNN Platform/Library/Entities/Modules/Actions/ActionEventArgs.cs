@@ -17,21 +17,21 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// -----------------------------------------------------------------------------
     public class ActionEventArgs : EventArgs
     {
-        private readonly ModuleAction _action;
-        private readonly ModuleInfo _moduleConfiguration;
+        private readonly ModuleAction action;
+        private readonly ModuleInfo moduleConfiguration;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionEventArgs"/> class.
         /// </summary>
-        /// <param name="Action"></param>
-        /// <param name="ModuleConfiguration"></param>
+        /// <param name="action"></param>
+        /// <param name="moduleConfiguration"></param>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
-        public ActionEventArgs(ModuleAction Action, ModuleInfo ModuleConfiguration)
+        public ActionEventArgs(ModuleAction action, ModuleInfo moduleConfiguration)
         {
-            this._action = Action;
-            this._moduleConfiguration = ModuleConfiguration;
+            this.action = action;
+            this.moduleConfiguration = moduleConfiguration;
         }
 
         /// -----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return this._action;
+                return this.action;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return this._moduleConfiguration;
+                return this.moduleConfiguration;
             }
         }
     }

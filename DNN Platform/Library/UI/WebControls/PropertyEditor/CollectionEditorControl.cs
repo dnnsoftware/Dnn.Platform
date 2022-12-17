@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.WebControls
         protected override string GetCategory(object obj)
         {
             PropertyInfo objProperty;
-            string _Category = Null.NullString;
+            string category = Null.NullString;
 
             // Get Category Field
             if (!string.IsNullOrEmpty(this.CategoryDataField))
@@ -197,11 +197,11 @@ namespace DotNetNuke.UI.WebControls
                 objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
-                    _Category = Convert.ToString(objProperty.GetValue(obj, null));
+                    category = Convert.ToString(objProperty.GetValue(obj, null));
                 }
             }
 
-            return _Category;
+            return category;
         }
 
         /// -----------------------------------------------------------------------------
@@ -223,11 +223,11 @@ namespace DotNetNuke.UI.WebControls
                     objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                     if (!((objProperty == null) || (objProperty.GetValue(obj, null) == null)))
                     {
-                        string _Category = Convert.ToString(objProperty.GetValue(obj, null));
+                        string category = Convert.ToString(objProperty.GetValue(obj, null));
 
-                        if (!arrGroups.Contains(_Category))
+                        if (!arrGroups.Contains(category))
                         {
-                            arrGroups.Add(_Category);
+                            arrGroups.Add(category);
                         }
                     }
                 }

@@ -15,11 +15,11 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageResizeTransform : ImageTransform
     {
-        private int _width;
-        private int _height;
-        private int _border;
-        private int _maxWidth;
-        private int _maxHeight;
+        private int width;
+        private int height;
+        private int border;
+        private int maxWidth;
+        private int maxHeight;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageResizeTransform"/> class.
@@ -51,13 +51,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return this._width;
+                return this.width;
             }
 
             set
             {
                 CheckValue(value);
-                this._width = value;
+                this.width = value;
             }
         }
 
@@ -68,13 +68,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return this._maxWidth;
+                return this.maxWidth;
             }
 
             set
             {
                 CheckValue(value);
-                this._maxWidth = value;
+                this.maxWidth = value;
             }
         }
 
@@ -85,13 +85,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return this._height;
+                return this.height;
             }
 
             set
             {
                 CheckValue(value);
-                this._height = value;
+                this.height = value;
             }
         }
 
@@ -102,13 +102,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return this._maxHeight;
+                return this.maxHeight;
             }
 
             set
             {
                 CheckValue(value);
-                this._maxHeight = value;
+                this.maxHeight = value;
             }
         }
 
@@ -119,13 +119,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             get
             {
-                return this._border;
+                return this.border;
             }
 
             set
             {
                 CheckValue(value);
-                this._border = value;
+                this.border = value;
             }
         }
 
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 }
             }
 
-            var newimage = new Bitmap(resizeWidth + (2 * this._border), resizeHeight + (2 * this._border));
+            var newimage = new Bitmap(resizeWidth + (2 * this.border), resizeHeight + (2 * this.border));
             var graphics = Graphics.FromImage(newimage);
 
             graphics.CompositingMode = CompositingMode.SourceCopy;
@@ -232,8 +232,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             graphics.InterpolationMode = this.InterpolationMode;
             graphics.SmoothingMode = this.SmoothingMode;
 
-            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + (2 * this._border), resizeHeight + (2 * this._border)));
-            graphics.DrawImage(img, this._border, this._border, resizeWidth, resizeHeight);
+            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + (2 * this.border), resizeHeight + (2 * this.border)));
+            graphics.DrawImage(img, this.border, this.border, resizeWidth, resizeHeight);
 
             return newimage;
         }
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 resizeHeight = Convert.ToInt32((float)img.Height / (float)img.Width * newDim);
             }
 
-            var newimage = new Bitmap(newDim + (2 * this._border), newDim + (2 * this._border));
+            var newimage = new Bitmap(newDim + (2 * this.border), newDim + (2 * this.border));
             var graphics = Graphics.FromImage(newimage);
 
             graphics.CompositingMode = CompositingMode.SourceCopy;
@@ -264,8 +264,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             graphics.InterpolationMode = this.InterpolationMode;
             graphics.SmoothingMode = this.SmoothingMode;
 
-            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + (2 * this._border), newDim + (2 * this._border)));
-            graphics.DrawImage(img, ((newDim - resizeWidth) / 2) + this._border, ((newDim - resizeHeight) / 2) + this._border, resizeWidth, resizeHeight);
+            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + (2 * this.border), newDim + (2 * this.border)));
+            graphics.DrawImage(img, ((newDim - resizeWidth) / 2) + this.border, ((newDim - resizeHeight) / 2) + this.border, resizeWidth, resizeHeight);
             return newimage;
         }
 

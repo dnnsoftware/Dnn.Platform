@@ -109,6 +109,7 @@ graph TD;
   dnn-rm-items-cardview --> dnn-collapsible
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-items-cardview --> dnn-rm-file-context-menu
+  dnn-rm-folder-mappings --> dnn-button
   style dnn-resource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

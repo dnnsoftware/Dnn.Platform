@@ -32,8 +32,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected const string PermissionTypeNull = "Null";
         protected DataGrid rolePermissionsGrid;
         protected DataGrid userPermissionsGrid;
-        private ArrayList _permissions;
-        private ArrayList _users;
+        private ArrayList permissions;
+        private ArrayList users;
         private DropDownList cboRoleGroups;
         private DropDownList cboSelectRole;
         private LinkButton cmdUser;
@@ -268,7 +268,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>
-        /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel.
+        /// Registers the scripts necessary to make the tri-state controls work inside a RadAjaxPanel.
         /// </summary>
         /// <remarks>
         /// No need to call this unless using the PermissionGrid inside an ajax control that omits scripts on postback
@@ -363,7 +363,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </summary>
         protected override void CreateChildControls()
         {
-            this._permissions = this.GetPermissions();
+            this.permissions = this.GetPermissions();
 
             this.pnlPermissions = new Panel { CssClass = "dnnGrid dnnPermissionsGrid" };
 
@@ -382,12 +382,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.rolePermissionsGrid.HeaderStyle.CssClass = "dnnGridHeader";
             this.rolePermissionsGrid.ItemStyle.CssClass = "dnnGridItem";
             this.rolePermissionsGrid.AlternatingItemStyle.CssClass = "dnnGridAltItem";
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += this.RolePermissionsGrid_ItemDataBound;
             this.SetUpRolesGrid();
             this.pnlPermissions.Controls.Add(this.rolePermissionsGrid);
 
-            this._users = this.GetUsers();
-            if (this._users != null)
+            this.users = this.GetUsers();
+            if (this.users != null)
             {
                 this.userPermissionsGrid = new DataGrid
                 {
@@ -631,14 +631,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        protected virtual void ParsePermissionKeys(PermissionInfoBase permission, string[] Settings)
+        protected virtual void ParsePermissionKeys(PermissionInfoBase permission, string[] settings)
         {
-            permission.PermissionID = Convert.ToInt32(Settings[1]);
-            permission.RoleID = Convert.ToInt32(Settings[4]);
-            permission.RoleName = Settings[3];
-            permission.AllowAccess = Convert.ToBoolean(Settings[0]);
-            permission.UserID = Convert.ToInt32(Settings[5]);
-            permission.DisplayName = Settings[6];
+            permission.PermissionID = Convert.ToInt32(settings[1]);
+            permission.RoleID = Convert.ToInt32(settings[4]);
+            permission.RoleName = settings[3];
+            permission.AllowAccess = Convert.ToBoolean(settings[0]);
+            permission.UserID = Convert.ToInt32(settings[5]);
+            permission.DisplayName = settings[6];
         }
 
         protected virtual void RemovePermission(int permissionID, int roleID, int userID)
@@ -725,7 +725,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.EnsureChildControls();
             this.GetRoles();
             this.UpdateRolePermissions();
-            this._users = this.GetUsers();
+            this.users = this.GetUsers();
             this.UpdateUserPermissions();
         }
 
@@ -750,7 +750,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         // all except first two cells which is role names and role ids and last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
-                            var permissionInfo = (PermissionInfo)this._permissions[i - 2];
+                            var permissionInfo = (PermissionInfo)this.permissions[i - 2];
                             var triState = (PermissionTriState)dgi.Cells[i].Controls[0];
                             if (this.SupportsDenyPermissions(permissionInfo))
                             {
@@ -773,7 +773,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             if (this.userPermissionsGrid != null && !this.RefreshGrid)
             {
-                var usersList = this._users.Cast<UserInfo>().ToList();
+                var usersList = this.users.Cast<UserInfo>().ToList();
                 foreach (DataGridItem dgi in this.userPermissionsGrid.Items)
                 {
                     var userId = int.Parse(dgi.Cells[1].Text);
@@ -787,7 +787,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         // all except first two cells which is displayname and userid and Last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
-                            var permissionInfo = (PermissionInfo)this._permissions[i - 2];
+                            var permissionInfo = (PermissionInfo)this.permissions[i - 2];
                             var triState = (PermissionTriState)dgi.Cells[i].Controls[0];
                             if (this.SupportsDenyPermissions(permissionInfo))
                             {
@@ -825,7 +825,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     var user = UserController.GetUserById(this.PortalId, userId);
                     if (user != null)
                     {
-                        this.AddPermission(this._permissions, user);
+                        this.AddPermission(this.permissions, user);
                         this.BindData();
                     }
                 }
@@ -852,9 +852,9 @@ namespace DotNetNuke.Security.Permissions.Controls
             // Add Roles Column
             this.dtRolePermissions.Columns.Add(new DataColumn("RoleName"));
 
-            for (int i = 0; i <= this._permissions.Count - 1; i++)
+            for (int i = 0; i <= this.permissions.Count - 1; i++)
             {
-                var permissionInfo = (PermissionInfo)this._permissions[i];
+                var permissionInfo = (PermissionInfo)this.permissions[i];
 
                 // Add Enabled Column
                 this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName + "_Enabled"));
@@ -873,10 +873,10 @@ namespace DotNetNuke.Security.Permissions.Controls
                 row["RoleId"] = role.RoleID;
                 row["RoleName"] = Localization.LocalizeRole(role.RoleName);
                 int j;
-                for (j = 0; j <= this._permissions.Count - 1; j++)
+                for (j = 0; j <= this.permissions.Count - 1; j++)
                 {
                     PermissionInfo objPerm;
-                    objPerm = (PermissionInfo)this._permissions[j];
+                    objPerm = (PermissionInfo)this.permissions[j];
                     row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, role, j + 1);
                     if (this.SupportsDenyPermissions(objPerm))
                     {
@@ -915,10 +915,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             col = new DataColumn("DisplayName");
             this.dtUserPermissions.Columns.Add(col);
             int i;
-            for (i = 0; i <= this._permissions.Count - 1; i++)
+            for (i = 0; i <= this.permissions.Count - 1; i++)
             {
                 PermissionInfo objPerm;
-                objPerm = (PermissionInfo)this._permissions[i];
+                objPerm = (PermissionInfo)this.permissions[i];
 
                 // Add Enabled Column
                 col = new DataColumn(objPerm.PermissionName + "_Enabled");
@@ -931,23 +931,23 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             if (this.userPermissionsGrid != null)
             {
-                this._users = this.GetUsers();
+                this.users = this.GetUsers();
 
-                if (this._users.Count != 0)
+                if (this.users.Count != 0)
                 {
                     this.userPermissionsGrid.Visible = true;
                     DataRow row;
-                    for (i = 0; i <= this._users.Count - 1; i++)
+                    for (i = 0; i <= this.users.Count - 1; i++)
                     {
-                        var user = (UserInfo)this._users[i];
+                        var user = (UserInfo)this.users[i];
                         row = this.dtUserPermissions.NewRow();
                         row["UserId"] = user.UserID;
                         row["DisplayName"] = user.DisplayName;
                         int j;
-                        for (j = 0; j <= this._permissions.Count - 1; j++)
+                        for (j = 0; j <= this.permissions.Count - 1; j++)
                         {
                             PermissionInfo objPerm;
-                            objPerm = (PermissionInfo)this._permissions[j];
+                            objPerm = (PermissionInfo)this.permissions[j];
                             row[objPerm.PermissionName + "_Enabled"] = this.GetEnabled(objPerm, user, j + 1);
                             if (this.SupportsDenyPermissions(objPerm))
                             {
@@ -1047,7 +1047,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             };
             grid.Columns.Add(idColumn);
 
-            foreach (PermissionInfo permission in this._permissions)
+            foreach (PermissionInfo permission in this.permissions)
             {
                 var templateCol = new TemplateColumn();
                 var columnTemplate = new PermissionTriStateTemplate(permission)
@@ -1076,10 +1076,10 @@ namespace DotNetNuke.Security.Permissions.Controls
                 HeaderText = Localization.GetString("PermissionActionsHeader.Text", PermissionProvider.Instance().LocalResourceFile),
             };
             grid.Columns.Add(actionsColumn);
-            grid.ItemCommand += this.grid_ItemCommand;
+            grid.ItemCommand += this.Grid_ItemCommand;
         }
 
-        private void grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        private void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             var entityID = int.Parse(e.CommandArgument.ToString());
             var command = this.GetGridCommand(e.CommandName);
@@ -1192,7 +1192,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);
         }
 
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        private void RolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
 
@@ -1273,7 +1273,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var role = this.GetSelectedRole(selectedRoleId);
             if (role != null)
             {
-                this.AddPermission(this._permissions, role);
+                this.AddPermission(this.permissions, role);
                 this.BindData();
             }
             else

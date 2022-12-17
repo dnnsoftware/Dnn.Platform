@@ -36,6 +36,7 @@ namespace DotNetNuke.Tests.Content
         private Mock<CachingProvider> mockCache;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -57,6 +58,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void Test_Add_File_To_Content_Item_Without_Metadata()
         {
             var dataService = DataServiceFactory();
@@ -86,6 +88,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+
         public void Test_Load_Attachments_From_DataService()
         {
             var files = new List<IFileInfo>

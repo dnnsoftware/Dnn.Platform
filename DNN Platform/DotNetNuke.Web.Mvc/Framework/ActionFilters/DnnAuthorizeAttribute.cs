@@ -64,6 +64,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return PortalController.Instance.GetCurrentPortalSettings().UserInfo;
         }
 
+        /// <inheritdoc/>
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (!this.IsAuthenticated())

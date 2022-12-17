@@ -188,12 +188,12 @@ namespace DotNetNuke.Services.Search
             return arr;
         }
 
-        public SearchItemInfoCollection ModuleItems(int ModuleId)
+        public SearchItemInfoCollection ModuleItems(int moduleId)
         {
             var retValue = new SearchItemInfoCollection();
             foreach (SearchItemInfo info in this)
             {
-                if (info.ModuleId == ModuleId)
+                if (info.ModuleId == moduleId)
                 {
                     retValue.Add(info);
                 }

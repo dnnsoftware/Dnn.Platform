@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.Connectors.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectorsController));
 
         [HttpGet]
+
         public HttpResponseMessage GetConnections()
         {
             var connections = this.GetConnections(this.PortalId)
@@ -54,6 +55,7 @@ namespace Dnn.PersonaBar.Connectors.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage SaveConnection(object postData)
         {
             try
@@ -88,9 +90,10 @@ namespace Dnn.PersonaBar.Connectors.Services
                     connector.Id = null;
                     connector.DisplayName = null;
                 }
+
                 if (connector != null && !string.IsNullOrEmpty(displayName) && connector.DisplayName != displayName)
                 {
-                    connector.DisplayName = string.IsNullOrEmpty(displayName) ? "" : displayName;
+                    connector.DisplayName = string.IsNullOrEmpty(displayName) ? string.Empty : displayName;
                 }
 
                 bool validated = false;
@@ -114,7 +117,8 @@ namespace Dnn.PersonaBar.Connectors.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Success = true,
@@ -132,7 +136,9 @@ namespace Dnn.PersonaBar.Connectors.Services
                 {
                     Logger.Error(ex);
                 }
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError,
+
+                return this.Request.CreateResponse(
+                    HttpStatusCode.InternalServerError,
                     new { Success = false, Message = ex.Message });
             }
         }
@@ -144,6 +150,7 @@ namespace Dnn.PersonaBar.Connectors.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeleteConnection(object postData)
         {
             try
@@ -171,13 +178,16 @@ namespace Dnn.PersonaBar.Connectors.Services
                 if (connector != null)
                 {
                     connector.DeleteConnector(this.PortalId);
-                    return this.Request.CreateResponse(HttpStatusCode.OK,
+                    return this.Request.CreateResponse(
+                        HttpStatusCode.OK,
                         new
                         {
                             Success = true,
                         });
                 }
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Success = true,
@@ -188,12 +198,14 @@ namespace Dnn.PersonaBar.Connectors.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.InternalServerError,
                     new { Success = false, Message = ex.Message });
             }
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetConnectionLocalizedString(string name, string culture)
         {
             var connection = this.GetConnections(this.PortalId).ForEach(x =>
@@ -231,6 +243,7 @@ namespace Dnn.PersonaBar.Connectors.Services
             {
                 allConnectors.AddRange(con.GetConnectors(portalId));
             }
+
             return allConnectors;
         }
 

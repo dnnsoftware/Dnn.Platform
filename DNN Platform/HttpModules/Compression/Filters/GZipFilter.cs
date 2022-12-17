@@ -11,12 +11,14 @@ namespace DotNetNuke.HttpModules.Compression
     /// </summary>
     public class GZipFilter : CompressingFilter
     {
-        private readonly GZipStream m_stream;
+        private readonly GZipStream stream;
 
+        /// <summary>Initializes a new instance of the <see cref="GZipFilter"/> class.</summary>
+        /// <param name="baseStream">The base stream.</param>
         public GZipFilter(Stream baseStream)
             : base(baseStream)
         {
-            this.m_stream = new GZipStream(baseStream, CompressionMode.Compress);
+            this.stream = new GZipStream(baseStream, CompressionMode.Compress);
         }
 
         /// <inheritdoc/>
@@ -36,19 +38,19 @@ namespace DotNetNuke.HttpModules.Compression
                 this.WriteHeaders();
             }
 
-            this.m_stream.Write(buffer, offset, count);
+            this.stream.Write(buffer, offset, count);
         }
 
         /// <inheritdoc/>
         public override void Close()
         {
-            this.m_stream.Close();
+            this.stream.Close();
         }
 
         /// <inheritdoc/>
         public override void Flush()
         {
-            this.m_stream.Flush();
+            this.stream.Flush();
         }
     }
 }

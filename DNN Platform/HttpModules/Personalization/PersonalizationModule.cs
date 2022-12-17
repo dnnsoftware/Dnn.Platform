@@ -43,13 +43,13 @@ namespace DotNetNuke.HttpModules.Personalization
             }
 
             // Obtain PortalSettings from Current Context
-            var _portalSettings = (PortalSettings)context.Items["PortalSettings"];
-            if (_portalSettings != null)
+            var portalSettings = (PortalSettings)context.Items["PortalSettings"];
+            if (portalSettings != null)
             {
                 // load the user info object
-                UserInfo UserInfo = UserController.Instance.GetCurrentUserInfo();
+                UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
                 var personalization = new PersonalizationController();
-                personalization.SaveProfile(context, UserInfo.UserID, _portalSettings.PortalId);
+                personalization.SaveProfile(context, userInfo.UserID, portalSettings.PortalId);
             }
         }
     }

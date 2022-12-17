@@ -77,7 +77,7 @@ namespace DotNetNuke.Framework
         /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
         /// </summary>
         /// <value>
-        /// <placeholder>Property to allow the programmatic assigning of ScrollTop position</placeholder>
+        /// Property to allow the programmatic assigning of ScrollTop position.
         /// </value>
         /// <remarks>
         /// </remarks>
@@ -96,7 +96,10 @@ namespace DotNetNuke.Framework
                 return pageScrollTop;
             }
 
-            set { this.ScrollTop.Value = value.ToString(); }
+            set
+            {
+                this.ScrollTop.Value = value.ToString();
+            }
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -137,6 +140,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -322,6 +326,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
@@ -363,6 +368,7 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
@@ -635,7 +641,7 @@ namespace DotNetNuke.Framework
                 var styleSheet = this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString();
 
                 // Try and go through the FolderProvider first
-                var stylesheetFile = GetPageStylesheetFileInfo(styleSheet);
+                var stylesheetFile = this.GetPageStylesheetFileInfo(styleSheet);
                 if (stylesheetFile != null)
                 {
                     ClientResourceManager.RegisterStyleSheet(this, FileManager.Instance.GetUrl(stylesheetFile));

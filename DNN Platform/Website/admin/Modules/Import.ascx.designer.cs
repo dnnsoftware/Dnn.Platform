@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
     
     
     public partial class Import {
-        
         /// <summary>
         /// plFolder control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFolder;
-        
         /// <summary>
         /// cboFolders control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList cboFolders;
-        
         /// <summary>
         /// plFile control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFile;
-        
         /// <summary>
         /// cboFiles control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboFiles;
-        
         /// <summary>
         /// txtContent control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtContent;
-        
         /// <summary>
         /// cmdImport control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdImport;
-        
         /// <summary>
         /// cmdCancel control.
         /// </summary>

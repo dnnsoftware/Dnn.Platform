@@ -24,8 +24,8 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionCommandButton : CommandButton, IActionControl
     {
-        private ActionManager _ActionManager;
-        private ModuleAction _ModuleAction;
+        private ActionManager actionManager;
+        private ModuleAction moduleAction;
 
         /// <inheritdoc/>
         public event ActionEventHandler Action;
@@ -40,12 +40,12 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._ActionManager == null)
+                if (this.actionManager == null)
                 {
-                    this._ActionManager = new ActionManager(this);
+                    this.actionManager = new ActionManager(this);
                 }
 
-                return this._ActionManager;
+                return this.actionManager;
             }
         }
 
@@ -59,17 +59,17 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (this._ModuleAction == null)
+                if (this.moduleAction == null)
                 {
-                    this._ModuleAction = this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
+                    this.moduleAction = this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
                 }
 
-                return this._ModuleAction;
+                return this.moduleAction;
             }
 
             set
             {
-                this._ModuleAction = value;
+                this.moduleAction = value;
             }
         }
 

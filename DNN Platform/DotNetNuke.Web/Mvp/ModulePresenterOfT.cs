@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.Mvp
         where TView : class, IModuleView<TModel>
         where TModel : class, new()
     {
+        /// <summary>Initializes a new instance of the <see cref="ModulePresenter{TView, TModel}"/> class.</summary>
+        /// <param name="view">The view.</param>
         protected ModulePresenter(TView view)
             : base(view)
         {

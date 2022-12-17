@@ -22,8 +22,8 @@ namespace DotNetNuke.UI.Modules.Html5
 
     public class ModuleLocalizationPropertyAccess : JsonPropertyAccess<ModuleLocalizationDto>
     {
-        private readonly ModuleInstanceContext _moduleContext;
-        private readonly string _html5File;
+        private readonly ModuleInstanceContext moduleContext;
+        private readonly string html5File;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleLocalizationPropertyAccess"/> class.
@@ -32,8 +32,8 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <param name="html5File"></param>
         public ModuleLocalizationPropertyAccess(ModuleInstanceContext moduleContext, string html5File)
         {
-            this._html5File = html5File;
-            this._moduleContext = moduleContext;
+            this.html5File = html5File;
+            this.moduleContext = moduleContext;
         }
 
         /// <inheritdoc/>
@@ -44,8 +44,8 @@ namespace DotNetNuke.UI.Modules.Html5
             string resourceFile = model.LocalResourceFile;
             if (string.IsNullOrEmpty(resourceFile))
             {
-                var fileName = Path.GetFileName(this._html5File);
-                var path = this._html5File.Replace(fileName, string.Empty);
+                var fileName = Path.GetFileName(this.html5File);
+                var path = this.html5File.Replace(fileName, string.Empty);
                 resourceFile = Path.Combine(path, Localization.LocalResourceDirectory + "/", Path.ChangeExtension(fileName, "resx"));
             }
 

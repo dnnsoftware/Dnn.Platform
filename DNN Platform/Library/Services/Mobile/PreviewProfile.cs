@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Mobile
     [Serializable]
     public class PreviewProfile : IPreviewProfile, IHydratable
     {
-        private int _id = -1;
+        private int id = -1;
 
         /// <summary>
         /// Gets or sets primary key.
@@ -23,12 +23,12 @@ namespace DotNetNuke.Services.Mobile
         {
             get
             {
-                return this._id;
+                return this.id;
             }
 
             set
             {
-                this._id = value;
+                this.id = value;
             }
         }
 

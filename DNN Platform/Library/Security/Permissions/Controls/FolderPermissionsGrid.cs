@@ -21,10 +21,10 @@ namespace DotNetNuke.Security.Permissions.Controls
     public class FolderPermissionsGrid : PermissionsGrid
     {
         protected FolderPermissionCollection FolderPermissions;
-        private string _folderPath = string.Empty;
-        private List<PermissionInfoBase> _permissionsList;
-        private bool _refreshGrid;
-        private IList<PermissionInfo> _systemFolderPermissions;
+        private string folderPath = string.Empty;
+        private List<PermissionInfoBase> permissionsList;
+        private bool refreshGrid;
+        private IList<PermissionInfo> systemFolderPermissions;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -52,13 +52,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this._folderPath;
+                return this.folderPath;
             }
 
             set
             {
-                this._folderPath = value;
-                this._refreshGrid = true;
+                this.folderPath = value;
+                this.refreshGrid = true;
                 this.GetFolderPermissions();
             }
         }
@@ -68,12 +68,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                if (this._permissionsList == null && this.FolderPermissions != null)
+                if (this.permissionsList == null && this.FolderPermissions != null)
                 {
-                    this._permissionsList = this.FolderPermissions.ToList();
+                    this.permissionsList = this.FolderPermissions.ToList();
                 }
 
-                return this._permissionsList;
+                return this.permissionsList;
             }
         }
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return this._refreshGrid;
+                return this.refreshGrid;
             }
         }
 
@@ -103,14 +103,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected virtual void GetFolderPermissions()
         {
             this.FolderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalId, this.FolderPath));
-            this._permissionsList = null;
+            this.permissionsList = null;
         }
 
         /// <inheritdoc/>
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += this.RolePermissionsGrid_ItemDataBound;
         }
 
         /// <inheritdoc/>
@@ -128,7 +128,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.FolderPermissions.Add(objPermission, true);
 
             // Clear Permission List
-            this._permissionsList = null;
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -249,7 +249,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override ArrayList GetPermissions()
         {
             ArrayList perms = PermissionController.GetPermissionsByFolder();
-            this._systemFolderPermissions = perms.Cast<PermissionInfo>().ToList();
+            this.systemFolderPermissions = perms.Cast<PermissionInfo>().ToList();
             return perms;
         }
 
@@ -275,7 +275,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load FolderPath
                 if (myState[1] != null)
                 {
-                    this._folderPath = Convert.ToString(myState[1]);
+                    this.folderPath = Convert.ToString(myState[1]);
                 }
 
                 // Load FolderPermissions
@@ -303,7 +303,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.FolderPermissions.Remove(permissionID, roleID, userID);
 
             // Clear Permission List
-            this._permissionsList = null;
+            this.permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -389,7 +389,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             return objFolderPermission;
         }
 
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        private void RolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
 
@@ -414,7 +414,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
         {
-            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
+            return this.systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
         }
 
         private bool IsImplicitRole(int portalId, int roleId)

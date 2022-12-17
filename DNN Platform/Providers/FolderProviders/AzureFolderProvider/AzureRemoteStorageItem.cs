@@ -12,6 +12,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     [Serializable]
     public class AzureRemoteStorageItem : IRemoteStorageItem
     {
+        /// <inheritdoc/>
         public string Key
         {
             get
@@ -21,10 +22,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
+        /// <inheritdoc/>
         public DateTime LastModified => this.Blob.LastModifiedUtc;
 
+        /// <inheritdoc/>
         public long Size => this.Blob.Length;
 
+        /// <inheritdoc/>
         public string HashCode => this.Blob.ETag;
 
         public AzureBlob Blob { get; set; }

@@ -124,13 +124,13 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                bool _HasValidFiles = true;
+                bool hasValidFiles = true;
                 if (this.Files.Values.Any(file => !Util.IsFileValid(file, this.AllowableFiles)))
                 {
-                    _HasValidFiles = Null.NullBoolean;
+                    hasValidFiles = Null.NullBoolean;
                 }
 
-                return _HasValidFiles;
+                return hasValidFiles;
             }
         }
 
@@ -144,14 +144,14 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                string _InvalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
+                string invalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
                                                             .Aggregate(Null.NullString, (current, file) => current + (", " + file.Extension));
-                if (!string.IsNullOrEmpty(_InvalidFileExtensions))
+                if (!string.IsNullOrEmpty(invalidFileExtensions))
                 {
-                    _InvalidFileExtensions = _InvalidFileExtensions.Substring(2);
+                    invalidFileExtensions = invalidFileExtensions.Substring(2);
                 }
 
-                return _InvalidFileExtensions;
+                return invalidFileExtensions;
             }
         }
 

@@ -70,6 +70,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private UserInfo _groupOwnerUserInfo;
 
         [SetUp]
+
         public void SetUp()
         {
             var serviceCollection = new ServiceCollection();
@@ -161,6 +162,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetArchivedMessages_Calls_DataService_GetArchiveBoxView_With_Default_Values()
         {
             DataService.RegisterInstance(this._mockDataService.Object);
@@ -215,6 +217,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetRecentSentbox_Calls_Overload_With_Default_Values()
         {
             this._mockInternalMessagingController
@@ -227,6 +230,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetRecentSentbox_Calls_GetSentbox_With_Default_Values()
         {
             this._mockInternalMessagingController
@@ -239,6 +243,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetSentbox_Calls_DataService_GetSentBoxView_With_Default_Values()
         {
             DataService.RegisterInstance(this._mockDataService.Object);
@@ -273,6 +278,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetSentbox_Calls_Overload_With_Default_Values()
         {
             this._mockInternalMessagingController
@@ -298,6 +304,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Null_Message()
         {
             // Act, Assert
@@ -305,6 +312,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Null_Body_And_Subject()
         {
             // Act, Assert
@@ -312,6 +320,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Null_Roles_And_Users()
         {
             // Arrange
@@ -322,6 +331,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Empty_Roles_And_Users_Lists()
         {
             // Arrange
@@ -332,6 +342,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Roles_And_Users_With_No_DisplayNames()
         {
             // Arrange
@@ -342,6 +353,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Large_Subject()
         {
             // Arrange
@@ -359,6 +371,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Large_To()
         {
             // Arrange
@@ -377,6 +390,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Null_Sender()
         {
             // Arrange
@@ -389,6 +403,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Negative_SenderID()
         {
             // Arrange
@@ -402,6 +417,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Throws_On_SendingToRole_ByNonAdmin()
         {
             // Arrange
@@ -420,6 +436,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         // [Test]
+
         public void MessagingController_CreateMessage_Throws_On_Passing_Attachments_When_Its_Not_Enabled()
         {
             // Arrange
@@ -444,6 +461,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_SaveSocialMessage_On_Valid_Message()
         {
             // Arrange
@@ -478,6 +496,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_Filters_Input_When_ProfanityFilter_Is_Enabled()
         {
             // Arrange
@@ -509,6 +528,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_For_CommonUser_Calls_DataService_SaveSocialMessageRecipient_Then_CreateSocialMessageRecipientsForRole()
         {
             // Arrange
@@ -543,6 +563,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Trims_Comma_For_One_User()
         {
             // Arrange
@@ -573,6 +594,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Trims_Comma_For_Two_Users()
         {
             // Arrange
@@ -604,6 +626,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Trims_Comma_For_One_Role()
         {
             // Arrange
@@ -623,6 +646,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Trims_Comma_For_Two_Roles()
         {
             // Arrange
@@ -643,6 +667,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_SaveSocialMessageAttachment_On_Passing_Attachments()
         {
             // Arrange
@@ -671,6 +696,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_CreateSocialMessageRecipientsForRole_On_Passing_Role_ByAdmin()
         {
             InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
@@ -697,6 +723,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_CreateSocialMessageRecipientsForRole_On_Passing_Role_ByHost()
         {
             // Arrange
@@ -725,6 +752,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_CreateSocialMessageRecipientsForRole_On_Passing_Roles()
         {
             // Arrange
@@ -754,6 +782,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_CreateSocialMessageRecipientsForRole_On_Passing_Roles_ByRoleOwner()
         {
             // Arrange
@@ -782,6 +811,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Calls_DataService_SaveSocialMessageRecipient_On_Passing_Users()
         {
             // Arrange
@@ -810,6 +840,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Sets_ReplyAll_To_False_On_Passing_Roles()
         {
             // Arrange
@@ -838,6 +869,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Sets_ReplyAll_To_True_On_Passing_User()
         {
             // Arrange
@@ -865,6 +897,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Adds_Sender_As_Recipient_When_Not_Aready_A_Recipient()
         {
             // Arrange
@@ -893,6 +926,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Marks_Message_As_Dispatched_For_Sender_When_Not_Already_A_Recipient()
         {
             // Arrange
@@ -923,6 +957,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_CreateMessage_Does_Not_Mark_Message_As_Dispatched_For_Sender_When_Already_A_Recipient()
         {
             // Arrange
@@ -953,6 +988,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Throws_On_Null_Sender()
         {
             // Arrange
@@ -962,6 +998,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Throws_On_Negative_SenderID()
         {
             // Arrange
@@ -972,6 +1009,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Throws_On_Null_Subject()
         {
             // Arrange
@@ -982,6 +1020,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Throws_On_Empty_Subject()
         {
             // Arrange
@@ -992,6 +1031,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Throws_On_Passing_Attachments_When_Its_Not_Enabled()
         {
             // Arrange
@@ -1005,6 +1045,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Filters_Input_When_ProfanityFilter_Is_Enabled()
         {
             // Arrange
@@ -1027,6 +1068,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Throws_When_Message_Or_Recipient_Are_Not_Found()
         {
             // Arrange
@@ -1047,6 +1089,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Marks_Message_As_Read_By_Sender()
         {
             // Arrange
@@ -1069,6 +1112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void MessagingController_ReplyMessage_Marks_Message_As_Dispatched_For_Sender()
         {
             // Arrange
@@ -1147,6 +1191,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetSocialMessageRecipient_Calls_DataService_GetSocialMessageRecipientByMessageAndUser()
         {
             this._dtMessageRecipients.Clear();
@@ -1161,12 +1206,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void WaitTimeForNextMessage_Throws_On_Null_Sender()
         {
             Assert.Throws<ArgumentNullException>(() => this._internalMessagingController.WaitTimeForNextMessage(null));
         }
 
         [Test]
+
         public void WaitTimeForNextMessage_Returns_Zero_When_MessagingThrottlingInterval_Is_Zero()
         {
             this._user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
@@ -1178,6 +1225,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void WaitTimeForNextMessage_Returns_Zero_When_Sender_Is_Admin_Or_Host()
         {
             this._adminUserInfo.PortalID = Constants.CONTENT_ValidPortalId;
@@ -1191,6 +1239,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void WaitTimeForNextMessage_Returns_Zero_When_The_User_Has_No_Previous_Conversations()
         {
             this._user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
@@ -1209,6 +1258,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [TestCase("2/16/2012 12:15:12 PM", "2/16/2012 12:14:12 PM", 1, 0)]
         [TestCase("2/16/2012 12:15:12 PM", "2/16/2012 12:14:12 PM", 2, 60)]
         [TestCase("2/16/2012 12:15:12 PM", "2/16/2012 12:14:12 PM", 10, 540)]
+
         public void WaitTimeForNextMessage_Returns_The_Number_Of_Seconds_Since_Last_Message_Sent(string actualDateString, string lastMessageDateString, int throttlingInterval, int expected)
         {
             var culture = CultureInfo.GetCultureInfo("en-US");
@@ -1229,6 +1279,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetInbox_Calls_DataService_GetMessageBoxView()
         {
             DataService.RegisterInstance(this._mockDataService.Object);
@@ -1244,6 +1295,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetInbox_Calls_Overload_With_Default_Values()
         {
             this._mockInternalMessagingController
@@ -1256,6 +1308,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetRecentInbox_Calls_GetInbox_With_Default_Values()
         {
             this._mockInternalMessagingController
@@ -1268,6 +1321,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetRecentInbox_Calls_Overload_With_Default_Values()
         {
             this._mockInternalMessagingController
@@ -1336,6 +1390,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void GetMessageRecipients_Calls_DataService_GetMessageRecipientsByMessage()
         {
             this._dtMessageRecipients.Clear();

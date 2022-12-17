@@ -24,8 +24,8 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class StandardEditorInfoAdapter : IEditorInfoAdapter
     {
-        private readonly object DataSource;
-        private readonly string FieldName;
+        private readonly object dataSource;
+        private readonly string fieldName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.
@@ -34,18 +34,18 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="fieldName"></param>
         public StandardEditorInfoAdapter(object dataSource, string fieldName)
         {
-            this.DataSource = dataSource;
-            this.FieldName = fieldName;
+            this.dataSource = dataSource;
+            this.fieldName = fieldName;
         }
 
         /// <inheritdoc/>
         public EditorInfo CreateEditControl()
         {
             EditorInfo editInfo = null;
-            PropertyInfo objProperty = this.GetProperty(this.DataSource, this.FieldName);
+            PropertyInfo objProperty = this.GetProperty(this.dataSource, this.fieldName);
             if (objProperty != null)
             {
-                editInfo = this.GetEditorInfo(this.DataSource, objProperty);
+                editInfo = this.GetEditorInfo(this.dataSource, objProperty);
             }
 
             return editInfo;
@@ -57,21 +57,21 @@ namespace DotNetNuke.UI.WebControls
             bool changed = e.Changed;
             object oldValue = e.OldValue;
             object newValue = e.Value;
-            bool _IsDirty = Null.NullBoolean;
-            if (this.DataSource != null)
+            bool isDirty = Null.NullBoolean;
+            if (this.dataSource != null)
             {
-                PropertyInfo objProperty = this.DataSource.GetType().GetProperty(e.Name);
+                PropertyInfo objProperty = this.dataSource.GetType().GetProperty(e.Name);
                 if (objProperty != null)
                 {
                     if ((!ReferenceEquals(newValue, oldValue)) || changed)
                     {
-                        objProperty.SetValue(this.DataSource, newValue, null);
-                        _IsDirty = true;
+                        objProperty.SetValue(this.dataSource, newValue, null);
+                        isDirty = true;
                     }
                 }
             }
 
-            return _IsDirty;
+            return isDirty;
         }
 
         /// <inheritdoc/>
@@ -164,10 +164,10 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Css Style
             editInfo.ControlStyle = new Style();
-            object[] StyleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
-            if (StyleAttributes.Length > 0)
+            object[] styleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
+            if (styleAttributes.Length > 0)
             {
-                var attribute = (ControlStyleAttribute)StyleAttributes[0];
+                var attribute = (ControlStyleAttribute)styleAttributes[0];
                 editInfo.ControlStyle.CssClass = attribute.CssClass;
                 editInfo.ControlStyle.Height = attribute.Height;
                 editInfo.ControlStyle.Width = attribute.Width;
@@ -212,8 +212,8 @@ namespace DotNetNuke.UI.WebControls
         {
             if (dataSource != null)
             {
-                BindingFlags Bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
-                PropertyInfo objProperty = dataSource.GetType().GetProperty(fieldName, Bindings);
+                BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+                PropertyInfo objProperty = dataSource.GetType().GetProperty(fieldName, bindings);
                 return objProperty;
             }
             else

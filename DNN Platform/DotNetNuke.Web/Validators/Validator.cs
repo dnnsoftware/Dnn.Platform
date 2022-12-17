@@ -8,30 +8,33 @@ namespace DotNetNuke.Web.Validators
 
     public class Validator
     {
-        private readonly IList<ObjectValidator> _Validators;
+        private readonly IList<ObjectValidator> validators;
 
+        /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
         public Validator()
         {
-            this._Validators = new List<ObjectValidator>();
+            this.validators = new List<ObjectValidator>();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
+        /// <param name="validator">The validator.</param>
         public Validator(ObjectValidator validator)
             : this()
         {
-            this._Validators.Add(validator);
+            this.validators.Add(validator);
         }
 
         public IList<ObjectValidator> Validators
         {
             get
             {
-                return this._Validators;
+                return this.validators;
             }
         }
 
         public ValidationResult ValidateObject(object target)
         {
-            return this._Validators.Aggregate(ValidationResult.Successful, (result, validator) => result.CombineWith(validator.ValidateObject(target) ?? ValidationResult.Successful));
+            return this.validators.Aggregate(ValidationResult.Successful, (result, validator) => result.CombineWith(validator.ValidateObject(target) ?? ValidationResult.Successful));
         }
     }
 }

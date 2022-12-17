@@ -23,10 +23,10 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyAccess"/> class.
         /// </summary>
-        /// <param name="TokenSource"></param>
-        public PropertyAccess(object TokenSource)
+        /// <param name="tokenSource"></param>
+        public PropertyAccess(object tokenSource)
         {
-            this.obj = TokenSource;
+            this.obj = tokenSource;
         }
 
         public static string ContentLocked
@@ -89,13 +89,13 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="strPropertyName">Name of property.</param>
         /// <param name="strFormat">Format String.</param>
         /// <param name="formatProvider">specify formatting.</param>
-        /// <param name="PropertyNotFound">out: specifies, whether property was found.</param>
+        /// <param name="propertyNotFound">out: specifies, whether property was found.</param>
         /// <returns>Localized Property.</returns>
         /// <remarks></remarks>
-        public static string GetObjectProperty(object objObject, string strPropertyName, string strFormat, CultureInfo formatProvider, ref bool PropertyNotFound)
+        public static string GetObjectProperty(object objObject, string strPropertyName, string strFormat, CultureInfo formatProvider, ref bool propertyNotFound)
         {
             PropertyInfo objProperty = null;
-            PropertyNotFound = false;
+            propertyNotFound = false;
             if (CBO.GetProperties(objObject.GetType()).TryGetValue(strPropertyName, out objProperty))
             {
                 object propValue = objProperty.GetValue(objObject, null);
@@ -127,19 +127,19 @@ namespace DotNetNuke.Services.Tokens
                 }
             }
 
-            PropertyNotFound = true;
+            propertyNotFound = true;
             return string.Empty;
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             if (this.obj == null)
             {
                 return string.Empty;
             }
 
-            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
+            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref propertyNotFound);
         }
     }
 }

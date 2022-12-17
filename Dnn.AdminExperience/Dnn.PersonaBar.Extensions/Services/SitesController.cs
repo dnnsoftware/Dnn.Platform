@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Sites.Services
     public class SitesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
-        private readonly Components.SitesController _controller = new Components.SitesController();
+        private readonly Components.SitesController controller = new Components.SitesController();
 
         /// <summary>
         /// Gets list of portals.
@@ -43,6 +43,7 @@ namespace Dnn.PersonaBar.Sites.Services
         /// GET /api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10.
         /// </example>
         [HttpGet]
+
         public HttpResponseMessage GetPortals(int portalGroupId, string filter, int pageIndex, int pageSize)
         {
             try
@@ -64,6 +65,7 @@ namespace Dnn.PersonaBar.Sites.Services
                     portals = PortalController.GetPortalsByName($"%{filter}%", pageIndex, pageSize,
                                 ref totalRecords).Cast<PortalInfo>();
                 }
+
                 var response = new
                 {
                     Results = portals.Select(this.GetPortalDto).ToList(),
@@ -88,12 +90,13 @@ namespace Dnn.PersonaBar.Sites.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
+
         public HttpResponseMessage CreatePortal(CreatePortalRequest request)
         {
             try
             {
                 var errors = new List<string>();
-                var portalId = this._controller.CreatePortal(errors, this.GetDomainName(), this.GetAbsoluteServerPath(),
+                var portalId = this.controller.CreatePortal(errors, this.GetDomainName(), this.GetAbsoluteServerPath(),
                     request.SiteTemplate, request.SiteName,
                     request.SiteAlias, request.SiteDescription, request.SiteKeywords,
                     request.IsChildSite, request.HomeDirectory, request.SiteGroupId, request.UseCurrentUserAsAdmin,
@@ -103,6 +106,7 @@ namespace Dnn.PersonaBar.Sites.Services
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join("<br/>", errors));
                 }
+
                 var portal = PortalController.Instance.GetPortal(portalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -125,6 +129,7 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeletePortal(int portalId)
         {
             try
@@ -140,12 +145,17 @@ namespace Dnn.PersonaBar.Sites.Services
                         {
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                         }
+
                         return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);
                     }
-                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+
+                    return this.Request.CreateErrorResponse(
+                        HttpStatusCode.Unauthorized,
                         Localization.GetString("PortalDeletionDenied", Components.Constants.LocalResourcesFile));
                 }
-                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound,
+
+                return this.Request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
                     Localization.GetString("PortalNotFound", Components.Constants.LocalResourcesFile));
             }
             catch (Exception exc)
@@ -163,26 +173,28 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage ExportPortalTemplate(ExportTemplateRequest request)
         {
             try
             {
                 bool success;
-                var message = this._controller.ExportPortalTemplate(request, this.UserInfo, out success);
+                var message = this.controller.ExportPortalTemplate(request, this.UserInfo, out success);
 
                 if (!success)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
                 }
-                var template = this._controller.GetPortalTemplates().First(x => x.Name == request.FileName);
-                var templateItem = this._controller.CreateListItem(template);
+
+                var template = this.controller.GetPortalTemplates().First(x => x.Name == request.FileName);
+                var templateItem = this.controller.CreateListItem(template);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Message = message,
                     Template = new
                     {
                         Name = templateItem.Text,
-                        templateItem.Value
+                        templateItem.Value,
                     },
                 });
             }
@@ -234,6 +246,7 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeleteExpiredPortals()
         {
             try
@@ -255,19 +268,22 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <param></param>
         /// <returns>List of portal templates.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetPortalTemplates()
         {
             try
             {
-                var defaultTemplate = this._controller.GetDefaultTemplate();
+                var defaultTemplate = this.controller.GetDefaultTemplate();
                 var temps = new List<Tuple<string, string>>();
-                var templates = this._controller.GetPortalTemplates();
+                var templates = this.controller.GetPortalTemplates();
                 foreach (var template in templates)
                 {
-                    var item = this._controller.CreateListItem(template);
+                    var item = this.controller.CreateListItem(template);
                     temps.Add(new Tuple<string, string>(item.Text, item.Value));
                     if (item.Value.StartsWith(defaultTemplate))
+                    {
                         defaultTemplate = item.Value;
+                    }
                 }
 
                 var response = new
@@ -322,11 +338,15 @@ namespace Dnn.PersonaBar.Sites.Services
             var httpContext = this.Request.Properties["MS_HttpContext"] as HttpContextWrapper;
             var strServerPath = string.Empty;
             if (httpContext != null)
+            {
                 strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
+            }
+
             if (!strServerPath.EndsWith("\\"))
             {
                 strServerPath += "\\";
             }
+
             return strServerPath;
         }
 
@@ -343,21 +363,21 @@ namespace Dnn.PersonaBar.Sites.Services
             {
                 portal.PortalID,
                 portal.PortalName,
-                PortalAliases = this._controller.FormatPortalAliases(portal.PortalID),
+                PortalAliases = this.controller.FormatPortalAliases(portal.PortalID),
                 portal.Users,
                 portal.Pages,
                 portal.HostSpace,
                 portal.HostFee,
                 portal.DefaultLanguage,
-                ExpiryDate = this._controller.FormatExpiryDate(portal.ExpiryDate),
+                ExpiryDate = this.controller.FormatExpiryDate(portal.ExpiryDate),
                 portal.LastModifiedOnDate,
                 contentLocalizable =
                     PortalController.Instance.GetPortalSettings(portal.PortalID)
                         .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
                     Convert.ToBoolean(contentLocalizable),
                 allowDelete =
-                    (portal.PortalID != this.PortalSettings.PortalId &&
-                     !PortalController.IsMemberOfPortalGroup(portal.PortalID)),
+                    portal.PortalID != this.PortalSettings.PortalId &&
+                     !PortalController.IsMemberOfPortalGroup(portal.PortalID),
             };
             return portalDto;
         }

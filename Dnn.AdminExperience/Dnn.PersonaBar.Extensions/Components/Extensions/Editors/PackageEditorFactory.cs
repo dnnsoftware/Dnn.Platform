@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 case PackageTypes.SkinObject:
                     return new SkinObjectPackageEditor();
             }
+
             return null;
         }
     }

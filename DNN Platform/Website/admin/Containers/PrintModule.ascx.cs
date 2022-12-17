@@ -29,6 +29,7 @@ namespace DotNetNuke.UI.Containers
     {
         public string PrintIcon { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -65,23 +66,23 @@ namespace DotNetNuke.UI.Containers
                     {
                         if (this.ModuleContext.Configuration.DisplayPrint)
                         {
-                            var ModuleActionIcon = new ImageButton();
+                            var moduleActionIcon = new ImageButton();
                             if (!string.IsNullOrEmpty(this.PrintIcon))
                             {
-                                ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
+                                moduleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
                             }
                             else
                             {
-                                ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
+                                moduleActionIcon.ImageUrl = "~/images/" + action.Icon;
                             }
 
-                            ModuleActionIcon.ToolTip = action.Title;
-                            ModuleActionIcon.ID = "ico" + action.ID;
-                            ModuleActionIcon.CausesValidation = false;
+                            moduleActionIcon.ToolTip = action.Title;
+                            moduleActionIcon.ID = "ico" + action.ID;
+                            moduleActionIcon.CausesValidation = false;
 
-                            ModuleActionIcon.Click += this.IconAction_Click;
+                            moduleActionIcon.Click += this.IconAction_Click;
 
-                            this.Controls.Add(ModuleActionIcon);
+                            this.Controls.Add(moduleActionIcon);
                         }
                     }
                 }

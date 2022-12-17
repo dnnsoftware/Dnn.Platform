@@ -15,6 +15,7 @@ namespace DotNetNuke.Modules.Groups.Components
 
     public class Notifications
     {
+
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)
         {
             return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);

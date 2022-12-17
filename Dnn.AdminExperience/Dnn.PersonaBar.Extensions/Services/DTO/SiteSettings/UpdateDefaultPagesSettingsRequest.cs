@@ -42,6 +42,5 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         [TabExist]
         public int RedirectAfterRegistrationTabId { get; set; }
-
     }
 }

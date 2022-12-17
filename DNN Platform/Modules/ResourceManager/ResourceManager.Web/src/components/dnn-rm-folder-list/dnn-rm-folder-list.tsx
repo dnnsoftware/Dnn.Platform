@@ -33,20 +33,27 @@ export class DnnRmFolderList {
   componentWillLoad() {
     this.getFolders()
     .then(() => {
+      console.log(state.rootFolders);
       this.itemsClient.getFolderContent(
-        Number.parseInt(state.rootFolders.Tree.children[0].data.key),
+        state.settings.HomeFolderId,
         0,
         state.pageSize,
         state.sortField)
       .then(data => state.currentItems = data)
       .catch(error => console.error(error));
     })
-    .catch(error => alert(error.Message));
+    .catch(error => {
+      console.error(error);
+      if (error.Message){
+        alert(error.Message);
+      }
+    });
+      
   }
 
   private getFolders() {
     return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders()
+      this.internalServicesClient.getFolders(state.settings.HomeFolderId)
       .then(data => {
         state.rootFolders = data;
         resolve(data);
@@ -60,14 +67,31 @@ export class DnnRmFolderList {
     this.dnnRmFolderListFolderPicked.emit(e.detail)
   }
 
+  private handleRootClicked(){
+    const item: FolderTreeItem = {
+      data: {
+        hasChildren: false,
+        key: state.settings.HomeFolderId.toString(),
+        selectable: true,
+        value: state.settings.HomeFolderName,
+      },
+    };
+    this.selectedFolder = item;
+    this.dnnRmFolderListFolderPicked.emit(item);
+  }
+
   render() {
     return (
       <Host>
+        <button
+          onClick={() => this.handleRootClicked()}
+        >
+          <strong>{state.settings.HomeFolderName}</strong>
+        </button>
         {state.rootFolders && state.rootFolders.Tree.children.map(item =>
             <dnn-rm-folder-list-item
               folder={item}
               parentFolderId={Number.parseInt(state.rootFolders.Tree.data.key)}
-              expanded
               onDnnRmFolderListItemClicked={e => this.handleFolderPicked(e)}
               selectedFolder={this.selectedFolder}
             >

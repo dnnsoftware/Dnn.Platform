@@ -20,14 +20,14 @@ namespace DotNetNuke.Security.Permissions
 
     public class PermissionController
     {
-        private static readonly DataProvider provider = DataProvider.Instance();
+        private static readonly DataProvider Provider = DataProvider.Instance();
 
-        public static string BuildPermissions(IList Permissions, string PermissionKey)
+        public static string BuildPermissions(IList permissions, string permissionKey)
         {
             var permissionsBuilder = new StringBuilder();
-            foreach (PermissionInfoBase permission in Permissions)
+            foreach (PermissionInfoBase permission in permissions)
             {
-                if (PermissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
+                if (permissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Deny permissions are prefixed with a "!"
                     string prefix = !permission.AllowAccess ? "!" : string.Empty;
@@ -85,7 +85,7 @@ namespace DotNetNuke.Security.Permissions
         public int AddPermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
-            var permissionId = Convert.ToInt32(provider.AddPermission(
+            var permissionId = Convert.ToInt32(Provider.AddPermission(
                 permission.PermissionCode,
                 permission.ModuleDefID,
                 permission.PermissionKey,
@@ -104,7 +104,7 @@ namespace DotNetNuke.Security.Permissions
                 PortalController.Instance.GetCurrentPortalSettings(),
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PERMISSION_DELETED);
-            provider.DeletePermission(permissionID);
+            Provider.DeletePermission(permissionID);
             this.ClearCache();
         }
 
@@ -134,7 +134,7 @@ namespace DotNetNuke.Security.Permissions
         public void UpdatePermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
-            provider.UpdatePermission(
+            Provider.UpdatePermission(
                 permission.PermissionID,
                 permission.PermissionCode,
                 permission.ModuleDefID,
@@ -152,15 +152,15 @@ namespace DotNetNuke.Security.Permissions
 
             if (permissionInfo != null)
             {
-                int RoleID = int.MinValue;
-                int UserID = int.MinValue;
+                int roleID = int.MinValue;
+                int userID = int.MinValue;
 
                 if (string.IsNullOrEmpty(permission.RoleName))
                 {
-                    UserInfo _user = UserController.GetUserByName(portalId, permission.Username);
-                    if (_user != null)
+                    UserInfo user = UserController.GetUserByName(portalId, permission.Username);
+                    if (user != null)
                     {
-                        UserID = _user.UserID;
+                        userID = user.UserID;
                     }
                 }
                 else
@@ -168,16 +168,16 @@ namespace DotNetNuke.Security.Permissions
                     switch (permission.RoleName)
                     {
                         case Globals.glbRoleAllUsersName:
-                            RoleID = Convert.ToInt32(Globals.glbRoleAllUsers);
+                            roleID = Convert.ToInt32(Globals.glbRoleAllUsers);
                             break;
                         case Globals.glbRoleUnauthUserName:
-                            RoleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                            roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
                             break;
                         default:
-                            RoleInfo _role = RoleController.Instance.GetRole(portalId, r => r.RoleName == permission.RoleName);
-                            if (_role != null)
+                            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleName == permission.RoleName);
+                            if (role != null)
                             {
-                                RoleID = _role.RoleID;
+                                roleID = role.RoleID;
                             }
 
                             break;
@@ -185,17 +185,17 @@ namespace DotNetNuke.Security.Permissions
                 }
 
                 // if role was found add, otherwise ignore
-                if (RoleID != int.MinValue || UserID != int.MinValue)
+                if (roleID != int.MinValue || userID != int.MinValue)
                 {
                     permission.PermissionID = permissionInfo.PermissionID;
-                    if (RoleID != int.MinValue)
+                    if (roleID != int.MinValue)
                     {
-                        permission.RoleID = RoleID;
+                        permission.RoleID = roleID;
                     }
 
-                    if (UserID != int.MinValue)
+                    if (userID != int.MinValue)
                     {
-                        permission.UserID = UserID;
+                        permission.UserID = userID;
                     }
 
                     result = permission;
@@ -220,7 +220,7 @@ namespace DotNetNuke.Security.Permissions
                 DataCache.PermissionsCacheKey,
                 DataCache.PermissionsCacheTimeout,
                 DataCache.PermissionsCachePriority),
-                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
+                c => CBO.FillCollection<PermissionInfo>(Provider.ExecuteReader("GetPermissions")));
         }
 
         private void ClearCache()

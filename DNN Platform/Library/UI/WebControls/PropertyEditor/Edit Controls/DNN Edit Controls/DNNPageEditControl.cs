@@ -33,10 +33,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            PortalSettings _portalSettings = Globals.GetPortalSettings();
+            PortalSettings portalSettings = Globals.GetPortalSettings();
 
             // Get the Pages
-            List<TabInfo> listTabs = TabController.GetPortalTabs(_portalSettings.PortalId, Null.NullInteger, true, "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false);
+            List<TabInfo> listTabs = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, true, "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false);
 
             // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);

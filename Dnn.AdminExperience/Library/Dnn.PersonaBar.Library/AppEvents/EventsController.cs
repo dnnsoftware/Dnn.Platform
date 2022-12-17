@@ -21,18 +21,19 @@ namespace Dnn.PersonaBar.Library.AppEvents
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventsController));
 
         private static readonly object LockThis = new object();
-        private static bool _isInitialized;
+        private static bool isInitialized;
 
+        /// <inheritdoc/>
         public void ApplicationStartEvent()
         {
             lock (LockThis)
             {
-                if (_isInitialized)
+                if (isInitialized)
                 {
                     throw new InvalidOperationException("ApplicationStartEvent cannot be called more than once");
                 }
 
-                _isInitialized = true;
+                isInitialized = true;
             }
 
             GetEventsImplements<IAppEvents>().ForEach(instance =>
@@ -50,6 +51,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
             });
         }
 
+        /// <inheritdoc/>
         public void ApplicationEndEvent()
         {
             GetEventsImplements<IAppEvents>().ForEach(instance =>
@@ -67,6 +69,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
             });
         }
 
+        /// <inheritdoc/>
         protected override Func<IEventsController> GetFactory()
         {
             return () => new EventsController();

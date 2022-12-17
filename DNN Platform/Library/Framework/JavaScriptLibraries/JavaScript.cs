@@ -32,8 +32,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
 
-        private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
-        private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
+        private const string JQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
+        private const string JQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JavaScript"/> class.
@@ -162,10 +162,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         public static string JQueryUIFile(bool getMinFile)
         {
-            string jfile = jQueryUIDebugFile;
+            string jfile = JQueryUIDebugFile;
             if (getMinFile)
             {
-                jfile = jQueryUIMinFile;
+                jfile = JQueryUIMinFile;
             }
 
             return jfile;

@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public static class XssCleaner
     {
+
         public static void Clean(this PageSettings input)
         {
             input.Title = Clean(input.Title);
@@ -36,7 +37,8 @@ namespace Dnn.PersonaBar.Pages.Components
             input.Name = Clean(input.Name);
         }
 
-        public static string Clean(string input,
+        public static string Clean(
+            string input,
             PortalSecurity.FilterFlag filterFlag = PortalSecurity.FilterFlag.NoMarkup)
         {
             return PortalSecurity.Instance.InputFilter(input, filterFlag);

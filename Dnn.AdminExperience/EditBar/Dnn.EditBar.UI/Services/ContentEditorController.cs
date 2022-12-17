@@ -39,6 +39,7 @@ namespace Dnn.EditBar.UI.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage DeleteModule([FromUri] int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, this.PortalSettings.ActiveTab.TabID, false);
@@ -62,6 +63,7 @@ namespace Dnn.EditBar.UI.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage GetRecommendedModules()
         {
             var recommendedModuleNames = new List<string>();
@@ -96,6 +98,7 @@ namespace Dnn.EditBar.UI.Services
         }
 
         [HttpGet]
+
         public HttpResponseMessage LoadModuleScript(int desktopModuleId)
         {
             var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);

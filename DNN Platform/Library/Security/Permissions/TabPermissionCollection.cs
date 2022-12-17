@@ -54,12 +54,12 @@ namespace DotNetNuke.Security.Permissions
         /// Initializes a new instance of the <see cref="TabPermissionCollection"/> class.
         /// </summary>
         /// <param name="tabPermissions"></param>
-        /// <param name="TabId"></param>
-        public TabPermissionCollection(ArrayList tabPermissions, int TabId)
+        /// <param name="tabId"></param>
+        public TabPermissionCollection(ArrayList tabPermissions, int tabId)
         {
             foreach (TabPermissionInfo permission in tabPermissions)
             {
-                if (permission.TabID == TabId)
+                if (permission.TabID == tabId)
                 {
                     this.Add(permission);
                 }

@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.Journal
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
+
         public HttpResponseMessage UploadFile()
         {
             var statuses = new List<FilesStatus>();
@@ -59,6 +60,7 @@ namespace DotNetNuke.Modules.Journal
         }
 
         // Upload entire file
+
         private void UploadWholeFile(HttpContextBase context, ICollection<FilesStatus> statuses)
         {
             for (var i = 0; i < context.Request.Files.Count; i++)

@@ -54,13 +54,13 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                UserMembership _Membership = null;
+                UserMembership membership = null;
                 if (this.User != null)
                 {
-                    _Membership = this.User.Membership;
+                    membership = this.User.Membership;
                 }
 
-                return _Membership;
+                return membership;
             }
         }
 
@@ -218,13 +218,14 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.cmdReset.Click += this.cmdReset_Click;
-            this.cmdUserReset.Click += this.cmdUserReset_Click;
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            this.cmdUpdateQA.Click += this.cmdUpdateQA_Click;
+            this.cmdReset.Click += this.CmdReset_Click;
+            this.cmdUserReset.Click += this.CmdUserReset_Click;
+            this.cmdUpdate.Click += this.CmdUpdate_Click;
+            this.cmdUpdateQA.Click += this.CmdUpdateQA_Click;
 
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && this.User.UserID != UserController.Instance.GetCurrentUserInfo().UserID)
             {
@@ -241,6 +242,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
@@ -297,7 +299,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdReset_Click(object sender, EventArgs e)
+        private void CmdReset_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -350,7 +352,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdUserReset_Click(object sender, EventArgs e)
+        private void CmdUserReset_Click(object sender, EventArgs e)
         {
             try
             {
@@ -420,7 +422,7 @@ namespace DotNetNuke.Modules.Admin.Users
             LogController.Instance.AddLog(log);
         }
 
-        private void cmdUpdate_Click(object sender, EventArgs e)
+        private void CmdUpdate_Click(object sender, EventArgs e)
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
@@ -546,7 +548,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
-        private void cmdUpdateQA_Click(object sender, EventArgs e)
+        private void CmdUpdateQA_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {

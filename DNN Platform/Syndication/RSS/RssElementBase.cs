@@ -12,13 +12,13 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     public abstract class RssElementBase
     {
-        private Dictionary<string, string> _attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, string> attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         protected internal Dictionary<string, string> Attributes
         {
             get
             {
-                return this._attributes;
+                return this.attributes;
             }
         }
 
@@ -28,14 +28,14 @@ namespace DotNetNuke.Services.Syndication
 
         internal void SetAttributes(Dictionary<string, string> attributes)
         {
-            this._attributes = attributes;
+            this.attributes = attributes;
         }
 
         protected string GetAttributeValue(string attributeName)
         {
             string attributeValue;
 
-            if (!this._attributes.TryGetValue(attributeName, out attributeValue))
+            if (!this.attributes.TryGetValue(attributeName, out attributeValue))
             {
                 attributeValue = string.Empty;
             }
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Syndication
 
         protected void SetAttributeValue(string attributeName, string attributeValue)
         {
-            this._attributes[attributeName] = attributeValue;
+            this.attributes[attributeName] = attributeValue;
         }
     }
 }

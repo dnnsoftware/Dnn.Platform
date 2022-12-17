@@ -11,7 +11,7 @@ namespace DotNetNuke.Framework.Reflections
 
     public class AssemblyWrapper : IAssembly
     {
-        private readonly Assembly _assembly;
+        private readonly Assembly assembly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyWrapper"/> class.
@@ -19,13 +19,13 @@ namespace DotNetNuke.Framework.Reflections
         /// <param name="assembly"></param>
         public AssemblyWrapper(Assembly assembly)
         {
-            this._assembly = assembly;
+            this.assembly = assembly;
         }
 
         /// <inheritdoc/>
         public Type[] GetTypes()
         {
-            return this._assembly.GetTypes();
+            return this.assembly.GetTypes();
         }
     }
 }

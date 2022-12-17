@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
             {
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Tokens
                     return TimeSpan.TicksPerDay.ToString(formatProvider);
             }
 
-            PropertyNotFound = true;
+            propertyNotFound = true;
             return string.Empty;
         }
     }

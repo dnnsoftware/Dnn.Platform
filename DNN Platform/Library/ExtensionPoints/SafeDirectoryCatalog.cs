@@ -13,7 +13,7 @@ namespace DotNetNuke.ExtensionPoints
 
     public class SafeDirectoryCatalog : ComposablePartCatalog
     {
-        private readonly AggregateCatalog _catalog;
+        private readonly AggregateCatalog catalog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.
@@ -23,7 +23,7 @@ namespace DotNetNuke.ExtensionPoints
         {
             var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
 
-            this._catalog = new AggregateCatalog();
+            this.catalog = new AggregateCatalog();
 
             foreach (var file in files)
             {
@@ -35,7 +35,7 @@ namespace DotNetNuke.ExtensionPoints
                     // good assemblies will not throw the RTLE exception and can be added to the catalog
                     if (asmCat.Parts.ToList().Count > 0)
                     {
-                        this._catalog.Catalogs.Add(asmCat);
+                        this.catalog.Catalogs.Add(asmCat);
                     }
                 }
                 catch (ReflectionTypeLoadException)
@@ -55,7 +55,7 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                return this._catalog.Parts;
+                return this.catalog.Parts;
             }
         }
     }

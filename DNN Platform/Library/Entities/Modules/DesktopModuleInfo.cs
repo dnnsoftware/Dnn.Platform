@@ -31,8 +31,8 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
     {
-        private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
-        private PageInfo _pageInfo;
+        private Dictionary<string, ModuleDefinitionInfo> moduleDefinitions;
+        private PageInfo pageInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopModuleInfo"/> class.
@@ -58,19 +58,19 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._moduleDefinitions == null)
+                if (this.moduleDefinitions == null)
                 {
                     if (this.DesktopModuleID > Null.NullInteger)
                     {
-                        this._moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(this.DesktopModuleID);
+                        this.moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(this.DesktopModuleID);
                     }
                     else
                     {
-                        this._moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
+                        this.moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
                     }
                 }
 
-                return this._moduleDefinitions;
+                return this.moduleDefinitions;
             }
         }
 
@@ -298,7 +298,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._pageInfo == null && this.PackageID > Null.NullInteger)
+                if (this.pageInfo == null && this.PackageID > Null.NullInteger)
                 {
                     var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID);
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
@@ -308,17 +308,17 @@ namespace DotNetNuke.Entities.Modules
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)
                         {
-                            this._pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
+                            this.pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
                         }
                     }
                 }
 
-                return this._pageInfo;
+                return this.pageInfo;
             }
 
             set
             {
-                this._pageInfo = value;
+                this.pageInfo = value;
             }
         }
 

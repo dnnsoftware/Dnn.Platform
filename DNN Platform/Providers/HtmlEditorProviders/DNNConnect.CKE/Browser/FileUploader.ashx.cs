@@ -385,6 +385,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                                     }
                                 }
                             }
+                            else
+                            {
+                                // fits within configured maximum dimensions
+                                FileManager.Instance.AddFile(this.StorageFolder, fileName, file.InputStream);
+                            }
                         }
                     }
                 }

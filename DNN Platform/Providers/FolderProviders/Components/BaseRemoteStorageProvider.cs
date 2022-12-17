@@ -20,19 +20,23 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
     public abstract class BaseRemoteStorageProvider : FolderProvider
     {
-        private readonly string _encryptionKey = Host.GUID;
-        private readonly PortalSecurity _portalSecurity = PortalSecurity.Instance;
 
+        private readonly string encryptionKey = Host.GUID;
+        private readonly PortalSecurity portalSecurity = PortalSecurity.Instance;
+
+        /// <inheritdoc/>
         public override bool SupportsMappedPaths
         {
             get { return true; }
         }
 
+        /// <inheritdoc/>
         public override bool SupportsMoveFile
         {
             get { return false; }
         }
 
+        /// <inheritdoc/>
         public override bool SupportsMoveFolder
         {
             get { return true; }
@@ -413,6 +417,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             this.UpdateFileInternal(content, folderMapping, folder.MappedPath + fileName);
         }
 
+        /// <inheritdoc/>
         public override string GetHashCode(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -428,6 +433,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return (item.Size == file.Size) ? item.HashCode : string.Empty;
         }
 
+        /// <inheritdoc/>
         public override string GetHashCode(IFileInfo file, Stream fileContent)
         {
             if (this.FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))

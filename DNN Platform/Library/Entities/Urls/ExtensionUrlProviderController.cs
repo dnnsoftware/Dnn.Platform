@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Urls
 
     public class ExtensionUrlProviderController
     {
-        private static readonly object providersBuildLock = new object();
+        private static readonly object ProvidersBuildLock = new object();
 
         private static readonly Regex RewrittenUrlRegex = new Regex(
             @"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
@@ -681,7 +681,7 @@ namespace DotNetNuke.Entities.Urls
             List<ExtensionUrlProvider> providers;
 
             // 887 : introduce lockable code to prevent caching race errors
-            lock (providersBuildLock)
+            lock (ProvidersBuildLock)
             {
                 bool definitelyNoProvider;
 

@@ -30,7 +30,6 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <remarks>The ZipInputStream is read into a byte array (Buffer), and the ZipEntry is used to
         /// set up the properties of the InstallFile class.</remarks>
-        /// <param name="zip">The ZipInputStream.</param>
         /// <param name="entry">The ZipEntry.</param>
         /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
@@ -338,7 +337,6 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// The ReadZip method reads the zip stream and parses the ZipEntry metadata.
         /// </summary>
-        /// <param name="unzip">A ZipStream containing the file content.</param>
         /// <param name="entry">A ZipEntry containing the file metadata.</param>
         /// -----------------------------------------------------------------------------
         private void ReadZip(ZipArchiveEntry entry)

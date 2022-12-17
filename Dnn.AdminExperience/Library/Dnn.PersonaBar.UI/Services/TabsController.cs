@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.UI.Services
     public class TabsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabsController));
-        private readonly Library.Controllers.TabsController _controller = new Library.Controllers.TabsController();
+        private readonly Library.Controllers.TabsController controller = new Library.Controllers.TabsController();
 
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
@@ -42,6 +42,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="includeDeletedChildren"></param>
         /// <returns>List of portal tabs.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage = false,
             bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
         {
@@ -56,7 +57,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        this._controller.GetPortalTabs(this.UserInfo, portalId < 0 ? this.PortalId : portalId, cultureCode, isMultiLanguage,
+                        this.controller.GetPortalTabs(this.UserInfo, portalId < 0 ? this.PortalId : portalId, cultureCode, isMultiLanguage,
                             excludeAdminTabs, roles,
                             disabledNotSelectable, sortOrder, selectedTabId, validateTab, includeHostPages, includeDisabled, includeDeleted, includeDeletedChildren),
                 };
@@ -84,6 +85,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="includeDeleted"></param>
         /// <returns></returns>
         [HttpGet]
+
         public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
         {
             try
@@ -92,7 +94,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        this._controller.SearchPortalTabs(this.UserInfo, searchText, portalId < 0 ? this.PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted),
+                        this.controller.SearchPortalTabs(this.UserInfo, searchText, portalId < 0 ? this.PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -113,6 +115,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="cultureCode"></param>
         /// <returns>List of portal tabs.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetPortalTab(int portalId, int tabId, string cultureCode)
         {
             try
@@ -120,7 +123,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var response = new
                 {
                     Success = true,
-                    Results = this._controller.GetTabByCulture(tabId, portalId < 0 ? this.PortalId : portalId, cultureCode),
+                    Results = this.controller.GetTabByCulture(tabId, portalId < 0 ? this.PortalId : portalId, cultureCode),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -148,6 +151,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="includeDeletedChildren"></param>
         /// <returns></returns>
         [HttpGet]
+
         public HttpResponseMessage GetTabsDescendants(int portalId, int parentId, string cultureCode,
             bool isMultiLanguage = false, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeletedChildren = true)
         {
@@ -157,7 +161,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        this._controller.GetTabsDescendants(portalId < 0 ? this.PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
+                        this.controller.GetTabsDescendants(portalId < 0 ? this.PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
                             disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeletedChildren),
                 };
 

@@ -34,10 +34,10 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class Container : UserControl
     {
-        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private HtmlContainerControl _contentPane;
-        private ModuleInfo _moduleConfiguration;
-        private ModuleHost _moduleHost;
+        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private HtmlContainerControl contentPane;
+        private ModuleInfo moduleConfiguration;
+        private ModuleHost moduleHost;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -67,7 +67,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._moduleConfiguration;
+                return this.moduleConfiguration;
             }
         }
 
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._moduleHost;
+                return this.moduleHost;
             }
         }
 
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
+                return this.contentPane ?? (this.contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
             }
         }
 
@@ -147,7 +147,7 @@ namespace DotNetNuke.UI.Containers
 
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
-            this._moduleConfiguration = configuration;
+            this.moduleConfiguration = configuration;
             this.ProcessModule();
         }
 
@@ -342,9 +342,9 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessModule()
         {
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+                this.tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
             }
 
             if (this.ContentPane != null)
@@ -366,10 +366,10 @@ namespace DotNetNuke.UI.Containers
                 this.ProcessHeader();
 
                 // Try to load the module control
-                this._moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
-                if (this._tracelLogger.IsDebugEnabled)
+                this.moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
+                if (this.tracelLogger.IsDebugEnabled)
                 {
-                    this._tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this._moduleHost.ID})");
+                    this.tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this.moduleHost.ID})");
                 }
 
                 this.ContentPane.Controls.Add(this.ModuleHost);
@@ -387,9 +387,9 @@ namespace DotNetNuke.UI.Containers
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
 
-            if (this._tracelLogger.IsDebugEnabled)
+            if (this.tracelLogger.IsDebugEnabled)
             {
-                this._tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+                this.tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
             }
         }
 

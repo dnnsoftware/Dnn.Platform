@@ -38,6 +38,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void ValidateUser_IfUserIdWithValidValue_ThenSuccessResponse()
         {
             // Arrange
@@ -53,6 +54,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void ValidateUser_IfUserAllowedInSiteGroup_ThenSuccessResponse()
         {
             // Arrange
@@ -68,6 +70,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void ValidateUser_IfUserNotAllowedInSiteGroup_ThenErrorResponse()
         {
             // Arrange
@@ -83,6 +86,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void ValidateUser_IfUserIdNotFound_ThenErrorResponse()
         {
             // Arrange
@@ -101,6 +105,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
+
         public void ValidateUser_IfUserIdWithoutValue_ThenErrorResponse()
         {
             // Arrange

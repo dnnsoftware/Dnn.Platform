@@ -8,19 +8,19 @@ namespace DotNetNuke.Services.Messaging.Data
 
     public interface IMessagingDataService
     {
-        IDataReader GetMessageByID(int MessageID);
+        IDataReader GetMessageByID(int messageID);
 
-        IDataReader GetUserInbox(int PortalID, int UserID, int PageNumber, int PageSize);
+        IDataReader GetUserInbox(int portalID, int userID, int pageNumber, int pageSize);
 
-        int GetInboxCount(int PortalID, int UserID);
+        int GetInboxCount(int portalID, int userID);
 
         long SaveMessage(Message objMessaging);
 
-        int GetNewMessageCount(int PortalID, int UserID);
+        int GetNewMessageCount(int portalID, int userID);
 
-        IDataReader GetNextMessageForDispatch(Guid SchedulerInstance);
+        IDataReader GetNextMessageForDispatch(Guid schedulerInstance);
 
-        void MarkMessageAsDispatched(int MessageID);
+        void MarkMessageAsDispatched(int messageID);
 
         void UpdateMessage(Message message);
     }

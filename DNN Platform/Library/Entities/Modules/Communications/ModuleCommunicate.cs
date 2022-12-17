@@ -11,9 +11,9 @@ namespace DotNetNuke.Entities.Modules.Communications
     /// </summary>
     public class ModuleCommunicate
     {
-        private readonly ModuleCommunicators _ModuleCommunicators = new ModuleCommunicators();
+        private readonly ModuleCommunicators moduleCommunicators = new ModuleCommunicators();
 
-        private readonly ModuleListeners _ModuleListeners = new ModuleListeners();
+        private readonly ModuleListeners moduleListeners = new ModuleListeners();
 
         /// <summary>
         /// Gets the module communicators.
@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return this._ModuleCommunicators;
+                return this.moduleCommunicators;
             }
         }
 
@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return this._ModuleListeners;
+                return this.moduleListeners;
             }
         }
 
@@ -64,12 +64,12 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         private int Add(IModuleCommunicator item)
         {
-            int returnData = this._ModuleCommunicators.Add(item);
+            int returnData = this.moduleCommunicators.Add(item);
 
             int i = 0;
-            for (i = 0; i <= this._ModuleListeners.Count - 1; i++)
+            for (i = 0; i <= this.moduleListeners.Count - 1; i++)
             {
-                item.ModuleCommunication += this._ModuleListeners[i].OnModuleCommunication;
+                item.ModuleCommunication += this.moduleListeners[i].OnModuleCommunication;
             }
 
             return returnData;
@@ -77,12 +77,12 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         private int Add(IModuleListener item)
         {
-            int returnData = this._ModuleListeners.Add(item);
+            int returnData = this.moduleListeners.Add(item);
 
             int i = 0;
-            for (i = 0; i <= this._ModuleCommunicators.Count - 1; i++)
+            for (i = 0; i <= this.moduleCommunicators.Count - 1; i++)
             {
-                this._ModuleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
+                this.moduleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
             }
 
             return returnData;

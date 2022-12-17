@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class Setup {
-        
         /// <summary>
         /// btnGo control.
         /// </summary>

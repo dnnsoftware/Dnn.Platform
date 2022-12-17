@@ -15,9 +15,9 @@ namespace DotNetNuke.Services.Installer.Packages
     /// -----------------------------------------------------------------------------
     public class PackageEditorBase : ModuleUserControlBase, IPackageEditor
     {
-        private bool _IsWizard = Null.NullBoolean;
-        private PackageInfo _Package;
-        private int _PackageID = Null.NullInteger;
+        private bool isWizard = Null.NullBoolean;
+        private PackageInfo package;
+        private int packageID = Null.NullInteger;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -29,12 +29,12 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return this._PackageID;
+                return this.packageID;
             }
 
             set
             {
-                this._PackageID = value;
+                this.packageID = value;
             }
         }
 
@@ -48,12 +48,12 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return this._IsWizard;
+                return this.isWizard;
             }
 
             set
             {
-                this._IsWizard = value;
+                this.isWizard = value;
             }
         }
 
@@ -79,12 +79,12 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                if (this._Package == null)
+                if (this.package == null)
                 {
-                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
+                    this.package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
                 }
 
-                return this._Package;
+                return this.package;
             }
         }
 

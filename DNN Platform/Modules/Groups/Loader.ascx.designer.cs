@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class Loader {
-        
         /// <summary>
         /// plhContent control.
         /// </summary>

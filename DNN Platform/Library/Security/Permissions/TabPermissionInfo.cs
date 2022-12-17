@@ -24,10 +24,10 @@ namespace DotNetNuke.Security.Permissions
     [XmlRoot("permission")]
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
     {
-        private int _TabID;
+        private int tabID;
 
         // local property declarations
-        private int _TabPermissionID;
+        private int tabPermissionID;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -37,8 +37,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public TabPermissionInfo()
         {
-            this._TabPermissionID = Null.NullInteger;
-            this._TabID = Null.NullInteger;
+            this.tabPermissionID = Null.NullInteger;
+            this.tabID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -69,12 +69,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._TabPermissionID;
+                return this.tabPermissionID;
             }
 
             set
             {
-                this._TabPermissionID = value;
+                this.tabPermissionID = value;
             }
         }
 
@@ -89,12 +89,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return this._TabID;
+                return this.tabID;
             }
 
             set
             {
-                this._TabID = value;
+                this.tabID = value;
             }
         }
 

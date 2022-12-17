@@ -76,20 +76,20 @@ namespace DotNetNuke.Entities.Modules
         {
             try
             {
-                string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
+                string businessControllerClass = message.Attributes["BusinessControllerClass"];
+                object controller = Reflection.CreateObject(businessControllerClass, string.Empty);
                 if (controller is IPortable)
                 {
-                    int ModuleId = Convert.ToInt32(message.Attributes["ModuleId"]);
-                    string Content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
-                    string Version = message.Attributes["Version"];
-                    int UserID = Convert.ToInt32(message.Attributes["UserId"]);
+                    int moduleId = Convert.ToInt32(message.Attributes["ModuleId"]);
+                    string content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
+                    string version = message.Attributes["Version"];
+                    int userID = Convert.ToInt32(message.Attributes["UserId"]);
 
                     // call the IPortable interface for the module/version
-                    ((IPortable)controller).ImportModule(ModuleId, Content, Version, UserID);
+                    ((IPortable)controller).ImportModule(moduleId, content, version, userID);
 
                     // Synchronize Module Cache
-                    ModuleController.SynchronizeModule(ModuleId);
+                    ModuleController.SynchronizeModule(moduleId);
                 }
             }
             catch (Exception exc)
@@ -105,24 +105,24 @@ namespace DotNetNuke.Entities.Modules
                 int desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"]);
                 var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
 
-                string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
+                string businessControllerClass = message.Attributes["BusinessControllerClass"];
+                object controller = Reflection.CreateObject(businessControllerClass, string.Empty);
                 if (controller is IUpgradeable)
                 {
                     // get the list of applicable versions
-                    string[] UpgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
-                    foreach (string Version in UpgradeVersions)
+                    string[] upgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
+                    foreach (string version in upgradeVersions)
                     {
                         // call the IUpgradeable interface for the module/version
-                        string Results = ((IUpgradeable)controller).UpgradeModule(Version);
+                        string results = ((IUpgradeable)controller).UpgradeModule(version);
 
                         // log the upgrade results
                         var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString() };
-                        log.AddProperty("Module Upgraded", BusinessControllerClass);
-                        log.AddProperty("Version", Version);
-                        if (!string.IsNullOrEmpty(Results))
+                        log.AddProperty("Module Upgraded", businessControllerClass);
+                        log.AddProperty("Version", version);
+                        if (!string.IsNullOrEmpty(results))
                         {
-                            log.AddProperty("Results", Results);
+                            log.AddProperty("Results", results);
                         }
 
                         LogController.Instance.AddLog(log);
@@ -139,8 +139,8 @@ namespace DotNetNuke.Entities.Modules
 
         private static void UpdateSupportedFeatures(EventMessage message)
         {
-            string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-            object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
+            string businessControllerClass = message.Attributes["BusinessControllerClass"];
+            object controller = Reflection.CreateObject(businessControllerClass, string.Empty);
             UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
         }
 

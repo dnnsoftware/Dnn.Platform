@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string LastIndexKeyFormat = "{0}_{1}";
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/App_GlobalResources/GlobalResources";
-        private readonly IList<string> _emptySynonums = new List<string>(0);
+        private readonly IList<string> emptySynonums = new List<string>(0);
 
         /// <inheritdoc/>
         public IEnumerable<SearchType> GetSearchTypes()
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Search.Internals
             IList<string> synonyms;
             if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLowerInvariant(), out synonyms))
             {
-                synonyms = this._emptySynonums;
+                synonyms = this.emptySynonums;
             }
 
             return synonyms;

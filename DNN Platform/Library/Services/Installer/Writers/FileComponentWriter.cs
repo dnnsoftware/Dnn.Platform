@@ -19,11 +19,11 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class FileComponentWriter
     {
-        private readonly string _BasePath;
-        private readonly Dictionary<string, InstallFile> _Files;
-        private readonly PackageInfo _Package;
-        private int _InstallOrder = Null.NullInteger;
-        private int _UnInstallOrder = Null.NullInteger;
+        private readonly string basePath;
+        private readonly Dictionary<string, InstallFile> files;
+        private readonly PackageInfo package;
+        private int installOrder = Null.NullInteger;
+        private int unInstallOrder = Null.NullInteger;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -36,21 +36,21 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public FileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
         {
-            this._Files = files;
-            this._BasePath = basePath;
-            this._Package = package;
+            this.files = files;
+            this.basePath = basePath;
+            this.package = package;
         }
 
         public int InstallOrder
         {
             get
             {
-                return this._InstallOrder;
+                return this.installOrder;
             }
 
             set
             {
-                this._InstallOrder = value;
+                this.installOrder = value;
             }
         }
 
@@ -58,12 +58,12 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._UnInstallOrder;
+                return this.unInstallOrder;
             }
 
             set
             {
-                this._UnInstallOrder = value;
+                this.unInstallOrder = value;
             }
         }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Package.Log;
+                return this.package.Log;
             }
         }
 
@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return this._Package;
+                return this.package;
             }
         }
 
@@ -159,12 +159,12 @@ namespace DotNetNuke.Services.Installer.Writers
             this.WriteCustomManifest(writer);
 
             // Write basePath Element
-            if (!string.IsNullOrEmpty(this._BasePath))
+            if (!string.IsNullOrEmpty(this.basePath))
             {
-                writer.WriteElementString("basePath", this._BasePath);
+                writer.WriteElementString("basePath", this.basePath);
             }
 
-            foreach (InstallFile file in this._Files.Values)
+            foreach (InstallFile file in this.files.Values)
             {
                 this.WriteFileElement(writer, file);
             }
@@ -198,11 +198,11 @@ namespace DotNetNuke.Services.Installer.Writers
             if (!string.IsNullOrEmpty(file.Path))
             {
                 string path = file.Path;
-                if (!string.IsNullOrEmpty(this._BasePath))
+                if (!string.IsNullOrEmpty(this.basePath))
                 {
-                    if (file.Path.ToLowerInvariant().Contains(this._BasePath.ToLowerInvariant()))
+                    if (file.Path.ToLowerInvariant().Contains(this.basePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", string.Empty);
+                        path = file.Path.ToLowerInvariant().Replace(this.basePath.ToLowerInvariant() + "\\", string.Empty);
                     }
                 }
 

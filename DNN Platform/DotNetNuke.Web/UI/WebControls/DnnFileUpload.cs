@@ -22,13 +22,13 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnFileUpload runat='server'></{0}:DnnFileUpload>")]
     public class DnnFileUpload : Control, INamingContainer
     {
-        private readonly Lazy<DnnFileUploadOptions> _options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
+        private readonly Lazy<DnnFileUploadOptions> options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
         public DnnFileUploadOptions Options
         {
             get
             {
-                return this._options.Value;
+                return this.options.Value;
             }
         }
 

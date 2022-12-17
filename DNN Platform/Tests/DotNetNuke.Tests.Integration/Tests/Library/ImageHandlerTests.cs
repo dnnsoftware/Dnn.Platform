@@ -38,6 +38,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
         }
 
         [Test]
+
         public void Using_Image_Handler_From_All_Alias_ShouldPass()
         {
             PortalAliasInfo pai;

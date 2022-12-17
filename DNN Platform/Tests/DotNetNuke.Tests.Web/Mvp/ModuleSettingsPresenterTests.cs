@@ -25,6 +25,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         private const string _tabModuleSettingValue = "value{0}";
 
         [Test]
+
         public void ModuleSettingsPresenter_Load_Initialises_Both_Dictionaries_On_PostBack()
         {
             // Arrange
@@ -46,6 +47,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         }
 
         [Test]
+
         public void ModuleSettingsPresenter_Load_Does_Not_Initialise_Dictionaries_If_Not_PostBack()
         {
             // Arrange
@@ -64,6 +66,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         }
 
         [Test]
+
         public void ModuleSettingsPresenter_LoadSettings_Loads_Both_Dictionaries()
         {
             // Arrange
@@ -87,6 +90,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         }
 
         [Test]
+
         public void ModuleSettingsPresenter_SaveSettings_Saves_ModuleSettings()
         {
             // Arrange
@@ -112,6 +116,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         }
 
         [Test]
+
         public void ModuleSettingsPresenter_SaveSettings_Saves_TabModuleSettings()
         {
             // Arrange

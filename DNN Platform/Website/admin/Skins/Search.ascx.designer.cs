@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Search {
-        
         /// <summary>
         /// ClassicSearch control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ClassicSearch;
-        
         /// <summary>
         /// WebRadioButton control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton WebRadioButton;
-        
         /// <summary>
         /// SiteRadioButton control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton SiteRadioButton;
-        
         /// <summary>
         /// txtSearch control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSearch;
-        
         /// <summary>
         /// cmdSearch control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSearch;
-        
         /// <summary>
         /// DropDownSearch control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DropDownSearch;
-        
         /// <summary>
         /// downArrow control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnImage downArrow;
-        
         /// <summary>
         /// txtSearchNew control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.UI.Skins.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSearchNew;
-        
         /// <summary>
         /// cmdSearchNew control.
         /// </summary>

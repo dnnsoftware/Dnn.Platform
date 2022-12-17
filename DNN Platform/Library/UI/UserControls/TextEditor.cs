@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.UserControls
         protected HtmlGenericControl DivRichTextBox;
         protected Panel PanelView;
         protected TextBox TxtDesktopHTML;
-        private HtmlEditorProvider _richTextEditor;
+        private HtmlEditorProvider richTextEditor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextEditor"/> class.
@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._richTextEditor != null;
+                return this.richTextEditor != null;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this._richTextEditor;
+                return this.richTextEditor;
             }
         }
 
@@ -216,7 +216,7 @@ namespace DotNetNuke.UI.UserControls
                         }
 
                     default:
-                        return this.IsRichEditorAvailable ? this.Encode(RemoveBaseTags(this._richTextEditor.Text)) : this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
+                        return this.IsRichEditorAvailable ? this.Encode(RemoveBaseTags(this.richTextEditor.Text)) : this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
                 }
             }
 
@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.UserControls
                 this.TxtDesktopHTML.Text = HtmlUtils.ConvertToText(this.Decode(value));
                 if (this.IsRichEditorAvailable)
                 {
-                    this._richTextEditor.Text = this.Decode(value);
+                    this.richTextEditor.Text = this.Decode(value);
                 }
             }
         }
@@ -270,12 +270,12 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnInit(e);
 
-            this._richTextEditor = HtmlEditorProvider.Instance();
+            this.richTextEditor = HtmlEditorProvider.Instance();
 
             if (this.IsRichEditorAvailable)
             {
-                this._richTextEditor.ControlID = this.ID;
-                this._richTextEditor.Initialize();
+                this.richTextEditor.ControlID = this.ID;
+                this.richTextEditor.Initialize();
             }
         }
 
@@ -304,8 +304,8 @@ namespace DotNetNuke.UI.UserControls
                 // Set the width and height of the controls
                 if (this.IsRichEditorAvailable)
                 {
-                    this._richTextEditor.Width = this.Width;
-                    this._richTextEditor.Height = this.Height;
+                    this.richTextEditor.Width = this.Width;
+                    this.richTextEditor.Height = this.Height;
                 }
 
                 this.TxtDesktopHTML.Height = this.Height;
@@ -327,7 +327,7 @@ namespace DotNetNuke.UI.UserControls
                 // Load the editor
                 if (this.IsRichEditorAvailable)
                 {
-                    this.PlcEditor.Controls.Add(this._richTextEditor.HtmlEditorControl);
+                    this.PlcEditor.Controls.Add(this.richTextEditor.HtmlEditorControl);
                 }
 
                 this.SetPanels();
@@ -379,10 +379,10 @@ namespace DotNetNuke.UI.UserControls
                 switch (this.TextRenderMode)
                 {
                     case "T":
-                        this.TxtDesktopHTML.Text = HtmlUtils.ConvertToText(this._richTextEditor.Text);
+                        this.TxtDesktopHTML.Text = HtmlUtils.ConvertToText(this.richTextEditor.Text);
                         break;
                     default:
-                        this.TxtDesktopHTML.Text = this._richTextEditor.Text;
+                        this.TxtDesktopHTML.Text = this.richTextEditor.Text;
                         break;
                 }
             }
@@ -391,10 +391,10 @@ namespace DotNetNuke.UI.UserControls
                 switch (this.TextRenderMode)
                 {
                     case "T":
-                        this._richTextEditor.Text = HtmlUtils.ConvertToHtml(this.TxtDesktopHTML.Text);
+                        this.richTextEditor.Text = HtmlUtils.ConvertToHtml(this.TxtDesktopHTML.Text);
                         break;
                     default:
-                        this._richTextEditor.Text = this.TxtDesktopHTML.Text;
+                        this.richTextEditor.Text = this.TxtDesktopHTML.Text;
                         break;
                 }
             }

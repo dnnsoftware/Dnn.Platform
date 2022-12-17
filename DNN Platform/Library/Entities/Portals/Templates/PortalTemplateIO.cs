@@ -8,11 +8,12 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
+    using System.Xml;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
 
+    [Obsolete("Scheduled to become internal in v11.0.0.")]
     public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
         /// <inheritdoc/>
@@ -62,6 +63,31 @@ namespace DotNetNuke.Entities.Portals.Internal
 
             retryable.TryIt();
             return reader;
+        }
+
+        /// <inheritdoc/>
+        public (string, List<string>) GetTemplateLanguages(string templateFilePath)
+        {
+            var defaultLanguage = "";
+            var locales = new List<string>();
+            var templateXml = new XmlDocument() { XmlResolver = null };
+            templateXml.Load(templateFilePath);
+            var node = templateXml.SelectSingleNode("//settings/defaultlanguage");
+            if (node != null)
+            {
+                defaultLanguage = node.InnerText;
+            }
+
+            node = templateXml.SelectSingleNode("//locales");
+            if (node != null)
+            {
+                foreach (XmlNode lnode in node.SelectNodes("//locale"))
+                {
+                    locales.Add(lnode.InnerText);
+                }
+            }
+
+            return (defaultLanguage, locales);
         }
 
         /// <inheritdoc/>

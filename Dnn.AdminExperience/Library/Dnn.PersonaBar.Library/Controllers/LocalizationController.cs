@@ -23,16 +23,19 @@ namespace Dnn.PersonaBar.Library.Controllers
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
+        /// <inheritdoc/>
         public string CultureName
         {
             get { return Thread.CurrentThread.CurrentUICulture.Name; }
         }
 
+        /// <inheritdoc/>
         public long GetResxTimeStamp(string resourceFile, Dto.Localization localization)
         {
             return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
         }
 
+        /// <inheritdoc/>
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Dto.Localization localization)
         {
             Requires.NotNullOrEmpty("resourceFile", resourceFile);
@@ -58,6 +61,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return dictionary;
         }
 
+        /// <inheritdoc/>
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
         {
             Requires.NotNullOrEmpty("resourceFile", resourceFile);
@@ -72,6 +76,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return dictionary;
         }
 
+        /// <inheritdoc/>
         protected override Func<ILocalizationController> GetFactory()
         {
             return () => new LocalizationController();

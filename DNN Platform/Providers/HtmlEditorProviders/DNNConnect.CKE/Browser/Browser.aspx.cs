@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DNNConnect.CKEditorProvider.Browser
 {
     using System;
@@ -17,6 +18,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using System.Web;
     using System.Web.Script.Services;
     using System.Web.Services;
+    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -160,7 +162,6 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets the current folder ID.</summary>
-
         protected int CurrentFolderId
         {
             get
@@ -947,7 +948,8 @@ namespace DNNConnect.CKEditorProvider.Browser
                                         this.panLinkMode.Visible = false;
                                         this.panPageMode.Visible = true;
 
-                                        this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"),
+                                        this.lblModus.Text = string.Format(
+                                            this.LocalizeString("BrowserModus.Text"),
                                             string.Format("Page {0}", this.browserModus));
                                         this.title.Text = string.Format(
                                             "{0} - DNNConnect.CKEditorProvider.FileBrowser",
@@ -1794,19 +1796,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private void LoadFavIcon()
         {
-            if (!File.Exists(Path.Combine(this.portalSettings.HomeDirectoryMapPath, "favicon.ico")))
-            {
-                return;
-            }
-
-            var faviconUrl = Path.Combine(this.portalSettings.HomeDirectory, "favicon.ico");
-
-            var objLink = new HtmlGenericSelfClosing("link");
-
-            objLink.Attributes["rel"] = "shortcut icon";
-            objLink.Attributes["href"] = faviconUrl;
-
-            this.favicon.Controls.Add(objLink);
+            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.portalSettings.PortalId)));
         }
 
         /// <summary>
@@ -2074,7 +2064,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.LabelTabLanguage.Text = this.LocalizeString("LabelTabLanguage.Text");
 
             this.MaximumUploadSizeInfo.Text =
-                string.Format(this.LocalizeString("FileSizeRestriction"),
+                string.Format(
+                    this.LocalizeString("FileSizeRestriction"),
                     this.MaxUploadSize / (1024 * 1024),
                     this.AcceptFileTypes.Replace("|", ","));
 
@@ -2358,6 +2349,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             sExtension = sExtension.TrimStart('.');
 
             bool bAllowUpl = false;
+            bool bIsImage = false;
 
             switch (command)
             {
@@ -2373,6 +2365,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     if (AllowedImageExtensions.Contains(sExtension))
                     {
                         bAllowUpl = true;
+                        bIsImage = true;
                     }
 
                     break;
@@ -2419,83 +2412,95 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
 
                 string sFilePath = Path.Combine(uploadPhysicalPath, fileName);
-                DotNetNuke.Services.FileSystem.IFileInfo uploadedFile;
                 if (File.Exists(sFilePath))
                 {
                     iCounter++;
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
                 }
 
-                int maxWidth = this.currentSettings.ResizeWidthUpload;
-                int maxHeight = this.currentSettings.ResizeHeightUpload;
-                if (maxWidth <= 0 && maxHeight <= 0)
+                if (!bIsImage)
                 {
                     FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
                 }
                 else
                 {
-                    // check if the size of the image is within boundaries
-                    using (var uplImage = Image.FromStream(file.InputStream))
+                    int maxWidth = this.currentSettings.ResizeWidthUpload;
+                    int maxHeight = this.currentSettings.ResizeHeightUpload;
+                    if (maxWidth <= 0 && maxHeight <= 0)
                     {
-                        if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
+                        FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                    }
+                    else
+                    {
+                        // check if the size of the image is within boundaries
+                        using (var uplImage = Image.FromStream(file.InputStream))
                         {
-                            // it's too big: we need to resize
-                            int newWidth, newHeight;
-
-                            // which determines the max: height or width?
-                            double ratioWidth = (double)maxWidth / (double)uplImage.Width;
-                            double ratioHeight = (double)maxHeight / (double)uplImage.Height;
-                            if (ratioWidth < ratioHeight)
+                            if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
                             {
-                                // max width needs to be used
-                                newWidth = maxWidth;
-                                newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
-                            }
-                            else
-                            {
-                                // max height needs to be used
-                                newHeight = maxHeight;
-                                newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
-                            }
+                                // it's too big: we need to resize
+                                int newWidth, newHeight;
 
-                            // Add Compression to Jpeg Images
-                            if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
-                            {
-                                ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
-
-                                Encoder myEncoder = Encoder.Quality;
-                                EncoderParameters encodeParams = new EncoderParameters(1);
-                                EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
-                                encodeParams.Param[0] = encodeParam;
-
-                                using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                                // which determines the max: height or width?
+                                double ratioWidth = (double)maxWidth / (double)uplImage.Width;
+                                double ratioHeight = (double)maxHeight / (double)uplImage.Height;
+                                if (ratioWidth < ratioHeight)
                                 {
-                                    using (Graphics g = Graphics.FromImage(dst))
-                                    {
-                                        g.SmoothingMode = SmoothingMode.AntiAlias;
-                                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                        g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
-                                    }
+                                    // max width needs to be used
+                                    newWidth = maxWidth;
+                                    newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
+                                }
+                                else
+                                {
+                                    // max height needs to be used
+                                    newHeight = maxHeight;
+                                    newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
+                                }
 
-                                    using (var stream = new MemoryStream())
+                                // Add Compression to Jpeg Images
+                                if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
+                                {
+                                    ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
+
+                                    Encoder myEncoder = Encoder.Quality;
+                                    EncoderParameters encodeParams = new EncoderParameters(1);
+                                    EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
+                                    encodeParams.Param[0] = encodeParam;
+
+                                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
                                     {
-                                        dst.Save(stream, jpgEncoder, encodeParams);
-                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        using (Graphics g = Graphics.FromImage(dst))
+                                        {
+                                            g.SmoothingMode = SmoothingMode.AntiAlias;
+                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                            g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
+                                        }
+
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            dst.Save(stream, jpgEncoder, encodeParams);
+                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // Finally Create a new Resized Image
+                                    using (Image newImage =
+                                           uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
+                                    {
+                                        var imageFormat = uplImage.RawFormat;
+                                        using (var stream = new MemoryStream())
+                                        {
+                                            newImage.Save(stream, imageFormat);
+                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                // Finally Create a new Resized Image
-                                using (Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
-                                {
-                                    var imageFormat = uplImage.RawFormat;
-                                    using (var stream = new MemoryStream())
-                                    {
-                                        newImage.Save(stream, imageFormat);
-                                        FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
-                                    }
-                                }
+                                // fits within configured maximum dimensions
+                                FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
                             }
                         }
                     }
@@ -2510,9 +2515,10 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
                 else
                 {
-                    this.Response.Write("<script type=\"text/javascript\">");
-                    this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
-                    this.Response.Write("</script>");
+                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                    this.Response.ClearContent();
+                    this.Response.ContentType = "application/json";
+                    this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");               
                 }
 
                 this.Response.End();
@@ -3212,7 +3218,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
 
             this.FileSpaceUsedLabel.Text =
-                string.Format(this.LocalizeString("SpaceUsed.Text"),
+                string.Format(
+                    this.LocalizeString("SpaceUsed.Text"),
                     usedSpace,
                     spaceAvailable);
         }

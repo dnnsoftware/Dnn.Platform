@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     public class XmlMerge
     {
-        private IDictionary<string, XmlDocument> _pendingDocuments;
+        private IDictionary<string, XmlDocument> pendingDocuments;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -94,12 +94,12 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                if (this._pendingDocuments == null)
+                if (this.pendingDocuments == null)
                 {
-                    this._pendingDocuments = new Dictionary<string, XmlDocument>();
+                    this.pendingDocuments = new Dictionary<string, XmlDocument>();
                 }
 
-                return this._pendingDocuments;
+                return this.pendingDocuments;
             }
         }
 

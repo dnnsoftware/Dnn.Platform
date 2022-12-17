@@ -23,11 +23,14 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "Login.ascx";
 
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Login"/> class.
+        /// </summary>
         public Login()
         {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.LegacyMode = true;
         }
 
@@ -47,6 +50,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public bool ShowInErrorPage { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -55,6 +59,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         && (!this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage);
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -100,7 +105,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.enhancedLoginLink.ToolTip = this.loginLink.Text;
                         }
 
-                        this.loginLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
+                        this.loginLink.NavigateUrl = this.navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
                         this.enhancedLoginLink.NavigateUrl = this.loginLink.NavigateUrl;
                     }
                     else

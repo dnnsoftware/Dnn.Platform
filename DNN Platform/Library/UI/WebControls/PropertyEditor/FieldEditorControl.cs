@@ -41,11 +41,11 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:FieldEditorControl runat=server></{0}:FieldEditorControl>")]
     public class FieldEditorControl : WebControl, INamingContainer
     {
-        private readonly List<IValidator> Validators = new List<IValidator>();
-        private IEditorInfoAdapter _EditorInfoAdapter;
-        private bool _IsValid = true;
-        private StandardEditorInfoAdapter _StdAdapter;
-        private bool _Validated;
+        private readonly List<IValidator> validators = new List<IValidator>();
+        private IEditorInfoAdapter editorInfoAdapter;
+        private bool isValid = true;
+        private StandardEditorInfoAdapter stdAdapter;
+        private bool validated;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldEditorControl"/> class.
@@ -84,12 +84,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (!this._Validated)
+                if (!this.validated)
                 {
                     this.Validate();
                 }
 
-                return this._IsValid;
+                return this.isValid;
             }
         }
 
@@ -147,24 +147,24 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (this._EditorInfoAdapter == null)
+                if (this.editorInfoAdapter == null)
                 {
-                    if (this._StdAdapter == null)
+                    if (this.stdAdapter == null)
                     {
-                        this._StdAdapter = new StandardEditorInfoAdapter(this.DataSource, this.DataField);
+                        this.stdAdapter = new StandardEditorInfoAdapter(this.DataSource, this.DataField);
                     }
 
-                    return this._StdAdapter;
+                    return this.stdAdapter;
                 }
                 else
                 {
-                    return this._EditorInfoAdapter;
+                    return this.editorInfoAdapter;
                 }
             }
 
             set
             {
-                this._EditorInfoAdapter = value;
+                this.editorInfoAdapter = value;
             }
         }
 
@@ -373,23 +373,23 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public virtual void Validate()
         {
-            this._IsValid = this.Editor.IsValid;
+            this.isValid = this.Editor.IsValid;
 
-            if (this._IsValid)
+            if (this.IsValid)
             {
-                IEnumerator valEnumerator = this.Validators.GetEnumerator();
+                IEnumerator valEnumerator = this.validators.GetEnumerator();
                 while (valEnumerator.MoveNext())
                 {
                     var validator = (IValidator)valEnumerator.Current;
                     validator.Validate();
                     if (!validator.IsValid)
                     {
-                        this._IsValid = false;
+                        this.isValid = false;
                         break;
                     }
                 }
 
-                this._Validated = true;
+                this.validated = true;
             }
         }
 
@@ -606,10 +606,10 @@ namespace DotNetNuke.UI.WebControls
 
             // Build the Validators
             this.BuildValidators(editInfo, propEditor.ID);
-            if (this.Validators.Count > 0)
+            if (this.validators.Count > 0)
             {
                 // Add the Validators to the editor cell
-                foreach (BaseValidator validator in this.Validators)
+                foreach (BaseValidator validator in this.validators)
                 {
                     validator.Width = this.Width;
                     this.Controls.Add(validator);
@@ -802,7 +802,7 @@ namespace DotNetNuke.UI.WebControls
             validatorsCell.ColumnSpan = 2;
 
             // Add the Validators to the editor cell
-            foreach (BaseValidator validator in this.Validators)
+            foreach (BaseValidator validator in this.validators)
             {
                 validatorsCell.Controls.Add(validator);
             }
@@ -823,7 +823,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private void BuildValidators(EditorInfo editInfo, string targetId)
         {
-            this.Validators.Clear();
+            this.validators.Clear();
 
             // Add Required Validators
             if (editInfo.Required)
@@ -841,7 +841,7 @@ namespace DotNetNuke.UI.WebControls
                 reqValidator.EnableClientScript = this.EnableClientValidation;
                 reqValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Required");
                 reqValidator.ErrorMessage = editInfo.Name + " is Required";
-                this.Validators.Add(reqValidator);
+                this.validators.Add(reqValidator);
             }
 
             // Add Regular Expression Validators
@@ -861,7 +861,7 @@ namespace DotNetNuke.UI.WebControls
                 regExValidator.EnableClientScript = this.EnableClientValidation;
                 regExValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Validation");
                 regExValidator.ErrorMessage = editInfo.Name + " is Invalid";
-                this.Validators.Add(regExValidator);
+                this.validators.Add(regExValidator);
             }
         }
 

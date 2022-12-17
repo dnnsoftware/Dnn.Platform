@@ -15,7 +15,6 @@ namespace DotNetNuke.Common.Controls {
     
     
     public partial class Privacy {
-        
         /// <summary>
         /// lblPrivacy control.
         /// </summary>

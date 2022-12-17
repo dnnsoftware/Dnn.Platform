@@ -20,8 +20,8 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class CaptchaHandler : IHttpHandler
     {
-        private const int MAX_IMAGE_WIDTH = 600;
-        private const int MAX_IMAGE_HEIGHT = 600;
+        private const int MAXIMAGEWIDTH = 600;
+        private const int MAXIMAGEHEIGHT = 600;
 
         /// <inheritdoc/>
         public bool IsReusable

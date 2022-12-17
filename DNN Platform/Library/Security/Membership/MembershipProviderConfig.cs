@@ -21,7 +21,7 @@ namespace DotNetNuke.Security.Membership
     /// -----------------------------------------------------------------------------
     public class MembershipProviderConfig
     {
-        private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
+        private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -34,7 +34,7 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.CanEditProviderProperties;
+                return MemberProvider.CanEditProviderProperties;
             }
         }
 
@@ -50,12 +50,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.MaxInvalidPasswordAttempts;
+                return MemberProvider.MaxInvalidPasswordAttempts;
             }
 
             set
             {
-                memberProvider.MaxInvalidPasswordAttempts = value;
+                MemberProvider.MaxInvalidPasswordAttempts = value;
             }
         }
 
@@ -71,12 +71,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.MinNonAlphanumericCharacters;
+                return MemberProvider.MinNonAlphanumericCharacters;
             }
 
             set
             {
-                memberProvider.MinNonAlphanumericCharacters = value;
+                MemberProvider.MinNonAlphanumericCharacters = value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.MinPasswordLength;
+                return MemberProvider.MinPasswordLength;
             }
 
             set
             {
-                memberProvider.MinPasswordLength = value;
+                MemberProvider.MinPasswordLength = value;
             }
         }
 
@@ -113,12 +113,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.PasswordAttemptWindow;
+                return MemberProvider.PasswordAttemptWindow;
             }
 
             set
             {
-                memberProvider.PasswordAttemptWindow = value;
+                MemberProvider.PasswordAttemptWindow = value;
             }
         }
 
@@ -134,12 +134,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.PasswordFormat;
+                return MemberProvider.PasswordFormat;
             }
 
             set
             {
-                memberProvider.PasswordFormat = value;
+                MemberProvider.PasswordFormat = value;
             }
         }
 
@@ -155,12 +155,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.PasswordResetEnabled;
+                return MemberProvider.PasswordResetEnabled;
             }
 
             set
             {
-                memberProvider.PasswordResetEnabled = value;
+                MemberProvider.PasswordResetEnabled = value;
             }
         }
 
@@ -176,10 +176,10 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                bool enabled = memberProvider.PasswordRetrievalEnabled;
+                bool enabled = MemberProvider.PasswordRetrievalEnabled;
 
                 // If password format is hashed the password cannot be retrieved
-                if (memberProvider.PasswordFormat == PasswordFormat.Hashed)
+                if (MemberProvider.PasswordFormat == PasswordFormat.Hashed)
                 {
                     enabled = false;
                 }
@@ -189,7 +189,7 @@ namespace DotNetNuke.Security.Membership
 
             set
             {
-                memberProvider.PasswordRetrievalEnabled = value;
+                MemberProvider.PasswordRetrievalEnabled = value;
             }
         }
 
@@ -205,12 +205,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.PasswordStrengthRegularExpression;
+                return MemberProvider.PasswordStrengthRegularExpression;
             }
 
             set
             {
-                memberProvider.PasswordStrengthRegularExpression = value;
+                MemberProvider.PasswordStrengthRegularExpression = value;
             }
         }
 
@@ -226,12 +226,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.RequiresQuestionAndAnswer;
+                return MemberProvider.RequiresQuestionAndAnswer;
             }
 
             set
             {
-                memberProvider.RequiresQuestionAndAnswer = value;
+                MemberProvider.RequiresQuestionAndAnswer = value;
             }
         }
 
@@ -247,12 +247,12 @@ namespace DotNetNuke.Security.Membership
         {
             get
             {
-                return memberProvider.RequiresUniqueEmail;
+                return MemberProvider.RequiresUniqueEmail;
             }
 
             set
             {
-                memberProvider.RequiresUniqueEmail = value;
+                MemberProvider.RequiresUniqueEmail = value;
             }
         }
     }

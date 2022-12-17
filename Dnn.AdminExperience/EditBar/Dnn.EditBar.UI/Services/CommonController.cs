@@ -29,6 +29,7 @@ namespace Dnn.EditBar.UI.Services
     {
         [HttpGet]
         [AllowAnonymous]
+
         public HttpResponseMessage CheckAuthorized()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, new { success = this.IsPageEditor() });
@@ -36,6 +37,7 @@ namespace Dnn.EditBar.UI.Services
 
         [HttpGet]
         [DnnPageEditor]
+
         public HttpResponseMessage GetUserSetting(string key)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
@@ -59,6 +61,7 @@ namespace Dnn.EditBar.UI.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPageEditor]
+
         public HttpResponseMessage SetUserSetting(UserSetting setting)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();

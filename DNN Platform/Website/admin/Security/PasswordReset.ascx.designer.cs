@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Admin.Security {
     
     
     public partial class PasswordReset {
-        
         /// <summary>
         /// resetMessages control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl resetMessages;
-        
         /// <summary>
         /// lblInfo control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblInfo;
-        
         /// <summary>
         /// lblHelp control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblHelp;
-        
         /// <summary>
         /// divPassword control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel divPassword;
-        
         /// <summary>
         /// txtUsername control.
         /// </summary>
@@ -60,7 +55,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUsername;
-        
         /// <summary>
         /// valUsername control.
         /// </summary>
@@ -69,7 +63,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valUsername;
-        
         /// <summary>
         /// passwordContainer control.
         /// </summary>
@@ -78,7 +71,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel passwordContainer;
-        
         /// <summary>
         /// txtPassword control.
         /// </summary>
@@ -87,7 +79,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
-        
         /// <summary>
         /// valPassword control.
         /// </summary>
@@ -96,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator valPassword;
-        
         /// <summary>
         /// txtConfirmPassword control.
         /// </summary>
@@ -105,7 +95,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtConfirmPassword;
-        
         /// <summary>
         /// valConfirmPassword control.
         /// </summary>
@@ -114,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valConfirmPassword;
-        
         /// <summary>
         /// divQA control.
         /// </summary>
@@ -123,7 +111,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divQA;
-        
         /// <summary>
         /// lblQuestion control.
         /// </summary>
@@ -132,7 +119,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblQuestion;
-        
         /// <summary>
         /// txtAnswer control.
         /// </summary>
@@ -141,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnswer;
-        
         /// <summary>
         /// valAnswer control.
         /// </summary>
@@ -150,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valAnswer;
-        
         /// <summary>
         /// cmdChangePassword control.
         /// </summary>
@@ -159,7 +143,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdChangePassword;
-        
         /// <summary>
         /// liLogin control.
         /// </summary>
@@ -168,7 +151,6 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liLogin;
-        
         /// <summary>
         /// hlCancel control.
         /// </summary>

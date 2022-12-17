@@ -19,13 +19,12 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to compile the platform.</summary>
     [IsDependentOn(typeof(CleanWebsite))]
     [IsDependentOn(typeof(RestoreNuGetPackages))]
+    [IsDependentOn(typeof(BuildNpmPackages))]
     public sealed class Build : FrostingTask<Context>
     {
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            // TODO: when Cake.Issues.MsBuild is updated to support Binary Log version 9, can use .EnableBinaryLogger() instead of .WithLogger(…)
-            // TODO: also can remove the .InstallTool(…) call for Cake.Issues.MsBuild in Program.cs at that point
             var cleanLog = context.ArtifactsDir.Path.CombineWithFilePath("clean.binlog");
             var buildLog = context.ArtifactsDir.Path.CombineWithFilePath("rebuild.binlog");
             try
@@ -71,7 +70,7 @@ namespace DotNetNuke.Build.Tasks
         {
             return new MSBuildSettings().SetConfiguration(context.BuildConfiguration)
                 .SetMaxCpuCount(0)
-                .WithLogger(context.Tools.Resolve("Cake.Issues.MsBuild*/**/StructuredLogger.dll").FullPath, "BinaryLogger", binLogPath.FullPath)
+                .EnableBinaryLogger(binLogPath.FullPath)
                 .SetNoConsoleLogger(context.IsRunningInCI);
         }
     }

@@ -51,13 +51,14 @@ namespace DotNetNuke.Modules.Journal
         public string ProfilePage;
         public int Gid = -1;
         public int Pid = -1;
+
         public long MaxUploadSize = Config.GetMaxUploadSize();
         public bool IsPublicGroup = false;
-        private readonly INavigationManager _navigationManager;
+        private readonly INavigationManager navigationManager;
 
         public View()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override void OnInit(EventArgs e)
@@ -199,7 +200,7 @@ namespace DotNetNuke.Modules.Journal
                 this.BaseUrl = this.BaseUrl.EndsWith("/") ? this.BaseUrl : this.BaseUrl + "/";
                 this.BaseUrl += "DesktopModules/Journal/";
 
-                this.ProfilePage = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" });
+                this.ProfilePage = this.navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" });
 
                 if (!string.IsNullOrEmpty(this.Request.QueryString["userId"]))
                 {

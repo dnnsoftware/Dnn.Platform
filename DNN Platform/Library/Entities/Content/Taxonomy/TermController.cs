@@ -29,9 +29,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     /// </example>
     public class TermController : ITermController
     {
-        private const CacheItemPriority _CachePriority = CacheItemPriority.Normal;
-        private const int _CacheTimeOut = 20;
-        private readonly IDataService _DataService;
+        private const CacheItemPriority CachePriority = CacheItemPriority.Normal;
+        private const int CacheTimeOut = 20;
+        private readonly IDataService dataService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TermController"/> class.
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// <param name="dataService"></param>
         public TermController(IDataService dataService)
         {
-            this._DataService = dataService;
+            this.dataService = dataService;
         }
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if (term.IsHeirarchical)
             {
-                term.TermId = this._DataService.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
+                term.TermId = this.dataService.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                term.TermId = this._DataService.AddSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
+                term.TermId = this.dataService.AddSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // Clear Cache
@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("term", term);
             Requires.NotNull("contentItem", contentItem);
 
-            this._DataService.AddTermToContent(term, contentItem);
+            this.dataService.AddTermToContent(term, contentItem);
 
             // We have adjusted a content item, remove it from cache
             DataCache.RemoveCache(string.Format(DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
@@ -115,11 +115,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if (term.IsHeirarchical)
             {
-                this._DataService.DeleteHeirarchicalTerm(term);
+                this.dataService.DeleteHeirarchicalTerm(term);
             }
             else
             {
-                this._DataService.DeleteSimpleTerm(term);
+                this.dataService.DeleteSimpleTerm(term);
             }
 
             // Clear Cache
@@ -137,7 +137,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Argument Contract
             Requires.NotNegative("termId", termId);
 
-            return CBO.FillObject<Term>(this._DataService.GetTerm(termId));
+            return CBO.FillObject<Term>(this.dataService.GetTerm(termId));
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             Requires.NotNegative("termId", termId);
 
-            return CBO.FillObject<TermUsage>(this._DataService.GetTermUsage(termId));
+            return CBO.FillObject<TermUsage>(this.dataService.GetTermUsage(termId));
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
-            return CBO.FillQueryable<Term>(this._DataService.GetTermsByContent(contentItemId));
+            return CBO.FillQueryable<Term>(this.dataService.GetTermsByContent(contentItemId));
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Argument Contract
             Requires.NotNegative("vocabularyId", vocabularyId);
 
-            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(DataCache.TermCacheKey, vocabularyId), _CacheTimeOut, _CachePriority, vocabularyId), this.GetTermsCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(DataCache.TermCacheKey, vocabularyId), CacheTimeOut, CachePriority, vocabularyId), this.GetTermsCallBack).AsQueryable();
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Argument Contract
             Requires.NotNull("contentItem", contentItem);
 
-            this._DataService.RemoveTermsFromContent(contentItem);
+            this.dataService.RemoveTermsFromContent(contentItem);
 
             // We have adjusted a content item, remove it from cache
             DataCache.RemoveCache(string.Format(DataCache.ContentItemsCacheKey, contentItem.ContentTypeId));
@@ -238,11 +238,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if (term.IsHeirarchical)
             {
-                this._DataService.UpdateHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.dataService.UpdateHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                this._DataService.UpdateSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
+                this.dataService.UpdateSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // Clear Cache
@@ -252,7 +252,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
         {
             var vocabularyId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
+            return CBO.FillQueryable<Term>(this.dataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
     }
 }

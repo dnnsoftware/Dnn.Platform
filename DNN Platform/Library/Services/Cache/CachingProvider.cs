@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Cache
         private const string CachePrefix = "DNN_";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
 
-        private static System.Web.Caching.Cache _cache;
+        private static System.Web.Caching.Cache cache;
 
         /// <summary>
         /// Gets the default cache provider.
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                return _cache ?? (_cache = HttpRuntime.Cache);
+                return cache ?? (cache = HttpRuntime.Cache);
             }
         }
 
@@ -67,33 +67,33 @@ namespace DotNetNuke.Services.Cache
         /// <summary>
         /// Cleans the cache key by remove cache key prefix.
         /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
+        /// <param name="cacheKey">The cache key.</param>
         /// <returns>cache key without prefix.</returns>
         /// <exception cref="ArgumentException">cache key is empty.</exception>
-        public static string CleanCacheKey(string CacheKey)
+        public static string CleanCacheKey(string cacheKey)
         {
-            if (string.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(cacheKey))
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
 
-            return CacheKey.Substring(CachePrefix.Length);
+            return cacheKey.Substring(CachePrefix.Length);
         }
 
         /// <summary>
         /// Gets the cache key with key prefix.
         /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
+        /// <param name="cacheKey">The cache key.</param>
         /// <returns>CachePrefix + CacheKey.</returns>
         /// <exception cref="ArgumentException">Cache key is empty.</exception>
-        public static string GetCacheKey(string CacheKey)
+        public static string GetCacheKey(string cacheKey)
         {
-            if (string.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(cacheKey))
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
 
-            return CachePrefix + CacheKey;
+            return CachePrefix + cacheKey;
         }
 
         /// <summary>
@@ -203,10 +203,10 @@ namespace DotNetNuke.Services.Cache
         /// <summary>
         /// Removes the specified cache key.
         /// </summary>
-        /// <param name="CacheKey">The cache key.</param>
-        public virtual void Remove(string CacheKey)
+        /// <param name="cacheKey">The cache key.</param>
+        public virtual void Remove(string cacheKey)
         {
-            this.RemoveInternal(CacheKey);
+            this.RemoveInternal(cacheKey);
         }
 
         /// <summary>
@@ -475,31 +475,31 @@ namespace DotNetNuke.Services.Cache
             this.RemoveCacheKey(string.Format(DataCache.TabSettingsCacheKey, portalId), clearRuntime);
         }
 
-        private void RemoveCacheKey(string CacheKey, bool clearRuntime)
+        private void RemoveCacheKey(string cacheKey, bool clearRuntime)
         {
             if (clearRuntime)
             {
                 // remove item from runtime cache
-                this.RemoveInternal(GetCacheKey(CacheKey));
+                this.RemoveInternal(GetCacheKey(cacheKey));
             }
             else
             {
                 // Call provider's remove method
-                this.Remove(GetCacheKey(CacheKey));
+                this.Remove(GetCacheKey(cacheKey));
             }
         }
 
-        private void RemoveFormattedCacheKey(string CacheKeyBase, bool clearRuntime, params object[] parameters)
+        private void RemoveFormattedCacheKey(string cacheKeyBase, bool clearRuntime, params object[] parameters)
         {
             if (clearRuntime)
             {
                 // remove item from runtime cache
-                this.RemoveInternal(string.Format(GetCacheKey(CacheKeyBase), parameters));
+                this.RemoveInternal(string.Format(GetCacheKey(cacheKeyBase), parameters));
             }
             else
             {
                 // Call provider's remove method
-                this.Remove(string.Format(GetCacheKey(CacheKeyBase), parameters));
+                this.Remove(string.Format(GetCacheKey(cacheKeyBase), parameters));
             }
         }
 

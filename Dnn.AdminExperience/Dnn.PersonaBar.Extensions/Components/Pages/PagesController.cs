@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class PagesController : ServiceLocator<IPagesController, PagesController>
     {
+        /// <inheritdoc/>
         protected override Func<IPagesController> GetFactory()
         {
             return () => new PagesControllerImpl();

@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.Security.Tests.Services
         private const int PortalId = 0;
 
         [Test]
+
         public void Services_Controller_AddPortalAlias_TrimsProtocolAndSlash()
         {
             // arrange
@@ -34,6 +35,7 @@ namespace Dnn.PersonaBar.Security.Tests.Services
         }
 
         [Test]
+
         public void Services_Controller_AddPortalAlias_WhenAliasExists_AddIsNotInvoked()
         {
             // arrange
@@ -62,6 +64,7 @@ namespace Dnn.PersonaBar.Security.Tests.Services
         }
 
         [Test]
+
         public void Services_Controller_AddPortalAlias_WhenAliasDoesNotExist_AddIsInvoked()
         {
             // arrange

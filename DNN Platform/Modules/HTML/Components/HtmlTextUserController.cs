@@ -28,12 +28,12 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "UserID">The Id of the User.</param>
+        /// <param name = "userID">The Id of the User.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public ArrayList GetHtmlTextUser(int UserID)
+        public ArrayList GetHtmlTextUser(int userID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextUser(UserID), typeof(HtmlTextUserInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextUser(userID), typeof(HtmlTextUserInfo));
         }
 
         /// -----------------------------------------------------------------------------

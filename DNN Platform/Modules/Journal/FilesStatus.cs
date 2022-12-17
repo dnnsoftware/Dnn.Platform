@@ -8,6 +8,9 @@ namespace DotNetNuke.Modules.Journal
     {
         // ReSharper restore InconsistentNaming
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilesStatus"/> class.
+        /// </summary>
         public FilesStatus()
         {
         } // ReSharper disable InconsistentNaming

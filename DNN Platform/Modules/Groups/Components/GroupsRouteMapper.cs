@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Groups
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
+        /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
             mapRouteManager.MapHttpRoute("SocialGroups", "default", "{controller}/{action}", new[] { "DotNetNuke.Modules.Groups" });

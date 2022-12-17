@@ -25,13 +25,14 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class LocalizationController : PersonaBarApiController
     {
-        private static object _threadLocker = new object();
+        private static object threadLocker = new object();
 
         /// <summary>
         /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+
         public HttpResponseMessage GetTable(string culture)
         {
             try
@@ -39,7 +40,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var resources = this.GetResourcesFromFile(culture);
                 if (resources == null)
                 {
-                    lock (_threadLocker)
+                    lock (threadLocker)
                     {
                         resources = this.GetResourcesFromFile(culture);
                         if (resources == null)

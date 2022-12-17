@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Social.Notifications
     [Serializable]
     public class NotificationTypeAction : BaseEntityInfo, IHydratable
     {
-        private int _notificationTypeActionId = -1;
+        private int notificationTypeActionId = -1;
 
         /// <summary>
         /// Gets or sets the notification type action identifier.
@@ -35,12 +35,12 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return this._notificationTypeActionId;
+                return this.notificationTypeActionId;
             }
 
             set
             {
-                this._notificationTypeActionId = value;
+                this.notificationTypeActionId = value;
             }
         }
 

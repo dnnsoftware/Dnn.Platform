@@ -14,12 +14,12 @@ namespace DotNetNuke.Framework.Reflections
 
     public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
-        private IAssemblyLocator _assemblyLocator;
+        private IAssemblyLocator assemblyLocator;
 
         internal IAssemblyLocator AssemblyLocator
         {
-            get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
-            set { this._assemblyLocator = value; }
+            get { return this.assemblyLocator ?? (this.assemblyLocator = this); }
+            set { this.assemblyLocator = value; }
         }
 
         /// <inheritdoc/>

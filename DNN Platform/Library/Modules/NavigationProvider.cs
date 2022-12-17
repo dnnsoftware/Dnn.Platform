@@ -979,9 +979,9 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-        public static NavigationProvider Instance(string FriendlyName)
+        public static NavigationProvider Instance(string friendlyName)
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", FriendlyName, string.Empty, string.Empty);
+            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();

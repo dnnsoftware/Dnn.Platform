@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     packages.Add(new ListItemDto { Id = p.PackageID, Name = p.Name });
                 }
             }
+
             return packages.OrderBy(p => p.Name);
         }
     }

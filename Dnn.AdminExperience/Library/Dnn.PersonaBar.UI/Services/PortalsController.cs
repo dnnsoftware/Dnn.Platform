@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="addAll">Add all portals item in list.</param>
         /// <returns>List of portals.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetPortals(bool addAll = false)
         {
             try

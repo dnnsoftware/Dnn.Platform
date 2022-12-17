@@ -15,7 +15,6 @@ namespace DotNetNuke.Authentication.LiveConnect {
     
     
     public partial class Login {
-        
         /// <summary>
         /// loginItem control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Authentication.LiveConnect {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl loginItem;
-        
         /// <summary>
         /// loginButton control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Authentication.LiveConnect {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton loginButton;
-        
         /// <summary>
         /// registerItem control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Authentication.LiveConnect {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerItem;
-        
         /// <summary>
         /// registerButton control.
         /// </summary>

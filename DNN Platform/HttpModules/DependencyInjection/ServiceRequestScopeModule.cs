@@ -15,7 +15,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
 {
     public class ServiceRequestScopeModule : IHttpModule
     {
-        private static IServiceProvider _serviceProvider;
+        private static IServiceProvider serviceProvider;
 
         public static void InitModule()
         {
@@ -24,7 +24,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
 
         public static void SetServiceProvider(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            ServiceRequestScopeModule.serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc/>
@@ -58,7 +58,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         private void Context_BeginRequest(object sender, EventArgs e)
         {
             var context = ((HttpApplication)sender).Context;
-            context.SetScope(_serviceProvider.CreateScope());
+            context.SetScope(serviceProvider.CreateScope());
         }
 
         private void Context_EndRequest(object sender, EventArgs e)

@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Web;
     using System.Xml;
     using System.Xml.XPath;
-
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -60,8 +61,8 @@ namespace DotNetNuke.Services.Upgrade
         private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
-        private static readonly object _threadLocker = new object();
-        private static DateTime _startTime;
+        private static readonly object ThreadLocker = new object();
+        private static DateTime startTime;
 
         public static string DefaultProvider
         {
@@ -76,7 +77,7 @@ namespace DotNetNuke.Services.Upgrade
             get
             {
                 DateTime currentTime = DateTime.Now;
-                return currentTime.Subtract(_startTime);
+                return currentTime.Subtract(startTime);
             }
         }
 
@@ -1444,7 +1445,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void StartTimer()
         {
             // Start Upgrade Timer
-            _startTime = DateTime.Now;
+            startTime = DateTime.Now;
         }
 
         /// -----------------------------------------------------------------------------
@@ -1982,7 +1983,7 @@ namespace DotNetNuke.Services.Upgrade
                 // check whether current binding already specific to correct version.
                 if (NewtonsoftNeedUpdate())
                 {
-                    lock (_threadLocker)
+                    lock (ThreadLocker)
                     {
                         if (NewtonsoftNeedUpdate())
                         {
@@ -2190,14 +2191,14 @@ namespace DotNetNuke.Services.Upgrade
             return adminUser;
         }
 
-        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
+        internal static IPortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
         {
             if (string.IsNullOrEmpty(currentCulture))
             {
                 currentCulture = Localization.SystemLocale;
             }
 
-            var templates = PortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalTemplateController.Instance.GetPortalTemplates();
 
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
@@ -2221,7 +2222,7 @@ namespace DotNetNuke.Services.Upgrade
             return match;
         }
 
-        internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName)
+        internal static IPortalTemplateInfo FindBestTemplate(string templateFileName)
         {
             // Load Template
             var installTemplate = new XmlDocument { XmlResolver = null };
@@ -2703,7 +2704,6 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
         }
-
 
         private static string GetStringVersionWithRevision(Version version)
         {

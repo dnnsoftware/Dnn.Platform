@@ -33,9 +33,9 @@ namespace DotNetNuke.Entities.Profile
     public class ProfileController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
-        private static readonly DataProvider _dataProvider = DataProvider.Instance();
-        private static readonly ProfileProvider _profileProvider = ProfileProvider.Instance();
-        private static int _orderCounter;
+        private static readonly DataProvider DataProvider = DataProvider.Instance();
+        private static readonly ProfileProvider ProfileProvider = ProfileProvider.Instance();
+        private static int orderCounter;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Profile
         {
             portalId = GetEffectivePortalId(portalId);
 
-            _orderCounter = 1;
+            orderCounter = 1;
             var listController = new ListController();
             Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.Visible = true;
             }
 
-            int intDefinition = _dataProvider.AddPropertyDefinition(
+            int intDefinition = DataProvider.AddPropertyDefinition(
                 portalId,
                 definition.ModuleDefId,
                 definition.DataType,
@@ -136,7 +136,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
-            _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
+            DataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Profile
             if (!bFound)
             {
                 // Try Database
-                definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinition(definitionId));
+                definition = FillPropertyDefinitionInfo(DataProvider.GetPropertyDefinition(definitionId));
             }
 
             return definition;
@@ -211,7 +211,7 @@ namespace DotNetNuke.Entities.Profile
             if (!bFound)
             {
                 // Try Database
-                definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinitionByName(portalId, name));
+                definition = FillPropertyDefinitionInfo(DataProvider.GetPropertyDefinitionByName(portalId, name));
             }
 
             return definition;
@@ -303,7 +303,7 @@ namespace DotNetNuke.Entities.Profile
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            _profileProvider.GetUserProfile(ref user);
+            ProfileProvider.GetUserProfile(ref user);
             user.PortalID = portalId;
         }
 
@@ -320,7 +320,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.Visible = true;
             }
 
-            _dataProvider.UpdatePropertyDefinition(
+            DataProvider.UpdatePropertyDefinition(
                 definition.PropertyDefinitionId,
                 definition.DataType,
                 definition.DefaultValue,
@@ -358,9 +358,9 @@ namespace DotNetNuke.Entities.Profile
             user.PortalID = portalId;
 
             var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID, IsSuperUser = user.IsSuperUser };
-            _profileProvider.GetUserProfile(ref oldUser);
+            ProfileProvider.GetUserProfile(ref oldUser);
 
-            _profileProvider.UpdateUserProfile(user);
+            ProfileProvider.UpdateUserProfile(user);
 
             // Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
@@ -482,7 +482,7 @@ namespace DotNetNuke.Entities.Profile
         [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
-            return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
+            return CBO.FillObject<ProfilePropertyDefinition>(DataProvider.GetPropertyDefinition(definitionId));
         }
 
         internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility,
@@ -507,8 +507,8 @@ namespace DotNetNuke.Entities.Profile
 
         private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
         {
-            _orderCounter += 2;
-            AddDefaultDefinition(portalId, category, name, strType, length, _orderCounter, defaultVisibility, types);
+            orderCounter += 2;
+            AddDefaultDefinition(portalId, category, name, strType, length, orderCounter, defaultVisibility, types);
         }
 
         private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr)
@@ -622,7 +622,7 @@ namespace DotNetNuke.Entities.Profile
                 int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
 
                 // Get the List from the database
-                definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));
+                definitions = FillPropertyDefinitionInfoCollection(DataProvider.GetPropertyDefinitionsByPortal(portalId));
 
                 // Cache the List
                 if (timeOut > 0)

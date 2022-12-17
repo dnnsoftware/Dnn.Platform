@@ -19,13 +19,13 @@ namespace DotNetNuke.HttpModules.Compression
     [Serializable]
     public class Settings
     {
-        private readonly StringCollection _excludedPaths;
-        private Algorithms _preferredAlgorithm;
+        private readonly StringCollection excludedPaths;
+        private Algorithms preferredAlgorithm;
 
         private Settings()
         {
-            this._preferredAlgorithm = Algorithms.None;
-            this._excludedPaths = new StringCollection();
+            this.preferredAlgorithm = Algorithms.None;
+            this.excludedPaths = new StringCollection();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return this._preferredAlgorithm;
+                return this.preferredAlgorithm;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.HttpModules.Compression
                 // Place this in a try/catch as during install the host settings will not exist
                 try
                 {
-                    settings._preferredAlgorithm = (Algorithms)Host.HttpCompressionAlgorithm;
+                    settings.preferredAlgorithm = (Algorithms)Host.HttpCompressionAlgorithm;
                 }
                 catch (Exception e)
                 {
@@ -79,7 +79,7 @@ namespace DotNetNuke.HttpModules.Compression
                     var doc = new XPathDocument(fileReader);
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
                     {
-                        settings._excludedPaths.Add(nav.Value.ToLowerInvariant());
+                        settings.excludedPaths.Add(nav.Value.ToLowerInvariant());
                     }
                 }
 
@@ -101,7 +101,7 @@ namespace DotNetNuke.HttpModules.Compression
         public bool IsExcludedPath(string relUrl)
         {
             bool match = false;
-            foreach (string path in this._excludedPaths)
+            foreach (string path in this.excludedPaths)
             {
                 if (relUrl.ToLowerInvariant().Contains(path))
                 {

@@ -49,6 +49,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public bool InsertFirst { get; set; }
 
+        /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

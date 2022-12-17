@@ -32,18 +32,21 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
-        private const int COLUMN_REQUIRED = 11;
-        private const int COLUMN_VISIBLE = 12;
-        private const int COLUMN_MOVE_DOWN = 2;
-        private const int COLUMN_MOVE_UP = 3;
+        private const int COLUMNREQUIRED = 11;
+        private const int COLUMNVISIBLE = 12;
+        private const int COLUMNMOVEDOWN = 2;
+        private const int COLUMNMOVEUP = 3;
 
-        private readonly INavigationManager _navigationManager;
-        private ProfilePropertyDefinitionCollection _profileProperties;
-        private bool _requiredColumnHidden = false;
+        private readonly INavigationManager navigationManager;
+        private ProfilePropertyDefinitionCollection profileProperties;
+        private bool requiredColumnHidden = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProfileDefinitions"/> class.
+        /// </summary>
         public ProfileDefinitions()
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         /// -----------------------------------------------------------------------------
@@ -70,17 +73,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 if (string.IsNullOrEmpty(this.Request.QueryString["filter"]))
                 {
-                    returnURL = this._navigationManager.NavigateURL(this.TabId);
+                    returnURL = this.navigationManager.NavigateURL(this.TabId);
                 }
                 else
                 {
-                    returnURL = this._navigationManager.NavigateURL(this.TabId, string.Empty, filterParams);
+                    returnURL = this.navigationManager.NavigateURL(this.TabId, string.Empty, filterParams);
                 }
 
                 return returnURL;
             }
         }
 
+        /// <inheritdoc/>
         public ModuleActionCollection ModuleActions
         {
             get
@@ -134,7 +138,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return this._profileProperties ?? (this._profileProperties = ProfileController.GetPropertyDefinitionsByPortal(this.UsersPortalId, false, false));
+                return this.profileProperties ?? (this.profileProperties = ProfileController.GetPropertyDefinitionsByPortal(this.UsersPortalId, false, false));
             }
         }
 
@@ -196,6 +200,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -212,11 +217,12 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Load ModuleID
                 if (myState[1] != null)
                 {
-                    this._profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
+                    this.profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
                 }
             }
         }
 
+        /// <inheritdoc/>
         protected override object SaveViewState()
         {
             var allStates = new object[2];
@@ -247,12 +253,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (checkBoxColumn.DataField == "Required" && this.UsersPortalId == Null.NullInteger)
                     {
                         checkBoxColumn.Visible = false;
-                        this._requiredColumnHidden = true;
+                        this.requiredColumnHidden = true;
                     }
 
                     if (this.SupportsRichClient() == false)
                     {
-                        checkBoxColumn.CheckedChanged += this.grdProfileProperties_ItemCheckedChanged;
+                        checkBoxColumn.CheckedChanged += this.GrdProfileProperties_ItemCheckedChanged;
                     }
                 }
                 else if (ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
@@ -285,13 +291,14 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            this.cmdRefresh.Click += this.cmdRefresh_Click;
-            this.grdProfileProperties.ItemCommand += this.grdProfileProperties_ItemCommand;
-            this.grdProfileProperties.ItemCreated += this.grdProfileProperties_ItemCreated;
+            this.cmdRefresh.Click += this.CmdRefresh_Click;
+            this.grdProfileProperties.ItemCommand += this.GrdProfileProperties_ItemCommand;
+            this.grdProfileProperties.ItemCreated += this.GrdProfileProperties_ItemCreated;
             this.grdProfileProperties.ItemDataBound += this.grdProfileProperties_ItemDataBound;
 
             this.cmdAdd.NavigateUrl = this.EditUrl("EditProfileProperty");
@@ -472,7 +479,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         private void RefreshGrid()
         {
-            this._profileProperties = null;
+            this.profileProperties = null;
             this.BindGrid();
         }
 
@@ -511,9 +518,9 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 DataGridItem dataGridItem = this.grdProfileProperties.Items[i];
                 ProfilePropertyDefinition profileProperty = this.ProfileProperties[i];
-                CheckBox checkBox = (CheckBox)dataGridItem.Cells[COLUMN_REQUIRED].Controls[0];
+                CheckBox checkBox = (CheckBox)dataGridItem.Cells[COLUMNREQUIRED].Controls[0];
                 profileProperty.Required = checkBox.Checked;
-                checkBox = (CheckBox)dataGridItem.Cells[COLUMN_VISIBLE].Controls[0];
+                checkBox = (CheckBox)dataGridItem.Cells[COLUMNVISIBLE].Controls[0];
                 profileProperty.Visible = checkBox.Checked;
             }
 
@@ -533,7 +540,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdRefresh_Click(object sender, EventArgs e)
+        private void CmdRefresh_Click(object sender, EventArgs e)
         {
             this.RefreshGrid();
         }
@@ -546,7 +553,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void grdProfileProperties_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
+        private void GrdProfileProperties_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             string propertyName = e.Field;
             bool propertyValue = e.Checked;
@@ -593,7 +600,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void grdProfileProperties_ItemCommand(object source, DataGridCommandEventArgs e)
+        private void GrdProfileProperties_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             int index = e.Item.ItemIndex;
 
@@ -620,7 +627,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void grdProfileProperties_ItemCreated(object sender, DataGridItemEventArgs e)
+        private void GrdProfileProperties_ItemCreated(object sender, DataGridItemEventArgs e)
         {
             if (this.SupportsRichClient())
             {
@@ -628,19 +635,19 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     case ListItemType.Header:
                         // we combined the header label and checkbox in same place, so it is control 1 instead of 0
-                        ((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
-                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
+                        ((WebControl)e.Item.Cells[COLUMNREQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMNREQUIRED + ");");
+                        ((CheckBox)e.Item.Cells[COLUMNREQUIRED].Controls[1]).AutoPostBack = false;
 
-                        int column_visible = this._requiredColumnHidden ? COLUMN_VISIBLE - 1 : COLUMN_VISIBLE;
-                        ((WebControl)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + column_visible + ");");
-                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[1]).AutoPostBack = false;
+                        int column_visible = this.requiredColumnHidden ? COLUMNVISIBLE - 1 : COLUMNVISIBLE;
+                        ((WebControl)e.Item.Cells[COLUMNVISIBLE].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + column_visible + ");");
+                        ((CheckBox)e.Item.Cells[COLUMNVISIBLE].Controls[1]).AutoPostBack = false;
                         break;
                     case ListItemType.AlternatingItem:
                     case ListItemType.Item:
-                        ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[0]).AutoPostBack = false;
-                        ((CheckBox)e.Item.Cells[COLUMN_VISIBLE].Controls[0]).AutoPostBack = false;
-                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_DOWN].Controls[0], this.Page, false, this.grdProfileProperties.ClientID);
-                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_UP].Controls[0], this.Page, true, this.grdProfileProperties.ClientID);
+                        ((CheckBox)e.Item.Cells[COLUMNREQUIRED].Controls[0]).AutoPostBack = false;
+                        ((CheckBox)e.Item.Cells[COLUMNVISIBLE].Controls[0]).AutoPostBack = false;
+                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMNMOVEDOWN].Controls[0], this.Page, false, this.grdProfileProperties.ClientID);
+                        ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMNMOVEUP].Controls[0], this.Page, true, this.grdProfileProperties.ClientID);
                         break;
                 }
             }

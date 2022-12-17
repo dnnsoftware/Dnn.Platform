@@ -8,7 +8,7 @@ namespace DotNetNuke.Services.Localization
 
     public class CultureInfoComparer : IComparer
     {
-        private readonly string _compare;
+        private readonly string compare;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CultureInfoComparer"/> class.
@@ -16,13 +16,13 @@ namespace DotNetNuke.Services.Localization
         /// <param name="compareBy"></param>
         public CultureInfoComparer(string compareBy)
         {
-            this._compare = compareBy;
+            this.compare = compareBy;
         }
 
         /// <inheritdoc/>
         public int Compare(object x, object y)
         {
-            switch (this._compare.ToUpperInvariant())
+            switch (this.compare.ToUpperInvariant())
             {
                 case "ENGLISH":
                     return ((CultureInfo)x).EnglishName.CompareTo(((CultureInfo)y).EnglishName);

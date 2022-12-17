@@ -32,7 +32,7 @@ namespace DotNetNuke.Security.Profile
     /// -----------------------------------------------------------------------------
     public class DNNProfileProvider : ProfileProvider
     {
-        private readonly DataProvider _dataProvider = DataProvider.Instance();
+        private readonly DataProvider dataProvider = DataProvider.Instance();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -74,7 +74,7 @@ namespace DotNetNuke.Security.Profile
                 }
                 else
                 {
-                    using (var dr = this._dataProvider.GetUserProfile(user.UserID))
+                    using (var dr = this.dataProvider.GetUserProfile(user.UserID))
                     {
                         while (dr.Read())
                         {
@@ -177,7 +177,7 @@ namespace DotNetNuke.Security.Profile
                 {
                     var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
-                    this._dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId,
+                    this.dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId,
                                                 propertyValue, (int)profProperty.ProfileVisibility.VisibilityMode,
                                                 profProperty.ProfileVisibility.ExtendedVisibilityString(), DateTime.Now);
                     EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");

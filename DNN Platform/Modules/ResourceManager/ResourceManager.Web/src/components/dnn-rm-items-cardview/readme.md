@@ -12,6 +12,13 @@
 | `currentItems` _(required)_ | --        | The list of current items. | `GetFolderContentResponse` | `undefined` |
 
 
+## Events
+
+| Event                      | Description                                                                         | Type                  |
+| -------------------------- | ----------------------------------------------------------------------------------- | --------------------- |
+| `dnnRmFolderDoubleClicked` | Fires when a folder is double-clicked and emits the folder ID into the event.detail | `CustomEvent<number>` |
+
+
 ## Dependencies
 
 ### Used by

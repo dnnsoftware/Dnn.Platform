@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Modules
     /// </remarks>
     public class UserModuleBase : PortalModuleBase
     {
-        private UserInfo _User;
+        private UserInfo user;
 
         /// <summary>
         /// Gets or sets and sets the User associated with this control.
@@ -58,15 +58,15 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._User ?? (this._User = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
+                return this.user ?? (this.user = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
             }
 
             set
             {
-                this._User = value;
-                if (this._User != null)
+                this.user = value;
+                if (this.user != null)
                 {
-                    this.UserId = this._User.UserID;
+                    this.UserId = this.user.UserID;
                 }
             }
         }
@@ -78,24 +78,22 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                int _UserId = Null.NullInteger;
+                int userId = Null.NullInteger;
                 if (this.ViewState["UserId"] == null)
                 {
                     if (this.Request.QueryString["userid"] != null)
                     {
-                        int userId;
-
                         // Use Int32.MaxValue as invalid UserId
-                        _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
-                        this.ViewState["UserId"] = _UserId;
+                        userId = int.TryParse(this.Request.QueryString["userid"], out var id) ? id : int.MaxValue;
+                        this.ViewState["UserId"] = userId;
                     }
                 }
                 else
                 {
-                    _UserId = Convert.ToInt32(this.ViewState["UserId"]);
+                    userId = Convert.ToInt32(this.ViewState["UserId"]);
                 }
 
-                return _UserId;
+                return userId;
             }
 
             set
@@ -130,7 +128,7 @@ namespace DotNetNuke.Entities.Modules
         /// Gets a value indicating whether gets whether this is the current user or admin.
         /// </summary>
         /// <value>
-        /// <placeholder>gets whether this is the current user or admin</placeholder>
+        /// gets whether this is the current user or admin.
         /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
@@ -160,17 +158,17 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                bool _IsEdit = false;
+                bool isEdit = false;
                 if (this.Request.QueryString["ctl"] != null)
                 {
                     string ctl = this.Request.QueryString["ctl"];
                     if (ctl.Equals("edit", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        _IsEdit = true;
+                        isEdit = true;
                     }
                 }
 
-                return _IsEdit;
+                return isEdit;
             }
         }
 
@@ -181,7 +179,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                bool _IsProfile = false;
+                bool isProfile = false;
                 if (this.IsUser)
                 {
                     if (this.PortalSettings.UserTabId != -1)
@@ -189,7 +187,7 @@ namespace DotNetNuke.Entities.Modules
                         // user defined tab
                         if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId)
                         {
-                            _IsProfile = true;
+                            isProfile = true;
                         }
                     }
                     else
@@ -200,13 +198,13 @@ namespace DotNetNuke.Entities.Modules
                             string ctl = this.Request.QueryString["ctl"];
                             if (ctl.Equals("profile", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                _IsProfile = true;
+                                isProfile = true;
                             }
                         }
                     }
                 }
 
-                return _IsProfile;
+                return isProfile;
             }
         }
 
@@ -423,75 +421,75 @@ namespace DotNetNuke.Entities.Modules
             }
 
             // Set AffiliateId
-            int AffiliateId = Null.NullInteger;
+            int affiliateId = Null.NullInteger;
             if (this.Request.Cookies["AffiliateId"] != null)
             {
-                AffiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
+                affiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
             }
 
-            newUser.AffiliateID = AffiliateId;
+            newUser.AffiliateID = affiliateId;
             return newUser;
         }
 
         private string LookupCountry()
         {
-            string IP;
-            bool IsLocal = false;
-            bool _CacheGeoIPData = true;
-            string _GeoIPFile;
-            _GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
+            string ip;
+            bool isLocal = false;
+            bool cacheGeoIPData = true;
+            string geoIPFile;
+            geoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
             var userRequestIpAddressController = UserRequestIPAddressController.Instance;
             var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
             if (ipAddress == "127.0.0.1")
             {
                 // 'The country cannot be detected because the user is local.
-                IsLocal = true;
+                isLocal = true;
 
                 // Set the IP address in case they didn't specify LocalhostCountryCode
-                IP = this.Page.Request.UserHostAddress;
+                ip = this.Page.Request.UserHostAddress;
             }
             else
             {
                 // Set the IP address so we can find the country
-                IP = this.Page.Request.UserHostAddress;
+                ip = this.Page.Request.UserHostAddress;
             }
 
             // Check to see if we need to generate the Cache for the GeoIPData file
-            if (this.Context.Cache.Get("GeoIPData") == null && _CacheGeoIPData)
+            if (this.Context.Cache.Get("GeoIPData") == null && cacheGeoIPData)
             {
                 // Store it as  well as setting a dependency on the file
-                this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(_GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(_GeoIPFile)));
+                this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(geoIPFile)), new CacheDependency(this.Context.Server.MapPath(geoIPFile)));
             }
 
             // Check to see if the request is a localhost request
             // and see if the LocalhostCountryCode is specified
-            if (IsLocal)
+            if (isLocal)
             {
                 return Null.NullString;
             }
 
             // Either this is a remote request or it is a local
             // request with no LocalhostCountryCode specified
-            CountryLookup _CountryLookup;
+            CountryLookup countryLookup;
 
             // Check to see if we are using the Cached
             // version of the GeoIPData file
-            if (_CacheGeoIPData)
+            if (cacheGeoIPData)
             {
                 // Yes, get it from cache
-                _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
+                countryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
             }
             else
             {
                 // No, get it from file
-                _CountryLookup = new CountryLookup(this.Context.Server.MapPath(_GeoIPFile));
+                countryLookup = new CountryLookup(this.Context.Server.MapPath(geoIPFile));
             }
 
             // Get the country code based on the IP address
             string country = Null.NullString;
             try
             {
-                country = _CountryLookup.LookupCountryName(IP);
+                country = countryLookup.LookupCountryName(ip);
             }
             catch (Exception ex)
             {

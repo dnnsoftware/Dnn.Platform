@@ -49,6 +49,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void IsSubscribed_ShouldReturnFalse_IfUserIsNotSubscribed()
         {
             // Arrange
@@ -71,6 +72,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void IsSubscribed_ShouldReturnFalse_WhenUserDoesNotHavePermissionOnTheSubscription()
         {
             // Arrange
@@ -98,6 +100,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void IsSubscribed_ShouldReturnTrue_WhenUserHasPermissionOnTheSubscription()
         {
             // Arrange
@@ -125,6 +128,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void IsSubscribed_ShouldCallDataService_WhenNoError()
         {
             // Arrange
@@ -256,6 +260,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void DeleteSubscription_ShouldThrowArgumentNullException_WhenSubscriptionIsNull()
         {
             // Act, Assert
@@ -263,6 +268,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void DeleteSubscriptionType_ShouldCallDeleteSubscriptionDataService_WhenSubscriptionExists()
         {
             // Arrange
@@ -287,6 +293,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
+
         public void DeleteSubscriptionType_ShouldNotCallDeleteSubscriptionDataService_WhenSubscriptionDoesNotExist()
         {
             // Arrange

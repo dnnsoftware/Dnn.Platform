@@ -44,6 +44,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void Init_Is_Called_In_First_ExecuteRequest_And_Not_In_Subsequent_Requests()
         {
             // Arrange
@@ -67,6 +68,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_Calls_ControllerFactory_To_Construct_Controller()
         {
             // Arrange
@@ -91,6 +93,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_Throws_InvalidOperationException_If_Controller_Only_Implements_IController()
         {
             // Arrange
@@ -107,6 +110,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_Throws_InvalidOperationException_If_Controller_Has_NonStandard_Action_Invoker()
         {
             // Arrange
@@ -126,6 +130,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_Does_Not_Throw_If_Controller_Implements_IDnnController()
         {
             // Arrange
@@ -144,6 +149,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_Returns_Result_And_ControllerContext_From_Controller()
         {
             // Arrange
@@ -168,6 +174,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_Executes_Constructed_Controller_And_Provides_RequestContext()
         {
             // Arrange
@@ -191,6 +198,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_ReleasesController_After_Executing()
         {
             // Arrange
@@ -211,6 +219,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
+
         public void ExecuteRequest_ReleasesController_Even_If_It_Throws_An_Exception()
         {
             // Arrange

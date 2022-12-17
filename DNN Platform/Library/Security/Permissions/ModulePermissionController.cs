@@ -21,7 +21,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     public class ModulePermissionController
     {
-        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
+        private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Modules.
@@ -30,7 +30,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A List with the implicit roles.</returns>
         public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
         {
-            return _provider.ImplicitRolesForPages(portalId);
+            return Provider.ImplicitRolesForPages(portalId);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAdminModule(ModuleInfo module)
         {
-            return _provider.CanAdminModule(module);
+            return Provider.CanAdminModule(module);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanDeleteModule(ModuleInfo module)
         {
-            return _provider.CanDeleteModule(module);
+            return Provider.CanDeleteModule(module);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanEditModuleContent(ModuleInfo module)
         {
-            return _provider.CanEditModuleContent(module);
+            return Provider.CanEditModuleContent(module);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanExportModule(ModuleInfo module)
         {
-            return _provider.CanExportModule(module);
+            return Provider.CanExportModule(module);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanImportModule(ModuleInfo module)
         {
-            return _provider.CanImportModule(module);
+            return Provider.CanImportModule(module);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanManageModule(ModuleInfo module)
         {
-            return _provider.CanManageModule(module);
+            return Provider.CanManageModule(module);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanViewModule(ModuleInfo module)
         {
-            return _provider.CanViewModule(module);
+            return Provider.CanViewModule(module);
         }
 
         /// -----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeleteModulePermissionsByUser(UserInfo user)
         {
-            _provider.DeleteModulePermissionsByUser(user);
+            Provider.DeleteModulePermissionsByUser(user);
             DataCache.ClearModulePermissionsCachesByPortal(user.PortalID);
         }
 
@@ -125,7 +125,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static ModulePermissionCollection GetModulePermissions(int moduleId, int tabId)
         {
-            return _provider.GetModulePermissions(moduleId, tabId);
+            return Provider.GetModulePermissions(moduleId, tabId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
         {
-            return _provider.HasModulePermission(modulePermissions, permissionKey);
+            return Provider.HasModulePermission(modulePermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -159,7 +159,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
-            return _provider.HasModuleAccess(accessLevel, permissionKey, moduleConfiguration);
+            return Provider.HasModuleAccess(accessLevel, permissionKey, moduleConfiguration);
         }
 
         /// -----------------------------------------------------------------------------
@@ -170,7 +170,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void SaveModulePermissions(ModuleInfo module)
         {
-            _provider.SaveModulePermissions(module);
+            Provider.SaveModulePermissions(module);
             DataCache.ClearModulePermissionsCache(module.TabID);
         }
 

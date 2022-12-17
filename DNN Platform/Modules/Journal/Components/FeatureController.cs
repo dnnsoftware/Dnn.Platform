@@ -44,6 +44,9 @@ namespace DotNetNuke.Modules.Journal.Components
     // uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureController"/> class.
+        /// </summary>
         public FeatureController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -115,6 +118,7 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
+        /// <inheritdoc/>
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new Dictionary<string, SearchDocument>();
@@ -201,6 +205,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return searchDocuments.Values.ToList();
         }
 
+        /// <inheritdoc/>
         public bool HasViewPermission(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
@@ -257,6 +262,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return false;
         }
 
+        /// <inheritdoc/>
         public string GetDocUrl(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))

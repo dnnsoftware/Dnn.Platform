@@ -423,4 +423,16 @@
   <data name="EditFolderMappings.Text" xml:space="preserve">
     <value>Edit Folder Mappings</value>
   </data>
+  <data name="GlobalAssets.Text" xml:space="preserve">
+    <value>Global Assets</value>
+  </data>
+  <data name="GroupAssets.Text" xml:space="preserve">
+    <value>{0} Assets</value>
+  </data>
+  <data name="SiteAssets.Text" xml:space="preserve">
+    <value>Site Assets</value>
+  </data>
+  <data name="UserAssets.Text" xml:space="preserve">
+    <value>{0} Assets</value>
+  </data>
 </root>

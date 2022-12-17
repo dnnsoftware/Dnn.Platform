@@ -20,14 +20,14 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNLocaleEditControl runat=server></{0}:DNNLocaleEditControl>")]
     public class DNNLocaleEditControl : TextEditControl, IPostBackEventHandler
     {
-        private string _DisplayMode = "Native";
-        private LanguagesListType _ListType = LanguagesListType.Enabled;
+        private string displayMode = "Native";
+        private LanguagesListType listType = LanguagesListType.Enabled;
 
         protected LanguagesListType ListType
         {
             get
             {
-                return this._ListType;
+                return this.listType;
             }
         }
 
@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this._DisplayMode;
+                return this.displayMode;
             }
         }
 
@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public void RaisePostBackEvent(string eventArgument)
         {
-            this._DisplayMode = eventArgument;
+            this.displayMode = eventArgument;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.WebControls
                     var listAtt = attribute as LanguagesListTypeAttribute;
                     if (listAtt != null)
                     {
-                        this._ListType = listAtt.ListType;
+                        this.listType = listAtt.ListType;
                         break;
                     }
                 }

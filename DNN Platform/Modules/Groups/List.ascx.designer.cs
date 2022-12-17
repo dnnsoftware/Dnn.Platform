@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class List {
-        
         /// <summary>
         /// panelSearch control.
         /// </summary>
@@ -24,7 +23,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panelSearch;
-        
         /// <summary>
         /// txtFilter control.
         /// </summary>
@@ -33,7 +31,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFilter;
-        
         /// <summary>
         /// btnSearch control.
         /// </summary>
@@ -42,7 +39,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSearch;
-        
         /// <summary>
         /// reqSearch control.
         /// </summary>
@@ -51,7 +47,6 @@ namespace DotNetNuke.Modules.Groups {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator reqSearch;
-        
         /// <summary>
         /// ctlGroupList control.
         /// </summary>

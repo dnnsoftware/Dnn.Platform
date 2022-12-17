@@ -209,7 +209,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public class UserCreatedEventArgs
         {
-            private UserCreateStatus _createStatus = UserCreateStatus.Success;
+            private UserCreateStatus createStatus = UserCreateStatus.Success;
 
             /// -----------------------------------------------------------------------------
             /// <summary>
@@ -232,12 +232,12 @@ namespace DotNetNuke.Entities.Modules
             {
                 get
                 {
-                    return this._createStatus;
+                    return this.createStatus;
                 }
 
                 set
                 {
-                    this._createStatus = value;
+                    this.createStatus = value;
                 }
             }
 

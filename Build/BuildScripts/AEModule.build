@@ -1,14 +1,12 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" 
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.props')" />
-  <Import Project="..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.17\build\Yarn.MSBuild.targets')" />
 
   <PropertyGroup>
     <ResourceZipWorkingDirectory>$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar</ResourceZipWorkingDirectory>
     <WorkingDirectory>$(RootDirectory)</WorkingDirectory>
   </PropertyGroup>
 
-  <Target Name="AfterBuild" DependsOnTargets="RunYarn;CopyBin;GetFiles;DebugProject;Package"></Target>
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package"></Target>
   <Target Name="GetFiles">
     <ItemGroup>
       <PersonaBar-views Include="admin/personaBar/**/*.html" />
@@ -33,19 +31,5 @@
     <Copy SourceFiles="@(PersonaBar-images)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
     <Copy SourceFiles="@(PersonaBar-scripts)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
     <Copy SourceFiles="@(PersonaBar-css)" DestinationFolder="$(ModuleFolderName)\%(RecursiveDir)" />
-  </Target>
-  <Target Name="RunYarn" Condition="$(YarnWorkingDirectory.Length) > 0 AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <ItemGroup>
-      <_YarnWorkingDirectory Include="$(YarnWorkingDirectory)" Exclude="**/node_modules/**/*" />
-    </ItemGroup>
-
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunYarnWorkspace" Properties="WorkingDirectory=%(_YarnWorkingDirectory.RootDir)%(_YarnWorkingDirectory.Directory);" />
-  </Target>
-
-  <Target Name="RunYarnWorkspace">
-    <Message Importance="high" Text="Running Yarn for $(WorkingDirectory)" />
-
-    <Yarn Command="install --no-immutable" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
-    <Yarn Command="build" WorkingDirectory="$(WorkingDirectory)" IgnoreExitCode="false" Condition="$(WorkingDirectory.Length) > 0" />
   </Target>
 </Project>

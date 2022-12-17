@@ -15,7 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class BreadCrumb {
-        
         /// <summary>
         /// lblBreadCrumb control.
         /// </summary>

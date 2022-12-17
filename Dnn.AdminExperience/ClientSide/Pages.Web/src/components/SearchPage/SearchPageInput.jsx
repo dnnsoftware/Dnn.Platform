@@ -44,7 +44,7 @@ class SearchPageInput extends Component {
                             value={this.state.searchTerm}
                             onChange={this.onSearchFieldChange.bind(this)}
                             onKeyPress={(e) => { e.key === "Enter" ? this.props.onSearch(this.state.searchTerm) : null; }}
-                            placeholder="Search" />
+                            placeholder={Localization.get("Search")} />
                     </div>
                     {this.state.searchTerm ?
                         <div

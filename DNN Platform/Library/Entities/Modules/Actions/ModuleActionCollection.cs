@@ -102,77 +102,77 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
-        /// <param name="ID">This is the identifier to use for this action.</param>
-        /// <param name="Title">This is the title that will be displayed for this action.</param>
-        /// <param name="CmdName">The command name passed to the client when this action is
+        /// <param name="iD">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is
         /// clicked.</param>
         /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// <remarks>This method creates a new <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> with the specified
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         /// -----------------------------------------------------------------------------
-        public ModuleAction Add(int ID, string Title, string CmdName)
+        public ModuleAction Add(int iD, string title, string cmdName)
         {
-            return this.Add(ID, Title, CmdName, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false);
+            return this.Add(iD, title, cmdName, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
-        /// <param name="ID">This is the identifier to use for this action.</param>
-        /// <param name="Title">This is the title that will be displayed for this action.</param>
-        /// <param name="CmdName">The command name passed to the client when this action is
+        /// <param name="iD">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is
         /// clicked.</param>
-        /// <param name="CmdArg">The command argument passed to the client when this action is
+        /// <param name="cmdArg">The command argument passed to the client when this action is
         /// clicked.</param>
-        /// <param name="Icon">The URL of the Icon to place next to this action.</param>
-        /// <param name="Url">The destination URL to redirect the client browser when this
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this
         /// action is clicked.</param>
-        /// <param name="UseActionEvent">Determines whether client will receive an event
+        /// <param name="useActionEvent">Determines whether client will receive an event
         /// notification.</param>
-        /// <param name="Secure">The security access level required for access to this action.</param>
-        /// <param name="Visible">Whether this action will be displayed.</param>
-        /// <param name="NewWindow">Whether open in new window.</param>
+        /// <param name="secure">The security access level required for access to this action.</param>
+        /// <param name="visible">Whether this action will be displayed.</param>
+        /// <param name="newWindow">Whether open in new window.</param>
         /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// <remarks>This method creates a new <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> with the specified
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         /// -----------------------------------------------------------------------------
-        public ModuleAction Add(int ID, string Title, string CmdName, string CmdArg, string Icon, string Url, bool UseActionEvent, SecurityAccessLevel Secure, bool Visible, bool NewWindow)
+        public ModuleAction Add(int iD, string title, string cmdName, string cmdArg, string icon, string url, bool useActionEvent, SecurityAccessLevel secure, bool visible, bool newWindow)
         {
-            return this.Add(ID, Title, CmdName, CmdArg, Icon, Url, string.Empty, UseActionEvent, Secure, Visible, NewWindow);
+            return this.Add(iD, title, cmdName, cmdArg, icon, url, string.Empty, useActionEvent, secure, visible, newWindow);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
-        /// <param name="ID">This is the identifier to use for this action.</param>
-        /// <param name="Title">This is the title that will be displayed for this action.</param>
-        /// <param name="CmdName">The command name passed to the client when this action is
+        /// <param name="iD">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is
         /// clicked.</param>
-        /// <param name="CmdArg">The command argument passed to the client when this action is
+        /// <param name="cmdArg">The command argument passed to the client when this action is
         /// clicked.</param>
-        /// <param name="Icon">The URL of the Icon to place next to this action.</param>
-        /// <param name="Url">The destination URL to redirect the client browser when this
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this
         /// action is clicked.</param>
-        /// <param name="ClientScript">Client side script to be run when the this action is
+        /// <param name="clientScript">Client side script to be run when the this action is
         /// clicked.</param>
-        /// <param name="UseActionEvent">Determines whether client will receive an event
+        /// <param name="useActionEvent">Determines whether client will receive an event
         /// notification.</param>
-        /// <param name="Secure">The security access level required for access to this action.</param>
-        /// <param name="Visible">Whether this action will be displayed.</param>
-        /// <param name="NewWindow">Whether open in new window.</param>
+        /// <param name="secure">The security access level required for access to this action.</param>
+        /// <param name="visible">Whether this action will be displayed.</param>
+        /// <param name="newWindow">Whether open in new window.</param>
         /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// <remarks>This method creates a new <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> with the specified
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         ///
         /// -----------------------------------------------------------------------------
-        public ModuleAction Add(int ID, string Title, string CmdName, string CmdArg, string Icon, string Url, string ClientScript, bool UseActionEvent, SecurityAccessLevel Secure, bool Visible,
-                                bool NewWindow)
+        public ModuleAction Add(int iD, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible,
+                                bool newWindow)
         {
-            var ModAction = new ModuleAction(ID, Title, CmdName, CmdArg, Icon, Url, ClientScript, UseActionEvent, Secure, Visible, NewWindow);
-            this.Add(ModAction);
-            return ModAction;
+            var modAction = new ModuleAction(iD, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, secure, visible, newWindow);
+            this.Add(modAction);
+            return modAction;
         }
 
         /// -----------------------------------------------------------------------------

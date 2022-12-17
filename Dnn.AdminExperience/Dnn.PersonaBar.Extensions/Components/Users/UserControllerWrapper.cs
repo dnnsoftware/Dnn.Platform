@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Users.Components
 
     public class UserControllerWrapper : IUserControllerWrapper
     {
+
         public UserInfo GetUserById(int portalId, int userId)
         {
             return UserController.GetUserById(portalId, userId);

@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return result.ToString();
         }
 
-        public virtual void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
+        public virtual void AuthenticateUser(UserData user, PortalSettings settings, string ipAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
         {
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             objUserInfo = UserController.ValidateUser(settings.PortalId, userName, string.Empty,
                                                                 this.Service, token,
-                                                                settings.PortalName, IPAddress,
+                                                                settings.PortalName, ipAddress,
                                                                 ref loginStatus);
 
             // Raise UserAuthenticated Event
@@ -618,11 +618,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
                 if (!string.IsNullOrEmpty(this.OAuthHeaderCode))
                 {
-                    byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret);
-                    string Api64Encoded = System.Convert.ToBase64String(API64);
+                    byte[] api64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret);
+                    string api64Encoded = System.Convert.ToBase64String(api64);
 
                     // Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
-                    request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded);
+                    request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + api64Encoded);
                 }
 
                 if (!string.IsNullOrEmpty(parameters))

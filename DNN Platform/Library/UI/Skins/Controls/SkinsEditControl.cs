@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Skins.Controls
     [ToolboxData("<{0}:SkinsEditControl runat=server></{0}:SkinsEditControl>")]
     public class SkinsEditControl : EditControl, IPostBackEventHandler
     {
-        private string _AddedItem = Null.NullString;
+        private string addedItem = Null.NullString;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,9 +66,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 string strValue = Null.NullString;
                 if (this.OldDictionaryValue != null)
                 {
-                    foreach (string Skin in this.OldDictionaryValue.Values)
+                    foreach (string skin in this.OldDictionaryValue.Values)
                     {
-                        strValue += Skin + ",";
+                        strValue += skin + ",";
                     }
                 }
 
@@ -127,9 +127,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 string strValue = Null.NullString;
                 if (this.DictionaryValue != null)
                 {
-                    foreach (string Skin in this.DictionaryValue.Values)
+                    foreach (string skin in this.DictionaryValue.Values)
                     {
-                        strValue += Skin + ",";
+                        strValue += skin + ",";
                     }
                 }
 
@@ -146,12 +146,12 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return this._AddedItem;
+                return this.addedItem;
             }
 
             set
             {
-                this._AddedItem = value;
+                this.addedItem = value;
             }
         }
 

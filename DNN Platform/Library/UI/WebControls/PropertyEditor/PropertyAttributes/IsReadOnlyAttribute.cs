@@ -8,7 +8,7 @@ namespace DotNetNuke.UI.WebControls
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class IsReadOnlyAttribute : Attribute
     {
-        private readonly bool _IsReadOnly;
+        private readonly bool isReadOnly;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IsReadOnlyAttribute"/> class.
@@ -16,14 +16,14 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="read">A boolean that indicates whether the property is ReadOnly.</param>
         public IsReadOnlyAttribute(bool read)
         {
-            this._IsReadOnly = read;
+            this.isReadOnly = read;
         }
 
         public bool IsReadOnly
         {
             get
             {
-                return this._IsReadOnly;
+                return this.isReadOnly;
             }
         }
     }

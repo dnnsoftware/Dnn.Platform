@@ -95,6 +95,7 @@ namespace Dnn.PersonaBar.Security.Components
             {
                 // suppress any unexpected error
             }
+
             return null;
         }
 
@@ -140,7 +141,6 @@ namespace Dnn.PersonaBar.Security.Components
                 {
                     while (dr.Read())
                     {
-
                         results.Add(new
                         {
                             ColumnName = dr["ColumnName"],
@@ -153,6 +153,7 @@ namespace Dnn.PersonaBar.Security.Components
             {
                 // ignore
             }
+
             return results;
         }
 
@@ -183,7 +184,7 @@ namespace Dnn.PersonaBar.Security.Components
             {
                 using (var stream = File.OpenRead(fileName))
                 {
-                    return BitConverter.ToString(cryptographyProvider.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+                    return BitConverter.ToString(cryptographyProvider.ComputeHash(stream)).Replace("-", string.Empty).ToLowerInvariant();
                 }
             }
         }
@@ -242,7 +243,6 @@ namespace Dnn.PersonaBar.Security.Components
             .Select(f => new FileInfo(f))
             .OrderByDescending(f => f.LastWriteTime)
             .Take(ModifiedFilesCount).ToList();
-
         }
 
         private static bool FileContainsText(string name, string searchText)

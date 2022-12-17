@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class SearchQueryAnalyzer : Analyzer
     {
-        private readonly bool _useStemmingFilter;
+        private readonly bool useStemmingFilter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchQueryAnalyzer"/> class.
@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="useStemmingFilter"></param>
         public SearchQueryAnalyzer(bool useStemmingFilter)
         {
-            this._useStemmingFilter = useStemmingFilter;
+            this.useStemmingFilter = useStemmingFilter;
         }
 
         /// <inheritdoc/>
@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Search.Internals
                                     new StandardTokenizer(Constants.LuceneVersion, reader)),
                                 wordLengthMinMax.Item1, wordLengthMinMax.Item2)));
 
-            if (!this._useStemmingFilter)
+            if (!this.useStemmingFilter)
             {
                 return filter;
             }

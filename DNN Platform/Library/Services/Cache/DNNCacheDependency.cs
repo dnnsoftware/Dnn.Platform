@@ -14,11 +14,11 @@ namespace DotNetNuke.Services.Cache
     /// </remarks>
     public class DNNCacheDependency : IDisposable
     {
-        private readonly DateTime _utcStart = DateTime.MaxValue;
-        private DNNCacheDependency _cacheDependency;
-        private string[] _cacheKeys;
-        private string[] _fileNames;
-        private CacheDependency _systemCacheDependency;
+        private readonly DateTime utcStart = DateTime.MaxValue;
+        private DNNCacheDependency cacheDependency;
+        private string[] cacheKeys;
+        private string[] fileNames;
+        private CacheDependency systemCacheDependency;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class.
@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Cache
         /// <param name="systemCacheDependency">The system cache dependency.</param>
         public DNNCacheDependency(CacheDependency systemCacheDependency)
         {
-            this._systemCacheDependency = systemCacheDependency;
+            this.systemCacheDependency = systemCacheDependency;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Cache
         /// <param name="filename"></param>
         public DNNCacheDependency(string filename)
         {
-            this._fileNames = new[] { filename };
+            this.fileNames = new[] { filename };
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Cache
         /// <param name="filenames">set the cache depend on muti files.</param>
         public DNNCacheDependency(string[] filenames)
         {
-            this._fileNames = filenames;
+            this.fileNames = filenames;
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string[] filenames, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
-            this._fileNames = filenames;
+            this.utcStart = start.ToUniversalTime();
+            this.fileNames = filenames;
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace DotNetNuke.Services.Cache
         /// <param name="cachekeys">The cachekeys.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys)
         {
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string filename, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
+            this.utcStart = start.ToUniversalTime();
             if (filename != null)
             {
-                this._fileNames = new[] { filename };
+                this.fileNames = new[] { filename };
             }
         }
 
@@ -94,9 +94,9 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
+            this.utcStart = start.ToUniversalTime();
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
         }
 
         /// <summary>
@@ -108,9 +108,9 @@ namespace DotNetNuke.Services.Cache
         /// <param name="dependency">The dependency.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys, DNNCacheDependency dependency)
         {
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
-            this._cacheDependency = dependency;
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
+            this.cacheDependency = dependency;
         }
 
         /// <summary>
@@ -124,10 +124,10 @@ namespace DotNetNuke.Services.Cache
         /// <param name="start">The start.</param>
         public DNNCacheDependency(string[] filenames, string[] cachekeys, DNNCacheDependency dependency, DateTime start)
         {
-            this._utcStart = start.ToUniversalTime();
-            this._fileNames = filenames;
-            this._cacheKeys = cachekeys;
-            this._cacheDependency = dependency;
+            this.utcStart = start.ToUniversalTime();
+            this.fileNames = filenames;
+            this.cacheKeys = cachekeys;
+            this.cacheDependency = dependency;
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                return this._cacheKeys;
+                return this.cacheKeys;
             }
         }
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                return this._fileNames;
+                return this.fileNames;
             }
         }
 
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                return this._cacheDependency;
+                return this.cacheDependency;
             }
         }
 
@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                return this._utcStart;
+                return this.utcStart;
             }
         }
 
@@ -195,19 +195,19 @@ namespace DotNetNuke.Services.Cache
         {
             get
             {
-                if (this._systemCacheDependency == null)
+                if (this.systemCacheDependency == null)
                 {
-                    if (this._cacheDependency == null)
+                    if (this.cacheDependency == null)
                     {
-                        this._systemCacheDependency = new CacheDependency(this._fileNames, this._cacheKeys, this._utcStart);
+                        this.systemCacheDependency = new CacheDependency(this.fileNames, this.cacheKeys, this.utcStart);
                     }
                     else
                     {
-                        this._systemCacheDependency = new CacheDependency(this._fileNames, this._cacheKeys, this._cacheDependency.SystemCacheDependency, this._utcStart);
+                        this.systemCacheDependency = new CacheDependency(this.fileNames, this.cacheKeys, this.cacheDependency.SystemCacheDependency, this.utcStart);
                     }
                 }
 
-                return this._systemCacheDependency;
+                return this.systemCacheDependency;
             }
         }
 
@@ -236,20 +236,20 @@ namespace DotNetNuke.Services.Cache
         {
             if (disposing)
             {
-                if (this._cacheDependency != null)
+                if (this.cacheDependency != null)
                 {
-                    this._cacheDependency.Dispose(disposing);
+                    this.cacheDependency.Dispose(disposing);
                 }
 
-                if (this._systemCacheDependency != null)
+                if (this.systemCacheDependency != null)
                 {
-                    this._systemCacheDependency.Dispose();
+                    this.systemCacheDependency.Dispose();
                 }
 
-                this._fileNames = null;
-                this._cacheKeys = null;
-                this._cacheDependency = null;
-                this._systemCacheDependency = null;
+                this.fileNames = null;
+                this.cacheKeys = null;
+                this.cacheDependency = null;
+                this.systemCacheDependency = null;
             }
         }
     }

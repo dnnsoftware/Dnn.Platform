@@ -21,6 +21,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     public class FileContentTypeManagerTests
     {
         [SetUp]
+
         public void Setup()
         {
             var serviceCollection = new ServiceCollection();

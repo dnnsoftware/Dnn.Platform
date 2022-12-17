@@ -19,6 +19,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public class BusinessController : IUpgradeable
     {
+        /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -32,15 +33,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                     {
                         UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                     }
+
                     break;
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         private static string UpdateTelerikEncryptionKey(string keyName)
         {
-            var strError = "";
+            var strError = string.Empty;
             var currentKey = Config.GetSetting(keyName);
             if (string.IsNullOrEmpty(currentKey) || currentKey.Length < 40)
             {
@@ -69,6 +71,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     strError += ex.Message;
                 }
             }
+
             return strError;
         }
 

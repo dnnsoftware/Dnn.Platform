@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Content
     /// </example>
     public class ContentTypeController : IContentTypeController
     {
-        private readonly IDataService _DataService;
+        private readonly IDataService dataService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeController"/> class.
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Content
         /// <param name="dataService"></param>
         public ContentTypeController(IDataService dataService)
         {
-            this._DataService = dataService;
+            this.dataService = dataService;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            contentType.ContentTypeId = this._DataService.AddContentType(contentType);
+            contentType.ContentTypeId = this.dataService.AddContentType(contentType);
 
             // Refresh cached collection of types
             this.ClearContentTypeCache();
@@ -91,7 +91,7 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
-            this._DataService.DeleteContentType(contentType);
+            this.dataService.DeleteContentType(contentType);
 
             // Refresh cached collection of types
             this.ClearContentTypeCache();
@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Content
                 DataCache.ContentTypesCacheKey,
                 DataCache.ContentTypesCacheTimeOut,
                 DataCache.ContentTypesCachePriority),
-                c => CBO.FillQueryable<ContentType>(this._DataService.GetContentTypes()).ToList()).AsQueryable();
+                c => CBO.FillQueryable<ContentType>(this.dataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            this._DataService.UpdateContentType(contentType);
+            this.dataService.UpdateContentType(contentType);
 
             // Refresh cached collection of types
             this.ClearContentTypeCache();

@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private const string UseSSLKey = "UseSSLForCacheSync";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
-        private readonly PerformanceController _performanceController = new PerformanceController();
+        private readonly PerformanceController performanceController = new PerformanceController();
 
         /// GET: api/Servers/GetPerformanceSettings
         /// <summary>
@@ -40,6 +40,7 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <param></param>
         /// <returns>performance settings.</returns>
         [HttpGet]
+
         public HttpResponseMessage GetPerformanceSettings()
         {
             try
@@ -49,7 +50,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     PortalName = PortalSettings.Current.PortalName,
 
-                    CachingProvider = this._performanceController.GetCachingProvider(),
+                    CachingProvider = this.performanceController.GetCachingProvider(),
                     PageStatePersistence = Host.PageStatePersister,
                     ModuleCacheProvider = Host.ModuleCachingMethod,
                     PageCacheProvider = Host.PageCachingMethod,
@@ -69,13 +70,13 @@ namespace Dnn.PersonaBar.Servers.Services
                     PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
 
                     // Options
-                    CachingProviderOptions = this._performanceController.GetCachingProviderOptions(),
-                    PageStatePersistenceOptions = this._performanceController.GetPageStatePersistenceOptions(),
-                    ModuleCacheProviders = this._performanceController.GetModuleCacheProviders(),
-                    PageCacheProviders = this._performanceController.GetPageCacheProviders(),
-                    CacheSettingOptions = this._performanceController.GetCacheSettingOptions(),
-                    AuthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
-                    UnauthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
+                    CachingProviderOptions = this.performanceController.GetCachingProviderOptions(),
+                    PageStatePersistenceOptions = this.performanceController.GetPageStatePersistenceOptions(),
+                    ModuleCacheProviders = this.performanceController.GetModuleCacheProviders(),
+                    PageCacheProviders = this.performanceController.GetPageCacheProviders(),
+                    CacheSettingOptions = this.performanceController.GetCacheSettingOptions(),
+                    AuthCacheabilityOptions = this.performanceController.GetCacheabilityOptions(),
+                    UnauthCacheabilityOptions = this.performanceController.GetCacheabilityOptions(),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, perfSettings);
             }
@@ -93,6 +94,7 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage IncrementPortalVersion()
         {
             try
@@ -118,6 +120,7 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage IncrementHostVersion()
         {
             try
@@ -144,6 +147,7 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public HttpResponseMessage UpdatePerformanceSettings(UpdatePerfSettingsRequest request)
         {
             try
@@ -152,10 +156,11 @@ namespace Dnn.PersonaBar.Servers.Services
                 this.SaveCachingProvider(request.CachingProvider);
                 HostController.Instance.Update("PageStatePersister", request.PageStatePersistence);
                 HostController.Instance.Update("ModuleCaching", request.ModuleCacheProvider, false);
-                if (this._performanceController.GetPageCacheProviders().Any())
+                if (this.performanceController.GetPageCacheProviders().Any())
                 {
                     HostController.Instance.Update("PageCaching", request.PageCacheProvider, false);
                 }
+
                 HostController.Instance.Update("PerformanceSetting", request.CacheSetting, false);
 
                 Globals.PerformanceSettings perfSetting;

@@ -9,7 +9,7 @@ namespace DotNetNuke.Common.Utilities
 
     public class FileExtensionWhitelist
     {
-        private readonly List<string> _extensions;
+        private readonly List<string> extensions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileExtensionWhitelist"/> class.
@@ -19,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
         /// should not have an '.' in the extensions (e.g. txt,jpg,png,doc).</remarks>
         public FileExtensionWhitelist(string extensionList)
         {
-            this._extensions = EscapedString.Seperate(extensionList.ToLowerInvariant(), true).Select(item => "." + item).ToList();
+            this.extensions = EscapedString.Seperate(extensionList.ToLowerInvariant(), true).Select(item => "." + item).ToList();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this._extensions;
+                return this.extensions;
             }
         }
 
@@ -121,26 +121,26 @@ namespace DotNetNuke.Common.Utilities
 
         public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
         {
-            var filter = parentList._extensions;
-            return new FileExtensionWhitelist(string.Join(",", this._extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
+            var filter = parentList.extensions;
+            return new FileExtensionWhitelist(string.Join(",", this.extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
 
         private IEnumerable<string> CombineLists(IEnumerable<string> additionalExtensions)
         {
             if (additionalExtensions == null)
             {
-                return this._extensions;
+                return this.extensions;
             }
 
             // toList required to ensure that multiple enumerations of the list are possible
             var additionalExtensionsList = additionalExtensions.ToList();
             if (!additionalExtensionsList.Any())
             {
-                return this._extensions;
+                return this.extensions;
             }
 
             var normalizedExtensions = this.NormalizeExtensions(additionalExtensionsList);
-            return this._extensions.Union(normalizedExtensions);
+            return this.extensions.Union(normalizedExtensions);
         }
 
         private IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
