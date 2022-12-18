@@ -16,12 +16,14 @@ const { state } = createStore<{
     sortField?: SortFieldInfo;
     selectedItems: Item[];
     settings?: GetSettingsResponse;
+    canManageFolderTypes: boolean;
 }>({
     moduleId: -1,
     layout: "list",
     pageSize: 50,
     lastSearchRequestedPage: 1,
     selectedItems: [],
+    canManageFolderTypes: false,
 });
 
 export default state;
