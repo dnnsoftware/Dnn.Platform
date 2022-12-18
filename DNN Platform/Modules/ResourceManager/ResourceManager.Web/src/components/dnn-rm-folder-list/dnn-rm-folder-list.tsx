@@ -33,7 +33,6 @@ export class DnnRmFolderList {
   componentWillLoad() {
     this.getFolders()
     .then(() => {
-      console.log(state.rootFolders);
       this.itemsClient.getFolderContent(
         state.settings.HomeFolderId,
         0,
