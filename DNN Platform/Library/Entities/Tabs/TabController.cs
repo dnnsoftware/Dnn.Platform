@@ -1035,8 +1035,21 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
+        [Obsolete("This has been deprecated in favor of AddMissingLanguagesWithWarnings. Scheduled for removal in v11.0.0")]
         public void AddMissingLanguages(int portalId, int tabId)
         {
+            this.AddMissingLanguagesWithWarnings(portalId, tabId);
+        }
+
+        /// <summary>
+        /// Adds localized copies of the page in all missing languages.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="tabId"></param>
+        /// <returns>Whether all missing languages were added.</returns>
+        public bool AddMissingLanguagesWithWarnings(int portalId, int tabId)
+        {
+            var addedAllMissingLanguages = true;
             var currentTab = this.GetTab(tabId, portalId, false);
             if (currentTab.CultureCode != null)
             {
@@ -1066,12 +1079,26 @@ namespace DotNetNuke.Entities.Tabs
 
                         if (missing)
                         {
-                            this.CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
+                            bool isRootOrLocalizedParentExists = this.CanLocalizeTabToLocale(workingTab, locale);
+                            if (isRootOrLocalizedParentExists)
+                            {
+                                this.CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
+                            }
+                            else
+                            {
+                                addedAllMissingLanguages = false;
+                            }
                         }
                     }
                 }
+
+                // For newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+                this.UpdateChildTabLocalizedParents(portalId, tabId);
             }
+
+            return addedAllMissingLanguages;
         }
+
 
         /// <summary>
         /// Adds a tab.
@@ -1227,6 +1254,9 @@ namespace DotNetNuke.Entities.Tabs
                     this.CreateLocalizedCopyInternal(originalTab, subLocale, false, true);
                 }
             }
+
+            // For newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+            this.UpdateChildTabLocalizedParents(originalTab.PortalID, originalTab.TabID);
         }
 
         /// <summary>
@@ -1238,6 +1268,9 @@ namespace DotNetNuke.Entities.Tabs
         public void CreateLocalizedCopy(TabInfo originalTab, Locale locale, bool clearCache)
         {
             this.CreateLocalizedCopyInternal(originalTab, locale, true, clearCache);
+
+            // For newly localized parent tabs, its localized children need to be updated to point at their corresponding localized parents
+            this.UpdateChildTabLocalizedParents(originalTab.PortalID, originalTab.TabID);
         }
 
         /// <summary>
@@ -2484,6 +2517,27 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        /// <summary>
+        /// Checks if the page is root or has a localized parent.
+        /// If neither is true, then we cannot create localized version of the page for the given locale.
+        /// </summary>
+        /// <param name="tab">The tab to be checked.</param>
+        /// <param name="locale">The locale to be checked.</param>
+        /// <returns>Whether the tab can be localized to the locale.</returns>
+        private bool CanLocalizeTabToLocale(TabInfo tab, Locale locale)
+        {
+            // If root page, can be localized
+            if (Null.IsNull(tab.ParentId))
+            {
+                return true;
+            }
+
+            // Otherwise can be localized only if localized parent is found
+            TabInfo parent = this.GetTab(tab.ParentId, tab.PortalID, false);
+            TabInfo localizedParent = this.GetTabByCulture(parent.TabID, parent.PortalID, locale);
+            return localizedParent != null;
+        }
+
         private bool IsAdminTab(TabInfo tab)
         {
             var portal = PortalController.Instance.GetPortal(tab.PortalID);
@@ -2684,6 +2738,42 @@ namespace DotNetNuke.Entities.Tabs
             if (clearCache)
             {
                 this.ClearCache(originalTab.PortalID);
+            }
+        }
+
+
+        /// <summary>
+        /// If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="parentTabId"></param>
+        private void UpdateChildTabLocalizedParents(int portalId, int parentTabId)
+        {
+            var childTabs = GetTabsByParent(parentTabId, portalId);
+
+            foreach (var childTab in childTabs)
+            {
+                if (childTab.CultureCode == null)
+                {
+                    continue;
+                }
+
+                var locale = LocaleController.Instance.GetLocale(portalId, childTab.CultureCode);
+
+                if (locale == null)
+                {
+                    continue;
+                }
+
+                TabInfo localizedParent = this.GetTabByCulture(parentTabId, portalId, locale);
+                if (childTab.ParentId != localizedParent.TabID)
+                {
+                    childTab.ParentId = localizedParent.TabID;
+
+                    this.UpdateTab(childTab);
+
+                    this.UpdateChildTabLocalizedParents(portalId, childTab.TabID);
+                }
             }
         }
 

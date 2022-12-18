@@ -1,0 +1,89 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/*********************/
+/** ADD NOTES FIELD **/
+/*********************/
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}IPFilter' AND COLUMN_NAME='Notes')
+	BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}IPFilter
+			ADD Notes nvarchar(255) NULL
+	END
+GO
+
+/**************************/
+/** UpdateIPFilter SPROC **/
+/**************************/
+
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}UpdateIPFilter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateIPFilter]
+	@IPFilterID		int,
+	@IPAddress		nvarchar(50),
+	@SubnetMask		nvarchar(50),
+	@RuleType		tinyint,
+	@LastModifiedByUserID int,
+    @Notes          nvarchar(255)
+AS 
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}IPFilter 
+			SET 
+				IPAddress = @IPAddress,
+				SubnetMask = @SubnetMask,
+				RuleType = @RuleType,
+				LastModifiedByUserID = @LastModifiedByUserID,
+				LastModifiedOnDate = getdate(),
+                Notes = @Notes
+			WHERE IPFilterID = @IPFilterID
+	END
+GO
+
+/**************************/
+/** AddIPFilter SPROC **/
+/**************************/
+
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}AddIPFilter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddIPFilter]
+	@IPAddress nvarchar(50),
+	@SubnetMask nvarchar(50),
+	@RuleType tinyint,
+	@CreatedByUserID int,
+    @Notes nvarchar(255)
+AS 
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}IPFilter  
+		(
+		[IPAddress]
+           ,[SubnetMask]
+           ,[RuleType]
+           ,[CreatedByUserID]
+           ,[CreatedOnDate]
+           ,[LastModifiedByUserID]
+           ,[LastModifiedOnDate]
+           ,[Notes]
+		)  
+		VALUES  
+		( 
+			@IPAddress , 
+			@SubnetMask , 
+			@RuleType,
+			@CreatedByUserID , 
+			getdate() , 
+			@CreatedByUserID , 
+			getdate() ,
+            @Notes
+		) 
+		 
+		SELECT SCOPE_IDENTITY()
+	END
+GO

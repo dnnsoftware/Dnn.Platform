@@ -20,8 +20,8 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class User : UserControlBase
     {
-        protected HtmlTableRow confirmPasswordRow;
-        protected HtmlTableRow passwordRow;
+        protected HtmlTableRow ConfirmPasswordRow;
+        protected HtmlTableRow PasswordRow;
         protected Label lblUsername;
         protected Label lblUsernameAsterisk;
         protected LabelControl plConfirm;
@@ -278,8 +278,8 @@ namespace DotNetNuke.UI.UserControls
                         this.valPassword.Enabled = false;
                         this.valConfirm1.Enabled = false;
                         this.valConfirm2.Enabled = false;
-                        this.passwordRow.Visible = false;
-                        this.confirmPasswordRow.Visible = false;
+                        this.PasswordRow.Visible = false;
+                        this.ConfirmPasswordRow.Visible = false;
                         this.txtUsername.Visible = false;
                         this.valUsername.Enabled = false;
                         this.lblUsername.Visible = true;
@@ -294,8 +294,8 @@ namespace DotNetNuke.UI.UserControls
                         this.valPassword.Enabled = true;
                         this.valConfirm1.Enabled = true;
                         this.valConfirm2.Enabled = true;
-                        this.passwordRow.Visible = true;
-                        this.confirmPasswordRow.Visible = true;
+                        this.PasswordRow.Visible = true;
+                        this.ConfirmPasswordRow.Visible = true;
                     }
 
                     this.ViewState["ModuleId"] = Convert.ToString(this.ModuleId);

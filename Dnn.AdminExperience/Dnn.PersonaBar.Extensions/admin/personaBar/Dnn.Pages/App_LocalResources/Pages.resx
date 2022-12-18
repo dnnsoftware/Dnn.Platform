@@ -156,6 +156,9 @@
   <data name="Continue.Text" xml:space="preserve">
     <value>Continue</value>
   </data>
+  <data name="OnlyAddedSomeMissingLanguagesWarning.Text" xml:space="preserve">
+    <value>Done adding missing languages. Only languages belonging to the parent page were added.</value>
+  </data>
   <data name="UpdateLocalizationWarning.Text" xml:space="preserve">
     <value>Updating localization might take a few minutes depending on the number of modules. Please wait until the process finishes completely.</value>
   </data>

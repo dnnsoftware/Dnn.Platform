@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.UI;
-
 namespace DNNConnect.CKEditorProvider.Browser
 {
     using System;
@@ -20,6 +18,7 @@ namespace DNNConnect.CKEditorProvider.Browser
     using System.Web;
     using System.Web.Script.Services;
     using System.Web.Services;
+    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -2419,7 +2418,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                     fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
                 }
 
-                if (bIsImage)
+                if (!bIsImage)
+                {
+                    FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                }
+                else
                 {
                     int maxWidth = this.currentSettings.ResizeWidthUpload;
                     int maxHeight = this.currentSettings.ResizeHeightUpload;
@@ -2494,6 +2497,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                                     }
                                 }
                             }
+                            else
+                            {
+                                // fits within configured maximum dimensions
+                                FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                            }
                         }
                     }
                 }
@@ -2507,9 +2515,10 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
                 else
                 {
-                    this.Response.Write("<script type=\"text/javascript\">");
-                    this.Response.Write(this.GetJsUploadCode(fileName, MapUrl(uploadPhysicalPath)));
-                    this.Response.Write("</script>");
+                    var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
+                    this.Response.ClearContent();
+                    this.Response.ContentType = "application/json";
+                    this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");               
                 }
 
                 this.Response.End();

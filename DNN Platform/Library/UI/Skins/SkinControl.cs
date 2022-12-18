@@ -118,9 +118,9 @@ namespace DotNetNuke.UI.Skins
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.optHost.CheckedChanged += this.OptHost_CheckedChanged;
-            this.optSite.CheckedChanged += this.OptSite_CheckedChanged;
-            this.cmdPreview.Click += this.CmdPreview_Click;
+            this.optHost.CheckedChanged += this.optHost_CheckedChanged;
+            this.optSite.CheckedChanged += this.optSite_CheckedChanged;
+            this.cmdPreview.Click += this.cmdPreview_Click;
             try
             {
                 if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
@@ -180,17 +180,17 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        protected void OptHost_CheckedChanged(object sender, EventArgs e)
+        protected void optHost_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
         }
 
-        protected void OptSite_CheckedChanged(object sender, EventArgs e)
+        protected void optSite_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
         }
 
-        protected void CmdPreview_Click(object sender, EventArgs e)
+        protected void cmdPreview_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(this.SkinSrc))
             {

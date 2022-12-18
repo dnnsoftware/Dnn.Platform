@@ -3694,9 +3694,32 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetIPFilters");
         }
 
+        /// <summary>
+        /// Adds a new IP filter.
+        /// </summary>
+        /// <param name="ipAddress">The IP address.</param>
+        /// <param name="subnetMask">The subnet mask if the filter is for a range.</param>
+        /// <param name="ruleType">The type of rule (1 for Allow, 2 for Deny).</param>
+        /// <param name="createdByUserId">The ID of the acting user.</param>
+        /// <returns>The ID of the newly created IP Filter.</returns>
+        [Obsolete("Deprecated in v9.11.1. Use the overload that takes a notes string. Scheduled removal in v11.0.0.")]
         public virtual int AddIPFilter(string ipAddress, string subnetMask, int ruleType, int createdByUserId)
         {
-            return this.ExecuteScalar<int>("AddIPFilter", ipAddress, subnetMask, ruleType, createdByUserId);
+            return this.AddIPFilter(ipAddress, subnetMask, ruleType, createdByUserId, null);
+        }
+
+        /// <summary>
+        /// Adds a new IP filter.
+        /// </summary>
+        /// <param name="ipAddress">The IP address.</param>
+        /// <param name="subnetMask">The subnet mask if the filter is for a range.</param>
+        /// <param name="ruleType">The type of rule (1 for Allow, 2 for Deny).</param>
+        /// <param name="createdByUserId">The ID of the acting user.</param>
+        /// <param name="notes">Notes about this filter.</param>
+        /// <returns>The ID of the newly created IP Filter.</returns>
+        public virtual int AddIPFilter(string ipAddress, string subnetMask, int ruleType, int createdByUserId, string notes)
+        {
+            return this.ExecuteScalar<int>("AddIPFilter", ipAddress, subnetMask, ruleType, createdByUserId, notes);
         }
 
         public virtual void DeleteIPFilter(int ipFilterid)
@@ -3704,9 +3727,32 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("DeleteIPFilter", ipFilterid);
         }
 
+        /// <summary>
+        /// Updates an existing IP filter.
+        /// </summary>
+        /// <param name="ipFilterid">The ID of the IP Filter to update.</param>
+        /// <param name="ipAddress">The IP address for the filter.</param>
+        /// <param name="subnetMask">The IP mask to use for an IP range.</param>
+        /// <param name="ruleType">The type of filter (1 to allow, 2 to deny).</param>
+        /// <param name="lastModifiedByUserId">The ID of the acting user.</param>
+        [Obsolete("Deprecated in v9.11.1. Use the overload that takes a notes string. Scheduled removal in v11.0.0.")]
         public virtual void UpdateIPFilter(int ipFilterid, string ipAddress, string subnetMask, int ruleType, int lastModifiedByUserId)
         {
-            this.ExecuteNonQuery("UpdateIPFilter", ipFilterid, ipAddress, subnetMask, ruleType, lastModifiedByUserId);
+            this.UpdateIPFilter(ipFilterid, ipAddress, subnetMask, ruleType, lastModifiedByUserId, null);
+        }
+
+        /// <summary>
+        /// Updates an existing IP filter.
+        /// </summary>
+        /// <param name="ipFilterid">The ID of the IP Filter to update.</param>
+        /// <param name="ipAddress">The IP address for the filter.</param>
+        /// <param name="subnetMask">The IP mask to use for an IP range.</param>
+        /// <param name="ruleType">The type of filter (1 to allow, 2 to deny).</param>
+        /// <param name="lastModifiedByUserId">The ID of the acting user.</param>
+        /// <param name="notes">Notes about the filter.</param>
+        public virtual void UpdateIPFilter(int ipFilterid, string ipAddress, string subnetMask, int ruleType, int lastModifiedByUserId, string notes)
+        {
+            this.ExecuteNonQuery("UpdateIPFilter", ipFilterid, ipAddress, subnetMask, ruleType, lastModifiedByUserId, notes);
         }
 
         public virtual IDataReader GetIPFilter(int ipf)

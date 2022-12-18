@@ -15,18 +15,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "Tags.ascx";
         private readonly INavigationManager navigationManager;
 
-        private string addImageUrl = IconController.IconURL("Add");
-        private bool allowTagging = true;
-
-        private string cancelImageUrl = IconController.IconURL("Lt");
-        private string objectType = "Page";
-        private string repeatDirection = "Horizontal";
-
-        private string saveImageUrl = IconController.IconURL("Save");
-        private string separator = ",&nbsp;";
-        private bool showCategories = true;
-        private bool showTags = true;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Tags"/> class.
         /// </summary>
@@ -35,124 +23,25 @@ namespace DotNetNuke.UI.Skins.Controls
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        public string AddImageUrl
-        {
-            get
-            {
-                return this.AddImageUrl;
-            }
+        public string AddImageUrl { get; set; } = IconController.IconURL("Add");
 
-            set
-            {
-                this.AddImageUrl = value;
-            }
-        }
+        public bool AllowTagging { get; set; } = true;
 
-        public bool AllowTagging
-        {
-            get
-            {
-                return this.AllowTagging;
-            }
-
-            set
-            {
-                this.AllowTagging = value;
-            }
-        }
-
-        public string CancelImageUrl
-        {
-            get
-            {
-                return this.CancelImageUrl;
-            }
-
-            set
-            {
-                this.CancelImageUrl = value;
-            }
-        }
+        public string CancelImageUrl { get; set; } = IconController.IconURL("Lt");
 
         public string CssClass { get; set; }
 
-        public string ObjectType
-        {
-            get
-            {
-                return this.ObjectType;
-            }
+        public string ObjectType { get; set; } = "Page";
 
-            set
-            {
-                this.ObjectType = value;
-            }
-        }
+        public string RepeatDirection { get; set; } = "Horizontal";
 
-        public string RepeatDirection
-        {
-            get
-            {
-                return this.RepeatDirection;
-            }
+        public string SaveImageUrl { get; set; } = IconController.IconURL("Save");
 
-            set
-            {
-                this.RepeatDirection = value;
-            }
-        }
+        public string Separator { get; set; } = ",&nbsp;";
 
-        public string SaveImageUrl
-        {
-            get
-            {
-                return this.SaveImageUrl;
-            }
+        public bool ShowCategories { get; set; } = true;
 
-            set
-            {
-                this.SaveImageUrl = value;
-            }
-        }
-
-        public string Separator
-        {
-            get
-            {
-                return this.Separator;
-            }
-
-            set
-            {
-                this.Separator = value;
-            }
-        }
-
-        public bool ShowCategories
-        {
-            get
-            {
-                return this.ShowCategories;
-            }
-
-            set
-            {
-                this.ShowCategories = value;
-            }
-        }
-
-        public bool ShowTags
-        {
-            get
-            {
-                return this.ShowTags;
-            }
-
-            set
-            {
-                this.ShowTags = value;
-            }
-        }
+        public bool ShowTags { get; set; } = true;
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
