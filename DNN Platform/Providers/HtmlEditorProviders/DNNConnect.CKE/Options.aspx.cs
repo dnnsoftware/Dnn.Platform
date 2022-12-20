@@ -1,15 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-using System.Web.UI;
-
 namespace DNNConnect.CKEditorProvider
 {
     using System;
     using System.Globalization;
     using System.IO;
     using System.Web;
+    using System.Web.UI;
 
     using DNNConnect.CKEditorProvider.Controls;
     using DotNetNuke.Common;
