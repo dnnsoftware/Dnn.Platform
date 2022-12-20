@@ -14,7 +14,7 @@ namespace DotNetNuke.Build
     public sealed class Lifetime : FrostingLifetime<Context>
     {
         /// <inheritdoc/>
-        public override void Setup(Context context, ISetupContext setupContext)
+        public override void Setup(Context context)
         {
             context.IsRunningInCI = context.HasEnvironmentVariable("TF_BUILD");
             context.Information("Is Running in CI : {0}", context.IsRunningInCI);
