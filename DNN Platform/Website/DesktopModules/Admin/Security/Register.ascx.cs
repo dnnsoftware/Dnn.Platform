@@ -133,13 +133,15 @@ namespace DotNetNuke.Modules.Admin.Users
                 // UserName
                 if (!this.PortalSettings.Registration.UseEmailAsUserName)
                 {
+                    var userNameValidator =
+                        string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                            ? this.ExcludeTerms
+                            : this.PortalSettings.Registration.UserNameValidator;
                     this.AddField(
                         "Username",
                         string.Empty,
                         true,
-                        string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
-                            ? this.ExcludeTerms
-                            : this.PortalSettings.Registration.UserNameValidator,
+                        userNameValidator,
                         TextBoxMode.SingleLine);
                 }
 
@@ -196,13 +198,15 @@ namespace DotNetNuke.Modules.Admin.Users
                     switch (trimmedField)
                     {
                         case "Username":
+                            var userNameValidator =
+                                string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                                    ? this.ExcludeTerms
+                                    : this.PortalSettings.Registration.UserNameValidator;
                             this.AddField(
                                 "Username",
                                 string.Empty,
                                 true,
-                                string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
-                                    ? this.ExcludeTerms
-                                    : this.PortalSettings.Registration.UserNameValidator,
+                                userNameValidator,
                                 TextBoxMode.SingleLine);
                             break;
                         case "DisplayName":

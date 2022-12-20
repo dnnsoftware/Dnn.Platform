@@ -275,9 +275,7 @@ namespace DotNetNuke.Security.Membership
 
             var userName = PortalSecurity.Instance.InputFilter(
                 newUsername,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             if (!userName.Equals(newUsername))
             {
@@ -1238,24 +1236,16 @@ namespace DotNetNuke.Security.Membership
             var objSecurity = PortalSecurity.Instance;
             string firstName = objSecurity.InputFilter(
                 user.FirstName,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                       PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string lastName = objSecurity.InputFilter(
                 user.LastName,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string email = objSecurity.InputFilter(
                 user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                   PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                   PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string displayName = objSecurity.InputFilter(
                 user.DisplayName,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             if (displayName.Contains("<"))
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
@@ -1471,14 +1461,10 @@ namespace DotNetNuke.Security.Membership
             var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(
                 user.Username,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             string email = portalSecurity.InputFilter(
                 user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             MembershipCreateStatus status;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
@@ -1875,9 +1861,7 @@ namespace DotNetNuke.Security.Membership
             var portalSecurity = PortalSecurity.Instance;
             string email = portalSecurity.InputFilter(
                 user.Email,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             // Persist the Membership Properties to the AspNet Data Store
             MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);

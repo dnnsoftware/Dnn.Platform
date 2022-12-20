@@ -695,16 +695,12 @@ namespace DotNetNuke.Security.Roles
                     Localization.GetSystemMessage(
                         objUser.Profile.PreferredLocale,
                         portalSettings,
-                        "EMAIL_ROLE_" +
-                        UserRoleActionsCaption[(int)action] +
-                        "_SUBJECT",
+                        $"EMAIL_ROLE_{UserRoleActionsCaption[(int)action]}_SUBJECT",
                         objUser),
                 Body = Localization.GetSystemMessage(
                     objUser.Profile.PreferredLocale,
                     portalSettings,
-                    "EMAIL_ROLE_" +
-                    UserRoleActionsCaption[(int)action] +
-                    "_BODY",
+                    $"EMAIL_ROLE_{UserRoleActionsCaption[(int)action]}_BODY",
                     objUser,
                     Localization.GlobalResourceFile,
                     custom),

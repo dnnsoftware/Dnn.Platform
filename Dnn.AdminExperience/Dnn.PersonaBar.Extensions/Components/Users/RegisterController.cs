@@ -81,9 +81,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             var cleanUsername = PortalSecurity.Instance.InputFilter(
                 username,
-                PortalSecurity.FilterFlag.NoScripting |
-                                                      PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                      PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             if (!cleanUsername.Equals(username))
             {

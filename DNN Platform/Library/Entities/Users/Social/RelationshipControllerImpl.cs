@@ -96,8 +96,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             relationshipType.RelationshipTypeId = this.dataService.SaveRelationshipType(
                 relationshipType,
-                UserController.Instance.GetCurrentUserInfo().
-                                                                                        UserID);
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             // log event
             string logContent = string.Format(
@@ -245,8 +244,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             userRelationship.UserRelationshipId = this.dataService.SaveUserRelationship(
                 userRelationship,
-                UserController.Instance.GetCurrentUserInfo().
-                                                                                        UserID);
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             // log event
             string logContent = string.Format(

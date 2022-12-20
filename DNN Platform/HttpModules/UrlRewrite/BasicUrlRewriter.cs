@@ -683,15 +683,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.LoginTabId + "&" + requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.LoginTabId}&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.LoginTabId);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.LoginTabId}");
                                 }
                             }
                             else
@@ -700,16 +698,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID + "&ctl=login&" +
-                                                             requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=login&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID + "&ctl=login");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=login");
                                 }
                             }
 
@@ -724,16 +719,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.RegisterTabId + "&portalid=" + portalID + "&" +
-                                                             requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalID}&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.RegisterTabId + "&portalid=" + portalID);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.RegisterTabId}&portalid={portalID}");
                                 }
                             }
                             else
@@ -742,17 +734,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID +
-                                                             "&ctl=Register&" + requestQuery);
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Register&{requestQuery}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" +
-                                                             portal.HomeTabId + "&portalid=" + portalID +
-                                                             "&ctl=Register");
+                                        $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Register");
                                 }
                             }
 
@@ -765,15 +753,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Terms&" + requestQuery);
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Terms&{requestQuery}");
                             }
                             else
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Terms");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Terms");
                             }
 
                             return;
@@ -785,15 +771,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Privacy&" + requestQuery);
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Privacy&{requestQuery}");
                             }
                             else
                             {
                                 RewriterUtils.RewriteUrl(
                                     app.Context,
-                                    "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
-                                                         "&portalid=" + portalID + "&ctl=Privacy");
+                                    $"~/{Globals.glbDefaultPage}?TabID={portal.HomeTabId}&portalid={portalID}&ctl=Privacy");
                             }
 
                             return;
@@ -810,14 +794,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID +
-                                                             "&" + app.Request.Url.Query.TrimStart('?'));
+                                        $"~/{Globals.glbDefaultPage}?TabID={kvp.Value.TabID}&{app.Request.Url.Query.TrimStart('?')}");
                                 }
                                 else
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,
-                                        "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID);
+                                        $"~/{Globals.glbDefaultPage}?TabID={kvp.Value.TabID}");
                                 }
 
                                 return;

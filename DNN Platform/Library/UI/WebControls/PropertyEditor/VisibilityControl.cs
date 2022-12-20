@@ -284,14 +284,13 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var relationship in this.User.Social.Relationships)
             {
+                var selected = this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1;
                 this.RenderCheckboxItem(
                     writer,
                     ":relationship_",
                     relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
                     relationship.Name,
-                    this.Visibility.RelationshipVisibilities.Count(
-                        r => r.RelationshipId == relationship.RelationshipId) ==
-                    1);
+                    selected);
             }
         }
     }

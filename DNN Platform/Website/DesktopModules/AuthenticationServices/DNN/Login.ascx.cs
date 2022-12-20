@@ -277,9 +277,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 string userName = PortalSecurity.Instance.InputFilter(
                     this.txtUsername.Text,
-                    PortalSecurity.FilterFlag.NoScripting |
-                                        PortalSecurity.FilterFlag.NoAngleBrackets |
-                                        PortalSecurity.FilterFlag.NoMarkup);
+                    PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
                 // DNN-6093
                 // check if we use email address here rather than username

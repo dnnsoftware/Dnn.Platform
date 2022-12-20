@@ -919,12 +919,11 @@ namespace DotNetNuke.Entities.Urls
                         replaceSpaceWith = settings.ReplaceSpaceWith;
                     }
 
+                    var reason = tabPath.Contains(replaceSpaceWith) ? RedirectReason.Spaces_Replaced : RedirectReason.Custom_Redirect;
                     substituteRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         substituteRewritePath,
                         ActionType.Redirect301,
-                        tabPath.Contains(replaceSpaceWith)
-                                                                ? RedirectReason.Spaces_Replaced
-                                                                : RedirectReason.Custom_Redirect);
+                        reason);
                 }
 
                 // the preference variable determines what to do if a duplicate tab is found already in the dictionary

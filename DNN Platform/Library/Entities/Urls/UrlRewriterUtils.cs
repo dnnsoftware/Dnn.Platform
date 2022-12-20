@@ -144,19 +144,13 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Raw Url", result.RawUrl ?? "null");
                         log.AddProperty("Final Url", result.FinalUrl ?? "null");
 
-                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
-                                                                     ? result.RewritePath
-                                                                     : "[no rewrite]");
-                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
-                                                                    ? "[no redirect]"
-                                                                    : result.FinalUrl);
+                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath) ? result.RewritePath : "[no rewrite]");
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) ? "[no redirect]" : result.FinalUrl);
                         log.AddProperty("Action", result.Action.ToString());
                         log.AddProperty("Reason", result.Reason.ToString());
                         log.AddProperty("Portal Id", result.PortalId.ToString());
                         log.AddProperty("Tab Id", result.TabId.ToString());
-                        log.AddProperty("Http Alias", result.PortalAlias != null
-                                                                ? result.PortalAlias.HTTPAlias
-                                                                : "Null");
+                        log.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
 
                         if (result.DebugMessages != null)
                         {

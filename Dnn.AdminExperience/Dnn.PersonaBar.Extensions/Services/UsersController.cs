@@ -64,12 +64,16 @@ namespace Dnn.PersonaBar.Users.Services
                     RandomPassword = contract.RandomPassword,
                     IgnoreRegistrationMode = true,
                 };
+                
                 var userInfo = RegisterController.Instance.Register(settings);
-                return this.Request.CreateResponse(HttpStatusCode.OK, userInfo != null
-                    ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(
-                        this.PortalId,
-                        userInfo.UserId))
-                    : null);
+                UserBasicDto response = null;
+                if (userInfo != null)
+                {
+                    var userDetail = Components.UsersController.Instance.GetUserDetail(this.PortalId, userInfo.UserId);
+                    response = UserBasicDto.FromUserDetails(userDetail);
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {
