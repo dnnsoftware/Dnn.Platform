@@ -200,8 +200,13 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage),
-                                }, mediaTypeFormatter, "text/plain");
+                                    Message = string.Format(
+                                        GetLocalizedString("ErrorMessage"),
+                                        fileName,
+                                        errorMessage),
+                                },
+                                mediaTypeFormatter,
+                                "text/plain");
                         }
 
                         return this.Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
@@ -532,9 +537,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
-                                                        FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)),
-                                                        userInfo.UserID);
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
                     if (extract && extension.ToLowerInvariant() == "zip")
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);

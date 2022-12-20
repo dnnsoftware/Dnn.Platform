@@ -662,7 +662,8 @@ namespace DotNetNuke.Services.Install
             // Output the current time for the user
             CurrentStepActivity(string.Concat(
                 Localization.GetString("UpgradeStarted", LocalResourceFile),
-                ":", DateTime.Now.ToString()));
+                ":",
+                DateTime.Now.ToString()));
 
             foreach (var step in steps)
             {
@@ -858,9 +859,7 @@ namespace DotNetNuke.Services.Install
                     sslDomain = sslDomain.Substring(sslDomain.IndexOf("://") + 3);
                 }
 
-                var sslUrl = string.Format(
-                    "https://{0}{1}",
-                    sslDomain, this.Request.RawUrl);
+                var sslUrl = $"https://{sslDomain}{this.Request.RawUrl}";
 
                 this.Response.Redirect(sslUrl, true);
             }

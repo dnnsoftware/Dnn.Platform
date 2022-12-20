@@ -529,8 +529,7 @@ namespace DotNetNuke.UI
             return objTab.ParentId == ((TabInfo)objTabLookup[intStartTabId]).ParentId;
         }
 
-        private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
-                                       int intDepth, int intNavNodeOptions, IDictionary<string, DNNNode> nodesLookup)
+        private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions, IDictionary<string, DNNNode> nodesLookup)
         {
             PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             bool showHidden = (intNavNodeOptions & (int)NavNodeOptions.IncludeHiddenNodes) == (int)NavNodeOptions.IncludeHiddenNodes;

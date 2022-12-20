@@ -54,8 +54,12 @@ namespace DotNetNuke.Security.Roles
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
             var id = Provider.CreateRoleGroup(objRoleGroupInfo);
-            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
+            EventLogController.Instance.AddLog(
+                objRoleGroupInfo,
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                EventLogController.EventLogType.USER_ROLE_CREATED);
             return id;
         }
 
@@ -688,15 +692,19 @@ namespace DotNetNuke.Security.Roles
                 FromUserID = portalSettings.AdministratorId,
                 ToUserID = objUser.UserID,
                 Subject =
-                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, portalSettings,
-                                                  "EMAIL_ROLE_" +
-                                                  UserRoleActionsCaption[(int)action] +
-                                                  "_SUBJECT", objUser),
+                    Localization.GetSystemMessage(
+                        objUser.Profile.PreferredLocale,
+                        portalSettings,
+                        "EMAIL_ROLE_" +
+                        UserRoleActionsCaption[(int)action] +
+                        "_SUBJECT",
+                        objUser),
                 Body = Localization.GetSystemMessage(
                     objUser.Profile.PreferredLocale,
                     portalSettings,
                     "EMAIL_ROLE_" +
-                                                     UserRoleActionsCaption[(int)action] + "_BODY",
+                    UserRoleActionsCaption[(int)action] +
+                    "_BODY",
                     objUser,
                     Localization.GlobalResourceFile,
                     custom),

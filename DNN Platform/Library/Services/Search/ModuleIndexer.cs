@@ -76,9 +76,7 @@ namespace DotNetNuke.Services.Search
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024 * 2;
@@ -115,7 +113,9 @@ namespace DotNetNuke.Services.Search
                             {
                                 Logger.TraceFormat(
                                     "ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
-                                    searchItems.Count, module.DesktopModule.ModuleName, module.ModuleID);
+                                    searchItems.Count,
+                                    module.DesktopModule.ModuleName,
+                                    module.ModuleID);
                             }
 
                             if (searchDocuments.Count >= saveThreshold)

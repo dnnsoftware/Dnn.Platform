@@ -62,8 +62,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(
                 tabVersionDetail.TabVersionDetailId,
-                tabVersionDetail.TabVersionId, tabVersionDetail.ModuleId, tabVersionDetail.ModuleVersion,
-                tabVersionDetail.PaneName, tabVersionDetail.ModuleOrder, (int)tabVersionDetail.Action, createdByUserID,
+                tabVersionDetail.TabVersionId,
+                tabVersionDetail.ModuleId,
+                tabVersionDetail.ModuleVersion,
+                tabVersionDetail.PaneName,
+                tabVersionDetail.ModuleOrder,
+                (int)tabVersionDetail.Action,
+                createdByUserID,
                 modifiedByUserID);
             this.ClearCache(tabVersionDetail.TabVersionId);
         }

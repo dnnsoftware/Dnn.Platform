@@ -38,8 +38,13 @@ namespace DotNetNuke.Services.Personalization
             {
                 var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
                 profileData = CBO.GetCachedObject<string>(
-                     new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
-                     DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
+                    new CacheItemArgs(
+                        cacheKey,
+                        DataCache.UserPersonalizationCacheTimeout,
+                        DataCache.UserPersonalizationCachePriority,
+                        portalId,
+                        userId),
+                    GetCachedUserPersonalizationCallback);
             }
             else
             {
@@ -93,8 +98,10 @@ namespace DotNetNuke.Services.Personalization
                     DataCache.RemoveCache(cacheKey);
                     CBO.GetCachedObject<string>(
                         new CacheItemArgs(
-                        cacheKey,
-                        DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority), _ => profileData);
+                            cacheKey,
+                            DataCache.UserPersonalizationCacheTimeout,
+                            DataCache.UserPersonalizationCachePriority),
+                        _ => profileData);
                 }
                 else
                 {

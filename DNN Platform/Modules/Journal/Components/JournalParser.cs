@@ -115,8 +115,13 @@ namespace DotNetNuke.Modules.Journal.Components
             IList<JournalItem> journalList;
             if (this.JournalId > 0)
             {
-                var journal = JournalController.Instance.GetJournalItem(this.PortalSettings.PortalId, this.CurrentUser.UserID,
-                                                                        this.JournalId, false, false, true);
+                var journal = JournalController.Instance.GetJournalItem(
+                    this.PortalSettings.PortalId,
+                    this.CurrentUser.UserID,
+                    this.JournalId,
+                    false,
+                    false,
+                    true);
                 journalList = new List<JournalItem>();
                 if (journal != null)
                 {

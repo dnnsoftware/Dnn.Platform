@@ -224,8 +224,11 @@ namespace DotNetNuke.Framework
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, heading, message,
-                                                 ModuleMessage.ModuleMessageType.YellowWarning);
+                    UI.Skins.Skin.AddPageMessage(
+                        ctlSkin,
+                        heading,
+                        message,
+                        ModuleMessage.ModuleMessageType.YellowWarning);
                 }
                 else
                 {
@@ -512,8 +515,10 @@ namespace DotNetNuke.Framework
                         default:
                             control.LocalResourceFile = string.Concat(
                                 slaveModule.ModuleControl.ControlSrc.Replace(
-                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
-                                Localization.LocalResourceDirectory, "/",
+                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc),
+                                    string.Empty),
+                                Localization.LocalResourceDirectory,
+                                "/",
                                 Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                             break;
                     }
@@ -633,8 +638,8 @@ namespace DotNetNuke.Framework
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
-                string versionString = string.Format(" ({0} Version: {1})", DotNetNukeContext.Current.Application.Status,
-                                                     DotNetNukeContext.Current.Application.Version);
+                string versionString =
+                    $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
                 this.Title += versionString;
             }
 

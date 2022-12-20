@@ -70,8 +70,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc/>
-        public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive,
-                                                  string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
+        public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string thresholdTime, string thresholdTimeType, string mailFromAddress, string mailToAddress)
         {
             int intThreshold = -1;
             int intThresholdTime = -1;

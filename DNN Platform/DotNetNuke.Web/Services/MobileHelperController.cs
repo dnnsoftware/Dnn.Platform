@@ -85,8 +85,7 @@ namespace DotNetNuke.Web.Services
             {
                 var cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalId) + "_" +
                                desktopModule.DesktopModuleID;
-                var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut,
-                                             DataCache.DesktopModuleCachePriority, portalId, desktopModule);
+                var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule);
 
                 return CBO.GetCachedObject<IList<TabModule>>(args, GetTabModulesCallback);
             }
@@ -128,8 +127,7 @@ namespace DotNetNuke.Web.Services
             return tabModules;
         }
 
-        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs,
-            IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
+        private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs, IDictionary<int, TabInfo> tabsWithModule, IDictionary<int, TabInfo> tabsInOrder)
         {
             if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
             {

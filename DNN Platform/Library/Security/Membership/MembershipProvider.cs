@@ -176,16 +176,13 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc cref="IUserController.GetUsersAdvancedSearch" />
-        public virtual IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
-                                                    bool isAdmin, int pageIndex, int pageSize, string sortColumn,
-                                                    bool sortAscending, string propertyNames, string propertyValues)
+        public virtual IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId, bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames, string propertyValues)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc cref="IUserController.GetUsersBasicSearch" />
-        public virtual IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
-                                            bool sortAscending, string propertyName, string propertyValue)
+        public virtual IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyName, string propertyValue)
         {
             throw new NotImplementedException();
         }

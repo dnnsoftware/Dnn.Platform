@@ -57,9 +57,8 @@ namespace DotNetNuke.Common.Utilities
             string strToday = ClientAPI.GetSafeJSString(Localization.GetString("Today"));
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
-            return string.Concat("javascript:popupCal('Cal','", field.ClientID, "','", formatString, "','",
-                monthNameString, "','", dayNameString, "','", strToday, "','", strClose, "','", strCalendar, "',",
-                (int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek, ");");
+            return
+                $"javascript:popupCal('Cal','{field.ClientID}','{formatString}','{monthNameString}','{dayNameString}','{strToday}','{strClose}','{strCalendar}',{(int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek});";
         }
     }
 }

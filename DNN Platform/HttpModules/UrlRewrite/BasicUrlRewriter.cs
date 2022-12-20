@@ -457,8 +457,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     // create a new URL using the SendTo regex value
                     sendTo = RewriterUtils.ResolveUrl(
                         app.Context.Request.ApplicationPath,
-                        Regex.Replace(requestedPath, pattern, rules[ruleIndex].SendTo,
-                                                                    RegexOptions.IgnoreCase));
+                        Regex.Replace(
+                            requestedPath,
+                            pattern,
+                            rules[ruleIndex].SendTo,
+                            RegexOptions.IgnoreCase));
 
                     string parameters = objMatch.Groups[2].Value;
 
@@ -634,7 +637,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             tabID = TabController.GetTabByTabPath(
                                 portalID,
-                                tabPath.Replace("/", "//").Replace(".aspx", string.Empty), string.Empty);
+                                tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
+                                string.Empty);
                         }
 
                         // End of patch

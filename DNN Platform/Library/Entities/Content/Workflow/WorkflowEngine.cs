@@ -159,15 +159,19 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             // Add logs
             this.AddWorkflowCommentLog(contentItem, currentState, stateTransaction.UserId, stateTransaction.Message.UserComment);
-            this.AddWorkflowLog(contentItem, currentState,
+            this.AddWorkflowLog(
+                contentItem,
+                currentState,
                 currentState.StateID == workflow.FirstState.StateID
                     ? WorkflowLogType.DraftCompleted
-                    : WorkflowLogType.StateCompleted, stateTransaction.UserId);
+                    : WorkflowLogType.StateCompleted,
+                stateTransaction.UserId);
             this.AddWorkflowLog(
                 contentItem,
                 nextState.StateID == workflow.LastState.StateID
                     ? WorkflowLogType.WorkflowApproved
-                    : WorkflowLogType.StateInitiated, stateTransaction.UserId);
+                    : WorkflowLogType.StateInitiated,
+                stateTransaction.UserId);
 
             this.SendNotificationsToReviewers(contentItem, nextState, stateTransaction, WorkflowActionTypes.CompleteState, new PortalSettings(workflow.PortalID));
 
@@ -592,8 +596,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
         }
 
-        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
-            ActionMessage message, string notificationType)
+        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction, ActionMessage message, string notificationType)
         {
             var notification = new Notification
             {

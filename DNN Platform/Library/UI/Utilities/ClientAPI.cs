@@ -168,20 +168,17 @@ namespace DotNetNuke.UI.Utilities
             EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, strMinIconLoc, strMaxIconLoc, ePersistanceType, 5);
         }
 
-        public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType,
-                                        string strPersonalizationNamingCtr, string strPersonalizationKey)
+        public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType, string strPersonalizationNamingCtr, string strPersonalizationKey)
         {
             EnableMinMax(objButton, objContent, -1, blnDefaultMin, strMinIconLoc, strMaxIconLoc, ePersistanceType, 5, strPersonalizationNamingCtr, strPersonalizationKey);
         }
 
-        public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType,
-                                        int intAnimationFrames)
+        public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType, int intAnimationFrames)
         {
             EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, strMinIconLoc, strMaxIconLoc, ePersistanceType, intAnimationFrames, null, null);
         }
 
-        public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType,
-                                        int intAnimationFrames, string strPersonalizationNamingCtr, string strPersonalizationKey)
+        public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType, int intAnimationFrames, string strPersonalizationNamingCtr, string strPersonalizationKey)
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML))
             {

@@ -46,8 +46,12 @@ namespace DotNetNuke.Common.Utilities
                 if (len != fs.Length)
                 {
                     Logger.ErrorFormat(
-                        "Reading from " + filePath + " didn't read all data in buffer. " +
-                                      "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
+                        "Reading from " +
+                        filePath +
+                        " didn't read all data in buffer. " +
+                        "Requested to read {0} bytes, but was read {1} bytes",
+                        fs.Length,
+                        len);
                 }
 
                 // Create Zip Entry
@@ -553,8 +557,12 @@ namespace DotNetNuke.Common.Utilities
                 if (len != fs.Length)
                 {
                     Logger.ErrorFormat(
-                        "Reading from " + filePath + " didn't read all data in buffer. " +
-                                      "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
+                        "Reading from " +
+                        filePath +
+                        " didn't read all data in buffer. " +
+                        "Requested to read {0} bytes, but was read {1} bytes",
+                        fs.Length,
+                        len);
                 }
 
                 // Create Zip Entry

@@ -102,7 +102,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private static string GetSettingUrl(int portalId, int authSystemPackageId)
         {
-            return NavigationManager.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "EditExtension",
+            return NavigationManager.NavigateURL(
+                PortalSettings.Current.ActiveTab.TabID,
+                PortalSettings.Current,
+                "EditExtension",
                 "packageid=" + authSystemPackageId,
                 "popUp=true",
                 "mode=settings");

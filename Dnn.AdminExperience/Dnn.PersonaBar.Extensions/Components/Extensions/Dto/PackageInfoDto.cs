@@ -61,13 +61,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tabId = portalSettings.ActiveTab.TabID;
-            this.SiteSettingsLink = this.NavigationManager.NavigateURL(tabId, "EditExtension",
-                new[]
-                {
-                    $"packageid={this.PackageId}",
-                    "Display=editor",
-                    "popUp=true",
-                });
+            this.SiteSettingsLink = this.NavigationManager.NavigateURL(
+                tabId,
+                "EditExtension",
+                $"packageid={this.PackageId}",
+                "Display=editor",
+                "popUp=true");
         }
 
         [JsonProperty("packageId")]

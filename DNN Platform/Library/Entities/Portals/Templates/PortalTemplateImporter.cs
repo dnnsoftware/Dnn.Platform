@@ -944,8 +944,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
-                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
+        private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalSetup(
                 portalId,
@@ -1279,8 +1278,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             return roleId;
         }
 
-        private static int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency,
-                               bool isPublic, bool isAuto)
+        private static int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency, bool isPublic, bool isAuto)
         {
             RoleInfo objRoleInfo = new RoleInfo();
             objRoleInfo.PortalID = portalId;

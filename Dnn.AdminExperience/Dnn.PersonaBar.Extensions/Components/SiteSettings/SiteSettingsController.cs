@@ -37,8 +37,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
         }
 
-        public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString,
-            string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
+        public void SaveLocalizedKeys(int portalId, string propertyName, string propertyCategory, string cultureCode, string propertyNameString, string propertyHelpString, string propertyRequiredString, string propertyValidationString, string categoryNameString)
         {
             var portalResources = new XmlDocument { XmlResolver = null };
             var defaultResources = new XmlDocument { XmlResolver = null };
@@ -263,8 +262,13 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             if (providerNavigator != null)
             {
                 string providerPath = providerNavigator.GetAttribute("providerPath", string.Empty);
-                return this.CreatePackage(cultureCode, package, providerPackage.PackageID,
-                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"), fileName, createZip);
+                return this.CreatePackage(
+                    cultureCode,
+                    package,
+                    providerPackage.PackageID,
+                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"),
+                    fileName,
+                    createZip);
             }
             else
             {

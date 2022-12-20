@@ -53,9 +53,7 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <returns>Count of indexed records.</returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = BatchSize;
@@ -93,8 +91,7 @@ namespace DotNetNuke.Services.Search
                 IList<int> indexedUsers;
                 do
                 {
-                    rowsAffected = FindModifiedUsers(portalId, startDateLocal,
-                        searchDocuments, profileDefinitions, out indexedUsers, ref startUserId);
+                    rowsAffected = FindModifiedUsers(portalId, startDateLocal, searchDocuments, profileDefinitions, out indexedUsers, ref startUserId);
 
                     if (rowsAffected > 0 && searchDocuments.Count >= saveThreshold)
                     {
@@ -140,9 +137,7 @@ namespace DotNetNuke.Services.Search
             return totalIndexed;
         }
 
-        private static int FindModifiedUsers(int portalId, DateTime startDateLocal,
-            IDictionary<string, SearchDocument> searchDocuments, IList<ProfilePropertyDefinition> profileDefinitions, out IList<int> indexedUsers,
-            ref int startUserId)
+        private static int FindModifiedUsers(int portalId, DateTime startDateLocal, IDictionary<string, SearchDocument> searchDocuments, IList<ProfilePropertyDefinition> profileDefinitions, out IList<int> indexedUsers, ref int startUserId)
         {
             var rowsAffected = 0;
             indexedUsers = new List<int>();
@@ -259,9 +254,7 @@ namespace DotNetNuke.Services.Search
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
-                    UniqueKey =
-                        string.Format("{0}_{1}", userSearch.UserId,
-                            UserVisibilityMode.AllUsers).ToLowerInvariant(),
+                    UniqueKey = $"{userSearch.UserId}_{UserVisibilityMode.AllUsers}".ToLowerInvariant(),
                     PortalId = portalId,
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
@@ -286,9 +279,7 @@ namespace DotNetNuke.Services.Search
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
-                    UniqueKey =
-                        string.Format("{0}_{1}", userSearch.UserId,
-                            UserVisibilityMode.AdminOnly).ToLowerInvariant(),
+                    UniqueKey = $"{userSearch.UserId}_{UserVisibilityMode.AdminOnly}".ToLowerInvariant(),
                     PortalId = portalId,
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
@@ -351,7 +342,10 @@ namespace DotNetNuke.Services.Search
                 foreach (var userId in usersList)
                 {
                     var mode = Enum.GetName(typeof(UserVisibilityMode), item);
-                    keyword.AppendFormat("{2} {0}_{1} OR {0}_{1}* ", userId, mode,
+                    keyword.AppendFormat(
+                        "{2} {0}_{1} OR {0}_{1}* ",
+                        userId,
+                        mode,
                         keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
@@ -383,7 +377,9 @@ namespace DotNetNuke.Services.Search
                 },
             };
 
-            var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag,
+            var parserContent = new QueryParser(
+                Constants.LuceneVersion,
+                Constants.UniqueKeyTag,
                 new SearchQueryAnalyzer(true));
             var parsedQueryContent = parserContent.Parse(keyword.ToLowerInvariant());
             query.Add(parsedQueryContent, Occur.MUST);

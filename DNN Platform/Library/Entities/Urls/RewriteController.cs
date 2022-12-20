@@ -176,8 +176,7 @@ namespace DotNetNuke.Entities.Urls
                 // else
                 // {
                 if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
-                    (!Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex,
-                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)))
+                    !Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                 {
                     retVal = true;
                     result.CanRewrite = StateBoolean.True;
@@ -589,9 +588,14 @@ namespace DotNetNuke.Entities.Urls
                                             }
                                         }
 
-                                        RedirectTokens.DetermineRedirectReasonAndAction(newUrl, result, false, settings,
-                                                                                        out resultUrl, out reason,
-                                                                                        out action);
+                                        RedirectTokens.DetermineRedirectReasonAndAction(
+                                            newUrl,
+                                            result,
+                                            false,
+                                            settings,
+                                            out resultUrl,
+                                            out reason,
+                                            out action);
                                         newUrl = resultUrl;
                                         result.Reason = reason;
                                         result.Action = action;
@@ -1298,7 +1302,8 @@ namespace DotNetNuke.Entities.Urls
             var messages = new List<string>();
             Dictionary<int, SharedList<ParameterRewriteAction>> rewriteActions = CacheController.GetParameterRewrites(
                 urlAction.PortalId,
-                ref messages, parentTraceId);
+                ref messages,
+                parentTraceId);
             if (messages == null)
             {
                 messages = new List<string>();
@@ -1659,7 +1664,8 @@ namespace DotNetNuke.Entities.Urls
                             // see if there is a skin for the alias/culture combination
                             string skin = TabPathHelper.GetTabAliasSkinForTabAndAlias(
                                 portalAlias.PortalID,
-                                portalAlias.HTTPAlias, culture);
+                                portalAlias.HTTPAlias,
+                                culture);
                             if (string.IsNullOrEmpty(skin) == false)
                             {
                                 newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty, "skinSrc=" + skin);

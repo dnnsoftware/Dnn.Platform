@@ -1582,8 +1582,7 @@ namespace DotNetNuke.Services.FileSystem
             return TestableGlobals.Instance.HostMapPath;
         }
 
-        private void CheckFileAddingRestrictions(IFolderInfo folder, string fileName, bool checkPermissions,
-            bool ignoreWhiteList)
+        private void CheckFileAddingRestrictions(IFolderInfo folder, string fileName, bool checkPermissions, bool ignoreWhiteList)
         {
             if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
             {

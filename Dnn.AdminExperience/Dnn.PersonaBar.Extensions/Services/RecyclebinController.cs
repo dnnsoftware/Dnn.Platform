@@ -207,8 +207,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     }
 
                     string resultmessage;
-                    result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID,
-                        out resultmessage);
+                    result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID, out resultmessage);
                     errors.Append(resultmessage);
                 }
             }

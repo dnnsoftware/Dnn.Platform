@@ -919,8 +919,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template,
-                                string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             // Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
@@ -995,8 +994,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="childPath">The child path.</param>
         /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
-        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
-                                string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             // Attempt to create a new portal
             int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
@@ -1907,9 +1905,11 @@ namespace DotNetNuke.Entities.Portals
                 var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
                 dictionary = CBO.GetCachedObject<Dictionary<string, string>>(
                     new CacheItemArgs(
-                    cacheKey,
-                    DataCache.PortalSettingsCacheTimeOut,
-                    DataCache.PortalSettingsCachePriority, portalId, cultureCode),
+                        cacheKey,
+                        DataCache.PortalSettingsCacheTimeOut,
+                        DataCache.PortalSettingsCachePriority,
+                        portalId,
+                        cultureCode),
                     GetPortalSettingsDictionaryCallback,
                     true);
                 if (httpContext != null)
@@ -1980,8 +1980,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template,
-                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
+        private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
         {
             // Add default workflows
             try

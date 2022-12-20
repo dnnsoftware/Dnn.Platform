@@ -95,7 +95,8 @@ namespace DotNetNuke.Entities.Modules.Prompt
                         {
                             var defaultModule = ModuleController.Instance.GetModule(
                                 this.PortalSettings.DefaultModuleId,
-                                this.PortalSettings.DefaultTabId, true);
+                                this.PortalSettings.DefaultTabId,
+                                true);
                             if (defaultModule != null)
                             {
                                 objModule.CacheTime = defaultModule.CacheTime;

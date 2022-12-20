@@ -46,7 +46,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // MyResources.ascx.en-US.Portal-123.resx
         internal static readonly Regex FileInfoRegex = new Regex(
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
 

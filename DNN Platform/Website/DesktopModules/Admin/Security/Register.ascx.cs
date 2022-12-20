@@ -133,9 +133,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 // UserName
                 if (!this.PortalSettings.Registration.UseEmailAsUserName)
                 {
-                    this.AddField("Username", string.Empty, true,
-                            string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator) ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
-                            TextBoxMode.SingleLine);
+                    this.AddField(
+                        "Username",
+                        string.Empty,
+                        true,
+                        string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                            ? this.ExcludeTerms
+                            : this.PortalSettings.Registration.UserNameValidator,
+                        TextBoxMode.SingleLine);
                 }
 
                 // Password
@@ -191,9 +196,14 @@ namespace DotNetNuke.Modules.Admin.Users
                     switch (trimmedField)
                     {
                         case "Username":
-                            this.AddField("Username", string.Empty, true, string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
-                                                                ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
-                                                                        TextBoxMode.SingleLine);
+                            this.AddField(
+                                "Username",
+                                string.Empty,
+                                true,
+                                string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                                    ? this.ExcludeTerms
+                                    : this.PortalSettings.Registration.UserNameValidator,
+                                TextBoxMode.SingleLine);
                             break;
                         case "DisplayName":
                             this.AddField(trimmedField, string.Empty, true, this.ExcludeTerms, TextBoxMode.SingleLine);

@@ -127,9 +127,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 while (true)
                 {
-                    using (var reader = DataProvider.Instance()
-                                                    .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
-                                                        moduleInfo.TabModuleID, beginDateUtc, lastJournalId, Constants.SearchBatchSize))
+                    using (var reader = DataProvider.Instance().ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID, moduleInfo.TabModuleID, beginDateUtc, lastJournalId, Constants.SearchBatchSize))
                     {
                         var journalIds = new Dictionary<int, int>();
 

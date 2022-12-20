@@ -108,19 +108,19 @@ namespace DotNetNuke.Entities.Portals
             if (result != null && !string.IsNullOrEmpty(result.HttpAlias))
             {
                 // try to find exact match
-                foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
-                                                         (string.Compare(a.CultureCode, cultureCode,
-                                                             StringComparison.OrdinalIgnoreCase) == 0)
-                                                         && a.PortalID == portalId
-                                                         && a.HTTPAlias == result.HttpAlias);
+                foundAlias = aliasList.FirstOrDefault(
+                    a => a.BrowserType == browserType &&
+                         (string.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0) &&
+                         a.PortalID == portalId &&
+                         a.HTTPAlias == result.HttpAlias);
                 if (foundAlias == null)
                 {
                     // let us try again using StartsWith() to find matching Hosts
-                    foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
-                                                         (string.Compare(a.CultureCode, cultureCode,
-                                                             StringComparison.OrdinalIgnoreCase) == 0)
-                                                         && a.PortalID == portalId
-                                                         && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
+                    foundAlias = aliasList.FirstOrDefault(
+                        a => a.BrowserType == browserType &&
+                             (string.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0) &&
+                             a.PortalID == portalId &&
+                             a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
                 }
             }
 

@@ -529,8 +529,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         /// <inheritdoc/>
         [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
-        public void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body,
-                                             string comment, int userID)
+        public void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int userID)
         {
             var replacedSubject = this.ReplaceNotificationTokens(subject, null, null, null, settings.PortalId, userID);
             var replacedBody = this.ReplaceNotificationTokens(body, null, null, null, settings.PortalId, userID);

@@ -452,8 +452,14 @@ namespace DotNetNuke.UI.WebControls
             // with a single server or web-farm, the cache might be cleared
             // which will cause a problem in such case unless sticky sessions are used.
             var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
-            DataCache.SetCache(cacheKey, challenge, (DNNCacheDependency)null, DateTime.Now.AddSeconds(this.expiration + 1),
-                Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+            DataCache.SetCache(
+                cacheKey,
+                challenge,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(this.expiration + 1),
+                Cache.NoSlidingExpiration,
+                CacheItemPriority.AboveNormal,
+                null);
             return challenge;
         }
 

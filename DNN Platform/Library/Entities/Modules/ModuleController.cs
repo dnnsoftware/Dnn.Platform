@@ -750,8 +750,12 @@ namespace DotNetNuke.Entities.Modules
             }
 
             // Log deletion
-            EventLogController.Instance.AddLog("ModuleId", moduleId.ToString(CultureInfo.InvariantCulture), PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
+            EventLogController.Instance.AddLog(
+                "ModuleId",
+                moduleId.ToString(CultureInfo.InvariantCulture),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.MODULE_DELETED);
 
             // queue remove module from search index
             var document = new SearchDocumentToDelete
@@ -1622,7 +1626,9 @@ namespace DotNetNuke.Entities.Modules
                             {
                                 var moduleInfo = this.GetModule(moduleId, tabId, true);
                                 var userInfo = UserController.Instance.GetCurrentUserInfo();
-                                TabChangeTracker.Instance.TrackModuleModification(moduleInfo, Null.NullInteger,
+                                TabChangeTracker.Instance.TrackModuleModification(
+                                    moduleInfo,
+                                    Null.NullInteger,
                                     userInfo.UserID);
                             }
                         }
@@ -1670,7 +1676,10 @@ namespace DotNetNuke.Entities.Modules
                         dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                         EventLogController.AddSettingLog(
                             EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                            "TabModuleId", tabModuleId, settingName, settingValue,
+                            "TabModuleId",
+                            tabModuleId,
+                            settingName,
+                            settingValue,
                             currentUser.UserID);
                         UpdateTabModuleVersion(tabModuleId);
                     }
@@ -1680,7 +1689,10 @@ namespace DotNetNuke.Entities.Modules
                     dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(
                         EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
-                        "TabModuleId", tabModuleId, settingName, settingValue,
+                        "TabModuleId",
+                        tabModuleId,
+                        settingName,
+                        settingValue,
                         currentUser.UserID);
                     UpdateTabModuleVersion(tabModuleId);
                 }
@@ -2494,7 +2506,10 @@ namespace DotNetNuke.Entities.Modules
                     dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(
                         EventLogController.EventLogType.MODULE_SETTING_CREATED,
-                        "ModuleId", moduleId, settingName, settingValue,
+                        "ModuleId",
+                        moduleId,
+                        settingName,
+                        settingValue,
                         currentUser.UserID);
                 }
                 else if (existValue != settingValue)
@@ -2502,7 +2517,10 @@ namespace DotNetNuke.Entities.Modules
                     dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(
                         EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                        "ModuleId", moduleId, settingName, settingValue,
+                        "ModuleId",
+                        moduleId,
+                        settingName,
+                        settingValue,
                         currentUser.UserID);
                 }
 

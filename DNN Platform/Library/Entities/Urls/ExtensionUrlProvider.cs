@@ -95,7 +95,8 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>Querystring value in key=value format, which will be used as an input to the rewriting function.</returns>
         public abstract string TransformFriendlyUrlToQueryString(
             string[] urlParms,
-            int tabId, int portalId,
+            int tabId,
+            int portalId,
             FriendlyUrlOptions options,
             string cultureCode,
             PortalAliasInfo portalAlias,

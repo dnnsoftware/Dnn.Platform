@@ -306,11 +306,14 @@ namespace DotNetNuke.Services.Localization
 
         private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
-                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
-            return locales;
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            var languages = portalId > Null.NullInteger
+                ? DataProvider.Instance().GetLanguagesByPortal(portalId)
+                : DataProvider.Instance().GetLanguages();
+            return CBO.FillDictionary(
+                "CultureCode",
+                languages,
+                new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
         }
     }
 }

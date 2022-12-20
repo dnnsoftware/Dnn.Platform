@@ -101,8 +101,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                 {
                     var configs = this.GetConfigAsDictionary(postObject.configurations);
                     string customErrorMessage;
-                    var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated,
-                        out customErrorMessage);
+                    var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated, out customErrorMessage);
 
                     if (!saved)
                     {

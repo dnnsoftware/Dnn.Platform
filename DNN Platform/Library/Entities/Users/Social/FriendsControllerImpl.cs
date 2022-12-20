@@ -33,7 +33,8 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             RelationshipController.Instance.AcceptUserRelationship(friendRelationship.UserRelationshipId);
             NotificationsController.Instance.DeleteNotificationRecipient(
                 NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
-                friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), initiatingUser.UserID);
+                friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture),
+                initiatingUser.UserID);
 
             EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship, initiatingUser.PortalID));
         }
@@ -77,8 +78,10 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 return;
             }
 
-            var userRelationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
-                                        RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
+            var userRelationship = RelationshipController.Instance.InitiateUserRelationship(
+                initiatingUser,
+                targetUser,
+                RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
             AddFriendRequestNotification(initiatingUser, targetUser, userRelationship);
 
@@ -108,7 +111,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            var friend = RelationshipController.Instance.GetUserRelationship(initiatingUser, targetUser,
+            var friend = RelationshipController.Instance.GetUserRelationship(
+                initiatingUser,
+                targetUser,
                 RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
             RelationshipController.Instance.DeleteUserRelationship(friend);

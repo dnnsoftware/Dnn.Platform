@@ -158,7 +158,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     this.tabVersionSettings.SetEnabledVersioningForTab(
                         tab.TabID,
                         changeControlStateForTab.IsVersioningEnabledForTab);
-                    this.tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
+                    this.tabWorkflowSettings.SetWorkflowEnabled(
+                        tab.PortalID,
+                        tab.TabID,
                         changeControlStateForTab.IsWorkflowEnabledForTab);
                 }
             }
@@ -184,7 +186,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     var title = !string.IsNullOrEmpty(module.ModuleTitle)
                         ? module.ModuleTitle
                         : module.DesktopModule.FriendlyName;
-                    errorMessage = string.Format(this.LocalizeString("Service_RestoreModuleError"), title,
+                    errorMessage = string.Format(
+                        this.LocalizeString("Service_RestoreModuleError"),
+                        title,
                         deletedTabs.SingleOrDefault().TabName);
                     return false;
                 }

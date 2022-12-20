@@ -364,8 +364,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             var count = this.dataService.CountTotalConversations(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 
@@ -386,8 +390,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             var count = this.dataService.CountNewThreads(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 

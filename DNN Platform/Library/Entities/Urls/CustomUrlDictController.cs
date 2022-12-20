@@ -61,7 +61,8 @@ namespace DotNetNuke.Entities.Urls
                     cc.StoreFriendlyUrlIndexInCache(
                         urlDict,
                         urlPortals,
-                        customAliasForTabs, settings,
+                        customAliasForTabs,
+                        settings,
                         "Portal Id " + portalId.ToString() + " added to index.");
                 }
             }

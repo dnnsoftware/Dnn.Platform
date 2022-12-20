@@ -257,8 +257,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     var keywordQuery = new BooleanQuery();
                     foreach (var fieldToSearch in Constants.KeyWordSearchFields)
                     {
-                        var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch,
-                            fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
+                        var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch, fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
                         parserContent.AllowLeadingWildcard = allowLeadingWildcard;
                         var parsedQueryContent = parserContent.Parse(keywords);
                         keywordQuery.Add(parsedQueryContent, Occur.SHOULD);

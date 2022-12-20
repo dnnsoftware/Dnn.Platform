@@ -468,7 +468,8 @@ namespace DotNetNuke.Entities.Modules
                     desktopModule.Permissions,
                     desktopModule.ContentItemId,
                     UserController.Instance.GetCurrentUserInfo().UserID,
-                    desktopModule.AdminPage, desktopModule.HostPage);
+                    desktopModule.AdminPage,
+                    desktopModule.HostPage);
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else

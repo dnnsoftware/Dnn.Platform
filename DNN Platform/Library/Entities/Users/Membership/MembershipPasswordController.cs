@@ -147,7 +147,9 @@ namespace DotNetNuke.Entities.Users.Membership
             var listController = new ListController();
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty,
+            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(
+                listName,
+                string.Empty,
                 Null.NullInteger);
             IEnumerable<ListEntryInfo> listEntryPortalInfos =
                 listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);

@@ -524,8 +524,7 @@ namespace DotNetNuke.Common.Utilities
             SetCache(cacheKey, objObject, objDependency, absoluteExpiration, slidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                    CacheItemRemovedCallback onRemoveCallback)
+        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
             if (objObject != null)
             {

@@ -20,8 +20,7 @@ namespace DotNetNuke.Services.Cache
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
 
         /// <inheritdoc/>
-        public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                    CacheItemRemovedCallback onRemoveCallback)
+        public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
             // initialize cache dependency
             DNNCacheDependency d = dependency;

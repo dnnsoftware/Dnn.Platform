@@ -55,8 +55,14 @@ namespace Dnn.PersonaBar.Library.Controllers
                 dictionary[kvp.Key] = kvp.Value;
             }
 
-            DataCache.SetCache(cacheKey, dictionary, (DNNCacheDependency)null,
-                               Cache.NoAbsoluteExpiration, FiveMinutes, CacheItemPriority.Normal, null);
+            DataCache.SetCache(
+                cacheKey,
+                dictionary,
+                (DNNCacheDependency)null,
+                Cache.NoAbsoluteExpiration,
+                FiveMinutes,
+                CacheItemPriority.Normal,
+                null);
 
             return dictionary;
         }
@@ -172,8 +178,14 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
 
-            DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,
-                               Cache.NoAbsoluteExpiration, OneHour, CacheItemPriority.Normal, null);
+            DataCache.SetCache(
+                cacheKey,
+                lastModifiedDate,
+                (DNNCacheDependency)null,
+                Cache.NoAbsoluteExpiration,
+                OneHour,
+                CacheItemPriority.Normal,
+                null);
 
             return lastModifiedDate;
         }

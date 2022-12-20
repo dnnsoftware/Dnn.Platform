@@ -14,14 +14,24 @@ namespace Dnn.PersonaBar.Library.Data
         protected static readonly DotNetNuke.Data.DataProvider DataProvider = DotNetNuke.Data.DataProvider.Instance();
 
         /// <inheritdoc/>
-        public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
-            string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
+        public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path, string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
             return DataProvider.ExecuteScalar<int>(
                 "PersonaBar_SavePersonaBarMenu",
-                identifier, moduleName, folderName, controller, resourceKey, path,
-                Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
-                Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId, Null.GetNull(iconFile, DBNull.Value));
+                identifier,
+                moduleName,
+                folderName,
+                controller,
+                resourceKey,
+                path,
+                Null.GetNull(link, DBNull.Value),
+                Null.GetNull(cssClass, DBNull.Value),
+                Null.GetNull(parentId, DBNull.Value),
+                order,
+                allowHost,
+                enabled,
+                currentUserId,
+                Null.GetNull(iconFile, DBNull.Value));
         }
 
         /// <inheritdoc/>
@@ -37,11 +47,19 @@ namespace Dnn.PersonaBar.Library.Data
         }
 
         /// <inheritdoc/>
-        public int SavePersonaBarExtension(string identifier, int menuId, string folderName, string controller, string container,
-            string path, int order, bool enabled, int currentUserId)
+        public int SavePersonaBarExtension(string identifier, int menuId, string folderName, string controller, string container, string path, int order, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarExtension", identifier, menuId, folderName,
-                controller, container, path, order, enabled, currentUserId);
+            return DataProvider.ExecuteScalar<int>(
+                "PersonaBar_SavePersonaBarExtension",
+                identifier,
+                menuId,
+                folderName,
+                controller,
+                container,
+                path,
+                order,
+                enabled,
+                currentUserId);
         }
 
         /// <inheritdoc/>
@@ -69,11 +87,17 @@ namespace Dnn.PersonaBar.Library.Data
         }
 
         /// <inheritdoc/>
-        public int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId, int roleId,
-            int userId, bool allowAccees, int currentUserId)
+        public int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId, int roleId, int userId, bool allowAccees, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenuPermission", DataProvider.GetNull(portalId), menuId, permissionId,
-                this.GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
+            return DataProvider.ExecuteScalar<int>(
+                "PersonaBar_SavePersonaBarMenuPermission",
+                DataProvider.GetNull(portalId),
+                menuId,
+                permissionId,
+                this.GetRoleNull(roleId),
+                DataProvider.GetNull(userId),
+                allowAccees,
+                currentUserId);
         }
 
         /// <inheritdoc/>
@@ -99,7 +123,10 @@ namespace Dnn.PersonaBar.Library.Data
         {
             return DataProvider.ExecuteScalar<int>(
                 "PersonaBar_SavePersonaBarPermission",
-                Null.GetNull(menuId, DBNull.Value), permissionKey, permissionName, currentUserId);
+                Null.GetNull(menuId, DBNull.Value),
+                permissionKey,
+                permissionName,
+                currentUserId);
         }
 
         /// <inheritdoc/>

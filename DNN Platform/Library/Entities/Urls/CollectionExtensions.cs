@@ -50,8 +50,7 @@ namespace DotNetNuke.Entities.Urls
                                     string tabIdRaw = rdr.GetAttribute("tabIds") ?? rdr.GetAttribute("tabId");
                                     string tabNames = rdr.GetAttribute("tabNames");
                                     string name = rdr.GetAttribute("name");
-                                    List<int> tabIds = XmlHelpers.TabIdsFromAttributes(tabIdRaw, tabNames, portalId,
-                                                                                       ref messages);
+                                    List<int> tabIds = XmlHelpers.TabIdsFromAttributes(tabIdRaw, tabNames, portalId, ref messages);
                                     foreach (int tabId in tabIds)
                                     {
                                         var action = new ParameterReplaceAction
@@ -162,8 +161,7 @@ namespace DotNetNuke.Entities.Urls
                                     bool.TryParse(fromDefaultRaw, out fromDefault);
                                     bool.TryParse(fromSiteRootRaw, out fromSiteRoot);
                                     bool.TryParse(changeToSiteRootRaw, out changeToSiteRoot);
-                                    List<int> tabIds = XmlHelpers.TabIdsFromAttributes(tabIdRaw, tabNames, portalId,
-                                                                                       ref tabMessages);
+                                    List<int> tabIds = XmlHelpers.TabIdsFromAttributes(tabIdRaw, tabNames, portalId, ref tabMessages);
                                     foreach (int tabId in tabIds)
                                     {
                                         var action = new ParameterRedirectAction
@@ -266,8 +264,7 @@ namespace DotNetNuke.Entities.Urls
                                     string fromSiteRootRaw = rdr.GetAttribute("fromSiteRoot");
                                     bool fromSiteRoot;
                                     bool.TryParse(fromSiteRootRaw, out fromSiteRoot);
-                                    List<int> tabIds = XmlHelpers.TabIdsFromAttributes(tabIdRaw, tabNames, portalId,
-                                                                                       ref messages);
+                                    List<int> tabIds = XmlHelpers.TabIdsFromAttributes(tabIdRaw, tabNames, portalId, ref messages);
                                     foreach (int tabId in tabIds)
                                     {
                                         var action = new ParameterRewriteAction

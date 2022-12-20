@@ -410,8 +410,15 @@ namespace DotNetNuke.Entities.Urls
 
                 response.AppendHeader(
                     "X-" + ProductName + "-Debug",
-                    string.Format(debugMsg, requestUri, finalUrl, rewritePath, action, productVer,
-                                                    portalSettings, browser));
+                    string.Format(
+                        debugMsg,
+                        requestUri,
+                        finalUrl,
+                        rewritePath,
+                        action,
+                        productVer,
+                        portalSettings,
+                        browser));
                 int msgNum = 1;
                 if (result != null)
                 {
@@ -621,9 +628,13 @@ namespace DotNetNuke.Entities.Urls
                                 reason = result.Reason.ToString();
                             }
 
-                            response.AppendHeader(errRH, string.Format(errRV, "DNN Tab",
-                                                                errTab.TabName + "(Tabid:" + errTabId.ToString() + ")",
-                                                                reason));
+                            response.AppendHeader(
+                                errRH,
+                                string.Format(
+                                    errRV,
+                                    "DNN Tab",
+                                    errTab.TabName + "(Tabid:" + errTabId.ToString() + ")",
+                                    reason));
 
                             // show debug messages even if in debug mode
                             if (context != null && response != null && result != null && showDebug)
@@ -1057,9 +1068,13 @@ namespace DotNetNuke.Entities.Urls
                                         }
 
                                         // get the redirect Url from the friendly url provider using the tab, path and settings
-                                        redirectUrl = RedirectController.GetTabRedirectUrl(tab, settings, cleanPath, result,
-                                                                                           out permanentRedirect,
-                                                                                           parentTraceId);
+                                        redirectUrl = RedirectController.GetTabRedirectUrl(
+                                            tab,
+                                            settings,
+                                            cleanPath,
+                                            result,
+                                            out permanentRedirect,
+                                            parentTraceId);
                                     }
 
                                     // check to make sure there isn't a blank redirect Url
@@ -2221,10 +2236,12 @@ namespace DotNetNuke.Entities.Urls
                             string culture;
                             string skin;
                             BrowserTypes browserType;
-                            primaryAliases.GetSettingsByPortalIdAndAlias(result.PortalId, result.HttpAlias,
-                                                                                            out culture,
-                                                                                            out browserType,
-                                                                                            out skin);
+                            primaryAliases.GetSettingsByPortalIdAndAlias(
+                                result.PortalId,
+                                result.HttpAlias,
+                                out culture,
+                                out browserType,
+                                out skin);
 
                             // add language code to path if it exists (not null) and if it's not already there
                             string rewritePath = result.RewritePath;
@@ -2750,7 +2767,8 @@ namespace DotNetNuke.Entities.Urls
                         homePageTabId = TabPathHelper.GetHomePageTabIdForCulture(
                             portalSettings.DefaultLanguage,
                             portalSettings.PortalId,
-                            result.CultureCode, homePageTabId);
+                            result.CultureCode,
+                            homePageTabId);
                         if (result.TabId == homePageTabId)
                         {
                             // replace the /default.aspx in the Url if it was found
@@ -3063,8 +3081,7 @@ namespace DotNetNuke.Entities.Urls
 
                         // will cause a redirect to the primary portal alias - we know now that there was no custom alias tab
                         // found, so it's just a plain wrong alias
-                        ConfigurePortalAliasRedirect(ref result, wrongAlias, rightAlias, true,
-                                                     settings.InternalAliasList, settings);
+                        ConfigurePortalAliasRedirect(ref result, wrongAlias, rightAlias, true, settings.InternalAliasList, settings);
                     }
                 }
             }

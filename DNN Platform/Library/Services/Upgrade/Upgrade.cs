@@ -2971,8 +2971,12 @@ namespace DotNetNuke.Services.Upgrade
                         .GetModuleDefinitionByFriendlyName("User Accounts", desktopModule.DesktopModuleID).ModuleDefID;
 
                     // Create New Host Page (or get existing one)
-                    var newPage = AddHostPage("Superuser Accounts", "Manage host user accounts.",
-                        "~/Icons/Sigma/Users_16X16_Standard.png", "~/Icons/Sigma/Users_32X32_Standard.png", false);
+                    var newPage = AddHostPage(
+                        "Superuser Accounts",
+                        "Manage host user accounts.",
+                        "~/Icons/Sigma/Users_16X16_Standard.png",
+                        "~/Icons/Sigma/Users_32X32_Standard.png",
+                        false);
 
                     // Add Module To Page
                     AddModuleToPage(newPage, moduleDefId, "SuperUser Accounts", "~/Icons/Sigma/Users_32X32_Standard.png");

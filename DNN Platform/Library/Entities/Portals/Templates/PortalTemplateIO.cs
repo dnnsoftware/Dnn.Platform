@@ -59,7 +59,10 @@ namespace DotNetNuke.Entities.Portals.Internal
 
             var retryable = new RetryableAction(
                 () => reader = new StreamReader(File.Open(filePath, FileMode.Open)),
-                filePath, 10, TimeSpan.FromMilliseconds(50), 2);
+                filePath,
+                10,
+                TimeSpan.FromMilliseconds(50),
+                2);
 
             retryable.TryIt();
             return reader;

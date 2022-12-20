@@ -121,7 +121,11 @@ namespace Dnn.PersonaBar.Prompt.Services
                 }
                 else if (isHelpCmd && args.Length == 1)
                 {
-                    return this.AddLogAndReturnResponse(null, null, command, startTime,
+                    return this.AddLogAndReturnResponse(
+                        null,
+                        null,
+                        command,
+                        startTime,
                         string.Format(
                             Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
@@ -239,8 +243,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
         }
 
-        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command,
-            DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponseNewCommands(DotNetNuke.Abstractions.Prompt.IConsoleCommand consoleCommand, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -263,7 +266,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
 
                             var args = command.Args;
                             var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
@@ -286,7 +290,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
                         }
                     }
 
@@ -320,8 +325,7 @@ namespace Dnn.PersonaBar.Prompt.Services
         /// <param name="startTime"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command,
-            DateTime startTime, string error = null)
+        private HttpResponseMessage AddLogAndReturnResponse(IConsoleCommand consoleCommand, Type cmdTypeToRun, CommandInputModel command, DateTime startTime, string error = null)
         {
             HttpResponseMessage message;
             var isValid = consoleCommand?.IsValid() ?? false;
@@ -348,7 +352,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessageWithLoad", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
 
                             var args = command.Args;
                             var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
@@ -371,7 +376,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                         {
                             result.Output = string.Format(
                                 Localization.GetString("Prompt_PagingMessage", Constants.LocalResourcesFile),
-                                result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
+                                result.PagingInfo.PageNo,
+                                result.PagingInfo.TotalPages);
                         }
                     }
 

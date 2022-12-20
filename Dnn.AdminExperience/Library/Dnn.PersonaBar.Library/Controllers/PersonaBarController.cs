@@ -114,8 +114,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     this.UpdateParamters(cloneItem);
                     cloneItem.Settings = this.GetMenuSettings(menuItem);
 
-                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
-                        menuItem.Children);
+                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
                     if (!filtered || cloneItem.Children.Count > 0)
                     {
                         filterItems.Add(cloneItem);

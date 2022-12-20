@@ -79,8 +79,13 @@ namespace DotNetNuke.Services.Search.Internals
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
-                    string.Format(SearchableModuleDefsKey, SearchableModuleDefsCacheKey, portalId, Thread.CurrentThread.CurrentCulture),
-                    120, CacheItemPriority.Default);
+                string.Format(
+                    SearchableModuleDefsKey,
+                    SearchableModuleDefsCacheKey,
+                    portalId,
+                    Thread.CurrentThread.CurrentCulture),
+                120,
+                CacheItemPriority.Default);
 
             var list = CBO.GetCachedObject<IList<SearchContentSource>>(
                 searchableModuleDefsCacheArgs, this.SearchContentSourceCallback);

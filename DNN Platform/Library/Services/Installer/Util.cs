@@ -396,26 +396,22 @@ namespace DotNetNuke.Services.Installer
             return result;
         }
 
-        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent,
-                                                    string referer, out string filename)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent, string referer, out string filename)
         {
             return GetExternalRequest(url, data, username, password, domain, proxyAddress, proxyPort, doPOST, userAgent, referer, out filename, Host.WebRequestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent,
-                                                    string referer, out string filename, int requestTimeout)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent, string referer, out string filename, int requestTimeout)
         {
             return GetExternalRequest(url, data, username, password, domain, proxyAddress, proxyPort, string.Empty, string.Empty, doPOST, userAgent, referer, out filename, requestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort,
-                                                    string proxyUsername, string proxyPassword, bool doPOST, string userAgent, string referer, out string filename)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, string proxyUsername, string proxyPassword, bool doPOST, string userAgent, string referer, out string filename)
         {
             return GetExternalRequest(url, data, username, password, domain, proxyAddress, proxyPort, proxyUsername, proxyPassword, doPOST, userAgent, referer, out filename, Host.WebRequestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort,
-                                                    string proxyUsername, string proxyPassword, bool doPOST, string userAgent, string referer, out string filename, int requestTimeout)
+        public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, string proxyUsername, string proxyPassword, bool doPOST, string userAgent, string referer, out string filename, int requestTimeout)
         {
             if (!doPOST && data != null && data.Length > 0)
             {

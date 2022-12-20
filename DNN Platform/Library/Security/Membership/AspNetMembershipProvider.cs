@@ -379,8 +379,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="passwordAnswer">The new password answer.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
         /// -----------------------------------------------------------------------------
-        public override bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion,
-                                                             string passwordAnswer)
+        public override bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
             MembershipUser aspnetUser = GetMembershipUser(user);
             if (password == Null.NullString)
@@ -640,15 +639,12 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByUserName(int portalId, string username)
         {
-            var objUserInfo = CBO.GetCachedObject<UserInfo>(
+            return CBO.GetCachedObject<UserInfo>(
                 new CacheItemArgs(
                     string.Format(DataCache.UserCacheKey, portalId, username),
-                    DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
-                _ =>
-                {
-                    return this.GetUserByUserNameFromDataStore(portalId, username);
-                });
-            return objUserInfo;
+                    DataCache.UserCacheTimeOut,
+                    DataCache.UserCachePriority),
+                _ => this.GetUserByUserNameFromDataStore(portalId, username));
         }
 
         /// -----------------------------------------------------------------------------
@@ -776,8 +772,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="superUsersOnly">Only select super users.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords,
-                                           bool includeDeleted, bool superUsersOnly)
+        public override ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -785,34 +780,50 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId, this.dataProvider.GetAllUsers(portalId, pageIndex, pageSize, includeDeleted,
-                                                                superUsersOnly), ref totalRecords);
+            return FillUserCollection(
+                portalId,
+                this.dataProvider.GetAllUsers(
+                    portalId,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
         /// <inheritdoc/>
-        public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId,
-                                                               int filterRoleId, int relationshipTypeId,
-                                                               bool isAdmin, int pageIndex, int pageSize,
-                                                               string sortColumn,
-                                                               bool sortAscending, string propertyNames,
-                                                               string propertyValues)
+        public override IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationshipTypeId, bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames, string propertyValues)
         {
             return FillUserList(
                 portalId,
-                this.dataProvider.GetUsersAdvancedSearch(portalId, userId, filterUserId, filterRoleId,
-                                                                     relationshipTypeId, isAdmin, pageIndex, pageSize,
-                                                                     sortColumn, sortAscending, propertyNames,
-                                                                     propertyValues));
+                this.dataProvider.GetUsersAdvancedSearch(
+                    portalId,
+                    userId,
+                    filterUserId,
+                    filterRoleId,
+                    relationshipTypeId,
+                    isAdmin,
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortAscending,
+                    propertyNames,
+                    propertyValues));
         }
 
         /// <inheritdoc/>
-        public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
-                                                            bool sortAscending, string propertyName,
-                                                            string propertyValue)
+        public override IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyName, string propertyValue)
         {
-            return FillUserList(portalId, this.dataProvider.GetUsersBasicSearch(portalId, pageIndex, pageSize,
-                                                                            sortColumn, sortAscending, propertyName,
-                                                                            propertyValue));
+            return FillUserList(
+                portalId,
+                this.dataProvider.GetUsersBasicSearch(
+                    portalId,
+                    pageIndex,
+                    pageSize,
+                    sortColumn,
+                    sortAscending,
+                    propertyName,
+                    propertyValue));
         }
 
         /// -----------------------------------------------------------------------------
@@ -828,8 +839,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize,
-                                                  ref int totalRecords)
+        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return this.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords, false, false);
         }
@@ -849,8 +859,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="superUsersOnly">Only select super users.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize,
-                                                  ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        public override ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -860,8 +869,14 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize,
-                                                                    includeDeleted, superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByEmail(
+                    portalId,
+                    emailToMatch,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
         /// -----------------------------------------------------------------------------
@@ -877,8 +892,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize,
-                                                     ref int totalRecords)
+        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return this.GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords, false, false);
         }
@@ -898,8 +912,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="superUsersOnly">Only select super users.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize,
-                                                     ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        public override ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -909,8 +922,14 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByUsername(portalId, userNameToMatch, pageIndex, pageSize,
-                                                                       includeDeleted, superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByUsername(
+                    portalId,
+                    userNameToMatch,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
         /// -----------------------------------------------------------------------------
@@ -928,8 +947,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="superUsersOnly">Only select super users.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize,
-                                                     ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        public override ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -939,8 +957,14 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByDisplayname(portalId, nameToMatch, pageIndex, pageSize,
-                                                                       includeDeleted, superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByDisplayname(
+                    portalId,
+                    nameToMatch,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
         /// -----------------------------------------------------------------------------
@@ -958,11 +982,17 @@ namespace DotNetNuke.Security.Membership
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue,
-                                                            int pageIndex, int pageSize, ref int totalRecords)
+        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords)
         {
-            return this.GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize,
-                                             ref totalRecords, false, false);
+            return this.GetUsersByProfileProperty(
+                portalId,
+                propertyName,
+                propertyValue,
+                pageIndex,
+                pageSize,
+                ref totalRecords,
+                false,
+                false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -982,9 +1012,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="superUsersOnly">Only select super users.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
-        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue,
-                                                            int pageIndex, int pageSize, ref int totalRecords,
-                                                            bool includeDeleted, bool superUsersOnly)
+        public override ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
             if (pageIndex == -1)
             {
@@ -994,9 +1022,15 @@ namespace DotNetNuke.Security.Membership
 
             return FillUserCollection(
                 portalId,
-                this.dataProvider.GetUsersByProfileProperty(portalId, propertyName, propertyValue,
-                                                                              pageIndex, pageSize, includeDeleted,
-                                                                              superUsersOnly), ref totalRecords);
+                this.dataProvider.GetUsersByProfileProperty(
+                    portalId,
+                    propertyName,
+                    propertyValue,
+                    pageIndex,
+                    pageSize,
+                    includeDeleted,
+                    superUsersOnly),
+                ref totalRecords);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1296,8 +1330,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="loginStatus">An enumerated value indicating the login status.</param>
         /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
-        public override UserInfo UserLogin(int portalId, string username, string password, string verificationCode,
-                                           ref UserLoginStatus loginStatus)
+        public override UserInfo UserLogin(int portalId, string username, string password, string verificationCode, ref UserLoginStatus loginStatus)
         {
             return this.UserLogin(portalId, username, password, "DNN", verificationCode, ref loginStatus);
         }
@@ -1316,8 +1349,7 @@ namespace DotNetNuke.Security.Membership
         /// <param name="loginStatus">An enumerated value indicating the login status.</param>
         /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
-        public override UserInfo UserLogin(int portalId, string username, string password, string authType,
-                                           string verificationCode, ref UserLoginStatus loginStatus)
+        public override UserInfo UserLogin(int portalId, string username, string password, string authType, string verificationCode, ref UserLoginStatus loginStatus)
         {
             // For now, we are going to ignore the possibility that the User may exist in the
             // Global Data Store but not in the Local DataStore ie. A shared Global Data Store
@@ -1799,16 +1831,24 @@ namespace DotNetNuke.Security.Membership
         {
             return
                 CBO.GetCachedObject<MembershipUser>(
-                    new CacheItemArgs(GetCacheKey(userName), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
-                                      userName), GetMembershipUserCallBack);
+                    new CacheItemArgs(
+                        GetCacheKey(userName),
+                        DataCache.UserCacheTimeOut,
+                        DataCache.UserCachePriority,
+                        userName),
+                    GetMembershipUserCallBack);
         }
 
         private static MembershipUser GetMembershipUserByUserKey(string userKey)
         {
             return
                 CBO.GetCachedObject<MembershipUser>(
-                    new CacheItemArgs(GetCacheKey(userKey), DataCache.UserCacheTimeOut, DataCache.UserCachePriority,
-                        userKey), GetMembershipUserByUserKeyCallBack);
+                    new CacheItemArgs(
+                        GetCacheKey(userKey),
+                        DataCache.UserCacheTimeOut,
+                        DataCache.UserCachePriority,
+                        userKey),
+                    GetMembershipUserByUserKeyCallBack);
         }
 
         private static string GetCacheKey(string cacheKey)
@@ -1860,9 +1900,7 @@ namespace DotNetNuke.Security.Membership
             DataCache.RemoveCache(GetCacheKey(user.Username));
         }
 
-        private static UserLoginStatus ValidateLogin(string username, string authType, UserInfo user,
-                                                     UserLoginStatus loginStatus, string password, ref bool bValid,
-                                                     int portalId)
+        private static UserLoginStatus ValidateLogin(string username, string authType, UserInfo user, UserLoginStatus loginStatus, string password, ref bool bValid, int portalId)
         {
             if (loginStatus != UserLoginStatus.LOGIN_USERLOCKEDOUT &&
                 (loginStatus != UserLoginStatus.LOGIN_USERNOTAPPROVED || user.IsInRole("Unverified Users")))
