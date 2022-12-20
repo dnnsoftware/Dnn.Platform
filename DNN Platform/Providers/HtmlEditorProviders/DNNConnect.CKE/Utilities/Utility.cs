@@ -300,11 +300,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettings portalSettings)
         {
-            try
+            if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
                 folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
             }
-            catch (Exception)
+            else
             {
                 folderPath = folderPath.Replace("\\", "/");
             }
@@ -530,6 +530,29 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 default:
                     return "https://";
             }
+        }
+
+        public static IFolderInfo EnsureGetFolder(int portalId, string folderPath)
+        {
+            if (FolderManager.Instance.FolderExists(portalId, folderPath))
+            {
+                return FolderManager.Instance.GetFolder(portalId, folderPath);
+            }
+
+            if (!string.IsNullOrEmpty(folderPath))
+            {
+                var newFolderPath = "";
+                IFolderInfo retval = null;
+                foreach (var folderName in folderPath.Split('/'))
+                {
+                    newFolderPath = $"{newFolderPath}{folderName}/";
+                    retval = FolderManager.Instance.AddFolder(portalId, newFolderPath);
+                }
+
+                return retval;
+            }
+
+            return null;
         }
     }
 }

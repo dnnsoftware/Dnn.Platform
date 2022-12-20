@@ -52,6 +52,16 @@ namespace DNNConnect.CKEditorProvider.Constants
         public const string IMAGEBUTTON = "imagebutton";
 
         /// <summary>
+        /// The Browser Root Directory Host level setting name.
+        /// </summary>
+        public const string HOSTBROWSERROOTDIR = "hostBrowserRootDir";
+
+        /// <summary>
+        /// The Browser Root Directory for images Host level setting name.
+        /// </summary>
+        public const string HOSTBROWSERROOTDIRFORIMG = "hostBrowserRootDirForImg";
+
+        /// <summary>
         /// The browser root folder id setting name.
         /// </summary>
         public const string BROWSERROOTDIRID = "browserRootDirId";
@@ -147,9 +157,19 @@ namespace DNNConnect.CKEditorProvider.Constants
         public const string UPLOADFILELIMITS = "uploadfileRoles";
 
         /// <summary>
-        /// The upload folder id setting name.
+        /// The upload folder for all portals setting name.
+        /// </summary>
+        public const string HOSTUPLOADDIR = "hostUploadDir";
+
+        /// <summary>
+        /// The upload folder setting name.
         /// </summary>
         public const string UPLOADDIRID = "uploadDirId";
+
+        /// <summary>
+        /// The upload folder for images for all portals setting name.
+        /// </summary>
+        public const string HOSTUPLOADDIRFORIMG = "hostUploadDirForImg";
 
         /// <summary>
         /// The upload folder for images id setting name.

@@ -114,6 +114,16 @@ namespace DNNConnect.CKEditorProvider.Objects
         public bool InjectSyntaxJs { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating the Browser Root Directory Host level setting.
+        /// </summary>
+        public string HostBrowserRootDir { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Browser Root Directory for images Host level setting.
+        /// </summary>
+        public string HostBrowserRootDirForImg { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating the Browser Root Directory Id.
         /// </summary>
         public int BrowserRootDirId { get; set; }
@@ -124,9 +134,19 @@ namespace DNNConnect.CKEditorProvider.Objects
         public int BrowserRootDirForImgId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating the Upload Directory for all portals.
+        /// </summary>
+        public string HostUploadDir { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating the Upload Directory Id.
         /// </summary>
         public int UploadDirId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the Upload Directory for images for all portals.
+        /// </summary>
+        public string HostUploadDirForImg { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the Upload Directory Id for images.
