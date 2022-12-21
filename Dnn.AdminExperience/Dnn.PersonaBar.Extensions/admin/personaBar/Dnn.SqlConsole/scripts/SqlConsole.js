@@ -780,7 +780,7 @@ define(['jquery',
         theme = e.matches ? "vs-dark" : "vs-light";
       });
 
-      var monacoEditor = sqlConsole.create(document.getElementById("monaco-editor-css"), {
+      var monacoEditor = sqlConsole.create(document.getElementById("monaco-editor-sql"), {
         model: sqlContent,
         language: "sql",
         wordWrap: 'wordWrapColumn',
