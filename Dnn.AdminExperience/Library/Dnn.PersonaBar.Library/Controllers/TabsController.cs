@@ -375,7 +375,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 if (!tabDtos.Exists(x => Convert.ToInt32(x.TabId) == tabId))
                 {
                     return this.GetDescendantsForTabs(
-                        enumerable.Except(new List<int> {tabId}),
+                        enumerable.Except(new List<int> { tabId }),
                         tabDtos,
                         selectedTabId,
                         portalId,
@@ -393,7 +393,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).IsOpen = true;
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
                     this.GetDescendantsForTabs(
-                            enumerable.Except(new List<int> {tabId}),
+                            enumerable.Except(new List<int> { tabId }),
                             tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs,
                             selectedTabId,
                             portalId,
