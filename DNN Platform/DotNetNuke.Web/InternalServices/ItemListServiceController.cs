@@ -321,14 +321,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
-        private NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
-        {
-            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var portals = this.GetPortalGroup(sortOrder);
-            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
-            return treeNode;
-        }
-
         private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, IList<int> filterTabs = null)
         {
             return tabs.Where(tab => tab.ParentId == parentId).Select(tab => new ItemDto
@@ -371,19 +363,6 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
-        {
-            var mygroup = this.GetMyPortalGroup();
-            var portals = mygroup.Select(p => new ItemDto
-            {
-                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
-                Value = p.PortalName,
-                HasChildren = true,
-                Selectable = false,
-            }).ToList();
-            return ApplySort(portals, sortOrder);
-        }
-
         private static IEnumerable<ItemDto> ApplySort(IEnumerable<ItemDto> items, int sortOrder)
         {
             switch (sortOrder)
@@ -395,6 +374,27 @@ namespace DotNetNuke.Web.InternalServices
                 default: // no sort
                     return items;
             }
+        }
+
+        private NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
+        {
+            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
+            var portals = this.GetPortalGroup(sortOrder);
+            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            return treeNode;
+        }
+
+        private IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
+        {
+            var mygroup = this.GetMyPortalGroup();
+            var portals = mygroup.Select(p => new ItemDto
+            {
+                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
+                Value = p.PortalName,
+                HasChildren = true,
+                Selectable = false,
+            }).ToList();
+            return ApplySort(portals, sortOrder);
         }
 
         private IEnumerable<PortalInfo> GetMyPortalGroup()

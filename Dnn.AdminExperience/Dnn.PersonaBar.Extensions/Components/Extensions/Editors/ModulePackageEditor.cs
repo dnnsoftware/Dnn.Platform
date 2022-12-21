@@ -83,6 +83,44 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
+        private static void UnassignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
+        {
+            foreach (var portal in portals)
+            {
+                DesktopModuleController.RemoveDesktopModuleFromPortal(portal.Id, desktopModule.DesktopModuleID, true);
+            }
+        }
+
+        private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
+        {
+            foreach (var portal in portals)
+            {
+                DesktopModuleController.AddDesktopModuleToPortal(portal.Id, desktopModule.DesktopModuleID, true, true);
+            }
+        }
+
+        private static void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
+        {
+            var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
+            ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
+        }
+
+        private static void DeleteModuleDefinition(int defId)
+        {
+            new ModuleDefinitionController().DeleteModuleDefinition(defId);
+        }
+
+        private static void SaveModuleControl(ModuleControlDto moduleControlDto)
+        {
+            var moduleControl = moduleControlDto.ToModuleControlInfo();
+            ModuleControlController.SaveModuleControl(moduleControl, true);
+        }
+
+        private static void DeleteModuleControl(int controlId)
+        {
+            ModuleControlController.DeleteModuleControl(controlId);
+        }
+
         private void UpdateModuleProperties(DesktopModuleInfo desktopModule, IDictionary<string, string> settings)
         {
             foreach (var setting in settings)
@@ -138,44 +176,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         break;
                 }
             }
-        }
-
-        private static void UnassignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
-        {
-            foreach (var portal in portals)
-            {
-                DesktopModuleController.RemoveDesktopModuleFromPortal(portal.Id, desktopModule.DesktopModuleID, true);
-            }
-        }
-
-        private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
-        {
-            foreach (var portal in portals)
-            {
-                DesktopModuleController.AddDesktopModuleToPortal(portal.Id, desktopModule.DesktopModuleID, true, true);
-            }
-        }
-
-        private static void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
-        {
-            var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
-            ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
-        }
-
-        private static void DeleteModuleDefinition(int defId)
-        {
-            new ModuleDefinitionController().DeleteModuleDefinition(defId);
-        }
-
-        private static void SaveModuleControl(ModuleControlDto moduleControlDto)
-        {
-            var moduleControl = moduleControlDto.ToModuleControlInfo();
-            ModuleControlController.SaveModuleControl(moduleControl, true);
-        }
-
-        private static void DeleteModuleControl(int controlId)
-        {
-            ModuleControlController.DeleteModuleControl(controlId);
         }
 
         private PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)

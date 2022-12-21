@@ -1644,6 +1644,31 @@ namespace DotNetNuke.Services.FileSystem
             return true;
         }
 
+        private static RotateFlipType OrientationToFlipType(string orientation)
+        {
+            switch (int.Parse(orientation))
+            {
+                case 1:
+                    return RotateFlipType.RotateNoneFlipNone;
+                case 2:
+                    return RotateFlipType.RotateNoneFlipX;
+                case 3:
+                    return RotateFlipType.Rotate180FlipNone;
+                case 4:
+                    return RotateFlipType.Rotate180FlipX;
+                case 5:
+                    return RotateFlipType.Rotate90FlipX;
+                case 6:
+                    return RotateFlipType.Rotate90FlipNone;
+                case 7:
+                    return RotateFlipType.Rotate270FlipX;
+                case 8:
+                    return RotateFlipType.Rotate270FlipNone;
+                default:
+                    return RotateFlipType.RotateNoneFlipNone;
+            }
+        }
+
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
             try
@@ -1702,30 +1727,6 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         // Match the orientation code to the correct rotation:
-        private static RotateFlipType OrientationToFlipType(string orientation)
-        {
-            switch (int.Parse(orientation))
-            {
-                case 1:
-                    return RotateFlipType.RotateNoneFlipNone;
-                case 2:
-                    return RotateFlipType.RotateNoneFlipX;
-                case 3:
-                    return RotateFlipType.Rotate180FlipNone;
-                case 4:
-                    return RotateFlipType.Rotate180FlipX;
-                case 5:
-                    return RotateFlipType.Rotate90FlipX;
-                case 6:
-                    return RotateFlipType.Rotate90FlipNone;
-                case 7:
-                    return RotateFlipType.Rotate270FlipX;
-                case 8:
-                    return RotateFlipType.Rotate270FlipNone;
-                default:
-                    return RotateFlipType.RotateNoneFlipNone;
-            }
-        }
 
         private void OnFileMoved(IFileInfo fileInfo, string oldFilePath, int userId)
         {

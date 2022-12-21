@@ -150,27 +150,6 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        private bool IsValidXmlMergDocument(string mergeDocText)
-        {
-            if (string.IsNullOrEmpty(mergeDocText.Trim()))
-            {
-                return false;
-            }
-
-            // TODO: Add more checks here
-            return true;
-        }
-
-        private void ValidateFilePath(string filePath)
-        {
-            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath);
-            var fileInfo = new FileInfo(physicalPath);
-            if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new ArgumentException("Invalid File Path");
-            }
-        }
-
         private static string SaveNonConfig(string document, string filename)
         {
             var retMsg = string.Empty;
@@ -224,6 +203,27 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
 
             return retMsg;
+        }
+
+        private bool IsValidXmlMergDocument(string mergeDocText)
+        {
+            if (string.IsNullOrEmpty(mergeDocText.Trim()))
+            {
+                return false;
+            }
+
+            // TODO: Add more checks here
+            return true;
+        }
+
+        private void ValidateFilePath(string filePath)
+        {
+            var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath);
+            var fileInfo = new FileInfo(physicalPath);
+            if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ArgumentException("Invalid File Path");
+            }
         }
     }
 }
