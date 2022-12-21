@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Web;
@@ -23,6 +24,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public class LanguagePropertyAccess : IPropertyAccess
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public LanguageTokenReplace objParent;
         private const string FlagIconPhysicalLocation = @"~\images\Flags";
         private const string NonExistingFlagIconFileName = "none.gif";
