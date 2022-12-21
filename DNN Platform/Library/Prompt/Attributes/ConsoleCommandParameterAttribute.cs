@@ -41,7 +41,7 @@ namespace DotNetNuke.Prompt
         /// <param name="descriptionKey"></param>
         /// <param name="defaultValue"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, string defaultValue)
-            : this(name, descriptionKey, (bool) false, defaultValue)
+            : this(name, descriptionKey, false, defaultValue)
         {
         }
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Prompt
         /// <param name="name"></param>
         /// <param name="descriptionKey"></param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey)
-            : this(name, descriptionKey, (bool) false, string.Empty)
+            : this(name, descriptionKey, false, string.Empty)
         {
         }
 
