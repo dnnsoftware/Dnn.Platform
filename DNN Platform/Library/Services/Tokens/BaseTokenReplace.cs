@@ -34,15 +34,6 @@ namespace DotNetNuke.Services.Tokens
         private string language;
 
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
-        protected virtual CultureInfo FormatProvider
-        {
-            get { return this.formatProvider ?? (this.formatProvider = Thread.CurrentThread.CurrentUICulture); }
-        }
-
-        /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
@@ -58,6 +49,15 @@ namespace DotNetNuke.Services.Tokens
                 this.language = value;
                 this.formatProvider = new CultureInfo(this.language);
             }
+        }
+
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture.
+        /// </summary>
+        /// <value>An CultureInfo.</value>
+        protected virtual CultureInfo FormatProvider
+        {
+            get { return this.formatProvider ?? (this.formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>

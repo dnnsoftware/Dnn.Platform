@@ -24,6 +24,7 @@ namespace DotNetNuke.Security
 
     public class PortalSecurity
     {
+        public static readonly PortalSecurity Instance = new PortalSecurity();
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
@@ -31,7 +32,6 @@ namespace DotNetNuke.Security
         private const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
 
         private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
-        public static readonly PortalSecurity Instance = new PortalSecurity();
 
         private static readonly DateTime OldExpiryTime = new DateTime(1999, 1, 1);
 

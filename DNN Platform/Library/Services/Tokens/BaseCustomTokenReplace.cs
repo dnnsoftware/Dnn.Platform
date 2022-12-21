@@ -30,11 +30,6 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource = this.TokenContext.PropertySource;
         }
 
-        protected TokenProvider Provider
-        {
-            get => ComponentFactory.GetComponent<TokenProvider>();
-        }
-
         public TokenContext TokenContext
         {
             get => this.tokenContext;
@@ -70,15 +65,6 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
-        protected override CultureInfo FormatProvider
-        {
-            get => this.TokenContext.Language;
-        }
-
-        /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
@@ -89,6 +75,20 @@ namespace DotNetNuke.Services.Tokens
             {
                 this.TokenContext.Language = new CultureInfo(value);
             }
+        }
+
+        protected TokenProvider Provider
+        {
+            get => ComponentFactory.GetComponent<TokenProvider>();
+        }
+
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture.
+        /// </summary>
+        /// <value>An CultureInfo.</value>
+        protected override CultureInfo FormatProvider
+        {
+            get => this.TokenContext.Language;
         }
 
         /// <summary>

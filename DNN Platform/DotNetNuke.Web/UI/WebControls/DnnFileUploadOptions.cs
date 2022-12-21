@@ -13,9 +13,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class DnnFileUploadOptions
     {
-        private const int DefaultWidth = 780;
-        private const int DefaultHeight = 630;
-
         [DataMember(Name = "clientId")]
         public string ClientId;
 
@@ -51,6 +48,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         [DataMember(Name = "folderPath")]
         public string FolderPath;
+
+        private const int DefaultWidth = 780;
+        private const int DefaultHeight = 630;
 
         private Dictionary<string, string> parameters;
 

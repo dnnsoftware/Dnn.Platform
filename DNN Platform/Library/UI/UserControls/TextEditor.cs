@@ -29,7 +29,6 @@ namespace DotNetNuke.UI.UserControls
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-        private const string MyFileName = "TextEditor.ascx";
         protected Panel PanelTextEditor;
         protected RadioButtonList OptRender;
         protected RadioButtonList OptView;
@@ -39,6 +38,7 @@ namespace DotNetNuke.UI.UserControls
         protected HtmlGenericControl DivRichTextBox;
         protected Panel PanelView;
         protected TextBox TxtDesktopHTML;
+        private const string MyFileName = "TextEditor.ascx";
         private HtmlEditorProvider richTextEditor;
 
         /// <summary>

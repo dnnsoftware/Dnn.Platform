@@ -18,9 +18,9 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class ModuleAuditControl : UserControl
     {
-        private const string MyFileName = "ModuleAuditControl.ascx";
         protected Label lblCreatedBy;
         protected Label lblUpdatedBy;
+        private const string MyFileName = "ModuleAuditControl.ascx";
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
         private string systemUser;

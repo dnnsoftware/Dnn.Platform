@@ -890,6 +890,7 @@
     <Compile Include="Services\Search\Controllers\SearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
     <Compile Include="Services\Search\UserIndexer.cs" />
+    <Compile Include="Services\Search\UserSearch.cs" />
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
@@ -1619,6 +1620,7 @@
     <Compile Include="UI\Skins\Controls\ControlPanel.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Skins\Controls\LanguagePropertyAccess.cs" />
     <Compile Include="UI\Skins\Controls\LanguageTokenReplace.cs" />
     <Compile Include="UI\Skins\Controls\ModuleMessage.cs">
       <SubType>ASPXCodeBehind</SubType>

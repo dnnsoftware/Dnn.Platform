@@ -448,6 +448,7 @@
     <Compile Include="Services\Dto\VocabularyDto.cs" />
     <Compile Include="Services\Dto\WebServer.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
+    <Compile Include="Services\KpvExtension.cs" />
     <Compile Include="Services\LanguagesController.cs" />
     <Compile Include="Services\LicensingController.cs" />
     <Compile Include="Services\PagesController.cs" />

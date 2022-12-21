@@ -16,9 +16,6 @@ namespace DotNetNuke.Prompt
 
     public abstract class ConsoleCommand : IConsoleCommand
     {
-        private static ISerializationManager SerializationManager =>
-            Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
-
         /// <inheritdoc/>
         public abstract string LocalResourceFile { get; }
 
@@ -41,6 +38,30 @@ namespace DotNetNuke.Prompt
         protected string[] Args { get; private set; }
 
         protected IDictionary<string, string> Flags { get; private set; }
+
+        private static ISerializationManager SerializationManager =>
+            Common.Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+
+        /// <inheritdoc/>
+        public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
+        {
+            this.Args = args;
+            this.PortalSettings = portalSettings;
+            this.User = userInfo;
+            this.PortalId = portalSettings.PortalId;
+            this.TabId = activeTabId;
+            this.ValidationMessage = string.Empty;
+            this.ParseFlags();
+        }
+
+        /// <inheritdoc/>
+        public abstract IConsoleResultModel Run();
+
+        /// <inheritdoc/>
+        public virtual bool IsValid()
+        {
+            return string.IsNullOrEmpty(this.ValidationMessage);
+        }
 
         protected string LocalizeString(string key)
         {
@@ -71,25 +92,30 @@ namespace DotNetNuke.Prompt
             });
         }
 
-        /// <inheritdoc/>
-        public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
+        protected virtual IList<ParameterMapping> CreateMapping()
         {
-            this.Args = args;
-            this.PortalSettings = portalSettings;
-            this.User = userInfo;
-            this.PortalId = portalSettings.PortalId;
-            this.TabId = activeTabId;
-            this.ValidationMessage = string.Empty;
-            this.ParseFlags();
+            var mapping = new List<ParameterMapping>();
+            this.GetType().GetProperties().ForEach(property =>
+            {
+                var attributes = property.GetCustomAttributes<ConsoleCommandParameterAttribute>(true);
+                attributes.ForEach(attribute => mapping.Add(new ParameterMapping() { Attribute = attribute, Property = property }));
+            });
+            return mapping;
         }
 
-        /// <inheritdoc/>
-        public abstract IConsoleResultModel Run();
-
-        /// <inheritdoc/>
-        public virtual bool IsValid()
+        private static string NormalizeFlagName(string flagName)
         {
-            return string.IsNullOrEmpty(this.ValidationMessage);
+            if (flagName == null)
+            {
+                return string.Empty;
+            }
+
+            if (flagName.StartsWith("--"))
+            {
+                flagName = flagName.Substring(2);
+            }
+
+            return flagName.ToLower().Trim();
         }
 
         private void ParseFlags()
@@ -129,32 +155,6 @@ namespace DotNetNuke.Prompt
 
                 this.Flags.Add(flagName.ToLower(), flagValue);
             }
-        }
-
-        private static string NormalizeFlagName(string flagName)
-        {
-            if (flagName == null)
-            {
-                return string.Empty;
-            }
-
-            if (flagName.StartsWith("--"))
-            {
-                flagName = flagName.Substring(2);
-            }
-
-            return flagName.ToLower().Trim();
-        }
-
-        protected virtual IList<ParameterMapping> CreateMapping()
-        {
-            var mapping = new List<ParameterMapping>();
-            this.GetType().GetProperties().ForEach(property =>
-            {
-                var attributes = property.GetCustomAttributes<ConsoleCommandParameterAttribute>(true);
-                attributes.ForEach(attribute => mapping.Add(new ParameterMapping() { Attribute = attribute, Property = property }));
-            });
-            return mapping;
         }
 
         public struct ParameterMapping

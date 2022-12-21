@@ -23,7 +23,6 @@ namespace DotNetNuke.UI.UserControls
     /// </remarks>
     public abstract class Address : UserControlBase
     {
-        private const string MyFileName = "Address.ascx";
         protected CountryListBox cboCountry;
         protected DropDownList cboRegion;
         protected CheckBox chkCell;
@@ -69,6 +68,7 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valRegion2;
         protected RequiredFieldValidator valStreet;
         protected RequiredFieldValidator valTelephone;
+        private const string MyFileName = "Address.ascx";
         private string cell;
         private string city;
         private string controlColumnWidth = string.Empty;

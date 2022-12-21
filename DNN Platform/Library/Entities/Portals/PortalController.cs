@@ -1500,6 +1500,48 @@ namespace DotNetNuke.Entities.Portals
             this.UpdatePortalInternal(portal, true);
         }
 
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
+        /// <returns>portal settings.</returns>
+        PortalSettings IPortalController.GetCurrentPortalSettings()
+        {
+            return GetCurrentPortalSettingsInternal();
+        }
+
+        /// <inheritdoc/>
+        IAbPortalSettings IPortalController.GetCurrentSettings()
+        {
+            return GetCurrentPortalSettingsInternal();
+        }
+
+        /// <inheritdoc/>
+        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
+        void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        {
+            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
+        }
+
+        /// <summary>
+        /// Adds or Updates or Deletes a portal setting value.
+        /// </summary>
+        void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        {
+            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
+        }
+
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        {
+            return this.CreatePortal(portalName, adminUser, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+        }
+
+        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
+        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        {
+            return this.CreatePortal(portalName, adminUserId, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+        }
+
         internal static void EnsureRequiredEventLogTypesExist()
         {
             if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
@@ -2370,48 +2412,6 @@ namespace DotNetNuke.Entities.Portals
             {
                 DataCache.ClearHostCache(true);
             }
-        }
-
-        /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
-        /// <returns>portal settings.</returns>
-        PortalSettings IPortalController.GetCurrentPortalSettings()
-        {
-            return GetCurrentPortalSettingsInternal();
-        }
-
-        /// <inheritdoc/>
-        IAbPortalSettings IPortalController.GetCurrentSettings()
-        {
-            return GetCurrentPortalSettingsInternal();
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
-        void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
-        {
-            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
-        }
-
-        /// <summary>
-        /// Adds or Updates or Deletes a portal setting value.
-        /// </summary>
-        void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
-        {
-            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
-        }
-
-        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
-        public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
-        {
-            return this.CreatePortal(portalName, adminUserId, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
-        }
-
-        [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]
-        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
-        {
-            return this.CreatePortal(portalName, adminUser, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
         }
 
         [Obsolete("Deprecated in DNN 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead. Scheduled removal in v11.0.0.")]

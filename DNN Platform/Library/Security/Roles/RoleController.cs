@@ -612,6 +612,36 @@ namespace DotNetNuke.Security.Roles
             Instance.ClearRoleCache(portalId);
         }
 
+        /// <inheritdoc/>
+        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
+        {
+            Requires.NotNull("role", role);
+
+            var roleId = -1;
+            if (Provider.CreateRole(role))
+            {
+                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
+                if (addToExistUsers)
+                {
+                    this.AutoAssignUsers(role);
+                }
+
+                roleId = role.RoleID;
+
+                this.ClearRoleCache(role.PortalID);
+
+                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
+            }
+
+            return roleId;
+        }
+
+        /// <inheritdoc/>
+        void IRoleController.UpdateRole(RoleInfo role)
+        {
+            this.UpdateRole(role, true);
+        }
+
         /// <summary>
         /// Completely remove all a user's roles for a specific portal. This method is used when
         /// anonymizing a user.
@@ -711,30 +741,6 @@ namespace DotNetNuke.Security.Roles
             Mail.SendEmail(portalSettings.Email, objUser.Email, message.Subject, message.Body);
         }
 
-        /// <inheritdoc/>
-        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
-        {
-            Requires.NotNull("role", role);
-
-            var roleId = -1;
-            if (Provider.CreateRole(role))
-            {
-                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
-                if (addToExistUsers)
-                {
-                    this.AutoAssignUsers(role);
-                }
-
-                roleId = role.RoleID;
-
-                this.ClearRoleCache(role.PortalID);
-
-                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
-            }
-
-            return roleId;
-        }
-
         private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
         {
             EventLogController.Instance.AddLog(
@@ -764,12 +770,6 @@ namespace DotNetNuke.Security.Roles
                     }
                 }
             }
-        }
-
-        /// <inheritdoc/>
-        void IRoleController.UpdateRole(RoleInfo role)
-        {
-            this.UpdateRole(role, true);
         }
     }
 }
