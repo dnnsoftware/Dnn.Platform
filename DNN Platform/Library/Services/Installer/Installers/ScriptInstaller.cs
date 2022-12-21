@@ -21,9 +21,9 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         private readonly SortedList<Version, InstallFile> installScripts = new SortedList<Version, InstallFile>();
         private readonly SortedList<Version, InstallFile> unInstallScripts = new SortedList<Version, InstallFile>();
-        private InstallFile installScript;
         private readonly List<InstallFile> preUpgradeScripts = new List<InstallFile>();
         private readonly List<InstallFile> postUpgradeScripts = new List<InstallFile>();
+        private InstallFile installScript;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
