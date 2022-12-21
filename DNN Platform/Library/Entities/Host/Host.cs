@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Host
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -1463,6 +1465,9 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to False.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public static bool jQueryDebug
         {
             get
@@ -1478,6 +1483,9 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to False.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public static bool jQueryHosted
         {
             get
@@ -1494,6 +1502,9 @@ namespace DotNetNuke.Entities.Host
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public static string jQueryUrl
         {
             get
@@ -1517,6 +1528,9 @@ namespace DotNetNuke.Entities.Host
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public static string jQueryMigrateUrl
         {
             get
@@ -1540,6 +1554,9 @@ namespace DotNetNuke.Entities.Host
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public static string jQueryUIUrl
         {
             get

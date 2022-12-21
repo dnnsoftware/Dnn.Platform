@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.DDRMenu
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities.Users;
@@ -13,11 +14,14 @@ namespace DotNetNuke.Web.DDRMenu
     [XmlRoot("xmlroot", Namespace = "")]
     public class MenuXml
     {
-        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public MenuNode root { get; set; }
 
-        public UserInfo user { get; set; }
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
-        // ReSharper restore InconsistentNaming
+        // ReSharper disable once InconsistentNaming
+        public UserInfo user { get; set; }
     }
 }

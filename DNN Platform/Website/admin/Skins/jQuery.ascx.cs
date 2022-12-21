@@ -5,15 +5,25 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Framework.JavaScriptLibraries;
 
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
     public partial class jQuery : SkinObjectBase
     {
         public bool DnnjQueryPlugins { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public bool jQueryHoverIntent { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public bool jQueryUI { get; set; }
 
         /// <inheritdoc/>

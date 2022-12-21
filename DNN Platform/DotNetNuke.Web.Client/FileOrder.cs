@@ -1,9 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Client
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Contains enumerations that define the relative loading order of both JavaScript and CSS files within the framework's registration system.
     /// </summary>
@@ -22,26 +23,26 @@ namespace DotNetNuke.Web.Client
             /// <summary>
             /// jQuery (CDN or local file) has the priority of 5
             /// </summary>
-            // ReSharper disable InconsistentNaming
-            jQuery = 5,
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
-            // ReSharper restore InconsistentNaming
+            // ReSharper disable once InconsistentNaming
+            jQuery = 5,
 
             /// <summary>
             /// jQuery Migrate file has the priority of 6, it should appear just after jquery.
             /// </summary>
-            // ReSharper disable InconsistentNaming
-            jQueryMigrate = 6,
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
-            // ReSharper restore InconsistentNaming
+            // ReSharper disable once InconsistentNaming
+            jQueryMigrate = 6,
 
             /// <summary>
             /// jQuery UI (CDN or local file) has the priority of 10
             /// </summary>
-// ReSharper disable InconsistentNaming
-            jQueryUI = 10,
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
-            // ReSharper restore InconsistentNaming
+            // ReSharper disable once InconsistentNaming
+            jQueryUI = 10,
 
             /// <summary>
             /// /js/dnn.xml.js has the priority of 15

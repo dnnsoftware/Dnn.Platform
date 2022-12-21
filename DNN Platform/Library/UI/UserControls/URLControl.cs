@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -687,6 +688,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cboFolders_SelectedIndexChanged(object sender, EventArgs e)
         {
             int portalId = Null.NullInteger;
@@ -746,6 +750,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = false;
@@ -760,6 +767,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             this.cboFiles.Visible = true;
@@ -774,6 +784,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
             if (this.cboUrls.SelectedItem != null)
@@ -790,6 +803,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdSave_Click(object sender, EventArgs e)
         {
             this.cmdUpload.Visible = false;
@@ -896,6 +912,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdSelect_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = true;
@@ -917,6 +936,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdUpload_Click(object sender, EventArgs e)
         {
             string strSaveFolder = this.cboFolders.SelectedValue;
@@ -963,6 +985,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Type changed, render the correct control set

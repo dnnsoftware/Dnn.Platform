@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Similar to ModuleInfoModel, however this one has information more specific to a module's
     /// implementation on a particular page (like the PaneName).
@@ -13,6 +15,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int TabId;
 
         // command link
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __ModuleId { get; set; }
 
         public int ModuleId { get; set; }
@@ -24,6 +29,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string ModuleName { get; set; }
 
         // command link
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __ModuleName { get; set; }
 
         public string FriendlyName { get; set; }

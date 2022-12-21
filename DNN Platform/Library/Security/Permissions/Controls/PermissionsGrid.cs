@@ -1,12 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Security.Permissions.Controls
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web.UI;
@@ -222,11 +224,17 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the underlying Permissions Data Table.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public DataTable dtRolePermissions { get; private set; }
 
         /// <summary>
         /// Gets the underlying Permissions Data Table.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public DataTable dtUserPermissions { get; private set; }
 
         /// <summary>

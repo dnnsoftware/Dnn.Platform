@@ -3,12 +3,11 @@
 // See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.Admin.Modules
-
-// ReSharper restore CheckNamespace
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -595,6 +594,9 @@ namespace DotNetNuke.Modules.Admin.Modules
             this.webSliceTTL.Visible = this.chkWebSlice.Checked;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void dgOnTabs_PageIndexChanging(object sender, System.Web.UI.WebControls.GridViewPageEventArgs e)
         {
             this.dgOnTabs.PageIndex = e.NewPageIndex;

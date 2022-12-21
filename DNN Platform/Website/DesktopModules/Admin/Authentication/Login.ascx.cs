@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
@@ -483,6 +484,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdAssociate_Click runs when the associate button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAssociate_Click(object sender, EventArgs e)
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
@@ -520,6 +524,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdCreateUser runs when the register (as new user) button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdCreateUser_Click(object sender, EventArgs e)
         {
             this.User.Membership.Password = UserController.GeneratePassword();
@@ -546,6 +553,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdProceed_Click(object sender, EventArgs e)
         {
             var user = this.ctlPassword.User;

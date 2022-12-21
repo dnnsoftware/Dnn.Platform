@@ -1,8 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Services.Tokens
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -81,6 +83,8 @@ namespace DotNetNuke.Services.Tokens
         }
 
         protected bool UseObjectLessExpression { get; set; }
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
         protected abstract string replacedTokenValue(string objectName, string propertyName, string format);

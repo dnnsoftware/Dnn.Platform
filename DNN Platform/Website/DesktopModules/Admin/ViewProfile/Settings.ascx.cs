@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using DotNetNuke.Entities.Modules;
@@ -63,6 +65,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdLoadDefault.Click += this.cmdLoadDefault_Click;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdLoadDefault_Click(object sender, EventArgs e)
         {
             this.txtTemplate.Text = Localization.GetString("DefaultTemplate", this.LocalResourceFile);
