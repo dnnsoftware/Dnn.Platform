@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -12,7 +13,14 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// -----------------------------------------------------------------------------
     public abstract class BaseInstallationStep : IInstallationStep
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected string LocalInstallResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
         private string details = string.Empty;
 

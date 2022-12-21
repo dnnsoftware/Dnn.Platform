@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
@@ -20,7 +21,14 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class User : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected HtmlTableRow ConfirmPasswordRow;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected HtmlTableRow PasswordRow;
         protected Label lblUsername;
         protected Label lblUsernameAsterisk;

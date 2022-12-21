@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Install
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -32,6 +33,9 @@ namespace DotNetNuke.Services.Install
 
     public partial class Install : Page
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object InstallLocker = new object();

@@ -27,13 +27,23 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class UrlControl : UserControlBase
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel ErrorRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel FileRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel ImagesRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel TabRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel TypeRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel URLRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Panel UserRow;
+
+        // ReSharper restore InconsistentNaming
         protected DropDownList cboFiles;
         protected DropDownList cboFolders;
         protected DropDownList cboImages;

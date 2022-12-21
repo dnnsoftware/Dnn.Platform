@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.ComponentModel;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using System.Web.UI;
@@ -17,6 +18,9 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:PagingControl runat=server></{0}:PagingControl>")]
     public class PagingControl : WebControl, IPostBackEventHandler
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Repeater PageNumbers;
         protected TableCell cellDisplayLinks;
         protected TableCell cellDisplayStatus;

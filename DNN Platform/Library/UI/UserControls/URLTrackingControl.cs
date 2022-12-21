@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -19,13 +20,23 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class URLTrackingControl : UserControlBase
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label1;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label2;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label3;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label4;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label5;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label6;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected Label Label7;
+
+        // ReSharper restore InconsistentNaming
         protected LinkButton cmdDisplay;
         protected HyperLink cmdEndCalendar;
         protected HyperLink cmdStartCalendar;

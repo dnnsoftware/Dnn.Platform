@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Tokens
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -19,6 +20,9 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Dictionary<string, IPropertyAccess> PropertySource;
         private TokenContext tokenContext = new TokenContext();
 

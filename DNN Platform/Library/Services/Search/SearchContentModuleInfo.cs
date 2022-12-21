@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System.Diagnostics.CodeAnalysis;
     using DotNetNuke.Entities.Modules;
 
     /// -----------------------------------------------------------------------------
@@ -18,11 +19,19 @@ namespace DotNetNuke.Services.Search
     public class SearchContentModuleInfo
     {
 #pragma warning disable 0618
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable InconsistentNaming
         protected ISearchable MModControllerType;
 #pragma warning restore 0618
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected ModuleSearchBase SearchBaseControllerType;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         protected ModuleInfo MModInfo;
 
+        // ReSharper restore InconsistentNaming
 #pragma warning disable 0618
         public ISearchable ModControllerType
         {

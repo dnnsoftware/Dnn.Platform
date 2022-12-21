@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -13,7 +15,14 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class DualListControl : UserControlBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Label Label1;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Label Label2;
         protected LinkButton cmdAdd;
         protected LinkButton cmdAddAll;
