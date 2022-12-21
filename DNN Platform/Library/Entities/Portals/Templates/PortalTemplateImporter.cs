@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         internal PortalTemplateImporter(string templatePath, string templateFile)
         {
-            var buffer = new StringBuilder(File.ReadAllText(Path.Combine(templatePath,templateFile)));
+            var buffer = new StringBuilder(File.ReadAllText(Path.Combine(templatePath, templateFile)));
 
             this.TemplatePath = templatePath;
             this.Template = new XmlDocument { XmlResolver = null };
