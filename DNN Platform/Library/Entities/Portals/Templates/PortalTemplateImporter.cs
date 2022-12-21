@@ -1238,49 +1238,49 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        //private void PrepareLocalizedPortalTemplate(PortalTemplateInfo template, out string templatePath, out string templateFile)
-        //{
-        //    if (string.IsNullOrEmpty(template.LanguageFilePath))
-        //    {
-        //        // no language to merge
-        //        templatePath = Path.GetDirectoryName(template.TemplateFilePath) + @"\";
-        //        templateFile = Path.GetFileName(template.TemplateFilePath);
-        //        return;
-        //    }
+        ////private void PrepareLocalizedPortalTemplate(PortalTemplateInfo template, out string templatePath, out string templateFile)
+        ////{
+        ////    if (string.IsNullOrEmpty(template.LanguageFilePath))
+        ////    {
+        ////        // no language to merge
+        ////        templatePath = Path.GetDirectoryName(template.TemplateFilePath) + @"\";
+        ////        templateFile = Path.GetFileName(template.TemplateFilePath);
+        ////        return;
+        ////    }
 
-        //    templatePath = Path.Combine(TestableGlobals.Instance.HostMapPath, "MergedTemplate");
-        //    Directory.CreateDirectory(templatePath);
+        ////    templatePath = Path.Combine(TestableGlobals.Instance.HostMapPath, "MergedTemplate");
+        ////    Directory.CreateDirectory(templatePath);
 
-        //    var buffer = new StringBuilder(File.ReadAllText(template.TemplateFilePath));
+        ////    var buffer = new StringBuilder(File.ReadAllText(template.TemplateFilePath));
 
-        //    XDocument languageDoc;
-        //    using (var reader = PortalTemplateIO.Instance.OpenTextReader(template.LanguageFilePath))
-        //    {
-        //        languageDoc = XDocument.Load(reader);
-        //    }
+        ////    XDocument languageDoc;
+        ////    using (var reader = PortalTemplateIO.Instance.OpenTextReader(template.LanguageFilePath))
+        ////    {
+        ////        languageDoc = XDocument.Load(reader);
+        ////    }
 
-        //    var localizedData = languageDoc.Descendants("data");
+        ////    var localizedData = languageDoc.Descendants("data");
 
-        //    foreach (var item in localizedData)
-        //    {
-        //        var nameAttribute = item.Attribute("name");
-        //        if (nameAttribute != null)
-        //        {
-        //            string name = nameAttribute.Value;
-        //            var valueElement = item.Descendants("value").FirstOrDefault();
-        //            if (valueElement != null)
-        //            {
-        //                string value = valueElement.Value;
+        ////    foreach (var item in localizedData)
+        ////    {
+        ////        var nameAttribute = item.Attribute("name");
+        ////        if (nameAttribute != null)
+        ////        {
+        ////            string name = nameAttribute.Value;
+        ////            var valueElement = item.Descendants("value").FirstOrDefault();
+        ////            if (valueElement != null)
+        ////            {
+        ////                string value = valueElement.Value;
 
-        //                buffer = buffer.Replace(string.Format("[{0}]", name), value);
-        //            }
-        //        }
-        //    }
+        ////                buffer = buffer.Replace(string.Format("[{0}]", name), value);
+        ////            }
+        ////        }
+        ////    }
 
-        //    templateFile = string.Format("Merged-{0}-{1}", template.CultureCode, Path.GetFileName(template.TemplateFilePath));
+        ////    templateFile = string.Format("Merged-{0}-{1}", template.CultureCode, Path.GetFileName(template.TemplateFilePath));
 
-        //    File.WriteAllText(Path.Combine(templatePath, templateFile), buffer.ToString());
-        //}
+        ////    File.WriteAllText(Path.Combine(templatePath, templateFile), buffer.ToString());
+        ////}
 
         private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
         {
