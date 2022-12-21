@@ -1071,7 +1071,7 @@ namespace DNNConnect.CKEditorProvider
                 moduleDefinitionInfo =
                     ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
-            if(moduleDefinitionInfo == null)
+            if (moduleDefinitionInfo == null)
             {
                 moduleDefinitionInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
                     "User Accounts", moduleInfo.DesktopModuleID);
