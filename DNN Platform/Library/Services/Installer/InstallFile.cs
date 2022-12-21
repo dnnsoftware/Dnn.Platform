@@ -100,6 +100,14 @@ namespace DotNetNuke.Services.Installer
             this.Path = filePath;
         }
 
+        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
+        public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
+        {
+            this.Encoding = TextEncoding.UTF8;
+            this.InstallerInfo = info;
+            this.ReadZip(zip, entry);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the location of the backup file.
@@ -344,14 +352,6 @@ namespace DotNetNuke.Services.Installer
             this.ParseFileName(entry.FullName);
             Util.WriteStream(entry.Open(), this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.LastWriteTime.LocalDateTime);
-        }
-
-        [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0, replaced with .net compression types.")]
-        public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
-        {
-            this.Encoding = TextEncoding.UTF8;
-            this.InstallerInfo = info;
-            this.ReadZip(zip, entry);
         }
 
         [Obsolete("Deprecated in 9.11.0, will be removed in 11.0.0.")]

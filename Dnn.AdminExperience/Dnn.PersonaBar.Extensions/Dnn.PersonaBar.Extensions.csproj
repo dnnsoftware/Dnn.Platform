@@ -239,6 +239,7 @@
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />
     <Compile Include="Components\Security\SeverityEnum.cs" />
+    <Compile Include="Components\Security\Ssl\ISSlController.cs" />
     <Compile Include="Components\Security\Ssl\PortalStats.cs" />
     <Compile Include="Components\Security\Ssl\SslController.cs" />
     <Compile Include="Components\Security\Utility.cs" />

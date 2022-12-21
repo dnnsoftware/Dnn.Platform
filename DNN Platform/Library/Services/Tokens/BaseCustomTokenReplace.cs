@@ -19,12 +19,21 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
+        protected Dictionary<string, IPropertyAccess> PropertySource;
+        private TokenContext tokenContext = new TokenContext();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.
+        /// </summary>
+        public BaseCustomTokenReplace()
+        {
+            this.PropertySource = this.TokenContext.PropertySource;
+        }
+
         protected TokenProvider Provider
         {
             get => ComponentFactory.GetComponent<TokenProvider>();
         }
-
-        private TokenContext tokenContext = new TokenContext();
 
         public TokenContext TokenContext
         {
@@ -35,8 +44,6 @@ namespace DotNetNuke.Services.Tokens
                 this.PropertySource = this.tokenContext.PropertySource;
             }
         }
-
-        protected Dictionary<string, IPropertyAccess> PropertySource;
 
         /// <summary>
         /// Gets or sets /sets the user object representing the currently accessing user (permission).
@@ -92,14 +99,6 @@ namespace DotNetNuke.Services.Tokens
         {
             get => this.TokenContext.CurrentAccessLevel;
             set => this.TokenContext.CurrentAccessLevel = value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.
-        /// </summary>
-        public BaseCustomTokenReplace()
-        {
-            this.PropertySource = this.TokenContext.PropertySource;
         }
 
         /// <summary>

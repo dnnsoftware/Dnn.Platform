@@ -104,30 +104,6 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource["culture"] = new CulturePropertyAccess();
         }
 
-        private void DeterminePortal(PortalSettings portalSettings)
-        {
-            this.PortalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
-        }
-
-        private void DetermineUser(UserInfo user)
-        {
-            this.AccessingUser = HttpContext.Current != null ? (UserInfo)HttpContext.Current.Items["UserInfo"] : new UserInfo();
-            this.User = user ?? this.AccessingUser;
-        }
-
-        private void DetermineLanguage(string language)
-        {
-            this.Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
-        }
-
-        private void DetermineModule(int moduleID)
-        {
-            if (moduleID != Null.NullInteger)
-            {
-                this.ModuleId = moduleID;
-            }
-        }
-
         /// <summary>
         /// Gets or sets /sets the current ModuleID to be used for 'User:' token replacement.
         /// </summary>
@@ -136,36 +112,6 @@ namespace DotNetNuke.Services.Tokens
         {
             get => this.TokenContext.Module?.ModuleID ?? Null.NullInteger;
             set => this.TokenContext.Module = this.GetModule(value);
-        }
-
-        /// <summary>
-        /// Load the module for the Module Token Provider.
-        /// </summary>
-        /// <param name="moduleId"></param>
-        /// <returns>The populated ModuleInfo or null.</returns>
-        /// <remarks>
-        /// This method is called by the Setter of ModuleId.
-        /// Because of this, it may NOT access ModuleId itself (which will still be -1) but use moduleId (lower case).
-        /// </remarks>
-        private ModuleInfo GetModule(int moduleId)
-        {
-            if (moduleId == this.TokenContext.Module?.ModuleID)
-            {
-                return this.TokenContext.Module;
-            }
-
-            if (moduleId <= 0)
-            {
-                return null;
-            }
-
-            var tab = this.TokenContext.Tab ?? this.PortalSettings?.ActiveTab;
-            if (tab != null && tab.TabID > 0)
-            {
-                return ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
-            }
-
-            return ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
         }
 
         /// <summary>
@@ -331,6 +277,60 @@ namespace DotNetNuke.Services.Tokens
                 this.PropertySource["user"] = this.User;
                 this.PropertySource["membership"] = new MembershipPropertyAccess(this.User);
                 this.PropertySource["profile"] = new ProfilePropertyAccess(this.User);
+            }
+        }
+
+        /// <summary>
+        /// Load the module for the Module Token Provider.
+        /// </summary>
+        /// <param name="moduleId"></param>
+        /// <returns>The populated ModuleInfo or null.</returns>
+        /// <remarks>
+        /// This method is called by the Setter of ModuleId.
+        /// Because of this, it may NOT access ModuleId itself (which will still be -1) but use moduleId (lower case).
+        /// </remarks>
+        private ModuleInfo GetModule(int moduleId)
+        {
+            if (moduleId == this.TokenContext.Module?.ModuleID)
+            {
+                return this.TokenContext.Module;
+            }
+
+            if (moduleId <= 0)
+            {
+                return null;
+            }
+
+            var tab = this.TokenContext.Tab ?? this.PortalSettings?.ActiveTab;
+            if (tab != null && tab.TabID > 0)
+            {
+                return ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
+            }
+
+            return ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
+        }
+
+        private void DeterminePortal(PortalSettings portalSettings)
+        {
+            this.PortalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+        }
+
+        private void DetermineUser(UserInfo user)
+        {
+            this.AccessingUser = HttpContext.Current != null ? (UserInfo)HttpContext.Current.Items["UserInfo"] : new UserInfo();
+            this.User = user ?? this.AccessingUser;
+        }
+
+        private void DetermineLanguage(string language)
+        {
+            this.Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
+        }
+
+        private void DetermineModule(int moduleID)
+        {
+            if (moduleID != Null.NullInteger)
+            {
+                this.ModuleId = moduleID;
             }
         }
     }

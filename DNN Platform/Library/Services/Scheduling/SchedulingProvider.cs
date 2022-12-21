@@ -24,6 +24,8 @@ namespace DotNetNuke.Services.Scheduling
 
     public delegate void WorkCompleted(SchedulerClient objSchedulerClient);
 
+    public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
+
     // ReSharper disable InconsistentNaming
     public enum EventName
     {
@@ -59,8 +61,6 @@ namespace DotNetNuke.Services.Scheduling
         TIMER_METHOD = 1,
         REQUEST_METHOD = 2,
     }
-
-    public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
 
     public abstract class SchedulingProvider
     {

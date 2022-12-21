@@ -13,6 +13,9 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class DnnFileUploadOptions
     {
+        private const int DefaultWidth = 780;
+        private const int DefaultHeight = 630;
+
         [DataMember(Name = "clientId")]
         public string ClientId;
 
@@ -46,22 +49,10 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "height")]
         public int Height;
 
-        private Dictionary<string, string> parameters;
-
-        [DataMember(Name = "parameters")]
-        public Dictionary<string, string> Parameters
-        {
-            get
-            {
-                return this.parameters ?? (this.parameters = new Dictionary<string, string>());
-            }
-        }
-
-        private const int DefaultWidth = 780;
-        private const int DefaultHeight = 630;
-
         [DataMember(Name = "folderPath")]
         public string FolderPath;
+
+        private Dictionary<string, string> parameters;
 
         public DnnFileUploadOptions()
         {
@@ -98,6 +89,15 @@ namespace DotNetNuke.Web.UI.WebControls
                 UnzipFileFailedPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileFailedPromptBody.Text"),
                 UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text"),
             };
+        }
+
+        [DataMember(Name = "parameters")]
+        public Dictionary<string, string> Parameters
+        {
+            get
+            {
+                return this.parameters ?? (this.parameters = new Dictionary<string, string>());
+            }
         }
 
         [DataMember(Name = "validationCode")]

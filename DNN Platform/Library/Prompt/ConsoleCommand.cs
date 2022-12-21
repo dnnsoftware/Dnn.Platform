@@ -22,6 +22,14 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         public abstract string LocalResourceFile { get; }
 
+        /// <inheritdoc/>
+        public string ValidationMessage { get; private set; }
+
+        /// <summary>
+        /// Gets resource key for the result html.
+        /// </summary>
+        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
+
         protected IPortalSettings PortalSettings { get; private set; }
 
         protected IUserInfo User { get; private set; }
@@ -138,21 +146,6 @@ namespace DotNetNuke.Prompt
             return flagName.ToLower().Trim();
         }
 
-        /// <inheritdoc/>
-        public string ValidationMessage { get; private set; }
-
-        /// <summary>
-        /// Gets resource key for the result html.
-        /// </summary>
-        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
-
-        public struct ParameterMapping
-        {
-            public ConsoleCommandParameterAttribute Attribute { get; set; }
-
-            public PropertyInfo Property { get; set; }
-        }
-
         protected virtual IList<ParameterMapping> CreateMapping()
         {
             var mapping = new List<ParameterMapping>();
@@ -162,6 +155,13 @@ namespace DotNetNuke.Prompt
                 attributes.ForEach(attribute => mapping.Add(new ParameterMapping() { Attribute = attribute, Property = property }));
             });
             return mapping;
+        }
+
+        public struct ParameterMapping
+        {
+            public ConsoleCommandParameterAttribute Attribute { get; set; }
+
+            public PropertyInfo Property { get; set; }
         }
     }
 }

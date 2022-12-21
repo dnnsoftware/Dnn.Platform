@@ -723,6 +723,10 @@
     <Compile Include="Services\Authentication\OAuth\QueryParameter.cs" />
     <Compile Include="Services\Authentication\OAuth\QueryParameterComparer.cs" />
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
+    <Compile Include="Services\ClientCapability\Age.cs" />
+    <Compile Include="Services\ClientCapability\FaceBookData.cs" />
+    <Compile Include="Services\ClientCapability\Page.cs" />
+    <Compile Include="Services\ClientCapability\User.cs" />
     <Compile Include="Services\ClientDependency\PurgeClientDependencyFiles.cs" />
     <Compile Include="Services\Connections\ConnectionsController.cs" />
     <Compile Include="Services\Connections\ConnectionsManager.cs" />

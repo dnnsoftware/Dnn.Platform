@@ -46,17 +46,17 @@ namespace DotNetNuke.Services.Mail
             this.MailAttachmentInternal(filename, content, contentType);
         }
 
+        public byte[] Content { get; set; }
+
+        public string Filename { get; set; }
+
+        public string ContentType { get; set; }
+
         private void MailAttachmentInternal(string filename, byte[] content, string contentType)
         {
             this.Filename = filename;
             this.Content = content;
             this.ContentType = contentType;
         }
-
-        public byte[] Content { get; set; }
-
-        public string Filename { get; set; }
-
-        public string ContentType { get; set; }
     }
 }

@@ -44,18 +44,6 @@ namespace DotNetNuke.Services.Mail
         private readonly List<UserInfo> addressedUsers = new List<UserInfo>();
         private readonly List<Attachment> attachments = new List<Attachment>();
 
-        /// <summary>
-        /// Addressing Methods (personalized or hidden).
-        /// </summary>
-        // ReSharper disable InconsistentNaming
-        // Existing public API
-        public enum AddressMethods
-        {
-            Send_TO = 1,
-            Send_BCC = 2,
-            Send_Relay = 3,
-        }
-
         private UserInfo replyToUser;
         private bool smtpEnableSSL;
         private TokenReplace tokenReplace;
@@ -116,6 +104,18 @@ namespace DotNetNuke.Services.Mail
         ~SendTokenizedBulkEmail()
         {
             this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Addressing Methods (personalized or hidden).
+        /// </summary>
+        // ReSharper disable InconsistentNaming
+        // Existing public API
+        public enum AddressMethods
+        {
+            Send_TO = 1,
+            Send_BCC = 2,
+            Send_Relay = 3,
         }
 
         /// <summary>

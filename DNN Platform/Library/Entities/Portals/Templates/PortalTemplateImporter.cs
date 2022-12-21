@@ -38,8 +38,6 @@ namespace DotNetNuke.Entities.Portals.Templates
     {
         public const string HtmlTextTimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlTextAutoSaveEnabled = "HtmlText_AutoSaveEnabled";
-        private XmlDocument Template { get; set; }
-        public string TemplatePath { get; set; }
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalTemplateImporter));
 
         internal PortalTemplateImporter(IPortalTemplateInfo templateToLoad)
@@ -86,6 +84,9 @@ namespace DotNetNuke.Entities.Portals.Templates
             this.Template = new XmlDocument { XmlResolver = null };
             this.Template.LoadXml(buffer.ToString());
         }
+
+        private XmlDocument Template { get; set; }
+        public string TemplatePath { get; set; }
 
         internal void ParseTemplate(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {

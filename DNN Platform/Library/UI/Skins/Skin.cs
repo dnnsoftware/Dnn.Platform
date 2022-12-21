@@ -61,6 +61,14 @@ namespace DotNetNuke.UI.Skins
     {
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
+
+        // ReSharper disable InconsistentNaming
+        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+
+        // ReSharper restore InconsistentNaming
+        private readonly ModuleCommunicate communicator = new ModuleCommunicate();
         private ArrayList actionEventListeners;
         private Control controlPanel;
         private Dictionary<string, Pane> panes;
@@ -1045,17 +1053,5 @@ namespace DotNetNuke.UI.Skins
 
             return success;
         }
-
-        // ReSharper disable InconsistentNaming
-
-        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
-
-        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
-
-        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
-
-        private readonly ModuleCommunicate communicator = new ModuleCommunicate();
-
-        // ReSharper restore InconsistentNaming
     }
 }
