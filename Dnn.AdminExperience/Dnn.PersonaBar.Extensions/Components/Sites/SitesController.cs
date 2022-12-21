@@ -3,6 +3,18 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Sites.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.DTO.Tabs;
     using Dnn.PersonaBar.Sites.Components.Dto;
@@ -25,17 +37,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Threading;
-    using System.Web;
-    using System.Web.UI.WebControls;
-    using System.Xml;
+
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     public class SitesController
