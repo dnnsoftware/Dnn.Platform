@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Users.Services
                     RandomPassword = contract.RandomPassword,
                     IgnoreRegistrationMode = true,
                 };
-                
+
                 var userInfo = RegisterController.Instance.Register(settings);
                 UserBasicDto response = null;
                 if (userInfo != null)
