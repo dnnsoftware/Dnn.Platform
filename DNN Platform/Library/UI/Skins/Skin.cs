@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -63,8 +64,11 @@ namespace DotNetNuke.UI.Skins
         public const string OnInitMessageType = "Skin_InitMessageType";
 
         // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         // ReSharper restore InconsistentNaming
