@@ -26,7 +26,7 @@ public class TestStopwatch : IStopwatch
             }
 
             return elapsedCalled >= this.timeSpans.Count 
-                ? this.timeSpans[^0] 
+                ? this.timeSpans[^1] 
                 : timeSpans[elapsedCalled++];
         }
     }
