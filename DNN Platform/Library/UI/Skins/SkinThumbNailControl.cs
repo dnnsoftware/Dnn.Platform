@@ -28,11 +28,13 @@ namespace DotNetNuke.UI.Skins
     public abstract class SkinThumbNailControl : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected HtmlGenericControl ControlContainer;
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected RadioButtonList OptSkin;

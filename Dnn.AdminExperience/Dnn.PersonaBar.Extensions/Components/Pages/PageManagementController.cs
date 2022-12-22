@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -16,6 +17,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private readonly ITabController tabController;
 

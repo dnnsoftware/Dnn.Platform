@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.NavigationProvider
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Framework;
@@ -1027,7 +1028,10 @@ namespace DotNetNuke.Modules.NavigationProvider
 
     public class NavigationEventArgs
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string ID;
+
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public DNNNode Node;
 
         /// <summary>

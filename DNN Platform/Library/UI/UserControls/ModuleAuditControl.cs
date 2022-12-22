@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.UserControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -18,7 +19,9 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class ModuleAuditControl : UserControl
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblCreatedBy;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUpdatedBy;
         private const string MyFileName = "ModuleAuditControl.ascx";
 

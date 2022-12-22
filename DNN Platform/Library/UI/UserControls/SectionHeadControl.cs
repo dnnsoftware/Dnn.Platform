@@ -25,8 +25,11 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public class SectionHeadControl : UserControl
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ImageButton imgIcon;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblTitle;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlRule;
         private bool includeRule;
         private bool isExpanded = true;

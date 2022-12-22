@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -2841,7 +2842,9 @@ namespace DotNetNuke.UI.Skins
 
     public class CustomAttribute
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Name;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Value;
     }
 }

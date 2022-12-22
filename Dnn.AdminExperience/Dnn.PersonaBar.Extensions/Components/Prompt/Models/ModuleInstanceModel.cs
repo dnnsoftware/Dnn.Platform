@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     using System.Diagnostics.CodeAnalysis;
@@ -12,6 +11,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     /// </summary>
     public class ModuleInstanceModel
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int TabId;
 
         // command link

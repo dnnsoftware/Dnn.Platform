@@ -16,6 +16,7 @@ namespace DotNetNuke.UI.Containers
     public partial class LinkActions : ActionBase
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected string _itemSeparator = string.Empty;

@@ -72,6 +72,7 @@ namespace DotNetNuke.Services.Install
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected static string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";

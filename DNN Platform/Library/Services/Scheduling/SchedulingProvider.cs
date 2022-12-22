@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -64,6 +65,7 @@ namespace DotNetNuke.Services.Scheduling
 
     public abstract class SchedulingProvider
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public EventName EventName;
 
         /// <summary>

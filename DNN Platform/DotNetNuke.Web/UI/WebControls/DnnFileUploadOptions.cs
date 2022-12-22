@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Runtime.Serialization;
 
@@ -14,39 +15,51 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileUploadOptions
     {
         [DataMember(Name = "clientId")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string ClientId;
 
         [DataMember(Name = "moduleId")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string ModuleId = string.Empty;
 
         [DataMember(Name = "parentClientId")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string ParentClientId;
 
         [DataMember(Name = "showOnStartup")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public bool ShowOnStartup;
 
         [DataMember(Name = "folderPicker")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public DnnDropDownListOptions FolderPicker;
 
         [DataMember(Name = "maxFileSize")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int MaxFileSize;
 
         [DataMember(Name = "maxFiles")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int MaxFiles = 0;
 
         [DataMember(Name = "extensions")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public List<string> Extensions;
 
         [DataMember(Name = "resources")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public DnnFileUploadResources Resources;
 
         [DataMember(Name = "width")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int Width;
 
         [DataMember(Name = "height")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public int Height;
 
         [DataMember(Name = "folderPath")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string FolderPath;
 
         private const int DefaultWidth = 780;

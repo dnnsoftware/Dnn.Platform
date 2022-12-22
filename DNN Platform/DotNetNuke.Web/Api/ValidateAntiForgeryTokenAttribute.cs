@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.Api
     public class ValidateAntiForgeryTokenAttribute : ActionFilterAttribute
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected static Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);

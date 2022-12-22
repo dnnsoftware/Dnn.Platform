@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// List of all colors in the palette.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected Color[] _colors;

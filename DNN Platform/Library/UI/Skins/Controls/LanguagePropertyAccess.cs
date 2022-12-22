@@ -25,6 +25,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public class LanguagePropertyAccess : IPropertyAccess
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public LanguageTokenReplace objParent;

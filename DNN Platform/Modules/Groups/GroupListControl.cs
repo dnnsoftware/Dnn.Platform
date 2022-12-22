@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.Groups.Controls
     public class GroupListControl : WebControl
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         public UserInfo currentUser;

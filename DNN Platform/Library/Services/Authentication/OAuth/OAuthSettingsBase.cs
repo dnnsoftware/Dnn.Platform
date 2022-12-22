@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
     public class OAuthSettingsBase : AuthenticationSettingsBase
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected PropertyEditorControl SettingsEditor;
