@@ -7,7 +7,6 @@ namespace DotNetNuke.Web.UI
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
     using System.Xml;
 
     using DotNetNuke.Common;
@@ -503,66 +502,6 @@ namespace DotNetNuke.Web.UI
             }
 
             TabController.Instance.UpdateTab(tab);
-        }
-    }
-
-    public class DotNetNukeException : Exception
-    {
-        private readonly DotNetNukeErrorCode errorCode = DotNetNukeErrorCode.NotSet;
-
-        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
-        public DotNetNukeException()
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
-        /// <param name="message">The message.</param>
-        public DotNetNukeException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public DotNetNukeException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
-        /// <param name="message">The message.</param>
-        /// <param name="errorCode">The error code.</param>
-        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode)
-            : base(message)
-        {
-            this.errorCode = errorCode;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
-        /// <param name="errorCode">The error code.</param>
-        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode)
-            : base(message, innerException)
-        {
-            this.errorCode = errorCode;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="DotNetNukeException"/> class.</summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The streaming context.</param>
-        public DotNetNukeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-
-        public DotNetNukeErrorCode ErrorCode
-        {
-            get
-            {
-                return this.errorCode;
-            }
         }
     }
 }

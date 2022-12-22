@@ -4,25 +4,16 @@
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
-    using System.Xml.Serialization;
-
-    [XmlInclude(typeof(ClientBoolean))]
-    [XmlInclude(typeof(ClientNumber))]
-    [XmlInclude(typeof(ClientString))]
-    public class ClientOption
+    public class ClientString : ClientOption
     {
-        public ClientOption()
+        public ClientString()
         {
         }
 
-        public ClientOption(string name, string value)
+        public ClientString(string name, string value)
         {
             this.Name = name;
             this.Value = value;
         }
-
-        public string Name { get; set; }
-
-        public string Value { get; set; }
     }
 }

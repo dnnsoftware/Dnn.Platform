@@ -212,6 +212,7 @@
     <Compile Include="ConfigSection\MessageHandlerEntry.cs" />
     <Compile Include="ConfigSection\MessageHandlersCollection.cs" />
     <Compile Include="DependencyInjection\BuildUpExtensions.cs" />
+    <Compile Include="InternalServices\PublishPageDto.cs" />
     <Compile Include="Prompt\ListServices.cs" />
     <Compile Include="Models\ModuleDetail.cs" />
     <Compile Include="Models\ModuleInstance.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="DependencyInjectionInitialize.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UI\DotNetNukeException.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListState.cs" />
     <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
@@ -358,8 +360,10 @@
     <Compile Include="UI\WebControls\Internal\DnnModuleComboBox.cs" />
     <Compile Include="UI\WebControls\Internal\DnnScriptBlock.cs" />
     <Compile Include="UI\WebControls\Internal\DnnSkinComboBox.cs" />
+    <Compile Include="UI\WebControls\Internal\OptionItem.cs" />
     <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\Internal\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\Internal\RenderOption.cs" />
     <Compile Include="UI\WebControls\Internal\TermsSelector.cs" />
     <Compile Include="UI\WebControls\ItemListOptions.cs" />
     <Compile Include="UI\WebControls\ItemListServicesOptions.cs" />

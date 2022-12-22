@@ -4,7 +4,6 @@
 namespace DotNetNuke.Modules.NavigationProvider
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Framework;
@@ -1023,26 +1022,6 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
-        }
-    }
-
-    public class NavigationEventArgs
-    {
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public string ID;
-
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public DNNNode Node;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationEventArgs"/> class.
-        /// </summary>
-        /// <param name="strID"></param>
-        /// <param name="objNode"></param>
-        public NavigationEventArgs(string strID, DNNNode objNode)
-        {
-            this.ID = strID;
-            this.Node = objNode;
         }
     }
 }

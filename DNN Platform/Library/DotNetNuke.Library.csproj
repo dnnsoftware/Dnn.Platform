@@ -205,6 +205,7 @@
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
     <Compile Include="Entities\Content\ContentExtensions.cs" />
+    <Compile Include="Entities\Content\Taxonomy\ScopeTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
     <Compile Include="Entities\Modules\Prompt\AddModule.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
@@ -259,6 +260,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
+    <Compile Include="ExtensionPoints\PanelEditPagePanelExtensionControl.cs" />
+    <Compile Include="ExtensionPoints\PanelTabExtensionControl.cs" />
+    <Compile Include="Modules\NavigationEventArgs.cs" />
     <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
     <Compile Include="Obsolete\LogInfo.cs" />
@@ -710,6 +714,7 @@
     <Compile Include="Services\Authentication\AuthMode.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthExtensions.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthorisationResult.cs" />
+    <Compile Include="Services\Authentication\OAuth\EmailData.cs" />
     <Compile Include="Services\Authentication\OAuth\HttpMethod.cs" />
     <Compile Include="Common\Utilities\Json.cs" />
     <Compile Include="Services\Authentication\OAuth\OAuthClientBase.cs" />
@@ -826,7 +831,9 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Installer\Packages\PackageTypeMemberNameFixer.cs" />
     <Compile Include="Services\Localization\CultureDropDownTypes.cs" />
+    <Compile Include="Services\Localization\LocalizationExpressionBuilderEditor.cs" />
     <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
@@ -892,6 +899,7 @@
     <Compile Include="Services\Search\Entities\SearchQuery.cs" />
     <Compile Include="Services\Search\UserIndexer.cs" />
     <Compile Include="Services\Search\UserSearch.cs" />
+    <Compile Include="Services\Sitemap\AlternateUrl.cs" />
     <Compile Include="Services\Social\Messaging\Frequency.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\DataService.cs" />
     <Compile Include="Services\Social\Subscriptions\Data\IDataService.cs" />
@@ -913,6 +921,7 @@
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptDto.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\StylesheetDto.cs" />
     <Compile Include="Services\Tokens\Scope.cs" />
     <Compile Include="Services\Tokens\CoreTokenProvider.cs" />
     <Compile Include="Services\Tokens\TokenContext.cs" />
@@ -1594,8 +1603,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Modules\Html5\Html5ModuleTokenReplace.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleActionDto.cs" />
     <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleLocalizationDto.cs" />
     <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\RequestPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
@@ -1627,6 +1638,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UI\Skins\Controls\SkinsEditControl.cs" />
+    <Compile Include="UI\Skins\CustomAttribute.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventArgs.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventHandler.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
@@ -1678,6 +1690,7 @@
     <Compile Include="UI\UserControls\LabelControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\ListItemComparer.cs" />
     <Compile Include="UI\UserControls\ModuleAuditControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

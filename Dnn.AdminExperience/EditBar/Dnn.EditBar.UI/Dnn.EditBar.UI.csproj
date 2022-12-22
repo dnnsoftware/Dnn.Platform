@@ -98,6 +98,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\CacheDto.cs" />
     <Compile Include="Services\CommonController.cs" />
     <Compile Include="Services\ContentEditorController.cs" />
     <Compile Include="Services\DTO\UserSetting.cs" />

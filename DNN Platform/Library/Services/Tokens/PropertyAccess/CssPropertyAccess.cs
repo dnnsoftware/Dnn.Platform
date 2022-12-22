@@ -11,19 +11,6 @@ namespace DotNetNuke.Services.Tokens
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using Newtonsoft.Json;
-
-    public class StylesheetDto
-    {
-        [JsonProperty("path")]
-        public string Path { get; set; }
-
-        [JsonProperty("priority")]
-        public int Priority { get; set; }
-
-        [JsonProperty("provider")]
-        public string Provider { get; set; }
-    }
 
     public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
     {
