@@ -297,7 +297,7 @@ namespace DotNetNuke.Services.Installer
         private bool InsertNode(XmlNode childRootNode, XmlNode actionNode, NodeInsertType mode)
         {
             XmlNode rootNode = childRootNode.ParentNode;
-            Debug.Assert(rootNode != null);
+            Debug.Assert(rootNode != null, "Root Node was null");
 
             var changedNode = false;
             foreach (XmlNode child in actionNode.ChildNodes)
@@ -468,7 +468,7 @@ namespace DotNetNuke.Services.Installer
 
         private XmlNode FindMatchingNode(XmlNode rootNode, XmlNode mergeNode, string pathAttributeName)
         {
-            Debug.Assert(mergeNode.Attributes != null);
+            Debug.Assert(mergeNode.Attributes != null, "Attributes collection was null");
 
             XmlNode matchingNode = null;
             if (mergeNode.Attributes[pathAttributeName] != null)

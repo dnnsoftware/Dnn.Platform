@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         internal void ProcessRequest(HttpContextBase context)
         {
-            Debug.Assert(context != null);
+            Debug.Assert(context != null, "HTTP Context was null");
             this.Implementation.HandleImageRequest(context, this.GenerateImage, this.ToString());
         }
     }
