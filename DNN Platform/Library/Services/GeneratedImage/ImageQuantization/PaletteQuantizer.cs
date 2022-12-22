@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Imaging;
 
@@ -18,6 +19,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <summary>
         /// List of all colors in the palette.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Color[] _colors;
 
         /// <summary>
