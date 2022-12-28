@@ -5,6 +5,8 @@
 namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Text;
@@ -23,6 +25,7 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Web.Api;
 
     [MenuPermission(Scope = ServiceScope.Admin)]
@@ -32,7 +35,6 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
 
         [HttpGet]
-
         public HttpResponseMessage GetSmtpSettings()
         {
             try
@@ -52,6 +54,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
                         smtpPassword = GetSmtpPassword(portalId, true),
+                        authProvider = PortalController.GetPortalSetting("SMTPAuthProvider", portalId, string.Empty),
                     },
                     portalName = PortalSettings.Current.PortalName,
                     hideCoreSettings = ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes.GetValueOrDefault("hideCoreSettings", false),
@@ -67,12 +70,14 @@ namespace Dnn.PersonaBar.Servers.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSmtpSettings(UpdateSmtpSettingsRequest request)
         {
             try
             {
+                IList<string> errorMessages = new List<string>();
+                var providerSettingsChanged = false;
                 var portalId = PortalSettings.Current.PortalId;
+
                 PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
 
                 if (request.SmtpPassword == ObfuscateString)
@@ -91,8 +96,33 @@ namespace Dnn.PersonaBar.Servers.Services
                     Config.GetDecryptionkey());
                 PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
+                var providerChanged = false;
+                if (request.SmtpAuthentication == 3) //oauth authentication
+                {
+                    // Only the mail kit provider supports oauth.
+                    this.EnsureUsingMailkitProvider();
+
+                    var authProvider = PortalController.GetPortalSetting("SMTPAuthProvider", portalId, string.Empty);
+                    if (authProvider != request.AuthProvider)
+                    {
+                        PortalController.UpdatePortalSetting(portalId, "SMTPAuthProvider", request.AuthProvider, false);
+                        providerChanged = true;
+                    }
+
+                    var provider = SmtpOAuthController.Instance.GetOAuthProvider(request.AuthProvider);
+                    if (provider != null)
+                    {
+                        providerChanged = provider.UpdateSettings(portalId, request.AuthProviderSettings, out errorMessages);
+                    }
+                }
+
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { success = true });
+                if (errorMessages.Any())
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { success = false, errors = errorMessages });
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { success = true, providerChanged });
             }
             catch (Exception exc)
             {
@@ -109,7 +139,6 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage SendTestEmail(SendTestEmailRequest request)
         {
             try
@@ -133,7 +162,8 @@ namespace Dnn.PersonaBar.Servers.Services
                     smtpHostMode ? HostController.Instance.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
                     smtpHostMode ? HostController.Instance.GetString("SMTPUsername") : request.SmtpUsername,
                     smtpHostMode ? HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
-                    smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
+                    smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl,
+                    smtpHostMode ? HostController.Instance.GetString("SMTPAuthProvider", string.Empty) : request.AuthProvider);
 
                 var success = string.IsNullOrEmpty(errMessage);
                 return this.Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
@@ -156,6 +186,34 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
+        /// <summary>
+        /// Get smtp oauth providers.
+        /// </summary>
+        /// <returns>smtp oauth providers.</returns>
+        [HttpGet]
+        public HttpResponseMessage GetSmtpOAuthProviders()
+        {
+            try
+            {
+                var portalId = PortalSettings.Current.PortalId;
+                var providers = SmtpOAuthController.Instance.GetOAuthProviders();
+                var result = providers.Select(i => new {
+                    name = i.Name,
+                    localizedName = i.LocalizedName,
+                    settings = i.GetSettings(portalId).Where(s => !s.IsBackground),
+                    isAuthorized = i.IsAuthorized(portalId),
+                    authorizeUrl = i.GetAuthorizeUrl(portalId),
+                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { host = new object[] { }, site = result });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         private static string GetSmtpPassword(int portalId, bool obfuscate)
         {
             var pwd = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey());
@@ -166,6 +224,27 @@ namespace Dnn.PersonaBar.Servers.Services
             }
 
             return pwd;
+        }
+
+        private void EnsureUsingMailkitProvider()
+        {
+            const string providerName = "MailKitMailProvider";
+
+            var xmlConfig = Config.Load();
+
+            // Update provider
+            var provider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/mail/providers/add[@name='" + providerName + "']");
+            if (provider != null)
+            {
+                var mailNode = xmlConfig.SelectSingleNode("configuration/dotnetnuke/mail");
+                var defaultProvder = mailNode.Attributes["defaultProvider"]?.Value;
+                if (defaultProvder != providerName)
+                {
+                    XmlUtils.UpdateAttribute(mailNode, "defaultProvider", providerName);
+
+                    Config.Save(xmlConfig);
+                }
+            }
         }
     }
 }

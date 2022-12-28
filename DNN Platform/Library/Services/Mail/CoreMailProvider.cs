@@ -124,6 +124,7 @@ namespace DotNetNuke.Services.Mail
                        Username = Host.SMTPUsername,
                        Password = Host.SMTPPassword,
                        EnableSSL = Host.EnableSMTPSSL,
+                       AuthProvider = Host.SMTPAuthProvider,
                    };
         }
 

@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Mail
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
-
+    using DotNetNuke.Services.Mail.OAuth;
     using MailKit.Net.Smtp;
     using MailKit.Security;
 
@@ -40,11 +40,27 @@ namespace DotNetNuke.Services.Mail
 
                 using (var smtpClient = new SmtpClient())
                 {
+                    var usingOAuth = smtpInfo.Authentication == "3";
                     smtpClient.Connect(host, port, SecureSocketOptions.Auto);
 
                     if (smtpInfo.Authentication == "1" && !string.IsNullOrEmpty(smtpInfo.Username) && !string.IsNullOrEmpty(smtpInfo.Password))
                     {
                         smtpClient.Authenticate(smtpInfo.Username, smtpInfo.Password);
+                    }
+
+                    if (usingOAuth)
+                    {
+                        var authProvider = SmtpOAuthController.Instance.GetOAuthProvider(smtpInfo.AuthProvider);
+                        if (authProvider != null)
+                        {
+                            var portalId = Null.NullInteger;
+                            if (Host.SMTPPortalEnabled)
+                            {
+                                portalId = PortalSettings.Current.PortalId;
+                            }
+
+                            authProvider.Authorize(portalId, smtpClient);
+                        }
                     }
 
                     smtpClient.Send(mailMessage);
@@ -74,11 +90,27 @@ namespace DotNetNuke.Services.Mail
             {
                 using (var smtpClient = new SmtpClient())
                 {
+                    var usingOAuth = smtpInfo.Authentication == "3";
                     await smtpClient.ConnectAsync(host, port, SecureSocketOptions.Auto, cancellationToken);
 
                     if (smtpInfo.Authentication == "1" && !string.IsNullOrEmpty(smtpInfo.Username) && !string.IsNullOrEmpty(smtpInfo.Password))
                     {
                         await smtpClient.AuthenticateAsync(smtpInfo.Username, smtpInfo.Password, cancellationToken);
+                    }
+
+                    if (usingOAuth)
+                    {
+                        var authProvider = SmtpOAuthController.Instance.GetOAuthProvider(smtpInfo.AuthProvider);
+                        if (authProvider != null)
+                        {
+                            var portalId = Null.NullInteger;
+                            if (Host.SMTPPortalEnabled)
+                            {
+                                portalId = PortalSettings.Current.PortalId;
+                            }
+
+                            authProvider.Authorize(portalId, smtpClient);
+                        }
                     }
 
                     await smtpClient.SendAsync(mailMessage, cancellationToken);
@@ -110,6 +142,7 @@ namespace DotNetNuke.Services.Mail
                                Username = Host.SMTPUsername,
                                Password = Host.SMTPPassword,
                                EnableSSL = Host.EnableSMTPSSL,
+                               AuthProvider = Host.SMTPAuthProvider,
                            };
             }
 

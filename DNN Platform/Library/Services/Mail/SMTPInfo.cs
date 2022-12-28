@@ -30,5 +30,10 @@ namespace DotNetNuke.Services.Mail
         /// Gets or sets a value indicating whether SSL should be enabled or disabled.
         /// </summary>
         public bool EnableSSL { get; set; }
+
+        /// <summary>
+        /// Gets or sets SMTP OAuth provider.
+        /// </summary>
+        public string AuthProvider { get; set; }
     }
 }

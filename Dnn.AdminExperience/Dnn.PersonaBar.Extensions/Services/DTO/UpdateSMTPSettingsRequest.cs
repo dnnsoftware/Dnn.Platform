@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Collections.Generic;
+
 namespace Dnn.PersonaBar.Servers.Services.Dto
 {
     public class UpdateSmtpSettingsRequest
@@ -25,5 +27,9 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
         public bool EnableSmtpSsl { get; set; }
 
         public int MessageSchedulerBatchSize { get; set; }
+
+        public string AuthProvider { get; set; }
+
+        public IDictionary<string, string> AuthProviderSettings { get; set; }
     }
 }
