@@ -604,7 +604,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating the SMTP OAuth provider.
+        ///   returns the currently configured SMTP OAuth provider if existing, for the current portal if portal SMTP enabled, otherwise for the installation.
         /// </summary>
         /// <remarks>
         ///   Defaults to empty string.
