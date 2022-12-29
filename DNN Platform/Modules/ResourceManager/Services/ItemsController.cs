@@ -230,6 +230,20 @@ namespace Dnn.Modules.ResourceManager.Services
         }
 
         /// <summary>
+        /// Determines whether or not the current user has permissions to manage the folder types.
+        /// </summary>
+        /// <returns>
+        /// A boolean indicating whether or not the current user has permissions to manage the folder types.
+        /// </returns>
+        [HttpGet]
+        [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
+        public HttpResponseMessage CanManageFolderTypes()
+        {
+            var canManage = this.UserInfo.IsSuperUser || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+            return this.Request.CreateResponse(HttpStatusCode.OK, canManage);
+        }
+
+        /// <summary>
         /// Gets a url to add a new folder type.
         /// </summary>
         /// <returns>A url to the folder providers control that allows adding a new folder type.</returns>

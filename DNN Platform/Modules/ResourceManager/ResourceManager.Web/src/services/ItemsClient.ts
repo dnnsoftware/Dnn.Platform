@@ -238,6 +238,23 @@ export class ItemsClient{
         });
     }
 
+    public canManageFolderTypes(){
+        return new Promise<boolean>((resolve, reject) => {
+            const url = `${this.requestUrl}CanManageFolderTypes`;
+            fetch(url, {
+                headers: this.sf.getModuleHeaders(),
+            })
+            .then(response => {
+                if (response.status == 200){
+                    response.json().then(data => resolve(data));
+                } else {
+                    response.json().then(error => reject(error.message));
+                }
+            })
+            .catch(error => reject(error));
+        })
+    }
+
     public getAddFolderTypeUrl(){
         return new Promise<string>((resolve, reject) => {
             const url = `${this.requestUrl}GetAddFolderTypeUrl`;

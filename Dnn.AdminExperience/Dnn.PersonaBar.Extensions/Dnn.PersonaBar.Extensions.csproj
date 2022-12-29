@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -712,7 +711,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -745,6 +744,7 @@
     <EmbeddedResource Include="Components\ConfigConsole\Schemas\DotNetConfig.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="web.config" />
     <Content Include="SqlDataProvider\09.11.00.SqlDataProvider" />
@@ -765,22 +765,6 @@
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
   <Import Project="Module.build" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.props'))" />
-    <Error Condition="!Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets" Condition="Exists('..\..\packages\Yarn.MSBuild.1.22.19\build\Yarn.MSBuild.targets')" />
 </Project>
