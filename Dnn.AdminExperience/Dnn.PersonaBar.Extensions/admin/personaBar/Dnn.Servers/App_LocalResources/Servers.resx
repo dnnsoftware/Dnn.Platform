@@ -736,9 +736,9 @@ Are you sure you want to increment the version number for your site?</value>
     <value>Your OAuth provider's configuration has been completed.</value>
   </data>
   <data name="CompleteAuthorize.Text" xml:space="preserve">
-    <value>Your OAuth provider settings has been saved, please click the Authorize button to complete the authorize process.</value>
+    <value>Your OAuth provider settings have been saved, please click the Authorize button to complete the authorize process.</value>
   </data>
   <data name="OAuthConfigurationNotSaved.Text" xml:space="preserve">
-    <value>Please save the settings and complete the authorize process before test when OAuth authentication mode is enabled in host or website level.</value>
+    <value>Please save the settings and complete the authorization process before testing when OAuth authentication mode is enabled in host or website level.</value>
   </data>
 </root>

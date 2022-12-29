@@ -243,7 +243,7 @@ class SmtpServer extends Component {
     }).pop();
 
     if(authProvider){
-      const myWindow = this.popupWindow('about:blank', 'GoogleAuth', 1090, 600);
+      const myWindow = this.popupWindow('about:blank', 'OAuth', 1090, 600);
       myWindow.location = authProvider.authorizeUrl;
 
       const intervalHandler = window.setInterval((() => {
