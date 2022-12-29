@@ -920,7 +920,7 @@ namespace DotNetNuke.UI.UserControls
         protected void cmdUpload_Click(object sender, EventArgs e)
         {
             string strSaveFolder = this.cboFolders.SelectedValue;
-            this.LoadFolders("ADD");
+            this.LoadFolders("WRITE");
             if (this.cboFolders.Items.FindByValue(strSaveFolder) != null)
             {
                 this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
@@ -944,7 +944,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     // reset controls
-                    this.LoadFolders("BROWSE,ADD");
+                    this.LoadFolders("BROWSE,WRITE");
                     this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
                     this.cboFiles.Visible = true;
                     this.cmdUpload.Visible = false;
@@ -1404,7 +1404,7 @@ namespace DotNetNuke.UI.UserControls
 
                         if (this.ViewState["FoldersLoaded"] == null || this.doReloadFolders)
                         {
-                            this.LoadFolders("BROWSE,ADD");
+                            this.LoadFolders("BROWSE,WRITE");
                             this.ViewState["FoldersLoaded"] = "Y";
                         }
 
