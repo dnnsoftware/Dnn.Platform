@@ -5,12 +5,10 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// Wrapper class for any object that maps string key onto the object value (like Dictionary).
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <remarks></remarks>
+    /// <summary>Wrapper class for any object that maps string key onto the object value (like <see cref="Dictionary{TKey,TValue}"/>).</summary>
+    /// <typeparam name="T">The type of the variable's value.</typeparam>
     public abstract class StateVariable<T>
     {
         private readonly string key;

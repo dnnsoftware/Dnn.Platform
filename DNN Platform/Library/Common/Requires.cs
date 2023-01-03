@@ -12,13 +12,11 @@ namespace DotNetNuke.Common
     /// </summary>
     public static class Requires
     {
-        /// <summary>
-        /// Determines whether argValue is type of T.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <summary>Determines whether <paramref name="argValue"/> is type of <typeparamref name="T"/>.</summary>
+        /// <typeparam name="T">The expected type.</typeparam>
         /// <param name="argName">Name of the arg.</param>
         /// <param name="argValue">The arg value.</param>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">When <paramref name="argValue"/> is not of type <typeparamref name="T"/>.</exception>
         public static void IsTypeOf<T>(string argName, object argValue)
         {
             if (!(argValue is T))
