@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Web;
     using System.Xml;
     using System.Xml.XPath;
+
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
     using DotNetNuke.Common;

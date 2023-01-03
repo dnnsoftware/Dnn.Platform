@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Entities.Users;
 

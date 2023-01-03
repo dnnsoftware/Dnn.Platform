@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Razor
 {
     using System;
+
     using DotNetNuke.Common;
     using Microsoft.Extensions.DependencyInjection;
 

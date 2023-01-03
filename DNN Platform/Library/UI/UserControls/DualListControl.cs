@@ -26,6 +26,7 @@ namespace DotNetNuke.UI.UserControls
 
         // ReSharper disable once InconsistentNaming
         protected Label Label2;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAdd;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

@@ -32,6 +32,7 @@ namespace DotNetNuke.UI.UserControls
 
         // ReSharper disable once InconsistentNaming
         protected HtmlTableRow PasswordRow;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUsername;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

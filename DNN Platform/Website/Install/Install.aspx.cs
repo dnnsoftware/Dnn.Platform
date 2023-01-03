@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Install
 
         // ReSharper disable once InconsistentNaming
         protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object InstallLocker = new object();
 

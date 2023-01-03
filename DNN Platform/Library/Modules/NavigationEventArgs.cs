@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.NavigationProvider
 {
     using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.UI.WebControls;
 
     public class NavigationEventArgs

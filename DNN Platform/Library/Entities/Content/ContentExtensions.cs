@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using DotNetNuke.Entities.Content.Taxonomy;
 
     [Obsolete("Moving ContentExtensions to the DotNetNuke.Entities.Content namespace was an error. Please use DotNetNuke.Entities.Content.Common.ContentExtensions. Scheduled removal in v10.0.0.")]

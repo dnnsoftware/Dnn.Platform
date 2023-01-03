@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.MemberDirectory.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Security.Roles;

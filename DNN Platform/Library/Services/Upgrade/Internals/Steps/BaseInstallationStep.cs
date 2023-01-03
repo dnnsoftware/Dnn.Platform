@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         // ReSharper disable once InconsistentNaming
         protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+
         private string details = string.Empty;
 
         /// <summary>

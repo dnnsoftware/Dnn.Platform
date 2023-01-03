@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
@@ -86,6 +87,7 @@ namespace DotNetNuke.Entities.Portals.Templates
         }
 
         public string TemplatePath { get; set; }
+
         private XmlDocument Template { get; set; }
 
         internal void ParseTemplate(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)

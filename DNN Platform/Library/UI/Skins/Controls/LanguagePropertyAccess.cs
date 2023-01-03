@@ -29,6 +29,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         // ReSharper disable once InconsistentNaming
         public LanguageTokenReplace objParent;
+
         private const string FlagIconPhysicalLocation = @"~\images\Flags";
         private const string NonExistingFlagIconFileName = "none.gif";
         private readonly PortalSettings objPortal;

@@ -7,6 +7,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
+
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Internal;

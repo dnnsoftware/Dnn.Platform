@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         // ReSharper disable once InconsistentNaming
         protected const string cachePrefix = "DNN_OUTPUT:";
+
         private static System.Web.Caching.Cache runtimeCache;
 
         internal static System.Web.Caching.Cache Cache

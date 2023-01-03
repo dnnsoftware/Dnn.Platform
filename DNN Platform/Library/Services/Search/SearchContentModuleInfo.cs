@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Search
 {
     using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Modules;
 
     /// -----------------------------------------------------------------------------

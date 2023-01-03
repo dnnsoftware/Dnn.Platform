@@ -27,6 +27,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         // ReSharper disable once InconsistentNaming
         protected FolderPermissionCollection FolderPermissions;
+
         private string folderPath = string.Empty;
         private List<PermissionInfoBase> permissionsList;
         private bool refreshGrid;

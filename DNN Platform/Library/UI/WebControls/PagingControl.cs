@@ -23,6 +23,7 @@ namespace DotNetNuke.UI.WebControls
 
         // ReSharper disable once InconsistentNaming
         protected Repeater PageNumbers;
+
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TableCell cellDisplayLinks;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

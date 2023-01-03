@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Tokens
 
         // ReSharper disable once InconsistentNaming
         protected Dictionary<string, IPropertyAccess> PropertySource;
+
         private TokenContext tokenContext = new TokenContext();
 
         /// <summary>

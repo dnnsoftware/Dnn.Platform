@@ -38,6 +38,7 @@ namespace DotNetNuke.UI.Skins
 
         // ReSharper disable once InconsistentNaming
         protected RadioButtonList OptSkin;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
 
         public string Border

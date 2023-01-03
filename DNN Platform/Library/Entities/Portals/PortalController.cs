@@ -16,6 +16,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -2456,6 +2457,7 @@ namespace DotNetNuke.Entities.Portals
             public string LanguageFilePath { get; private set; }
 
             public string Description { get; private set; }
+
             internal DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo ToNewPortalTemplateInfo()
             {
                 return new DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo(this.TemplateFilePath, this.originalCultureCode);
