@@ -91,18 +91,14 @@ namespace DotNetNuke.Common.Utilities
             File.Copy(sourceFileName, destFileName, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
+        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging).
         /// This solves file concurrency issues under heavy load.
         /// </summary>
-        /// <param name="fileName">String.</param>
-        /// <param name="waitInMilliseconds">Int16.</param>
-        /// <param name="maxAttempts">Int16.</param>
-        /// <returns>Boolean.</returns>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <param name="fileName">The file name.</param>
+        /// <param name="waitInMilliseconds">The number of milliseconds to wait.</param>
+        /// <param name="maxAttempts">The maximum number of attempts.</param>
+        /// <returns>Whether the file is deleted.</returns>
         public static bool DeleteFileWithWait(string fileName, short waitInMilliseconds, short maxAttempts)
         {
             fileName = FixPath(fileName);

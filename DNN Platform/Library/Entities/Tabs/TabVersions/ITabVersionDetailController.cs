@@ -24,14 +24,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// Get all Tab Version Details of a existing version and earlier.
         /// </summary>
         /// <param name="tabId">The Tab Id to be queried.</param>
-        /// <param name="version">The Tab Id to be queried.</param>
+        /// <param name="version">The maximum tab version to retrieve.</param>
         /// <returns>List of TabVersionDetail objects.</returns>
         IEnumerable<TabVersionDetail> GetVersionHistory(int tabId, int version);
 
         /// <summary>
         /// Gets all TabVersionDetail objects of an existing TabVersion.
         /// </summary>
-        /// <param name="tabVersionId">Tha TabVersion Id to be quiered.</param>
+        /// <param name="tabVersionId">Tha TabVersion Id to be queried.</param>
         /// <param name="ignoreCache">If true, the method will not use the Caching Storage.</param>
         /// <returns>List of TabVersionDetail objects.</returns>
         IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false);

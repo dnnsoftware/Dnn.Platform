@@ -26,16 +26,14 @@ namespace DotNetNuke.Security.Roles
         /// <returns>The Id of the new role.</returns>
         int AddRole(RoleInfo role, bool addToExistUsers);
 
-        /// <summary>
-        ///     Adds a User to a Role.
-        /// </summary>
+        /// <summary>Adds a User to a Role.</summary>
         /// <remarks>Overload adds Effective Date.</remarks>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="userId">The Id of the User.</param>
         /// <param name="roleId">The Id of the Role.</param>
         /// <param name="status">The status of the Role.</param>
         /// <param name="isOwner">If the user is the owner of the Role.</param>
-        /// <param name="effectiveDate">The expiry Date of the Role membership.</param>
+        /// <param name="effectiveDate">The effective Date of the Role membership.</param>
         /// <param name="expiryDate">The expiry Date of the Role membership.</param>
         void AddUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, DateTime effectiveDate, DateTime expiryDate);
 

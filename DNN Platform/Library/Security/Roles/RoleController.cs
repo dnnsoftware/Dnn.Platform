@@ -70,7 +70,7 @@ namespace DotNetNuke.Security.Roles
         /// <param name="role">The role to add.</param>
         /// <param name="portalSettings">The PortalSettings of the Portal.</param>
         /// <param name="status">RoleStatus.</param>
-        /// <param name="effectiveDate">The expiry Date of the Role membership.</param>
+        /// <param name="effectiveDate">The effective Date of the Role membership.</param>
         /// <param name="expiryDate">The expiry Date of the Role membership.</param>
         /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
         /// <param name="isOwner">A flag that indicates whether this user should be one of the group owners.</param>

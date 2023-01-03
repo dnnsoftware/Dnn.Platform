@@ -921,10 +921,8 @@ namespace Dnn.PersonaBar.Security.Services
         }
 
         /// GET: api/Security/SearchFileSystemAndDatabase
-        /// <summary>
-        /// Searchs file system and database.
-        /// </summary>
-        /// <returns>Searchs file system and database.</returns>
+        /// <summary>Searches file system and database.</summary>
+        /// <returns>The search results from files and database.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage SearchFileSystemAndDatabase(string term)
