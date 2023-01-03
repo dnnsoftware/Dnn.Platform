@@ -617,7 +617,6 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <inheritdoc />
-
         public override UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
             IDataReader dr = this.dataProvider.GetUserByDisplayName(portalId, displayName);
