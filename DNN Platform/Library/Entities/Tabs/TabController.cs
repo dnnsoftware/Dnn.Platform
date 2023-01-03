@@ -1088,7 +1088,6 @@ namespace DotNetNuke.Entities.Tabs
             return addedAllMissingLanguages;
         }
 
-
         /// <summary>
         /// Adds a tab.
         /// </summary>
@@ -2736,7 +2735,6 @@ namespace DotNetNuke.Entities.Tabs
                 this.ClearCache(originalTab.PortalID);
             }
         }
-
 
         /// <summary>
         /// If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents
