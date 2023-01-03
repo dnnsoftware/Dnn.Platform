@@ -79,7 +79,6 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         // This method is copied from user skin object
-
         private int GetMessageTab()
         {
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
@@ -100,7 +99,6 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         // This method is copied from user skin object
-
         private int FindMessageTab()
         {
             // On brand new install the new Message Center Module is on the child page of User Profile Page

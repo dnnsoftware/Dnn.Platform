@@ -331,7 +331,6 @@ namespace DotNetNuke.Modules.Journal
         }
 
         // Check if a user can post content on a specific profile's page
-
         private void CheckProfileAccess(int profileId, UserInfo currentUser)
         {
             if (profileId != currentUser.UserID)

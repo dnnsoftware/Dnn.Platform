@@ -154,7 +154,6 @@ namespace DotNetNuke.Services.UserProfile
         }
 
         // whether current user has permission to view target user's photo.
-
         private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
         {
             bool isVisible = false;

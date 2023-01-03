@@ -36,6 +36,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
+        /// <summary>A regular expression which matches a file name for a resource file.</summary>
+        /// <remarks>
+        /// Sample matches:
+        /// MyResources.ascx.en-US.resx
+        /// MyResources.ascx.en-US.Host.resx
+        /// MyResources.ascx.en-US.Portal-123.resx
+        /// </remarks>
         internal static readonly Regex FileInfoRegex = new Regex(
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled,
@@ -44,11 +51,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
 
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-
-        // Sample matches:
-        // MyResources.ascx.en-US.resx
-        // MyResources.ascx.en-US.Host.resx
-        // MyResources.ascx.en-US.Portal-123.resx
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
 

@@ -1727,7 +1727,6 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         // Match the orientation code to the correct rotation:
-
         private void OnFileMoved(IFileInfo fileInfo, string oldFilePath, int userId)
         {
             EventManager.Instance.OnFileMoved(new FileMovedEventArgs
