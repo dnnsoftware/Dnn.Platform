@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Portals
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 
     /// <summary>
-    /// PoralController provides business layer of poatal.
+    /// PortalController provides business layer of portal.
     /// </summary>
     /// <remarks>
     /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
@@ -60,7 +60,6 @@ namespace DotNetNuke.Entities.Portals
     /// </remarks>
     public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
     {
-
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));

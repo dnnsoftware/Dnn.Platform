@@ -40,7 +40,6 @@
         [SetUp]
         public void SetUp()
         {
-
             this.SetupDataProvider();
 
             this.SetupCachingProvider();

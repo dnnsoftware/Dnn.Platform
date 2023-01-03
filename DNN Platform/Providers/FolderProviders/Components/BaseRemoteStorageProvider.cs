@@ -20,7 +20,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
     public abstract class BaseRemoteStorageProvider : FolderProvider
     {
-
         private readonly string encryptionKey = Host.GUID;
         private readonly PortalSecurity portalSecurity = PortalSecurity.Instance;
 

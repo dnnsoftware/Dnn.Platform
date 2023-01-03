@@ -10,7 +10,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
     internal static class KpvExtension
     {
-
         public static IEnumerable<LocalizationEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
         {
             var appPath = Globals.ApplicationMapPath;

@@ -30,7 +30,6 @@ namespace Dnn.PersonaBar.Users.Components
 
     internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
     {
-
         public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
         {
             var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";

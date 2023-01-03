@@ -22,7 +22,6 @@ namespace Dnn.ExportImport.Components.Services
 
     public class PageTemplatesExportService : AssetsExportService
     {
-
         private readonly string templatesFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
 

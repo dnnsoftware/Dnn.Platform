@@ -32,7 +32,6 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionManager
     {
-
         private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
         private readonly HttpRequest request = HttpContext.Current.Request;
         private readonly HttpResponse response = HttpContext.Current.Response;
