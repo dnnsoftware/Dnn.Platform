@@ -583,6 +583,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.Extensions.Depend
 		DNN Platform\Components\Microsoft.Extensions.DependencyInjection\Microsoft.Extensions.DependencyInjection.dnn = DNN Platform\Components\Microsoft.Extensions.DependencyInjection\Microsoft.Extensions.DependencyInjection.dnn
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.Web.Infrastructure", "Microsoft.Web.Infrastructure", "{2D4DE515-22A1-4EFF-9E65-1443965F6E35}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\Components\Microsoft.Web.Infrastructure\License.txt = DNN Platform\Components\Microsoft.Web.Infrastructure\License.txt
+		DNN Platform\Components\Microsoft.Web.Infrastructure\Microsoft.Web.Infrastructure.dnn = DNN Platform\Components\Microsoft.Web.Infrastructure\Microsoft.Web.Infrastructure.dnn
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -2272,6 +2278,7 @@ Global
 		{123EDB09-B698-4DD7-B4CB-E5A95496BD25} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{0F64275A-8107-4A9D-99E0-6B75AFD0BB0B} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{9A5B3ED8-C38E-4C0D-BA73-4250140A9566} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
+		{2D4DE515-22A1-4EFF-9E65-1443965F6E35} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}
