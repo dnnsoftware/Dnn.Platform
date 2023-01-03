@@ -435,6 +435,7 @@ namespace DotNetNuke.Services.Installer
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
 
         // ReSharper restore InconsistentNaming
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteFile method deletes a file.
