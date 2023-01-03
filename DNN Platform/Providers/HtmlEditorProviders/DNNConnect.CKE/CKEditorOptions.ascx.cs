@@ -1071,6 +1071,7 @@ namespace DNNConnect.CKEditorProvider
                 moduleDefinitionInfo =
                     ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
+
             if (moduleDefinitionInfo == null)
             {
                 moduleDefinitionInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
