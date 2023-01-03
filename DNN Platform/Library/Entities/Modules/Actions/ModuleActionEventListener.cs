@@ -33,15 +33,6 @@ namespace DotNetNuke.Entities.Modules.Actions
             this.actionEvent = e;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public int ModuleID
         {
             get
@@ -50,15 +41,6 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ActionEventHandler ActionEvent
         {
             get

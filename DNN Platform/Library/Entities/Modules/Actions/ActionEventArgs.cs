@@ -34,15 +34,6 @@ namespace DotNetNuke.Entities.Modules.Actions
             this.moduleConfiguration = moduleConfiguration;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleAction Action
         {
             get
@@ -51,15 +42,6 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {
             get
