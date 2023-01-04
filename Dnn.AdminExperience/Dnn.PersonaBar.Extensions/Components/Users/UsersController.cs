@@ -254,8 +254,7 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         /// <inheritdoc/>
-        public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser,
-            bool isOwner)
+        public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
             PortalSettings portalSettings = this.PortalSettings;
 
@@ -285,8 +284,7 @@ namespace Dnn.PersonaBar.Users.Components
                     isOwner = false;
                 }
 
-                RoleController.AddUserRole(user, role, portalSettings, RoleStatus.Approved, userRoleDto.StartTime,
-                    userRoleDto.ExpiresTime, notifyUser, isOwner);
+                RoleController.AddUserRole(user, role, portalSettings, RoleStatus.Approved, userRoleDto.StartTime, userRoleDto.ExpiresTime, notifyUser, isOwner);
                 var addedRole = RoleController.Instance.GetUserRole(portalId, userRoleDto.UserId, userRoleDto.RoleId);
 
                 return new UserRoleDto
@@ -409,8 +407,7 @@ namespace Dnn.PersonaBar.Users.Components
 
                 Mail.SendMail(userInfo, MessageType.UserAuthorized, this.PortalSettings);
             }
-            else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", portalId,
-                    false))
+            else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", portalId, false))
             {
                 Mail.SendMail(userInfo, MessageType.UserUnAuthorized, this.PortalSettings);
             }
@@ -422,10 +419,7 @@ namespace Dnn.PersonaBar.Users.Components
             return () => new UsersController();
         }
 
-        protected virtual IDataReader CallGetUsersBySearchTerm(
-            GetUsersContract usersContract,
-            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
-            bool? hasAgreedToTerms, bool? requestsRemoval)
+        protected virtual IDataReader CallGetUsersBySearchTerm(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval)
         {
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? string.Empty : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 
@@ -444,8 +438,7 @@ namespace Dnn.PersonaBar.Users.Components
                     requestsRemoval);
         }
 
-        private static IEnumerable<UserBasicDto> GetSortedUsers(IEnumerable<UserBasicDto> users, string sortColumn,
-            bool sortAscending = false)
+        private static IEnumerable<UserBasicDto> GetSortedUsers(IEnumerable<UserBasicDto> users, string sortColumn, bool sortAscending = false)
         {
             switch (sortColumn?.ToLowerInvariant())
             {
@@ -529,7 +522,8 @@ namespace Dnn.PersonaBar.Users.Components
                             totalRecords = userInfos.Count;
                             users = GetSortedUsers(
                                 GetPagedUsers(userInfos, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo),
-                                usersContract.SortColumn, usersContract.SortAscending);
+                                usersContract.SortColumn,
+                                usersContract.SortAscending);
                         }
 
                         break;
@@ -572,10 +566,7 @@ namespace Dnn.PersonaBar.Users.Components
             return false;
         }
 
-        private IEnumerable<UserBasicDto> GetUsers(
-            GetUsersContract usersContract,
-            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
-            bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
+        private IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? string.Empty : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 

@@ -4,6 +4,8 @@
 
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Dnn.PersonaBar.Library.Prompt.Common;
     using DotNetNuke.Security.Roles;
 
@@ -29,6 +31,9 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
             this.Description = role.Description;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __CreatedBy => $"get-user {this.CreatedBy}";
 
         public string Description { get; set; }

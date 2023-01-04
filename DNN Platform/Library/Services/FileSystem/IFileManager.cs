@@ -23,6 +23,11 @@ namespace DotNetNuke.Services.FileSystem
         IDictionary<string, string> ContentTypes { get; }
 
         /// <summary>
+        /// Gets current user's file upload extension whitelist.
+        /// </summary>
+        FileExtensionWhitelist WhiteList { get; }
+
+        /// <summary>
         /// Adds a file to the specified folder.
         /// </summary>
         /// <param name="folder">The folder where to add the file.</param>
@@ -277,10 +282,5 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The file to download.</param>
         /// <param name="contentDisposition">Indicates how to display the document once downloaded.</param>
         void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition);
-
-        /// <summary>
-        /// Gets current user's file upload extension whitelist.
-        /// </summary>
-        FileExtensionWhitelist WhiteList { get; }
     }
 }

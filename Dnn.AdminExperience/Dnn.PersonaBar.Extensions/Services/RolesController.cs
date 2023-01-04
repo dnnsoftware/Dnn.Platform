@@ -205,8 +205,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 var totalRecords2 = 0;
                 var isAdmin = this.IsAdmin();
 
-                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false);
+                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count, ref totalRecords, false, false);
                 matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
                 var finalUsers = matchedUsers
                     .Cast<UserInfo>()
@@ -315,8 +314,15 @@ namespace Dnn.PersonaBar.Roles.Services
                             Components.Constants.LocalResourcesFile));
                 }
 
-                RoleController.AddUserRole(user, role, this.PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
-                    userRoleDto.ExpiresTime, notifyUser, isOwner);
+                RoleController.AddUserRole(
+                    user,
+                    role,
+                    this.PortalSettings,
+                    RoleStatus.Approved,
+                    userRoleDto.StartTime,
+                    userRoleDto.ExpiresTime,
+                    notifyUser,
+                    isOwner);
 
                 var addedUser = RoleController.Instance.GetUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId);
                 var portal = PortalController.Instance.GetPortal(this.PortalId);
@@ -365,8 +371,13 @@ namespace Dnn.PersonaBar.Roles.Services
                     return response;
                 }
 
-                RoleController.Instance.UpdateUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
-                    RoleStatus.Approved, false, true);
+                RoleController.Instance.UpdateUserRole(
+                    this.PortalId,
+                    userRoleDto.UserId,
+                    userRoleDto.RoleId,
+                    RoleStatus.Approved,
+                    false,
+                    true);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { userRoleDto.UserId, userRoleDto.RoleId });
             }

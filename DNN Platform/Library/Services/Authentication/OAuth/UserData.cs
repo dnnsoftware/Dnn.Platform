@@ -72,20 +72,4 @@ namespace DotNetNuke.Services.Authentication.OAuth
         [DataMember(Name = "website")]
         public virtual string Website { get; set; }
     }
-
-    [DataContract]
-    public class EmailData
-    {
-        [DataMember(Name = "preferred")]
-        public string PreferredEmail { get; set; }
-
-        [DataMember(Name = "account")]
-        public string AccountEmail { get; set; }
-
-        [DataMember(Name = "personal")]
-        public string PersonalEmail { get; set; }
-
-        [DataMember(Name = "business")]
-        public string BusinessEmail { get; set; }
-    }
 }

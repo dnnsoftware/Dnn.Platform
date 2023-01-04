@@ -166,10 +166,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="result"></param>
         /// <param name="messages"></param>
         /// <param name="provider"></param>
-        public static void LogModuleProviderExceptionInRequest(Exception ex, string status,
-                                                                ExtensionUrlProvider provider,
-                                                                UrlAction result,
-                                                                List<string> messages)
+        public static void LogModuleProviderExceptionInRequest(Exception ex, string status, ExtensionUrlProvider provider, UrlAction result, List<string> messages)
         {
             if (ex != null)
             {
@@ -211,12 +208,8 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Raw Url", result.RawUrl ?? "null");
                         log.AddProperty("Final Url", result.FinalUrl ?? "null");
 
-                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
-                                                                     ? result.RewritePath
-                                                                     : "[no rewrite]");
-                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
-                                                                    ? "[no redirect]"
-                                                                    : result.FinalUrl);
+                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath) ? result.RewritePath : "[no rewrite]");
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) ? "[no redirect]" : result.FinalUrl);
                         log.AddProperty("Action", result.Action.ToString());
                         log.AddProperty("Reason", result.Reason.ToString());
                         log.AddProperty("Portal Id", result.PortalId.ToString());
@@ -358,17 +351,22 @@ namespace DotNetNuke.Entities.Urls
             ExtensionUrlProvider activeProvider = null;
             try
             {
-                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(result.TabId, result.PortalId, settings,
-                                                                             parentTraceId);
+                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(result.TabId, result.PortalId, settings, parentTraceId);
                 if (providersToCall != null && providersToCall.Count > 0)
                 {
                     FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                     foreach (ExtensionUrlProvider provider in providersToCall)
                     {
                         activeProvider = provider; // for error handling
-                        redirected = provider.CheckForRedirect(result.TabId, result.PortalId, result.HttpAlias,
-                                                               requestUri, queryStringCol, options, out location,
-                                                               ref messages);
+                        redirected = provider.CheckForRedirect(
+                            result.TabId,
+                            result.PortalId,
+                            result.HttpAlias,
+                            requestUri,
+                            queryStringCol,
+                            options,
+                            out location,
+                            ref messages);
                         if (redirected)
                         {
                             result.FinalUrl = location;
@@ -436,8 +434,7 @@ namespace DotNetNuke.Entities.Urls
 
             try
             {
-                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tab.TabID, portalId, settings,
-                                                                             parentTraceId);
+                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tab.TabID, portalId, settings, parentTraceId);
                 FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                 foreach (ExtensionUrlProvider provider in providersToCall)
                 {
@@ -551,8 +548,9 @@ namespace DotNetNuke.Entities.Urls
                             ref messages,
                             out status,
                             out location);
-                        if (status == 0 || status == 200) // either not set, or set to '200 OK'.
+                        if (status == 0 || status == 200)
                         {
+                            // either not set, or set to '200 OK'.
                             if (!string.IsNullOrEmpty(queryString) && queryString != newUrl)
                             {
                                 rewriteDone = true;
@@ -694,9 +692,8 @@ namespace DotNetNuke.Entities.Urls
                     out definitelyNoProvider,
                     parentTraceId);
                 if (definitelyNoProvider == false && providersToCall == null)
-
-                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                 {
+                    // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                     // get all providers for the portal
                     var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
 

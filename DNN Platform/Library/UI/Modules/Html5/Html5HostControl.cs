@@ -89,8 +89,7 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             var cacheKey = string.Format(DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
             var absoluteFilePath = this.Page.Server.MapPath(filepath);
-            var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut,
-                DataCache.SpaModulesHtmlFileCachePriority)
+            var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut, DataCache.SpaModulesHtmlFileCachePriority)
             {
                 CacheDependency = new DNNCacheDependency(absoluteFilePath),
             };

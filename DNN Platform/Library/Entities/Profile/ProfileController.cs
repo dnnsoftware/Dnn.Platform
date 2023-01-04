@@ -485,8 +485,7 @@ namespace DotNetNuke.Entities.Profile
             return CBO.FillObject<ProfilePropertyDefinition>(DataProvider.GetPropertyDefinition(definitionId));
         }
 
-        internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility,
-                                                  Dictionary<string, ListEntryInfo> types)
+        internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
         {
             ListEntryInfo typeInfo = types["DataType:" + type] ?? types["DataType:Unknown"];
             var propertyDefinition = new ProfilePropertyDefinition(portalId)

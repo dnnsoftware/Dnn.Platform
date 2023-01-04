@@ -3,6 +3,18 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Sites.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.DTO.Tabs;
     using Dnn.PersonaBar.Sites.Components.Dto;
@@ -25,17 +37,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Threading;
-    using System.Web;
-    using System.Web.UI.WebControls;
-    using System.Xml;
+
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     public class SitesController
@@ -219,11 +221,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return exportResult.Item2;
         }
 
-        public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
-            string siteDescription, string siteKeywords,
-            bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email,
-            string password,
-            string confirm, string question = "", string answer = "")
+        public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias, string siteDescription, string siteKeywords, bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email, string password, string confirm, string question = "", string answer = "")
         {
             var template = this.LoadPortalTemplateInfoForSelectedItem(siteTemplate);
 
@@ -452,8 +450,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
 
                     // mark default language as published if content localization is enabled
-                    var contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId,
-                        false);
+                    var contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId, false);
                     if (contentLocalizationEnabled)
                     {
                         var lc = new LocaleController();
@@ -476,8 +473,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return intPortalId;
         }
 
-        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
-            IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
+        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
         {
             if (tabsCollection == null)
             {
@@ -514,12 +510,10 @@ namespace Dnn.PersonaBar.Sites.Components
                         checkedState = NodeCheckedState.Checked;
                     }
 
-                    var descendants = this.tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
-                        isMultiLanguage).ToList();
+                    var descendants = this.tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode, isMultiLanguage).ToList();
                     descendants.ForEach(x => { x.CheckedState = checkedState; });
 
-                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
-                        descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
+                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs, descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
                 }
             }
 

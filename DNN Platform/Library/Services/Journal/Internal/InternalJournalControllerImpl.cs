@@ -20,30 +20,44 @@ namespace DotNetNuke.Services.Journal.Internal
         }
 
         /// <inheritdoc/>
-        public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId,
-                                                           int rowIndex, int maxRows)
+        public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(this.dataService.Journal_ListForProfile(portalId, moduleId, currentUserId,
-                                                                                    profileId, rowIndex, maxRows));
+                CBO.FillCollection<JournalItem>(
+                    this.dataService.Journal_ListForProfile(
+                        portalId,
+                        moduleId,
+                        currentUserId,
+                        profileId,
+                        rowIndex,
+                        maxRows));
         }
 
         /// <inheritdoc/>
-        public IList<JournalItem> GetJournalItemsByGroup(int portalId, int moduleId, int currentUserId, int groupId,
-                                                         int rowIndex, int maxRows)
+        public IList<JournalItem> GetJournalItemsByGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(this.dataService.Journal_ListForGroup(portalId, moduleId, currentUserId,
-                                                                                  groupId, rowIndex, maxRows));
+                CBO.FillCollection<JournalItem>(
+                    this.dataService.Journal_ListForGroup(
+                        portalId,
+                        moduleId,
+                        currentUserId,
+                        groupId,
+                        rowIndex,
+                        maxRows));
         }
 
         /// <inheritdoc/>
-        public IList<JournalItem> GetJournalItems(int portalId, int moduleId, int currentUserId, int rowIndex,
-                                                  int maxRows)
+        public IList<JournalItem> GetJournalItems(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows)
         {
             return
-                CBO.FillCollection<JournalItem>(this.dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
-                                                                                    rowIndex, maxRows));
+                CBO.FillCollection<JournalItem>(
+                    this.dataService.Journal_ListForSummary(
+                        portalId,
+                        moduleId,
+                        currentUserId,
+                        rowIndex,
+                        maxRows));
         }
 
         /// <inheritdoc/>

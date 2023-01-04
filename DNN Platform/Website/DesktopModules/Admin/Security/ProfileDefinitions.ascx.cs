@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -194,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Redirect to upadte page
                 this.Response.Redirect(this.Request.RawUrl, true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -311,7 +313,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.BindGrid();
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -325,6 +327,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void grdProfileProperties_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             DataGridItem item = e.Item;

@@ -310,9 +310,20 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
 
-                var scheduleItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
-            scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
-            scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
+                var scheduleItem = this.controller.CreateScheduleItem(
+                    scheduleDto.TypeFullName,
+                    scheduleDto.FriendlyName,
+                    scheduleDto.TimeLapse,
+                    scheduleDto.TimeLapseMeasurement,
+                    scheduleDto.RetryTimeLapse,
+                    scheduleDto.RetryTimeLapseMeasurement,
+                    scheduleDto.RetainHistoryNum,
+                    scheduleDto.AttachToEvent,
+                    scheduleDto.CatchUpEnabled,
+                    scheduleDto.Enabled,
+                    scheduleDto.ObjectDependencies,
+                    scheduleDto.ScheduleStartDate,
+                    scheduleDto.Servers);
                 SchedulingProvider.Instance().AddSchedule(scheduleItem);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -348,9 +359,20 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
                 var existingItem = SchedulingProvider.Instance().GetSchedule(scheduleDto.ScheduleID);
 
-                var updatedItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
-            scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
-            scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
+                var updatedItem = this.controller.CreateScheduleItem(
+                    scheduleDto.TypeFullName,
+                    scheduleDto.FriendlyName,
+                    scheduleDto.TimeLapse,
+                    scheduleDto.TimeLapseMeasurement,
+                    scheduleDto.RetryTimeLapse,
+                    scheduleDto.RetryTimeLapseMeasurement,
+                    scheduleDto.RetainHistoryNum,
+                    scheduleDto.AttachToEvent,
+                    scheduleDto.CatchUpEnabled,
+                    scheduleDto.Enabled,
+                    scheduleDto.ObjectDependencies,
+                    scheduleDto.ScheduleStartDate,
+                    scheduleDto.Servers);
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
 
                 if (updatedItem.ScheduleStartDate != existingItem.ScheduleStartDate ||
@@ -525,9 +547,20 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                var scheduleItem = this.controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
-            scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
-            scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
+                var scheduleItem = this.controller.CreateScheduleItem(
+                    scheduleDto.TypeFullName,
+                    scheduleDto.FriendlyName,
+                    scheduleDto.TimeLapse,
+                    scheduleDto.TimeLapseMeasurement,
+                    scheduleDto.RetryTimeLapse,
+                    scheduleDto.RetryTimeLapseMeasurement,
+                    scheduleDto.RetainHistoryNum,
+                    scheduleDto.AttachToEvent,
+                    scheduleDto.CatchUpEnabled,
+                    scheduleDto.Enabled,
+                    scheduleDto.ObjectDependencies,
+                    scheduleDto.ScheduleStartDate,
+                    scheduleDto.Servers);
                 scheduleItem.ScheduleID = scheduleDto.ScheduleID;
                 SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
 

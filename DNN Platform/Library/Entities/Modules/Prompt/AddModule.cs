@@ -25,10 +25,10 @@ namespace DotNetNuke.Entities.Modules.Prompt
     [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
+
         /// <inheritdoc/>
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
         [ConsoleCommandParameter("name", "Prompt_AddModule_FlagModuleName", true)]
         public string ModuleName { get; set; }
@@ -95,7 +95,8 @@ namespace DotNetNuke.Entities.Modules.Prompt
                         {
                             var defaultModule = ModuleController.Instance.GetModule(
                                 this.PortalSettings.DefaultModuleId,
-                                this.PortalSettings.DefaultTabId, true);
+                                this.PortalSettings.DefaultTabId,
+                                true);
                             if (defaultModule != null)
                             {
                                 objModule.CacheTime = defaultModule.CacheTime;

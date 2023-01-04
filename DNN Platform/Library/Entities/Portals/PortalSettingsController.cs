@@ -278,16 +278,34 @@ namespace DotNetNuke.Entities.Portals
             if (Globals.IsAdminSkin())
             {
                 // DNN-6170 ensure skin value is culture specific
-                activeTab.SkinSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
-                    Host.Host.DefaultAdminSkin, portalSettings.CultureCode)) ? portalSettings.DefaultAdminSkin : PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
-                    Host.Host.DefaultAdminSkin, portalSettings.CultureCode);
+                activeTab.SkinSrc = string.IsNullOrEmpty(
+                    PortalController.GetPortalSetting(
+                        "DefaultAdminSkin",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultAdminSkin,
+                        portalSettings.CultureCode))
+                    ? portalSettings.DefaultAdminSkin
+                    : PortalController.GetPortalSetting(
+                        "DefaultAdminSkin",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultAdminSkin,
+                        portalSettings.CultureCode);
             }
             else if (string.IsNullOrEmpty(activeTab.SkinSrc))
             {
                 // DNN-6170 ensure skin value is culture specific
-                activeTab.SkinSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
-                    Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultPortalSkin : PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
-                    Host.Host.DefaultPortalSkin, portalSettings.CultureCode);
+                activeTab.SkinSrc = string.IsNullOrEmpty(
+                    PortalController.GetPortalSetting(
+                        "DefaultPortalSkin",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultPortalSkin,
+                        portalSettings.CultureCode))
+                    ? portalSettings.DefaultPortalSkin
+                    : PortalController.GetPortalSetting(
+                        "DefaultPortalSkin",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultPortalSkin,
+                        portalSettings.CultureCode);
             }
 
             activeTab.SkinSrc = SkinController.FormatSkinSrc(activeTab.SkinSrc, portalSettings);
@@ -295,15 +313,33 @@ namespace DotNetNuke.Entities.Portals
 
             if (Globals.IsAdminSkin())
             {
-                activeTab.ContainerSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
-                    Host.Host.DefaultAdminContainer, portalSettings.CultureCode)) ? portalSettings.DefaultAdminContainer : PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
-                    Host.Host.DefaultAdminContainer, portalSettings.CultureCode);
+                activeTab.ContainerSrc = string.IsNullOrEmpty(
+                    PortalController.GetPortalSetting(
+                        "DefaultAdminContainer",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultAdminContainer,
+                        portalSettings.CultureCode))
+                    ? portalSettings.DefaultAdminContainer
+                    : PortalController.GetPortalSetting(
+                        "DefaultAdminContainer",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultAdminContainer,
+                        portalSettings.CultureCode);
             }
             else if (string.IsNullOrEmpty(activeTab.ContainerSrc))
             {
-                activeTab.ContainerSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
-                    Host.Host.DefaultPortalContainer, portalSettings.CultureCode)) ? portalSettings.DefaultPortalContainer : PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
-                    Host.Host.DefaultPortalContainer, portalSettings.CultureCode);
+                activeTab.ContainerSrc = string.IsNullOrEmpty(
+                    PortalController.GetPortalSetting(
+                        "DefaultPortalContainer",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultPortalContainer,
+                        portalSettings.CultureCode))
+                    ? portalSettings.DefaultPortalContainer
+                    : PortalController.GetPortalSetting(
+                        "DefaultPortalContainer",
+                        portalSettings.PortalId,
+                        Host.Host.DefaultPortalContainer,
+                        portalSettings.CultureCode);
             }
 
             activeTab.ContainerSrc = SkinController.FormatSkinSrc(activeTab.ContainerSrc, portalSettings);

@@ -9,7 +9,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public static class XssCleaner
     {
-
         public static void Clean(this PageSettings input)
         {
             input.Title = Clean(input.Title);

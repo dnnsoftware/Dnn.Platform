@@ -200,8 +200,9 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (this.ContainsKey(tabId))
             {
-                if (updatedTab == null) // the tab has been deleted
+                if (updatedTab == null)
                 {
+                    // the tab has been deleted
                     this.Remove(tabId);
                     this.list.RemoveAll(t => t.TabID == tabId);
                     this.localizedTabs.ForEach(kvp =>

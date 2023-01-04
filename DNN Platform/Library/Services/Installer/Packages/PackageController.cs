@@ -607,8 +607,11 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void SavePackageDependency(PackageDependencyInfo dependency)
         {
-            dependency.PackageDependencyId = Provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-                           dependency.Version.ToString());
+            dependency.PackageDependencyId = Provider.SavePackageDependency(
+                dependency.PackageDependencyId,
+                dependency.PackageId,
+                dependency.PackageName,
+                dependency.Version.ToString());
 
             ClearDependenciesCache();
         }

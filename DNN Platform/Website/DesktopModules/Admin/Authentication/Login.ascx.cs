@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Text.RegularExpressions;
@@ -442,16 +443,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 this.ShowPanel();
             }
-            else // user is already authenticated
+            else
             {
+                // user is already authenticated
                 // if a Login Page has not been specified for the portal
                 if (Globals.IsAdminControl())
                 {
                     // redirect browser
                     this.Response.Redirect(this.RedirectURL, true);
                 }
-                else // make module container invisible if user is not a page admin
+                else
                 {
+                    // make module container invisible if user is not a page admin
                     var path = this.RedirectURL.Split('?')[0];
                     if (this.NeedRedirectAfterLogin && path != this.navigationManager.NavigateURL() && path != this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
                     {
@@ -481,6 +484,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdAssociate_Click runs when the associate button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAssociate_Click(object sender, EventArgs e)
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
@@ -518,6 +524,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdCreateUser runs when the register (as new user) button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdCreateUser_Click(object sender, EventArgs e)
         {
             this.User.Membership.Password = UserController.GeneratePassword();
@@ -544,6 +553,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdProceed_Click(object sender, EventArgs e)
         {
             var user = this.ctlPassword.User;
@@ -754,7 +766,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

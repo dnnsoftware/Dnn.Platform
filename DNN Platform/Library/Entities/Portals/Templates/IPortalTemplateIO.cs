@@ -20,6 +20,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         string GetLanguageFilePath(string templateFilePath, string cultureCode);
 
         TextReader OpenTextReader(string filePath);
+
         (string, List<string>) GetTemplateLanguages(string templateFilePath);
     }
 }

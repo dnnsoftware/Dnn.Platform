@@ -56,8 +56,9 @@ namespace DotNetNuke.Services.Mobile
                 int val;
                 if (int.TryParse(app.Request.QueryString[DisableMobileRedirectQueryStringName], out val))
                 {
-                    if (val == 0) // forced enable. clear any cookie previously set
+                    if (val == 0)
                     {
+                        // forced enable. clear any cookie previously set
                         if (app.Response.Cookies[DisableMobileRedirectCookieName] != null)
                         {
                             var cookie = new HttpCookie(DisableMobileRedirectCookieName)
@@ -78,19 +79,22 @@ namespace DotNetNuke.Services.Mobile
                             app.Response.Cookies.Add(cookie);
                         }
                     }
-                    else if (val == 1) // forced disable. need to setup cookie
+                    else if (val == 1)
                     {
+                        // forced disable. need to setup cookie
                         allowed = false;
                     }
                 }
             }
-            else if (app.Request.Cookies[DisableMobileRedirectCookieName] != null && app.Request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
+            else if (app.Request.Cookies[DisableMobileRedirectCookieName] != null && app.Request.Cookies[DisableRedirectPresistCookieName] != null)
             {
+                // check for cookie
                 allowed = false;
             }
 
-            if (!allowed) // redirect is not setup to be allowed, keep the cookie alive
+            if (!allowed)
             {
+                // redirect is not setup to be allowed, keep the cookie alive
                 // this cookie is set to re-enable redirect after 20 minutes
                 var presistCookie = new HttpCookie(DisableRedirectPresistCookieName)
                 {
@@ -271,19 +275,23 @@ namespace DotNetNuke.Services.Mobile
             {
                 if (redirection.Enabled)
                 {
-                    if (redirection.TargetType == TargetType.Tab) // page within same site
+                    if (redirection.TargetType == TargetType.Tab)
                     {
+                        // page within same site
                         int targetTabId = int.Parse(redirection.TargetValue.ToString());
-                        if (targetTabId == currentTabId) // target tab is same as current tab
+                        if (targetTabId == currentTabId)
                         {
+                            // target tab is same as current tab
                             foundRule = true;
                         }
                     }
-                    else if (redirection.TargetType == TargetType.Portal) // home page of another portal
+                    else if (redirection.TargetType == TargetType.Portal)
                     {
+                        // home page of another portal
                         int targetPortalId = int.Parse(redirection.TargetValue.ToString());
-                        if (targetPortalId == portalId) // target portal is same as current portal
+                        if (targetPortalId == portalId)
                         {
+                            // target portal is same as current portal
                             foundRule = true;
                         }
                     }
@@ -301,7 +309,9 @@ namespace DotNetNuke.Services.Mobile
                         // else //redirection is based on portal
                         {
                             var portalSettings = new PortalSettings(redirection.PortalId);
-                            if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) // ensure it's not redirecting to itself
+
+                            // ensure it's not redirecting to itself
+                            if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId)
                             {
                                 fullSiteUrl = this.GetPortalHomePageUrl(portalSettings);
                             }
@@ -568,14 +578,18 @@ namespace DotNetNuke.Services.Mobile
         {
             string redirectUrl = string.Empty;
 
-            if (redirection.TargetType == TargetType.Url) // independent url base
+            if (redirection.TargetType == TargetType.Url)
             {
+                // independent url base
                 redirectUrl = redirection.TargetValue.ToString();
             }
-            else if (redirection.TargetType == TargetType.Tab) // page within same site
+            else if (redirection.TargetType == TargetType.Tab)
             {
+                // page within same site
                 int targetTabId = int.Parse(redirection.TargetValue.ToString());
-                if (targetTabId != currentTabId) // ensure it's not redirecting to itself
+
+                // ensure it's not redirecting to itself
+                if (targetTabId != currentTabId)
                 {
                     var tab = TabController.Instance.GetTab(targetTabId, portalId, false);
                     if (tab != null && !tab.IsDeleted)
@@ -584,17 +598,21 @@ namespace DotNetNuke.Services.Mobile
                     }
                 }
             }
-            else if (redirection.TargetType == TargetType.Portal) // home page of another portal
+            else if (redirection.TargetType == TargetType.Portal)
             {
+                // home page of another portal
                 int targetPortalId = int.Parse(redirection.TargetValue.ToString());
-                if (targetPortalId != portalId) // ensure it's not redirecting to itself
+
+                // ensure it's not redirecting to itself
+                if (targetPortalId != portalId)
                 {
                     // check whethter the target portal still exists
                     if (PortalController.Instance.GetPortals().Cast<PortalInfo>().Any(p => p.PortalID == targetPortalId))
                     {
                         var portalSettings = new PortalSettings(targetPortalId);
-                        if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) // ensure it's not redirecting to itself
+                        if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId)
                         {
+                            // ensure it's not redirecting to itself
                             redirectUrl = this.GetPortalHomePageUrl(portalSettings);
                         }
                     }

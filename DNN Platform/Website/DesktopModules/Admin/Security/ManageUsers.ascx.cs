@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Abstractions;
@@ -168,8 +170,9 @@ namespace DotNetNuke.Modules.Admin.Users
                         redirectURL = this.navigationManager.NavigateURL();
                     }
                 }
-                else // redirect to after registration page
+                else
                 {
+                    // redirect to after registration page
                     redirectURL = this.navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
 
@@ -335,12 +338,15 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this.navigationManager.NavigateURL(), true);
@@ -350,6 +356,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdRegister_Click runs when the Register button is clicked.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             if (this.IsAdmin == false && this.HasManageUsersModulePermission() == false)
@@ -389,7 +398,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -687,7 +696,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -713,7 +722,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -739,7 +748,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -764,7 +773,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -788,7 +797,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.AddModuleMessage("UserUnLocked", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 this.BindMembership();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -917,7 +926,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -935,7 +944,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.Response.Redirect(this.ReturnUrl, true);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

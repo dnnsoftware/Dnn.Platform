@@ -76,9 +76,7 @@ namespace DotNetNuke.Services.Search
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(
-            int portalId,
-            ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
+        public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024 * 2;
@@ -115,7 +113,9 @@ namespace DotNetNuke.Services.Search
                             {
                                 Logger.TraceFormat(
                                     "ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
-                                    searchItems.Count, module.DesktopModule.ModuleName, module.ModuleID);
+                                    searchItems.Count,
+                                    module.DesktopModule.ModuleName,
+                                    module.ModuleID);
                             }
 
                             if (searchDocuments.Count >= saveThreshold)
@@ -193,6 +193,43 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Converts a SearchItemInfo into a SearchDocument.
+        ///
+        /// SearchItemInfo object was used in the old version of search.
+        /// </summary>
+        /// <param name="searchItem"></param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+#pragma warning disable 0618
+        public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
+        {
+            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
+
+            var searchDoc = new SearchDocument
+            {
+                // Assigns as a Search key the SearchItems' GUID, if not it creates a new guid.
+                UniqueKey = (searchItem.SearchKey.Trim() != string.Empty) ? searchItem.SearchKey : Guid.NewGuid().ToString(),
+                QueryString = searchItem.GUID,
+                Title = searchItem.Title,
+                Body = searchItem.Content,
+                Description = searchItem.Description,
+                ModifiedTimeUtc = searchItem.PubDate,
+                AuthorUserId = searchItem.Author,
+                TabId = searchItem.TabId,
+                PortalId = module.PortalID,
+                SearchTypeId = ModuleSearchTypeId,
+                CultureCode = module.CultureCode,
+
+                // Add Module MetaData
+                ModuleDefId = module.ModuleDefID,
+                ModuleId = module.ModuleID,
+            };
+
+            return searchDoc;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets a list of modules that are listed as "Searchable" from the module definition and check if they
         /// implement ModuleSearchBase -- which is a newer implementation of search that replaces ISearchable.
         /// </summary>
@@ -211,19 +248,37 @@ namespace DotNetNuke.Services.Search
                    select mii.ModuleInfo;
         }
 
+        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
+        {
+            foreach (var searchItem in searchItems)
+            {
+                searchItem.ModuleDefId = module.ModuleDefID;
+                searchItem.ModuleId = module.ModuleID;
+                if (string.IsNullOrEmpty(searchItem.CultureCode))
+                {
+                    searchItem.CultureCode = module.CultureCode;
+                }
+
+                if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                {
+                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                }
+            }
+        }
+
         private static void ThrowLogError(ModuleInfo module, Exception ex)
         {
             try
             {
                 var message = string.Format(
-                        Localization.GetExceptionMessage(
-                            "ErrorCreatingBusinessControllerClass",
-                            "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
-                        module.DesktopModule.BusinessControllerClass,
-                        module.DesktopModule.ModuleName,
-                        module.ModuleID,
-                        module.TabID,
-                        module.PortalID);
+                    Localization.GetExceptionMessage(
+                        "ErrorCreatingBusinessControllerClass",
+                        "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
+                    module.DesktopModule.BusinessControllerClass,
+                    module.DesktopModule.ModuleName,
+                    module.ModuleID,
+                    module.TabID,
+                    module.PortalID);
                 throw new Exception(message, ex);
             }
             catch (Exception ex1)
@@ -278,61 +333,6 @@ namespace DotNetNuke.Services.Search
             }
 
             return searchModules;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Converts a SearchItemInfo into a SearchDocument.
-        ///
-        /// SearchItemInfo object was used in the old version of search.
-        /// </summary>
-        /// <param name="searchItem"></param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-#pragma warning disable 0618
-        public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
-        {
-            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
-
-            var searchDoc = new SearchDocument
-            {
-                // Assigns as a Search key the SearchItems' GUID, if not it creates a new guid.
-                UniqueKey = (searchItem.SearchKey.Trim() != string.Empty) ? searchItem.SearchKey : Guid.NewGuid().ToString(),
-                QueryString = searchItem.GUID,
-                Title = searchItem.Title,
-                Body = searchItem.Content,
-                Description = searchItem.Description,
-                ModifiedTimeUtc = searchItem.PubDate,
-                AuthorUserId = searchItem.Author,
-                TabId = searchItem.TabId,
-                PortalId = module.PortalID,
-                SearchTypeId = ModuleSearchTypeId,
-                CultureCode = module.CultureCode,
-
-                // Add Module MetaData
-                ModuleDefId = module.ModuleDefID,
-                ModuleId = module.ModuleID,
-            };
-
-            return searchDoc;
-        }
-
-        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
-        {
-            foreach (var searchItem in searchItems)
-            {
-                searchItem.ModuleDefId = module.ModuleDefID;
-                searchItem.ModuleId = module.ModuleID;
-                if (string.IsNullOrEmpty(searchItem.CultureCode))
-                {
-                    searchItem.CultureCode = module.CultureCode;
-                }
-
-                if (Null.IsNull(searchItem.ModifiedTimeUtc))
-                {
-                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
-                }
-            }
         }
 
         private int IndexCollectedDocs(

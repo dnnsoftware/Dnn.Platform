@@ -316,7 +316,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static readonly SharedDictionary<string, object> DictionaryCache = new SharedDictionary<string, object>();
 
-        private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
+        private static readonly TimeSpan FiveSeconds = new TimeSpan(0, 0, 5);
 
         private static string cachePersistenceEnabled = string.Empty;
 
@@ -524,8 +524,7 @@ namespace DotNetNuke.Common.Utilities
             SetCache(cacheKey, objObject, objDependency, absoluteExpiration, slidingExpiration, CacheItemPriority.Normal, null);
         }
 
-        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                    CacheItemRemovedCallback onRemoveCallback)
+        public static void SetCache(string cacheKey, object objObject, DNNCacheDependency objDependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
             if (objObject != null)
             {
@@ -705,7 +704,7 @@ namespace DotNetNuke.Common.Utilities
         private static object GetUniqueLockObject(string key)
         {
             object @lock = null;
-            if (DictionaryLock.TryEnterReadLock(_5seconds))
+            if (DictionaryLock.TryEnterReadLock(FiveSeconds))
             {
                 try
                 {
@@ -723,7 +722,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (@lock == null)
             {
-                if (DictionaryLock.TryEnterWriteLock(_5seconds))
+                if (DictionaryLock.TryEnterWriteLock(FiveSeconds))
                 {
                     try
                     {
@@ -749,7 +748,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static void RemoveUniqueLockObject(string key)
         {
-            if (!DictionaryLock.TryEnterWriteLock(_5seconds))
+            if (!DictionaryLock.TryEnterWriteLock(FiveSeconds))
             {
                 return;
             }

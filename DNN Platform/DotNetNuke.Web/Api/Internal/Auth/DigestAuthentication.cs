@@ -127,21 +127,20 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         private string GenerateUnhashedDigest()
         {
-            string a1 = string.Format("{0}:{1}:{2}", this.request.RequestParams["username"].Replace("\\\\", "\\"),
-                                      this.request.RequestParams["realm"], this.password);
+            string a1 =
+                $"{this.request.RequestParams["username"].Replace("\\\\", "\\")}:{this.request.RequestParams["realm"]}:{this.password}";
             string ha1 = CreateMd5HashBinHex(a1);
-            string a2 = string.Format("{0}:{1}", this.request.HttpMethod, this.request.RequestParams["uri"]);
+            string a2 = $"{this.request.HttpMethod}:{this.request.RequestParams["uri"]}";
             string ha2 = CreateMd5HashBinHex(a2);
             string unhashedDigest;
             if (this.request.RequestParams["qop"] != null)
             {
-                unhashedDigest = string.Format("{0}:{1}:{2}:{3}:{4}:{5}", ha1, this.request.RequestParams["nonce"],
-                                               this.request.RequestParams["nc"], this.request.RequestParams["cnonce"],
-                                               this.request.RequestParams["qop"], ha2);
+                unhashedDigest =
+                    $"{ha1}:{this.request.RequestParams["nonce"]}:{this.request.RequestParams["nc"]}:{this.request.RequestParams["cnonce"]}:{this.request.RequestParams["qop"]}:{ha2}";
             }
             else
             {
-                unhashedDigest = string.Format("{0}:{1}:{2}", ha1, this.request.RequestParams["nonce"], ha2);
+                unhashedDigest = $"{ha1}:{this.request.RequestParams["nonce"]}:{ha2}";
             }
 
             // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)

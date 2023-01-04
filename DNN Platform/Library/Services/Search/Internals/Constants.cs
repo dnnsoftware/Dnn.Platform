@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using Version = Lucene.Net.Util.Version;
 
     /// <summary>
@@ -87,7 +89,6 @@ namespace DotNetNuke.Services.Search.Internals
         // misc.
         internal const string TlsSearchInfo = "TLS_SEARCH_INFO";
 
-        internal static Version LuceneVersion = Version.LUCENE_30;
         internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
 
         internal static readonly string[] KeyWordSearchFields =
@@ -102,5 +103,8 @@ namespace DotNetNuke.Services.Search.Internals
             KeywordsPrefixTag + CommentsTag,
             KeywordsPrefixTag + AuthorNameTag,
         };
+
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        internal static Version LuceneVersion = Version.LUCENE_30;
     }
 }

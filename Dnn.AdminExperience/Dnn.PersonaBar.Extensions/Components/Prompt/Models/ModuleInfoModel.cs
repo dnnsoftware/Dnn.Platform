@@ -4,17 +4,24 @@
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
 
     public class ModuleInfoModel
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __ModuleId { get; set; } // command link
 
         public int ModuleId { get; set; }
 
         public string Title { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string __ModuleName { get; set; } // command link
 
         public string ModuleName { get; set; }

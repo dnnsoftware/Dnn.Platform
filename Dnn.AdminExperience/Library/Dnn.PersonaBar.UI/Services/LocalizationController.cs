@@ -243,9 +243,4 @@ namespace Dnn.PersonaBar.UI.Services
             return resourceFiles;
         }
     }
-
-    [Serializable]
-    public class CacheDto
-    {
-    }
 }

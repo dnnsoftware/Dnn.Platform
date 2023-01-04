@@ -203,8 +203,9 @@ namespace DotNetNuke.Services.Installer.Installers
                                             this.Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
                                         }
 
-                                        if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) // To allow when fresh installing or installresources
+                                        if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install))
                                         {
+                                            // To allow when fresh installing or installresources
                                             attribValue += version + ",";
                                         }
                                         else if (upgradeVersion != null && upgradeVersion > this.Package.InstalledVersion)

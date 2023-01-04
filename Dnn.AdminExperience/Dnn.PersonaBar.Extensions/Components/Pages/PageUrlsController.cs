@@ -391,8 +391,9 @@ namespace Dnn.PersonaBar.Pages.Components
 
                     // AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200);
                     // 27139 : only show primary aliases in the tab grid (gets too confusing otherwise)
-                    if (alias.IsPrimary) // alias was provided to FriendlyUrlCall, so will always get the correct canonical Url back
+                    if (alias.IsPrimary)
                     {
+                        // alias was provided to FriendlyUrlCall, so will always get the correct canonical Url back
                         this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, string.Empty, status, isSystem, friendlyUrlSettings, null);
                     }
 

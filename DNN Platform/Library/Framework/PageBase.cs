@@ -400,8 +400,7 @@ namespace DotNetNuke.Framework
 
                     if (this.PortalSettings?.ErrorPage500 != -1)
                     {
-                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc,
-                            false);
+                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc, false);
                         HttpContext.Current.Response.Redirect(url);
                     }
                     else

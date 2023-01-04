@@ -129,9 +129,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             var message = ignoreRead
                 ? @"{0} - Write:{2}, Create:{3}, Delete:{4}"
                 : @"{0} - Read:{1}, Write:{2}, Create:{3}, Delete:{4}";
-            return string.Format(
-                @"{0} - Read:{1}, Write:{2}, Create:{3}, Delete:{4}",
-                dir.FullName, permissions.Read, permissions.Write, permissions.Create, permissions.Delete);
+            return
+                $@"{dir.FullName} - Read:{permissions.Read}, Write:{permissions.Write}, Create:{permissions.Create}, Delete:{permissions.Delete}";
         }
 
         private static Permissions CheckPermissionOnDir(DirectoryInfo dir)

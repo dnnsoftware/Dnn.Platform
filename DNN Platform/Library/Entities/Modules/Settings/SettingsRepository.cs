@@ -126,7 +126,8 @@ namespace DotNetNuke.Entities.Modules.Settings
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
 
-                if (property.CanRead) // Should be, because we asked for properties with a Get accessor.
+                // Should be, because we asked for properties with a Get accessor.
+                if (property.CanRead)
                 {
                     var settingValueAsString = SerializationManager.SerializeProperty(settings, property, attribute.Serializer);
 

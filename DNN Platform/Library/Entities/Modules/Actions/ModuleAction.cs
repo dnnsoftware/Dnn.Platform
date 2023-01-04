@@ -168,8 +168,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> class at the time the instance is created.
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible,
-                            bool newWindow)
+        public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible, bool newWindow)
         {
             this.ID = id;
             this.Title = title;

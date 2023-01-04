@@ -40,8 +40,13 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     if (translatePages)
                     {
                         // populate default language
-                        ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLanguage),
-                            defaultLanguage, languageCounter, languageCount, progress);
+                        ProcessLanguage(
+                            pageList,
+                            LocaleController.Instance.GetLocale(defaultLanguage),
+                            defaultLanguage,
+                            languageCounter,
+                            languageCount,
+                            progress);
                     }
 
                     PublishLanguage(defaultLanguage, portalId, true);
@@ -166,8 +171,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             return results;
         }
 
-        private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale,
-            string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
+        private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale, string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
         {
             progress.PrimaryTotal = totalLanguages;
             progress.PrimaryValue = languageCount;
@@ -193,7 +197,12 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
                 progress.CurrentOperationText = string.Format(
                     Localization.GetString(
-                    "ProcessingPage", LocalResourcesFile), locale.Code, stepNo, total, currentTab.TabName);
+                        "ProcessingPage",
+                        LocalResourcesFile),
+                    locale.Code,
+                    stepNo,
+                    total,
+                    currentTab.TabName);
 
                 progress.TimeEstimated = (total - stepNo) * 100;
 

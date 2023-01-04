@@ -82,8 +82,8 @@ namespace DotNetNuke.Services.Search.Entities
         /// <inheritdoc/>
         public override string ToString()
         {
-            return string.Join(", ", new[]
-            {
+            return string.Join(
+                ", ",
                 "Portal ID: " + this.PortalId,
                 "Tab ID: " + this.TabId,
                 "Module ID: " + this.ModuleId,
@@ -92,8 +92,7 @@ namespace DotNetNuke.Services.Search.Entities
                 "Unique Key: " + this.UniqueKey,
                 "Last Modified: " + this.ModifiedTimeUtc.ToString("O"),
                 "Culture: " + this.CultureCode,
-                "Search Type: " + this.SearchTypeId,
-            });
+                "Search Type: " + this.SearchTypeId);
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
 
@@ -116,8 +118,9 @@ namespace DotNetNuke.Modules.Admin.Users
                         redirectURL = this.navigationManager.NavigateURL();
                     }
                 }
-                else // redirect to after registration page
+                else
                 {
+                    // redirect to after registration page
                     redirectURL = this.navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
 
@@ -234,12 +237,15 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Bind the User information to the controls
                 this.BindData();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
             UserInfo user = this.User;
@@ -281,6 +287,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.Response.Redirect(this.navigationManager.NavigateURL(this.PortalSettings.HomeTabId));
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
             if (this.userForm.IsValid && (this.User != null))

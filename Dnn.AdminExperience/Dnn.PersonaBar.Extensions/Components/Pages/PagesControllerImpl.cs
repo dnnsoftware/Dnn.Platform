@@ -133,8 +133,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (valid)
             {
                 bool modified;
-                FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger,
-                    portalSettings, out modified);
+                FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
                 if (modified)
                 {
                     errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
@@ -341,8 +340,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, bool? deleted, string tabName, string tabTitle, string tabPath,
-            string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10, bool includeSubpages = false)
+        public IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, bool? deleted, string tabName, string tabTitle, string tabPath, string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10, bool includeSubpages = false)
         {
             pageIndex = pageIndex <= 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
@@ -405,8 +403,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", string publishStatus = "",
-            string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
+        public IEnumerable<TabInfo> SearchPages(out int totalRecords, string searchKey = "", string pageType = "", string tags = "", string publishStatus = "", string publishDateStart = "", string publishDateEnd = "", int workflowId = -1, int pageIndex = -1, int pageSize = -1)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var adminTabId = portalSettings.AdminTabId;

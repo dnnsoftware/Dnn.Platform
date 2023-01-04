@@ -200,10 +200,15 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
             }
 
-            objUserInfo = UserController.ValidateUser(settings.PortalId, userName, string.Empty,
-                                                                this.Service, token,
-                                                                settings.PortalName, ipAddress,
-                                                                ref loginStatus);
+            objUserInfo = UserController.ValidateUser(
+                settings.PortalId,
+                userName,
+                string.Empty,
+                this.Service,
+                token,
+                settings.PortalName,
+                ipAddress,
+                ref loginStatus);
 
             // Raise UserAuthenticated Event
             var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, this.Service)
@@ -316,10 +321,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             var hmacsha1 = new HMACSHA1
             {
-                Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(this.APISecret),
-                                                                             string.IsNullOrEmpty(tokenSecret)
-                                                                                 ? string.Empty
-                                                                                 : UrlEncode(tokenSecret))),
+                Key = Encoding.ASCII.GetBytes($"{UrlEncode(this.APISecret)}&{(string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncode(tokenSecret))}"),
             };
 
             return this.GenerateSignatureUsingHash(signatureBase, hmacsha1);

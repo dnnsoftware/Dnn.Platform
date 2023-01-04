@@ -1155,8 +1155,9 @@ namespace DotNetNuke.UI.Skins
                                 this.fileAttributes.Load(fileName.Replace(this.FileExtension, ".xml"));
                                 this.messages += SkinController.FormatMessage(this.fILELOAD, fileName, 2, false);
                             }
-                            catch (Exception exc) // could not load XML file
+                            catch (Exception exc)
                             {
+                                // could not load XML file
                                 Logger.Error(exc);
                                 this.fileAttributes = skinAttributes;
                                 this.messages += SkinController.FormatMessage(this.fILELOADERROR, fileName, 2, true);

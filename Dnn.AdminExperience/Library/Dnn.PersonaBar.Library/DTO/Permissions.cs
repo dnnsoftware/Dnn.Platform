@@ -12,7 +12,6 @@ namespace Dnn.PersonaBar.Library.DTO
     [DataContract]
     public abstract class Permissions
     {
-
         protected Permissions()
             : this(false)
         {

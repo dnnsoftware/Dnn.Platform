@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -13,9 +14,13 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <remarks></remarks>
     public class ModuleMessage : SkinObjectBase
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel dnnSkinMessage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblHeading;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblMessage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Control scrollScript;
 
         public enum ModuleMessageType
@@ -95,7 +100,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.lblHeading.Text = this.Heading;
                 }
             }
-            catch (Exception exc) // Control failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc, false);
             }

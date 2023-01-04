@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Scheduling
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Security.Principal;
     using System.Text;
@@ -26,7 +26,10 @@ namespace DotNetNuke.Services.Scheduling
         {
             // If KeepRunning gets switched to false,
             // the scheduler stops running.
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public static bool KeepThreadAlive = true;
+
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public static bool KeepRunning = true;
 
             private static readonly SharedList<ScheduleItem> ScheduleQueue;
@@ -689,10 +692,8 @@ namespace DotNetNuke.Services.Scheduling
                             // to loop.
                             // refreshQueueSchedule can get set to true near bottom of loop
                             // not sure why R# thinks it is always false
-                            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                             while (FreeThreads > 0 && !refreshQueueSchedule && KeepRunning && !forceReloadSchedule)
-
-                            // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
                                 // Fire off the events that need running.
                                 if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)

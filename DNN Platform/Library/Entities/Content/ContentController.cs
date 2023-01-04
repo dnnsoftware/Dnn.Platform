@@ -274,8 +274,10 @@ namespace DotNetNuke.Entities.Content
             {
                 CBO.Instance.GetCachedObject<ContentItem>(
                     new CacheItemArgs(
-                    GetContentItemCacheKey(contentItem.ContentItemId),
-                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem,
+                        GetContentItemCacheKey(contentItem.ContentItemId),
+                        DataCache.ContentItemsCacheTimeOut,
+                        DataCache.ContentItemsCachePriority),
+                    c => contentItem,
                     false);
             }
         }

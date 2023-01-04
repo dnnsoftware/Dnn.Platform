@@ -45,9 +45,11 @@ namespace DotNetNuke.Entities.Users
             switch (PortalSettings.Current.UserRegistration)
             {
                 case (int)PortalRegistrationType.PrivateRegistration:
-                    NotifyUser(user, CurrentUser != null && CurrentUser.UserID != Null.NullInteger ?
-                        MessageType.UserRegistrationPrivateNoApprovalRequired :
-                        MessageType.UserRegistrationPrivate);
+                    var messageType =
+                        CurrentUser != null && CurrentUser.UserID != Null.NullInteger
+                            ? MessageType.UserRegistrationPrivateNoApprovalRequired
+                            : MessageType.UserRegistrationPrivate;
+                    NotifyUser(user, messageType);
                     break;
                 case (int)PortalRegistrationType.PublicRegistration:
                     NotifyUser(user, MessageType.UserRegistrationPublic);

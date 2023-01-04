@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = this.hostSettingsService.GetString("SMTPAuthentication"),
                         enableSmtpSsl = this.hostSettingsService.GetBoolean("SMTPEnableSSL", false),
                         smtpUserName = this.hostSettingsService.GetString("SMTPUsername"),
-                        smtpPassword = GetSmtpPassword(-1, true),
+                        smtpPassword = this.GetSmtpPassword(-1, true),
                         smtpHostEmail = this.hostSettingsService.GetString("HostEmail"),
                         messageSchedulerBatchSize = Host.MessageSchedulerBatchSize,
                     },
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0"),
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
-                        smtpPassword = GetSmtpPassword(portalId, true),
+                        smtpPassword = this.GetSmtpPassword(portalId, true),
                     },
                     portalName = PortalSettings.Current.PortalName,
                     hideCoreSettings = ProviderConfiguration.GetProviderConfiguration("mail").GetDefaultProvider().Attributes.GetValueOrDefault("hideCoreSettings", false),
@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     if (request.SmtpPassword == ObfuscateString)
                     {
-                        request.SmtpPassword = GetSmtpPassword(portalId, false);
+                        request.SmtpPassword = this.GetSmtpPassword(portalId, false);
                     }
 
                     PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);

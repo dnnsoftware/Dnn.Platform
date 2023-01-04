@@ -1,6 +1,7 @@
 ﻿namespace DotNetNuke.Tests.Core.Services.Search.Internals
 {
     using System.Data;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;

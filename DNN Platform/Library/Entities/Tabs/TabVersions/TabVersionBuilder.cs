@@ -405,7 +405,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 if (publishDetail.PaneName != unPublishedDetail.PaneName ||
                     publishDetail.ModuleOrder != unPublishedDetail.ModuleOrder)
                 {
-                    this.moduleController.UpdateModuleOrder(tabId, publishDetail.ModuleId, publishDetail.ModuleOrder,
+                    this.moduleController.UpdateModuleOrder(
+                        tabId,
+                        publishDetail.ModuleId,
+                        publishDetail.ModuleOrder,
                         publishDetail.PaneName);
                 }
 
@@ -426,7 +429,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     string.Format(
                         Localization.GetString(
                             "TabVersionCannotBeDeleted_UnpublishedVersion",
-                            Localization.ExceptionsResourceFile), tabId, version));
+                            Localization.ExceptionsResourceFile),
+                        tabId,
+                        version));
             }
 
             var tabVersions = this.tabVersionController.GetTabVersions(tabId).OrderByDescending(tv => tv.Version);
@@ -434,8 +439,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 throw new InvalidOperationException(
                     string.Format(
-                        Localization.GetString("TabVersionCannotBeDiscarded_OnlyOneVersion", Localization.ExceptionsResourceFile),
-                        tabId, version));
+                        Localization.GetString(
+                            "TabVersionCannotBeDiscarded_OnlyOneVersion",
+                            Localization.ExceptionsResourceFile),
+                        tabId,
+                        version));
             }
 
             var versionToDelete = tabVersions.ElementAt(0);
@@ -475,8 +483,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                                     (peviousVersionDetail.PaneName != versionToDeleteDetail.PaneName ||
                                       peviousVersionDetail.ModuleOrder != versionToDeleteDetail.ModuleOrder))
                                 {
-                                    this.moduleController.UpdateModuleOrder(tabId, peviousVersionDetail.ModuleId,
-                                        peviousVersionDetail.ModuleOrder, peviousVersionDetail.PaneName);
+                                    this.moduleController.UpdateModuleOrder(
+                                        tabId,
+                                        peviousVersionDetail.ModuleId,
+                                        peviousVersionDetail.ModuleOrder,
+                                        peviousVersionDetail.PaneName);
                                 }
 
                                 if (versionToDeleteDetail.ModuleVersion != Null.NullInteger)
@@ -691,8 +702,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.UpdateDeletedTabDetails(snapshotTabVersion, deletedTabVersion, snapShotTabVersionDetails);
         }
 
-        private void UpdateDeletedTabDetails(TabVersion snapshotTabVersion, TabVersion deletedTabVersion,
-            TabVersionDetail[] snapShotTabVersionDetails)
+        private void UpdateDeletedTabDetails(TabVersion snapshotTabVersion, TabVersion deletedTabVersion, TabVersionDetail[] snapShotTabVersionDetails)
         {
             var tabVersionDetailsToBeUpdated = deletedTabVersion != null ? this.tabVersionDetailController.GetTabVersionDetails(deletedTabVersion.TabVersionId).ToArray()
                                                                                 : snapShotTabVersionDetails;

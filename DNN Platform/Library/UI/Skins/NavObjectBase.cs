@@ -2838,10 +2838,4 @@ namespace DotNetNuke.UI.Skins
             return strPath;
         }
     }
-
-    public class CustomAttribute
-    {
-        public string Name;
-        public string Value;
-    }
 }

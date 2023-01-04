@@ -41,12 +41,15 @@ namespace DotNetNuke.Services.Installer.Blocker
         {
             var retryable = new RetryableAction(
                 () =>
-            {
-                if (this.IsInstallInProgress() && this.fileCreated)
                 {
-                    File.Delete(Globals.ApplicationMapPath + InstallBlockerFile);
-                }
-            }, "Deleting lock file", 60, TimeSpan.FromSeconds(1));
+                    if (this.IsInstallInProgress() && this.fileCreated)
+                    {
+                        File.Delete(Globals.ApplicationMapPath + InstallBlockerFile);
+                    }
+                },
+                "Deleting lock file",
+                60,
+                TimeSpan.FromSeconds(1));
 
             retryable.TryIt();
             this.fileCreated = false;

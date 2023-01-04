@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Install
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -69,6 +70,11 @@ namespace DotNetNuke.Services.Install
         protected static readonly string OptionNo = "N";
 
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected static string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
@@ -662,7 +668,8 @@ namespace DotNetNuke.Services.Install
             // Output the current time for the user
             CurrentStepActivity(string.Concat(
                 Localization.GetString("UpgradeStarted", LocalResourceFile),
-                ":", DateTime.Now.ToString()));
+                ":",
+                DateTime.Now.ToString()));
 
             foreach (var step in steps)
             {
@@ -858,9 +865,7 @@ namespace DotNetNuke.Services.Install
                     sslDomain = sslDomain.Substring(sslDomain.IndexOf("://") + 3);
                 }
 
-                var sslUrl = string.Format(
-                    "https://{0}{1}",
-                    sslDomain, this.Request.RawUrl);
+                var sslUrl = $"https://{sslDomain}{this.Request.RawUrl}";
 
                 this.Response.Redirect(sslUrl, true);
             }

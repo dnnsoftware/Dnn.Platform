@@ -42,10 +42,10 @@ namespace Dnn.PersonaBar.Security.Services
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
+        private const string BULLETINXMLNODEPATH = "//channel/item";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController controller;
         private readonly IPortalAliasController portalAliasController;
-        private const string BULLETINXMLNODEPATH = "//channel/item";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityController"/> class.

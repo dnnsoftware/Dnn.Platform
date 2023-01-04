@@ -224,8 +224,11 @@ namespace DotNetNuke.Framework
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, heading, message,
-                                                 ModuleMessage.ModuleMessageType.YellowWarning);
+                    UI.Skins.Skin.AddPageMessage(
+                        ctlSkin,
+                        heading,
+                        message,
+                        ModuleMessage.ModuleMessageType.YellowWarning);
                 }
                 else
                 {
@@ -244,8 +247,9 @@ namespace DotNetNuke.Framework
             if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
             {
                 string primaryHttpAlias = null;
-                if (Config.GetFriendlyUrlProvider() == "advanced") // advanced mode compares on the primary alias as set during alias identification
+                if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
+                    // advanced mode compares on the primary alias as set during alias identification
                     if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
                     {
                         if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
@@ -254,16 +258,18 @@ namespace DotNetNuke.Framework
                         }
                     }
                 }
-                else // other modes just depend on the default alias
+                else
                 {
+                    // other modes just depend on the default alias
                     if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
                     {
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                     }
                 }
 
-                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl))
                 {
+                    // a primary http alias was identified
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
                     this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
 
@@ -509,8 +515,10 @@ namespace DotNetNuke.Framework
                         default:
                             control.LocalResourceFile = string.Concat(
                                 slaveModule.ModuleControl.ControlSrc.Replace(
-                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
-                                Localization.LocalResourceDirectory, "/",
+                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc),
+                                    string.Empty),
+                                Localization.LocalResourceDirectory,
+                                "/",
                                 Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                             break;
                     }
@@ -630,8 +638,8 @@ namespace DotNetNuke.Framework
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
-                string versionString = string.Format(" ({0} Version: {1})", DotNetNukeContext.Current.Application.Status,
-                                                     DotNetNukeContext.Current.Application.Version);
+                string versionString =
+                    $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
                 this.Title += versionString;
             }
 

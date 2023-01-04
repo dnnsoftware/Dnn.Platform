@@ -390,9 +390,11 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
-            SchedulingProvider.Instance().AddScheduleItemSetting(
-                scheduleId,
-                Constants.SearchLastSuccessIndexName, startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat));
+            SchedulingProvider.Instance()
+                .AddScheduleItemSetting(
+                    scheduleId,
+                    Constants.SearchLastSuccessIndexName,
+                    startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat));
         }
 
         /// <inheritdoc/>

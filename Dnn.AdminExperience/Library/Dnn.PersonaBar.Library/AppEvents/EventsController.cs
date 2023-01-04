@@ -46,7 +46,9 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "{0}.ApplicationStart threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName, e.Message, e.StackTrace);
+                        instance.GetType().FullName,
+                        e.Message,
+                        e.StackTrace);
                 }
             });
         }
@@ -64,7 +66,9 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "{0}.ApplicationEnd threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName, e.Message, e.StackTrace);
+                        instance.GetType().FullName,
+                        e.Message,
+                        e.StackTrace);
                 }
             });
         }
@@ -91,7 +95,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "Unable to create {0} while calling Application start implementors.  {1}",
-                        type.FullName, e.Message);
+                        type.FullName,
+                        e.Message);
                     appEventHandler = null;
                 }
 
@@ -133,7 +138,9 @@ namespace Dnn.PersonaBar.Library.AppEvents
             {
                 Logger.InfoFormat(
                     "Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored",
-                    t.FullName, typeVersion, currentVersion);
+                    t.FullName,
+                    typeVersion,
+                    currentVersion);
             }
 
             return matched;

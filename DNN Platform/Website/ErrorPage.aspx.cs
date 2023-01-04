@@ -64,8 +64,7 @@ namespace DotNetNuke.Services.Exceptions
             var security = PortalSecurity.Instance;
             var status = security.InputFilter(
                 this.Request.QueryString["status"],
-                PortalSecurity.FilterFlag.NoScripting |
-                                                    PortalSecurity.FilterFlag.NoMarkup);
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoMarkup);
             if (!string.IsNullOrEmpty(status))
             {
                 this.ManageError(status);

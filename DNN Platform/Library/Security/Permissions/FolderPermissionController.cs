@@ -172,6 +172,36 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache(folder.PortalID);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a folder or file.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        bool IFolderPermissionController.CanAddFolder(IFolderInfo folder)
+        {
+            return Provider.CanAddFolder((FolderInfo)folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can addmister a folder.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
+        {
+            return Provider.CanAdminFolder((FolderInfo)folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view a folder or file.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        bool IFolderPermissionController.CanViewFolder(IFolderInfo folder)
+        {
+            return Provider.CanViewFolder((FolderInfo)folder);
+        }
+
         /// <inheritdoc/>
         protected override Func<IFolderPermissionController> GetFactory()
         {
@@ -203,36 +233,6 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return clearCache;
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can add a folder or file.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        bool IFolderPermissionController.CanAddFolder(IFolderInfo folder)
-        {
-            return Provider.CanAddFolder((FolderInfo)folder);
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can addmister a folder.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
-        {
-            return Provider.CanAdminFolder((FolderInfo)folder);
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can view a folder or file.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        bool IFolderPermissionController.CanViewFolder(IFolderInfo folder)
-        {
-            return Provider.CanViewFolder((FolderInfo)folder);
         }
     }
 }

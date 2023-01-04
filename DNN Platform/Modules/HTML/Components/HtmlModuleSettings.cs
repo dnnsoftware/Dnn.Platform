@@ -33,11 +33,4 @@ namespace DotNetNuke.Modules.Html.Components
         [ModuleSetting]
         public int WorkFlowID { get; set; } = -1;
     }
-
-    /// <summary>
-    /// The <see cref="SettingsRepository{T}"/> used for storing and retrieving <see cref="HtmlModuleSettings"/>.
-    /// </summary>
-    public class HtmlModuleSettingsRepository : SettingsRepository<HtmlModuleSettings>
-    {
-    }
 }

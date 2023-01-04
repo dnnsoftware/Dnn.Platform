@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.IO;
     using System.Linq;
     using System.Xml;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Framework;
@@ -59,7 +60,10 @@ namespace DotNetNuke.Entities.Portals.Internal
 
             var retryable = new RetryableAction(
                 () => reader = new StreamReader(File.Open(filePath, FileMode.Open)),
-                filePath, 10, TimeSpan.FromMilliseconds(50), 2);
+                filePath,
+                10,
+                TimeSpan.FromMilliseconds(50),
+                2);
 
             retryable.TryIt();
             return reader;
@@ -68,7 +72,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         /// <inheritdoc/>
         public (string, List<string>) GetTemplateLanguages(string templateFilePath)
         {
-            var defaultLanguage = "";
+            var defaultLanguage = string.Empty;
             var locales = new List<string>();
             var templateXml = new XmlDocument() { XmlResolver = null };
             templateXml.Load(templateFilePath);

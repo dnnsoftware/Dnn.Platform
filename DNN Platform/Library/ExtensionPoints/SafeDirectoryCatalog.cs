@@ -44,8 +44,9 @@ namespace DotNetNuke.ExtensionPoints
                 catch (BadImageFormatException)
                 {
                 }
-                catch (FileLoadException) // ignore when the assembly load failed.
+                catch (FileLoadException)
                 {
+                    // ignore when the assembly load failed.
                 }
             }
         }

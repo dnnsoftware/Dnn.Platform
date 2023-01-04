@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.Groups
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.Groups
                 ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, this.radSortDirection.SelectedItem.Value);
                 ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, this.chkUserGroups.Checked.ToString());
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

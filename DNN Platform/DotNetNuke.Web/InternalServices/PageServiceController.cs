@@ -154,9 +154,4 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
     }
-
-    public class PublishPageDto
-    {
-        public bool Publish { get; set; }
-    }
 }

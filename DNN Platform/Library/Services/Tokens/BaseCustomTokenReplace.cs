@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Tokens
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -19,12 +20,21 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
-        protected TokenProvider Provider
-        {
-            get => ComponentFactory.GetComponent<TokenProvider>();
-        }
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
+        protected Dictionary<string, IPropertyAccess> PropertySource;
 
         private TokenContext tokenContext = new TokenContext();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.
+        /// </summary>
+        public BaseCustomTokenReplace()
+        {
+            this.PropertySource = this.TokenContext.PropertySource;
+        }
 
         public TokenContext TokenContext
         {
@@ -35,8 +45,6 @@ namespace DotNetNuke.Services.Tokens
                 this.PropertySource = this.tokenContext.PropertySource;
             }
         }
-
-        protected Dictionary<string, IPropertyAccess> PropertySource;
 
         /// <summary>
         /// Gets or sets /sets the user object representing the currently accessing user (permission).
@@ -63,15 +71,6 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
-        protected override CultureInfo FormatProvider
-        {
-            get => this.TokenContext.Language;
-        }
-
-        /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
@@ -84,6 +83,20 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
+        protected TokenProvider Provider
+        {
+            get => ComponentFactory.GetComponent<TokenProvider>();
+        }
+
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture.
+        /// </summary>
+        /// <value>An CultureInfo.</value>
+        protected override CultureInfo FormatProvider
+        {
+            get => this.TokenContext.Language;
+        }
+
         /// <summary>
         /// Gets or sets /sets the current Access Level controlling access to critical user settings.
         /// </summary>
@@ -92,14 +105,6 @@ namespace DotNetNuke.Services.Tokens
         {
             get => this.TokenContext.CurrentAccessLevel;
             set => this.TokenContext.CurrentAccessLevel = value;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.
-        /// </summary>
-        public BaseCustomTokenReplace()
-        {
-            this.PropertySource = this.TokenContext.PropertySource;
         }
 
         /// <summary>

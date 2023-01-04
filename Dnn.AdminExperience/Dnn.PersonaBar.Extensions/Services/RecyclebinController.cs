@@ -27,6 +27,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class RecyclebinController : PersonaBarApiController
     {
+        private const string EmptyRecycleBinPermission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinModulesView + "&" +
+                                                         Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinPagesEdit + "&" +
+                                                         Components.Constants.RecycleBinModulesEdit + "&" + Components.Constants.RecycleBinUsersEdit;
+
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView)]
 
@@ -207,8 +211,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     }
 
                     string resultmessage;
-                    result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID,
-                        out resultmessage);
+                    result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID, out resultmessage);
                     errors.Append(resultmessage);
                 }
             }
@@ -259,12 +262,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         }
 
         [HttpGet]
-        [AdvancedPermission(
-            MenuName = Components.Constants.MenuName,
-            Permission =
-                Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinModulesView + "&" +
-                Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinPagesEdit + "&" +
-                Components.Constants.RecycleBinModulesEdit + "&" + Components.Constants.RecycleBinUsersEdit)]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = EmptyRecycleBinPermission)]
         public HttpResponseMessage EmptyRecycleBin()
         {
             var totalRecords = 0;

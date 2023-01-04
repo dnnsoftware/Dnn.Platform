@@ -19,9 +19,7 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <param name="category">Catenory name.</param>
         /// <param name="searchTerm">Search term to filter modules.</param>
         /// <returns>A list with all matched desktop modules.</returns>
-        IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(
-            int portalId,
-            string category, string searchTerm = "");
+        IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "");
 
         /// <summary>
         /// Get all desktop modules bookmark by user in Control Bar.
@@ -30,8 +28,7 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <param name="userId">User Id who has bookmarked the modules.</param>
         /// <param name="searchTerm">Search term to filter modules.</param>
         /// <returns>A list with all matched modules.</returns>
-        IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedDesktopModules(int portalId, int userId,
-            string searchTerm = "");
+        IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedDesktopModules(int portalId, int userId, string searchTerm = "");
 
         /// <summary>
         /// Save a user bookmark.

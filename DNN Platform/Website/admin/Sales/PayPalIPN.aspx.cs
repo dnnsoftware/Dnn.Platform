@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                 }
             }
-            catch (Exception exc) // Page failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessPageLoadException(exc);
             }

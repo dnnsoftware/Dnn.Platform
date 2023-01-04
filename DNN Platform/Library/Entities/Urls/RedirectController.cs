@@ -40,10 +40,9 @@ namespace DotNetNuke.Entities.Urls
 
             // redo the rewrite to fix up the problem.  The user has ticked 'permanent redirect' but hasn't supplied a forwarding Url
             if (context != null)
-
-            // if no context supplied, means no rewrite was required because querystring didn't contain do301 action
             {
-                // RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
+                // if no context supplied, means no rewrite was required because querystring didn't contain do301 action
+                ////RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
                 RewriterUtils.RewriteUrl(context, result.RewritePath);
             }
 
@@ -125,8 +124,9 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     // check for 'all tabs' redirections
-                    if (redirectActions.ContainsKey(-1)) // -1 means 'all tabs' - rewriting across all tabs
+                    if (redirectActions.ContainsKey(-1))
                     {
+                        // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab redirects
                         if (parmRedirects == null)
                         {

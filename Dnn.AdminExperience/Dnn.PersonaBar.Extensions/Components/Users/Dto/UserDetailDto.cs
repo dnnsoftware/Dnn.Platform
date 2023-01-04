@@ -112,11 +112,14 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             }
 
             // ctl/Edit/mid/345/packageid/52
-            return NavigationManager.NavigateURL(tabId, PortalSettings.Current, "Edit",
-                                            "mid=" + module.ModuleID,
-                                            "popUp=true",
-                                            "UserId=" + userId,
-                                            "editprofile=true");
+            return NavigationManager.NavigateURL(
+                tabId,
+                PortalSettings.Current,
+                "Edit",
+                "mid=" + module.ModuleID,
+                "popUp=true",
+                "UserId=" + userId,
+                "editprofile=true");
         }
     }
 }

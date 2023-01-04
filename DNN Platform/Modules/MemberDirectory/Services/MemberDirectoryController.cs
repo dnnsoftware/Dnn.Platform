@@ -317,11 +317,19 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                     if (this.CanViewGroupMembers(portalId, groupId))
                     {
-                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId,
-                                                                                       groupId,
-                                                                                       -1, isAdmin, pageIndex, pageSize,
-                                                                                       sortField, sortOrder == "ASC",
-                                                                                       propertyNames, propertyValues);
+                        users = UserController.Instance.GetUsersAdvancedSearch(
+                            portalId,
+                            this.PortalSettings.UserId,
+                            userId,
+                            groupId,
+                            -1,
+                            isAdmin,
+                            pageIndex,
+                            pageSize,
+                            sortField,
+                            sortOrder == "ASC",
+                            propertyNames,
+                            propertyValues);
                     }
                     else
                     {
@@ -330,29 +338,61 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                     break;
                 case "Relationship":
-                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
-                                                                           int.Parse(filterValue), isAdmin, pageIndex, pageSize,
-                                                                           sortField, sortOrder == "ASC",
-                                                                           propertyNames, propertyValues);
+                    users = UserController.Instance.GetUsersAdvancedSearch(
+                        portalId,
+                        this.PortalSettings.UserId,
+                        userId,
+                        -1,
+                        int.Parse(filterValue),
+                        isAdmin,
+                        pageIndex,
+                        pageSize,
+                        sortField,
+                        sortOrder == "ASC",
+                        propertyNames,
+                        propertyValues);
                     break;
                 case "ProfileProperty":
                     var propertyValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterPropertyValue", string.Empty);
                     AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
-                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
-                                                                           -1, isAdmin, pageIndex, pageSize,
-                                                                           sortField, sortOrder == "ASC",
-                                                                           propertyNames, propertyValues);
+                    users = UserController.Instance.GetUsersAdvancedSearch(
+                        portalId,
+                        this.PortalSettings.UserId,
+                        userId,
+                        -1,
+                        -1,
+                        isAdmin,
+                        pageIndex,
+                        pageSize,
+                        sortField,
+                        sortOrder == "ASC",
+                        propertyNames,
+                        propertyValues);
                     break;
                 default:
-                    users = isBasicSearch ? UserController.Instance.GetUsersBasicSearch(this.PortalSettings.PortalId, pageIndex, pageSize,
-                                                                           sortField, sortOrder == "ASC",
-                                                                           "DisplayName", searchTerm)
-                                                                           :
-                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
-                                                                               -1, isAdmin, pageIndex, pageSize,
-                                                                               sortField, sortOrder == "ASC",
-                                                                               propertyNames, propertyValues);
+                    users = isBasicSearch
+                        ? UserController.Instance.GetUsersBasicSearch(
+                            this.PortalSettings.PortalId,
+                            pageIndex,
+                            pageSize,
+                            sortField,
+                            sortOrder == "ASC",
+                            "DisplayName",
+                            searchTerm)
+                        : UserController.Instance.GetUsersAdvancedSearch(
+                            portalId,
+                            this.PortalSettings.UserId,
+                            userId,
+                            -1,
+                            -1,
+                            isAdmin,
+                            pageIndex,
+                            pageSize,
+                            sortField,
+                            sortOrder == "ASC",
+                            propertyNames,
+                            propertyValues);
                     break;
             }
 

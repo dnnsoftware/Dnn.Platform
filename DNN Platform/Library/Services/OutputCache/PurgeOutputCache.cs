@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.OutputCache
 
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 

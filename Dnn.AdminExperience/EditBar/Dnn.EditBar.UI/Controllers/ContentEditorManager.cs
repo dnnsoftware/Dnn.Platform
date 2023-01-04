@@ -274,7 +274,8 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
             ClientResourceManager.RegisterStyleSheet(
                 this.Page,
-                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), CssFileOrder);
+                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"),
+                CssFileOrder);
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);

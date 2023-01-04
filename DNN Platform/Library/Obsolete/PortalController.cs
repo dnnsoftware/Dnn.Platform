@@ -44,9 +44,7 @@ namespace DotNetNuke.Entities.Portals
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
-        public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email,
-                        string description, string keyWords, string templatePath, string templateFile, string homeDirectory,
-                        string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email, string description, string keyWords, string templatePath, string templateFile, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             var adminUser = new UserInfo
             {
@@ -66,14 +64,11 @@ namespace DotNetNuke.Entities.Portals
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
-        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath,
-                        string templateFile, string homeDirectory, string portalAlias,
-                        string serverPath, string childPath, bool isChildPortal)
+        public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, string templatePath, string templateFile, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             var template = PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
 
-            return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
-                                serverPath, childPath, isChildPortal);
+            return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

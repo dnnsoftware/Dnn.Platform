@@ -10,7 +10,6 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
 
     public class DatabaseController
     {
-
         public DbInfo GetDbInfo()
         {
             return CBO.FillObject<DbInfo>(DataService.GetDbInfo());

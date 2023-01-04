@@ -10,7 +10,6 @@ namespace DotNetNuke.Services.Localization
     using System.Web;
     using System.Web.Compilation;
     using System.Web.UI;
-    using System.Web.UI.Design;
 
     [ExpressionPrefix("dnnLoc")]
     [ExpressionEditor("DotNetNuke.Services.Localization.LocalizationExpressionBuilderEditor")]
@@ -95,15 +94,6 @@ namespace DotNetNuke.Services.Localization
             string virtualPath = context.VirtualPath;
 
             return GetLocalizedResource(key, targetType, propertyName, virtualPath);
-        }
-    }
-
-    public class LocalizationExpressionBuilderEditor : ExpressionEditor
-    {
-        /// <inheritdoc/>
-        public override object EvaluateExpression(string expression, object parseTimeData, Type propertyType, IServiceProvider serviceProvider)
-        {
-            return string.Concat("[dnnLoc:", expression, "]");
         }
     }
 }

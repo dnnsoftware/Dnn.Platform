@@ -16,12 +16,6 @@ namespace DotNetNuke.Framework.Reflections
     {
         private IAssemblyLocator assemblyLocator;
 
-        internal IAssemblyLocator AssemblyLocator
-        {
-            get { return this.assemblyLocator ?? (this.assemblyLocator = this); }
-            set { this.assemblyLocator = value; }
-        }
-
         /// <inheritdoc/>
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
@@ -30,9 +24,15 @@ namespace DotNetNuke.Framework.Reflections
             get
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                       where this.CanScan(assembly)
-                       select new AssemblyWrapper(assembly);
+                    where this.CanScan(assembly)
+                    select new AssemblyWrapper(assembly);
             }
+        }
+
+        internal IAssemblyLocator AssemblyLocator
+        {
+            get { return this.assemblyLocator ?? (this.assemblyLocator = this); }
+            set { this.assemblyLocator = value; }
         }
 
         /// <inheritdoc/>

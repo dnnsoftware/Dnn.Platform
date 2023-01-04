@@ -294,8 +294,10 @@ namespace DotNetNuke.Security.Roles
         {
             this.dataProvider.UpdateUserRole(
                 userRole.UserRoleID,
-                (int)userRole.Status, userRole.IsOwner,
-                userRole.EffectiveDate, userRole.ExpiryDate,
+                (int)userRole.Status,
+                userRole.IsOwner,
+                userRole.EffectiveDate,
+                userRole.ExpiryDate,
                 UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
@@ -310,9 +312,11 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
-            var roleGroupId = this.dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName.Trim(),
-                                                        (roleGroup.Description ?? string.Empty).Trim(),
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+            var roleGroupId = this.dataProvider.AddRoleGroup(
+                roleGroup.PortalID,
+                roleGroup.RoleGroupName.Trim(),
+                (roleGroup.Description ?? string.Empty).Trim(),
+                UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
         }
@@ -370,18 +374,27 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
-            this.dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
-                (roleGroup.Description ?? string.Empty).Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
+            this.dataProvider.UpdateRoleGroup(
+                roleGroup.RoleGroupID,
+                roleGroup.RoleGroupName.Trim(),
+                (roleGroup.Description ?? string.Empty).Trim(),
+                UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 
         private void AddDNNUserRole(UserRoleInfo userRole)
         {
             // Add UserRole to DNN
-            userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
-                                                                (int)userRole.Status, userRole.IsOwner,
-                                                                userRole.EffectiveDate, userRole.ExpiryDate,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID));
+            userRole.UserRoleID = Convert.ToInt32(
+                this.dataProvider.AddUserRole(
+                    userRole.PortalID,
+                    userRole.UserID,
+                    userRole.RoleID,
+                    (int)userRole.Status,
+                    userRole.IsOwner,
+                    userRole.EffectiveDate,
+                    userRole.ExpiryDate,
+                    UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         private void ClearRoleGroupCache(int portalId)

@@ -16,10 +16,12 @@ namespace Dnn.PersonaBar.Users.Data
         /// <inheritdoc/>
         public IList<UserBasicDto> GetUsersByUserIds(int portalId, string userIds)
         {
-            return CBO.FillCollection<UserBasicDto>(DotNetNuke.Data.DataProvider.Instance()
-                .ExecuteReader(
-                    "Personabar_GetUsersByUserIds",
-                    portalId, userIds));
+            return CBO.FillCollection<UserBasicDto>(
+                DotNetNuke.Data.DataProvider.Instance()
+                    .ExecuteReader(
+                        "Personabar_GetUsersByUserIds",
+                        portalId,
+                        userIds));
         }
 
         /// <inheritdoc/>

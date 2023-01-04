@@ -133,10 +133,13 @@ namespace DotNetNuke.Services.Sitemap
                     }
                     catch (Exception ex)
                     {
-                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.GetExceptionMessage(
-                            "SitemapProviderError",
-                            "URL sitemap provider '{0}' failed with error: {1}",
-                            provider.Name, ex.Message)));
+                        Services.Exceptions.Exceptions.LogException(
+                            new Exception(
+                                Localization.GetExceptionMessage(
+                                    "SitemapProviderError",
+                                    "URL sitemap provider '{0}' failed with error: {1}",
+                                    provider.Name,
+                                    ex.Message)));
                     }
 
                     foreach (SitemapUrl url in urls)
@@ -146,8 +149,9 @@ namespace DotNetNuke.Services.Sitemap
                             url.Priority = providerPriorityValue;
                         }
 
-                        if (url.Priority > 0 && url.Priority >= excludePriority) // #RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
+                        if (url.Priority > 0 && url.Priority >= excludePriority)
                         {
+                            // #RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
                             allUrls.Add(url);
                         }
                     }

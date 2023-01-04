@@ -84,8 +84,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="storageLocation"></param>
         /// <param name="cached"></param>
         /// <param name="hash"></param>
-        public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached,
-                        string hash)
+        public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached, string hash)
             : this(Guid.NewGuid(), Guid.NewGuid(), portalId, filename, extension, filesize, width, height, contentType, folder, folderId, storageLocation, cached, hash)
         {
         }
@@ -107,8 +106,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="storageLocation"></param>
         /// <param name="cached"></param>
         /// <param name="hash"></param>
-        public FileInfo(Guid uniqueId, Guid versionGuid, int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId,
-                        int storageLocation, bool cached, string hash)
+        public FileInfo(Guid uniqueId, Guid versionGuid, int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached, string hash)
         {
             this.UniqueId = uniqueId;
             this.VersionGuid = versionGuid;

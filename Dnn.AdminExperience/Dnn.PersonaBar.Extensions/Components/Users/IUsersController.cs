@@ -25,16 +25,13 @@ namespace Dnn.PersonaBar.Users.Components
 
         UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int portalId = -1);
 
-        UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser,
-            bool isOwner);
+        UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner);
 
-        void AddUserToRoles(UserInfo currentUserInfo, int userId, int portalId, string roleNames, string roleDelimiter = ",",
-            DateTime? effectiveDate = null, DateTime? expiryDate = null);
+        void AddUserToRoles(UserInfo currentUserInfo, int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null);
 
         IList<UserRoleInfo> GetUserRoles(UserInfo user, string keyword, out int total, int pageIndex = -1, int pageSize = -1);
 
-        IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total,
-            out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
+        IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total, out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
 
         bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify);
 

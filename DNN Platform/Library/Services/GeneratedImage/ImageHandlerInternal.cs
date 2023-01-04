@@ -329,7 +329,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             using (var imageOutputBuffer = new MemoryStream())
             {
-                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null));
+                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null), "Image or ImageByteByffer must have a value");
                 if (imageMethodData.Image != null)
                 {
                     this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);

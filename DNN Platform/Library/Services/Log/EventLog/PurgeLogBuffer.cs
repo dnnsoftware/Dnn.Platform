@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Purged log entries successfully"); // OPTIONAL
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("EXCEPTION: " + exc); // OPTIONAL

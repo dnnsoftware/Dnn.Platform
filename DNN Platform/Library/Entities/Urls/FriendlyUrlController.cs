@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
@@ -951,8 +951,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     }
 
                     // check the DotNetNuke cookies for allowed
+                    // check for cookie
                     if (request.Cookies[DisableMobileRedirectCookieName] != null
-                        && request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
+                        && request.Cookies[DisableRedirectPresistCookieName] != null)
                     {
                         // cookies exist, can't use mobile device
                         canUseMobileDevice = false;
@@ -993,8 +994,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
         {
             var resultingCh = new StringBuilder(ch.Length);
-            foreach (char c in ch) // ch could contain several chars from the pre-defined replacement list
+            foreach (char c in ch)
             {
+                // ch could contain several chars from the pre-defined replacement list
                 if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
                 {
                     replacedUnwantedChars = true;

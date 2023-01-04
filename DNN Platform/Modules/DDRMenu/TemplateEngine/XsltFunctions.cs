@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
     using System;
@@ -11,6 +10,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
@@ -50,16 +50,16 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         {
             try
             {
-                return HttpContext.Current.Request.IsAuthenticated
-                        ? UserController.Instance.GetCurrentUserInfo().DisplayName
-                        : Localization.GetString(
-                            "Register",
-
-                            // ReSharper disable PossibleNullReferenceException
-                            (HttpContext.Current.Items["DDRMenuHostControl"] as Control).ResolveUrl(
-                                "~/Admin/Skins/" + Localization.LocalResourceDirectory + "/User.ascx"));
-
-                // ReSharper restore PossibleNullReferenceException
+                if (HttpContextSource.Current.Request.IsAuthenticated)
+                {
+                    return UserController.Instance.GetCurrentUserInfo().DisplayName;
+                }
+                else
+                {
+                    var hostControl = (Control)HttpContextSource.Current.Items["DDRMenuHostControl"];
+                    var resourceFileRoot = hostControl.ResolveUrl($"~/Admin/Skins/{Localization.LocalResourceDirectory}/User.ascx");
+                    return Localization.GetString("Register", resourceFileRoot);
+                }
             }
             catch (Exception exc)
             {

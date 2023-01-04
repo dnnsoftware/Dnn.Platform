@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -14,6 +15,10 @@ namespace DotNetNuke.UI.Containers
 
     public partial class LinkActions : ActionBase
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected string _itemSeparator = string.Empty;
 
         public string ItemSeparator
@@ -88,7 +93,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -110,7 +115,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((LinkButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

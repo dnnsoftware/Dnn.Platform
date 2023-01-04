@@ -39,20 +39,6 @@ namespace DotNetNuke.HttpModules.Membership
 
         private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
 
-        private static bool IsActiveDirectoryAuthHeaderPresent()
-        {
-            var auth = HttpContext.Current.Request.Headers.Get("Authorization");
-            if (!string.IsNullOrEmpty(auth))
-            {
-                if (auth.StartsWith("Negotiate"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private static string cultureCode;
 
         /// <summary>
@@ -186,6 +172,20 @@ namespace DotNetNuke.HttpModules.Membership
         /// </summary>
         public void Dispose()
         {
+        }
+
+        private static bool IsActiveDirectoryAuthHeaderPresent()
+        {
+            var auth = HttpContext.Current.Request.Headers.Get("Authorization");
+            if (!string.IsNullOrEmpty(auth))
+            {
+                if (auth.StartsWith("Negotiate"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool RequireLogout(HttpContextBase context, UserInfo user)

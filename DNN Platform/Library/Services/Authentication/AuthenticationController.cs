@@ -309,13 +309,15 @@ namespace DotNetNuke.Services.Authentication
                     // redirect to portal home page specified
                     redirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                 }
-                else // redirect to default portal root
+                else
                 {
+                    // redirect to default portal root
                     redirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
                 }
             }
-            else // redirect to after logout page
+            else
             {
+                // redirect to after logout page
                 redirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
 

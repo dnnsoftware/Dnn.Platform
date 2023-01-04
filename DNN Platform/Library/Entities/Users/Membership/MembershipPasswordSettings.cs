@@ -31,8 +31,9 @@ namespace DotNetNuke.Entities.Users.Membership
                 this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
                 this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
-            else // setup default values during install process.
+            else
             {
+                // setup default values during install process.
                 this.EnableStrengthMeter = true;
                 this.EnableBannedList = true;
                 this.EnablePasswordHistory = true;
