@@ -6,17 +6,12 @@ namespace DotNetNuke.Services.Search
     using System;
     using System.Collections;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.DataStore
     /// Class:      SearchCriteria
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Represents a collection of <see cref="SearchCriteria">SearchCriteria</see> objects.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchCriteriaCollection : CollectionBase
     {

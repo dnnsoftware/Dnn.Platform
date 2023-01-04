@@ -9,13 +9,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationPackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class AuthenticationPackageWriter : PackageWriterBase
     {
         /// <summary>
@@ -41,12 +37,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the associated Authentication System.
         /// </summary>
         /// <value>An AuthenticationInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
 
         /// <inheritdoc/>

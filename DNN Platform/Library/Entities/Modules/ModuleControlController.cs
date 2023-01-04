@@ -11,50 +11,41 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
     /// Class    : ModuleControlController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleControlController provides the Business Layer for Module Controls.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class ModuleControlController
     {
         private const string Key = "ModuleControlID";
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddModuleControl adds a new Module Control to the database.
         /// </summary>
         /// <param name="objModuleControl">The Module Control to save.</param>
-        /// -----------------------------------------------------------------------------
         public static void AddModuleControl(ModuleControlInfo objModuleControl)
         {
             SaveModuleControl(objModuleControl, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeleteModuleControl deletes a Module Control in the database.
         /// </summary>
         /// <param name="moduleControlID">The ID of the Module Control to delete.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteModuleControl(int moduleControlID)
         {
             DataProvider.DeleteModuleControl(moduleControlID);
             DataCache.ClearHostCache(true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleControl gets a single Module Control from the database.
         /// </summary>
         /// <param name="moduleControlID">The ID of the Module Control to fetch.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControl(int moduleControlID)
         {
             return (from kvp in GetModuleControls()
@@ -63,27 +54,23 @@ namespace DotNetNuke.Entities.Modules
                    .FirstOrDefault();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleControl gets a Dictionary of Module Controls by Module Definition.
         /// </summary>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
         {
             return GetModuleControls().Where(kvp => kvp.Value.ModuleDefID == moduleDefID)
                    .ToDictionary(kvp => kvp.Value.ControlKey, kvp => kvp.Value);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleControlByControlKey gets a single Module Control from the database.
         /// </summary>
         /// <param name="controlKey">The key for the control.</param>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
         {
             return (from kvp in GetModuleControls()
@@ -93,14 +80,12 @@ namespace DotNetNuke.Entities.Modules
                    .FirstOrDefault();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// SaveModuleControl updates a Module Control in the database.
         /// </summary>
         /// <param name="moduleControl">The Module Control to save.</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static int SaveModuleControl(ModuleControlInfo moduleControl, bool clearCache)
         {
             int moduleControlID = moduleControl.ModuleControlID;
@@ -146,23 +131,19 @@ namespace DotNetNuke.Entities.Modules
             return moduleControlID;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpdateModuleControl updates a Module Control in the database.
         /// </summary>
         /// <param name="objModuleControl">The Module Control to save.</param>
-        /// -----------------------------------------------------------------------------
         public static void UpdateModuleControl(ModuleControlInfo objModuleControl)
         {
             SaveModuleControl(objModuleControl, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleControls gets a Dictionary of Module Controls from
         /// the Cache.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private static Dictionary<int, ModuleControlInfo> GetModuleControls()
         {
             return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(
@@ -173,14 +154,12 @@ namespace DotNetNuke.Entities.Modules
                 GetModuleControlsCallBack);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleControlsCallBack gets a Dictionary of Module Controls from
         /// the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
         /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
         private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
         {
             return CBO.FillDictionary(Key, DataProvider.GetModuleControls(), new Dictionary<int, ModuleControlInfo>());

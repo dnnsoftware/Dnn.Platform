@@ -22,15 +22,12 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Services.Tokens;
     using Newtonsoft.Json;
 
-/// -----------------------------------------------------------------------------
 /// Project:    DotNetNuke
 /// Namespace:  DotNetNuke.Security.Roles
 /// Class:      RoleInfo
-/// -----------------------------------------------------------------------------
 /// <summary>
 /// The RoleInfo class provides the Entity Layer Role object.
 /// </summary>
-/// -----------------------------------------------------------------------------
     [Serializable]
     public class RoleInfo : BaseEntityInfo, IHydratable, IXmlSerializable, IPropertyAccess
     {
@@ -49,12 +46,10 @@ namespace DotNetNuke.Security.Roles
             this.IsSystemRole = false;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Role Type.
         /// </summary>
         /// <value>A enum representing the type of the role.</value>
-        /// -----------------------------------------------------------------------------
         public RoleType RoleType
         {
             get
@@ -69,11 +64,9 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the role settings.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public Dictionary<string, string> Settings
@@ -122,15 +115,12 @@ namespace DotNetNuke.Security.Roles
         /// <value>A boolean representing whether this is a system role such as Administrators, Registered Users etc.</value>
         public bool IsSystemRole { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether users are automatically assigned to the role.
         /// </summary>
         /// <value>A boolean (True/False).</value>
-        /// -----------------------------------------------------------------------------
         public bool AutoAssignment { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Billing Frequency for the role.
         /// </summary>
@@ -144,121 +134,93 @@ namespace DotNetNuke.Security.Roles
         /// <list>Y - Yearly</list>
         /// </ul>
         /// </value>
-        /// -----------------------------------------------------------------------------
         public string BillingFrequency { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the length of the billing period.
         /// </summary>
         /// <value>An integer representing the length of the billing period.</value>
-        /// -----------------------------------------------------------------------------
         public int BillingPeriod { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets an sets the Description of the Role.
         /// </summary>
         /// <value>A string representing the description of the role.</value>
-        /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Icon File for the role.
         /// </summary>
         /// <value>A string representing the Icon File for the role.</value>
-        /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the role is public.
         /// </summary>
         /// <value>A boolean (True/False).</value>
-        /// -----------------------------------------------------------------------------
         public bool IsPublic { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Portal Id for the Role.
         /// </summary>
         /// <value>An Integer representing the Id of the Portal.</value>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int PortalID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Role Id.
         /// </summary>
         /// <value>An Integer representing the Id of the Role.</value>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int RoleID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the RoleGroup Id.
         /// </summary>
         /// <value>An Integer representing the Id of the RoleGroup.</value>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int RoleGroupID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Role Name.
         /// </summary>
         /// <value>A string representing the name of the role.</value>
-        /// -----------------------------------------------------------------------------
         public string RoleName { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the RSVP Code for the role.
         /// </summary>
         /// <value>A string representing the RSVP Code for the role.</value>
-        /// -----------------------------------------------------------------------------
         public string RSVPCode { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets whether the role is a security role and can be used in Permission
         /// Grids etc.
         /// </summary>
         /// <value>A SecurityMode enum.</value>
-        /// -----------------------------------------------------------------------------
         public SecurityMode SecurityMode { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the fee for the role.
         /// </summary>
         /// <value>A single number representing the fee for the role.</value>
-        /// -----------------------------------------------------------------------------
         public float ServiceFee { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the status for the role.
         /// </summary>
         /// <value>An enumerated value Pending, Disabled, Approved.</value>
-        /// -----------------------------------------------------------------------------
         public RoleStatus Status { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the trial fee for the role.
         /// </summary>
         /// <value>A single number representing the trial fee for the role.</value>
-        /// -----------------------------------------------------------------------------
         public float TrialFee { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Trial Frequency for the role.
         /// </summary>
@@ -272,43 +234,34 @@ namespace DotNetNuke.Security.Roles
         /// <list>Y - Yearly</list>
         /// </ul>
         /// </value>
-        /// -----------------------------------------------------------------------------
         public string TrialFrequency { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the length of the trial period.
         /// </summary>
         /// <value>An integer representing the length of the trial period.</value>
-        /// -----------------------------------------------------------------------------
         public int TrialPeriod { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the number of users in the role.
         /// </summary>
         /// <value>An integer representing the number of users.</value>
-        /// -----------------------------------------------------------------------------
         public int UserCount { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {
             get { return this.RoleID; }
             set { this.RoleID = value; }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a RoleInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
             this.RoleID = Null.SetNullInteger(dr["RoleId"]);
@@ -455,23 +408,19 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets an XmlSchema for the RoleInfo.
         /// </summary>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Reads a RoleInfo from an XmlReader.
         /// </summary>
         /// <param name="reader">The XmlReader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
             // Set status to approved by default
@@ -618,12 +567,10 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Writes a RoleInfo to an XmlWriter.
         /// </summary>
         /// <param name="writer">The XmlWriter to use.</param>
-        /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elemenst

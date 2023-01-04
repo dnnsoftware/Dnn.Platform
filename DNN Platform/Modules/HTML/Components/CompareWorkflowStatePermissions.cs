@@ -6,11 +6,9 @@ namespace DotNetNuke.Security.Permissions
 {
     using System.Collections;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : CompareWorkflowStatePermissions
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   CompareWorkflowStatePermissions provides the a custom IComparer implementation for
     ///   WorkflowStatePermissionInfo objects.

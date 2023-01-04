@@ -10,15 +10,12 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PortalPermissionInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// PortalPermissionInfo provides the Entity Layer for Portal Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("permission")]
     public class PortalPermissionInfo : PermissionInfoBase, IHydratable
@@ -28,25 +25,21 @@ namespace DotNetNuke.Security.Permissions
         // local property declarations
         private int portalPermissionID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalPermissionInfo"/> class.
         /// Constructs a new PortalPermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public PortalPermissionInfo()
         {
             this.portalPermissionID = Null.NullInteger;
             this.portalID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalPermissionInfo"/> class.
         /// Constructs a new PortalPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public PortalPermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -57,12 +50,10 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Portal Permission ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("portalpermissionid")]
         public int PortalPermissionID
         {
@@ -77,12 +68,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Portal ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlElement("portalid")]
         public int PortalID
         {
@@ -97,12 +86,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
         {
@@ -117,12 +104,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a PortalPermissionInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class properties

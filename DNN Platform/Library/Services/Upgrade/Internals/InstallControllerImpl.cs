@@ -20,12 +20,9 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Controller class for Installer.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
         /// <inheritdoc/>
@@ -574,8 +571,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
         /// <summary>
         /// Tests the Database Connection using the database connection config.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <returns></returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {

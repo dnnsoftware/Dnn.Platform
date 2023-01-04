@@ -81,11 +81,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             JavaScript.RequestRegistration(CommonJs.Knockout);
         }
 
-        /// <summary>
-        ///   Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

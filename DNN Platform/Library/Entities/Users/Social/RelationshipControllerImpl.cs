@@ -314,7 +314,6 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initiate an UserRelationship Request.
         /// </summary>
@@ -329,7 +328,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// </returns>
         /// <exception cref="UserRelationshipBlockedException">Target user has Blocked any relationship request from Initiating user.</exception>
         /// <exception cref="InvalidRelationshipTypeException">Relationship type does not exist.</exception>
-        /// -----------------------------------------------------------------------------
         public UserRelationship InitiateUserRelationship(UserInfo initiatingUser, UserInfo targetUser, Relationship relationship)
         {
             Requires.NotNull("user1", initiatingUser);
@@ -410,7 +408,6 @@ namespace DotNetNuke.Entities.Users.Social
             return userRelationship;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Accept an existing UserRelationship Request.
         /// </summary>
@@ -418,13 +415,11 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>
         /// Method updates the status of the UserRelationship to Accepted.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void AcceptUserRelationship(int userRelationshipId)
         {
             this.ManageUserRelationshipStatus(userRelationshipId, RelationshipStatus.Accepted);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Remove an existing UserRelationship Request.
         /// </summary>
@@ -432,7 +427,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>
         /// UserRelationship record is physically removed.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public void RemoveUserRelationship(int userRelationshipId)
         {
             UserRelationship userRelationship = this.VerifyUserRelationshipExist(userRelationshipId);
@@ -442,7 +436,6 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFollowerRelationship - Get the UserRelationship between Current User and the Target Users in Follower Relationship.
         /// </summary>
@@ -451,13 +444,11 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>UserRelationship object is returned if a Follower Relationship exists between the two Users.
         /// The relation status can be Any (Initiated / Accepted / Blocked). Follower Relationship can be initited by either of the Users.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public UserRelationship GetFollowerRelationship(UserInfo targetUser)
         {
             return this.GetFollowerRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFollowerRelationship - Get the UserRelationship between InitiatingUser User and the Target Users in Follower Relationship.
         /// </summary>
@@ -467,7 +458,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>UserRelationship object is returned if a Follower Relationship exists between the two Users.
         /// The relation status can be Any (Initiated / Accepted / Blocked). Follower Relationship can be initited by either of the Users.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public UserRelationship GetFollowerRelationship(UserInfo initiatingUser, UserInfo targetUser)
         {
             Requires.NotNull("user1", initiatingUser);
@@ -479,7 +469,6 @@ namespace DotNetNuke.Entities.Users.Social
                 this.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFollowingRelationship - Get the UserRelationship between Current User and the Target Users in Following Relationship.
         /// </summary>
@@ -488,13 +477,11 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>UserRelationship object is returned if a Following Relationship exists between the two Users.
         /// The relation status can be Any (Initiated / Accepted / Blocked).
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public UserRelationship GetFollowingRelationship(UserInfo targetUser)
         {
             return this.GetFollowingRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFollowingRelationship - Get the UserRelationship between InitiatingUser User and the Target Users in Following Relationship.
         /// </summary>
@@ -504,7 +491,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>UserRelationship object is returned if a Following Relationship exists between the two Users.
         /// The relation status can be Any (Initiated / Accepted / Blocked).
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public UserRelationship GetFollowingRelationship(UserInfo initiatingUser, UserInfo targetUser)
         {
             Requires.NotNull("user1", initiatingUser);
@@ -516,7 +502,6 @@ namespace DotNetNuke.Entities.Users.Social
                 this.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFriendRelationship - Get the UserRelationship between Current User and the Target Users in Friend Relationship.
         /// </summary>
@@ -525,13 +510,11 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>UserRelationship object is returned if a Friend Relationship exists between the two Users.
         /// The relation status can be Any (Initiated / Accepted / Blocked). Friend Relationship can be initited by either of the Users.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public UserRelationship GetFriendRelationship(UserInfo targetUser)
         {
             return this.GetFriendRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFriendRelationship - Get the UserRelationship between InitiatingUser User and the Target Users in Friend Relationship.
         /// </summary>
@@ -541,7 +524,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// <remarks>UserRelationship object is returned if a Friend Relationship exists between the two Users.
         /// The relation status can be Any (Initiated / Accepted / Blocked). Friend Relationship can be initited by either of the Users.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public UserRelationship GetFriendRelationship(UserInfo initiatingUser, UserInfo targetUser)
         {
             Requires.NotNull("user1", initiatingUser);

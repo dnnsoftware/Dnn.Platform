@@ -5,15 +5,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging.Views
     /// Class:      MessageBoxView
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MessageBoxView contains the View of Inbox, Sent or Archived messages.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class MessageBoxView
     {
         /// <summary>

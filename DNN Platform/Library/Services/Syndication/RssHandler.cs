@@ -23,7 +23,6 @@ namespace DotNetNuke.Services.Syndication
         /// </summary>
         /// <param name="channelName"></param>
         /// <param name="userName"></param>
-        /// <remarks></remarks>
         protected override void PopulateChannel(string channelName, string userName)
         {
             ModuleInfo objModule;
@@ -94,7 +93,6 @@ namespace DotNetNuke.Services.Syndication
         /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid".
         /// </summary>
         /// <param name="ea">Event Args.</param>
-        /// <remarks></remarks>
         protected override void OnPreRender(EventArgs ea)
         {
             base.OnPreRender(ea);
@@ -109,7 +107,6 @@ namespace DotNetNuke.Services.Syndication
         /// </summary>
         /// <param name="searchResult"></param>
         /// <returns></returns>
-        /// <remarks></remarks>
         private GenericRssElement GetRssItem(SearchResult searchResult)
         {
             var item = new GenericRssElement();

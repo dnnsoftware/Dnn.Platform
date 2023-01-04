@@ -6,17 +6,12 @@ namespace DotNetNuke.Modules.Html
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextLogInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Defines an instance of an HtmlTextLog object.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class HtmlTextLogInfo
     {
         // local property declarations

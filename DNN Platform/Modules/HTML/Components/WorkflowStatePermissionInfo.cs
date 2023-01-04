@@ -10,16 +10,13 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : DesktopModulePermissionInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
     ///   Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class WorkflowStatePermissionInfo : PermissionInfoBase, IHydratable
     {
@@ -27,12 +24,10 @@ namespace DotNetNuke.Security.Permissions
         private int stateID;
         private int workflowStatePermissionID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
         ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo()
         {
             this.workflowStatePermissionID = Null.NullInteger;
@@ -41,13 +36,11 @@ namespace DotNetNuke.Security.Permissions
 
         // New
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
         ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
         /// <param name = "permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -58,12 +51,10 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets or sets and sets the WorkflowState Permission ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int WorkflowStatePermissionID
         {
             get
@@ -77,12 +68,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets or sets and sets the State ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int StateID
         {
             get
@@ -96,12 +85,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int KeyID
         {
             get
@@ -115,7 +102,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.
         /// </summary>
@@ -128,7 +114,6 @@ namespace DotNetNuke.Security.Permissions
         ///   WorkflowStatePermissionCollection.Contains will use this method to check if a given permission
         ///   is already included in the collection.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -173,12 +158,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Fills a WorkflowStatePermissionInfo from a Data Reader.
         /// </summary>
         /// <param name = "dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class proeprties

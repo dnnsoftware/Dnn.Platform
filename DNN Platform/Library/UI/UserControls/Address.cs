@@ -20,8 +20,6 @@ namespace DotNetNuke.UI.UserControls
     /// <summary>
     /// The Address UserControl is used to manage User Addresses.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public abstract class Address : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
@@ -443,8 +441,6 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -708,8 +704,6 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>
         /// Localize correctly sets up the control for US/Canada/Other Countries.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void Localize()
         {
             var countryCode = this.cboCountry.SelectedItem.Value;
@@ -777,8 +771,6 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>
         /// ShowRequiredFields sets up displaying which fields are required.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void ShowRequiredFields()
         {
             var reqStreet = PortalController.GetPortalSettingAsBoolean("addressstreet", this.PortalSettings.PortalId, true);
@@ -906,8 +898,6 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>
         /// UpdateRequiredFields updates which fields are required.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void UpdateRequiredFields()
         {
             if (this.chkCountry.Checked == false)

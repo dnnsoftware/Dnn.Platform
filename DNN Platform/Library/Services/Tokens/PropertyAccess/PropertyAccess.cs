@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Tokens
     /// <summary>
     /// Property Access to Objects using Relection.
     /// </summary>
-    /// <remarks></remarks>
     public class PropertyAccess : IPropertyAccess
     {
         private readonly object obj;
@@ -52,7 +51,6 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="value"></param>
         /// <param name="formatProvider"></param>
         /// <returns></returns>
-        /// <remarks></remarks>
         public static string Boolean2LocalizedYesNo(bool value, CultureInfo formatProvider)
         {
             string strValue = Convert.ToString(value ? "Yes" : "No");
@@ -65,7 +63,6 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="value">string to be formatted.</param>
         /// <param name="format">format specification.</param>
         /// <returns>formatted string.</returns>
-        /// <remarks></remarks>
         public static string FormatString(string value, string format)
         {
             if (format.Trim() == string.Empty)
@@ -91,7 +88,6 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="formatProvider">specify formatting.</param>
         /// <param name="propertyNotFound">out: specifies, whether property was found.</param>
         /// <returns>Localized Property.</returns>
-        /// <remarks></remarks>
         public static string GetObjectProperty(object objObject, string strPropertyName, string strFormat, CultureInfo formatProvider, ref bool propertyNotFound)
         {
             PropertyInfo objProperty = null;

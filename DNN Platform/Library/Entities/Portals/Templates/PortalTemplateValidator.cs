@@ -6,7 +6,6 @@ namespace DotNetNuke.Entities.Portals
 {
     using DotNetNuke.Common;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PortalTemplateValidator Class is used to validate the Portal Template.
     /// </summary>

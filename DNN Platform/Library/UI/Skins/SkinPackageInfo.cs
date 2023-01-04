@@ -13,17 +13,12 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinPackageInfo
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///     Handles the Business Object for Skins.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable
     {

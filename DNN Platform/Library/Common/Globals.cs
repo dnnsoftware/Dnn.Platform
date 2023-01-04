@@ -1480,7 +1480,6 @@ namespace DotNetNuke.Common
             HttpContext.Current.Items["ApplicationName"] = GetApplicationName(portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Sets the ApplicationName for the MemberRole API.
         /// </summary>
@@ -1488,7 +1487,6 @@ namespace DotNetNuke.Common
         /// This overload takes a the PortalId.
         /// </remarks>
         /// <param name="applicationName">The Application Name to set.</param>
-        /// -----------------------------------------------------------------------------
         public static void SetApplicationName(string applicationName)
         {
             HttpContext.Current.Items["ApplicationName"] = applicationName;

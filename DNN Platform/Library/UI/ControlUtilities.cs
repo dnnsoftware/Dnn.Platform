@@ -77,7 +77,6 @@ namespace DotNetNuke.UI
             return null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadControl loads a control and returns a reference to the control.
         /// </summary>
@@ -86,7 +85,6 @@ namespace DotNetNuke.UI
         /// <param name="controlSrc">The source for the control.  This can either be a User Control (.ascx) or a compiled
         /// control.</param>
         /// <returns>A Control of type T.</returns>
-        /// -----------------------------------------------------------------------------
         public static T LoadControl<T>(TemplateControl containerControl, string controlSrc)
             where T : Control
         {

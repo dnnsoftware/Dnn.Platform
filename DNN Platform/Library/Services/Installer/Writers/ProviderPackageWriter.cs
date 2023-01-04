@@ -9,13 +9,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProviderPackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ProviderPackageWriter : PackageWriterBase
     {
         /// <summary>

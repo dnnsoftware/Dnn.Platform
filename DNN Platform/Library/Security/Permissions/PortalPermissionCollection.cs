@@ -11,16 +11,13 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PortalPermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// PortalPermissionCollection provides the a custom collection for PortalPermissionInfo
     /// objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [XmlRoot("portalpermissions")]
     public class PortalPermissionCollection : CollectionBase

@@ -11,19 +11,14 @@ namespace DotNetNuke.Services.Installer
 
     using ICSharpCode.SharpZipLib.Zip;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallFile class represents a single file in an Installer Package.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class InstallFile
     {
         private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance from a ZipInputStream and a ZipEntry.
@@ -32,7 +27,6 @@ namespace DotNetNuke.Services.Installer
         /// set up the properties of the InstallFile class.</remarks>
         /// <param name="entry">The ZipEntry.</param>
         /// <param name="info">An INstallerInfo instance.</param>
-        /// -----------------------------------------------------------------------------
         public InstallFile(ZipArchiveEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -40,27 +34,23 @@ namespace DotNetNuke.Services.Installer
             this.ReadZip(entry);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
-        /// -----------------------------------------------------------------------------
         public InstallFile(string fileName)
         {
             this.Encoding = TextEncoding.UTF8;
             this.ParseFileName(fileName);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
         /// <param name="info">An INstallerInfo instance.</param>
-        /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -68,7 +58,6 @@ namespace DotNetNuke.Services.Installer
             this.InstallerInfo = info;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
@@ -76,7 +65,6 @@ namespace DotNetNuke.Services.Installer
         /// <param name="fileName">The fileName of the File.</param>
         /// <param name="sourceFileName">Source file name.</param>
         /// <param name="info">An INstallerInfo instance.</param>
-        /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -85,14 +73,12 @@ namespace DotNetNuke.Services.Installer
             this.InstallerInfo = info;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The file name of the File.</param>
         /// <param name="filePath">The file path of the file.</param>
-        /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string filePath)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -108,12 +94,10 @@ namespace DotNetNuke.Services.Installer
             this.ReadZip(zip, entry);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the location of the backup file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string BackupFileName
         {
             get
@@ -122,12 +106,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the location of the backup folder.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public virtual string BackupPath
         {
             get
@@ -136,12 +118,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the File Extension of the file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string Extension
         {
             get
@@ -156,12 +136,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Full Name of the file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string FullName
         {
             get
@@ -170,12 +148,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the location of the temporary file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string TempFileName
         {
             get
@@ -190,82 +166,64 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Action for this file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string Action { get; set; }
 
         public TextEncoding Encoding { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the associated InstallerInfo.
         /// </summary>
         /// <value>An InstallerInfo object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public InstallerInfo InstallerInfo { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Name of the file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string Name { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Path of the file.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string Path { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the source file name.
         /// </summary>
         /// <value>A string.</value>
-        /// -----------------------------------------------------------------------------
         public string SourceFileName { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Type of the file.
         /// </summary>
         /// <value>An InstallFileType Enumeration.</value>
-        /// -----------------------------------------------------------------------------
         public InstallFileType Type { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Version of the file.
         /// </summary>
         /// <value>A System.Version.</value>
-        /// -----------------------------------------------------------------------------
         public Version Version { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The SetVersion method sets the version of the file.
         /// </summary>
         /// <param name="version">The version of the file.</param>
-        /// -----------------------------------------------------------------------------
         public void SetVersion(Version version)
         {
             this.Version = version;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ParseFileName parses the ZipEntry metadata.
         /// </summary>
         /// <param name="fileName">A String representing the file name.</param>
-        /// -----------------------------------------------------------------------------
         private void ParseFileName(string fileName)
         {
             int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
@@ -341,12 +299,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadZip method reads the zip stream and parses the ZipEntry metadata.
         /// </summary>
         /// <param name="entry">A ZipEntry containing the file metadata.</param>
-        /// -----------------------------------------------------------------------------
         private void ReadZip(ZipArchiveEntry entry)
         {
             this.ParseFileName(entry.FullName);

@@ -254,12 +254,10 @@ namespace DotNetNuke.Common.Utilities
             return key?.DecryptionKey.ToString() ?? string.Empty;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the fcnMode from webconfig httpRuntime.
         /// </summary>
         /// <returns>decryption key.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetFcnMode()
         {
             var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
@@ -267,12 +265,10 @@ namespace DotNetNuke.Common.Utilities
             return ((ValueType)mode ?? FcnMode.NotSet).ToString();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the maximum file size allowed to be uploaded to the application in bytes.
         /// </summary>
         /// <returns>Size in bytes.</returns>
-        /// -----------------------------------------------------------------------------
         public static long GetMaxUploadSize()
         {
             var configNav = Load();
@@ -303,12 +299,10 @@ namespace DotNetNuke.Common.Utilities
             return maxRequestLength;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the maximum file size allowed to be uploaded based on the request filter limit.
         /// </summary>
         /// <returns>Size in megabytes.</returns>
-        /// -----------------------------------------------------------------------------
         public static long GetRequestFilterSize()
         {
             var configNav = Load();

@@ -109,7 +109,6 @@ namespace DotNetNuke.Services.Mail
             return MailProvider.Instance().SendMail(mailInfo);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// <summary>Send an email notification</summary>
         /// </summary>
@@ -117,14 +116,11 @@ namespace DotNetNuke.Services.Mail
         /// <param name="msgType">The type of message being sent.</param>
         /// <param name="settings">Portal Settings.</param>
         /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public static string SendMail(UserInfo user, MessageType msgType, PortalSettings settings)
         {
             return SendMail(user.PortalID, user.UserID, msgType, settings);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// <summary>Send an email notification</summary>
         /// </summary>
@@ -133,8 +129,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="msgType">The type of message being sent.</param>
         /// <param name="settings">Portal Settings.</param>
         /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public static string SendMail(int portalId, int userId, MessageType msgType, PortalSettings settings)
         {
             // Send Notification to User
@@ -227,7 +221,6 @@ namespace DotNetNuke.Services.Mail
             return Null.NullString;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// <summary>Send a simple email.</summary>
         /// </summary>
@@ -243,8 +236,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="smtpUsername"></param>
         /// <param name="smtpPassword"></param>
         /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public static string SendMail(string mailFrom, string mailTo, string bcc, string subject, string body, string attachment, string bodyType, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword)
         {
             MailFormat bodyFormat = MailFormat.Text;
@@ -264,7 +255,6 @@ namespace DotNetNuke.Services.Mail
             return SendMail(mailFrom, mailTo, string.Empty, bcc, MailPriority.Normal, subject, bodyFormat, Encoding.UTF8, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>Send a simple email.</summary>
         /// <param name="mailFrom"></param>
         /// <param name="mailTo"></param>
@@ -281,8 +271,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="smtpUsername"></param>
         /// <param name="smtpPassword"></param>
         /// <returns></returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, string attachment, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword)
         {
             return SendMail(mailFrom, mailTo, cc, bcc, priority, subject, bodyFormat, bodyEncoding, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword, Host.EnableSMTPSSL);

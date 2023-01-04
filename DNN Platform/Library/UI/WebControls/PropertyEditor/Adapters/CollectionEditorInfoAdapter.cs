@@ -12,17 +12,12 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      CollectionEditorInfoFactory
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CollectionEditorInfoAdapter control provides an Adapter for Collection Onjects.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class CollectionEditorInfoAdapter : IEditorInfoAdapter
     {
         private readonly object dataSource;
@@ -127,11 +122,9 @@ namespace DotNetNuke.UI.WebControls
             return dirty;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetEditorInfo builds an EditorInfo object for a propoerty.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private EditorInfo GetEditorInfo()
         {
             string categoryDataField = Convert.ToString(this.fieldNames["Category"]);

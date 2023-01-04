@@ -15,13 +15,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class AuthenticationEditor : PackageEditorBase
     {
         private readonly INavigationManager navigationManager;
@@ -134,11 +130,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This routine Binds the Authentication System.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void BindAuthentication()
         {
             if (this.AuthSystem != null)

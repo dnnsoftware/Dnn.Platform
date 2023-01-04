@@ -27,7 +27,6 @@ namespace DotNetNuke.UI.WebControls
         /// Returns nodes image.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string ImageUrl
         {
             get
@@ -50,7 +49,6 @@ namespace DotNetNuke.UI.WebControls
         /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual bool HasChildren
         {
             get
@@ -66,7 +64,6 @@ namespace DotNetNuke.UI.WebControls
         /// The hierarchical path of the node.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string Path
         {
             get
@@ -82,7 +79,6 @@ namespace DotNetNuke.UI.WebControls
         /// The hierarchical data node that the IHierarchyData object represents.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual object Item
         {
             get
@@ -98,7 +94,6 @@ namespace DotNetNuke.UI.WebControls
         /// The name of the type of Object contained in the Item property.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string Type
         {
             get
@@ -114,7 +109,6 @@ namespace DotNetNuke.UI.WebControls
         /// Returns node name.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string Name
         {
             get
@@ -130,7 +124,6 @@ namespace DotNetNuke.UI.WebControls
         /// Returns value path of node.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string Value
         {
             get
@@ -146,7 +139,6 @@ namespace DotNetNuke.UI.WebControls
         /// Returns node navigation url.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string NavigateUrl
         {
             get
@@ -162,7 +154,6 @@ namespace DotNetNuke.UI.WebControls
         /// Returns Node description.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual string Description
         {
             get
@@ -175,7 +166,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets an enumeration object that represents all the child nodes of the current hierarchical node.
         /// </summary>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual IHierarchicalEnumerable GetChildren()
         {
             var objNodes = new NavDataPageHierarchicalEnumerable();
@@ -194,7 +184,6 @@ namespace DotNetNuke.UI.WebControls
         /// Gets an enumeration object that represents the parent node of the current hierarchical node.
         /// </summary>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual IHierarchyData GetParent()
         {
             if (this.objNode != null)
@@ -219,7 +208,6 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="value">Value to evaluate for null.</param>
         /// <param name="def">If null, return this default.</param>
         /// <returns></returns>
-        /// <remarks></remarks>
         private string GetSafeValue(string value, string def)
         {
             if (value != null)

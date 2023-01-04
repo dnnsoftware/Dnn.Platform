@@ -14,7 +14,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <param name="enumeratedItem"></param>
         /// <returns></returns>
-        /// <remarks></remarks>
         public virtual IHierarchyData GetHierarchyData(object enumeratedItem)
         {
             return (IHierarchyData)enumeratedItem;

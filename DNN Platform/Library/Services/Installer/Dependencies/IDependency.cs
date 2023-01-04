@@ -5,13 +5,9 @@ namespace DotNetNuke.Services.Installer.Dependencies
 {
     using System.Xml.XPath;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The IDependency Interface defines the contract for a Package Dependency.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public interface IDependency
     {
         string ErrorMessage { get; }

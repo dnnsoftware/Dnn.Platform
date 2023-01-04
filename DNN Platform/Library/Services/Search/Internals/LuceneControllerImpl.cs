@@ -27,11 +27,9 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Impl Controller class for Lucene.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     internal class LuceneControllerImpl : ILuceneController, IDisposable
     {
         internal const int DefaultRereadTimeSpan = 30; // in seconds

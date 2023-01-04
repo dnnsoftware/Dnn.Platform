@@ -11,23 +11,17 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerFactory is a factory class that is used to instantiate the
     /// appropriate Component Installer.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetInstaller method instantiates the relevant Component Installer.
         /// </summary>
         /// <param name="installerType">The type of Installer.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(string installerType)
         {
             ComponentInstallerBase installer = null;
@@ -105,14 +99,12 @@ namespace DotNetNuke.Services.Installer.Installers
             return installer;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetInstaller method instantiates the relevant Component Installer.
         /// </summary>
         /// <param name="manifestNav">The manifest (XPathNavigator) for the component.</param>
         /// <param name="package">The associated PackageInfo instance.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
         {
             string installerType = Util.ReadAttribute(manifestNav, "type");

@@ -45,8 +45,6 @@ namespace DotNetNuke.Entities.Modules
     /// The UserModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal that manage Users.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class UserModuleBase : PortalModuleBase
     {
         private UserInfo user;
@@ -131,7 +129,6 @@ namespace DotNetNuke.Entities.Modules
         /// gets whether this is the current user or admin.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         protected bool IsUserOrAdmin
         {
             get
@@ -244,8 +241,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets a Setting for the Module.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <returns></returns>
         public static object GetSetting(int portalId, string settingKey)
         {

@@ -11,11 +11,9 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchConfig class provides a configuration class for Search.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     [Serializable]
     public class SearchConfig
@@ -47,12 +45,10 @@ namespace DotNetNuke.Services.Search
             this.searchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to include Common Words in the Search Index.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon
         {
             get
@@ -61,12 +57,10 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to include Numbers in the Search Index.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric
         {
             get
@@ -75,12 +69,10 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the maximum Search Word length to index.
         /// </summary>
         /// <remarks>Defaults to 25.</remarks>
-        /// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength
         {
             get
@@ -89,12 +81,10 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the maximum Search Word length to index.
         /// </summary>
         /// <remarks>Defaults to 3.</remarks>
-        /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength
         {
             get

@@ -169,7 +169,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <summary>How long a user needs to wait before sending the next message.</summary>
         /// <returns>Time in seconds. Returns zero if user is Host, Admin or has never sent a message.</returns>
         /// <param name="sender">Sender's UserInfo.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.ArgumentNullException">When <paramref name="sender"/> is <see langword="null"/>.</exception>
         public virtual int WaitTimeForNextMessage(UserInfo sender)
         {
             Requires.NotNull("sender", sender);

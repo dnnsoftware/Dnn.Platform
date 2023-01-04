@@ -29,7 +29,6 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ManageUsers UserModuleBase is used to manage Users.
     /// </summary>
@@ -99,7 +98,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the current Page No.
         /// </summary>
@@ -122,7 +120,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to display the Manage Services tab.
         /// </summary>
@@ -135,7 +132,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Redirect URL (after successful registration).
         /// </summary>
@@ -180,7 +176,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Return Url for the page.
         /// </summary>
@@ -192,7 +187,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Filter to use.
         /// </summary>
@@ -238,12 +232,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Init runs when the control is initialised.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -313,12 +304,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -352,7 +340,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.Response.Redirect(this.navigationManager.NavigateURL(), true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdRegister_Click runs when the Register button is clicked.
         /// </summary>
@@ -379,12 +366,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -641,12 +625,9 @@ namespace DotNetNuke.Modules.Admin.Users
             return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "MANAGEUSER");
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ModuleAction_Click handles all ModuleAction events raised from the skin.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="sender"> The object that triggers the event.</param>
         /// <param name="e">An ActionEventArgs object.</param>
         private void ModuleAction_Click(object sender, ActionEventArgs e)
@@ -670,12 +651,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MembershipAuthorized runs when the User has been unlocked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void MembershipAuthorized(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -702,13 +680,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MembershipPromoteToSuperuser runs when the User has been promoted to a superuser.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void MembershipPromoteToSuperuser(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -728,13 +702,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MembershipDemoteFromSuperuser runs when the User has been demoted to a regular user.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void MembershipDemoteFromSuperuser(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -754,12 +724,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MembershipUnAuthorized runs when the User has been unlocked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void MembershipUnAuthorized(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -779,12 +746,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MembershipUnLocked runs when the User has been unlocked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void MembershipUnLocked(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -803,12 +767,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsAdmin == false)
@@ -827,12 +788,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// PasswordUpdated runs when the Password has been updated or reset.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsAdmin == false)
@@ -873,12 +831,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProfileUpdateCompleted runs when the Profile has been updated.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
@@ -906,12 +861,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UserCreateCompleted runs when a new user has been Created.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             try
@@ -932,12 +884,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UserDeleted runs when the User has been deleted.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void UserDeleted(object sender, UserUserControlBase.UserDeletedEventArgs e)
         {
             try
@@ -950,12 +899,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UserUpdateCompleted runs when a user has been updated.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void UserRestored(object sender, UserUserControlBase.UserRestoredEventArgs e)
         {
             try
@@ -990,12 +936,9 @@ namespace DotNetNuke.Modules.Admin.Users
             HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UserUpdateError runs when there is an error updating the user.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void UserUpdateError(object sender, UserUserControlBase.UserUpdateErrorArgs e)
         {
             this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);

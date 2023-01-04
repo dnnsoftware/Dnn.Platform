@@ -12,11 +12,9 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Data;
     using DotNetNuke.Framework.Providers;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ScriptInstaller installs Script Components to a DotNetNuke site.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class ScriptInstaller : FileInstaller
     {
         private readonly SortedList<Version, InstallFile> installScripts = new SortedList<Version, InstallFile>();
@@ -25,12 +23,10 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly List<InstallFile> postUpgradeScripts = new List<InstallFile>();
         private InstallFile installScript;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
@@ -39,12 +35,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the base Install Script (if present).
         /// </summary>
         /// <value>An InstallFile.</value>
-        /// -----------------------------------------------------------------------------
         protected InstallFile InstallScript
         {
             get
@@ -53,12 +47,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the collection of versioned Install Scripts.
         /// </summary>
         /// <value>A List(Of InstallFile).</value>
-        /// -----------------------------------------------------------------------------
         protected SortedList<Version, InstallFile> InstallScripts
         {
             get
@@ -67,12 +59,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the collection of UnInstall Scripts.
         /// </summary>
         /// <value>A List(Of InstallFile).</value>
-        /// -----------------------------------------------------------------------------
         protected SortedList<Version, InstallFile> UnInstallScripts
         {
             get
@@ -81,12 +71,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Collection Node ("scripts").
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -95,12 +83,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Item Node ("script").
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -117,13 +103,11 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of Pre-Upgrade Scripts (if present) - these scripts will always run before
         /// any upgrade scripts but not upon initial installation.
         /// </summary>
         /// <value>A list of <see cref="InstallFile"/> instances.</value>
-        /// -----------------------------------------------------------------------------
         protected IList<InstallFile> PreUpgradeScripts
         {
             get
@@ -135,13 +119,11 @@ namespace DotNetNuke.Services.Installer.Installers
         [Obsolete("This is now the first of the PostUpgrade scripts. Will be removed in DNN 11.0.")]
         protected InstallFile UpgradeScript => this.PostUpgradeScripts[0];
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of Post-Upgrade Scripts (if present) - these scripts will always run after
         /// and versioned upgrade scripts and also after initial install.
         /// </summary>
         /// <value>A list of <see cref="InstallFile"/> instances.</value>
-        /// -----------------------------------------------------------------------------
         protected IList<InstallFile> PostUpgradeScripts
         {
             get
@@ -150,22 +132,18 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Files this is not neccessary.</remarks>
-        /// -----------------------------------------------------------------------------
         public override void Commit()
         {
             base.Commit();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Install method installs the script component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Install()
         {
             this.Log.AddInfo(Util.SQL_Begin);
@@ -250,22 +228,18 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(Util.SQL_End);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the script component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             base.Rollback();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UnInstall method uninstalls the script component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
             this.Log.AddInfo(Util.SQL_BeginUnInstall);
@@ -276,25 +250,21 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(Util.SQL_EndUnInstall);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
         /// <param name="type">The type of file being processed.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {
             return type == InstallFileType.Script;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
         /// <param name="file">The file represented by the node.</param>
         /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
             string type = nav.GetAttribute("type", string.Empty);

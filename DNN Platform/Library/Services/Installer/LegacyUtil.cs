@@ -20,14 +20,10 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LegacyUtil class is a Utility class that provides helper methods to transfer
     /// legacy packages to Cambrian's Universal Installer based system.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class LegacyUtil
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));

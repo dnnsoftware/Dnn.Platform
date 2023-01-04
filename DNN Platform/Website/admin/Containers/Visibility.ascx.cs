@@ -17,19 +17,14 @@ namespace DotNetNuke.UI.Containers
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : Containers.Visibility
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Handles the events for collapsing and expanding modules,
     /// Showing or hiding admin controls when preview is checked
     /// if personalization of the module container and title is allowed for that module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Visibility : SkinObjectBase
     {
         private int animationFrames = 5;

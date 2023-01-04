@@ -13,15 +13,12 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PortalPermissionController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// PortalPermissionController provides the Business Layer for Portal Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class PortalPermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
@@ -64,12 +61,10 @@ namespace DotNetNuke.Security.Permissions
             return Provider.IsPageAdmin(portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeletePortalPermissionsByUser deletes a user's Portal Permissions in the Database.
         /// </summary>
         /// <param name="user">The user.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeletePortalPermissionsByUser(UserInfo user)
         {
             Provider.DeletePortalPermissionsByUser(user);
@@ -77,19 +72,16 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearPortalPermissionsCache(user.PortalID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetPortalPermissions gets a PortalPermissionCollection.
         /// </summary>
         /// <param name="portalId">The ID of the portal.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static PortalPermissionCollection GetPortalPermissions(int portalId)
         {
             return Provider.GetPortalPermissions(portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// HasPortalPermission checks whether the current user has a specific Portal Permission.
         /// </summary>
@@ -97,13 +89,11 @@ namespace DotNetNuke.Security.Permissions
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="permissionKey">The Permission to check.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static bool HasPortalPermission(string permissionKey)
         {
             return HasPortalPermission(PortalController.Instance.GetPortal(PortalController.Instance.GetCurrentSettings().PortalId).PortalPermissions, permissionKey);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// HasPortalPermission checks whether the current user has a specific Portal Permission.
         /// </summary>
@@ -112,18 +102,15 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="portalPermissions">The Permissions for the Portal.</param>
         /// <param name="permissionKey">The Permission(s) to check.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static bool HasPortalPermission(PortalPermissionCollection portalPermissions, string permissionKey)
         {
             return Provider.HasPortalPermission(portalPermissions, permissionKey);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// SavePortalPermissions saves a Portal's permissions.
         /// </summary>
         /// <param name="portal">The Portal to update.</param>
-        /// -----------------------------------------------------------------------------
         public static void SavePortalPermissions(PortalInfo portal)
         {
             Provider.SavePortalPermissions(portal);

@@ -9,17 +9,12 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextUserInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Defines an instance of an HtmlTextUser object.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class HtmlTextUserInfo
     {
         // local property declarations

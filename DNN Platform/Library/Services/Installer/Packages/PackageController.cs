@@ -24,11 +24,9 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PackageController class provides the business class for the packages.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();

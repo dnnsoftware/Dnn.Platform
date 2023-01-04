@@ -5,11 +5,9 @@ namespace DotNetNuke.Services.FileSystem
 {
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class FolderTypeConfig
     {
         /// <summary>

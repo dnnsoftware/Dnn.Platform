@@ -24,12 +24,10 @@ namespace DotNetNuke.Services.SystemDateTime
             return Provider.GetDatabaseTimeUtc();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetCurrentTime get current time from database.
         /// </summary>
         /// <returns>DateTime.</returns>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 9.1.0.  Replaced by DateUtils.GetDatabaseLocalTime, which includes caching. Scheduled removal in v11.0.0.")]
         public static DateTime GetCurrentTime()
         {

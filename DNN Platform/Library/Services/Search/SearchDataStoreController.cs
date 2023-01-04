@@ -11,17 +11,12 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.DataStore
     /// Class:      SearchDataStoreController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchDataStoreController is the Business Controller class for SearchDataStore.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchDataStoreController
     {
@@ -62,16 +57,12 @@ namespace DotNetNuke.Services.Search
             return empty;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetSearchResults gets the search results for a single word.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="portalID">A Id of the Portal.</param>
         /// <param name="word">The word.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchResultsInfoCollection GetSearchResults(int portalID, string word)
         {
@@ -86,15 +77,11 @@ namespace DotNetNuke.Services.Search
             return empty;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetSearchSettings gets the search settings for a single module.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="moduleId">The Id of the Module.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static Dictionary<string, string> GetSearchSettings(int moduleId)
         {
             var dicSearchSettings = new Dictionary<string, string>();

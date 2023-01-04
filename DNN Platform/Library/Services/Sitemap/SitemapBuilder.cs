@@ -36,8 +36,6 @@ namespace DotNetNuke.Services.Sitemap
         ///   Creates an instance of the sitemap builder class.
         /// </summary>
         /// <param name = "ps">Current PortalSettings for the portal being processed.</param>
-        /// <remarks>
-        /// </remarks>
         public SitemapBuilder(PortalSettings ps)
         {
             this.portalSettings = ps;
@@ -89,8 +87,6 @@ namespace DotNetNuke.Services.Sitemap
         /// <summary>
         ///   Builds the complete portal sitemap.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public void BuildSiteMap(TextWriter output)
         {
             int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.portalSettings.PortalId, "1"));
@@ -361,8 +357,6 @@ namespace DotNetNuke.Services.Sitemap
         ///   Adds a new url to the sitemap.
         /// </summary>
         /// <param name = "sitemapUrl">The url to be included in the sitemap.</param>
-        /// <remarks>
-        /// </remarks>
         private void AddURL(SitemapUrl sitemapUrl, XmlWriter writer)
         {
             writer.WriteStartElement("url");

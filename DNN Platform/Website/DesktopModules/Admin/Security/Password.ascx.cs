@@ -30,12 +30,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Password UserModuleBase is used to manage Users Passwords.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Password : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
@@ -46,7 +43,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the UserMembership associated with this control.
         /// </summary>
@@ -72,7 +68,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the PasswordUpdated Event.
         /// </summary>
@@ -89,7 +84,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the PasswordQuestionAnswerUpdated Event.
         /// </summary>
@@ -106,7 +100,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls.
         /// </summary>
@@ -542,12 +535,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdUpdate_Click runs when the Update Question and Answer  Button is clicked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void CmdUpdateQA_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -580,14 +570,12 @@ namespace DotNetNuke.Modules.Admin.Users
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The PasswordUpdatedEventArgs class provides a customised EventArgs class for
         /// the PasswordUpdated Event.
         /// </summary>
         public class PasswordUpdatedEventArgs
         {
-            /// -----------------------------------------------------------------------------
             /// <summary>
             /// Initializes a new instance of the <see cref="PasswordUpdatedEventArgs"/> class.
             /// Constructs a new PasswordUpdatedEventArgs.
@@ -598,7 +586,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.UpdateStatus = status;
             }
 
-            /// -----------------------------------------------------------------------------
             /// <summary>
             /// Gets or sets and sets the Update Status.
             /// </summary>

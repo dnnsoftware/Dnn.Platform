@@ -11,16 +11,13 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : ModulePermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
     /// objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModulePermissionCollection : CollectionBase
     {

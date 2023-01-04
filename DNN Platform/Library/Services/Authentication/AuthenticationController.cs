@@ -20,24 +20,20 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationController class provides the Business Layer for the
     /// Authentication Systems.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class AuthenticationController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddAuthentication adds a new Authentication System to the Data Store.
         /// </summary>
         /// <param name="authSystem">The new Authentication System to add.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
@@ -51,7 +47,6 @@ namespace DotNetNuke.Services.Authentication
                 UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddUserAuthentication adds a new UserAuthentication to the User.
         /// </summary>
@@ -59,7 +54,6 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="authenticationType">The authentication type.</param>
         /// <param name="authenticationToken">The authentication token.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
             UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
@@ -104,13 +98,11 @@ namespace DotNetNuke.Services.Authentication
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetAuthenticationService fetches a single Authentication Systems.
         /// </summary>
         /// <param name="authenticationID">The ID of the Authentication System.</param>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationService(int authenticationID)
         {
             AuthenticationInfo authInfo = null;
@@ -132,13 +124,11 @@ namespace DotNetNuke.Services.Authentication
             return authInfo;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetAuthenticationServiceByPackageID fetches a single Authentication System.
         /// </summary>
         /// <param name="packageID">The id of the Package.</param>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationServiceByPackageID(int packageID)
         {
             AuthenticationInfo authInfo = null;
@@ -160,13 +150,11 @@ namespace DotNetNuke.Services.Authentication
             return authInfo;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetAuthenticationServiceByType fetches a single Authentication Systems.
         /// </summary>
         /// <param name="authenticationType">The type of the Authentication System.</param>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationServiceByType(string authenticationType)
         {
             AuthenticationInfo authInfo = null;
@@ -188,13 +176,11 @@ namespace DotNetNuke.Services.Authentication
             return authInfo;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetAuthenticationServices fetches a list of all the Authentication Systems
         /// installed in the system.
         /// </summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         public static List<AuthenticationInfo> GetAuthenticationServices()
         {
             return
@@ -203,12 +189,10 @@ namespace DotNetNuke.Services.Authentication
                     GetAuthenticationServicesCallBack);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetAuthenticationType fetches the authentication method used by the currently logged on user.
         /// </summary>
         /// <returns>An AuthenticationInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         public static AuthenticationInfo GetAuthenticationType()
         {
             AuthenticationInfo objAuthentication = null;
@@ -227,13 +211,11 @@ namespace DotNetNuke.Services.Authentication
             return objAuthentication;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetEnabledAuthenticationServices fetches a list of all the Authentication Systems
         /// installed in the system that have been enabled by the Host user.
         /// </summary>
         /// <returns>A List of AuthenticationInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         public static List<AuthenticationInfo> GetEnabledAuthenticationServices()
         {
             var enabled = new List<AuthenticationInfo>();
@@ -279,14 +261,12 @@ namespace DotNetNuke.Services.Authentication
                 : HostController.Instance.GetBoolean(authentication.AuthenticationType + "_Enabled", false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetLogoffRedirectURL fetches the url to redirect too after logoff.
         /// </summary>
         /// <param name="settings">A PortalSettings object.</param>
         /// <param name="request">The current Request.</param>
         /// <returns>The Url.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
             string redirectURL = string.Empty;
@@ -324,12 +304,10 @@ namespace DotNetNuke.Services.Authentication
             return redirectURL;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// SetAuthenticationType sets the authentication method used by the currently logged on user.
         /// </summary>
         /// <param name="value">The Authentication type.</param>
-        /// -----------------------------------------------------------------------------
         public static void SetAuthenticationType(string value)
         {
             SetAuthenticationType(value, false);
@@ -386,12 +364,10 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpdateAuthentication updates an existing Authentication System in the Data Store.
         /// </summary>
         /// <param name="authSystem">The new Authentication System to update.</param>
-        /// -----------------------------------------------------------------------------
         public static void UpdateAuthentication(AuthenticationInfo authSystem)
         {
             Provider.UpdateAuthentication(

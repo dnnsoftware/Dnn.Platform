@@ -23,7 +23,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <summary>
     /// The Language skinobject allows the visitor to select the language of the page.
     /// </summary>
-    /// <remarks></remarks>
     public partial class Language : SkinObjectBase
     {
         private const string MyFileName = "Language.ascx";

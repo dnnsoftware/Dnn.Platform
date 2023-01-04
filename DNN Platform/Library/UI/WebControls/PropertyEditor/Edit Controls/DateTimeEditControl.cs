@@ -11,18 +11,13 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DateTimeEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DateTimeEditControl control provides a standard UI component for editing
     /// date and time properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
     public class DateTimeEditControl : DateEditControl
     {
@@ -31,14 +26,12 @@ namespace DotNetNuke.UI.WebControls
         private bool is24HourClock;
         private DropDownList minutesField;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets defaultFormat is a string that will be used to format the date in the absence of a
         /// FormatAttribute.
         /// </summary>
         /// <value>A String representing the default format to use to render the date.</value>
         /// <returns>A Format String.</returns>
-        /// -----------------------------------------------------------------------------
         protected override string DefaultFormat
         {
             get

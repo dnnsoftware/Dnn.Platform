@@ -14,8 +14,6 @@ namespace DotNetNuke.Entities.Content
     /// <summary>
     /// ContentTypeController provides the business layer of ContentType.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     /// <example>
     /// <code lang="C#">
     /// IContentTypeController typeController = new ContentTypeController();

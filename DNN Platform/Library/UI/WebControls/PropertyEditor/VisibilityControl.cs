@@ -24,8 +24,6 @@ namespace DotNetNuke.UI.WebControls
     /// The VisibilityControl control provides a base control for defining visibility
     /// options.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [ToolboxData("<{0}:VisibilityControl runat=server></{0}:VisibilityControl>")]
     public class VisibilityControl : WebControl, IPostBackDataHandler, INamingContainer
     {

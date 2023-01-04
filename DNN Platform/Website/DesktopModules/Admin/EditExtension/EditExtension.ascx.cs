@@ -24,12 +24,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditExtension control is used to edit a Extension.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class EditExtension : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
@@ -132,12 +129,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

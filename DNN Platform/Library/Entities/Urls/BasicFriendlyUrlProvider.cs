@@ -78,12 +78,9 @@ namespace DotNetNuke.Entities.Urls
             return this.FriendlyUrl(tab, path, pageName, portalAlias, null);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddPage adds the page to the friendly url.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page name.</param>
         /// <returns>The formatted url.</returns>
@@ -112,12 +109,9 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFriendlyAlias gets the Alias root of the friendly url.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="path">The path to format.</param>
         /// <param name="portalAlias">The portal alias of the site.</param>
         /// <param name="isPagePath">Whether is a relative page path.</param>
@@ -202,12 +196,9 @@ namespace DotNetNuke.Entities.Urls
             return friendlyPath;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFriendlyQueryString gets the Querystring part of the friendly url.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="tab">The tab whose url is being formatted.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The Page name.</param>

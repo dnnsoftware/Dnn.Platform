@@ -13,13 +13,9 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ComponentInstallerBase is a base class for all Component Installers.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public abstract class ComponentInstallerBase
     {
         /// <summary>
@@ -30,12 +26,10 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Completed = Null.NullBoolean;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public virtual string AllowableFiles
         {
             get
@@ -44,12 +38,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the InstallMode.
         /// </summary>
         /// <value>An InstallMode value.</value>
-        /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
             get
@@ -58,12 +50,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Logger.
         /// </summary>
         /// <value>An Logger object.</value>
-        /// -----------------------------------------------------------------------------
         public Logger Log
         {
             get
@@ -72,12 +62,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Dictionary of Files that are included in the Package.
         /// </summary>
         /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> PackageFiles
         {
             get
@@ -86,12 +74,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string PhysicalSitePath
         {
             get
@@ -100,12 +86,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
         /// </summary>
         /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
         public virtual bool SupportsManifestOnlyInstall
         {
             get
@@ -114,38 +98,30 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets the Completed flag.
         /// </summary>
         /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
         public bool Completed { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the associated Package.
         /// </summary>
         /// <value>An PackageInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public PackageInfo Package { get; set; }
 
         public bool Skipped { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Type of the component.
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string Type { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Version of the Component.
         /// </summary>
         /// <value>A System.Version.</value>
-        /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 
         public EventMessage ReadEventMessageNode(XPathNavigator manifestNav)

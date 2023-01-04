@@ -10,12 +10,10 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationInfo class provides the Entity Layer for the
     /// Authentication Systems.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class AuthenticationInfo : BaseEntityInfo, IHydratable
     {
@@ -31,61 +29,45 @@ namespace DotNetNuke.Services.Authentication
             this.AuthenticationID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the ID of the Authentication System.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public int AuthenticationID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the PackageID for the Authentication System.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and Sets a flag that determines whether the Authentication System is enabled.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public bool IsEnabled { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID).
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string AuthenticationType { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the url for the Settings Control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string SettingsControlSrc { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the url for the Login Control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string LoginControlSrc { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the url for the Logoff Control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string LogoffControlSrc { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {
             get
@@ -99,12 +81,10 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a RoleInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
             this.AuthenticationID = Null.SetNullInteger(dr["AuthenticationID"]);

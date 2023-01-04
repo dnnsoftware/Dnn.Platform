@@ -17,15 +17,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// <summary>
     /// The Logoff UserModuleBase is used to log off a registered user.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Logoff : UserModuleBase
     {
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -17,7 +17,6 @@ namespace DotNetNuke.Services.Tokens
     /// <summary>
     /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
     /// </summary>
-    /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
@@ -63,7 +62,6 @@ namespace DotNetNuke.Services.Tokens
         /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
         /// </value>
         /// <returns></returns>
-        /// <remarks></remarks>
         public bool DebugMessages
         {
             get => this.TokenContext.DebugMessages;

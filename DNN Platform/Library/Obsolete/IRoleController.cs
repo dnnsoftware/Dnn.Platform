@@ -12,13 +12,11 @@ namespace DotNetNuke.Security.Roles.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Security.Roles instead. Scheduled removal in v10.0.0.")]
     public interface IRoleController
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Adds a role.
         /// </summary>
         /// <param name="role">The Role to Add.</param>
         /// <returns>The Id of the new role.</returns>
-        /// -----------------------------------------------------------------------------
         int AddRole(RoleInfo role);
 
         /// <summary>
@@ -29,31 +27,25 @@ namespace DotNetNuke.Security.Roles.Internal
         /// <returns>The Id of the new role.</returns>
         int AddRole(RoleInfo role, bool addToExistUsers);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes a role.
         /// </summary>
         /// <param name="role">The Role to delete.</param>
-        /// -----------------------------------------------------------------------------
         void DeleteRole(RoleInfo role);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fetch a single role based on a predicate.
         /// </summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="predicate">The predicate (criteria) required.</param>
         /// <returns>A RoleInfo object.</returns>
-        /// -----------------------------------------------------------------------------
         RoleInfo GetRole(int portalId, Func<RoleInfo, bool> predicate);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Obtains a list of roles from the cache (or for the database if the cache has expired).
         /// </summary>
         /// <param name="portalId">The id of the portal.</param>
         /// <returns>The list of roles.</returns>
-        /// -----------------------------------------------------------------------------
         IList<RoleInfo> GetRoles(int portalId);
 
         /// <summary>
@@ -65,31 +57,25 @@ namespace DotNetNuke.Security.Roles.Internal
         /// <returns></returns>
         IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get the roles based on a predicate.
         /// </summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="predicate">The predicate (criteria) required.</param>
         /// <returns>A List of RoleInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         IList<RoleInfo> GetRoles(int portalId, Func<RoleInfo, bool> predicate);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the settings for a role.
         /// </summary>
         /// <param name="roleId">Id of the role.</param>
         /// <returns>A Dictionary of settings.</returns>
-        /// -----------------------------------------------------------------------------
         IDictionary<string, string> GetRoleSettings(int roleId);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Persists a role to the Data Store.
         /// </summary>
         /// <param name="role">The role to persist.</param>
-        /// -----------------------------------------------------------------------------
         void UpdateRole(RoleInfo role);
 
         /// <summary>
@@ -99,13 +85,11 @@ namespace DotNetNuke.Security.Roles.Internal
         /// <param name="addToExistUsers">Add this role on all exist users if auto assignment is true.</param>
         void UpdateRole(RoleInfo role, bool addToExistUsers);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Update the role settings.
         /// </summary>
         /// <param name="role">The Role.</param>
         /// <param name="clearCache">A flag that indicates whether the cache should be cleared.</param>
-        /// -----------------------------------------------------------------------------
         void UpdateRoleSettings(RoleInfo role, bool clearCache);
 
         /// <summary>

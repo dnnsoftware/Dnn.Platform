@@ -17,17 +17,12 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Internals;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchEngine
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchEngine  manages the Indexing of the Portal content.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     internal class SearchEngine
     {
         /// <summary>
@@ -46,11 +41,9 @@ namespace DotNetNuke.Services.Search
         // the time from where to start indexing items
         public DateTime IndexingStartTime { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Indexes content within the given time farame.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         internal void IndexContent()
         {
             // Index TAB META-DATA
@@ -157,18 +150,14 @@ namespace DotNetNuke.Services.Search
             InternalSearchController.Instance.Commit();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable)
         ///
         /// GetContent gets all the content and passes it to the Indexer.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
         {
@@ -183,19 +172,15 @@ namespace DotNetNuke.Services.Search
             return searchItems;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable)
         ///
         /// GetContent gets the Portal's content and passes it to the Indexer.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
         {
@@ -204,12 +189,10 @@ namespace DotNetNuke.Services.Search
             return searchItems;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Ensures all SearchDocuments have a SearchTypeId.
         /// </summary>
         /// <param name="searchDocs"></param>
-        /// -----------------------------------------------------------------------------
         private static void StoreSearchDocuments(IEnumerable<SearchDocument> searchDocs)
         {
             var defaultSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
@@ -228,12 +211,10 @@ namespace DotNetNuke.Services.Search
             this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets all the Search Documents for the given timeframe.
         /// </summary>
         /// <param name="indexer"></param>
-        /// -----------------------------------------------------------------------------
         private int GetAndStoreSearchDocuments(IndexingProviderBase indexer)
         {
             IList<SearchDocument> searchDocs;
@@ -278,11 +259,9 @@ namespace DotNetNuke.Services.Search
             return indexedCount;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private int GetAndStoreModuleMetaData(ModuleIndexer indexer)
         {
             IEnumerable<SearchDocument> searchDocs;
@@ -308,11 +287,9 @@ namespace DotNetNuke.Services.Search
             return indexedCount;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Adjusts the re-index date/time to account for the portal reindex value.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private DateTime FixedIndexingStartDate(int portalId)
         {
             var startDate = this.IndexingStartTime;

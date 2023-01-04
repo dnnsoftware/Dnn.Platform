@@ -20,11 +20,9 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ViewJournal class displays the content.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class View : JournalModuleBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
@@ -189,11 +187,9 @@ namespace DotNetNuke.Modules.Journal
             this.Load += this.Page_Load;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, EventArgs e)
         {
             try

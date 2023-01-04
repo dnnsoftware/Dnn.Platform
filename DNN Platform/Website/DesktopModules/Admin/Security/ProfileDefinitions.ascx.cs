@@ -24,14 +24,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileDefinitions PortalModuleBase is used to manage the Profile Properties
     /// for a portal.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
         private const int COLUMNREQUIRED = 11;
@@ -51,11 +47,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Return Url for the page.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string ReturnUrl
         {
             get
@@ -118,11 +112,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether we are dealing with SuperUsers.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected bool IsSuperUser
         {
             get
@@ -131,11 +123,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the collection of Profile Proeprties.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected ProfilePropertyDefinitionCollection ProfileProperties
         {
             get
@@ -144,11 +134,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Portal Id whose Users we are managing.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected int UsersPortalId
         {
             get
@@ -236,13 +224,9 @@ namespace DotNetNuke.Modules.Admin.Users
             return allStates;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Init runs when the control is initialised.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -319,14 +303,10 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
         /// Grid.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -357,22 +337,18 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Helper function that determines whether the client-side functionality is possible.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private bool SupportsRichClient()
         {
             return ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes a property.
         /// </summary>
         /// <param name="index">The index of the Property to delete.</param>
-        /// -----------------------------------------------------------------------------
         private void DeleteProperty(int index)
         {
             ProfileController.DeletePropertyDefinition(this.ProfileProperties[index]);
@@ -380,13 +356,11 @@ namespace DotNetNuke.Modules.Admin.Users
             this.RefreshGrid();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Moves a property.
         /// </summary>
         /// <param name="index">The index of the Property to move.</param>
         /// <param name="destIndex">The new index of the Property.</param>
-        /// -----------------------------------------------------------------------------
         private void MoveProperty(int index, int destIndex)
         {
             ProfilePropertyDefinition profileProperty = this.ProfileProperties[index];
@@ -404,33 +378,27 @@ namespace DotNetNuke.Modules.Admin.Users
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Moves a property down in the ViewOrder.
         /// </summary>
         /// <param name="index">The index of the Property to move.</param>
-        /// -----------------------------------------------------------------------------
         private void MovePropertyDown(int index)
         {
             this.MoveProperty(index, index + 1);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Moves a property up in the ViewOrder.
         /// </summary>
         /// <param name="index">The index of the Property to move.</param>
-        /// -----------------------------------------------------------------------------
         private void MovePropertyUp(int index)
         {
             this.MoveProperty(index, index - 1);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Binds the Property Collection to the Grid.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void BindGrid()
         {
             bool allRequired = true;
@@ -477,22 +445,18 @@ namespace DotNetNuke.Modules.Admin.Users
             this.grdProfileProperties.DataBind();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Refresh the Property Collection to the Grid.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void RefreshGrid()
         {
             this.profileProperties = null;
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates any "dirty" properties.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void UpdateProperties()
         {
             this.ProcessPostBack();
@@ -510,12 +474,10 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This method is responsible for taking in posted information from the grid and
         /// persisting it to the property definition collection.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void ProcessPostBack()
         {
             string[] newOrder = ClientAPI.GetClientSideReorder(this.grdProfileProperties.ClientID, this.Page);
@@ -538,26 +500,11 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ProfileProperties.Sort();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdRefresh_Click runs when the refresh button is clciked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void CmdRefresh_Click(object sender, EventArgs e)
         {
             this.RefreshGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdProfileProperties_ItemCheckedChanged runs when a checkbox in the grid
-        /// is clicked.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void GrdProfileProperties_ItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             string propertyName = e.Field;
@@ -597,14 +544,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.BindGrid();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdProfileProperties_ItemCommand runs when a Command event is raised in the
-        /// Grid.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void GrdProfileProperties_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             int index = e.Item.ItemIndex;
@@ -623,15 +562,11 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated
-        /// event is responsible for disabling all the unneeded AutoPostBacks, along with assiging the appropriate
+        /// event is responsible for disabling all the unneeded AutoPostBacks, along with assigning the appropriate
         ///     client-side script for each event handler.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void GrdProfileProperties_ItemCreated(object sender, DataGridItemEventArgs e)
         {
             if (this.SupportsRichClient())

@@ -26,11 +26,9 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Adds a File to a Zip File.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public static void AddToZip(ref ZipArchive zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
@@ -74,13 +72,11 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Tries to copy a file in the file system.
         /// </summary>
         /// <param name="sourceFileName">The name of the source file.</param>
         /// <param name="destFileName">The name of the destination file.</param>
-        /// -----------------------------------------------------------------------------
         public static void CopyFile(string sourceFileName, string destFileName)
         {
             if (File.Exists(destFileName))
@@ -141,12 +137,10 @@ namespace DotNetNuke.Common.Utilities
             return fileDeleted;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Tries to delete a file from the file system.
         /// </summary>
         /// <param name="fileName">The name of the file.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName)
         {
             fileName = FixPath(fileName);
@@ -557,12 +551,10 @@ namespace DotNetNuke.Common.Utilities
             return strMessage;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the filename for a file path.
         /// </summary>
         /// <param name="filePath">The full name of the file.</param>
-        /// -----------------------------------------------------------------------------
         private static string GetFileName(string filePath)
         {
             return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
@@ -589,15 +581,9 @@ namespace DotNetNuke.Common.Utilities
             FileManager.Instance.DeleteFile(objFile);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a Stream to the appropriate File Storage.
-        /// </summary>
+        /// <summary>Writes a Stream to the appropriate File Storage.</summary>
         /// <param name="objResponse">The Id of the File.</param>
         /// <param name="objStream">The Input Stream.</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static void WriteStream(HttpResponse objResponse, Stream objStream)
         {
             // Buffer to read 10K bytes in chunk:

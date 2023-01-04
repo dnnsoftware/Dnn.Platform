@@ -18,13 +18,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ModulePackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ModulePackageWriter : PackageWriterBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
@@ -102,12 +98,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(desktopModule.FolderName);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the associated Desktop Module.
         /// </summary>
         /// <value>A DesktopModuleInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public DesktopModuleInfo DesktopModule { get; set; }
 
         /// <inheritdoc/>

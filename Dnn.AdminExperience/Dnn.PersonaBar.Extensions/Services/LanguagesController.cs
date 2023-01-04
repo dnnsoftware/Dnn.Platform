@@ -692,7 +692,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return Localization.GetString(key, LocalResourcesFile);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///  Loads resources from file into the HastTable.
         /// </summary>
@@ -704,7 +703,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         ///   First=>value to be edited
         ///   Second=>default value.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static void LoadResource(IDictionary ht, string filepath)
         {
             var d = new XmlDocument { XmlResolver = null };
@@ -781,7 +779,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return this.localeController.GetLocales(portalId).ContainsKey(cultureCode);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Loads resources from file.
         /// </summary>
@@ -802,7 +799,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         ///   - Portal: base en-US, host override for en-US, base locale especific resource, and host override
         ///   for locale.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private Hashtable LoadFile(int portalId, LanguageResourceMode mode, string type, string locale)
         {
             string file;
@@ -848,7 +844,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return ht;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Returns the resource file name for a given resource and language.
         /// </summary>
@@ -856,17 +851,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="language">Language Name.</param>
         /// <param name = "mode">Identifies the resource being searched (System, Host, Portal).</param>
         /// <returns>Localized File Name.</returns>
-        /// -----------------------------------------------------------------------------
         private string ResourceFile(int portalId, string language, LanguageResourceMode mode)
         {
             return Localization.GetResourceFileName(this.selectedResourceFile, language, mode.ToString(), portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Updates all values from the datagrid.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private string SaveResourceFileFile(int portalId, LanguageResourceMode mode, string locale, IEnumerable<LocalizationEntry> entries)
         {
             var resDoc = new XmlDocument { XmlResolver = null };

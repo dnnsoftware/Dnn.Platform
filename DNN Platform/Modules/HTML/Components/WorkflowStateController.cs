@@ -10,17 +10,12 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.Html.Components;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      WorkflowStateController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The WorkflowStateController is the Controller class for managing workflows and states for the HtmlText module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class WorkflowStateController
     {
         private const string WORKFLOWCACHEKEY = "Workflow{0}";
@@ -28,59 +23,43 @@ namespace DotNetNuke.Modules.Html
 
         private const CacheItemPriority WORKFLOWCACHEPRIORITY = CacheItemPriority.Normal;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkFlows retrieves a collection of workflows for the portal.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "portalID">The ID of the Portal.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflows(int portalID)
         {
             return CBO.FillCollection(DataProvider.Instance().GetWorkflows(portalID), typeof(WorkflowStateInfo));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkFlowStates retrieves a collection of WorkflowStateInfo objects for the Workflow from the cache.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "workflowID">The ID of the Workflow.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflowStates(int workflowID)
         {
             string cacheKey = string.Format(WORKFLOWCACHEKEY, workflowID);
             return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(cacheKey, WORKFLOWCACHETIMEOUT, WORKFLOWCACHEPRIORITY, workflowID), this.GetWorkflowStatesCallBack);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkFlowStatesCallback retrieves a collection of WorkflowStateInfo objects for the Workflow from the database.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "cacheItemArgs">Arguments passed by the GetWorkflowStates method.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public object GetWorkflowStatesCallBack(CacheItemArgs cacheItemArgs)
         {
             var workflowID = (int)cacheItemArgs.ParamList[0];
             return CBO.FillCollection(DataProvider.Instance().GetWorkflowStates(workflowID), typeof(WorkflowStateInfo));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetFirstWorkFlowStateID retrieves the first StateID for the Workflow.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "workflowID">The ID of the Workflow.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public int GetFirstWorkflowStateID(int workflowID)
         {
             int intStateID = -1;
@@ -93,16 +72,12 @@ namespace DotNetNuke.Modules.Html
             return intStateID;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetPreviousWorkFlowStateID retrieves the previous StateID for the Workflow and State specified.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "workflowID">The ID of the Workflow.</param>
         /// <param name = "stateID">The ID of the State.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public int GetPreviousWorkflowStateID(int workflowID, int stateID)
         {
             int intPreviousStateID = -1;
@@ -144,16 +119,12 @@ namespace DotNetNuke.Modules.Html
             return intPreviousStateID;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetNextWorkFlowStateID retrieves the next StateID for the Workflow and State specified.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "workflowID">The ID of the Workflow.</param>
         /// <param name = "stateID">The ID of the State.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public int GetNextWorkflowStateID(int workflowID, int stateID)
         {
             int intNextStateID = -1;
@@ -195,15 +166,11 @@ namespace DotNetNuke.Modules.Html
             return intNextStateID;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetLastWorkFlowStateID retrieves the last StateID for the Workflow.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name = "workflowID">The ID of the Workflow.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public int GetLastWorkflowStateID(int workflowID)
         {
             int intStateID = -1;

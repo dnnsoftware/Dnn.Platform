@@ -17,11 +17,9 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ViewSocialGroups class displays the content.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class View : GroupsModuleBase
     {
         private readonly INavigationManager navigationManager;
@@ -46,11 +44,9 @@ namespace DotNetNuke.Modules.Groups
             this.Load += this.Page_Load;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, EventArgs e)
         {
             try

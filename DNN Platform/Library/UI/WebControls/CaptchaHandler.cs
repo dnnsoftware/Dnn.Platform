@@ -9,15 +9,12 @@ namespace DotNetNuke.UI.WebControls
     using System.Net.Mime;
     using System.Web;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      CaptchaHandler
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CaptchaHandler control provides a validator to validate a CAPTCHA Challenge.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class CaptchaHandler : IHttpHandler
     {
         private const int MAXIMAGEWIDTH = 600;

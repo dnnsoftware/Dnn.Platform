@@ -29,8 +29,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>
     /// The CaptchaControl control provides a Captcha Challenge control.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [ToolboxData("<{0}:CaptchaControl Runat=\"server\" CaptchaHeight=\"100px\" CaptchaWidth=\"300px\" />")]
     public class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
     {
@@ -305,14 +303,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadPostData loads the Post Back Data and determines whether the value has change.
         /// </summary>
         /// <param name="postDataKey">A key to the PostBack Data to load.</param>
         /// <param name="postCollection">A name value collection of postback data.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this.userText = postCollection[postDataKey];
@@ -325,11 +321,9 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// RaisePostDataChangedEvent runs when the PostBackData has changed.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void RaisePostDataChangedEvent()
         {
         }
@@ -358,13 +352,11 @@ namespace DotNetNuke.UI.WebControls
             return this.isValid;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GenerateImage generates the Captch Image.
         /// </summary>
         /// <param name="encryptedText">The Encrypted Text to display.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         internal static Bitmap GenerateImage(string encryptedText)
         {
             string encodedText = Decrypt(encryptedText);
@@ -701,12 +693,10 @@ namespace DotNetNuke.UI.WebControls
             return textPath;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Decrypts the CAPTCHA Text.
         /// </summary>
         /// <param name="encryptedContent">The encrypted text.</param>
-        /// -----------------------------------------------------------------------------
         private static string Decrypt(string encryptedContent)
         {
             string decryptedText = string.Empty;
@@ -726,13 +716,11 @@ namespace DotNetNuke.UI.WebControls
             return decryptedText;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DistortImage distorts the captcha image.
         /// </summary>
         /// <param name="b">The Image to distort.</param>
         /// <param name="distortion">Distortion.</param>
-        /// -----------------------------------------------------------------------------
         private static void DistortImage(ref Bitmap b, double distortion)
         {
             int width = b.Width;
@@ -760,24 +748,20 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Encrypts the CAPTCHA Text.
         /// </summary>
         /// <param name="content">The text to encrypt.</param>
         /// <param name="expiration">The time the ticket expires.</param>
-        /// -----------------------------------------------------------------------------
         private static string Encrypt(string content, DateTime expiration)
         {
             var ticket = new FormsAuthenticationTicket(1, HttpContext.Current.Request.UserHostAddress, DateTime.Now, expiration, false, content);
             return FormsAuthentication.Encrypt(ticket);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetFont gets a random font to use for the Captcha Text.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private static FontFamily GetFont()
         {
             FontFamily font = null;
@@ -798,7 +782,6 @@ namespace DotNetNuke.UI.WebControls
             return font;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Generates a random point.
         /// </summary>
@@ -806,19 +789,16 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="xmax">The maximum x value.</param>
         /// <param name="ymin">The minimum y value.</param>
         /// <param name="ymax">The maximum y value.</param>
-        /// -----------------------------------------------------------------------------
         private static PointF RandomPoint(int xmin, int xmax, int ymin, int ymax)
         {
             return new PointF(Rand.Next(xmin, xmax), Rand.Next(ymin, ymax));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Warps the Text.
         /// </summary>
         /// <param name="textPath">The Graphics Path for the text.</param>
         /// <param name="rect">a rectangle which defines the image.</param>
-        /// -----------------------------------------------------------------------------
         private static void WarpText(ref GraphicsPath textPath, Rectangle rect)
         {
             int intWarpDivisor;

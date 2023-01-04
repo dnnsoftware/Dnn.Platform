@@ -36,11 +36,9 @@ namespace DotNetNuke.Modules.Journal.Components
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Controller class for Journal.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     // uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
@@ -54,13 +52,11 @@ namespace DotNetNuke.Modules.Journal.Components
 
         protected INavigationManager NavigationManager { get; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ExportModule implements the IPortable ExportModule Interface.
         /// </summary>
         /// <param name="moduleID">The Id of the module to be exported.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public string ExportModule(int moduleID)
         {
             // string strXML = "";
@@ -83,7 +79,6 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ImportModule implements the IPortable ImportModule Interface.
         /// </summary>
@@ -91,7 +86,6 @@ namespace DotNetNuke.Modules.Journal.Components
         /// <param name="content">The content to be imported.</param>
         /// <param name="version">The version of the module to be imported.</param>
         /// <param name="userId">The Id of the user performing the import.</param>
-        /// -----------------------------------------------------------------------------
         public void ImportModule(int moduleID, string content, string version, int userId)
         {
             // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
@@ -106,13 +100,11 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpgradeModule implements the IUpgradeable Interface.
         /// </summary>
         /// <param name="version">The current version of the module.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public string UpgradeModule(string version)
         {
             throw new NotImplementedException("The method or operation is not implemented.");

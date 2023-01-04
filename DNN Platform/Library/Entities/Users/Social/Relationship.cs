@@ -12,11 +12,9 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      Relationship
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Relationship class describes the relationships that a user or portal owns.
     /// A handful of default Portal-Level Relationships will be be present for every portal (e.g. Friends, Followers, Family).
@@ -24,7 +22,6 @@ namespace DotNetNuke.Entities.Users.Social
     /// Any custom User-Level Relationship created by user will also be defined by this class (e.g. My InLaws, Engineering Group).
     /// User-Relationship will always have an associcated PortalId. User-Level Relationship will always be tied to a specific Portal.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class Relationship : BaseEntityInfo, IHydratable
     {

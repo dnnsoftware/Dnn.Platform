@@ -15,21 +15,16 @@ namespace DotNetNuke.Web.UI.WebControls
 
         // private DnnFilePicker _fileControl;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets or sets the current file extension filter.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string FileFilter { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets or sets the current file path.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string FilePath { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Loads the Post Back Data and determines whether the value has change.
         /// </summary>
@@ -41,7 +36,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <param name = "postDataKey">A key to the PostBack Data to load.</param>
         /// <param name = "postCollection">A name value collection of postback data.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -58,11 +52,9 @@ namespace DotNetNuke.Web.UI.WebControls
             return dataChanged;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Creates the control contained within this control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
             // First clear the controls collection
@@ -95,11 +87,9 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Runs before the control is rendered.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -112,12 +102,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Renders the control in edit mode.
         /// </summary>
         /// <param name = "writer">An HtmlTextWriter to render the control to.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);

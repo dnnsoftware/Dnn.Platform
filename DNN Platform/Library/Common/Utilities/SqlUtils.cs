@@ -6,13 +6,9 @@ namespace DotNetNuke.Common.Utilities
     using System.Data.SqlClient;
     using System.Text;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The SqlUtils class provides Shared/Static methods for working with SQL Server related code.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SqlUtils
     {
         /// <summary>
@@ -22,8 +18,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name = "exc"></param>
         /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
         public static string TranslateSQLException(SqlException exc)
         {
             int i = 0;

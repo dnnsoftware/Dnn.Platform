@@ -279,8 +279,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetLink returns the page number links for paging.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private string GetLink(int pageNum)
         {
             if (pageNum == this.CurrentPage)
@@ -296,8 +294,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetPreviousLink returns the link for the Previous page for paging.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private string GetPreviousLink()
         {
             return this.CurrentPage > 1 && this.totalPages > 0
@@ -313,8 +309,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetNextLink returns the link for the Next Page for paging.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private string GetNextLink()
         {
             return this.CurrentPage != this.totalPages && this.totalPages > 0
@@ -330,8 +324,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetFirstLink returns the First Page link for paging.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private string GetFirstLink()
         {
             if (this.CurrentPage > 1 && this.totalPages > 0)
@@ -349,8 +341,6 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetLastLink returns the Last Page link for paging.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private string GetLastLink()
         {
             if (this.CurrentPage != this.totalPages && this.totalPages > 0)

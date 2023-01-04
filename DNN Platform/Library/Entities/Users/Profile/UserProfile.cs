@@ -678,13 +678,11 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Sets a Profile Property Value in the Profile.
         /// </summary>
         /// <param name="propName">The name of the propoerty to set.</param>
         /// <param name="propValue">The value of the propoerty to set.</param>
-        /// -----------------------------------------------------------------------------
         public void SetProfileProperty(string propName, string propValue)
         {
             ProfilePropertyDefinition profileProp = this.GetProperty(propName);

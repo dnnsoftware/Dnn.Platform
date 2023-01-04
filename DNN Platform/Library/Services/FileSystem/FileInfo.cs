@@ -18,15 +18,12 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Instrumentation;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : FileInfo
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Represents the File object and holds the Properties of that object.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
     public class FileInfo : BaseEntityInfo, IHydratable, IFileInfo

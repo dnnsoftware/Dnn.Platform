@@ -18,16 +18,13 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNRegionEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
@@ -166,11 +163,9 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnAttributesChanged()
         {
             // Get the List settings out of the "Attributes"

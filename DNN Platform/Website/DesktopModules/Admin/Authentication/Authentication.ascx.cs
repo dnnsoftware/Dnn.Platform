@@ -18,8 +18,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// <summary>
     /// Manages the Authentication settings.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Authentication : PortalModuleBase
     {
         private readonly List<AuthenticationSettingsBase> settingControls = new List<AuthenticationSettingsBase>();

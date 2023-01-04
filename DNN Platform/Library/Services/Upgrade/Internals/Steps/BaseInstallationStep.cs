@@ -6,11 +6,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// BaseInstallationStep - Abstract class to perform common tasks for the various installation steps.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class BaseInstallationStep : IInstallationStep
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]

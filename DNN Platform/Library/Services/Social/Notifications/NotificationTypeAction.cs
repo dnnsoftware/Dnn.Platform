@@ -13,15 +13,12 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Services.Social.Notifications
     /// Class:      NotificationTypeAction
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The NotificationTypeAction class describes a single notification type action that can be associated to a message.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class NotificationTypeAction : BaseEntityInfo, IHydratable
     {

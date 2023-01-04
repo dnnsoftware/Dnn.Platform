@@ -37,7 +37,6 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="key">The key to use for storing the value in the dictionary.</param>
         /// <param name="initializer">A function that is called in order to create a default value per dictionary.</param>
-        /// <remarks></remarks>
         protected StateVariable(string key, Func<T> initializer)
             : this(key)
         {
@@ -108,7 +107,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="key">Value key.</param>
         /// <value></value>
         /// <returns></returns>
-        /// <remarks></remarks>
         protected abstract object this[string key] { get; set; }
 
         /// <summary>
@@ -123,7 +121,6 @@ namespace DotNetNuke.Common.Utilities
         /// Removes the value in associated dictionary according.
         /// </summary>
         /// <param name="key">Value key.</param>
-        /// <remarks></remarks>
         protected abstract void Remove(string key);
 
         private object GetInitializedInternalValue()

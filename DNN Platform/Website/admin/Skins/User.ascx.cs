@@ -24,10 +24,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class User : SkinObjectBase
     {
         private const string MyFileName = "User.ascx";

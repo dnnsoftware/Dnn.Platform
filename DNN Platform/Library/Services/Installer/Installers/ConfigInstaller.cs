@@ -10,13 +10,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ConfigInstaller installs Config changes.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ConfigInstaller : ComponentInstallerBase
     {
         private string fileName = Null.NullString;
@@ -27,12 +23,10 @@ namespace DotNetNuke.Services.Installer.Installers
         private string uninstallFileName = Null.NullString;
         private XmlMerge xmlMerge;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Install config changes.
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string InstallConfig
         {
             get
@@ -41,12 +35,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Target Config XmlDocument.
         /// </summary>
         /// <value>An XmlDocument.</value>
-        /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig
         {
             get
@@ -55,12 +47,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Target Config file to change.
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public InstallFile TargetFile
         {
             get
@@ -69,12 +59,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the UnInstall config changes.
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public string UnInstallConfig
         {
             get
@@ -83,11 +71,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Commit()
         {
             try
@@ -113,11 +99,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Install method installs the config component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Install()
         {
             try
@@ -165,11 +149,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadManifest method reads the manifest file for the config compoent.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.fileName = Util.ReadAttribute(manifestNav, "fileName");
@@ -197,23 +179,19 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the file component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             // Do nothing as the changes are all in memory
             this.Log.AddInfo(Util.CONFIG_RolledBack + " - " + this.TargetFile.Name);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UnInstall method uninstalls the config component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
             if (string.IsNullOrEmpty(this.uninstallFileName))

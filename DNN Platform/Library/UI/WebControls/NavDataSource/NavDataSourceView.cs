@@ -51,7 +51,6 @@ namespace DotNetNuke.UI.WebControls
         /// and return the list.
         /// </summary>
         /// <returns></returns>
-        /// <remarks></remarks>
         public override IHierarchicalEnumerable Select()
         {
             var objPages = new NavDataPageHierarchicalEnumerable();

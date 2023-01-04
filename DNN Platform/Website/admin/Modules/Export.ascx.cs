@@ -28,12 +28,8 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Export : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;

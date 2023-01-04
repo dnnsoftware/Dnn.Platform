@@ -25,17 +25,12 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserInfo class provides Business Layer model for Users.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo
     {
@@ -74,11 +69,9 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Social property.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public UserSocial Social
         {
@@ -98,40 +91,32 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the AffiliateId for this user.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public int AffiliateID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Display Name.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [SortOrder(3)]
         [Required(true)]
         [MaxLength(128)]
         public string DisplayName { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Email Address.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [SortOrder(4)]
         [MaxLength(256)]
         [Required(true)]
         [RegularExpressionValidator(Globals.glbEmailRegEx)]
         public string Email { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the First Name.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [SortOrder(1)]
         [MaxLength(50)]
         public string FirstName
@@ -140,35 +125,27 @@ namespace DotNetNuke.Entities.Users
             set { this.Profile.FirstName = value; }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the User is deleted.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsDeleted { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the User is a SuperUser.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Last IP address used by user.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public string LastIPAddress { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Last Name.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [SortOrder(2)]
         [MaxLength(50)]
         public string LastName
@@ -177,11 +154,9 @@ namespace DotNetNuke.Entities.Users
             set { this.Profile.LastName = value; }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Membership object.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public UserMembership Membership
         {
@@ -217,43 +192,33 @@ namespace DotNetNuke.Entities.Users
         [Browsable(false)]
         public DateTime PasswordResetExpiration { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the PortalId.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public int PortalID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the user has agreed to the terms and conditions.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool HasAgreedToTerms { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets when the user last agreed to the terms and conditions.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public DateTime HasAgreedToTermsOn { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the user has requested they be removed from the site.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool RequestsRemoval { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Profile Object.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public UserProfile Profile
         {
@@ -308,19 +273,15 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the User Id.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public int UserID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the User Name.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [SortOrder(0)]
         [MaxLength(100)]
         [IsReadOnly(true)]
@@ -468,13 +429,11 @@ namespace DotNetNuke.Entities.Users
             return string.Empty;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// IsInRole determines whether the user is in the role passed.
         /// </summary>
         /// <param name="role">The role to check.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
             // super users should always be verified.
@@ -507,24 +466,20 @@ namespace DotNetNuke.Entities.Users
             return false;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets current time in User's timezone.
         /// </summary>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public DateTime LocalTime()
         {
             return this.LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Convert utc time in User's timezone.
         /// </summary>
         /// <param name="utcTime">Utc time to convert.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public DateTime LocalTime(DateTime utcTime)
         {
             if (this.UserID > Null.NullInteger)
@@ -535,12 +490,10 @@ namespace DotNetNuke.Entities.Users
             return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpdateDisplayName updates the displayname to the format provided.
         /// </summary>
         /// <param name="format">The format to use.</param>
-        /// -----------------------------------------------------------------------------
         public void UpdateDisplayName(string format)
         {
             // Replace Tokens

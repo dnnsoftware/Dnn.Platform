@@ -16,18 +16,13 @@ namespace DotNetNuke.UI.WebControls
 
     using Calendar = DotNetNuke.Common.Utilities.Calendar;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DateEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DateEditControl control provides a standard UI component for editing
     /// date properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
     {
@@ -35,12 +30,10 @@ namespace DotNetNuke.UI.WebControls
         private TextBox dateField;
         private HyperLink linkCalendar;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets dateValue returns the Date representation of the Value.
         /// </summary>
         /// <value>A Date representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected DateTime DateValue
         {
             get
@@ -60,14 +53,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets defaultDateFormat is a string that will be used to format the date in the absence of a
         /// FormatAttribute.
         /// </summary>
         /// <value>A String representing the default format to use to render the date.</value>
         /// <returns>A Format String.</returns>
-        /// -----------------------------------------------------------------------------
         protected virtual string DefaultFormat
         {
             get
@@ -76,13 +67,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets format is a string that will be used to format the date in View mode.
         /// </summary>
         /// <value>A String representing the format to use to render the date.</value>
         /// <returns>A Format String.</returns>
-        /// -----------------------------------------------------------------------------
         protected virtual string Format
         {
             get
@@ -105,12 +94,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets oldDateValue returns the Date representation of the OldValue.
         /// </summary>
         /// <value>A Date representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
         protected DateTime OldDateValue
         {
             get
@@ -231,12 +218,10 @@ namespace DotNetNuke.UI.WebControls
             this.RenderChildren(writer);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             this.ControlStyle.AddAttributesToRender(writer);

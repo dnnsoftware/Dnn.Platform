@@ -20,13 +20,9 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The XmlUtils class provides Shared/Static methods for manipulating xml files.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class XmlUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(XmlUtils));
@@ -192,14 +188,12 @@ namespace DotNetNuke.Common.Utilities
             return hashTable;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of an attribute.
         /// </summary>
         /// <param name="nav">Parent XPathNavigator.</param>
         /// <param name="attributeName">Thename of the Attribute.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static string GetAttributeValue(XPathNavigator nav, string attributeName)
         {
             return nav.GetAttribute(attributeName, string.Empty);
@@ -273,7 +267,6 @@ namespace DotNetNuke.Common.Utilities
             return strValue;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -288,7 +281,6 @@ namespace DotNetNuke.Common.Utilities
             return GetNodeValue(objNode, nodeName, string.Empty);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -299,7 +291,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetNodeValue(XmlNode objNode, string nodeName, string defaultValue)
         {
             string strValue = defaultValue;
@@ -315,7 +306,6 @@ namespace DotNetNuke.Common.Utilities
             return strValue;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -325,13 +315,11 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value (False) will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName)
         {
             return GetNodeValueBoolean(objNode, nodeName, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -342,7 +330,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName, bool defaultValue)
         {
             bool bValue = defaultValue;
@@ -389,7 +376,6 @@ namespace DotNetNuke.Common.Utilities
             return Convert.ToBoolean(strValue);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -400,7 +386,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static DateTime GetNodeValueDate(XmlNode objNode, string nodeName, DateTime defaultValue)
         {
             DateTime dateValue = defaultValue;
@@ -448,7 +433,6 @@ namespace DotNetNuke.Common.Utilities
             return dateValue;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -458,13 +442,11 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value (0) will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static int GetNodeValueInt(XmlNode node, string nodeName)
         {
             return GetNodeValueInt(node, nodeName, 0);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -475,7 +457,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static int GetNodeValueInt(XmlNode node, string nodeName, int defaultValue)
         {
             int intValue = defaultValue;
@@ -522,7 +503,6 @@ namespace DotNetNuke.Common.Utilities
             return Convert.ToInt32(strValue);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -532,13 +512,11 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value (0) will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static float GetNodeValueSingle(XmlNode node, string nodeName)
         {
             return GetNodeValueSingle(node, nodeName, 0);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node.
         /// </summary>
@@ -549,7 +527,6 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// If the node does not exist or it causes any error the default value will be returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static float GetNodeValueSingle(XmlNode node, string nodeName, float defaultValue)
         {
             float sValue = defaultValue;
@@ -596,13 +573,11 @@ namespace DotNetNuke.Common.Utilities
             return Convert.ToSingle(strValue, CultureInfo.InvariantCulture);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets an XmlWriterSettings object.
         /// </summary>
         /// <param name="conformance">Conformance Level.</param>
         /// <returns>An XmlWriterSettings.</returns>
-        /// -----------------------------------------------------------------------------
         public static XmlWriterSettings GetXmlWriterSettings(ConformanceLevel conformance)
         {
             var settings = new XmlWriterSettings();
@@ -685,13 +660,11 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///  Xml Encodes HTML.
         /// </summary>
         /// <param name = "html">The HTML to encode.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static string XMLEncode(string html)
         {
             return "<![CDATA[" + html + "]]>";

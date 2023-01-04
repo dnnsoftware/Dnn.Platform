@@ -165,8 +165,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name = "uniqueID"></param>
         /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
         ModuleInfo GetModuleByUniqueID(Guid uniqueID);
 
         /// <summary>

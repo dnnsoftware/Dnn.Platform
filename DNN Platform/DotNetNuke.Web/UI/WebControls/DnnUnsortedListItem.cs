@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls
     /// <summary>
     /// Creates a control that render one item in a list ($lt;li> control).
     /// </summary>
-    /// <remarks></remarks>
     public class DnnUnsortedListItem : WebControl
     {
         /// <summary>

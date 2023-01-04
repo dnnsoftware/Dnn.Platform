@@ -9,16 +9,13 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : DesktopModulePermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionCollection provides the a custom collection for DesktopModulePermissionInfo
     /// objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModulePermissionCollection : CollectionBase
     {

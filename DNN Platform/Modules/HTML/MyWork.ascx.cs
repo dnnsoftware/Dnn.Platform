@@ -14,8 +14,6 @@ namespace DotNetNuke.Modules.Html
     /// <summary>
     ///   MyWork allows a user to view any outstanding workflow items.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class MyWork : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
@@ -37,8 +35,6 @@ namespace DotNetNuke.Modules.Html
         /// <summary>
         ///   Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -7,13 +7,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The WidgetComponentWriter class handles creating the manifest for Widget Component(s).
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class WidgetComponentWriter : FileComponentWriter
     {
         /// <summary>
@@ -27,12 +23,10 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Collection Node ("widgetFiles").
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
             get
@@ -41,12 +35,10 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Item Node ("widgetFiles").
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
             get
@@ -55,12 +47,10 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Component Type ("Widget").
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
             get

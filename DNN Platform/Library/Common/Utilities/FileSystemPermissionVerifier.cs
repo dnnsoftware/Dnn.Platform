@@ -88,11 +88,9 @@ namespace DotNetNuke.Common.Utilities
             Directory.CreateDirectory(verifyPath);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   VerifyFileCreate checks whether a file can be created.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private bool VerifyFileCreate()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
@@ -112,11 +110,9 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   VerifyFileDelete checks whether a file can be deleted.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private bool VerifyFileDelete()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify\\Verify.txt");
@@ -136,11 +132,9 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   VerifyFolderCreate checks whether a folder can be created.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private bool VerifyFolderCreate()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify");
@@ -160,11 +154,9 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   VerifyFolderDelete checks whether a folder can be deleted.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private bool VerifyFolderDelete()
         {
             string verifyPath = Path.Combine(this.basePath, "Verify");

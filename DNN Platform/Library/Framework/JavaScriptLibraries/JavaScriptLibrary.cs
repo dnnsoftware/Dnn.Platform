@@ -59,12 +59,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             throw new NotImplementedException();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Reads a JavaScriptLibrary from an XmlReader.
         /// </summary>
         /// <param name="reader">The XmlReader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -124,12 +122,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Writes a JavaScriptLibrary to an XmlWriter.
         /// </summary>
         /// <param name="writer">The XmlWriter to use.</param>
-        /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elemenst

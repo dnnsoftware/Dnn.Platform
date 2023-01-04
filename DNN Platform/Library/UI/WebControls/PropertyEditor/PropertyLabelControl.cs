@@ -19,8 +19,6 @@ namespace DotNetNuke.UI.WebControls
     /// The PropertyLabelControl control provides a standard UI component for displaying
     /// a label for a property. It contains a Label and Help Text and can be Data Bound.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [ToolboxData("<{0}:PropertyLabelControl runat=server></{0}:PropertyLabelControl>")]
     public class PropertyLabelControl : WebControl
     {
@@ -45,12 +43,10 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the value of the Label Style.
         /// </summary>
         /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -65,12 +61,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the value of the Label Style.
         /// </summary>
         /// <value>A string representing the Name of the Field.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

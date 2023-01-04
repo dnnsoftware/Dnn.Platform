@@ -10,15 +10,12 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : ModulePermissionController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionController provides the Business Layer for Module Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class ModulePermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
@@ -103,32 +100,27 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanViewModule(module);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeleteModulePermissionsByUser deletes a user's Module Permission in the Database.
         /// </summary>
         /// <param name="user">The user.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteModulePermissionsByUser(UserInfo user)
         {
             Provider.DeleteModulePermissionsByUser(user);
             DataCache.ClearModulePermissionsCachesByPortal(user.PortalID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModulePermissions gets a ModulePermissionCollection.
         /// </summary>
         /// <param name="moduleId">The ID of the module.</param>
         /// <param name="tabId">The ID of the tab.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static ModulePermissionCollection GetModulePermissions(int moduleId, int tabId)
         {
             return Provider.GetModulePermissions(moduleId, tabId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// HasModulePermission checks whether the current user has a specific Module Permission.
         /// </summary>
@@ -137,13 +129,11 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="modulePermissions">The Permissions for the Module.</param>
         /// <param name="permissionKey">The Permission to check.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static bool HasModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
         {
             return Provider.HasModulePermission(modulePermissions, permissionKey);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Determines if user has the necessary permissions to access an item with the
         /// designated AccessLevel.
@@ -156,18 +146,15 @@ namespace DotNetNuke.Security.Permissions
         /// function determines whether the user represented by UserName has sufficient permissions, as
         /// determined by the PortalSettings and ModuleSettings, to access a resource with the
         /// designated AccessLevel.</remarks>
-        /// -----------------------------------------------------------------------------
         public static bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
             return Provider.HasModuleAccess(accessLevel, permissionKey, moduleConfiguration);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// SaveModulePermissions updates a Module's permissions.
         /// </summary>
         /// <param name="module">The Module to update.</param>
-        /// -----------------------------------------------------------------------------
         public static void SaveModulePermissions(ModuleInfo module)
         {
             Provider.SaveModulePermissions(module);

@@ -10,17 +10,12 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Roles;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserRoleInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserRoleInfo class provides Business Layer model for a User/Role.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserRoleInfo : RoleInfo
     {

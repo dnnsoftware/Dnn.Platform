@@ -751,8 +751,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="urlDict"></param>
         /// <param name="urlPortals"></param>
         /// <param name="customAliasTabs"></param>
-        /// <remarks>
-        /// </remarks>
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             out ConcurrentBag<int> urlPortals,
@@ -811,8 +809,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="customAliasTabs"></param>
         /// <param name="settings"></param>
         /// <param name="reason"></param>
-        /// <remarks>
-        /// </remarks>
         internal void StoreFriendlyUrlIndexInCache(
             SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             ConcurrentBag<int> urlPortals,

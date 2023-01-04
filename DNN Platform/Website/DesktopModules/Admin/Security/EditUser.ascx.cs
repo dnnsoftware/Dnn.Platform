@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ManageUsers UserModuleBase is used to manage Users.
     /// </summary>
@@ -45,7 +44,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the current Page No.
         /// </summary>
@@ -70,7 +68,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public bool ShowVanityUrl { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to display the Manage Services tab.
         /// </summary>
@@ -83,7 +80,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Redirect URL (after successful registration).
         /// </summary>
@@ -128,7 +124,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Return Url for the page.
         /// </summary>
@@ -140,7 +135,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Filter to use.
         /// </summary>
@@ -171,12 +165,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Init runs when the control is initialised.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -222,12 +213,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -539,12 +527,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// PasswordQuestionAnswerUpdated runs when the Password Q and A have been updated.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void PasswordQuestionAnswerUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -563,12 +548,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// PasswordUpdated runs when the Password has been updated or reset.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -610,12 +592,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProfileUpdateCompleted runs when the Profile has been updated.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         private void ProfileUpdateCompleted(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)

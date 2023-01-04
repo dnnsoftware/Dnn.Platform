@@ -8,13 +8,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ContainerPackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ContainerPackageWriter : SkinPackageWriter
     {
         /// <summary>

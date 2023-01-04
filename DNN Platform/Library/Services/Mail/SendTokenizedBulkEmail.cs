@@ -27,14 +27,10 @@ namespace DotNetNuke.Services.Mail
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// SendTokenizedBulkEmail Class is a class to manage the sending of bulk mails
     /// that contains tokens, which might be replaced with individual user properties.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
@@ -554,7 +550,6 @@ namespace DotNetNuke.Services.Mail
         /// <param name="startedAt">date/time, sendout started.</param>
         /// <param name="mailErrors">mail error texts.</param>
         /// <param name="recipientList">List of recipients as formatted string.</param>
-        /// <remarks></remarks>
         private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
         {
             // send confirmation, use resource string like:

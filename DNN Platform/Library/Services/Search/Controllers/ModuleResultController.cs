@@ -27,7 +27,6 @@ namespace DotNetNuke.Services.Search.Controllers
     /// <summary>
     /// Search Result Controller for Module Crawler.
     /// </summary>
-    /// <remarks></remarks>
     [Serializable]
     public class ModuleResultController : BaseResultController
     {

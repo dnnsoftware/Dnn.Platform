@@ -6,7 +6,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using System;
     using System.Web.UI.HtmlControls;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>A skin object which enables adding a <c>meta</c> element to the <c>head</c>.</summary>
     public partial class Meta : SkinObjectBase
     {

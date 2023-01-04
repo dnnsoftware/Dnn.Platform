@@ -17,11 +17,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// InstallSiteStep - Step that installs Website.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class InstallSiteStep : BaseInstallationStep
     {
         /// <summary>

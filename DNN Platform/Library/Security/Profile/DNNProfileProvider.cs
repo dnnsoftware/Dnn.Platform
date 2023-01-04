@@ -18,28 +18,21 @@ namespace DotNetNuke.Security.Profile
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Profile
     /// Class:      DNNProfileProvider
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNProfileProvider overrides the default ProfileProvider to provide
     /// a purely DotNetNuke implementation.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class DNNProfileProvider : ProfileProvider
     {
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Provider Properties can be edited.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         public override bool CanEditProviderProperties
         {
             get
@@ -48,14 +41,10 @@ namespace DotNetNuke.Security.Profile
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserProfile retrieves the UserProfile information from the Data Store.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
-        /// -----------------------------------------------------------------------------
         public override void GetUserProfile(ref UserInfo user)
         {
             ProfilePropertyDefinition profProperty;
@@ -133,14 +122,10 @@ namespace DotNetNuke.Security.Profile
             this.UpdateTimeZoneInfo(user, properties);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// UpdateUserProfile persists a user's Profile to the Data Store.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="user">The user to persist to the Data Store.</param>
-        /// -----------------------------------------------------------------------------
         public override void UpdateUserProfile(UserInfo user)
         {
             var key = this.GetProfileCacheKey(user);

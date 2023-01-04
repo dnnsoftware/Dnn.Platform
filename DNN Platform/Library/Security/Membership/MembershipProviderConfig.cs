@@ -7,28 +7,21 @@ namespace DotNetNuke.Security.Membership
 
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Membership
     /// Class:      MembershipProviderConfig
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MembershipProviderConfig class provides a wrapper to the Membership providers
     /// configuration.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class MembershipProviderConfig
     {
         private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Provider Properties can be edited.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public static bool CanEditProviderProperties
         {
@@ -38,12 +31,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the maximum number of invlaid attempts to login are allowed.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(8)]
         [Category("Password")]
         public static int MaxInvalidPasswordAttempts
@@ -59,12 +50,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Mimimum no of Non AlphNumeric characters required.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(5)]
         [Category("Password")]
         public static int MinNonAlphanumericCharacters
@@ -80,12 +69,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Mimimum Password Length.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(4)]
         [Category("Password")]
         public static int MinPasswordLength
@@ -101,12 +88,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the window in minutes that the maxium attempts are tracked for.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(9)]
         [Category("Password")]
         public static int PasswordAttemptWindow
@@ -122,12 +107,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Password Format.
         /// </summary>
         /// <returns>A PasswordFormat enumeration.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(1)]
         [Category("Password")]
         public static PasswordFormat PasswordFormat
@@ -143,12 +126,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Users's Password can be reset.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(3)]
         [Category("Password")]
         public static bool PasswordResetEnabled
@@ -164,12 +145,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Users's Password can be retrieved.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(2)]
         [Category("Password")]
         public static bool PasswordRetrievalEnabled
@@ -193,12 +172,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets a Regular Expression that determines the strength of the password.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(7)]
         [Category("Password")]
         public static string PasswordStrengthRegularExpression
@@ -214,12 +191,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether a Question/Answer is required for Password retrieval.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(6)]
         [Category("Password")]
         public static bool RequiresQuestionAndAnswer
@@ -235,12 +210,10 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether a Unique Email is required.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         [SortOrder(0)]
         [Category("User")]
         public static bool RequiresUniqueEmail

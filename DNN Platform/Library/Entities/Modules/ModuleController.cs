@@ -664,8 +664,6 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// </summary>
         /// <param name = "module"></param>
-        /// <remarks>
-        /// </remarks>
         /// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
@@ -1095,8 +1093,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name = "uniqueID"></param>
         /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
         public ModuleInfo GetModuleByUniqueID(Guid uniqueID)
         {
             return CBO.FillObject<ModuleInfo>(DataProvider.GetModuleByUniqueID(uniqueID));

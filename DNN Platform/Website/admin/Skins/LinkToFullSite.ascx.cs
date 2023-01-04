@@ -14,11 +14,8 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>Skin object of portal links between desktop and mobile portals.</summary>
     /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class LinkToFullSite : SkinObjectBase
     {
         private const string MyFileName = "LinkToFullSite.ascx";

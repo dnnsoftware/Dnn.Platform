@@ -10,12 +10,9 @@ namespace DotNetNuke.Services.Messaging.Data
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Info class for Messaging.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     [Serializable]
     public class Message : IHydratable
     {

@@ -12,13 +12,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SkinControlPackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SkinControlPackageWriter : PackageWriterBase
     {
         /// <summary>
@@ -69,12 +65,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the associated SkinControl.
         /// </summary>
         /// <value>A SkinControlInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
 
         /// <inheritdoc/>

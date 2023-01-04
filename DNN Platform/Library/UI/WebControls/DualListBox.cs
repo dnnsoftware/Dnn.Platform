@@ -44,12 +44,10 @@ namespace DotNetNuke.UI.WebControls
 
         public event EventHandler RemoveAllButtonClick;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Available List Box Style.
         /// </summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -64,12 +62,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Button Style.
         /// </summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -84,12 +80,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Container Style.
         /// </summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -104,12 +98,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Header Style.
         /// </summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -124,12 +116,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Selected List Box Style.
         /// </summary>
         /// <value>A Style object.</value>
-        /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

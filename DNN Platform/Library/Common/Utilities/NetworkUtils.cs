@@ -21,18 +21,14 @@ namespace DotNetNuke.Common.Utils
         IPv6 = 1,
     }
 
-    /// <summary>
-    /// Utility functions for network information.
-    /// </summary>
+    /// <summary>Utility functions for network information.</summary>
     public class NetworkUtils
     {
-        /// <summary>
-        /// Gets the address.
-        /// </summary>
+        /// <summary>Gets the address.</summary>
         /// <param name="host">The host.</param>
         /// <param name="addressFormat">The address format.</param>
         /// <returns>Returns IP address.</returns>
-        /// <remarks><seealso cref="AddressType"></seealso></remarks>
+        /// <seealso cref="AddressType" />
         public static string GetAddress(string host, AddressType addressFormat)
         {
             AddressFamily addrFamily = AddressFamily.InterNetwork;

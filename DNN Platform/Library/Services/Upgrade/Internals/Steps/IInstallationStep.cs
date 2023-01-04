@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// <summary>
     /// Interface for an Installation Step.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public interface IInstallationStep
     {
         /// <summary>

@@ -11,15 +11,12 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
     /// Class    : SkinControlInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// SkinControlInfo provides the Entity Layer for Skin Controls (SkinObjects).
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class SkinControlInfo : ControlInfo, IXmlSerializable, IHydratable
     {
@@ -32,28 +29,22 @@ namespace DotNetNuke.Entities.Modules
             this.SkinControlID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the SkinControl ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int SkinControlID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the ID of the Package for this Desktop Module.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int KeyID
         {
             get
@@ -67,12 +58,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a SkinControlInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.SkinControlID = Null.SetNullInteger(dr["SkinControlID"]);
@@ -80,23 +69,19 @@ namespace DotNetNuke.Entities.Modules
             this.FillInternal(dr);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets an XmlSchema for the SkinControlInfo.
         /// </summary>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Reads a SkinControlInfo from an XmlReader.
         /// </summary>
         /// <param name="reader">The XmlReader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
             while (reader.Read())
@@ -115,12 +100,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Writes a SkinControlInfo to an XmlWriter.
         /// </summary>
         /// <param name="writer">The XmlWriter to use.</param>
-        /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elemenst

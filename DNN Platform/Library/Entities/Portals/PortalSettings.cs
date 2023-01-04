@@ -17,13 +17,11 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Tokens;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PortalSettings class encapsulates all of the settings for the Portal,
     /// as well as the configuration settings required to execute the current tab
     /// view within the portal.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
@@ -56,18 +54,14 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalSettings"/> class.
         /// The PortalSettings Constructor encapsulates all of the logic
         /// necessary to obtain configuration settings necessary to render
         /// a Portal Tab view for a given request.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="tabId">The current tab.</param>
         /// <param name="portalAliasInfo">The current portal.</param>
-        /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
             this.PortalId = portalAliasInfo.PortalID;
@@ -445,14 +439,12 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public int PrivacyTabId { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether allows users to select their own UI culture.
         /// When set to false (default) framework will allways same culture for both
         /// CurrentCulture (content) and CurrentUICulture (interface).
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool AllowUserUICulture { get; internal set; }
 
         /// <inheritdoc/>
@@ -480,12 +472,10 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public string DefaultIconLocation { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Default Module Id.
         /// </summary>
         /// <remarks>Defaults to Null.NullInteger.</remarks>
-        /// -----------------------------------------------------------------------------
         public int DefaultModuleId { get; internal set; }
 
         /// <inheritdoc/>
@@ -497,40 +487,32 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public string DefaultPortalSkin { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Default Tab Id.
         /// </summary>
         /// <remarks>Defaults to Null.NullInteger.</remarks>
-        /// -----------------------------------------------------------------------------
         public int DefaultTabId { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether Browser Language Detection is Enabled.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool EnableBrowserLanguage { get; internal set; }
 
         /// <inheritdoc/>
         public bool EnableCompositeFiles { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to use the module effect in edit mode.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to use the popup.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool EnablePopUps { get; internal set; }
 
         /// <summary>
@@ -538,22 +520,18 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public bool EnableRegisterNotification { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         [Obsolete("This setting is no longer relevant as skin widgets are no longer supported. Scheduled for removal in v11.0.0.")]
 
         public bool EnableSkinWidgets { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether a cookie consent popup should be shown.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool ShowCookieConsent { get; internal set; }
 
         /// <summary>
@@ -562,12 +540,10 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public string CookieMoreLink { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether enable url language.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
         /// <inheritdoc/>
@@ -576,7 +552,6 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public int ErrorPage500 { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets a value indicating whether gets whether folders which are hidden or whose name begins with underscore
         ///   are included in folder synchronization.
@@ -584,15 +559,12 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public bool HideFoldersEnabled { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether hide the login link.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool HideLoginControl { get; internal set; }
 
         /// <inheritdoc/>
@@ -601,54 +573,42 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public string HomeSystemDirectoryMapPath { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Inline Editor is enabled.
         /// </summary>
         /// <remarks>Defaults to True.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool InlineEditorEnabled { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
-        /// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the filter used for inclusion of tag info.
         /// </summary>
         /// <remarks>
         ///   Defaults to "".
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string SearchIncludedTagInfoFilter { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the maximum Search Word length to index.
         /// </summary>
         /// <remarks>Defaults to 3.</remarks>
-        /// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the minum Search Word length to index.
         /// </summary>
         /// <remarks>Defaults to 3.</remarks>
-        /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength { get; internal set; }
 
         /// <inheritdoc/>

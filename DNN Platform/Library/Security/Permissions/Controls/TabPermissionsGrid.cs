@@ -24,11 +24,9 @@ namespace DotNetNuke.Security.Permissions.Controls
         private int tabID = -1;
         private TabPermissionCollection tabPermissions;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Permissions Collection.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public TabPermissionCollection Permissions
         {
             get
@@ -41,11 +39,9 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the Id of the Tab.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public int TabID
         {
             get
@@ -124,13 +120,11 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.permissionsList = null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates a Permission.
         /// </summary>
         /// <param name="permissions">The permissions collection.</param>
         /// <param name="user">The user to add.</param>
-        /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
             // Search TabPermission Collection for the user
@@ -157,13 +151,11 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates a Permission.
         /// </summary>
         /// <param name="permissions">The permissions collection.</param>
         /// <param name="role">The role to add.</param>
-        /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             // Search TabPermission Collection for the user
@@ -182,7 +174,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Enabled status of the permission.
         /// </summary>
@@ -190,13 +181,11 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="role">The role.</param>
         /// <param name="column">The column of the Grid.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
             return !this.IsImplicitRole(role.PortalID, role.RoleID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Value of the permission.
         /// </summary>
@@ -205,7 +194,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="column">The column of the Grid.</param>
         /// <param name="defaultState">Default State.</param>
         /// <returns>A Boolean (True or False).</returns>
-        /// -----------------------------------------------------------------------------
         protected override string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
             string permission;
@@ -223,23 +211,19 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permission;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the permissions from the Database.
         /// </summary>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
             return PermissionController.GetPermissionsByTab();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Load the ViewState.
         /// </summary>
         /// <param name="savedState">The saved state.</param>
-        /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -287,12 +271,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.permissionsList = null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Saves the ViewState.
         /// </summary>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         protected override object SaveViewState()
         {
             var allStates = new object[3];
@@ -334,34 +316,28 @@ namespace DotNetNuke.Security.Permissions.Controls
             return allStates;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// returns whether or not the derived grid supports Deny permissions.
         /// </summary>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the TabPermissions from the Data Store.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void GetTabPermissions()
         {
             this.tabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
             this.permissionsList = null;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Parse the Permission Keys used to persist the Permissions in the ViewState.
         /// </summary>
         /// <param name="settings">A string array of settings.</param>
-        /// -----------------------------------------------------------------------------
         private TabPermissionInfo ParseKeys(string[] settings)
         {
             var objTabPermission = new TabPermissionInfo();

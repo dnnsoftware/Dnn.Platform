@@ -24,8 +24,6 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class ModulePermissions : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;

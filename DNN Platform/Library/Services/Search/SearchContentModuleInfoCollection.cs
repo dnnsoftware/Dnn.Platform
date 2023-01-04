@@ -5,17 +5,12 @@ namespace DotNetNuke.Services.Search
 {
     using System.Collections;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.Index
     /// Class:      SearchContentModuleInfoCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Represents a collection of <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> objects.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
 #pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase
     {

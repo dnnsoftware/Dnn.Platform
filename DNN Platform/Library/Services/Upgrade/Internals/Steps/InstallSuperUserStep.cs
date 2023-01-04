@@ -12,11 +12,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// InstallSuperUserStep - Step that installs SuperUser Account.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class InstallSuperUserStep : BaseInstallationStep
     {
         /// <summary>

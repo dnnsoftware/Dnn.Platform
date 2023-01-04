@@ -21,17 +21,12 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinController
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///     Handles the Business Control Layer for Skins.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SkinController
     {
         private const string GlobalSkinPrefix = "[G]";
@@ -520,12 +515,9 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// format skin name.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="skinFolder">The Folder Name.</param>
         /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)

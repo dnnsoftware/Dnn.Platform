@@ -10,36 +10,27 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Framework
     /// Project:    DotNetNuke
     /// Class:      DiskPageStatePersister
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// DiskPageStatePersister provides a disk (stream) based page state peristence mechanism.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class DiskPageStatePersister : PageStatePersister
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="DiskPageStatePersister"/> class.
         /// Creates the DiskPageStatePersister.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public DiskPageStatePersister(Page page)
             : base(page)
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the CacheDirectory property is used to return the location of the "Cache"
         /// Directory for the Portal.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string CacheDirectory
         {
             get
@@ -48,13 +39,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the StateFileName property is used to store the FileName for the State.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public string StateFileName
         {
             get
@@ -71,11 +58,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Loads the Page State from the Cache.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Load()
         {
             StreamReader reader = null;
@@ -104,11 +89,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Saves the Page State to the Cache.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Save()
         {
             // No processing needed if no states available

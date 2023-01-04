@@ -10,13 +10,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.UI.Skins;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SkinPackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class SkinPackageWriter : PackageWriterBase
     {
         private readonly SkinPackageInfo skinPackage;

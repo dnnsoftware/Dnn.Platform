@@ -19,13 +19,11 @@ namespace DotNetNuke.Entities.Portals
     /// </summary>
     public interface IPortalController
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates a new portal alias.
         /// </summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="portalAlias">Portal Alias to be created.</param>
-        /// -----------------------------------------------------------------------------
         void AddPortalAlias(int portalId, string portalAlias);
 
         /// <summary>
@@ -199,8 +197,6 @@ namespace DotNetNuke.Entities.Portals
         ///   Remaps the Special Pages such as Home, Profile, Search
         ///   to their localized versions.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
         /// <summary>

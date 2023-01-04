@@ -5,13 +5,9 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using DotNetNuke.Services.Installer.Packages;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LibraryPackageWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class LibraryPackageWriter : PackageWriterBase
     {
         /// <summary>

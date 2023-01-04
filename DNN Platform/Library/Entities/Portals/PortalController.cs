@@ -253,18 +253,14 @@ namespace DotNetNuke.Entities.Portals
             return CBO.GetCachedObject<Dictionary<int, int>>(new CacheItemArgs(cacheKey, DataCache.PortalDictionaryTimeOut, DataCache.PortalDictionaryCachePriority), GetPortalDictionaryCallback);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetPortalsByName gets all the portals whose name matches a provided filter expression.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="nameToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
-        /// -----------------------------------------------------------------------------
         public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             if (pageIndex == -1)
@@ -745,8 +741,6 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name = "portalID"></param>
         /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
         public static string GetActivePortalLanguage(int portalID)
         {
             // get Language
@@ -810,8 +804,6 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name = "portalID"></param>
         /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
         public static string GetPortalDefaultLanguage(int portalID)
         {
             string cacheKey = string.Format("PortalDefaultLanguage_{0}", portalID);
@@ -824,8 +816,6 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name = "portalID"></param>
         /// <param name = "cultureCode"></param>
-        /// <remarks>
-        /// </remarks>
         public static void UpdatePortalDefaultLanguage(int portalID, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalDefaultLanguage(portalID, cultureCode);
@@ -1311,8 +1301,6 @@ namespace DotNetNuke.Entities.Portals
         ///   Remaps the Special Pages such as Home, Profile, Search
         ///   to their localized versions.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public void MapLocalizedSpecialPages(int portalId, string cultureCode)
         {
             DataCache.ClearHostCache(true);

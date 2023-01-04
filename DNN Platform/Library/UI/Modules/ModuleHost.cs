@@ -35,11 +35,9 @@ namespace DotNetNuke.UI.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
     /// Class    : ModuleHost
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleHost hosts a Module Control (or its cached Content).
     /// </summary>
@@ -59,13 +57,10 @@ namespace DotNetNuke.UI.Modules
         private Control control;
         private bool isCached;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleHost"/> class.
         /// Creates a Module Host control using the ModuleConfiguration for the Module.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
             this.ID = "ModuleContent";
@@ -74,7 +69,6 @@ namespace DotNetNuke.UI.Modules
             this.Skin = skin;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the attached ModuleControl.
         /// </summary>
@@ -89,7 +83,6 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the current POrtal Settings.
         /// </summary>
@@ -105,7 +98,6 @@ namespace DotNetNuke.UI.Modules
 
         public Skins.Skin Skin { get; private set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a flag that indicates whether the Module is in View Mode.
         /// </summary>
@@ -126,7 +118,6 @@ namespace DotNetNuke.UI.Modules
             return viewMode || Personalization.GetUserMode() == PortalSettings.Mode.View;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateChildControls builds the control tree.
         /// </summary>
@@ -175,7 +166,6 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// RenderContents renders the contents of the control to the output stream.
         /// </summary>
@@ -296,7 +286,6 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// ----------------------------------------------------------------------------
         /// <summary>
         /// Gets a flag that indicates whether the Module Content should be displayed.
         /// </summary>
@@ -328,7 +317,6 @@ namespace DotNetNuke.UI.Modules
             return content;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadModuleControl loads the ModuleControl (PortalModuelBase).
         /// </summary>
@@ -443,7 +431,6 @@ namespace DotNetNuke.UI.Modules
             this.Controls.Add(updateProgress);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a flag that indicates whether the Module Instance supports Caching.
         /// </summary>
@@ -453,7 +440,6 @@ namespace DotNetNuke.UI.Modules
             return this.moduleConfiguration.CacheTime > 0;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Trys to load previously cached Module Content.
         /// </summary>

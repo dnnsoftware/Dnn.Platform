@@ -142,13 +142,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Serializes the Tab.
         /// </summary>
         /// <param name="xmlTemplate">Reference to XmlDocument context.</param>
         /// <param name="nodeTabs">Node to add the serialized objects.</param>
-        /// -----------------------------------------------------------------------------
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
             var xmlTab = new XmlDocument { XmlResolver = null };

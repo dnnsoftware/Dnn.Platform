@@ -19,16 +19,13 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Modules.Admin.Users
     /// Class:      Membership
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Membership UserModuleBase is used to manage the membership aspects of a
     /// User.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public partial class Membership : UserModuleBase
     {
         private readonly INavigationManager navigationManager;
@@ -41,11 +38,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipAuthorized Event
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public event EventHandler MembershipAuthorized;
 
         public event EventHandler MembershipPasswordUpdateChanged;
@@ -58,11 +53,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public event EventHandler MembershipDemoteFromSuperuser;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the UserMembership associated with this control.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public UserMembership UserMembership
         {
             get
@@ -77,11 +70,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipPromoteToSuperuser Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void OnMembershipPromoteToSuperuser(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -96,11 +87,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipPromoteToSuperuser Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void OnMembershipDemoteFromSuperuser(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -115,11 +104,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipAuthorized Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void OnMembershipAuthorized(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -133,11 +120,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipPasswordUpdateChanged Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -151,11 +136,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipUnAuthorized Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void OnMembershipUnAuthorized(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -169,11 +152,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipUnLocked Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public void OnMembershipUnLocked(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -187,11 +168,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
             // disable/enable buttons
@@ -252,13 +231,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.membershipForm.DataBind();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -270,11 +245,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdToggleSuperuser.Click += this.CmdToggleSuperuser_Click;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdAuthorize_Click runs when the Authorize User Button is clicked.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void CmdAuthorize_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -306,11 +279,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.OnMembershipAuthorized(EventArgs.Empty);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdPassword_Click runs when the ChangePassword Button is clicked.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void CmdPassword_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -344,11 +315,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void CmdUnAuthorize_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -411,11 +380,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdUnlock_Click runs when the Unlock Account Button is clicked.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void CmdUnLock_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)

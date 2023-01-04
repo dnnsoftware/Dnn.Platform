@@ -10,16 +10,13 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : WorkflowStatePermissionCollection
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   DesktopModulePermissionCollection provides the a custom collection for WorkflowStatePermissionInfo
     ///   objects.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class WorkflowStatePermissionCollection : CollectionBase
     {

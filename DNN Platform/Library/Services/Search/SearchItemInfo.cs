@@ -7,17 +7,12 @@ namespace DotNetNuke.Services.Search
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchItemInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchItemInfo represents a Search Item.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     [Serializable]
     public class SearchItemInfo

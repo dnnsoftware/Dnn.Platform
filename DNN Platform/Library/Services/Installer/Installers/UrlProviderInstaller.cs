@@ -17,7 +17,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private ExtensionUrlProviderInfo installedExtensionUrlProvider;
         private string desktopModuleName;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
@@ -30,20 +29,16 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Commit()
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Install method installs the UrlProvider component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Install()
         {
             try
@@ -77,11 +72,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadManifest method reads the manifest file for the compoent.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.extensionUrlProvider = new ExtensionUrlProviderInfo
@@ -102,12 +95,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             // If Temp Provider exists then we need to update the DataStore with this
@@ -123,11 +114,9 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UnInstall method uninstalls the component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
             this.DeleteProvider();

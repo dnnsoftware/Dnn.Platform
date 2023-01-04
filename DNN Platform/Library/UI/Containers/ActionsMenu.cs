@@ -13,11 +13,9 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
     /// Class    : ActionsMenu
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionsMenu provides a menu for a collection of actions.
     /// </summary>
@@ -25,7 +23,6 @@ namespace DotNetNuke.UI.Containers
     /// ActionsMenu inherits from CompositeControl, and implements the IActionControl
     /// Interface. It uses the Navigation Providers to implement the Menu.
     /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ActionsMenu : Control, IActionControl
     {
         private ActionManager actionManager;
@@ -37,12 +34,10 @@ namespace DotNetNuke.UI.Containers
         /// <inheritdoc/>
         public event ActionEventHandler Action;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ActionManager instance for this Action control.
         /// </summary>
         /// <returns>An ActionManager object.</returns>
-        /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
             get
@@ -56,12 +51,10 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the Expansion Depth for the Control.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int ExpandDepth
         {
             get
@@ -80,28 +73,22 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the Path to the Script Library for the provider.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string PathSystemScript { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         public bool PopulateNodesFromClient { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the Name of the provider to use.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ProviderName
         {
             get
@@ -115,20 +102,16 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
         /// <returns>An IModuleControl object.</returns>
-        /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ActionRoot.
         /// </summary>
         /// <returns>A ModuleActionCollection.</returns>
-        /// -----------------------------------------------------------------------------
         protected ModuleAction ActionRoot
         {
             get
@@ -142,12 +125,10 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Provider Control.
         /// </summary>
         /// <returns>A NavigationProvider.</returns>
-        /// -----------------------------------------------------------------------------
         protected NavigationProvider ProviderControl
         {
             get
@@ -156,21 +137,17 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// BindMenu binds the Navigation Provider to the Node Collection.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected void BindMenu()
         {
             this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnAction raises the Action Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -179,11 +156,9 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnInit runs during the controls initialisation phase.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
             this.providerControl = NavigationProvider.Instance(this.ProviderName);
@@ -194,11 +169,9 @@ namespace DotNetNuke.UI.Containers
             this.Controls.Add(this.ProviderControl.NavigationControl);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnLoad runs during the controls load phase.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -210,23 +183,19 @@ namespace DotNetNuke.UI.Containers
             this.SetMenuDefaults();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnPreRender runs during the controls pre-render phase.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             this.BindMenu();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// BindMenu binds the Navigation Provider to the Node Collection.
         /// </summary>
         /// <param name="objNodes">The Nodes collection to bind.</param>
-        /// -----------------------------------------------------------------------------
         private void BindMenu(DNNNodeCollection objNodes)
         {
             this.Visible = this.ActionManager.DisplayControl(objNodes);
@@ -243,12 +212,10 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessNodes proceses a single node and its children.
         /// </summary>
         /// <param name="objParent">The Node to process.</param>
-        /// -----------------------------------------------------------------------------
         private void ProcessNodes(DNNNode objParent)
         {
             if (!string.IsNullOrEmpty(objParent.JSFunction))
@@ -262,11 +229,9 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// SetMenuDefaults sets up the default values.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void SetMenuDefaults()
         {
             try
@@ -301,11 +266,9 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// MenuItem_Click handles the Menu Click event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void MenuItem_Click(NavigationEventArgs args)
         {
             if (Globals.NumberMatchRegex.IsMatch(args.ID))
@@ -318,11 +281,9 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProviderControl_PopulateOnDemand handles the Populate On Demand Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void ProviderControl_PopulateOnDemand(NavigationEventArgs args)
         {
             this.SetMenuDefaults();

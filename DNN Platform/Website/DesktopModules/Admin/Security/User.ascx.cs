@@ -32,17 +32,11 @@ namespace DotNetNuke.Modules.Admin.Users
     using Globals = DotNetNuke.Common.Globals;
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The User UserModuleBase is used to manage the base parts of a User.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The User UserModuleBase is used to manage the base parts of a User.</summary>
     public partial class User : UserUserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the User is valid.
         /// </summary>
@@ -56,7 +50,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public UserCreateStatus CreateStatus { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Password section is displayed.
         /// </summary>
@@ -73,7 +66,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Update button.
         /// </summary>
@@ -107,7 +99,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateUser creates a new user in the Database.
         /// </summary>
@@ -145,7 +136,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.OnUserCreateCompleted(args);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls.
         /// </summary>
@@ -284,12 +274,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -408,7 +393,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Validate validates the User.
         /// </summary>
@@ -476,7 +460,6 @@ namespace DotNetNuke.Modules.Admin.Users
             return isValid;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdDelete_Click runs when the delete Button is clicked.
         /// </summary>
@@ -541,7 +524,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdUpdate_Click runs when the Update Button is clicked.
         /// </summary>

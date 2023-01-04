@@ -20,11 +20,9 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : PortalModuleBase
     ///
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PortalModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal.
@@ -32,8 +30,6 @@ namespace DotNetNuke.Entities.Modules
     /// The PortalModuleBase class defines portal specific properties
     /// that are used by the portal framework to correctly display portal modules.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class PortalModuleBase : UserControlBase, IModuleControl
     {
         protected static readonly Regex FileInfoRegex = new Regex(
@@ -56,15 +52,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
         /// Administrator role
         /// Cache.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public bool EditMode
         {
             get
@@ -143,12 +135,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the underlying base control for this ModuleControl.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public Control Control
         {
             get
@@ -157,12 +147,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Path for this control (used primarily for UserControls).
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlPath
         {
             get
@@ -171,12 +159,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Name for this control.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlName
         {
             get
@@ -185,12 +171,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Module Context for this control.
         /// </summary>
         /// <returns>A ModuleInstanceContext.</returns>
-        /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
             get
@@ -206,14 +190,10 @@ namespace DotNetNuke.Entities.Modules
 
         // CONVERSION: Remove obsoleted methods (FYI some core modules use these, such as Links)
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the CacheDirectory property is used to return the location of the "Cache"
         ///   Directory for the Module.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         [Obsolete("This property is deprecated.  Plaese use ModuleController.CacheDirectory(). Scheduled removal in v11.0.0.")]
         public string CacheDirectory
         {
@@ -223,14 +203,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the CacheFileName property is used to store the FileName for this Module's
         ///   Cache.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]
         public string CacheFileName
         {
@@ -328,12 +304,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the local resource file for this control.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
             get
@@ -477,14 +451,10 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Helper method that can be used to add an ActionEventHandler to the Skin for this
         /// Module Control.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected void AddActionHandler(ActionEventHandler e)
         {
             UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);

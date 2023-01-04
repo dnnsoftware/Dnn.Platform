@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Tokens
     /// Supported Token Sources: User, Host, Portal, Tab, Module, Membership, Profile,
     ///                          Row, Date, Ticks, ArrayList (Custom), IDictionary.
     /// </summary>
-    /// <remarks></remarks>
     public class TokenReplace : BaseCustomTokenReplace
     {
         /// <summary>

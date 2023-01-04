@@ -9,15 +9,12 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Common.Utilities;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
     /// Class    : ControlInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ControlInfo provides a base class for Module Controls and SkinControls.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class ControlInfo : BaseEntityInfo
     {
@@ -29,37 +26,29 @@ namespace DotNetNuke.Entities.Modules
             this.SupportsPartialRendering = Null.NullBoolean;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Control Key.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlKey { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Control Source.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlSrc { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets a flag that determines whether the control support the AJAX
         /// Update Panel.
         /// </summary>
         /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
         public bool SupportsPartialRendering { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a ControlInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {
             // Call EntityBaseInfo's implementation

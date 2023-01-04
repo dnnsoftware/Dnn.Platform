@@ -20,12 +20,10 @@ namespace DotNetNuke.Security.Permissions
         private int folderPermissionID;
         private int portalID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public FolderPermissionInfo()
         {
             this.folderPermissionID = Null.NullInteger;
@@ -34,13 +32,11 @@ namespace DotNetNuke.Security.Permissions
             this.folderID = Null.NullInteger;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>
-        /// -----------------------------------------------------------------------------
         public FolderPermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -110,12 +106,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -131,12 +125,10 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a FolderPermissionInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);

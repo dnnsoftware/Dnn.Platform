@@ -17,7 +17,6 @@ namespace DotNetNuke.Services.Tokens
     /// [object:property] or [object:property|format|ifEmpty] or [custom:no] within a string
     /// with the appropriate current property/custom values.
     /// </summary>
-    /// <remarks></remarks>
     public abstract class BaseTokenReplace
     {
         protected const string ObjectLessToken = "no_object";

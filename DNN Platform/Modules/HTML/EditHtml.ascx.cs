@@ -27,8 +27,6 @@ namespace DotNetNuke.Modules.Html
     /// <summary>
     ///   The EditHtml PortalModuleBase is used to manage Html.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class EditHtml : HtmlModuleBase
     {
         private readonly INavigationManager navigationManager;

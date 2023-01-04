@@ -17,7 +17,6 @@ namespace DotNetNuke.Entities.Tabs
     /// <summary>
     /// Represents the collection of Tabs for a portal.
     /// </summary>
-    /// <remarks></remarks>
     [Serializable]
     public class TabCollection : Dictionary<int, TabInfo>
     {

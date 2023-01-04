@@ -8,12 +8,9 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
     using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Interface for InstallController. This Interface is meant for Internal use only.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public interface IInstallController
     {
         string InstallerLogName { get; }

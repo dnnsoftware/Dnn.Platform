@@ -14,15 +14,12 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Services.Exceptions;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : WorkflowStatePermissionController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   WorkflowStatePermissionController provides the Business Layer for DesktopModule Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class WorkflowStatePermissionController
     {
         public const string WorkflowStatePermissionCacheKey = "WorkflowStatePermissions";
@@ -31,13 +28,11 @@ namespace DotNetNuke.Security.Permissions
         public const int WorkflowStatePermissionCacheTimeOut = 20;
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection.
         /// </summary>
         /// <param name = "stateID">The ID of the State.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int stateID)
         {
             bool bFound = false;
@@ -60,25 +55,21 @@ namespace DotNetNuke.Security.Permissions
             return workflowStatePermissions;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   HasWorkflowStatePermission checks whether the current user has a specific WorkflowState Permission.
         /// </summary>
         /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState.</param>
         /// <param name = "permissionKey">The Permission to check.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static bool HasWorkflowStatePermission(WorkflowStatePermissionCollection objWorkflowStatePermissions, string permissionKey)
         {
             return PortalSecurity.IsInRoles(objWorkflowStatePermissions.ToString(permissionKey));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkflowStatePermissions gets a Dictionary of WorkflowStatePermissionCollections by
         ///   WorkflowState.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private static Dictionary<int, WorkflowStatePermissionCollection> GetWorkflowStatePermissions()
         {
             return CBO.GetCachedObject<Dictionary<int, WorkflowStatePermissionCollection>>(
@@ -86,25 +77,21 @@ namespace DotNetNuke.Security.Permissions
                 GetWorkflowStatePermissionsCallBack);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkflowStatePermissionsCallBack gets a Dictionary of WorkflowStatePermissionCollections by
         ///   WorkflowState from the the Database.
         /// </summary>
         /// <param name = "cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
         private static object GetWorkflowStatePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
             return FillWorkflowStatePermissionDictionary(Provider.GetWorkflowStatePermissions());
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   FillWorkflowStatePermissionDictionary fills a Dictionary of WorkflowStatePermissions from a
         ///   dataReader.
         /// </summary>
         /// <param name = "dr">The IDataReader.</param>
-        /// -----------------------------------------------------------------------------
         private static Dictionary<int, WorkflowStatePermissionCollection> FillWorkflowStatePermissionDictionary(IDataReader dr)
         {
             var dic = new Dictionary<int, WorkflowStatePermissionCollection>();

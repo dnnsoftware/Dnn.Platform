@@ -17,10 +17,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Title : SkinObjectBase
     {
         private const string MyFileName = "Title.ascx";

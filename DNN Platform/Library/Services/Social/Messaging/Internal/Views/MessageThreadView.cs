@@ -5,15 +5,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging
     /// Class:      MessageThreadView
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MessageThreadView class contains MessageConversationView and collection of MessageAttachmentView.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class MessageThreadView
     {
         /// <summary>

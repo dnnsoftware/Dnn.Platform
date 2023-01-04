@@ -5,21 +5,15 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System.Xml.XPath;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProviderInstaller installs Provider Components to a DotNetNuke site.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class ProviderInstaller : ComponentInstallerBase
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get

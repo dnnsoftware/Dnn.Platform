@@ -31,8 +31,6 @@ namespace DotNetNuke.Modules.Admin.Security
     /// <summary>
     /// The SendPassword UserModuleBase is used to allow a user to retrieve their password.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class SendPassword : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
@@ -176,8 +174,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -201,8 +197,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// cmdSendPassword_Click runs when the Password Reminder button is clicked.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void OnSendPasswordClick(object sender, EventArgs e)
         {
             // pretty much always display the same message to avoid hinting on the existance of a user name

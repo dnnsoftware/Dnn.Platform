@@ -31,11 +31,9 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Impl Controller class for Lucene.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     internal class InternalSearchControllerImpl : IInternalSearchController
     {
         private const string SearchableModuleDefsKey = "{0}-{1}-{2}";

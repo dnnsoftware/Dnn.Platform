@@ -25,15 +25,12 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Framework
     /// Project:    DotNetNuke
     /// Class:      PageBase
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// PageBase provides a custom DotNetNuke base class for pages.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
@@ -48,12 +45,10 @@ namespace DotNetNuke.Framework
         private CultureInfo pageCulture;
         private string localResourceFile;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="PageBase"/> class.
         /// Creates the Page.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected PageBase()
         {
             this.localizedControls = new ArrayList();
@@ -114,12 +109,10 @@ namespace DotNetNuke.Framework
         /// </summary>
         public bool HeaderIsWritten { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.
         /// </summary>
         /// <returns>A System.Web.UI.PageStatePersister.</returns>
-        /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
             get

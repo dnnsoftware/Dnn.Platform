@@ -23,12 +23,9 @@ namespace DotNetNuke.Services.Social.Messaging
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Controller class for social Messaging.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class MessagingController
                                 : ServiceLocator<IMessagingController, MessagingController>,
                                 IMessagingController

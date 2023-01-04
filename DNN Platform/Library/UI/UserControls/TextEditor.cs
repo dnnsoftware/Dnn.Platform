@@ -18,16 +18,11 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// -----------------------------------------------------------------------------
     /// Class:  TextEditor
     /// Project: DotNetNuke
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// TextEditor is a user control that provides a wrapper for the HtmlEditor providers.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
@@ -302,13 +297,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -361,13 +352,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// optRender_SelectedIndexChanged runs when Basic Text Box mode is changed.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected void OptRenderSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptRender.SelectedIndex != -1)
@@ -383,13 +370,9 @@ namespace DotNetNuke.UI.UserControls
             this.SetPanels();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// optView_SelectedIndexChanged runs when Editor Mode is changed.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         protected void OptViewSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptView.SelectedIndex != -1)
@@ -430,41 +413,29 @@ namespace DotNetNuke.UI.UserControls
             return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Decodes the html.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="strHtml">Html to decode.</param>
         /// <returns>The decoded html.</returns>
-        /// -----------------------------------------------------------------------------
         private string Decode(string strHtml)
         {
             return this.HtmlEncode ? this.Server.HtmlDecode(strHtml) : strHtml;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Encodes the html.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <param name="strHtml">Html to encode.</param>
         /// <returns>The encoded html.</returns>
-        /// -----------------------------------------------------------------------------
         private string Encode(string strHtml)
         {
             return this.HtmlEncode ? this.Server.HtmlEncode(strHtml) : strHtml;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Builds the radio button lists.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void PopulateLists()
         {
             if (this.OptRender.Items.Count == 0)
@@ -484,13 +455,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Sets the Mode displayed.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         private void SetPanels()
         {
             if (this.OptView.SelectedIndex != -1)

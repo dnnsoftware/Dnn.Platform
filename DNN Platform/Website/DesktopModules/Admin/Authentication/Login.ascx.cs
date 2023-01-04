@@ -51,8 +51,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// <summary>
     /// The Signin UserModuleBase is used to provide a login for a registered user.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class Login : UserModuleBase
     {
         private const string LOGINPATH = "/login";
@@ -352,8 +350,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// Page_Init runs when the control is initialised.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -589,8 +585,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// DataConsentCompleted runs after the user has gone through the data consent screen.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
         {
             switch (e.Status)
@@ -740,8 +734,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <summary>
         /// UserCreateCompleted runs when a new user has been Created.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             var strMessage = string.Empty;
@@ -1173,11 +1165,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return this.UserToken.Replace("http://", string.Empty).TrimEnd('/');
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ShowPanel controls what "panel" is to be displayed.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void ShowPanel()
         {
             bool showLogin = this.PageNo == 0;
@@ -1278,14 +1268,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ValidateUser runs when the user has been authorized by the data store.  It validates for
         /// things such as an expiring password, valid profile, or missing DNN User Association.
         /// </summary>
         /// <param name="objUser">The logged in User.</param>
         /// <param name="ignoreExpiring">Ignore the situation where the password is expiring (but not yet expired).</param>
-        /// -----------------------------------------------------------------------------
         private void ValidateUser(UserInfo objUser, bool ignoreExpiring)
         {
             UserValidStatus validStatus = UserValidStatus.VALID;

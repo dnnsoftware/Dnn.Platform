@@ -59,7 +59,6 @@ namespace DotNetNuke.Entities.Users
     /// </list>
     /// </remarks>
     /// <seealso cref="DotNetNuke.Security.Membership.MembershipProvider"/>
-    /// -----------------------------------------------------------------------------
     public partial class UserController : ServiceLocator<IUserController, UserController>, IUserController
     {
         /// <summary>
@@ -403,13 +402,11 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(targetUser.PortalID, targetUser);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates a new User in the Data Store.
         /// </summary>
         /// <param name="user">The userInfo object to persist to the Database.</param>
         /// <returns>The <see cref="UserCreateStatus"/> ot the User.</returns>
-        /// -----------------------------------------------------------------------------
         public static UserCreateStatus CreateUser(ref UserInfo user)
         {
             return CreateUser(ref user, false);
@@ -2026,7 +2023,6 @@ namespace DotNetNuke.Entities.Users
             return settings;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   updates a user.
         /// </summary>

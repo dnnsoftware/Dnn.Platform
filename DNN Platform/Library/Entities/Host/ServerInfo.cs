@@ -56,12 +56,10 @@ namespace DotNetNuke.Entities.Host
 
         public string UniqueId { get; set; }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         public int KeyID
         {
             get
@@ -75,12 +73,10 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a ServerInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.ServerID = Null.SetNullInteger(dr["ServerID"]);

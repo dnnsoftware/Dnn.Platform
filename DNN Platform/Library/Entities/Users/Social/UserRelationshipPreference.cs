@@ -10,16 +10,13 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      UserRelationshipPreference
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserRelationshipPreference class defines the relationship preference per user
     /// The user initiating the relationship is UserId.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     public class UserRelationshipPreference : BaseEntityInfo, IHydratable
     {

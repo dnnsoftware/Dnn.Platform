@@ -33,7 +33,6 @@ namespace DotNetNuke.Entities.Users
     /// </list>
     /// </remarks>
     /// <seealso cref="DotNetNuke.Security.Membership.MembershipProvider"/>
-    /// -----------------------------------------------------------------------------
     public partial class UserController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

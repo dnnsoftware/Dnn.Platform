@@ -30,8 +30,6 @@ namespace DotNetNuke.UI.Containers
     /// <summary>
     /// Container is the base for the Containers.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class Container : UserControl
     {
         private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
@@ -39,7 +37,6 @@ namespace DotNetNuke.UI.Containers
         private ModuleInfo moduleConfiguration;
         private ModuleHost moduleHost;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleControl object that this container is displaying.
         /// </summary>
@@ -58,7 +55,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the ModuleInfo object that this container is displaying.
         /// </summary>
@@ -71,7 +67,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleHost object that this container is displaying.
         /// </summary>
@@ -84,7 +79,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Parent Container for this container.
         /// </summary>
@@ -98,7 +92,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Path for this container.
         /// </summary>
@@ -111,7 +104,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Source for this container.
         /// </summary>
@@ -132,7 +124,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Portal Settings for the current Portal.
         /// </summary>
@@ -151,7 +142,6 @@ namespace DotNetNuke.UI.Containers
             this.ProcessModule();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnInit runs when the Container is initialised.
         /// </summary>
@@ -172,7 +162,6 @@ namespace DotNetNuke.UI.Containers
             this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnLoad runs just before the Container is rendered.
         /// </summary>
@@ -183,7 +172,6 @@ namespace DotNetNuke.UI.Containers
             this.InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnUnLoad runs when the Container is unloaded.
         /// </summary>
@@ -199,7 +187,6 @@ namespace DotNetNuke.UI.Containers
             this.ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessChildControls parses all the controls in the container, and if the
         /// control is an action (IActionControl) it attaches the ModuleControl (IModuleControl)
@@ -242,7 +229,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessContentPane processes the ContentPane, setting its style and other
         /// attributes.
@@ -296,7 +282,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessFooter adds an optional footer (and an End_Module comment)..
         /// </summary>
@@ -316,7 +301,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessHeader adds an optional header (and a Start_Module_ comment)..
         /// </summary>
@@ -336,7 +320,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessModule processes the module which is attached to this container.
         /// </summary>
@@ -393,7 +376,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessStylesheets processes the Module and Container stylesheets and adds
         /// them to the Page.
@@ -480,7 +462,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// ModuleAction_Click runs when a ModuleAction is clicked.
         /// </summary>

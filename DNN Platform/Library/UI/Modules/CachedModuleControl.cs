@@ -8,39 +8,32 @@ namespace DotNetNuke.UI.Modules
 
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
     /// Class    : CachedModuleControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// CachedModuleControl represents a cached "ModuleControl".  It inherits from
     /// Literal and implements the IModuleControl interface.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class CachedModuleControl : Literal, IModuleControl
     {
         private string localResourceFile;
         private ModuleInstanceContext moduleContext;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedModuleControl"/> class.
         /// Constructs a new CachedModuleControl.
         /// </summary>
         /// <param name="cachedContent">The cached Content for this control.</param>
-        /// -----------------------------------------------------------------------------
         public CachedModuleControl(string cachedContent)
         {
             this.Text = cachedContent;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the underlying base control for this ModuleControl.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public Control Control
         {
             get
@@ -49,12 +42,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Path for this control (used primarily for UserControls).
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlPath
         {
             get
@@ -63,12 +54,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Name for this control.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string ControlName
         {
             get
@@ -77,12 +66,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Module Context for this control.
         /// </summary>
         /// <returns>A ModuleInstanceContext.</returns>
-        /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
             get
@@ -96,12 +83,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the local resource file for this control.
         /// </summary>
         /// <returns>A String.</returns>
-        /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
             get

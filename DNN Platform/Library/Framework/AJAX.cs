@@ -12,12 +12,9 @@ namespace DotNetNuke.Framework
 
     public class AJAX
     {
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   AddScriptManager is used internally by the framework to add a ScriptManager control to the page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public static void AddScriptManager(Page page)
         {
             AddScriptManager(page, true);
@@ -73,13 +70,10 @@ namespace DotNetNuke.Framework
             return objPage.FindControl("ScriptManager") as ScriptManager;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   IsEnabled can be used to determine if AJAX has been enabled already as we
         ///   only need one Script Manager per page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <returns></returns>
         public static bool IsEnabled()
         {
@@ -93,24 +87,18 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   IsInstalled can be used to determine if AJAX is installed on the server.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <returns></returns>
         public static bool IsInstalled()
         {
             return true;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Allows a control to be excluded from UpdatePanel async callback.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public static void RegisterPostBackControl(Control objControl)
         {
             ScriptManager objScriptManager = GetScriptManager(objControl.Page);
@@ -120,12 +108,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   RegisterScriptManager must be used by developers to instruct the framework that AJAX is required on the page.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public static void RegisterScriptManager()
         {
             if (!IsEnabled())
@@ -134,12 +119,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   RemoveScriptManager will remove the ScriptManager control during Page Render if the RegisterScriptManager has not been called.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         public static void RemoveScriptManager(Page objPage)
         {
             if (!IsEnabled())
@@ -152,12 +134,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Wraps a control in an update panel.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         /// <returns></returns>
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {

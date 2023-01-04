@@ -116,15 +116,11 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether the ShowMissingKeys property returns the web.config setting that determines
         /// whether to render a visual indicator that a key is missing
         /// is 'key'.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static bool ShowMissingKeys
         {
             get
@@ -169,13 +165,11 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the KeyName property returns and caches the name of the key attribute used to lookup resources.
         /// This can be configured by setting ResourceManagerKey property in the web.config file. The default value for this property
         /// is 'key'.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public static string KeyName
         {
             get
@@ -193,12 +187,10 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the CurrentCulture returns the current Culture being used
         /// is 'key'.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public string CurrentCulture
         {
             get
@@ -728,20 +720,17 @@ namespace DotNetNuke.Services.Localization
             return localizedText;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resource key.
         /// </summary>
         /// <param name="key">The resource key to find.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key)
         {
             return GetString(key, null, PortalController.Instance.GetCurrentPortalSettings(), null, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resourcekey.
@@ -749,13 +738,11 @@ namespace DotNetNuke.Services.Localization
         /// <param name="key">The resourcekey to find.</param>
         /// <param name="portalSettings">The current portals Portal Settings.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key, PortalSettings portalSettings)
         {
             return LocalizationProvider.Instance.GetString(key, null, null, portalSettings);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resourcekey.
@@ -764,13 +751,11 @@ namespace DotNetNuke.Services.Localization
         /// <param name="resourceFileRoot">The Local Resource root.</param>
         /// <param name="disableShowMissingKeys">Disable to show missing key.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, bool disableShowMissingKeys)
         {
             return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, disableShowMissingKeys);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resourcekey.
@@ -778,13 +763,11 @@ namespace DotNetNuke.Services.Localization
         /// <param name="key">The resourcekey to find.</param>
         /// <param name="resourceFileRoot">The Resource File Name.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot)
         {
             return LocalizationProvider.Instance.GetString(key, resourceFileRoot);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resourcekey.
@@ -793,13 +776,11 @@ namespace DotNetNuke.Services.Localization
         /// <param name="resourceFileRoot">The Local Resource root.</param>
         /// <param name="language">A specific language to lookup the string.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, string language)
         {
             return LocalizationProvider.Instance.GetString(key, resourceFileRoot, language);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resourcekey.
@@ -809,13 +790,11 @@ namespace DotNetNuke.Services.Localization
         /// <param name="portalSettings">The current portals Portal Settings.</param>
         /// <param name="language">A specific language to lookup the string.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language)
         {
             return GetString(key, resourceFileRoot, portalSettings, language, false);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <overloads>One of six overloads.</overloads>
         /// <summary>
         /// GetString gets the localized string corresponding to the resourcekey.
@@ -826,13 +805,11 @@ namespace DotNetNuke.Services.Localization
         /// <param name="language">A specific language to lookup the string.</param>
         /// <param name="disableShowMissingKeys">Disables the show missing keys flag.</param>
         /// <returns>The localized Text.</returns>
-        /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, PortalSettings portalSettings, string language, bool disableShowMissingKeys)
         {
             return LocalizationProvider.Instance.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetStringUrl gets the localized string corresponding to the resourcekey.
         /// </summary>
@@ -845,7 +822,6 @@ namespace DotNetNuke.Services.Localization
         /// but it disables the ShowMissingKey flag, so even it testing scenarios, the correct string
         /// is returned.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetStringUrl(string key, string resourceFileRoot)
         {
             return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, true);
@@ -878,7 +854,6 @@ namespace DotNetNuke.Services.Localization
             return GetSafeJSString(unsafeString);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage.
         /// </summary>
@@ -895,13 +870,11 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName)
         {
             return GetSystemMessage(null, portalSettings, messageName, null, GlobalResourceFile, null);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage.
         /// </summary>
@@ -919,13 +892,11 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo)
         {
             return GetSystemMessage(null, portalSettings, messageName, userInfo, GlobalResourceFile, null);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///         /// Gets a SystemMessage.
         /// </summary>
@@ -944,13 +915,11 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo)
         {
             return GetSystemMessage(strLanguage, portalSettings, messageName, userInfo, GlobalResourceFile, null);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage.
         /// </summary>
@@ -969,13 +938,11 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile)
         {
             return GetSystemMessage(null, portalSettings, messageName, null, resourceFile, null);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage.
         /// </summary>
@@ -995,13 +962,11 @@ namespace DotNetNuke.Services.Localization
         /// - [User:VerificationCode]: User verification code for verified registrations
         /// - [Date:Current]: Current date.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile)
         {
             return GetSystemMessage(null, portalSettings, messageName, userInfo, resourceFile, null);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage passing extra custom parameters to personalize.
         /// </summary>
@@ -1015,13 +980,11 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile, ArrayList custom)
         {
             return GetSystemMessage(null, portalSettings, messageName, null, resourceFile, custom);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage passing extra custom parameters to personalize.
         /// </summary>
@@ -1036,13 +999,11 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
             return GetSystemMessage(null, portalSettings, messageName, userInfo, resourceFile, custom);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage passing extra custom parameters to personalize.
         /// </summary>
@@ -1058,13 +1019,11 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
             return GetSystemMessage(strLanguage, portalSettings, messageName, userInfo, resourceFile, custom, null, string.Empty, -1);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage passing extra custom parameters to personalize.
         /// </summary>
@@ -1082,13 +1041,11 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom, string customCaption, int accessingUserID)
         {
             return GetSystemMessage(strLanguage, portalSettings, messageName, userInfo, resourceFile, custom, null, customCaption, accessingUserID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a SystemMessage passing extra custom parameters to personalize.
         /// </summary>
@@ -1107,7 +1064,6 @@ namespace DotNetNuke.Services.Localization
         /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList customArray, IDictionary customDictionary, string customCaption, int accessingUserID)
         {
             try
@@ -1249,7 +1205,6 @@ namespace DotNetNuke.Services.Localization
             return cultureListItems;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Localizes ModuleControl Titles.
         /// </summary>
@@ -1263,7 +1218,6 @@ namespace DotNetNuke.Services.Localization
         /// Key can also be "blank" for admin/edit controls. These will only be used
         /// in admin pages.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         public static string LocalizeControlTitle(IModuleControl moduleControl)
         {
             string controlTitle = moduleControl.ModuleContext.Configuration.ModuleTitle;
@@ -1307,14 +1261,12 @@ namespace DotNetNuke.Services.Localization
             return controlTitle;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// LocalizeDataGrid creates localized Headers for a DataGrid.
         /// </summary>
         /// <param name="grid">Grid to localize.</param>
         /// <param name="resourceFile">The root name of the Resource File where the localized
         ///   text can be found.</param>
-        /// -----------------------------------------------------------------------------
         public static void LocalizeDataGrid(ref DataGrid grid, string resourceFile)
         {
             string localizedText;
@@ -1382,7 +1334,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="detailsView"></param>
         /// <param name="resourceFile">The root name of the resource file where the localized
         ///  texts can be found.</param>
-        /// <remarks></remarks>
         public static void LocalizeDetailsView(ref DetailsView detailsView, string resourceFile)
         {
             foreach (DataControlField field in detailsView.Fields)
@@ -1397,7 +1348,6 @@ namespace DotNetNuke.Services.Localization
         /// <param name="gridView">Grid to localize.</param>
         /// <param name="resourceFile">The root name of the resource file where the localized
         ///  texts can be found.</param>
-        /// <remarks></remarks>
         public static void LocalizeGridView(ref GridView gridView, string resourceFile)
         {
             foreach (DataControlField column in gridView.Columns)
@@ -1406,7 +1356,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Localizes the "Built In" Roles.
         /// </summary>
@@ -1416,7 +1365,6 @@ namespace DotNetNuke.Services.Localization
         /// -BreadCrumbs.
         /// </remarks>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static string LocalizeRole(string role)
         {
             string localRole;

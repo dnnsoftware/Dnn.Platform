@@ -13,19 +13,15 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Common;
     using DotNetNuke.Data;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AssemblyInstaller installs Assembly Components to a DotNetNuke site.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public class AssemblyInstaller : FileInstaller
     {
         private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
@@ -38,7 +34,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Collection Node ("assemblies").
         /// </summary>
@@ -51,7 +46,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the default Path for the file - if not present in the manifest.
         /// </summary>
@@ -64,7 +58,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Item Node ("assembly").
         /// </summary>
@@ -77,7 +70,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the PhysicalBasePath for the assemblies.
         /// </summary>
@@ -90,7 +82,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteFile method deletes a single assembly.
         /// </summary>
@@ -114,7 +105,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
@@ -125,7 +115,6 @@ namespace DotNetNuke.Services.Installer.Installers
             return type == InstallFileType.Assembly;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The InstallFile method installs a single assembly.
         /// </summary>

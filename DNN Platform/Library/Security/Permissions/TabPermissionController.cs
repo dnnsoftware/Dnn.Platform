@@ -12,15 +12,12 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : TabPermissionController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// TabPermissionController provides the Business Layer for Tab Permissions.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class TabPermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
@@ -225,12 +222,10 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanViewPage(tab);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeleteTabPermissionsByUser deletes a user's Tab Permissions in the Database.
         /// </summary>
         /// <param name="user">The user.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteTabPermissionsByUser(UserInfo user)
         {
             Provider.DeleteTabPermissionsByUser(user);
@@ -238,20 +233,17 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearTabPermissionsCache(user.PortalID);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetTabPermissions gets a TabPermissionCollection.
         /// </summary>
         /// <param name="tabId">The ID of the tab.</param>
         /// <param name="portalId">The ID of the portal.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
             return Provider.GetTabPermissions(tabId, portalId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// HasTabPermission checks whether the current user has a specific Tab Permission.
         /// </summary>
@@ -259,13 +251,11 @@ namespace DotNetNuke.Security.Permissions
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="permissionKey">The Permission to check.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(string permissionKey)
         {
             return HasTabPermission(PortalController.Instance.GetCurrentPortalSettings().ActiveTab.TabPermissions, permissionKey);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// HasTabPermission checks whether the current user has a specific Tab Permission.
         /// </summary>
@@ -274,18 +264,15 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="tabPermissions">The Permissions for the Tab.</param>
         /// <param name="permissionKey">The Permission(s) to check.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
         {
             return Provider.HasTabPermission(tabPermissions, permissionKey);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// SaveTabPermissions saves a Tab's permissions.
         /// </summary>
         /// <param name="tab">The Tab to update.</param>
-        /// -----------------------------------------------------------------------------
         public static void SaveTabPermissions(TabInfo tab)
         {
             Provider.SaveTabPermissions(tab);

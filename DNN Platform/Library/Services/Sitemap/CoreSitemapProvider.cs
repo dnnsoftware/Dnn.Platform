@@ -140,8 +140,6 @@ namespace DotNetNuke.Services.Sitemap
         /// </summary>
         /// <param name = "objTab">The page being indexed.</param>
         /// <returns>The priority assigned to the page.</returns>
-        /// <remarks>
-        /// </remarks>
         protected float GetPriority(TabInfo objTab)
         {
             float priority = objTab.SiteMapPriority;
@@ -172,8 +170,6 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name = "objTab">The page being indexed.</param>
         /// <param name="language">Culture code to use in the URL.</param>
         /// <returns>A SitemapUrl object for the current page.</returns>
-        /// <remarks>
-        /// </remarks>
         private SitemapUrl GetPageUrl(TabInfo objTab, string language, PortalSettings ps)
         {
             var pageUrl = new SitemapUrl();

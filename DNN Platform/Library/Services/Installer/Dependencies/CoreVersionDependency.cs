@@ -7,13 +7,9 @@ namespace DotNetNuke.Services.Installer.Dependencies
     using System.Reflection;
     using System.Xml.XPath;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CoreVersionDependency determines whether the CoreVersion is correct.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class CoreVersionDependency : DependencyBase
     {
         private Version minVersion;

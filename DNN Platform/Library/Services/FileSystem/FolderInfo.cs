@@ -310,12 +310,10 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -331,12 +329,10 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Fills a FolderInfo from a Data Reader.
         /// </summary>
         /// <param name = "dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
             this.FolderID = Null.SetNullInteger(dr["FolderID"]);

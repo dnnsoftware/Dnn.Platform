@@ -86,14 +86,12 @@ namespace DotNetNuke.Security
         private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The FilterFlag enum determines which filters are applied by the InputFilter
         /// function.  The Flags attribute allows the user to include multiple
         /// enumerated values in a single variable by OR'ing the individual values
         /// together.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Flags]
         public enum FilterFlag
         {
@@ -302,7 +300,6 @@ namespace DotNetNuke.Security
             return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function creates a random key.
         /// </summary>
@@ -341,14 +338,12 @@ namespace DotNetNuke.Security
             return CryptographyProvider.Instance().EncryptString(message, passphrase);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function applies security filtering to the UserInput string.
         /// </summary>
         /// <param name="userInput">This is the string to be filtered.</param>
         /// <param name="filterType">Flags which designate the filters to be applied.</param>
         /// <returns>Filtered UserInput.</returns>
-        /// -----------------------------------------------------------------------------
         public string InputFilter(string userInput, FilterFlag filterType)
         {
             if (userInput == null)
@@ -394,7 +389,6 @@ namespace DotNetNuke.Security
             return tempInput;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Replaces profanity words with other words in the provided input string.
         /// </summary>
@@ -410,7 +404,6 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words replaced.</returns>
-        /// -----------------------------------------------------------------------------
         public string Replace(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -456,7 +449,6 @@ namespace DotNetNuke.Security
             return inputString;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Removes profanity words in the provided input string.
         /// </summary>
@@ -472,7 +464,6 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words removed.</returns>
-        /// -----------------------------------------------------------------------------
         public string Remove(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -694,7 +685,6 @@ namespace DotNetNuke.Security
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function applies security filtering to the UserInput string, and reports
         /// whether the input string is valid.
@@ -702,7 +692,6 @@ namespace DotNetNuke.Security
         /// <param name="userInput">This is the string to be filtered.</param>
         /// <param name="filterType">Flags which designate the filters to be applied.</param>
         /// <returns></returns>
-        /// -----------------------------------------------------------------------------
         public bool ValidateInput(string userInput, FilterFlag filterType)
         {
             string filteredInput = this.InputFilter(userInput, filterType);
@@ -862,7 +851,6 @@ namespace DotNetNuke.Security
             return hexString.ToString();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function uses Regex search strings to remove HTML tags which are
         /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
@@ -873,7 +861,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the FormatDisableScripting function.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static string FilterStrings(string strInput)
         {
             // setup up list of search terms as items may be used twice
@@ -912,7 +899,6 @@ namespace DotNetNuke.Security
             return tempInput;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This filter removes angle brackets i.e.
         /// </summary>
@@ -921,14 +907,12 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static string FormatAngleBrackets(string strInput)
         {
             var tempInput = new StringBuilder(strInput).Replace("<", string.Empty).Replace(">", string.Empty);
             return tempInput.ToString();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This filter removes CrLf characters and inserts br.
         /// </summary>
@@ -937,7 +921,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static string FormatMultiLine(string strInput)
         {
             const string lbreak = "<br />";
@@ -945,7 +928,6 @@ namespace DotNetNuke.Security
             return tempInput.ToString();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function verifies raw SQL statements to prevent SQL injection attacks
         /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module.
@@ -955,14 +937,12 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static string FormatRemoveSQL(string strSQL)
         {
             // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
             return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function determines if the Input string contains any markup.
         /// </summary>
@@ -971,7 +951,6 @@ namespace DotNetNuke.Security
         /// <remarks>
         /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        /// -----------------------------------------------------------------------------
         private static bool IncludesMarkup(string strInput)
         {
             return StripTagsRegex.IsMatch(strInput);

@@ -5,17 +5,12 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users
     /// Class:      BaseUserInfo
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The BaseUserInfo class provides a base Entity for an online user.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     [Serializable]
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public abstract class BaseUserInfo
@@ -25,11 +20,9 @@ namespace DotNetNuke.Entities.Users
         private int portalID;
         private int tabID;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the PortalId for this online user.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int PortalID
         {
@@ -44,11 +37,9 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the TabId for this online user.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int TabID
         {
@@ -63,11 +54,9 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the CreationDate for this online user.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public DateTime CreationDate
         {
@@ -82,11 +71,9 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the LastActiveDate for this online user.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public DateTime LastActiveDate
         {

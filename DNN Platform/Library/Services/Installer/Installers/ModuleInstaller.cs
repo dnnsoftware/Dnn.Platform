@@ -17,25 +17,19 @@ using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.EventQueue;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ModuleInstaller installs Module Components to a DotNetNuke site.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
 public class ModuleInstaller : ComponentInstallerBase
     {
         private DesktopModuleInfo desktopModule;
         private EventMessage eventMessage;
         private DesktopModuleInfo installedDesktopModule;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
@@ -44,12 +38,10 @@ public class ModuleInstaller : ComponentInstallerBase
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Modules this is not neccessary.</remarks>
-        /// -----------------------------------------------------------------------------
         public override void Commit()
         {
             // Add CodeSubDirectory
@@ -133,11 +125,9 @@ public class ModuleInstaller : ComponentInstallerBase
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Install method installs the Module component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Install()
         {
             try
@@ -170,11 +160,9 @@ public class ModuleInstaller : ComponentInstallerBase
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadManifest method reads the manifest file for the Module compoent.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the Desktop Module from the manifest
@@ -228,12 +216,10 @@ public class ModuleInstaller : ComponentInstallerBase
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             // If Temp Module exists then we need to update the DataStore with this
@@ -249,21 +235,17 @@ public class ModuleInstaller : ComponentInstallerBase
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UnInstall method uninstalls the Module component.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
             this.DeleteModule();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteModule method deletes the Module from the data Store.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void DeleteModule()
         {
             try

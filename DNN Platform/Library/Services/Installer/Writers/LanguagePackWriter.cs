@@ -15,13 +15,9 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LanguagePackWriter class.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
     public class LanguagePackWriter : PackageWriterBase
     {
         private bool isCore = Null.NullBoolean;
@@ -113,12 +109,10 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the associated Language.
         /// </summary>
         /// <value>An Locale object.</value>
-        /// -----------------------------------------------------------------------------
         public Locale Language
         {
             get
@@ -132,12 +126,10 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the associated Language Pack.
         /// </summary>
         /// <value>An LanguagePackInfo object.</value>
-        /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {
             get

@@ -15,11 +15,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// InstallDatabaseStep - Step that installs Database.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     public class InstallDatabaseStep : BaseInstallationStep
     {
         /// <summary>

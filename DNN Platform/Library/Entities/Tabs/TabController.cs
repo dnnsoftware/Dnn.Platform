@@ -178,7 +178,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Processes all panes and modules in the template file.
         /// </summary>
@@ -187,8 +186,6 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabId">Tab being processed.</param>
         /// <param name="mergeTabs">Tabs need to merge.</param>
         /// <param name="hModules">Modules Hashtable.</param>
-        /// <remarks>
-        /// </remarks>
         public static void DeserializePanes(XmlNode nodePanes, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
             Dictionary<int, ModuleInfo> dicModules = ModuleController.Instance.GetTabModules(tabId);
