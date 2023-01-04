@@ -15,65 +15,49 @@ namespace DotNetNuke.Modules.RazorHost {
     
     
     public partial class AddScript {
-        /// <summary>
-        /// createNewScriptLabel control.
-        /// </summary>
+        /// <summary>createNewScriptLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label createNewScriptLabel;
-        /// <summary>
-        /// fileTypeLabel control.
-        /// </summary>
+        /// <summary>fileTypeLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl fileTypeLabel;
-        /// <summary>
-        /// scriptFileType control.
-        /// </summary>
+        /// <summary>scriptFileType control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList scriptFileType;
-        /// <summary>
-        /// fileNameLabel control.
-        /// </summary>
+        /// <summary>fileNameLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl fileNameLabel;
-        /// <summary>
-        /// fileName control.
-        /// </summary>
+        /// <summary>fileName control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fileName;
-        /// <summary>
-        /// fileExtension control.
-        /// </summary>
+        /// <summary>fileExtension control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label fileExtension;
-        /// <summary>
-        /// cmdAdd control.
-        /// </summary>
+        /// <summary>cmdAdd control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdAdd;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

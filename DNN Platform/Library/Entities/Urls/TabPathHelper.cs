@@ -15,9 +15,7 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The TabPathHelper class provides helper methods for working with tab urls.
-    /// </summary>
+    /// <summary>The TabPathHelper class provides helper methods for working with tab urls.</summary>
     public class TabPathHelper
     {
         public static string BuildTabPathWithReplacement(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
@@ -41,12 +39,10 @@ namespace DotNetNuke.Entities.Urls
             return path;
         }
 
-        /// <summary>
-        /// Replaces the diacritic characters in a path with other values.
-        /// </summary>
-        /// <param name="tabPath"></param>
-        /// <param name="replacedDiacritic"></param>
-        /// <returns></returns>
+        /// <summary>Replaces the diacritic characters in a path with other values.</summary>
+        /// <param name="tabPath">THe tab path.</param>
+        /// <param name="replacedDiacritic"><see langword="true"/> if any diacritics were replaced, otherwise <see langword="false"/>.</param>
+        /// <returns>The <paramref name="tabPath"/> with diacritics replaced.</returns>
         public static string ReplaceDiacritics(string tabPath, out bool replacedDiacritic)
         {
             string nmTabPath = tabPath.Normalize(NormalizationForm.FormD);
@@ -65,13 +61,11 @@ namespace DotNetNuke.Entities.Urls
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Get the tab path for the supplied Tab.
-        /// </summary>
+        /// <summary>Get the tab path for the supplied Tab.</summary>
         /// <param name="tab"></param>
         /// <param name="options"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns>The friendly URL path.</returns>
         internal static string GetFriendlyUrlTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
             string baseTabPath = tab.TabPath.Replace("//", "/").TrimStart('/');
@@ -92,21 +86,19 @@ namespace DotNetNuke.Entities.Urls
             return baseTabPath;
         }
 
-        /// <summary>
-        /// Finds a culture-specific homepage tabid for a non-default language.
-        /// </summary>
+        /// <summary>Finds a culture-specific homepage tab ID for a non-default language.</summary>
         /// <param name="defaultCulture">The default culture of the portal.</param>
         /// <param name="cultureCode"></param>
-        /// <param name="defaultHomeTabId">The default home page tab id.</param>
         /// <param name="portalId"></param>
-        /// <returns>THe valid home page tabid for the portalid and culture.</returns>
+        /// <param name="defaultHomeTabId">The default home page tab id.</param>
+        /// <returns>The valid home page tab ID for the portal ID and culture.</returns>
         /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back.</remarks>
         internal static int GetHomePageTabIdForCulture(string defaultCulture, int portalId, string cultureCode, int defaultHomeTabId)
         {
             int homeTabId = defaultHomeTabId;
             if (string.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
             {
-                // not the default culture, so there could be a different home page for the different cultulre in 5.5+ builds
+                // not the default culture, so there could be a different home page for the different culture in 5.5+ builds
                 var cultureLocale = new Locale { Code = cultureCode, Fallback = cultureCode, Text = cultureCode };
                 TabInfo tab = TabController.Instance.GetTabByCulture(defaultHomeTabId, portalId, cultureLocale);
                 if (tab != null)
@@ -140,9 +132,7 @@ namespace DotNetNuke.Entities.Urls
             return skin;
         }
 
-        /// <summary>
-        /// For the supplied options, return a tab path for the specified tab.
-        /// </summary>
+        /// <summary>For the supplied options, return a tab path for the specified tab.</summary>
         /// <param name="tab">TabInfo object of selected tab.</param>
         /// <param name="settings">FriendlyUrlSettings.</param>
         /// <param name="options"></param>
@@ -182,7 +172,7 @@ namespace DotNetNuke.Entities.Urls
             isCustomPath = false;
             if (homePageSiteRoot && isHomeTab && !hasPath)
             {
-                // && !isDefaultCultureCode - not working for non-language specifc custom root urls
+                // && !isDefaultCultureCode - not working for non-language specific custom root urls
                 newTabPath = "/"; // site root for home page
             }
             else

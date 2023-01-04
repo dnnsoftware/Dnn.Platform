@@ -26,9 +26,7 @@ namespace DotNetNuke.Services.Installer.Packages
             this.package = package;
         }
 
-        /// <summary>
-        /// Gets the Package associated with this event.
-        /// </summary>
+        /// <summary>Gets the Package associated with this event.</summary>
         public PackageInfo Package
         {
             get

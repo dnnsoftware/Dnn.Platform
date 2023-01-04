@@ -12,9 +12,7 @@ namespace DotNetNuke.Entities.Icons
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// IconController provides all operation to icons.
-    /// </summary>
+    /// <summary>IconController provides all operation to icons.</summary>
     /// <remarks>
     /// Tab is equal to page in DotNetNuke.
     /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
@@ -32,9 +30,7 @@ namespace DotNetNuke.Entities.Icons
 
         private static readonly SharedDictionary<string, bool> IconsStatusOnDisk = new SharedDictionary<string, bool>();
 
-        /// <summary>
-        /// Gets the Icon URL.
-        /// </summary>
+        /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
         public static string IconURL(string key)
@@ -42,9 +38,7 @@ namespace DotNetNuke.Entities.Icons
             return IconURL(key, DefaultIconSize, DefaultIconStyle);
         }
 
-        /// <summary>
-        /// Gets the Icon URL.
-        /// </summary>
+        /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
         /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32.</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
@@ -53,9 +47,7 @@ namespace DotNetNuke.Entities.Icons
             return IconURL(key, size, DefaultIconStyle);
         }
 
-        /// <summary>
-        /// Gets the Icon URL.
-        /// </summary>
+        /// <summary>Gets the Icon URL.</summary>
         /// <param name="key">Key to icon, e.g. edit.</param>
         /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32.</param>
         /// <param name="style">Style of icon, e.g. Standard (default).</param>

@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.DDRMenu
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
-    /// <summary>
-    /// Implementes the DDR Menu navigation profider.
-    /// </summary>
+    /// <summary>Implementes the DDR Menu navigation profider.</summary>
     public class DDRMenuNavigationProvider : NavigationProvider
     {
         private DDRMenuControl menuControl;
@@ -271,14 +269,10 @@ namespace DotNetNuke.Web.DDRMenu
         /// <inheritdoc/>
         public override string CSSControl { get; set; }
 
-        /// <summary>
-        /// Gets or sets the style of the menu.
-        /// </summary>
+        /// <summary>Gets or sets the style of the menu.</summary>
         public string MenuStyle { get; set; }
 
-        /// <summary>
-        /// Gets or sets the template arguments, <see cref="TemplateArgument"/>.
-        /// </summary>
+        /// <summary>Gets or sets the template arguments, <see cref="TemplateArgument"/>.</summary>
         public List<TemplateArgument> TemplateArguments { get; set; }
 
         /// <inheritdoc/>
@@ -294,9 +288,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.Bind(objNodes, true);
         }
 
-        /// <summary>
-        /// Binds the menu nodes.
-        /// </summary>
+        /// <summary>Binds the menu nodes.</summary>
         /// <param name="objNodes">The collection of menu nodes.</param>
         /// <param name="localise">A value indicating whether the menu should be localized.</param>
         public void Bind(DNNNodeCollection objNodes, bool localise)

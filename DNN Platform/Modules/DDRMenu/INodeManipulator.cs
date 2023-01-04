@@ -7,14 +7,10 @@ namespace DotNetNuke.Web.DDRMenu
 
     using DotNetNuke.Entities.Portals;
 
-    /// <summary>
-    /// Allows modules that implement this interface to manipulate the nodes in the menu before they render.
-    /// </summary>
+    /// <summary>Allows modules that implement this interface to manipulate the nodes in the menu before they render.</summary>
     public interface INodeManipulator
     {
-        /// <summary>
-        /// Manipulates the menu nodes before they render.
-        /// </summary>
+        /// <summary>Manipulates the menu nodes before they render.</summary>
         /// <param name="nodes">The list of nodes before they are manipulated.</param>
         /// <param name="portalSettings">The settings of the portal (site) on which the menu is rendered.</param>
         /// <returns>The list of nodes after they have been manipulated.</returns>

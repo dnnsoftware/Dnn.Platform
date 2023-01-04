@@ -14,9 +14,7 @@ namespace DotNetNuke.Security.Roles
     /// </summary>
     public class RoleComparer : IComparer
     {
-        /// <summary>
-        /// Compares two <see cref="RoleInfo"/> objects by performing a comparison of their rolenames.
-        /// </summary>
+        /// <summary>Compares two <see cref="RoleInfo"/> objects by performing a comparison of their rolenames.</summary>
         /// <param name="x">One of the <see cref="RoleInfo"/> instances to compare.</param>
         /// <param name="y">The other <see cref="RoleInfo"/> instance to compare.</param>
         /// <returns>An Integer that determines whether x is greater, smaller or equal to y. </returns>

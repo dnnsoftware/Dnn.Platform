@@ -25,18 +25,14 @@ namespace DotNetNuke.Entities.Users.Social
         private IList<UserRelationship> userRelationships;
         private IList<UserRoleInfo> roles;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserSocial"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserSocial"/> class.</summary>
         /// <param name="userInfo"></param>
         public UserSocial(UserInfo userInfo)
         {
             this.userInfo = userInfo;
         }
 
-        /// <summary>
-        /// Gets the Friend Relationship (if it exists with the current User).
-        /// </summary>
+        /// <summary>Gets the Friend Relationship (if it exists with the current User).</summary>
         public UserRelationship Friend
         {
             get
@@ -53,9 +49,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets the Follower Relationship. Does the user in object Follow the current User (with any status).
-        /// </summary>
+        /// <summary>Gets the Follower Relationship. Does the user in object Follow the current User (with any status).</summary>
         public UserRelationship Follower
         {
             get
@@ -69,9 +63,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets the Following Relationship (if it exists with the current User).
-        /// </summary>
+        /// <summary>Gets the Following Relationship (if it exists with the current User).</summary>
         public UserRelationship Following
         {
             get
@@ -85,17 +77,13 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets a collection of all the relationships the user is a member of.
-        /// </summary>
+        /// <summary>Gets a collection of all the relationships the user is a member of.</summary>
         public IList<UserRelationship> UserRelationships
         {
             get { return this.userRelationships ?? (this.userRelationships = RelationshipController.Instance.GetUserRelationships(this.userInfo)); }
         }
 
-        /// <summary>
-        /// Gets list of Relationships for the User.
-        /// </summary>
+        /// <summary>Gets list of Relationships for the User.</summary>
         [XmlAttribute]
         public IList<Relationship> Relationships
         {
@@ -115,9 +103,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Gets list of Roles/Groups for the User.
-        /// </summary>
+        /// <summary>Gets list of Roles/Groups for the User.</summary>
         [XmlAttribute]
         public IList<UserRoleInfo> Roles
         {

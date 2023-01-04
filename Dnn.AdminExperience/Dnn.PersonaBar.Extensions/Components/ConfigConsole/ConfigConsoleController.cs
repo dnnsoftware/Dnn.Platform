@@ -20,9 +20,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
     public class ConfigConsoleController
     {
-        /// <summary>
-        /// Name of the Web configuration file.
-        /// </summary>
+        /// <summary>Name of the Web configuration file.</summary>
         internal const string WebConfig = "Web.config";
 
         private const string CONFIGEXT = ".config";
@@ -80,9 +78,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        /// <summary>
-        /// Validates a config file against a well known schema.
-        /// </summary>
+        /// <summary>Validates a config file against a well known schema.</summary>
         /// <param name="fileName">The config file name.</param>
         /// <param name="fileContent">The contents of the config file.</param>
         /// <returns>A list of validation errors.</returns>

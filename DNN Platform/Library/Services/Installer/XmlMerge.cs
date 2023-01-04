@@ -18,16 +18,12 @@ namespace DotNetNuke.Services.Installer
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// The XmlMerge class is a utility class for XmlSplicing config files.
-    /// </summary>
+    /// <summary>The XmlMerge class is a utility class for XmlSplicing config files.</summary>
     public class XmlMerge
     {
         private IDictionary<string, XmlDocument> pendingDocuments;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceFileName"></param>
@@ -39,9 +35,7 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig.Load(sourceFileName);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceStream"></param>
@@ -53,9 +47,7 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig.Load(sourceStream);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceReader"></param>
@@ -67,9 +59,7 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig.Load(sourceReader);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
         /// <param name="sourceDoc"></param>
@@ -93,39 +83,27 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the Source for the Config file.
-        /// </summary>
+        /// <summary>Gets the Source for the Config file.</summary>
         /// <value>An XmlDocument.</value>
         public XmlDocument SourceConfig { get; private set; }
 
-        /// <summary>
-        /// Gets the Sender (source) of the changes to be merged.
-        /// </summary>
+        /// <summary>Gets the Sender (source) of the changes to be merged.</summary>
         /// <value>A String.</value>
         public string Sender { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the Target Config file.
-        /// </summary>
+        /// <summary>Gets or sets the Target Config file.</summary>
         /// <value>An XmlDocument.</value>
         public XmlDocument TargetConfig { get; set; }
 
-        /// <summary>
-        /// Gets the File Name of the Target Config file.
-        /// </summary>
+        /// <summary>Gets the File Name of the Target Config file.</summary>
         /// <value>A String.</value>
         public string TargetFileName { get; private set; }
 
-        /// <summary>
-        /// Gets the Version of the changes to be merged.
-        /// </summary>
+        /// <summary>Gets the Version of the changes to be merged.</summary>
         /// <value>A String.</value>
         public string Version { get; private set; }
 
-        /// <summary>
-        /// Gets a value indicating whether the last update performed by this instance resulted in any changes.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the last update performed by this instance resulted in any changes.</summary>
         /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document.</value>
         public bool ConfigUpdateChangedNodes { get; private set; }
 

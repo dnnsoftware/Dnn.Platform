@@ -16,9 +16,7 @@ namespace DotNetNuke.Security.Permissions
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
-        /// <summary>
-        /// Returns a list with all roles with implicit permissions on Folders.
-        /// </summary>
+        /// <summary>Returns a list with all roles with implicit permissions on Folders.</summary>
         /// <param name="portalId">The Portal Id where the Roles are.</param>
         /// <returns>A List with the implicit roles.</returns>
         public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
@@ -26,9 +24,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.ImplicitRolesForPages(portalId);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can add a folder or file.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can add a folder or file.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAddFolder(FolderInfo folder)
@@ -36,9 +32,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanAddFolder(folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can addmister a folder.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can addmister a folder.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAdminFolder(FolderInfo folder)
@@ -46,9 +40,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanAdminFolder(folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can browse the folder.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can browse the folder.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanBrowseFolder(FolderInfo folder)
@@ -56,9 +48,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanBrowseFolder(folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can copy a folder or file.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can copy a folder or file.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanCopyFolder(FolderInfo folder)
@@ -66,9 +56,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanCopyFolder(folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can delete a folder or file.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can delete a folder or file.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanDeleteFolder(FolderInfo folder)
@@ -76,9 +64,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanDeleteFolder(folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can manage a folder's settings.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can manage a folder's settings.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanManageFolder(FolderInfo folder)
@@ -86,9 +72,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanManageFolder(folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can view a folder or file.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can view a folder or file.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanViewFolder(FolderInfo folder)
@@ -137,9 +121,7 @@ namespace DotNetNuke.Security.Permissions
             return hasPermission;
         }
 
-        /// <summary>
-        /// Copies the permissions to subfolders.
-        /// </summary>
+        /// <summary>Copies the permissions to subfolders.</summary>
         /// <param name="folder">The parent folder.</param>
         /// <param name="newPermissions">The new permissions.</param>
         public static void CopyPermissionsToSubfolders(IFolderInfo folder, FolderPermissionCollection newPermissions)
@@ -151,18 +133,14 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// SaveFolderPermissions updates a Folder's permissions.
-        /// </summary>
+        /// <summary>SaveFolderPermissions updates a Folder's permissions.</summary>
         /// <param name="folder">The Folder to update.</param>
         public static void SaveFolderPermissions(FolderInfo folder)
         {
             SaveFolderPermissions((IFolderInfo)folder);
         }
 
-        /// <summary>
-        /// SaveFolderPermissions updates a Folder's permissions.
-        /// </summary>
+        /// <summary>SaveFolderPermissions updates a Folder's permissions.</summary>
         /// <param name="folder">The Folder to update.</param>
         public static void SaveFolderPermissions(IFolderInfo folder)
         {
@@ -170,9 +148,7 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache(folder.PortalID);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can add a folder or file.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can add a folder or file.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         bool IFolderPermissionController.CanAddFolder(IFolderInfo folder)
@@ -180,9 +156,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanAddFolder((FolderInfo)folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can addmister a folder.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can addmister a folder.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
@@ -190,9 +164,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanAdminFolder((FolderInfo)folder);
         }
 
-        /// <summary>
-        /// Returns a flag indicating whether the current user can view a folder or file.
-        /// </summary>
+        /// <summary>Returns a flag indicating whether the current user can view a folder or file.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         bool IFolderPermissionController.CanViewFolder(IFolderInfo folder)

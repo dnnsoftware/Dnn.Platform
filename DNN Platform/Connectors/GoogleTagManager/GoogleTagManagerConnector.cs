@@ -16,9 +16,7 @@ namespace DNN.Connectors.GoogleTagManager
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Connector to provide configuration for Google Tag Manager support.
-    /// </summary>
+    /// <summary>Connector to provide configuration for Google Tag Manager support.</summary>
     public class GoogleTagManagerConnector : IConnector
     {
         private const string DefaultDisplayName = "Google Tag Manager";
@@ -198,9 +196,7 @@ namespace DNN.Connectors.GoogleTagManager
             }
         }
 
-        /// <summary>
-        /// Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.
-        /// </summary>
+        /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
         private void EnsureScriptInConfig()
         {
             var applicationMappath = HttpContext.Current.Server.MapPath("\\");

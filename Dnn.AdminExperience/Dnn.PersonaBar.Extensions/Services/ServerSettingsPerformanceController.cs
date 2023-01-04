@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
@@ -34,13 +33,9 @@ namespace Dnn.PersonaBar.Servers.Services
         private readonly PerformanceController performanceController = new PerformanceController();
 
         /// GET: api/Servers/GetPerformanceSettings
-        /// <summary>
-        /// Gets performance settings.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets performance settings.</summary>
         /// <returns>performance settings.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetPerformanceSettings()
         {
             try
@@ -88,13 +83,10 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         /// POST: api/Servers/IncrementPortalVersion
-        /// <summary>
-        /// Increment portal resources management version.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Increment portal resources management version.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage IncrementPortalVersion()
         {
             try
@@ -114,13 +106,10 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         /// POST: api/Servers/IncrementHostVersion
-        /// <summary>
-        /// Increment host resources management version.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Increment host resources management version.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage IncrementHostVersion()
         {
             try
@@ -140,14 +129,11 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         /// POST: api/Servers/UpdatePerformanceSettings
-        /// <summary>
-        /// Updates performance settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates performance settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdatePerformanceSettings(UpdatePerfSettingsRequest request)
         {
             try

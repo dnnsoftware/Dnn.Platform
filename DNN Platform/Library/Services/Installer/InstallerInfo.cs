@@ -100,10 +100,7 @@ namespace DotNetNuke.Services.Installer
             package.AttachInstallerInfo(this);
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the package contains Valid Files.
-        /// </summary>
-        /// <value>A Boolean.</value>
+        /// <summary>Gets a value indicating whether the package contains Valid Files.</summary>
         public bool HasValidFiles
         {
             get
@@ -118,10 +115,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the Invalid File Extensions.
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets the Invalid File Extensions.</summary>
         public string InvalidFileExtensions
         {
             get
@@ -137,10 +131,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid.
-        /// </summary>
-        /// <value>A Boolean value.</value>
+        /// <summary>Gets a value indicating whether the InstallerInfo instance is Valid.</summary>
         public bool IsValid
         {
             get
@@ -149,94 +140,53 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets or sets a list of allowable file extensions (in addition to the Host's List).</summary>
         public string AllowableFiles { get; set; }
 
-        /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
+        /// <summary>Gets a Dictionary of Files that are included in the Package.</summary>
         public Dictionary<string, InstallFile> Files { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the File Extension WhiteList is ignored.
-        /// </summary>
-        /// <value>A Boolean value.</value>
+        /// <summary>Gets or sets a value indicating whether the File Extension WhiteList is ignored.</summary>
         public bool IgnoreWhiteList { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets whether the Package is already installed with the same version.
-        /// </summary>
-        /// <value>A Boolean value.</value>
+        /// <summary>Gets or sets a value indicating whether gets whether the Package is already installed with the same version.</summary>
         public bool Installed { get; set; }
 
-        /// <summary>
-        /// Gets the InstallMode.
-        /// </summary>
-        /// <value>A InstallMode value.</value>
+        /// <summary>Gets the InstallMode.</summary>
         public InstallMode InstallMode { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets whether the Installer is in legacy mode.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets whether the Installer is in legacy mode.</summary>
         public bool IsLegacyMode { get; set; }
 
-        /// <summary>
-        /// Gets or sets the associated Logger.
-        /// </summary>
-        /// <value>A Logger.</value>
+        /// <summary>Gets or sets the associated Logger.</summary>
         public string LegacyError { get; set; }
 
-        /// <summary>
-        /// Gets the associated Logger.
-        /// </summary>
-        /// <value>A Logger.</value>
+        /// <summary>Gets the associated Logger.</summary>
         public Logger Log { get; private set; }
 
-        /// <summary>
-        /// Gets and Sets the Manifest File for the Package.
-        /// </summary>
-        /// <value>An InstallFile.</value>
+        /// <summary>Gets and Sets the Manifest File for the Package.</summary>
         public InstallFile ManifestFile { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the Id of the package after installation (-1 if fail).
-        /// </summary>
-        /// <value>An Integer.</value>
+        /// <summary>Gets or sets the Id of the package after installation (-1 if fail).</summary>
         public int PackageID { get; set; }
 
-        /// <summary>
-        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").
-        /// </summary>
-        /// <value>A String.</value>
+        /// <summary>Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").</summary>
         public string PhysicalSitePath { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the Id of the current portal (-1 if Host).
-        /// </summary>
-        /// <value>An Integer.</value>
+        /// <summary>Gets or sets the Id of the current portal (-1 if Host).</summary>
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Package Install is being repaird.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the Package Install is being repaired.</summary>
         /// <value>A Boolean value.</value>
         public bool RepairInstall { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the security Access Level of the user that is calling the INstaller.
-        /// </summary>
-        /// <value>A SecurityAccessLevel enumeration.</value>
+        /// <summary>Gets or sets the security Access Level of the user that is calling the Installer.</summary>
         public SecurityAccessLevel SecurityAccessLevel { get; set; }
 
         /// <summary>
         /// Gets the Temporary Install Folder used to unzip the archive (and to place the
         /// backups of existing files) during InstallMode.
         /// </summary>
-        /// <value>A String.</value>
         public string TempInstallFolder { get; private set; }
 
         private void Initialize()

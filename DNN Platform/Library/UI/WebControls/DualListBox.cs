@@ -25,9 +25,7 @@ namespace DotNetNuke.UI.WebControls
         private List<string> addValues;
         private List<string> removeValues;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DualListBox"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DualListBox"/> class.</summary>
         public DualListBox()
         {
             this.ShowAddButton = true;
@@ -44,9 +42,7 @@ namespace DotNetNuke.UI.WebControls
 
         public event EventHandler RemoveAllButtonClick;
 
-        /// <summary>
-        /// Gets the value of the Available List Box Style.
-        /// </summary>
+        /// <summary>Gets the value of the Available List Box Style.</summary>
         /// <value>A Style object.</value>
         [Browsable(true)]
         [Category("Styles")]
@@ -62,9 +58,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the value of the Button Style.
-        /// </summary>
+        /// <summary>Gets the value of the Button Style.</summary>
         /// <value>A Style object.</value>
         [Browsable(true)]
         [Category("Styles")]
@@ -80,9 +74,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the value of the Container Style.
-        /// </summary>
+        /// <summary>Gets the value of the Container Style.</summary>
         /// <value>A Style object.</value>
         [Browsable(true)]
         [Category("Styles")]
@@ -98,9 +90,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the value of the Header Style.
-        /// </summary>
+        /// <summary>Gets the value of the Header Style.</summary>
         /// <value>A Style object.</value>
         [Browsable(true)]
         [Category("Styles")]
@@ -116,9 +106,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the value of the Selected List Box Style.
-        /// </summary>
+        /// <summary>Gets the value of the Selected List Box Style.</summary>
         /// <value>A Style object.</value>
         [Browsable(true)]
         [Category("Styles")]

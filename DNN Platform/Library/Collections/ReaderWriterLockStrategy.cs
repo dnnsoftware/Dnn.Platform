@@ -7,9 +7,7 @@ namespace DotNetNuke.Collections.Internal
     using System.Runtime.Serialization;
     using System.Threading;
 
-    /// <summary>
-    /// Provides read/write locking.
-    /// </summary>
+    /// <summary>Provides read/write locking.</summary>
     [Serializable]
     public class ReaderWriterLockStrategy : IDisposable, ILockStrategy
     {
@@ -20,17 +18,13 @@ namespace DotNetNuke.Collections.Internal
 
         private bool isDisposed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.</summary>
         public ReaderWriterLockStrategy()
             : this(LockRecursionPolicy.NoRecursion)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ReaderWriterLockStrategy"/> class.</summary>
         /// <param name="recursionPolicy">An instance of a <see cref="LockRecursionPolicy"/> to use.</param>
         public ReaderWriterLockStrategy(LockRecursionPolicy recursionPolicy)
         {
@@ -50,9 +44,7 @@ namespace DotNetNuke.Collections.Internal
             this.@lock = new ReaderWriterLockSlim(this.lockRecursionPolicy);
         }
 
-        /// <summary>
-        /// Finalizes an instance of the <see cref="ReaderWriterLockStrategy"/> class.
-        /// </summary>
+        /// <summary>Finalizes an instance of the <see cref="ReaderWriterLockStrategy"/> class.</summary>
         ~ReaderWriterLockStrategy()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
@@ -158,9 +150,7 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Disposes this instance resources.
-        /// </summary>
+        /// <summary>Disposes this instance resources.</summary>
         /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
         protected virtual void Dispose(bool disposing)
         {

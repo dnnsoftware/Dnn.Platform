@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
     using DotNetNuke.Security;
 
-    /// <summary>
-    /// The PackageType class represents a single Installer Package Type.
-    /// </summary>
+    /// <summary>The PackageType class represents a single Installer Package Type.</summary>
     [Serializable]
     public class PackageType : PackageTypeMemberNameFixer
     {

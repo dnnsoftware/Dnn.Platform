@@ -22,9 +22,7 @@ namespace DotNetNuke.Services.DependencyInjection
 
         private Func<IDictionary> getContextItems;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeAccessor"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeAccessor"/> class.</summary>
         public ScopeAccessor()
         {
             this.getContextItems = fallbackGetContextItems;

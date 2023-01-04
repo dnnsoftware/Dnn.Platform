@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utilities
 {
     using System;
@@ -19,9 +18,7 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly Regex FolderPathRx = new Regex("^0\\\\", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PathUtils"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PathUtils"/> class.</summary>
         internal PathUtils()
         {
         }
@@ -32,11 +29,7 @@ namespace DotNetNuke.Common.Utilities
             SubFolder = 1,
         }
 
-        /// <summary>
-        /// Adds backslash to the specified source.
-        /// </summary>
-        /// <param name="source">The source string to be modified.</param>
-        /// <returns>The original string plus a backslash.</returns>
+        /// <inheritdoc />
         public virtual string AddTrailingSlash(string source)
         {
             Requires.PropertyNotNull("source", source);
@@ -44,11 +37,7 @@ namespace DotNetNuke.Common.Utilities
             return source.EndsWith("\\") ? source : source + "\\";
         }
 
-        /// <summary>
-        /// Formats the provided folder path by adding a slash if needed.
-        /// </summary>
-        /// <param name="folderPath">The folder path to format.</param>
-        /// <returns>The formatted path.</returns>
+        /// <inheritdoc />
         public virtual string FormatFolderPath(string folderPath)
         {
             // Can not call trim on folderpath since folder passed in might have a legit space
@@ -61,10 +50,7 @@ namespace DotNetNuke.Common.Utilities
             return folderPath.EndsWith("/") ? folderPath.Trim() : folderPath.Trim() + "/";
         }
 
-        /// <summary>
-        /// Gets the physical path for the specified relative path.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual string GetPhysicalPath(int portalID, string relativePath)
         {
             Requires.PropertyNotNull("relativePath", relativePath);
@@ -82,10 +68,7 @@ namespace DotNetNuke.Common.Utilities
             return this.RemoveTrailingSlash(physicalPath);
         }
 
-        /// <summary>
-        /// Gets the relative path for the specified physical path.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual string GetRelativePath(int portalID, string physicalPath)
         {
             Requires.PropertyNotNull("physicalPath", physicalPath);
@@ -118,18 +101,13 @@ namespace DotNetNuke.Common.Utilities
             return this.FormatFolderPath(relativePath);
         }
 
-        /// <summary>
-        /// Gets the physical root folder path for the specified portal.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual string GetRootFolderMapPath(int portalID)
         {
             return (portalID == Null.NullInteger) ? GetHostMapPath() : GetPortalMapPath(portalID);
         }
 
-        /// <summary>
-        /// Gets the path to a user folder.
-        /// </summary>
+        /// <summary>Gets the path to a user folder.</summary>
         /// <param name="user">The user info.</param>
         /// <returns>The path to a user folder.</returns>
         public virtual string GetUserFolderPath(UserInfo user)
@@ -137,22 +115,13 @@ namespace DotNetNuke.Common.Utilities
             return FolderManager.Instance.GetUserFolder(user).FolderPath;
         }
 
-        /// <summary>
-        /// Get elements from the user folder path.
-        /// </summary>
-        /// <param name="userID">The user identifier.</param>
-        /// <param name="mode">The UserFolderElement to get.</param>
-        /// <returns>The element from the user folder path.</returns>
+        /// <inheritdoc />
         public virtual string GetUserFolderPathElement(int userID, UserFolderElement mode)
         {
             return this.GetUserFolderPathElementInternal(userID, mode);
         }
 
-        /// <summary>
-        /// Checks if a folder is a default protected folder.
-        /// </summary>
-        /// <param name="folderPath">The folder path.</param>
-        /// <returns>True if the folderPath is a default protected folder. False otherwise.</returns>
+        /// <inheritdoc />
         public virtual bool IsDefaultProtectedPath(string folderPath)
         {
             return string.IsNullOrEmpty(folderPath) ||
@@ -162,17 +131,7 @@ namespace DotNetNuke.Common.Utilities
                    folderPath.StartsWith("containers/", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        /// <summary>
-        /// The MapPath method maps the specified relative or virtual path to the corresponding physical directory on the server.
-        /// </summary>
-        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either
-        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path
-        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path
-        /// of the directory that contains the current application.
-        /// </remarks>
+        /// <inheritdoc />
         public virtual string MapPath(string path)
         {
             Requires.PropertyNotNull("path", path);
@@ -204,11 +163,7 @@ namespace DotNetNuke.Common.Utilities
             return convertedPath;
         }
 
-        /// <summary>
-        /// Removes the trailing slash or backslash from the specified source.
-        /// </summary>
-        /// <param name="source">The source string to be modified.</param>
-        /// <returns>The original string minus the trailing slash.</returns>
+        /// <inheritdoc />
         public virtual string RemoveTrailingSlash(string source)
         {
             if (string.IsNullOrEmpty(source))
@@ -224,11 +179,7 @@ namespace DotNetNuke.Common.Utilities
             return source;
         }
 
-        /// <summary>
-        /// Strips the original path by removing starting 0\\.
-        /// </summary>
-        /// <param name="originalPath">The original path.</param>
-        /// <returns>The stripped path.</returns>
+        /// <inheritdoc />
         public virtual string StripFolderPath(string originalPath)
         {
             Requires.PropertyNotNull("originalPath", originalPath);

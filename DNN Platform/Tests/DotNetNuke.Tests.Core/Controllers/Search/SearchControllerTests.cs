@@ -32,9 +32,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using Constants = DotNetNuke.Services.Search.Internals.Constants;
 
-    /// <summary>
-    ///  Testing various aspects of SearchController.
-    /// </summary>
+    /// <summary> Testing various aspects of SearchController.</summary>
     [TestFixture]
     public class SearchControllerTests
     {
@@ -2475,9 +2473,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
         }
 
-        /// <summary>
-        /// Executes function proc on a separate thread respecting the given timeout value.
-        /// </summary>
+        /// <summary>Executes function proc on a separate thread respecting the given timeout value.</summary>
         /// <typeparam name="R"></typeparam>
         /// <param name="proc">The function to execute.</param>
         /// <param name="timeout">The timeout duration.</param>
@@ -2761,9 +2757,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
         }
 
-        /// <summary>
-        /// Returns few SearchDocs.
-        /// </summary>
+        /// <summary>Returns few SearchDocs.</summary>
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var searchDocs = new List<SearchDocument>
@@ -2815,9 +2809,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return searchDocs;
         }
 
-        /// <summary>
-        /// Adds standarad SearchDocs in Lucene Index.
-        /// </summary>
+        /// <summary>Adds standarad SearchDocs in Lucene Index.</summary>
         /// <returns>Number of dcuments added.</returns>
         private int AddStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {

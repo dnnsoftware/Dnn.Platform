@@ -38,9 +38,7 @@ namespace Dnn.PersonaBar.Security.Components
             new Regex(Regex.Escape(AppDomain.CurrentDomain.BaseDirectory + "web.config"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
-        /// <summary>
-        ///     delete unnedded installwizard files.
-        /// </summary>
+        /// <summary>delete unneeded installwizard files.</summary>
         public static void CleanUpInstallerFiles()
         {
             var files = new List<string>
@@ -71,11 +69,9 @@ namespace Dnn.PersonaBar.Security.Components
             }
         }
 
-        /// <summary>
-        ///     search all files in the website for matching text.
-        /// </summary>
+        /// <summary>search all files in the website for matching text.</summary>
         /// <param name="searchText">the matching text.</param>
-        /// <returns>ienumerable of file names.</returns>
+        /// <returns>A sequence of new <see cref="SearchFileInfo"/> instances.</returns>
         public static IEnumerable<object> SearchFiles(string searchText)
         {
             try
@@ -99,10 +95,8 @@ namespace Dnn.PersonaBar.Security.Components
             return null;
         }
 
-        /// <summary>
-        ///     search all website files for files with a potential dangerous extension.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>search all website files for files with a potential dangerous extension.</summary>
+        /// <returns>A sequence of file paths.</returns>
         public static IEnumerable<string> FindUnexpectedExtensions(IList<string> invalidFolders)
         {
             var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories, invalidFolders)
@@ -110,10 +104,8 @@ namespace Dnn.PersonaBar.Security.Components
             return files;
         }
 
-        /// <summary>
-        ///     search all website files which are hidden or system.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>search all website files which are hidden or system.</summary>
+        /// <returns>A sequence of file paths.</returns>
         public static IEnumerable<string> FineHiddenSystemFiles()
         {
             var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
@@ -281,10 +273,8 @@ namespace Dnn.PersonaBar.Security.Components
             return true;
         }
 
-        /// <summary>
-        /// Recursively finds file.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Recursively finds file.</summary>
+        /// <returns>A sequence of file paths.</returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
             try
@@ -297,10 +287,8 @@ namespace Dnn.PersonaBar.Security.Components
             }
         }
 
-        /// <summary>
-        /// Recursively finds file.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Recursively finds file.</summary>
+        /// <returns>A sequence of file paths.</returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, ICollection<string> invalidFolders)
         {
             // Looking at the root folder only. There should not be any permission issue here.

@@ -16,32 +16,22 @@ namespace DNNConnect.CKEditorProvider.Controls
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The url control.
-    /// </summary>
+    /// <summary>The url control.</summary>
     public abstract class UrlControl : UserControl
     {
-        /// <summary>
-        /// The _local resource file.
-        /// </summary>
+        /// <summary>The _local resource file.</summary>
         private string localResourceFile;
 
-        /// <summary>
-        /// The with events field folders.
-        /// </summary>
+        /// <summary>The with events field folders.</summary>
         private DropDownList folders;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UrlControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UrlControl"/> class.</summary>
         protected UrlControl()
         {
             this.PreRender += this.Page_PreRender;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [reload files].
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether [reload files].</summary>
         /// <value>
         ///   <c>true</c> if [reload files]; otherwise, <c>false</c>.
         /// </value>
@@ -58,9 +48,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the file filter.
-        /// </summary>
+        /// <summary>Gets or sets the file filter.</summary>
         public string FileFilter
         {
             get
@@ -76,9 +64,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the local resource file.
-        /// </summary>
+        /// <summary>Gets or sets the local resource file.</summary>
         public string LocalResourceFile
         {
             get
@@ -98,9 +84,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
+        /// <summary>Gets or sets the width.</summary>
         public string Width
         {
             get
@@ -121,9 +105,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the width.
-        /// </summary>
+        /// <summary>Gets or sets the width.</summary>
         public int PortalId
         {
             get
@@ -137,9 +119,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the url.
-        /// </summary>
+        /// <summary>Gets or sets the url.</summary>
         public string Url
         {
             get
@@ -163,33 +143,25 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the files.
-        /// </summary>
+        /// <summary>Gets or sets the files.</summary>
         /// <value>
         /// The files.
         /// </value>
         protected DropDownList Files { get; set; }
 
-        /// <summary>
-        /// Gets or sets the file label.
-        /// </summary>
+        /// <summary>Gets or sets the file label.</summary>
         /// <value>
         /// The file label.
         /// </value>
         protected Label FileLabel { get; set; }
 
-        /// <summary>
-        /// Gets or sets the folder label.
-        /// </summary>
+        /// <summary>Gets or sets the folder label.</summary>
         /// <value>
         /// The folder label.
         /// </value>
         protected Label FolderLabel { get; set; }
 
-        /// <summary>
-        /// Gets or sets the folders.
-        /// </summary>
+        /// <summary>Gets or sets the folders.</summary>
         protected DropDownList Folders
         {
             get
@@ -212,9 +184,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Binds the data.
-        /// </summary>
+        /// <summary>Binds the data.</summary>
         public void BindData()
         {
             this.LoadFolders();
@@ -274,9 +244,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             this.ViewState["Url"] = url;
         }
 
-        /// <summary>
-        /// The get file list.
-        /// </summary>
+        /// <summary>The get file list.</summary>
         /// <param name="noneSpecified">
         /// The none specified.
         /// </param>
@@ -289,9 +257,7 @@ namespace DNNConnect.CKEditorProvider.Controls
                 this.PortalId, this.FileFilter, noneSpecified, this.Folders.SelectedItem.Value, false);
         }
 
-        /// <summary>
-        /// The load folders.
-        /// </summary>
+        /// <summary>The load folders.</summary>
         private void LoadFolders()
         {
             this.Folders.Items.Clear();
@@ -314,9 +280,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Handles the PreRender event of the Page control.
-        /// </summary>
+        /// <summary>Handles the PreRender event of the Page control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void Page_PreRender(object sender, EventArgs e)
@@ -335,9 +299,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Handles the SelectedIndexChanged event of the Folders control.
-        /// </summary>
+        /// <summary>Handles the SelectedIndexChanged event of the Folders control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void Folders_SelectedIndexChanged(object sender, EventArgs e)

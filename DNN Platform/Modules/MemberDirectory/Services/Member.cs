@@ -22,9 +22,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private UserInfo viewer;
         private PortalSettings settings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Member"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Member"/> class.</summary>
         /// <param name="user"></param>
         /// <param name="settings"></param>
         public Member(UserInfo user, PortalSettings settings)
@@ -143,9 +141,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             get { return Globals.UserProfileURL(this.MemberId); }
         }
 
-        /// <summary>
-        /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string.
-        /// </summary>
+        /// <summary>This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string.</summary>
         /// <param name="propertyName">property name.</param>
         /// <returns>property value.</returns>
         private string GetProfileProperty(string propertyName)

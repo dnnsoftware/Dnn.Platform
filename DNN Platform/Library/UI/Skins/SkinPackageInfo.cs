@@ -16,9 +16,7 @@ namespace DotNetNuke.UI.Skins
     /// Project  : DotNetNuke
     /// Class    : SkinPackageInfo
     ///
-    /// <summary>
-    ///     Handles the Business Object for Skins.
-    /// </summary>
+    /// <summary>    Handles the Business Object for Skins.</summary>
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable
     {

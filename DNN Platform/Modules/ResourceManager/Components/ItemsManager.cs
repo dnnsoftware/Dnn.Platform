@@ -23,9 +23,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Provides services to manage items.
-    /// </summary>
+    /// <summary>Provides services to manage items.</summary>
     public class ItemsManager : ServiceLocator<IItemsManager, ItemsManager>, IItemsManager
     {
         private const int MaxDescriptionLength = 500;
@@ -34,9 +32,7 @@ namespace Dnn.Modules.ResourceManager.Components
         private readonly IAssetManager assetManager;
         private readonly IPermissionsManager permissionsManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemsManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ItemsManager"/> class.</summary>
         public ItemsManager()
         {
             this.roleController = RoleController.Instance;

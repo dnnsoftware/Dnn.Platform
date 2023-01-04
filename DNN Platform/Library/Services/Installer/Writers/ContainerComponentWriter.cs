@@ -26,9 +26,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("containerFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("containerFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -38,9 +36,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("Skin").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Skin").</summary>
         /// <value>A String.</value>
         protected override string ComponentType
         {
@@ -50,9 +46,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("containerFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("containerFile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {
@@ -62,9 +56,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the SkinName Node ("containerName").
-        /// </summary>
+        /// <summary>Gets the name of the SkinName Node ("containerName").</summary>
         /// <value>A String.</value>
         protected override string SkinNameNodeName
         {

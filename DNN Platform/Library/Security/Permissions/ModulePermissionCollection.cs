@@ -21,34 +21,26 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class ModulePermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
         public ModulePermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
         /// <param name="modulePermissions"></param>
         public ModulePermissionCollection(ArrayList modulePermissions)
         {
             this.AddRange(modulePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
         /// <param name="modulePermissions"></param>
         public ModulePermissionCollection(ModulePermissionCollection modulePermissions)
         {
             this.AddRange(modulePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
         /// <param name="modulePermissions"></param>
         /// <param name="moduleID"></param>
         public ModulePermissionCollection(ArrayList modulePermissions, int moduleID)
@@ -62,9 +54,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
         /// <param name="objModule"></param>
         public ModulePermissionCollection(ModuleInfo objModule)
         {

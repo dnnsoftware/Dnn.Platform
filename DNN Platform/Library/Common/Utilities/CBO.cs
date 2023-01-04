@@ -21,20 +21,16 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
 
-    /// <summary>
-    /// The CBO class generates objects.
-    /// </summary>
+    /// <summary>The CBO class generates objects.</summary>
     public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
         private const string DefaultPrimaryKey = "ItemID";
 
         private const string ObjectMapCacheKey = "ObjectMap_";
 
-        /// <summary>
-        /// CloneObject clones an object.
-        /// </summary>
+        /// <summary>CloneObject clones an object.</summary>
         /// <param name="objObject">The Object to Clone.</param>
-        /// <returns></returns>
+        /// <returns>A new object.</returns>
         public static object CloneObject(object objObject)
         {
             try
@@ -106,13 +102,10 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// CreateObject creates a new object of Type TObject.
-        /// </summary>
+        /// <summary>CreateObject creates a new object of Type TObject.</summary>
         /// <typeparam name="TObject">The type of object to create.</typeparam>
-        /// <param name="initialise">A flag that indicates whether to initialise the
-        /// object.</param>
-        /// <returns></returns>
+        /// <param name="initialise">A flag that indicates whether to initialise the object (i.e. set all properties to <see langword="null"/>).</param>
+        /// <returns>The created object.</returns>
         public static TObject CreateObject<TObject>(bool initialise)
         {
             return (TObject)CreateObjectInternal(typeof(TObject), initialise);
@@ -160,84 +153,70 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillCollection fills a Collection of objects from a DataReader.</summary>
         /// <param name="dr">The Data Reader.</param>
         /// <param name="objType">The type of the Object.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="ArrayList"/> filled with the values from <paramref name="dr"/>.</returns>
         public static ArrayList FillCollection(IDataReader dr, Type objType)
         {
             return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), true);
         }
 
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillCollection fills a Collection of objects from a DataReader.</summary>
         /// <param name="dr">The Data Reader.</param>
         /// <param name="objType">The type of the Object.</param>
         /// <param name="closeReader">Flag that indicates whether the Data Reader should be closed.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="ArrayList"/> filled with the values from <paramref name="dr"/>.</returns>
         public static ArrayList FillCollection(IDataReader dr, Type objType, bool closeReader)
         {
             return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), closeReader);
         }
 
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillCollection fills a Collection of objects from a DataReader.</summary>
         /// <param name="dr">The Data Reader.</param>
         /// <param name="objType">The type of the Object.</param>
         /// <param name="objToFill">An IList to fill.</param>
-        /// <returns></returns>
+        /// <returns><paramref name="objToFill"/> filled with the values from <paramref name="dr"/>.</returns>
         public static IList FillCollection(IDataReader dr, Type objType, ref IList objToFill)
         {
             return FillListFromReader(objType, dr, objToFill, true);
         }
 
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillCollection fills a Collection of objects from a DataReader.</summary>
         /// <typeparam name="TItem">The type of object.</typeparam>
         /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="List{T}"/> filled with the values from <paramref name="dr"/>.</returns>
         public static List<TItem> FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillCollection fills a Collection of objects from a DataReader.</summary>
         /// <typeparam name="TItem">The type of object.</typeparam>
-        /// <param name="objToFill">The List to fill.</param>
         /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
+        /// <param name="objToFill">The List to fill.</param>
+        /// <returns><paramref name="objToFill"/> filled with the values from <paramref name="dr"/>.</returns>
         public static IList<TItem> FillCollection<TItem>(IDataReader dr, ref IList<TItem> objToFill)
         {
             return FillListFromReader(dr, objToFill, true);
         }
 
-        /// <summary>
-        /// FillCollection fills a List of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillCollection fills a List of objects from a DataReader.</summary>
         /// <typeparam name="TItem">The type of the Object.</typeparam>
-        /// <param name="objToFill">The List to fill.</param>
         /// <param name="dr">The Data Reader.</param>
+        /// <param name="objToFill">The List to fill.</param>
         /// <param name="closeReader">A flag that indicates whether the DataReader should be closed.</param>
-        /// <returns></returns>
+        /// <returns><paramref name="objToFill"/> filled with the values from <paramref name="dr"/>.</returns>
         public static IList<TItem> FillCollection<TItem>(IDataReader dr, IList<TItem> objToFill, bool closeReader)
         {
             return FillListFromReader(dr, objToFill, closeReader);
         }
 
-        /// <summary>
-        /// Generic version of FillCollection fills a List custom business object of a specified type
-        /// from the supplied DataReader.
-        /// </summary>
+        /// <summary>Generic version of FillCollection fills a List custom business object of a specified type from the supplied DataReader.</summary>
         /// <param name="dr">The IDataReader to use to fill the object.</param>
         /// <param name="objType">The type of the Object.</param>
-        /// <param name="totalRecords">The total No of records.</param>
+        /// <param name="totalRecords">The value from a second result in <paramref name="dr"/> with a single <c>TotalRecords</c> column.</param>
+        /// <seealso cref="Globals.GetTotalRecords"/>
         /// <returns>A List of custom business objects.</returns>
         public static ArrayList FillCollection(IDataReader dr, ref Type objType, ref int totalRecords)
         {
@@ -263,13 +242,11 @@ namespace DotNetNuke.Common.Utilities
             return objFillCollection;
         }
 
-        /// <summary>
-        /// Generic version of FillCollection fills a List custom business object of a specified type
-        /// from the supplied DataReader.
-        /// </summary>
+        /// <summary>Generic version of FillCollection fills a List custom business object of a specified type from the supplied DataReader.</summary>
         /// <typeparam name="T">The type of the business object.</typeparam>
         /// <param name="dr">The IDataReader to use to fill the object.</param>
-        /// <param name="totalRecords"></param>
+        /// <param name="totalRecords">The value from a second result in <paramref name="dr"/> with a single <c>TotalRecords</c> column.</param>
+        /// <seealso cref="Globals.GetTotalRecords"/>
         /// <returns>A List of custom business objects.</returns>
         public static List<T> FillCollection<T>(IDataReader dr, ref int totalRecords)
         {
@@ -278,7 +255,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (dr.NextResult())
                 {
-                    // Get the total no of records from the second result
+                    // Get the total number of records from the second result
                     totalRecords = Globals.GetTotalRecords(ref dr);
                 }
             }
@@ -295,66 +272,56 @@ namespace DotNetNuke.Common.Utilities
             return (List<T>)objFillCollection;
         }
 
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillDictionary fills a Dictionary of objects from a DataReader.</summary>
         /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
         /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
         /// <param name="keyField">The key field used for the Key.</param>
         /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="Dictionary{TKey,TValue}"/> filled with values from <paramref name="dr"/>.</returns>
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr)
         {
             return
                 (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), true);
         }
 
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillDictionary fills a Dictionary of objects from a DataReader.</summary>
         /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
         /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
         /// <param name="keyField">The key field used for the Key.</param>
         /// <param name="dr">The Data Reader.</param>
         /// <param name="closeReader">A flag indicating whether to close the reader.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="Dictionary{TKey,TValue}"/> filled with values from <paramref name="dr"/>.</returns>
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, bool closeReader)
         {
             return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
         }
 
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillDictionary fills a Dictionary of objects from a DataReader.</summary>
         /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
         /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
         /// <param name="keyField">The key field used for the Key.</param>
-        /// <param name="objDictionary">The Dictionary to fill.</param>
         /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
+        /// <param name="objDictionary">The Dictionary to fill.</param>
+        /// <returns><paramref name="objDictionary"/> filled with the values from <paramref name="dr"/>.</returns>
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
         {
             return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
         }
 
-        /// <summary>
-        /// FillObject fills an object from a DataReader.
-        /// </summary>
+        /// <summary>FillObject fills an object from a DataReader.</summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
+        /// <returns>The filled object or <see langword="null"/>.</returns>
         public static TObject FillObject<TObject>(IDataReader dr)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
-        /// <summary>
-        /// FillObject fills an object from a DataReader.
-        /// </summary>
+        /// <summary>FillObject fills an object from a DataReader.</summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="dr">The Data Reader.</param>
         /// <param name="closeReader">A flag that indicates the reader should be closed.</param>
-        /// <returns></returns>
+        /// <returns>The filled object or <see langword="null"/>.</returns>
         public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, closeReader);
@@ -365,14 +332,12 @@ namespace DotNetNuke.Common.Utilities
             return FillListFromReader(dr, new List<TItem>(), true).AsQueryable();
         }
 
-        /// <summary>
-        /// FillSortedList fills a SortedList of objects from a DataReader.
-        /// </summary>
+        /// <summary>FillSortedList fills a SortedList of objects from a DataReader.</summary>
         /// <typeparam name="TKey">The key for the SortedList.</typeparam>
         /// <typeparam name="TValue">The value for the SortedList Item.</typeparam>
         /// <param name="keyField">The key field used for the Key.</param>
         /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
+        /// <returns>The filled <see cref="SortedList{TKey,TValue}"/>.</returns>
         public static SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
         {
             return
@@ -394,10 +359,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Iterates items in a IDictionary object and generates XML nodes.</summary>
-        /// <param name = "dictionary">The IDictionary to iterate.</param>
-        /// <param name = "document">The XML document the node should be added to.</param>
+        /// <param name="dictionary">The IDictionary to iterate.</param>
+        /// <param name="document">The XML document the node should be added to.</param>
         /// <param name="targetPath">Path at which to serialize settings.</param>
-        /// <param name = "elementName">The name of the new element created.</param>
+        /// <param name="elementName">The name of the new element created.</param>
         public static void SerializeSettings(IDictionary dictionary, XmlDocument document, string targetPath, string elementName)
         {
             string sOuterElementName = elementName + "s";
@@ -429,15 +394,13 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// GetCachedObject gets an object from the Cache.
-        /// </summary>
-        /// <typeparam name="TObject">The type of th object to fetch.</typeparam>
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
         /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
         /// cache AND to fetch the item if the cache has expired.</param>
         /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
         /// the cache if the item has expired.</param>
-        /// <returns></returns>
+        /// <returns>The cached object.</returns>
         public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired);
@@ -448,30 +411,23 @@ namespace DotNetNuke.Common.Utilities
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
-        /// <summary>
-        /// GetProperties gets a Dictionary of the Properties for an object.
-        /// </summary>
+        /// <summary>GetProperties gets a Dictionary of the Properties for an object.</summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <returns></returns>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping property names to <see cref="PropertyInfo"/> instances.</returns>
         public static Dictionary<string, PropertyInfo> GetProperties<TObject>()
         {
             return GetObjectMapping(typeof(TObject)).Properties;
         }
 
-        /// <summary>
-        /// GetProperties gets a Dictionary of the Properties for an object.
-        /// </summary>
+        /// <summary>GetProperties gets a Dictionary of the Properties for an object.</summary>
         /// <param name="objType">The type of the object.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping property names to <see cref="PropertyInfo"/> instances.</returns>
         public static Dictionary<string, PropertyInfo> GetProperties(Type objType)
         {
             return GetObjectMapping(objType).Properties;
         }
 
-        /// <summary>
-        /// InitializeObject initialises all the properties of an object to their
-        /// Null Values.
-        /// </summary>
+        /// <summary>InitializeObject initialises all the properties of an object to their <see langword="null"/> Values.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         public static void InitializeObject(object objObject)
         {
@@ -485,13 +441,10 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// InitializeObject initialises all the properties of an object to their
-        /// Null Values.
-        /// </summary>
+        /// <summary>InitializeObject initialises all the properties of an object to their <see langword="null"/> Values.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         /// <param name="objType">The type of the object.</param>
-        /// <returns></returns>
+        /// <returns><paramref name="objObject"/>.</returns>
         public static object InitializeObject(object objObject, Type objType)
         {
             // initialize properties
@@ -506,9 +459,7 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
+        /// <summary>SerializeObject serializes an Object.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         /// <param name="fileName">A filename for the resulting serialized xml.</param>
         public static void SerializeObject(object objObject, string fileName)
@@ -521,9 +472,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
+        /// <summary>SerializeObject serializes an Object.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         /// <param name="document">An XmlDocument to serialize to.</param>
         public static void SerializeObject(object objObject, XmlDocument document)
@@ -539,9 +488,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
+        /// <summary>SerializeObject serializes an Object.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         /// <param name="stream">A Stream to serialize to.</param>
         public static void SerializeObject(object objObject, Stream stream)
@@ -553,9 +500,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
+        /// <summary>SerializeObject serializes an Object.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         /// <param name="textWriter">A TextWriter to serialize to.</param>
         public static void SerializeObject(object objObject, TextWriter textWriter)
@@ -568,9 +513,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
+        /// <summary>SerializeObject serializes an Object.</summary>
         /// <param name="objObject">The object to Initialise.</param>
         /// <param name="writer">An XmlWriter to serialize to.</param>
         public static void SerializeObject(object objObject, XmlWriter writer)

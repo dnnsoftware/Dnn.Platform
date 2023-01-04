@@ -13,21 +13,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Permissions;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules.Definitions
-    /// Class    : ModuleDefinitionInfo
-    /// <summary>
-    /// ModuleDefinitionInfo provides the Entity Layer for Module Definitions.
-    /// </summary>
+    /// <summary>ModuleDefinitionInfo provides the Entity Layer for Module Definitions.</summary>
     [Serializable]
     public class ModuleDefinitionInfo : IXmlSerializable, IHydratable
     {
         private Dictionary<string, ModuleControlInfo> moduleControls;
         private string definitionName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleDefinitionInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleDefinitionInfo"/> class.</summary>
         public ModuleDefinitionInfo()
         {
             this.Permissions = new Dictionary<string, PermissionInfo>();
@@ -35,10 +28,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             this.ModuleDefID = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Gets the Dictionary of ModuleControls that are part of this definition.
-        /// </summary>
-        /// <returns>A Dictionary(Of String, ModuleControlInfo).</returns>
+        /// <summary>Gets the Dictionary of ModuleControls that are part of this definition.</summary>
         public Dictionary<string, ModuleControlInfo> ModuleControls
         {
             get
@@ -52,33 +42,19 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Module Definition ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
+        /// <summary>Gets or sets the Module Definition ID.</summary>
         public int ModuleDefID { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Default Cache Time.
-        /// </summary>
-        /// <returns>An Integer.</returns>
+        /// <summary>Gets or sets the Default Cache Time.</summary>
         public int DefaultCacheTime { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the associated Desktop Module ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
+        /// <summary>Gets or sets the associated Desktop Module ID.</summary>
         public int DesktopModuleID { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Friendly Name.
-        /// </summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets or sets the Friendly Name.</summary>
         public string FriendlyName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the DefinitionName.
-        /// </summary>
+        /// <summary>Gets or sets the DefinitionName.</summary>
         public string DefinitionName
         {
             get
@@ -97,16 +73,10 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
         }
 
-        /// <summary>
-        /// Gets the Dictionary of Permissions that are part of this definition.
-        /// </summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the Dictionary of Permissions that are part of this definition.</summary>
         public Dictionary<string, PermissionInfo> Permissions { get; private set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -120,10 +90,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
         }
 
-        /// <summary>
-        /// Fills a ModuleDefinitionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
@@ -136,18 +103,13 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
         }
 
-        /// <summary>
-        /// Gets an XmlSchema for the ModuleDefinitionInfo.
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <summary>
-        /// Reads a ModuleDefinitionInfo from an XmlReader.
-        /// </summary>
+        /// <summary>Reads a ModuleDefinitionInfo from an XmlReader.</summary>
         /// <param name="reader">The XmlReader to use.</param>
         public void ReadXml(XmlReader reader)
         {
@@ -202,13 +164,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
         }
 
-        /// <summary>
-        /// Writes a ModuleDefinitionInfo to an XmlWriter.
-        /// </summary>
+        /// <summary>Writes a ModuleDefinitionInfo to an XmlWriter.</summary>
         /// <param name="writer">The XmlWriter to use.</param>
         public void WriteXml(XmlWriter writer)
         {
-            // Write start of main elemenst
+            // Write start of main elements
             writer.WriteStartElement("moduleDefinition");
 
             // write out properties
@@ -237,9 +197,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             this.moduleControls = this.ModuleDefID > Null.NullInteger ? ModuleControlController.GetModuleControlsByModuleDefinitionID(this.ModuleDefID) : new Dictionary<string, ModuleControlInfo>();
         }
 
-        /// <summary>
-        /// Reads the ModuleControls from an XmlReader.
-        /// </summary>
+        /// <summary>Reads the ModuleControls from an XmlReader.</summary>
         /// <param name="reader">The XmlReader to use.</param>
         private void ReadModuleControls(XmlReader reader)
         {

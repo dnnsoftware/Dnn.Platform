@@ -58,9 +58,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets columnNames gets a dictionary of Database Column Names for the Object.
-        /// </summary>
+        /// <summary>Gets columnNames gets a dictionary of Database Column Names for the Object.</summary>
         public Dictionary<string, string> ColumnNames
         {
             get
@@ -69,9 +67,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets properties gets a dictionary of Properties for the Object.
-        /// </summary>
+        /// <summary>Gets properties gets a dictionary of Properties for the Object.</summary>
         public Dictionary<string, PropertyInfo> Properties
         {
             get
@@ -118,9 +114,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets or sets objectType gets and sets the type of the object.
-        /// </summary>
+        /// <summary>Gets or sets objectType gets and sets the type of the object.</summary>
         public string ObjectType
         {
             get

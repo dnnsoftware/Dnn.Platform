@@ -51,9 +51,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.dependentPackageID = languagePack.DependentPackageID;
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("languageFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("languageFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -63,9 +61,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("CoreLanguage/ExtensionLanguage").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("CoreLanguage/ExtensionLanguage").</summary>
         /// <value>A String.</value>
         protected override string ComponentType
         {
@@ -82,9 +78,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("languageFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("languageFile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {
@@ -94,9 +88,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// The WriteCustomManifest method writes the custom manifest items.
-        /// </summary>
+        /// <summary>The WriteCustomManifest method writes the custom manifest items.</summary>
         /// <param name="writer">The Xmlwriter to use.</param>
         protected override void WriteCustomManifest(XmlWriter writer)
         {

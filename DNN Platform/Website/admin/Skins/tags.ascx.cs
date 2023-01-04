@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "Tags.ascx";
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Tags"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Tags"/> class.</summary>
         public Tags()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

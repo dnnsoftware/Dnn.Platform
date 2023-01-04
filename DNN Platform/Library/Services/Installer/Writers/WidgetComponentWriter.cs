@@ -7,14 +7,10 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// The WidgetComponentWriter class handles creating the manifest for Widget Component(s).
-    /// </summary>
+    /// <summary>The WidgetComponentWriter class handles creating the manifest for Widget Component(s).</summary>
     public class WidgetComponentWriter : FileComponentWriter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WidgetComponentWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WidgetComponentWriter"/> class.</summary>
         /// <param name="basePath"></param>
         /// <param name="files"></param>
         /// <param name="package"></param>
@@ -23,9 +19,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("widgetFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("widgetFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -35,9 +29,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("widgetFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("widgetFiles").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {
@@ -47,9 +39,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("Widget").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Widget").</summary>
         /// <value>A String.</value>
         protected override string ComponentType
         {

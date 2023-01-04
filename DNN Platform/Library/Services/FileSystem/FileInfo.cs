@@ -21,9 +21,7 @@ namespace DotNetNuke.Services.FileSystem
     /// Project  : DotNetNuke
     /// Class    : FileInfo
     ///
-    /// <summary>
-    ///   Represents the File object and holds the Properties of that object.
-    /// </summary>
+    /// <summary>  Represents the File object and holds the Properties of that object.</summary>
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
     public class FileInfo : BaseEntityInfo, IHydratable, IFileInfo
@@ -38,18 +36,14 @@ namespace DotNetNuke.Services.FileSystem
         private int? height = null;
         private string sha1Hash = null;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
         public FileInfo()
         {
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
         /// <param name="portalId"></param>
         /// <param name="filename"></param>
         /// <param name="extension"></param>
@@ -66,9 +60,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
         /// <param name="portalId"></param>
         /// <param name="filename"></param>
         /// <param name="extension"></param>
@@ -86,9 +78,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
         /// <param name="uniqueId"></param>
         /// <param name="versionGuid"></param>
         /// <param name="portalId"></param>
@@ -425,44 +415,30 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Gets or sets a metadata field with an optional title associated to the file.
-        /// </summary>
+        /// <summary>Gets or sets a metadata field with an optional title associated to the file.</summary>
         public string Title { get; set; }
 
         /// <inheritdoc/>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date on which the file starts to be published.
-        /// </summary>
+        /// <summary>Gets or sets the date on which the file starts to be published.</summary>
         public DateTime StartDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date on which the file ends to be published.
-        /// </summary>
+        /// <summary>Gets or sets the date on which the file ends to be published.</summary>
         public DateTime EndDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether publish period is enabled for the file.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether publish period is enabled for the file.</summary>
         public bool EnablePublishPeriod { get; set; }
 
-        /// <summary>
-        /// Gets or sets the published version number of the file.
-        /// </summary>
+        /// <summary>Gets or sets the published version number of the file.</summary>
         public int PublishedVersion { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
-        /// </summary>
+        /// <summary>Gets a value indicating whether gets a flag which says whether the file has ever been published.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public bool HasBeenPublished { get; private set; }
 
-        /// <summary>
-        /// Gets or sets a reference to ContentItem, to use in Workflows.
-        /// </summary>
+        /// <summary>Gets or sets a reference to ContentItem, to use in Workflows.</summary>
         public int ContentItemID { get; set; }
 
         /// <inheritdoc/>

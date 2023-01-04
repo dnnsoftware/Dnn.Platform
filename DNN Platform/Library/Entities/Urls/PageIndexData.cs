@@ -6,9 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    /// <summary>
-    /// The PageIndexData class is used during the page index build process.
-    /// </summary>
+    /// <summary>The PageIndexData class is used during the page index build process.</summary>
     [Serializable]
     internal class PageIndexData
     {

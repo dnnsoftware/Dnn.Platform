@@ -27,9 +27,7 @@ namespace DotNetNuke.Tests.Content
 
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for TermTests.
-    /// </summary>
+    /// <summary>  Summary description for TermTests.</summary>
     [TestFixture]
     public class TermControllerTests
     {

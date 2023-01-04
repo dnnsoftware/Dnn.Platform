@@ -10,9 +10,7 @@ namespace DotNetNuke.UI.Internals
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Manages the FavIcon of a portal.
-    /// </summary>
+    /// <summary>Manages the FavIcon of a portal.</summary>
     public class FavIcon
     {
         private const string SettingName = "FavIconPath";
@@ -29,9 +27,7 @@ namespace DotNetNuke.UI.Internals
             this.portalId = portalId;
         }
 
-        /// <summary>
-        /// Get the HTML for a favicon link.
-        /// </summary>
+        /// <summary>Get the HTML for a favicon link.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <returns>The HTML for the favicon link for the portal, or an empty string if there is no favicon.</returns>
         public static string GetHeaderLink(int portalId)
@@ -64,9 +60,7 @@ namespace DotNetNuke.UI.Internals
             return headerLink;
         }
 
-        /// <summary>
-        /// Get the path of the favicon file relative to the portal root.
-        /// </summary>
+        /// <summary>Get the path of the favicon file relative to the portal root.</summary>
         /// <remarks>This relative path is only relevant to use with Host/Portal Settings the path is not guaranteed any
         /// physical relevance in the local file system.</remarks>
         /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set.</returns>
@@ -75,9 +69,7 @@ namespace DotNetNuke.UI.Internals
             return PortalController.GetPortalSetting(SettingName, this.portalId, string.Empty);
         }
 
-        /// <summary>
-        /// Update the file to use for a favIcon.
-        /// </summary>
+        /// <summary>Update the file to use for a favIcon.</summary>
         /// <param name="fileId">The file id or Null.NullInteger for none.</param>
         public void Update(int fileId)
         {

@@ -10,10 +10,7 @@ namespace DotNetNuke.Services.ClientCapability
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,
-    /// giving it variables such as if the Page has been Liked, and the age range of the user.
-    /// </summary>
+    /// <summary>Make modules that are aware of Facebook’s <c>signed_request</c> – a parameter that is POSTed to the web page being loaded in the iFrame, giving it variables such as if the Page has been Liked, and the age range of the user.</summary>
     public class FacebookRequestController
     {
         private const string SignedRequestParameter = "signed_request";
@@ -126,9 +123,7 @@ namespace DotNetNuke.Services.ClientCapability
             return false;
         }
 
-        /// <summary>
-        /// Converts the base 64 url encoded string to standard base 64 encoding.
-        /// </summary>
+        /// <summary>Converts the base 64 url encoded string to standard base 64 encoding.</summary>
         /// <param name="encodedValue">The encoded value.</param>
         /// <returns>The base 64 string.</returns>
         private static string Base64UrlDecode(string encodedValue)
@@ -156,11 +151,9 @@ namespace DotNetNuke.Services.ClientCapability
             }
         }
 
-        /// <summary>
-        /// method for converting a System.DateTime value to a UNIX Timestamp.
-        /// </summary>
-        /// <param name="value">date to convert.</param>
-        /// <returns></returns>
+        /// <summary>method for converting a Unix Timestamp to a <see cref="DateTime"/>.</summary>
+        /// <param name="value">The number of seconds since the start of the Unix epoch.</param>
+        /// <returns>The corresponding <see cref="DateTime"/> value.</returns>
         private static DateTime ConvertToTimestamp(long value)
         {
             // create Timespan by subtracting the value provided from

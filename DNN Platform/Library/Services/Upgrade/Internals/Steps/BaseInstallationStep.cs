@@ -6,9 +6,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
-    /// <summary>
-    /// BaseInstallationStep - Abstract class to perform common tasks for the various installation steps.
-    /// </summary>
+    /// <summary>BaseInstallationStep - Abstract class to perform common tasks for the various installation steps.</summary>
     public abstract class BaseInstallationStep : IInstallationStep
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
@@ -25,23 +23,17 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         private string details = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseInstallationStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BaseInstallationStep"/> class.</summary>
         protected BaseInstallationStep()
         {
             this.Percentage = 0;
             this.Errors = new List<string>();
         }
 
-        /// <summary>
-        /// This event gets fired when any activity gets recorded
-        /// </summary>
+        /// <summary>This event gets fired when any activity gets recorded</summary>
         public event ActivityEventHandler Activity;
 
-        /// <summary>
-        /// Gets or sets any details of the task while it's executing.
-        /// </summary>
+        /// <summary>Gets or sets any details of the task while it's executing.</summary>
         public string Details
         {
             get
@@ -60,24 +52,16 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             }
         }
 
-        /// <summary>
-        /// Gets or sets percentage done.
-        /// </summary>
+        /// <summary>Gets or sets percentage done.</summary>
         public int Percentage { get; set; }
 
-        /// <summary>
-        /// Gets or sets step Status.
-        /// </summary>
+        /// <summary>Gets or sets step Status.</summary>
         public StepStatus Status { get; set; }
 
-        /// <summary>
-        /// Gets or sets list of Errors.
-        /// </summary>
+        /// <summary>Gets or sets list of Errors.</summary>
         public IList<string> Errors { get; set; }
 
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public abstract void Execute();
     }
 }

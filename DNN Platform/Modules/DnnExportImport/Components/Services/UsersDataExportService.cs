@@ -18,9 +18,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Supplementary service to import users additional data.
-    /// </summary>
+    /// <summary>Supplementary service to import users additional data.</summary>
     public class UsersDataExportService : BasePortableService
     {
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =

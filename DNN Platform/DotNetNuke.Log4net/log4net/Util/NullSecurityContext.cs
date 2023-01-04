@@ -24,9 +24,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// A SecurityContext used when a SecurityContext is not required
-    /// </summary>
+    /// <summary>A SecurityContext used when a SecurityContext is not required</summary>
     /// <remarks>
     /// <para>
     /// The <see cref="NullSecurityContext"/> is a no-op implementation of the
@@ -37,9 +35,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class NullSecurityContext : SecurityContext
     {
-        /// <summary>
-        /// Singleton instance of <see cref="NullSecurityContext"/>
-        /// </summary>
+        /// <summary>Singleton instance of <see cref="NullSecurityContext"/></summary>
         /// <remarks>
         /// <para>
         /// Singleton instance of <see cref="NullSecurityContext"/>
@@ -47,9 +43,7 @@ namespace log4net.Util
         /// </remarks>
         public static readonly NullSecurityContext Instance = new NullSecurityContext();
 
-        /// <summary>
-        /// Private constructor
-        /// </summary>
+        /// <summary>Private constructor</summary>
         /// <remarks>
         /// <para>
         /// Private constructor for singleton pattern.
@@ -59,9 +53,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Impersonate this SecurityContext
-        /// </summary>
+        /// <summary>Impersonate this SecurityContext</summary>
         /// <param name="state">State supplied by the caller</param>
         /// <returns><c>null</c></returns>
         /// <remarks>

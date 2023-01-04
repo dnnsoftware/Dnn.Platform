@@ -10,9 +10,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
     public interface IMapRoute
     {
-        /// <summary>
-        /// Sets up the route(s) for DotNetNuke MVC Controls.
-        /// </summary>
+        /// <summary>Sets up the route(s) for DotNetNuke MVC Controls.</summary>
         /// <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides.</param>
         /// <param name="routeName">A unique name for the route.</param>
         /// <param name="url">The parameterized portion of the route.</param>
@@ -21,9 +19,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         /// <remarks>The combination of moduleFolderName and routeName must be unique for each route.</remarks>
         Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces);
 
-        /// <summary>
-        /// Sets up the route(s) for DotNetNuke MVC Controls.
-        /// </summary>
+        /// <summary>Sets up the route(s) for DotNetNuke MVC Controls.</summary>
         /// <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides.</param>
         /// <param name="routeName">A unique name for the route.</param>
         /// <param name="url">The parameterized portion of the route.</param>
@@ -33,9 +29,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         /// <remarks>The combination of moduleFolderName and routeName must be unique for each route.</remarks>
         Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces);
 
-        /// <summary>
-        /// Sets up the route(s) for DotNetNuke MVC Controls.
-        /// </summary>
+        /// <summary>Sets up the route(s) for DotNetNuke MVC Controls.</summary>
         /// <param name="moduleFolderName">The name of the folder under DesktopModules in which your module resides.</param>
         /// <param name="routeName">A unique name for the route.</param>
         /// <param name="url">The parameterized portion of the route.</param>

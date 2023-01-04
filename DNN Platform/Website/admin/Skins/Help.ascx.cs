@@ -11,7 +11,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
 
     /// <summary></summary>
-    /// <returns></returns>
     public partial class Help : SkinObjectBase
     {
         public string CssClass { get; set; }

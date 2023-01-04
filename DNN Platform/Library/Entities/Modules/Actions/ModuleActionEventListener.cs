@@ -15,9 +15,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         private readonly ActionEventHandler actionEvent;
         private readonly int moduleID;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.</summary>
         /// <param name="modID"></param>
         /// <param name="e"></param>
         public ModuleActionEventListener(int modID, ActionEventHandler e)

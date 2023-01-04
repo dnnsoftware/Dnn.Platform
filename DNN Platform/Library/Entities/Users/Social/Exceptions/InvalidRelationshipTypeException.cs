@@ -10,25 +10,19 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class InvalidRelationshipTypeException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.</summary>
         public InvalidRelationshipTypeException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.</summary>
         /// <param name="message"></param>
         public InvalidRelationshipTypeException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public InvalidRelationshipTypeException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Entities.Users
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InvalidRelationshipTypeException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public InvalidRelationshipTypeException(SerializationInfo info, StreamingContext context)

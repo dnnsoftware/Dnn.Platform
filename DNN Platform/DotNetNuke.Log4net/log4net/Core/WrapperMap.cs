@@ -25,9 +25,7 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Delegate used to handle creation of new wrappers.
-    /// </summary>
+    /// <summary>Delegate used to handle creation of new wrappers.</summary>
     /// <param name="logger">The logger to wrap in a wrapper.</param>
     /// <remarks>
     /// <para>
@@ -42,9 +40,7 @@ namespace log4net.Core
     /// </remarks>
     public delegate ILoggerWrapper WrapperCreationHandler(ILogger logger);
 
-    /// <summary>
-    /// Maps between logger objects and wrapper objects.
-    /// </summary>
+    /// <summary>Maps between logger objects and wrapper objects.</summary>
     /// <remarks>
     /// <para>
     /// This class maintains a mapping between <see cref="ILogger"/> objects and
@@ -63,9 +59,7 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class WrapperMap
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WrapperMap" />
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WrapperMap" /></summary>
         /// <param name="createWrapperHandler">The handler to use to create the wrapper objects.</param>
         /// <remarks>
         /// <para>
@@ -81,9 +75,7 @@ namespace log4net.Core
             this.m_shutdownHandler = new LoggerRepositoryShutdownEventHandler(this.ILoggerRepository_Shutdown);
         }
 
-        /// <summary>
-        /// Gets the wrapper object for the specified logger.
-        /// </summary>
+        /// <summary>Gets the wrapper object for the specified logger.</summary>
         /// <returns>The wrapper object for the specified logger</returns>
         /// <remarks>
         /// <para>
@@ -139,9 +131,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Gets the map of logger repositories.
-        /// </summary>
+        /// <summary>Gets the map of logger repositories.</summary>
         /// <value>
         /// Map of logger repositories.
         /// </value>
@@ -157,9 +147,7 @@ namespace log4net.Core
             get { return this.m_repositories; }
         }
 
-        /// <summary>
-        /// Creates the wrapper object for the specified logger.
-        /// </summary>
+        /// <summary>Creates the wrapper object for the specified logger.</summary>
         /// <param name="logger">The logger to wrap in a wrapper.</param>
         /// <returns>The wrapper object for the logger.</returns>
         /// <remarks>
@@ -178,9 +166,7 @@ namespace log4net.Core
             return null;
         }
 
-        /// <summary>
-        /// Called when a monitored repository shutdown event is received.
-        /// </summary>
+        /// <summary>Called when a monitored repository shutdown event is received.</summary>
         /// <param name="repository">The <see cref="ILoggerRepository"/> that is shutting down</param>
         /// <remarks>
         /// <para>
@@ -203,9 +189,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Event handler for repository shutdown event.
-        /// </summary>
+        /// <summary>Event handler for repository shutdown event.</summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The event args.</param>
         private void ILoggerRepository_Shutdown(object sender, EventArgs e)
@@ -218,19 +202,13 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings
-        /// </summary>
+        /// <summary>Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings</summary>
         private readonly Hashtable m_repositories = new Hashtable();
 
-        /// <summary>
-        /// The handler to use to create the extension wrapper objects.
-        /// </summary>
+        /// <summary>The handler to use to create the extension wrapper objects.</summary>
         private readonly WrapperCreationHandler m_createWrapperHandler;
 
-        /// <summary>
-        /// Internal reference to the delegate used to register for repository shutdown events.
-        /// </summary>
+        /// <summary>Internal reference to the delegate used to register for repository shutdown events.</summary>
         private readonly LoggerRepositoryShutdownEventHandler m_shutdownHandler;
     }
 }

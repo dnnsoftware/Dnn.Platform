@@ -143,17 +143,13 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Clear clears the radio button list.
-        /// </summary>
+        /// <summary>Clear clears the radio button list.</summary>
         public void Clear()
         {
             this.OptSkin.Items.Clear();
         }
 
-        /// <summary>
-        /// LoadAllSkins loads all the available skins (Host and Site) to the radio button list.
-        /// </summary>
+        /// <summary>LoadAllSkins loads all the available skins (Host and Site) to the radio button list.</summary>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         public void LoadAllSkins(bool includeNotSpecified)
         {
@@ -170,9 +166,7 @@ namespace DotNetNuke.UI.Skins
             this.LoadPortalSkins(false);
         }
 
-        /// <summary>
-        /// LoadHostSkins loads all the available Host skins to the radio button list.
-        /// </summary>
+        /// <summary>LoadHostSkins loads all the available Host skins to the radio button list.</summary>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         public void LoadHostSkins(bool includeNotSpecified)
         {
@@ -197,9 +191,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// LoadHostSkins loads all the available Site/Portal skins to the radio button list.
-        /// </summary>
+        /// <summary>LoadHostSkins loads all the available Site/Portal skins to the radio button list.</summary>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         public void LoadPortalSkins(bool includeNotSpecified)
         {
@@ -221,9 +213,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// LoadSkins loads all the available skins in a specific folder to the radio button list.
-        /// </summary>
+        /// <summary>LoadSkins loads all the available skins in a specific folder to the radio button list.</summary>
         /// <param name="strFolder">The folder to search for skins.</param>
         /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]".</param>
         /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
@@ -247,9 +237,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// format skin name.
-        /// </summary>
+        /// <summary>format skin name.</summary>
         /// <param name="strSkinFolder">The Folder Name.</param>
         /// <param name="strSkinFile">The File Name without extension.</param>
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
@@ -272,9 +260,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// CreateThumbnail creates a thumbnail of the Preview Image.
-        /// </summary>
+        /// <summary>CreateThumbnail creates a thumbnail of the Preview Image.</summary>
         /// <param name="strImage">The Image File Name.</param>
         private static string CreateThumbnail(string strImage)
         {
@@ -350,9 +336,7 @@ namespace DotNetNuke.UI.Skins
             return strThumbnail;
         }
 
-        /// <summary>
-        /// AddDefaultSkin adds the not-specified skin to the radio button list.
-        /// </summary>
+        /// <summary>AddDefaultSkin adds the not-specified skin to the radio button list.</summary>
         private void AddDefaultSkin()
         {
             var strDefault = Localization.GetString("Not_Specified") + "<br />";
@@ -360,9 +344,7 @@ namespace DotNetNuke.UI.Skins
             this.OptSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
         }
 
-        /// <summary>
-        /// AddSkin adds the skin to the radio button list.
-        /// </summary>
+        /// <summary>AddSkin adds the skin to the radio button list.</summary>
         /// <param name="root">Root Path.</param>
         /// <param name="strFolder">The Skin Folder.</param>
         /// <param name="strFile">The Skin File.</param>

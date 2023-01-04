@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Installer
 
     using ICSharpCode.SharpZipLib.Zip;
 
-    /// <summary>
-    /// The InstallFile class represents a single file in an Installer Package.
-    /// </summary>
+    /// <summary>The InstallFile class represents a single file in an Installer Package.</summary>
     [Serializable]
     public class InstallFile
     {
@@ -94,9 +92,7 @@ namespace DotNetNuke.Services.Installer
             this.ReadZip(zip, entry);
         }
 
-        /// <summary>
-        /// Gets the location of the backup file.
-        /// </summary>
+        /// <summary>Gets the location of the backup file.</summary>
         /// <value>A string.</value>
         public string BackupFileName
         {
@@ -106,9 +102,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the location of the backup folder.
-        /// </summary>
+        /// <summary>Gets the location of the backup folder.</summary>
         /// <value>A string.</value>
         public virtual string BackupPath
         {
@@ -118,9 +112,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the File Extension of the file.
-        /// </summary>
+        /// <summary>Gets the File Extension of the file.</summary>
         /// <value>A string.</value>
         public string Extension
         {
@@ -136,9 +128,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the Full Name of the file.
-        /// </summary>
+        /// <summary>Gets the Full Name of the file.</summary>
         /// <value>A string.</value>
         public string FullName
         {
@@ -148,9 +138,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets the location of the temporary file.
-        /// </summary>
+        /// <summary>Gets the location of the temporary file.</summary>
         /// <value>A string.</value>
         public string TempFileName
         {
@@ -166,63 +154,45 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Action for this file.
-        /// </summary>
+        /// <summary>Gets or sets the Action for this file.</summary>
         /// <value>A string.</value>
         public string Action { get; set; }
 
         public TextEncoding Encoding { get; private set; }
 
-        /// <summary>
-        /// Gets the associated InstallerInfo.
-        /// </summary>
+        /// <summary>Gets the associated InstallerInfo.</summary>
         /// <value>An InstallerInfo object.</value>
         [Browsable(false)]
         public InstallerInfo InstallerInfo { get; private set; }
 
-        /// <summary>
-        /// Gets the Name of the file.
-        /// </summary>
+        /// <summary>Gets the Name of the file.</summary>
         /// <value>A string.</value>
         public string Name { get; private set; }
 
-        /// <summary>
-        /// Gets the Path of the file.
-        /// </summary>
+        /// <summary>Gets the Path of the file.</summary>
         /// <value>A string.</value>
         public string Path { get; private set; }
 
-        /// <summary>
-        /// Gets the source file name.
-        /// </summary>
+        /// <summary>Gets the source file name.</summary>
         /// <value>A string.</value>
         public string SourceFileName { get; private set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Type of the file.
-        /// </summary>
+        /// <summary>Gets or sets the Type of the file.</summary>
         /// <value>An InstallFileType Enumeration.</value>
         public InstallFileType Type { get; set; }
 
-        /// <summary>
-        /// Gets the Version of the file.
-        /// </summary>
+        /// <summary>Gets the Version of the file.</summary>
         /// <value>A System.Version.</value>
         public Version Version { get; private set; }
 
-        /// <summary>
-        /// The SetVersion method sets the version of the file.
-        /// </summary>
+        /// <summary>The SetVersion method sets the version of the file.</summary>
         /// <param name="version">The version of the file.</param>
         public void SetVersion(Version version)
         {
             this.Version = version;
         }
 
-        /// <summary>
-        /// The ParseFileName parses the ZipEntry metadata.
-        /// </summary>
+        /// <summary>The ParseFileName parses the ZipEntry metadata.</summary>
         /// <param name="fileName">A String representing the file name.</param>
         private void ParseFileName(string fileName)
         {
@@ -299,9 +269,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// The ReadZip method reads the zip stream and parses the ZipEntry metadata.
-        /// </summary>
+        /// <summary>The ReadZip method reads the zip stream and parses the ZipEntry metadata.</summary>
         /// <param name="entry">A ZipEntry containing the file metadata.</param>
         private void ReadZip(ZipArchiveEntry entry)
         {

@@ -22,9 +22,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
-    /// <summary>
-    ///   The Impl Controller class for Search.
-    /// </summary>
+    /// <summary>  The Impl Controller class for Search.</summary>
     internal class SearchControllerImpl : ISearchController
     {
         private const string SeacrchContollersCacheKey = "SearchControllers";

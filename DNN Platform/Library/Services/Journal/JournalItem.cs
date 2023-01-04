@@ -76,9 +76,7 @@ namespace DotNetNuke.Services.Journal
 
         public int SimilarCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
+        /// <summary>Gets or sets the key ID.</summary>
         /// <value>
         /// The key ID.
         /// </value>

@@ -8,7 +8,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Users;
 
     /// <summary></summary>
-    /// <returns></returns>
     public partial class CurrentDate : SkinObjectBase
     {
         public string CssClass { get; set; }

@@ -15,33 +15,25 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class ProfileDefinitions {
-        /// <summary>
-        /// grdProfileProperties control.
-        /// </summary>
+        /// <summary>grdProfileProperties control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataGrid grdProfileProperties;
-        /// <summary>
-        /// actionsRow control.
-        /// </summary>
+        /// <summary>actionsRow control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl actionsRow;
-        /// <summary>
-        /// cmdAdd control.
-        /// </summary>
+        /// <summary>cmdAdd control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink cmdAdd;
-        /// <summary>
-        /// cmdRefresh control.
-        /// </summary>
+        /// <summary>cmdRefresh control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

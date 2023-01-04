@@ -49,9 +49,7 @@ namespace DotNetNuke.Entities.Modules
     {
         private UserInfo user;
 
-        /// <summary>
-        /// Gets or sets and sets the User associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the User associated with this control.</summary>
         public UserInfo User
         {
             get
@@ -69,9 +67,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the UserId associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the UserId associated with this control.</summary>
         public new int UserId
         {
             get
@@ -100,9 +96,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether we are in Add User mode.
-        /// </summary>
+        /// <summary>Gets a value indicating whether we are in Add User mode.</summary>
         protected virtual bool AddUser
         {
             get
@@ -111,9 +105,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the current user is an Administrator (or SuperUser).
-        /// </summary>
+        /// <summary>Gets a value indicating whether the current user is an Administrator (or SuperUser).</summary>
         protected bool IsAdmin
         {
             get
@@ -122,13 +114,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether this is the current user or admin.
-        /// </summary>
-        /// <value>
-        /// gets whether this is the current user or admin.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets a value indicating whether this is the current user or admin.</summary>
+        /// <value>gets whether this is the current user or admin.</value>
         protected bool IsUserOrAdmin
         {
             get
@@ -137,9 +124,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether this control is in the Host menu.
-        /// </summary>
+        /// <summary>Gets a value indicating whether this control is in the Host menu.</summary>
         protected bool IsHostTab
         {
             get
@@ -148,9 +133,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the control is being called form the User Accounts module.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the control is being called form the User Accounts module.</summary>
         protected bool IsEdit
         {
             get
@@ -169,9 +152,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the current user is modifying their profile.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the current user is modifying their profile.</summary>
         protected bool IsProfile
         {
             get
@@ -205,9 +186,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether an anonymous user is trying to register.
-        /// </summary>
+        /// <summary>Gets a value indicating whether an anonymous user is trying to register.</summary>
         protected bool IsRegister
         {
             get
@@ -216,9 +195,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the User is editing their own information.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the User is editing their own information.</summary>
         protected bool IsUser
         {
             get
@@ -227,9 +204,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the PortalId to use for this control.
-        /// </summary>
+        /// <summary>Gets the PortalId to use for this control.</summary>
         protected int UserPortalID
         {
             get
@@ -238,10 +213,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a Setting for the Module.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets a Setting for the Module.</summary>
+        /// <returns>The setting value or <see langword="null"/>.</returns>
         public static object GetSetting(int portalId, string settingKey)
         {
             Hashtable settings = UserController.GetUserSettings(portalId);
@@ -265,9 +238,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Updates the Settings for the Module.
-        /// </summary>
+        /// <summary>Updates the Settings for the Module.</summary>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
             string key;
@@ -281,9 +252,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// AddLocalizedModuleMessage adds a localized module message.
-        /// </summary>
+        /// <summary>AddLocalizedModuleMessage adds a localized module message.</summary>
         /// <param name="message">The localized message.</param>
         /// <param name="type">The type of message.</param>
         /// <param name="display">A flag that determines whether the message should be displayed.</param>
@@ -295,9 +264,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// AddModuleMessage adds a module message.
-        /// </summary>
+        /// <summary>AddModuleMessage adds a module message.</summary>
         /// <param name="message">The message.</param>
         /// <param name="type">The type of message.</param>
         /// <param name="display">A flag that determines whether the message should be displayed.</param>
@@ -377,9 +344,7 @@ namespace DotNetNuke.Entities.Modules
             return strMessage;
         }
 
-        /// <summary>
-        /// InitialiseUser initialises a "new" user.
-        /// </summary>
+        /// <summary>InitialiseUser initialises a "new" user.</summary>
         private UserInfo InitialiseUser()
         {
             var newUser = new UserInfo();

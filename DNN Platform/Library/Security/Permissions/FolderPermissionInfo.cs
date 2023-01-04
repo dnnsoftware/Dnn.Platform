@@ -106,9 +106,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlIgnore]
         [JsonIgnore]
@@ -125,9 +123,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Fills a FolderPermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a FolderPermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {

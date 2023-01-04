@@ -22,9 +22,7 @@ using log4net.Core;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Interface for appenders that support bulk logging.
-    /// </summary>
+    /// <summary>Interface for appenders that support bulk logging.</summary>
     /// <remarks>
     /// <para>
     /// This interface extends the <see cref="IAppender"/> interface to
@@ -35,9 +33,7 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public interface IBulkAppender : IAppender
     {
-        /// <summary>
-        /// Log the array of logging events in Appender specific way.
-        /// </summary>
+        /// <summary>Log the array of logging events in Appender specific way.</summary>
         /// <param name="loggingEvents">The events to log</param>
         /// <remarks>
         /// <para>

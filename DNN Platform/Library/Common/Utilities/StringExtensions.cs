@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utilities
 {
     using System.Text;
@@ -38,9 +37,7 @@ namespace DotNetNuke.Common.Utilities
             return stringValue ?? string.Empty;
         }
 
-        /// <summary>
-        /// Takes a string and removes any diacritics.
-        /// </summary>
+        /// <summary>Takes a string and removes any diacritics.</summary>
         /// <param name="input">String to normalize.</param>
         /// <returns>String without diacritics.</returns>
         public static string NormalizeString(this string input)
@@ -50,13 +47,11 @@ namespace DotNetNuke.Common.Utilities
                 : Iso8859Encoding.GetString(Encoding.Convert(Encoding.UTF8, Iso8859Encoding, Encoding.UTF8.GetBytes(input))).ToLowerInvariant();
         }
 
-        /// <summary>
-        /// Alternative to <see cref="string.Replace(string, string)"/> that supports case insensitive replacement.
-        /// </summary>
+        /// <summary>Alternative to <see cref="string.Replace(string, string)"/> that supports case insensitive replacement.</summary>
         /// <param name="source">The source.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        /// <returns></returns>
+        /// <returns>The <paramref name="source"/> with <paramref name="oldValue"/> replaced by <paramref name="newValue"/>.</returns>
         public static string ReplaceIgnoreCase(this string source, string oldValue, string newValue)
         {
             if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(oldValue) || oldValue.Equals(newValue, System.StringComparison.OrdinalIgnoreCase))

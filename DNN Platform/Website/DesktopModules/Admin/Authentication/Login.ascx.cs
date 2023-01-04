@@ -48,9 +48,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// <summary>
-    /// The Signin UserModuleBase is used to provide a login for a registered user.
-    /// </summary>
+    /// <summary>The Signin UserModuleBase is used to provide a login for a registered user.</summary>
     public partial class Login : UserModuleBase
     {
         private const string LOGINPATH = "/login";
@@ -66,17 +64,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private readonly List<AuthenticationLoginBase> defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> oAuthControls = new List<OAuthLoginBase>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Login"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets the Redirect URL (after successful login).
-        /// </summary>
+        /// <summary>Gets the Redirect URL (after successful login).</summary>
         protected string RedirectURL
         {
             get
@@ -159,9 +153,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Captcha control is used to validate the login.</summary>
         protected bool UseCaptcha
         {
             get
@@ -171,9 +163,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the current AuthenticationType.
-        /// </summary>
+        /// <summary>Gets or sets the current AuthenticationType.</summary>
         protected string AuthenticationType
         {
             get
@@ -193,9 +183,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.</summary>
         protected bool AutoRegister
         {
             get
@@ -234,9 +222,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the current Page No.
-        /// </summary>
+        /// <summary>Gets or sets the current Page No.</summary>
         protected int PageNo
         {
             get
@@ -256,9 +242,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.</summary>
         protected bool RememberMe
         {
             get
@@ -297,9 +281,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the current UserToken.
-        /// </summary>
+        /// <summary>Gets or sets the current UserToken.</summary>
         protected string UserToken
         {
             get
@@ -319,9 +301,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the current UserName.
-        /// </summary>
+        /// <summary>Gets or sets the current UserName.</summary>
         protected string UserName
         {
             get
@@ -347,9 +327,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
 
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
+        /// <summary>Page_Init runs when the control is initialised.</summary>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -385,9 +363,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -477,9 +453,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// cmdAssociate_Click runs when the associate button is clicked.
-        /// </summary>
+        /// <summary>cmdAssociate_Click runs when the associate button is clicked.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -517,9 +491,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// cmdCreateUser runs when the register (as new user) button is clicked.
-        /// </summary>
+        /// <summary>cmdCreateUser runs when the register (as new user) button is clicked.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -546,9 +518,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
-        /// </summary>
+        /// <summary>cmdProceed_Click runs when the Proceed Anyway button is clicked.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -558,9 +528,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this.ValidateUser(user, true);
         }
 
-        /// <summary>
-        /// PasswordUpdated runs when the password is updated.
-        /// </summary>
+        /// <summary>PasswordUpdated runs when the password is updated.</summary>
         protected void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             PasswordUpdateStatus status = e.UpdateStatus;
@@ -582,9 +550,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// DataConsentCompleted runs after the user has gone through the data consent screen.
-        /// </summary>
+        /// <summary>DataConsentCompleted runs after the user has gone through the data consent screen.</summary>
         protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
         {
             switch (e.Status)
@@ -602,9 +568,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// ProfileUpdated runs when the profile is updated.
-        /// </summary>
+        /// <summary>ProfileUpdated runs when the profile is updated.</summary>
         protected void ProfileUpdated(object sender, EventArgs e)
         {
             // Authorize User
@@ -731,9 +695,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// UserCreateCompleted runs when a new user has been Created.
-        /// </summary>
+        /// <summary>UserCreateCompleted runs when a new user has been Created.</summary>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             var strMessage = string.Empty;
@@ -764,13 +726,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>
-        /// Replaces the original language with user language.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="originalLanguage"></param>
-        /// <param name="newLanguage"></param>
-        /// <returns></returns>
+        /// <summary>Replaces the original language with user language.</summary>
+        /// <param name="url">The URL to update.</param>
+        /// <param name="originalLanguage">The original language.</param>
+        /// <param name="newLanguage">The new language.</param>
+        /// <returns>The <paramref name="url"/> with the <paramref name="newLanguage"/>.</returns>
         private static string ReplaceLanguage(string url, string originalLanguage, string newLanguage)
         {
             var returnValue = Host.UseFriendlyUrls
@@ -1165,9 +1125,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return this.UserToken.Replace("http://", string.Empty).TrimEnd('/');
         }
 
-        /// <summary>
-        /// ShowPanel controls what "panel" is to be displayed.
-        /// </summary>
+        /// <summary>ShowPanel controls what "panel" is to be displayed.</summary>
         private void ShowPanel()
         {
             bool showLogin = this.PageNo == 0;

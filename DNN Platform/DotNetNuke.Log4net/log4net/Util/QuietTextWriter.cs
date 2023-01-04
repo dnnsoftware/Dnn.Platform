@@ -25,9 +25,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// <see cref="TextWriter"/> that does not leak exceptions
-    /// </summary>
+    /// <summary><see cref="TextWriter"/> that does not leak exceptions</summary>
     /// <remarks>
     /// <para>
     /// <see cref="QuietTextWriter"/> does not throw exceptions when things go wrong. 
@@ -38,9 +36,7 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public class QuietTextWriter : TextWriterAdapter
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="writer">the writer to actually write to</param>
         /// <param name="errorHandler">the error handler to report error to</param>
         /// <remarks>
@@ -58,9 +54,7 @@ namespace log4net.Util
             this.ErrorHandler = errorHandler;
         }
 
-        /// <summary>
-        /// Gets or sets the error handler that all errors are passed to.
-        /// </summary>
+        /// <summary>Gets or sets the error handler that all errors are passed to.</summary>
         /// <value>
         /// The error handler that all errors are passed to.
         /// </value>
@@ -84,9 +78,7 @@ namespace log4net.Util
             }
         }	
 
-        /// <summary>
-        /// Gets a value indicating whether this writer is closed.
-        /// </summary>
+        /// <summary>Gets a value indicating whether this writer is closed.</summary>
         /// <value>
         /// <c>true</c> if this writer is closed, otherwise <c>false</c>.
         /// </value>
@@ -100,9 +92,7 @@ namespace log4net.Util
             get { return this.m_closed; }
         }
 
-        /// <summary>
-        /// Writes a character to the underlying writer
-        /// </summary>
+        /// <summary>Writes a character to the underlying writer</summary>
         /// <param name="value">the char to write</param>
         /// <remarks>
         /// <para>
@@ -121,9 +111,7 @@ namespace log4net.Util
             }
         }
     
-        /// <summary>
-        /// Writes a buffer to the underlying writer
-        /// </summary>
+        /// <summary>Writes a buffer to the underlying writer</summary>
         /// <param name="buffer">the buffer to write</param>
         /// <param name="index">the start index to write from</param>
         /// <param name="count">the number of characters to write</param>
@@ -144,9 +132,7 @@ namespace log4net.Util
             }
         }
     
-        /// <summary>
-        /// Writes a string to the output.
-        /// </summary>
+        /// <summary>Writes a string to the output.</summary>
         /// <param name="value">The string data to write to the output.</param>
         /// <remarks>
         /// <para>
@@ -165,9 +151,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Closes the underlying output writer.
-        /// </summary>
+        /// <summary>Closes the underlying output writer.</summary>
         /// <remarks>
         /// <para>
         /// Closes the underlying output writer.
@@ -179,14 +163,10 @@ namespace log4net.Util
             base.Close();
         }
 
-        /// <summary>
-        /// The error handler instance to pass all errors to
-        /// </summary>
+        /// <summary>The error handler instance to pass all errors to</summary>
         private IErrorHandler m_errorHandler;
 
-        /// <summary>
-        /// Flag to indicate if this writer is closed
-        /// </summary>
+        /// <summary>Flag to indicate if this writer is closed</summary>
         private bool m_closed = false;
     }
 }

@@ -16,9 +16,7 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     public class DNNDataGridCheckChangedEventArgs : DataGridItemEventArgs
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNDataGridCheckChangedEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNDataGridCheckChangedEventArgs"/> class.</summary>
         /// <param name="item"></param>
         /// <param name="isChecked"></param>
         /// <param name="field"></param>
@@ -27,9 +25,7 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNDataGridCheckChangedEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNDataGridCheckChangedEventArgs"/> class.</summary>
         /// <param name="item"></param>
         /// <param name="isChecked"></param>
         /// <param name="field"></param>

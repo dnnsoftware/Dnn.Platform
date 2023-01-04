@@ -6,9 +6,7 @@ namespace DotNetNuke.HttpModules.Compression
     using System.IO;
     using System.IO.Compression;
 
-    /// <summary>
-    /// This is a little filter to support HTTP compression using GZip.
-    /// </summary>
+    /// <summary>This is a little filter to support HTTP compression using GZip.</summary>
     public class GZipFilter : CompressingFilter
     {
         private readonly GZipStream stream;

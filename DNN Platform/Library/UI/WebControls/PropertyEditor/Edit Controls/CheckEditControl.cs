@@ -17,9 +17,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:CheckEditControl runat=server></{0}:CheckEditControl>")]
     public class CheckEditControl : TrueFalseEditControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CheckEditControl"/> class.</summary>
         public CheckEditControl()
         {
             this.SystemType = "System.Boolean";

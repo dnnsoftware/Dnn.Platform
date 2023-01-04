@@ -5,14 +5,10 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using DotNetNuke.UI.Skins;
 
-    /// <summary>
-    /// The ContainerInstaller installs Container Components to a DotNetNuke site.
-    /// </summary>
+    /// <summary>The ContainerInstaller installs Container Components to a DotNetNuke site.</summary>
     public class ContainerInstaller : SkinInstaller
     {
-        /// <summary>
-        /// Gets the name of the Collection Node ("containerFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("containerFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -22,9 +18,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("containerFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("containerFile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {
@@ -34,9 +28,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the SkinName Node ("containerName").
-        /// </summary>
+        /// <summary>Gets the name of the SkinName Node ("containerName").</summary>
         /// <value>A String.</value>
         protected override string SkinNameNodeName
         {
@@ -46,9 +38,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the RootName of the Skin.
-        /// </summary>
+        /// <summary>Gets the RootName of the Skin.</summary>
         /// <value>A String.</value>
         protected override string SkinRoot
         {
@@ -58,9 +48,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the Type of the Skin.
-        /// </summary>
+        /// <summary>Gets the Type of the Skin.</summary>
         /// <value>A String.</value>
         protected override string SkinType
         {

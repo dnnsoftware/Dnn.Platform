@@ -19,34 +19,26 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class DesktopModulePermissionCollection : CollectionBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         public DesktopModulePermissionCollection()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         /// <param name="desktopModulePermissions"></param>
         public DesktopModulePermissionCollection(ArrayList desktopModulePermissions)
         {
             this.AddRange(desktopModulePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         /// <param name="desktopModulePermissions"></param>
         public DesktopModulePermissionCollection(DesktopModulePermissionCollection desktopModulePermissions)
         {
             this.AddRange(desktopModulePermissions);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
         /// <param name="desktopModulePermissions"></param>
         /// <param name="desktopModulePermissionID"></param>
         public DesktopModulePermissionCollection(ArrayList desktopModulePermissions, int desktopModulePermissionID)

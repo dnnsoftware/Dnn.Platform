@@ -25,9 +25,7 @@ namespace DotNetNuke.Web.Mvc
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        /// <summary>
-        /// Returns the specified service from the scope.
-        /// </summary>
+        /// <summary>Returns the specified service from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>
@@ -46,9 +44,7 @@ namespace DotNetNuke.Web.Mvc
             throw new InvalidOperationException("IServiceScope not provided");
         }
 
-        /// <summary>
-        /// Returns the specified services from the scope.
-        /// </summary>
+        /// <summary>Returns the specified services from the scope.</summary>
         /// <param name="serviceType">
         /// The service to be retrieved.
         /// </param>

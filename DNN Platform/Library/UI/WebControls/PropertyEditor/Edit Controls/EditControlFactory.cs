@@ -14,12 +14,9 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     public class EditControlFactory
     {
-        /// <summary>
-        /// CreateEditControl creates the appropriate Control based on the EditorField or
-        /// TypeDataField.
-        /// </summary>
+        /// <summary>CreateEditControl creates the appropriate Control based on the EditorField or TypeDataField. </summary>
         /// <param name="editorInfo">An EditorInfo object.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="EditControl"/> instance.</returns>
         public static EditControl CreateEditControl(EditorInfo editorInfo)
         {
             EditControl propEditor;

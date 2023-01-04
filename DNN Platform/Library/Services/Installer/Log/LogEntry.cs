@@ -5,9 +5,7 @@ namespace DotNetNuke.Services.Installer.Log
 {
     using System;
 
-    /// <summary>
-    /// The LogEntry class provides a single entry for the Installer Log.
-    /// </summary>
+    /// <summary>The LogEntry class provides a single entry for the Installer Log.</summary>
     [Serializable]
     public class LogEntry
     {
@@ -25,9 +23,7 @@ namespace DotNetNuke.Services.Installer.Log
             this.description = description;
         }
 
-        /// <summary>
-        /// Gets the description of LogEntry.
-        /// </summary>
+        /// <summary>Gets the description of LogEntry.</summary>
         /// <value>A String.</value>
         public string Description
         {
@@ -42,9 +38,7 @@ namespace DotNetNuke.Services.Installer.Log
             }
         }
 
-        /// <summary>
-        /// Gets the type of LogEntry.
-        /// </summary>
+        /// <summary>Gets the type of LogEntry.</summary>
         /// <value>A LogType.</value>
         public LogType Type { get; private set; }
 

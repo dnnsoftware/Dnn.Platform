@@ -14,9 +14,7 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class List : GroupsModuleBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="List"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="List"/> class.</summary>
         public List()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

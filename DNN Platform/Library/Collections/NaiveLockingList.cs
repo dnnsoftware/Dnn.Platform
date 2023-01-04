@@ -8,9 +8,7 @@ namespace DotNetNuke.Collections.Internal
     using System.Collections;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Provides naive locking for generic lists.
-    /// </summary>
+    /// <summary>Provides naive locking for generic lists.</summary>
     /// <typeparam name="T">The type of value in the list.</typeparam>
     public class NaiveLockingList<T> : IList<T>
     {
@@ -168,9 +166,7 @@ namespace DotNetNuke.Collections.Internal
             private readonly ISharedCollectionLock readLock;
             private bool isDisposed;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="NaiveLockingEnumerator"/> class.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="NaiveLockingEnumerator"/> class.</summary>
             /// <param name="enumerator">The enumerator to implement locking on.</param>
             /// <param name="readLock">An <see cref="ISharedCollectionLock"/> instance to implement the read lock.</param>
             public NaiveLockingEnumerator(IEnumerator<T> enumerator, ISharedCollectionLock readLock)
@@ -179,9 +175,7 @@ namespace DotNetNuke.Collections.Internal
                 this.readLock = readLock;
             }
 
-            /// <summary>
-            /// Finalizes an instance of the <see cref="NaiveLockingEnumerator"/> class.
-            /// </summary>
+            /// <summary>Finalizes an instance of the <see cref="NaiveLockingEnumerator"/> class.</summary>
             ~NaiveLockingEnumerator()
             {
                 this.Dispose(false);
@@ -225,9 +219,7 @@ namespace DotNetNuke.Collections.Internal
                 GC.SuppressFinalize(this);
             }
 
-            /// <summary>
-            /// Disposes this instance resources.
-            /// </summary>
+            /// <summary>Disposes this instance resources.</summary>
             /// <param name="disposing">A value indicating whether this instance is currently disposing.</param>
             protected virtual void Dispose(bool disposing)
             {

@@ -8,9 +8,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
 
     public class WorkflowDoesNotExistException : WorkflowException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowDoesNotExistException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowDoesNotExistException"/> class.</summary>
         public WorkflowDoesNotExistException()
             : base(Localization.GetString("WorkflowDoesNotExistException", Localization.ExceptionsResourceFile))
         {

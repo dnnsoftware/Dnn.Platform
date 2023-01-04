@@ -73,9 +73,7 @@ namespace DotNetNuke.Services.Syndication
             this.Render(new XmlTextWriter(this.Context.Response.OutputStream, null));
         }
 
-        /// <summary>
-        ///   Triggers the Init event.
-        /// </summary>
+        /// <summary>  Triggers the Init event.</summary>
         protected virtual void OnInit(EventArgs ea)
         {
             if (this.Init != null)
@@ -84,9 +82,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        /// <summary>
-        ///   Triggers the PreRender event.
-        /// </summary>
+        /// <summary>  Triggers the PreRender event.</summary>
         protected virtual void OnPreRender(EventArgs ea)
         {
             if (this.PreRender != null)

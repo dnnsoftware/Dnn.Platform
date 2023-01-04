@@ -17,17 +17,10 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Internals;
     using Newtonsoft.Json;
 
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke
-    /// Class:      SearchEngine
-    /// <summary>
-    /// The SearchEngine  manages the Indexing of the Portal content.
-    /// </summary>
+    /// <summary>The SearchEngine manages the Indexing of the Portal content.</summary>
     internal class SearchEngine
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchEngine"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchEngine"/> class.</summary>
         /// <param name="scheduler"></param>
         /// <param name="startTime"></param>
         internal SearchEngine(ScheduleHistoryItem scheduler, DateTime startTime)
@@ -41,9 +34,7 @@ namespace DotNetNuke.Services.Search
         // the time from where to start indexing items
         public DateTime IndexingStartTime { get; private set; }
 
-        /// <summary>
-        /// Indexes content within the given time farame.
-        /// </summary>
+        /// <summary>Indexes content within the given time frame.</summary>
         internal void IndexContent()
         {
             // Index TAB META-DATA
@@ -101,9 +92,7 @@ namespace DotNetNuke.Services.Search
             return false;
         }
 
-        /// <summary>
-        /// Deletes all old documents when re-index was requested, so we start a fresh search.
-        /// </summary>
+        /// <summary>Deletes all old documents when re-index was requested, so we start a fresh search.</summary>
         internal void DeleteOldDocsBeforeReindex()
         {
             var portal2Reindex = SearchHelper.Instance.GetPortalsToReindex(this.IndexingStartTime);
@@ -116,9 +105,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// <summary>
-        /// Deletes all deleted items from the system that are added to deletions table.
-        /// </summary>
+        /// <summary>Deletes all deleted items from the system that are added to deletions table.</summary>
         internal void DeleteRemovedObjects()
         {
             var deletedCount = 0;
@@ -142,9 +129,7 @@ namespace DotNetNuke.Services.Search
             dataProvider.DeleteProcessedSearchDeletedItems(cutoffTime);
         }
 
-        /// <summary>
-        /// Commits (flushes) all added and deleted content to search engine's disk file.
-        /// </summary>
+        /// <summary>Commits (flushes) all added and deleted content to search engine's disk file.</summary>
         internal void Commit()
         {
             InternalSearchController.Instance.Commit();
@@ -157,7 +142,7 @@ namespace DotNetNuke.Services.Search
         /// GetContent gets all the content and passes it to the Indexer.
         /// </summary>
         /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="SearchItemInfoCollection"/> instance.</returns>
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
         {
@@ -180,7 +165,7 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="SearchItemInfoCollection"/> instance.</returns>
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
         {
@@ -189,9 +174,7 @@ namespace DotNetNuke.Services.Search
             return searchItems;
         }
 
-        /// <summary>
-        /// Ensures all SearchDocuments have a SearchTypeId.
-        /// </summary>
+        /// <summary>Ensures all SearchDocuments have a SearchTypeId.</summary>
         /// <param name="searchDocs"></param>
         private static void StoreSearchDocuments(IEnumerable<SearchDocument> searchDocs)
         {
@@ -211,9 +194,7 @@ namespace DotNetNuke.Services.Search
             this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
         }
 
-        /// <summary>
-        /// Gets all the Search Documents for the given timeframe.
-        /// </summary>
+        /// <summary>Gets all the Search Documents for the given timeframe.</summary>
         /// <param name="indexer"></param>
         private int GetAndStoreSearchDocuments(IndexingProviderBase indexer)
         {
@@ -259,9 +240,7 @@ namespace DotNetNuke.Services.Search
             return indexedCount;
         }
 
-        /// <summary>
-        /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals.
-        /// </summary>
+        /// <summary>Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals.</summary>
         private int GetAndStoreModuleMetaData(ModuleIndexer indexer)
         {
             IEnumerable<SearchDocument> searchDocs;
@@ -287,9 +266,7 @@ namespace DotNetNuke.Services.Search
             return indexedCount;
         }
 
-        /// <summary>
-        /// Adjusts the re-index date/time to account for the portal reindex value.
-        /// </summary>
+        /// <summary>Adjusts the re-index date/time to account for the portal reindex value.</summary>
         private DateTime FixedIndexingStartDate(int portalId)
         {
             var startDate = this.IndexingStartTime;

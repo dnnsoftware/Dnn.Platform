@@ -11,9 +11,7 @@ namespace DotNetNuke.Entities.Host
 
     public class HostPropertyAccess : DictionaryPropertyAccess
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HostPropertyAccess"/> class.</summary>
         public HostPropertyAccess()
             : base(HostController.Instance.GetSettingsDictionary())
         {

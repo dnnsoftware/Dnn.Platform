@@ -14,16 +14,12 @@ namespace DotNetNuke.Services.Social.Subscriptions
     using DotNetNuke.Services.Social.Subscriptions.Data;
     using DotNetNuke.Services.Social.Subscriptions.Entities;
 
-    /// <summary>
-    /// This controller is responsible to manage the subscription types.
-    /// </summary>
+    /// <summary>This controller is responsible to manage the subscription types.</summary>
     public class SubscriptionTypeController : ServiceLocator<ISubscriptionTypeController, SubscriptionTypeController>, ISubscriptionTypeController
     {
         private readonly IDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubscriptionTypeController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SubscriptionTypeController"/> class.</summary>
         public SubscriptionTypeController()
         {
             this.dataService = DataService.Instance;

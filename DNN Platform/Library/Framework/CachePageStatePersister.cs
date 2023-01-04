@@ -14,9 +14,7 @@ namespace DotNetNuke.Framework
     /// Namespace:  DotNetNuke.Framework
     /// Project:    DotNetNuke
     /// Class:      CachePageStatePersister
-    /// <summary>
-    /// CachePageStatePersister provides a cache based page state peristence mechanism.
-    /// </summary>
+    /// <summary>CachePageStatePersister provides a cache based page state peristence mechanism.</summary>
     public class CachePageStatePersister : PageStatePersister
     {
         private const string ViewStateCacheKey = "__VIEWSTATE_CACHEKEY";
@@ -30,9 +28,7 @@ namespace DotNetNuke.Framework
         {
         }
 
-        /// <summary>
-        /// Loads the Page State from the Cache.
-        /// </summary>
+        /// <summary>Loads the Page State from the Cache.</summary>
         public override void Load()
         {
             // Get the cache key from the web form data
@@ -59,9 +55,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Saves the Page State to the Cache.
-        /// </summary>
+        /// <summary>Saves the Page State to the Cache.</summary>
         public override void Save()
         {
             // No processing needed if no states available

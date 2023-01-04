@@ -35,15 +35,11 @@ namespace DotNetNuke.UI.UserControls
         private string helpKey;
         private string resourceKey;
 
-        /// <summary>
-        /// Gets or sets controlName is the Id of the control that is associated with the label.
-        /// </summary>
+        /// <summary>Gets or sets controlName is the Id of the control that is associated with the label.</summary>
         /// <value>A string representing the id of the associated control.</value>
         public string ControlName { get; set; } // Associated Edit Control for this Label
 
-        /// <summary>
-        /// Gets or sets helpKey is the Resource Key for the Help Text.
-        /// </summary>
+        /// <summary>Gets or sets helpKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Help Text.</value>
         public string HelpKey
         {
@@ -58,9 +54,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets helpText is value of the Help Text if no ResourceKey is provided.
-        /// </summary>
+        /// <summary>Gets or sets helpText is value of the Help Text if no ResourceKey is provided.</summary>
         /// <value>A string representing the Text.</value>
         public string HelpText
         {
@@ -82,9 +76,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets resourceKey is the Resource Key for the Help Text.
-        /// </summary>
+        /// <summary>Gets or sets resourceKey is the Resource Key for the Help Text.</summary>
         /// <value>A string representing the Resource Key for the Label Text.</value>
         public string ResourceKey
         {
@@ -99,9 +91,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

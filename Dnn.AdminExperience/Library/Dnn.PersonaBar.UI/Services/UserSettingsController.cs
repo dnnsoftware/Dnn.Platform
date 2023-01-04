@@ -22,13 +22,10 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class UserSettingsController : PersonaBarApiController
     {
-        /// <summary>
-        /// Update Person Bar's User Settings.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Update Persona Bar's User Settings.</summary>
+        /// <returns>A response with an empty object.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateUserSettings(IDictionary<string, object> settings)
         {
             try

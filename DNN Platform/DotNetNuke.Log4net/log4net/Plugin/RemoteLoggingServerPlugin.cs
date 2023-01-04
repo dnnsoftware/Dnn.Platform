@@ -31,9 +31,7 @@ using IRemoteLoggingSink = log4net.Appender.RemotingAppender.IRemoteLoggingSink;
 
 namespace log4net.Plugin
 {
-    /// <summary>
-    /// Plugin that listens for events from the <see cref="log4net.Appender.RemotingAppender"/>
-    /// </summary>
+    /// <summary>Plugin that listens for events from the <see cref="log4net.Appender.RemotingAppender"/></summary>
     /// <remarks>
     /// <para>
     /// This plugin publishes an instance of <see cref="IRemoteLoggingSink"/> 
@@ -49,9 +47,7 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public class RemoteLoggingServerPlugin : PluginSkeleton
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="RemoteLoggingServerPlugin" /> class.
@@ -64,9 +60,7 @@ namespace log4net.Plugin
         {
         }
 
-        /// <summary>
-        /// Construct with sink Uri.
-        /// </summary>
+        /// <summary>Construct with sink Uri.</summary>
         /// <param name="sinkUri">The name to publish the sink under in the remoting infrastructure. 
         /// See <see cref="SinkUri"/> for more details.</param>
         /// <remarks>
@@ -80,9 +74,7 @@ namespace log4net.Plugin
             this.m_sinkUri = sinkUri;
         }
 
-        /// <summary>
-        /// Gets or sets the URI of this sink.
-        /// </summary>
+        /// <summary>Gets or sets the URI of this sink.</summary>
         /// <value>
         /// The URI of this sink.
         /// </value>
@@ -98,9 +90,7 @@ namespace log4net.Plugin
             set { this.m_sinkUri = value; }
         }
 
-        /// <summary>
-        /// Attaches this plugin to a <see cref="ILoggerRepository"/>.
-        /// </summary>
+        /// <summary>Attaches this plugin to a <see cref="ILoggerRepository"/>.</summary>
         /// <param name="repository">The <see cref="ILoggerRepository"/> that this plugin should be attached to.</param>
         /// <remarks>
         /// <para>
@@ -130,9 +120,7 @@ namespace log4net.Plugin
             }
         }
 
-        /// <summary>
-        /// Is called when the plugin is to shutdown.
-        /// </summary>
+        /// <summary>Is called when the plugin is to shutdown.</summary>
         /// <remarks>
         /// <para>
         /// When the plugin is shutdown the remote logging
@@ -154,18 +142,14 @@ namespace log4net.Plugin
         private RemoteLoggingSinkImpl m_sink;
         private string m_sinkUri;
 
-        /// <summary>
-        /// The fully qualified type of the RemoteLoggingServerPlugin class.
-        /// </summary>
+        /// <summary>The fully qualified type of the RemoteLoggingServerPlugin class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(RemoteLoggingServerPlugin);
 
-        /// <summary>
-        /// Delivers <see cref="LoggingEvent"/> objects to a remote sink.
-        /// </summary>
+        /// <summary>Delivers <see cref="LoggingEvent"/> objects to a remote sink.</summary>
         /// <remarks>
         /// <para>
         /// Internal class used to listen for logging events
@@ -174,9 +158,7 @@ namespace log4net.Plugin
         /// </remarks>
         private class RemoteLoggingSinkImpl : MarshalByRefObject, IRemoteLoggingSink
         {
-            /// <summary>
-            /// Constructor
-            /// </summary>
+            /// <summary>Constructor</summary>
             /// <param name="repository">The repository to log to.</param>
             /// <remarks>
             /// <para>
@@ -189,9 +171,7 @@ namespace log4net.Plugin
                 this.m_repository = repository;
             }
 
-            /// <summary>
-            /// Logs the events to the repository.
-            /// </summary>
+            /// <summary>Logs the events to the repository.</summary>
             /// <param name="events">The events to log.</param>
             /// <remarks>
             /// <para>

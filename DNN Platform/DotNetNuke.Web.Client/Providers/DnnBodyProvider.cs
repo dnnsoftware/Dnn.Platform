@@ -16,24 +16,16 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.Config;
     using ClientDependency.Core.FileRegistration.Providers;
 
-    /// <summary>
-    /// Registers resources at the top of the body on default.aspx.
-    /// </summary>
+    /// <summary>Registers resources at the top of the body on default.aspx.</summary>
     public class DnnBodyProvider : DnnFileRegistrationProvider
     {
-        /// <summary>
-        /// The name of the provider.
-        /// </summary>
+        /// <summary>The name of the provider.</summary>
         public const string DefaultName = "DnnBodyProvider";
 
-        /// <summary>
-        /// The name of the placeholder in which the controls will be rendered.
-        /// </summary>
+        /// <summary>The name of the placeholder in which the controls will be rendered.</summary>
         public const string DnnBodyPlaceHolderName = "BodySCRIPTS";
 
-        /// <summary>
-        /// Initializes the provider.
-        /// </summary>
+        /// <summary>Initializes the provider.</summary>
         /// <param name="name">The friendly name of the provider.
         ///                 </param><param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.
         ///                 </param><exception cref="T:System.ArgumentNullException">The name of the provider is null.
@@ -121,9 +113,7 @@ namespace DotNetNuke.Web.Client.Providers
             return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
         }
 
-        /// <summary>
-        /// Registers the dependencies in the body of default.aspx.
-        /// </summary>
+        /// <summary>Registers the dependencies in the body of default.aspx.</summary>
         /// <param name="http"></param>
         /// <param name="js"></param>
         /// <param name="css"></param>

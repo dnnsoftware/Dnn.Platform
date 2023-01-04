@@ -18,18 +18,14 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// <seealso cref="T:DotNetNuke.ModuleActionCollection" /></remarks>
     public class ModuleAction
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         public ModuleAction(int id)
             : this(id, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -38,9 +34,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -50,9 +44,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -63,9 +55,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -77,9 +67,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -92,9 +80,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -108,9 +94,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -125,9 +109,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAction"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="cmdName"></param>
@@ -199,9 +181,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// the ID is used to link the child and parent actions.</remarks>
         public int ID { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether the current action should be displayed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets whether the current action should be displayed.</summary>
         /// <value>A boolean value that determines if the current action should be displayed.</value>
         /// <remarks>If Visible is false, then the action is always hidden.  If Visible
         /// is true then the action may be visible depending on the security access rights
@@ -340,9 +320,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// <summary>
-        /// Determines whether the action node contains any child actions.
-        /// </summary>
+        /// <summary>Determines whether the action node contains any child actions.</summary>
         /// <returns>True if child actions exist, false if child actions do not exist.</returns>
         /// <remarks>Each action may contain one or more child actions in the
         /// <see cref="P:DotNetNuke.ModuleAction.Actions"/> property.  When displayed via

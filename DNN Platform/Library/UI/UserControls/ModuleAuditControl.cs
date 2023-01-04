@@ -28,9 +28,7 @@ namespace DotNetNuke.UI.UserControls
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
         private string systemUser;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleAuditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleAuditControl"/> class.</summary>
         public ModuleAuditControl()
         {
             this.LastModifiedDate = string.Empty;

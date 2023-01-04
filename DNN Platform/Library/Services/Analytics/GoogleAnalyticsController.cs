@@ -14,19 +14,13 @@ namespace DotNetNuke.Services.Analytics
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// Namespace:  DotNetNuke.Services.Analytics
-    /// Module:     GoogleAnalytics
-    /// <summary>
-    ///   Controller class definition for GoogleAnalytics which handles upgrades.
-    /// </summary>
+    /// <summary>Controller class definition for GoogleAnalytics which handles upgrades.</summary>
     public class GoogleAnalyticsController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GoogleAnalyticsController));
 
-        /// <summary>
-        ///   Handles module upgrades includes a new Google Analytics Asychronous script.
-        /// </summary>
-        /// <param name = "version"></param>
+        /// <summary>Handles module upgrades includes a new Google Analytics Asynchronous script.</summary>
+        /// <param name="version">The upgrade version.</param>
         public void UpgradeModule(string version)
         {
             // MD5 Hash value of the old synchronous script config file (from previous module versions)
@@ -66,10 +60,8 @@ namespace DotNetNuke.Services.Analytics
             }
         }
 
-        /// <summary>
-        ///   Retrieves the Google Analytics config file, "SiteAnalytics.config".
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Retrieves the Google Analytics config file, "SiteAnalytics.config".</summary>
+        /// <returns>A <see cref="StreamReader"/> to read the config file or <see langword="null"/>.</returns>
         private StreamReader GetConfigFile()
         {
             StreamReader fileReader = null;

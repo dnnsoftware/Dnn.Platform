@@ -22,47 +22,33 @@ namespace DotNetNuke.Entities.Users.Social
     [Serializable]
     public class UserRelationship : BaseEntityInfo, IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationship"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationship"/> class.</summary>
         public UserRelationship()
         {
             this.UserRelationshipId = -1;
         }
 
-        /// <summary>
-        /// Gets or sets userRelationshipId - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets userRelationshipId - The primary key.</summary>
         [XmlAttribute]
         public int UserRelationshipId { get; set; }
 
-        /// <summary>
-        /// Gets or sets userId of the User that owns the relationship.
-        /// </summary>
+        /// <summary>Gets or sets userId of the User that owns the relationship.</summary>
         [XmlAttribute]
         public int UserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the UserId of the Related User.
-        /// </summary>
+        /// <summary>Gets or sets the UserId of the Related User.</summary>
         [XmlAttribute]
         public int RelatedUserId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).
-        /// </summary>
+        /// <summary>Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).</summary>
         [XmlAttribute]
         public int RelationshipId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Status of the Relationship (e.g. Initiated, Accepted, Rejected).
-        /// </summary>
+        /// <summary>Gets or sets the Status of the Relationship (e.g. Initiated, Accepted, Rejected).</summary>
         [XmlAttribute]
         public RelationshipStatus Status { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -78,9 +64,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

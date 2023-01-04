@@ -6,14 +6,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System.IO;
 
-    /// <summary>
-    /// Deletes files.
-    /// </summary>
+    /// <summary>Deletes files.</summary>
     internal interface IDeleteFilesStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the path to the directory to search, relative to the application root path.
-        /// </summary>
+        /// <summary>Gets or sets the path to the directory to search, relative to the application root path.</summary>
         string RelativePath { get; set; }
 
         /// <summary>

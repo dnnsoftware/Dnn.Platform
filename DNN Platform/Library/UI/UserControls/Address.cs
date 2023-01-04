@@ -17,9 +17,7 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>
-    /// The Address UserControl is used to manage User Addresses.
-    /// </summary>
+    /// <summary>The Address UserControl is used to manage User Addresses.</summary>
     public abstract class Address : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
@@ -137,9 +135,7 @@ namespace DotNetNuke.UI.UserControls
         private string telephone;
         private string unit;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Address"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Address"/> class.</summary>
         protected Address()
         {
             this.StartTabIndex = 1;
@@ -438,9 +434,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -701,9 +695,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Localize correctly sets up the control for US/Canada/Other Countries.
-        /// </summary>
+        /// <summary>Localize correctly sets up the control for US/Canada/Other Countries.</summary>
         private void Localize()
         {
             var countryCode = this.cboCountry.SelectedItem.Value;
@@ -768,9 +760,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// ShowRequiredFields sets up displaying which fields are required.
-        /// </summary>
+        /// <summary>ShowRequiredFields sets up displaying which fields are required.</summary>
         private void ShowRequiredFields()
         {
             var reqStreet = PortalController.GetPortalSettingAsBoolean("addressstreet", this.PortalSettings.PortalId, true);
@@ -895,9 +885,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// UpdateRequiredFields updates which fields are required.
-        /// </summary>
+        /// <summary>UpdateRequiredFields updates which fields are required.</summary>
         private void UpdateRequiredFields()
         {
             if (this.chkCountry.Checked == false)

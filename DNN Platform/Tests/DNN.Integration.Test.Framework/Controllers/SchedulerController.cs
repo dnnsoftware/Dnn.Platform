@@ -99,9 +99,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             return DatabaseHelper.ExecuteQuery(query).FirstOrDefault();
         }
 
-        /// <summary>
-        /// Runs a specific scheduler and returns the resul depending on the passed flags.
-        /// </summary>
+        /// <summary>Runs a specific scheduler and returns the resul depending on the passed flags.</summary>
         /// <param name="schedulerName">Name of the scheduler in the database.</param>
         /// <param name="maxWaitSeconds">Maimum amount of time to wait for the task to finish.</param>
         /// <returns>Result of running the taske (depends on the flags).</returns>
@@ -228,9 +226,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 : latestInfo;
         }
 
-        /// <summary>
-        /// Finds the last time a specific scheduler was run and the ID of the last run.
-        /// </summary>
+        /// <summary>Finds the last time a specific scheduler was run and the ID of the last run.</summary>
         /// <param name="scheduleId">Scheduler ID to inquire.</param>
         /// <remarks>If no previous run exists, it returns ID as -1.</remarks>
         private static ScheduleHistoryInfo LastRunningScheduleItem(int scheduleId)

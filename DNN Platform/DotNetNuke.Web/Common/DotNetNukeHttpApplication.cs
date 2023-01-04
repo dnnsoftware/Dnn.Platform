@@ -39,9 +39,7 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
-    /// <summary>
-    /// DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
-    /// </summary>
+    /// <summary>DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.</summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));

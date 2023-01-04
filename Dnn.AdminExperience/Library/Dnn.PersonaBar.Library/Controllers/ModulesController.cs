@@ -25,17 +25,13 @@ namespace Dnn.PersonaBar.Library.Controllers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
         private IContentVerifier contentVerifier;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulesController"/> class.</summary>
         public ModulesController()
             : this(new ContentVerifier())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulesController"/> class.</summary>
         /// <param name="contentVerifier"></param>
         public ModulesController(IContentVerifier contentVerifier)
         {

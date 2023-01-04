@@ -31,9 +31,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         private readonly IRecyclebinController recyclebinController;
         private readonly IContentVerifier contentVerifier;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PurgePage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PurgePage"/> class.</summary>
         public PurgePage()
             : this(
             TabController.Instance,
@@ -42,9 +40,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PurgePage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PurgePage"/> class.</summary>
         /// <param name="tabController"></param>
         /// <param name="recyclebinController"></param>
         /// <param name="contentVerifier"></param>

@@ -16,14 +16,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DNNConnect.CKEditorProvider.Objects;
     using DotNetNuke.Common;
 
-    /// <summary>
-    /// Toolbar Helper Class.
-    /// </summary>
+    /// <summary>Toolbar Helper Class.</summary>
     public class ToolbarUtil
     {
-        /// <summary>
-        /// Loads the tool bar buttons.
-        /// </summary>
+        /// <summary>Loads the tool bar buttons.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <returns>Returns the Toolbar Button List.</returns>
         public static List<ToolbarButton> LoadToolBarButtons(string homeDirPath)
@@ -54,9 +50,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return buttons;
         }
 
-        /// <summary>
-        /// Converts the string to toolbar set.
-        /// </summary>
+        /// <summary>Converts the string to toolbar set.</summary>
         /// <param name="inputString">The input string.</param>
         /// <returns>Returns the ToolbarSet.</returns>
         public static ToolbarSet ConvertStringToToolbarSet(string inputString)
@@ -117,9 +111,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return toolbarSet;
         }
 
-        /// <summary>
-        /// Converts the toolbar set to string.
-        /// </summary>
+        /// <summary>Converts the toolbar set to string.</summary>
         /// <param name="toolbarSet">The toolbar set.</param>
         /// <param name="convertRowBreak">if set to <c>true</c> [convert row break].</param>
         /// <returns>
@@ -163,9 +155,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return stringBuilder.ToString();
         }
 
-        /// <summary>
-        /// Create Default Toolbar Button xml File.
-        /// </summary>
+        /// <summary>Create Default Toolbar Button xml File.</summary>
         /// <param name="savePath">The save path.</param>
         public static void CreateDefaultToolbarButtonXml(string savePath)
         {
@@ -572,9 +562,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets the default toolbar.
-        /// </summary>
+        /// <summary>Gets the default toolbar.</summary>
         /// <param name="toolbarName">Name of the toolbar.</param>
         /// <returns>Gets the Default Toolbar Based on the toolbarName.</returns>
         public static ToolbarSet GetDefaultToolbar(string toolbarName)
@@ -840,9 +828,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return null;
         }
 
-        /// <summary>
-        /// Create Default ToolbarSet xml File.
-        /// </summary>
+        /// <summary>Create Default ToolbarSet xml File.</summary>
         /// <param name="savePath">
         /// The save path.
         /// </param>
@@ -865,9 +851,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Find the Toolbar Set with the x Value.
-        /// </summary>
+        /// <summary>Find the Toolbar Set with the x Value.</summary>
         /// <param name="toolbars">
         /// Toolbar List to Search in.
         /// </param>
@@ -882,9 +866,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return toolbars.Find(toolbarSel => toolbarSel.Priority.Equals(maxPriority));
         }
 
-        /// <summary>
-        /// Get Toolbar Sets from the Serialized Xml File.
-        /// </summary>
+        /// <summary>Get Toolbar Sets from the Serialized Xml File.</summary>
         /// <param name="homeDirPath">
         /// Current Portal Home directory.
         /// </param>
@@ -1006,9 +988,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return toolBarSets;
         }
 
-        /// <summary>
-        /// Save Toolbar Set list as serialized Xml File.
-        /// </summary>
+        /// <summary>Save Toolbar Set list as serialized Xml File.</summary>
         /// <param name="toolBarSets">The Toolbar Set list.</param>
         /// <param name="homeDirPath">The home directory path.</param>
         internal static void SaveToolbarSets(List<ToolbarSet> toolBarSets, string homeDirPath)
@@ -1030,9 +1010,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Imports the old toolbar XML.
-        /// </summary>
+        /// <summary>Imports the old toolbar XML.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         internal static void ImportOldToolbarXml(string homeDirPath)
         {

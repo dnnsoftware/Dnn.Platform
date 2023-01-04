@@ -11,9 +11,7 @@ namespace DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      CheckBoxColumn
-    /// <summary>
-    /// The CheckBoxColumn control provides a Check Box column for a Data Grid.
-    /// </summary>
+    /// <summary>The CheckBoxColumn control provides a Check Box column for a Data Grid.</summary>
     public class CheckBoxColumn : TemplateColumn
     {
         private bool mAutoPostBack = true;
@@ -62,9 +60,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound).
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the checkbox is checked (unless DataBound).</summary>
         /// <value>A Boolean.</value>
         public bool Checked { get; set; }
 
@@ -141,9 +137,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
+        /// <summary>Initialises the Column.</summary>
         public override void Initialize()
         {
             this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
@@ -160,9 +154,7 @@ namespace DotNetNuke.UI.WebControls
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
 
-        /// <summary>
-        /// Creates a CheckBoxColumnTemplate.
-        /// </summary>
+        /// <summary>Creates a CheckBoxColumnTemplate.</summary>
         /// <returns>A CheckBoxColumnTemplate.</returns>
         private CheckBoxColumnTemplate CreateTemplate(ListItemType type)
         {
@@ -194,9 +186,7 @@ namespace DotNetNuke.UI.WebControls
             return template;
         }
 
-        /// <summary>
-        /// Centralised Event that is raised whenever a check box is changed.
-        /// </summary>
+        /// <summary>Centralised Event that is raised whenever a check box is changed.</summary>
         private void OnCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             // Add the column to the Event Args

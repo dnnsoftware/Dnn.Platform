@@ -39,17 +39,13 @@ namespace DotNetNuke.Modules.Admin.Users
         private ProfilePropertyDefinitionCollection profileProperties;
         private bool requiredColumnHidden = false;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProfileDefinitions"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
         public ProfileDefinitions()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets the Return Url for the page.
-        /// </summary>
+        /// <summary>Gets the Return Url for the page.</summary>
         public string ReturnUrl
         {
             get
@@ -112,9 +108,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether we are dealing with SuperUsers.
-        /// </summary>
+        /// <summary>Gets a value indicating whether we are dealing with SuperUsers.</summary>
         protected bool IsSuperUser
         {
             get
@@ -123,9 +117,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// Gets the collection of Profile Proeprties.
-        /// </summary>
+        /// <summary>Gets the collection of Profile Properties.</summary>
         protected ProfilePropertyDefinitionCollection ProfileProperties
         {
             get
@@ -134,9 +126,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// Gets the Portal Id whose Users we are managing.
-        /// </summary>
+        /// <summary>Gets the Portal Id whose Users we are managing.</summary>
         protected int UsersPortalId
         {
             get
@@ -224,9 +214,7 @@ namespace DotNetNuke.Modules.Admin.Users
             return allStates;
         }
 
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
+        /// <summary>Page_Init runs when the control is initialised.</summary>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -337,17 +325,13 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// Helper function that determines whether the client-side functionality is possible.
-        /// </summary>
+        /// <summary>Helper function that determines whether the client-side functionality is possible.</summary>
         private bool SupportsRichClient()
         {
             return ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML);
         }
 
-        /// <summary>
-        /// Deletes a property.
-        /// </summary>
+        /// <summary>Deletes a property.</summary>
         /// <param name="index">The index of the Property to delete.</param>
         private void DeleteProperty(int index)
         {
@@ -356,9 +340,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.RefreshGrid();
         }
 
-        /// <summary>
-        /// Moves a property.
-        /// </summary>
+        /// <summary>Moves a property.</summary>
         /// <param name="index">The index of the Property to move.</param>
         /// <param name="destIndex">The new index of the Property.</param>
         private void MoveProperty(int index, int destIndex)
@@ -378,27 +360,21 @@ namespace DotNetNuke.Modules.Admin.Users
             this.BindGrid();
         }
 
-        /// <summary>
-        /// Moves a property down in the ViewOrder.
-        /// </summary>
+        /// <summary>Moves a property down in the ViewOrder.</summary>
         /// <param name="index">The index of the Property to move.</param>
         private void MovePropertyDown(int index)
         {
             this.MoveProperty(index, index + 1);
         }
 
-        /// <summary>
-        /// Moves a property up in the ViewOrder.
-        /// </summary>
+        /// <summary>Moves a property up in the ViewOrder.</summary>
         /// <param name="index">The index of the Property to move.</param>
         private void MovePropertyUp(int index)
         {
             this.MoveProperty(index, index - 1);
         }
 
-        /// <summary>
-        /// Binds the Property Collection to the Grid.
-        /// </summary>
+        /// <summary>Binds the Property Collection to the Grid.</summary>
         private void BindGrid()
         {
             bool allRequired = true;
@@ -445,18 +421,14 @@ namespace DotNetNuke.Modules.Admin.Users
             this.grdProfileProperties.DataBind();
         }
 
-        /// <summary>
-        /// Refresh the Property Collection to the Grid.
-        /// </summary>
+        /// <summary>Refresh the Property Collection to the Grid.</summary>
         private void RefreshGrid()
         {
             this.profileProperties = null;
             this.BindGrid();
         }
 
-        /// <summary>
-        /// Updates any "dirty" properties.
-        /// </summary>
+        /// <summary>Updates any "dirty" properties.</summary>
         private void UpdateProperties()
         {
             this.ProcessPostBack();

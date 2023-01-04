@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    ///   Class for managing an OPML feed.
-    /// </summary>
+    /// <summary>  Class for managing an OPML feed.</summary>
     public class Opml
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));

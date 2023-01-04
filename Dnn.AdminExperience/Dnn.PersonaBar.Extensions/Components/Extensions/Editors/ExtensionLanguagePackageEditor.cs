@@ -21,9 +21,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
         public ExtensionLanguagePackageEditor()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

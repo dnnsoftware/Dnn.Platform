@@ -9,14 +9,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
     using DotNetNuke.Data;
 
-    /// <summary>
-    /// FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into database.
-    /// </summary>
+    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into database.</summary>
     public class DatabaseResponseFilter : OutputCacheResponseFilter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DatabaseResponseFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DatabaseResponseFilter"/> class.</summary>
         /// <param name="itemId"></param>
         /// <param name="maxVaryByCount"></param>
         /// <param name="filterChain"></param>

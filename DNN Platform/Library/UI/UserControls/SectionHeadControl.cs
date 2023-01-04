@@ -35,9 +35,7 @@ namespace DotNetNuke.UI.UserControls
         private string maxImageUrl = "images/plus.gif";
         private string minImageUrl = "images/minus.gif";
 
-        /// <summary>
-        /// Gets or sets cssClass determines the Css Class used for the Title Text.
-        /// </summary>
+        /// <summary>Gets or sets cssClass determines the Css Class used for the Title Text.</summary>
         /// <value>A string representing the name of the css class.</value>
         public string CssClass
         {
@@ -70,9 +68,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether isExpanded determines whether the section is expanded or collapsed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether isExpanded determines whether the section is expanded or collapsed.</summary>
         /// <value>Boolean value that determines whether the panel is expanded (true)
         /// or collapsed (false).  The default is true.</value>
         public bool IsExpanded
@@ -89,9 +85,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets javaScript is the name of the javascript function implementation.
-        /// </summary>
+        /// <summary>Gets or sets javaScript is the name of the javascript function implementation.</summary>
         /// <value>A string representing the name of the javascript function implementation.</value>
         public string JavaScript
         {
@@ -156,9 +150,7 @@ namespace DotNetNuke.UI.UserControls
         /// <value>A string representing the Section.</value>
         public string Section { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Text is the name or title of the section.
-        /// </summary>
+        /// <summary>Gets or sets the Text is the name or title of the section.</summary>
         /// <value>A string representing the Title Text.</value>
         public string Text
         {
@@ -173,9 +165,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Assign resource key to label for localization.
-        /// </summary>
+        /// <summary>Assign resource key to label for localization.</summary>
         /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
@@ -195,9 +185,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>
-        /// Renders the SectionHeadControl.
-        /// </summary>
+        /// <summary>Renders the SectionHeadControl.</summary>
         /// <param name="e"></param>
         protected override void OnPreRender(EventArgs e)
         {

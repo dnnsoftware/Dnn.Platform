@@ -25,9 +25,7 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Interface that all loggers implement
-    /// </summary>
+    /// <summary>Interface that all loggers implement</summary>
     /// <remarks>
     /// <para>
     /// This interface supports logging events and testing if a level
@@ -43,9 +41,7 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public interface ILogger
     {
-        /// <summary>
-        /// Gets the name of the logger.
-        /// </summary>
+        /// <summary>Gets the name of the logger.</summary>
         /// <value>
         /// The name of the logger.
         /// </value>
@@ -56,9 +52,7 @@ namespace log4net.Core
         /// </remarks>
         string Name { get; }
 
-        /// <summary>
-        /// This generic form is intended to be used by wrappers.
-        /// </summary>
+        /// <summary>This generic form is intended to be used by wrappers.</summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
         /// the stack boundary into the logging system for this call.</param>
         /// <param name="level">The level of the message to be logged.</param>
@@ -84,9 +78,7 @@ namespace log4net.Core
         /// </remarks>
         void Log(LoggingEvent logEvent);
 
-        /// <summary>
-        /// Checks if this logger is enabled for a given <see cref="Level"/> passed as parameter.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for a given <see cref="Level"/> passed as parameter.</summary>
         /// <param name="level">The level to check.</param>
         /// <returns>
         /// <c>true</c> if this logger is enabled for <c>level</c>, otherwise <c>false</c>.

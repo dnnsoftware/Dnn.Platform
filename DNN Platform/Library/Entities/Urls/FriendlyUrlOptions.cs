@@ -10,9 +10,7 @@ namespace DotNetNuke.Entities.Urls
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// This class encapsulates different options used in generating friendly urls.
-    /// </summary>
+    /// <summary>This class encapsulates different options used in generating friendly urls.</summary>
     [Serializable]
     public class FriendlyUrlOptions
     {

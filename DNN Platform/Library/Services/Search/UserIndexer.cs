@@ -41,9 +41,7 @@ namespace DotNetNuke.Services.Search
 
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
-        /// <summary>
-        /// Searches for and indexes modified users for the given portal.
-        /// </summary>
+        /// <summary>Searches for and indexes modified users for the given portal.</summary>
         /// <returns>Count of indexed records.</returns>
         public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {

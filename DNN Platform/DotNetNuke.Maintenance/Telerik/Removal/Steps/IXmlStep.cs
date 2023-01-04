@@ -4,14 +4,10 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Contract for XML file steps.
-    /// </summary>
+    /// <summary>Contract for XML file steps.</summary>
     internal interface IXmlStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the path of the XML file to load, relative to the application root path.
-        /// </summary>
+        /// <summary>Gets or sets the path of the XML file to load, relative to the application root path.</summary>
         string RelativeFilePath { get; set; }
     }
 }

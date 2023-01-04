@@ -24,9 +24,7 @@ namespace DotNetNuke.UI.Skins
     /// Project  : DotNetNuke
     /// Class    : SkinFileProcessor
     ///
-    /// <summary>
-    ///     Handles processing of a list of uploaded skin files into a working skin.
-    /// </summary>
+    /// <summary>    Handles processing of a list of uploaded skin files into a working skin.</summary>
     public class SkinFileProcessor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
@@ -235,9 +233,7 @@ namespace DotNetNuke.UI.Skins
             return strMessage;
         }
 
-        /// <summary>
-        ///     Perform processing on list of files to generate skin.
-        /// </summary>
+        /// <summary>    Perform processing on list of files to generate skin.</summary>
         /// <param name="fileList">ArrayList of files to be processed.</param>
         /// <returns>HTML formatted string of informational messages.</returns>
         public string ProcessList(ArrayList fileList)
@@ -268,9 +264,7 @@ namespace DotNetNuke.UI.Skins
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.ControlParser
         ///
-        /// <summary>
-        ///     Parsing functionality for token replacement in new skin files.
-        /// </summary>
+        /// <summary>    Parsing functionality for token replacement in new skin files.</summary>
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately
         ///     handle all the token parsing needs for new skin files (which is appropriate
@@ -303,9 +297,7 @@ namespace DotNetNuke.UI.Skins
                 this.controlList = (Hashtable)controlList.Clone();
             }
 
-            /// <summary>
-            ///     Gets registration directives generated as a result of the Parse method.
-            /// </summary>
+            /// <summary>    Gets registration directives generated as a result of the Parse method.</summary>
             /// <returns>ArrayList of formatted registration directives.</returns>
             /// <remarks>
             ///     In addition to the updated file contents, the Parse method also
@@ -379,9 +371,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            /// <summary>
-            ///     Perform parsing on the specified source file using the specified attributes.
-            /// </summary>
+            /// <summary>    Perform parsing on the specified source file using the specified attributes.</summary>
             /// <param name="source">Pointer to Source string to be parsed.</param>
             /// <param name="attributes">XML document containing token attribute information (can be empty).</param>
             /// <remarks>
@@ -406,9 +396,7 @@ namespace DotNetNuke.UI.Skins
                 return this.Messages;
             }
 
-            /// <summary>
-            ///     Process regular expression matches.
-            /// </summary>
+            /// <summary>    Process regular expression matches.</summary>
             /// <param name="m">Regular expression match for token which requires processing.</param>
             /// <returns>Properly formatted token.</returns>
             /// <remarks>
@@ -533,9 +521,7 @@ namespace DotNetNuke.UI.Skins
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.ObjectParser
         ///
-        /// <summary>
-        ///     Parsing functionality for token replacement in new skin files.
-        /// </summary>
+        /// <summary>    Parsing functionality for token replacement in new skin files.</summary>
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately
         ///     handle all the object parsing needs for new skin files (which is appropriate
@@ -570,9 +556,7 @@ namespace DotNetNuke.UI.Skins
                 this.controlList = (Hashtable)controlList.Clone();
             }
 
-            /// <summary>
-            ///     Gets registration directives generated as a result of the Parse method.
-            /// </summary>
+            /// <summary>    Gets registration directives generated as a result of the Parse method.</summary>
             /// <returns>ArrayList of formatted registration directives.</returns>
             /// <remarks>
             ///     In addition to the updated file contents, the Parse method also
@@ -633,9 +617,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            /// <summary>
-            ///     Perform parsing on the specified source file.
-            /// </summary>
+            /// <summary>    Perform parsing on the specified source file.</summary>
             /// <param name="source">Pointer to Source string to be parsed.</param>
             /// <remarks>
             ///     This procedure invokes a handler for each match of a formatted object.
@@ -653,9 +635,7 @@ namespace DotNetNuke.UI.Skins
                 return this.Messages;
             }
 
-            /// <summary>
-            ///     Process regular expression matches.
-            /// </summary>
+            /// <summary>    Process regular expression matches.</summary>
             /// <param name="m">Regular expression match for object which requires processing.</param>
             /// <returns>Properly formatted token.</returns>
             /// <remarks>
@@ -804,9 +784,7 @@ namespace DotNetNuke.UI.Skins
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.PathParser
         ///
-        /// <summary>
-        ///     Parsing functionality for path replacement in new skin files.
-        /// </summary>
+        /// <summary>    Parsing functionality for path replacement in new skin files.</summary>
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately
         ///     handle all the path replacement parsing needs for new skin files. Parsing
@@ -845,9 +823,7 @@ namespace DotNetNuke.UI.Skins
             private string messages = string.Empty;
             private string skinPath = string.Empty;
 
-            /// <summary>
-            ///     Gets list of regular expressions for processing HTML syntax.
-            /// </summary>
+            /// <summary>    Gets list of regular expressions for processing HTML syntax.</summary>
             /// <returns>ArrayList of Regex objects formatted for the Parser method.</returns>
             /// <remarks>
             ///     Additional patterns can be added to this list (if necessary) if properly
@@ -873,9 +849,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            /// <summary>
-            ///     Gets list of regular expressions for processing CSS syntax.
-            /// </summary>
+            /// <summary>    Gets list of regular expressions for processing CSS syntax.</summary>
             /// <returns>ArrayList of Regex objects formatted for the Parser method.</returns>
             /// <remarks>
             ///     Additional patterns can be added to this list (if necessary) if properly
@@ -924,9 +898,7 @@ namespace DotNetNuke.UI.Skins
 
             private SkinParser ParseOption { get; set; }
 
-            /// <summary>
-            ///     Perform parsing on the specified source file.
-            /// </summary>
+            /// <summary>    Perform parsing on the specified source file.</summary>
             /// <param name="source">Pointer to Source string to be parsed.</param>
             /// <param name="regexList">ArrayList of properly formatted regular expression objects.</param>
             /// <param name="skinPath">Path to use in replacement operation.</param>
@@ -954,9 +926,7 @@ namespace DotNetNuke.UI.Skins
                 return this.messages;
             }
 
-            /// <summary>
-            ///     Process regular expression matches.
-            /// </summary>
+            /// <summary>    Process regular expression matches.</summary>
             /// <param name="m">Regular expression match for path information which requires processing.</param>
             /// <returns>Properly formatted path information.</returns>
             /// <remarks>
@@ -1008,9 +978,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        ///     Utility class for processing of skin files.
-        /// </summary>
+        /// <summary>    Utility class for processing of skin files.</summary>
         private class SkinFile
         {
             private const string StrPattern = "<\\s*body[^>]*>(?<skin>.*)<\\s*/\\s*body\\s*>";
@@ -1193,9 +1161,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            /// <summary>
-            ///     Prepend ascx control directives to file contents.
-            /// </summary>
+            /// <summary>    Prepend ascx control directives to file contents.</summary>
             /// <param name="registrations">ArrayList of registration directives.</param>
             /// <remarks>
             ///     This procedure formats the @Control directive and prepends it and all

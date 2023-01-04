@@ -20,9 +20,7 @@ namespace DotNetNuke.Entities.Portals.Templates
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
         private string resourceFilePath;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.</summary>
         /// <param name="templateFilePath"></param>
         /// <param name="cultureCode"></param>
         public PortalTemplateInfo(string templateFilePath, string cultureCode)

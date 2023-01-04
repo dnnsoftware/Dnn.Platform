@@ -47,9 +47,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private Control control;
         private ModuleInfo module;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

@@ -12,17 +12,13 @@ namespace DotNetNuke.Framework
 
     public class AJAX
     {
-        /// <summary>
-        ///   AddScriptManager is used internally by the framework to add a ScriptManager control to the page.
-        /// </summary>
+        /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
         public static void AddScriptManager(Page page)
         {
             AddScriptManager(page, true);
         }
 
-        /// <summary>
-        /// AddScriptManager is used internally by the framework to add a ScriptManager control to the page.
-        /// </summary>
+        /// <summary>AddScriptManager is used internally by the framework to add a ScriptManager control to the page.</summary>
         /// <param name="page">the page instance.</param>
         /// <param name="checkCdn">Whether check cdn settings from host settings.</param>
         public static void AddScriptManager(Page page, bool checkCdn)
@@ -70,11 +66,8 @@ namespace DotNetNuke.Framework
             return objPage.FindControl("ScriptManager") as ScriptManager;
         }
 
-        /// <summary>
-        ///   IsEnabled can be used to determine if AJAX has been enabled already as we
-        ///   only need one Script Manager per page.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>IsEnabled can be used to determine if AJAX has been enabled already as we only need one Script Manager per page.</summary>
+        /// <returns><see langword="true"/> if the current request has enabled the script manager, otherwise <see langword="false"/>.</returns>
         public static bool IsEnabled()
         {
             if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
@@ -87,18 +80,14 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   IsInstalled can be used to determine if AJAX is installed on the server.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>IsInstalled can be used to determine if AJAX is installed on the server.</summary>
+        /// <returns><see langword="true"/> if ASP.NET AJAX is installed (always), otherwise <see langword="false"/> (never).</returns>
         public static bool IsInstalled()
         {
             return true;
         }
 
-        /// <summary>
-        ///   Allows a control to be excluded from UpdatePanel async callback.
-        /// </summary>
+        /// <summary>Allows a control to be excluded from UpdatePanel async callback.</summary>
         public static void RegisterPostBackControl(Control objControl)
         {
             ScriptManager objScriptManager = GetScriptManager(objControl.Page);
@@ -108,9 +97,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   RegisterScriptManager must be used by developers to instruct the framework that AJAX is required on the page.
-        /// </summary>
+        /// <summary>RegisterScriptManager must be used by developers to instruct the framework that AJAX is required on the page.</summary>
         public static void RegisterScriptManager()
         {
             if (!IsEnabled())
@@ -119,9 +106,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   RemoveScriptManager will remove the ScriptManager control during Page Render if the RegisterScriptManager has not been called.
-        /// </summary>
+        /// <summary>RemoveScriptManager will remove the ScriptManager control during Page Render if the RegisterScriptManager has not been called.</summary>
         public static void RemoveScriptManager(Page objPage)
         {
             if (!IsEnabled())
@@ -134,10 +119,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        ///   Wraps a control in an update panel.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Wraps a control in an update panel.</summary>
+        /// <returns>The <see cref="UpdatePanel"/>.</returns>
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {
             var updatePanel = new UpdatePanel();

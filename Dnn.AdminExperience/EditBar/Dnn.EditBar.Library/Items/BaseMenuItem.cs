@@ -13,33 +13,23 @@ namespace Dnn.EditBar.Library.Items
     [DataContract]
     public abstract class BaseMenuItem
     {
-        /// <summary>
-        /// Gets the menu item name.
-        /// </summary>
+        /// <summary>Gets the menu item name.</summary>
         [DataMember(Name = "name")]
         public abstract string Name { get; }
 
-        /// <summary>
-        /// Gets the menu item's group.
-        /// </summary>
+        /// <summary>Gets the menu item's group.</summary>
         [DataMember(Name = "group")]
         public virtual string Group { get; }
 
-        /// <summary>
-        /// Gets the menu's css class.
-        /// </summary>
+        /// <summary>Gets the menu's css class.</summary>
         [DataMember(Name = "cssClass")]
         public virtual string CssClass { get; }
 
-        /// <summary>
-        /// Gets the menu's text, when template set value, this will be ignored.
-        /// </summary>
+        /// <summary>Gets the menu's text, when template set value, this will be ignored.</summary>
         [DataMember(Name = "text")]
         public virtual string Text { get; }
 
-        /// <summary>
-        /// Gets the content will render as the menu item.
-        /// </summary>
+        /// <summary>Gets the content will render as the menu item.</summary>
         [DataMember(Name = "template")]
         public virtual string Template { get; }
 
@@ -51,27 +41,19 @@ namespace Dnn.EditBar.Library.Items
         [DataMember(Name = "parent")]
         public abstract string Parent { get; }
 
-        /// <summary>
-        /// Gets the menu order.
-        /// </summary>
+        /// <summary>Gets the menu order.</summary>
         [DataMember(Name = "order")]
         public virtual int Order { get; } = 0;
 
-        /// <summary>
-        /// Gets the menu script path, which will handle the button click event.
-        /// </summary>
+        /// <summary>Gets the menu script path, which will handle the button click event.</summary>
         [DataMember(Name = "loader")]
         public abstract string Loader { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the menu have custom layout.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the menu have custom layout.</summary>
         [DataMember(Name = "customLayout")]
         public virtual bool CustomLayout { get; } = false;
 
-        /// <summary>
-        /// Gets menu custom settings.
-        /// </summary>
+        /// <summary>Gets menu custom settings.</summary>
         [DataMember(Name = "settings")]
         public virtual IDictionary<string, object> Settings { get; } = new Dictionary<string, object>();
 

@@ -79,9 +79,7 @@ namespace DotNetNuke.Common.Utilities
             this.Params = parameters;
         }
 
-        /// <summary>
-        /// Gets the Cache Item's Parameter List.
-        /// </summary>
+        /// <summary>Gets the Cache Item's Parameter List.</summary>
         public ArrayList ParamList
         {
             get
@@ -104,36 +102,24 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Cache Item's CacheItemRemovedCallback delegate.
-        /// </summary>
+        /// <summary>Gets or sets the Cache Item's CacheItemRemovedCallback delegate.</summary>
         public CacheItemRemovedCallback CacheCallback { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Cache Item's CacheDependency.
-        /// </summary>
+        /// <summary>Gets or sets the Cache Item's CacheDependency.</summary>
         public DNNCacheDependency CacheDependency { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Cache Item's Key.
-        /// </summary>
+        /// <summary>Gets or sets the Cache Item's Key.</summary>
         public string CacheKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Cache Item's priority (defaults to Default).
-        /// </summary>
+        /// <summary>Gets or sets the Cache Item's priority (defaults to Default).</summary>
         /// <remarks>Note: DotNetNuke currently doesn't support the ASP.NET Cache's
         /// ItemPriority, but this is included for possible future use. </remarks>
         public CacheItemPriority CachePriority { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Cache Item's Timeout.
-        /// </summary>
+        /// <summary>Gets or sets the Cache Item's Timeout.</summary>
         public int CacheTimeOut { get; set; }
 
-        /// <summary>
-        /// Gets the Cache Item's Parameter Array.
-        /// </summary>
+        /// <summary>Gets the Cache Item's Parameter Array.</summary>
         public object[] Params { get; private set; }
 
         public string ProcedureName { get; set; }

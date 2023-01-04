@@ -10,24 +10,18 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Drawing;
     using System.Drawing.Imaging;
 
-    /// <summary>
-    /// Summary description for PaletteQuantizer.
-    /// </summary>
+    /// <summary>Summary description for PaletteQuantizer.</summary>
     [CLSCompliant(false)]
     public class PaletteQuantizer : Quantizer
     {
-        /// <summary>
-        /// List of all colors in the palette.
-        /// </summary>
+        /// <summary>List of all colors in the palette.</summary>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
         protected Color[] _colors;
 
-        /// <summary>
-        /// Lookup table for colors.
-        /// </summary>
+        /// <summary>Lookup table for colors.</summary>
         private readonly Hashtable colorMap;
 
         /// <summary>
@@ -47,9 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             palette.CopyTo(this._colors);
         }
 
-        /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm.
-        /// </summary>
+        /// <summary>Override this to process the pixel in the second pass of the algorithm.</summary>
         /// <param name="pixel">The pixel to quantize.</param>
         /// <returns>The quantized value.</returns>
         protected override byte QuantizePixel(Color32 pixel)
@@ -120,9 +112,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             return colorIndex;
         }
 
-        /// <summary>
-        /// Retrieve the palette for the quantized image.
-        /// </summary>
+        /// <summary>Retrieve the palette for the quantized image.</summary>
         /// <param name="palette">Any old palette, this is overrwritten.</param>
         /// <returns>The new color palette.</returns>
         protected override ColorPalette GetPalette(ColorPalette palette)

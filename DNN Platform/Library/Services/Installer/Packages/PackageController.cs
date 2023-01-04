@@ -24,9 +24,7 @@ namespace DotNetNuke.Services.Installer.Packages
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
 
-    /// <summary>
-    /// The PackageController class provides the business class for the packages.
-    /// </summary>
+    /// <summary>The PackageController class provides the business class for the packages.</summary>
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
@@ -430,9 +428,7 @@ namespace DotNetNuke.Services.Installer.Packages
             return this.GetExtensionPackages(portalId).Where(predicate).ToList();
         }
 
-        /// <summary>
-        /// Save or update the package.
-        /// </summary>
+        /// <summary>Save or update the package.</summary>
         /// <param name="package"></param>
         public void SaveExtensionPackage(PackageInfo package)
         {

@@ -13,14 +13,10 @@ namespace Dnn.ExportImport.Components.Common
 
     using DotNetNuke.Common.Utilities.Internal;
 
-    /// <summary>
-    /// Provides compression utilites.
-    /// </summary>
+    /// <summary>Provides compression utilites.</summary>
     public static class CompressionUtil
     {
-        /// <summary>
-        /// Compress a full folder.
-        /// </summary>
+        /// <summary>Compress a full folder.</summary>
         /// <param name="folderPath">Full path of folder to compress.</param>
         /// <param name="archivePath">Full path of the archived file.</param>
         public static void ZipFolder(string folderPath, string archivePath)
@@ -33,9 +29,7 @@ namespace Dnn.ExportImport.Components.Common
             ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Fastest, false);
         }
 
-        /// <summary>
-        /// Unzip compressed file to a folder.
-        /// </summary>
+        /// <summary>Unzip compressed file to a folder.</summary>
         /// <param name="archivePath">Full path to archive with name.</param>
         /// <param name="extractFolder">Full path to the target folder.</param>
         /// <param name="overwrite">Overwrites the files on target if true.</param>
@@ -44,9 +38,7 @@ namespace Dnn.ExportImport.Components.Common
             UnZipArchiveExcept(archivePath, extractFolder, overwrite);
         }
 
-        /// <summary>
-        /// Unzip compressed file to a folder.
-        /// </summary>
+        /// <summary>Unzip compressed file to a folder.</summary>
         /// <param name="archivePath">Full path to archive with name.</param>
         /// <param name="extractFolder">Full path to the target folder.</param>
         /// <param name="overwrite">Overwrites the files on target if true.</param>
@@ -93,9 +85,7 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        /// <summary>
-        /// Unzip a single file from an archive.
-        /// </summary>
+        /// <summary>Unzip a single file from an archive.</summary>
         /// <param name="fileName">Name of the file to extract. This name should match the entry name in the archive. i.e. it should include complete folder structure inside the archive.</param>
         /// <param name="archivePath">Full path to archive with name.</param>
         /// <param name="extractFolder">Full path to the target folder.</param>
@@ -134,9 +124,7 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        /// <summary>
-        /// Add files to an archive. If no archive exists, new one is created.
-        /// </summary>
+        /// <summary>Add files to an archive. If no archive exists, new one is created.</summary>
         /// <param name="archive">Source archive to write the files to.</param>
         /// <param name="files">List containing path of files to add to archive.</param>
         /// <param name="folderOffset">Starting index(Index in file url) of the root folder in archive based on what the folder structure starts in archive.
@@ -161,9 +149,7 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        /// <summary>
-        /// Add single file to an archive. If no archive exists, new one is created.
-        /// </summary>
+        /// <summary>Add single file to an archive. If no archive exists, new one is created.</summary>
         /// <param name="file">Full path of file to add.</param>
         /// <param name="archivePath">Full path of archive file.</param>
         /// <param name="folderOffset">Starting index(Index in file url) of the root folder in archive based on what the folder structure starts in archive.
@@ -184,9 +170,7 @@ namespace Dnn.ExportImport.Components.Common
             return false;
         }
 
-        /// <summary>
-        /// Adds a file to an archive.
-        /// </summary>
+        /// <summary>Adds a file to an archive.</summary>
         /// <param name="archive">The archive to add to.</param>
         /// <param name="file">The file to add.</param>
         /// <param name="folderOffset">Strips this number of characters from the front of the filename.</param>
@@ -216,9 +200,7 @@ namespace Dnn.ExportImport.Components.Common
             return false;
         }
 
-        /// <summary>
-        /// Open the archive file for read and write.
-        /// </summary>
+        /// <summary>Open the archive file for read and write.</summary>
         /// <param name="archiveFileName">The name of the archive.</param>
         /// <returns>The resulting <see cref="ZipArchive"/>.</returns>
         public static ZipArchive OpenCreate(string archiveFileName)
@@ -237,9 +219,7 @@ namespace Dnn.ExportImport.Components.Common
             return zip;
         }
 
-        /// <summary>
-        /// Open the archive file for read and write (no retry).
-        /// </summary>
+        /// <summary>Open the archive file for read and write (no retry).</summary>
         /// <param name="archiveFileName">The full zip file path.</param>
         /// <returns>A <see cref="ZipArchive"/> instance.</returns>
         internal static ZipArchive OpenCreateUnsafe(string archiveFileName)

@@ -42,9 +42,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
     using Constants = DotNetNuke.Services.Search.Internals.Constants;
 
-    /// <summary>
-    ///  Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods).
-    /// </summary>
+    /// <summary> Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods).</summary>
     [TestFixture]
     public class SearchServiceControllerTests
     {

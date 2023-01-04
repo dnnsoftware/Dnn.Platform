@@ -30,9 +30,7 @@ namespace DotNetNuke.UI.Skins.Controls
             BlueInfo = 3,
         }
 
-        /// <summary>
-        /// Gets a value indicating whether check this message is shown as page message or module message.
-        /// </summary>
+        /// <summary>Gets a value indicating whether check this message is shown as page message or module message.</summary>
         public bool IsModuleMessage
         {
             get

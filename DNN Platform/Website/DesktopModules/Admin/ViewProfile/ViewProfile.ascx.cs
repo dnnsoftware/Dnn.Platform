@@ -23,16 +23,12 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.
-    /// </summary>
+    /// <summary>  The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.</summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ViewProfile"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         public ViewProfile()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

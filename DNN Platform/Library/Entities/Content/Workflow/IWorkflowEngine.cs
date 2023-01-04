@@ -15,9 +15,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     /// </summary>
     public interface IWorkflowEngine
     {
-        /// <summary>
-        /// This method starts a workflow for a Content Item.
-        /// </summary>
+        /// <summary>This method starts a workflow for a Content Item.</summary>
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="contentItemId">Content item Id.</param>
         /// <param name="userId">User Id of the user that start the workflow.</param>
@@ -46,33 +44,25 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when trying to discard a workflow in the last state.</exception>
         void DiscardState(StateTransaction stateTransaction);
 
-        /// <summary>
-        /// This method returns true if the workflow associated to the Content Item is completed (it is in the last state).
-        /// </summary>
+        /// <summary>This method returns true if the workflow associated to the Content Item is completed (it is in the last state).</summary>
         /// <remarks>Content Item without workflow is considered as completed as well.</remarks>
         /// <param name="contentItemId">Content item Id.</param>
         /// <returns>True if the workflow is completed, false otherwise.</returns>
         bool IsWorkflowCompleted(int contentItemId);
 
-        /// <summary>
-        /// This method returns true if the workflow associated to the Content Item is completed (it is in the last state).
-        /// </summary>
+        /// <summary>This method returns true if the workflow associated to the Content Item is completed (it is in the last state).</summary>
         /// <remarks>Content Item without workflow is considered as completed as well.</remarks>
         /// <param name="contentItem">Content item entity.</param>
         /// <returns>True if the workflow is completed, false otherwise.</returns>
         bool IsWorkflowCompleted(ContentItem contentItem);
 
-        /// <summary>
-        /// This method returns true if the workflow associated to the Content Item is in draft (it is in the first state).
-        /// </summary>
+        /// <summary>This method returns true if the workflow associated to the Content Item is in draft (it is in the first state).</summary>
         /// <remarks>Content Item without workflow is considered as not in draft.</remarks>
         /// <param name="contentItemId">Content item Id.</param>
         /// <returns>True if the workflow is in draft, false otherwise.</returns>
         bool IsWorkflowOnDraft(int contentItemId);
 
-        /// <summary>
-        /// This method returns true if the workflow associated to the Content Item is in draft (it is in the first state).
-        /// </summary>
+        /// <summary>This method returns true if the workflow associated to the Content Item is in draft (it is in the first state).</summary>
         /// <remarks>Content Item without workflow is considered as not in draft.</remarks>
         /// <param name="contentItem">Content item entity.</param>
         /// <returns>True if the workflow is in draft, false otherwise.</returns>
@@ -96,17 +86,13 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowConcurrencyException">Thrown when the current state of the workflow is not the same of the current state specified in the StateTransaction Dto.</exception>
         void CompleteWorkflow(StateTransaction stateTransaction);
 
-        /// <summary>
-        /// This method returns the user that started the workflow for the contentItem.
-        /// </summary>
+        /// <summary>This method returns the user that started the workflow for the contentItem.</summary>
         /// <remarks>If Content Item has no workflow, returns null.</remarks>
         /// <param name="contentItem">ContentItem.</param>
         /// <returns>User Info.</returns>
         UserInfo GetStartedDraftStateUser(ContentItem contentItem);
 
-        /// <summary>
-        /// This method returns the user that submitted the contentItem.
-        /// </summary>
+        /// <summary>This method returns the user that submitted the contentItem.</summary>
         /// <remarks>If Content Item has no workflow or the content has not submitted yet, returns null.</remarks>
         /// <param name="contentItem">ContentItem.</param>
         /// <returns>User Info.</returns>

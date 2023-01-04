@@ -20,9 +20,7 @@ namespace DotNetNuke.Entities.Tabs
         private readonly ITabController tabController;
         private readonly ISystemWorkflowManager systemWorkflowManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabWorkflowSettings"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TabWorkflowSettings"/> class.</summary>
         public TabWorkflowSettings()
         {
             this.tabController = TabController.Instance;

@@ -10,9 +10,7 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly string expression;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RegularExpressionValidatorAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RegularExpressionValidatorAttribute"/> class.</summary>
         public RegularExpressionValidatorAttribute(string expression)
         {
             this.expression = expression;

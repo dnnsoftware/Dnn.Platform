@@ -67,9 +67,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return isAuthorized ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
         }
 
-        /// <summary>
-        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.
-        /// </summary>
+        /// <summary>Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.</summary>
         /// <param name="actionContext"></param>
         /// <returns></returns>
         protected virtual bool SkipAuthorization(AuthorizationContext filterContext)

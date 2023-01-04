@@ -7,9 +7,7 @@ namespace DotNetNuke.Common
 
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Assert Class.
-    /// </summary>
+    /// <summary>Assert Class.</summary>
     public static class Requires
     {
         /// <summary>Determines whether <paramref name="argValue"/> is type of <typeparamref name="T"/>.</summary>

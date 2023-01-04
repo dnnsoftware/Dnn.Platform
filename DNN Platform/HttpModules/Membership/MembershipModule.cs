@@ -30,18 +30,14 @@ namespace DotNetNuke.HttpModules.Membership
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Skins.EventListeners;
 
-    /// <summary>
-    /// Information about membership.
-    /// </summary>
+    /// <summary>Information about membership.</summary>
     public class MembershipModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
 
         private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Gets the name of the module.
-        /// </summary>
+        /// <summary>Gets the name of the module.</summary>
         /// <value>
         /// The name of the module: "DNNMembershipModule".
         /// </value>
@@ -53,9 +49,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        /// <summary>
-        /// Called when unverified user skin initialize.
-        /// </summary>
+        /// <summary>Called when unverified user skin initialize.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="SkinEventArgs"/> instance containing the event data.</param>
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
@@ -64,9 +58,7 @@ namespace DotNetNuke.HttpModules.Membership
             UI.Skins.Skin.AddPageMessage(e.Skin, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
-        /// <summary>
-        /// Authenticates the request.
-        /// </summary>
+        /// <summary>Authenticates the request.</summary>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensinons.</param>
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
@@ -154,9 +146,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        /// <summary>
-        /// Initializes the specified application.
-        /// </summary>
+        /// <summary>Initializes the specified application.</summary>
         /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
@@ -165,9 +155,7 @@ namespace DotNetNuke.HttpModules.Membership
             application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
-        /// <summary>
-        /// Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.
-        /// </summary>
+        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.</summary>
         public void Dispose()
         {
         }

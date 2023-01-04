@@ -47,12 +47,7 @@ namespace DotNetNuke.UI.Skins
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Skins
-    /// Class    : Skin
-    /// <summary>
-    /// Skin is the base for the Skins.
-    /// </summary>
+    /// <summary>Skin is the base for the Skins.</summary>
     public class Skin : UserControlBase
     {
         public const string OnInitMessage = "Skin_InitMessage";
@@ -75,18 +70,14 @@ namespace DotNetNuke.UI.Skins
         private Control controlPanel;
         private Dictionary<string, Pane> panes;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Skin"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Skin"/> class.</summary>
         public Skin()
         {
             this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets a Dictionary of Panes.
-        /// </summary>
+        /// <summary>Gets a Dictionary of Panes.</summary>
         public Dictionary<string, Pane> Panes
         {
             get
@@ -95,10 +86,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Gets the Path for this skin.
-        /// </summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets the Path for this skin.</summary>
         public string SkinPath
         {
             get
@@ -107,9 +95,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Gets or sets an ArrayList of ActionEventListeners.
-        /// </summary>
+        /// <summary>Gets or sets an ArrayList of ActionEventListeners.</summary>
         public ArrayList ActionEventListeners
         {
             get
@@ -123,15 +109,10 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Source for this skin.
-        /// </summary>
-        /// <returns>A String.</returns>
+        /// <summary>Gets or sets the Source for this skin.</summary>
         public string SkinSrc { get; set; }
 
-        /// <summary>
-        /// Gets the ControlPanel container.
-        /// </summary>
+        /// <summary>Gets the ControlPanel container.</summary>
         internal Control ControlPanel
         {
             get
@@ -140,10 +121,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Gets the ModuleCommunicate instance for the skin.
-        /// </summary>
-        /// <returns>The ModuleCommunicate instance for the Skin.</returns>
+        /// <summary>Gets the ModuleCommunicate instance for the skin.</summary>
         internal ModuleCommunicate Communicator
         {
             get
@@ -166,109 +144,91 @@ namespace DotNetNuke.UI.Skins
             AddModuleMessage(control, heading, message, moduleMessageType, Null.NullString);
         }
 
-        /// <summary>
-        /// AddModuleMessage adds a Moduel Message control to the Skin.
-        /// </summary>
-        /// <param name="message">The Message Text.</param>
+        /// <summary>AddModuleMessage adds a Module Message control to the Skin.</summary>
         /// <param name="control">The current control.</param>
+        /// <param name="message">The Message Text.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
         public static void AddModuleMessage(Control control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
         }
 
-        /// <summary>
-        /// AddModuleMessage adds a Moduel Message control to the Skin.
-        /// </summary>
+        /// <summary>AddModuleMessage adds a Module Message control to the Skin.</summary>
+        /// <param name="control">The current control.</param>
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
-        /// <param name="control">The current control.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
         public static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddModuleMessage(control, heading, message, moduleMessageType, Null.NullString);
         }
 
-        /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin.
-        /// </summary>
-        /// <param name="heading">The Message Heading.</param>
-        /// <param name="iconSrc">The Icon to diplay.</param>
-        /// <param name="message">The Message Text.</param>
+        /// <summary>AddPageMessage adds a Page Message control to the Skin.</summary>
         /// <param name="page">The Page.</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="iconSrc">The Icon to display.</param>
         public static void AddPageMessage(Page page, string heading, string message, string iconSrc)
         {
             AddPageMessage(page, heading, message, ModuleMessage.ModuleMessageType.GreenSuccess, iconSrc);
         }
 
-        /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin.
-        /// </summary>
-        /// <param name="heading">The Message Heading.</param>
-        /// <param name="iconSrc">The Icon to diplay.</param>
-        /// <param name="message">The Message Text.</param>
+        /// <summary>AddPageMessage adds a Page Message control to the Skin.</summary>
         /// <param name="skin">The skin.</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="iconSrc">The Icon to display.</param>
         public static void AddPageMessage(Skin skin, string heading, string message, string iconSrc)
         {
             AddPageMessage(skin, heading, message, ModuleMessage.ModuleMessageType.GreenSuccess, iconSrc);
         }
 
-        /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin.
-        /// </summary>
+        /// <summary>AddPageMessage adds a Page Message control to the Skin.</summary>
+        /// <param name="skin">The skin.</param>
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
-        /// <param name="skin">The skin.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
         public static void AddPageMessage(Skin skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddPageMessage(skin, heading, message, moduleMessageType, Null.NullString);
         }
 
-        /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin.
-        /// </summary>
+        /// <summary>AddPageMessage adds a Page Message control to the Skin.</summary>
+        /// <param name="page">The Page.</param>
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
-        /// <param name="page">The Page.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
         public static void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddPageMessage(page, heading, message, moduleMessageType, Null.NullString);
         }
 
-        /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
-        /// </summary>
+        /// <summary>GetModuleMessageControl gets an existing Message Control and sets its properties.</summary>
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="iconImage">The Message Icon.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="ModuleMessage"/> control.</returns>
         public static ModuleMessage GetModuleMessageControl(string heading, string message, string iconImage)
         {
             return GetModuleMessageControl(heading, message, ModuleMessage.ModuleMessageType.GreenSuccess, iconImage);
         }
 
-        /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
-        /// </summary>
+        /// <summary>GetModuleMessageControl gets an existing Message Control and sets its properties.</summary>
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="moduleMessageType">The type of message.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="ModuleMessage"/> control.</returns>
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             return GetModuleMessageControl(heading, message, moduleMessageType, Null.NullString);
         }
 
-        /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
-        /// </summary>
+        /// <summary>GetModuleMessageControl gets an existing Message Control and sets its properties.</summary>
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
-        /// <param name="iconImage">The Message Icon.</param>
         /// <param name="moduleMessageType">The type of message.</param>
-        /// <returns></returns>
+        /// <param name="iconImage">The Message Icon.</param>
+        /// <returns>The <see cref="ModuleMessage"/> control.</returns>
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
         {
             // Use this to get a module message control
@@ -282,31 +242,25 @@ namespace DotNetNuke.UI.Skins
             return moduleMessage;
         }
 
-        /// <summary>
-        /// GetParentSkin gets the Parent Skin for a control.
-        /// </summary>
+        /// <summary>GetParentSkin gets the Parent Skin for a control.</summary>
         /// <param name="module">The control whose Parent Skin is requested.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Skin"/> instance or <see langword="null"/>.</returns>
         public static Skin GetParentSkin(PortalModuleBase module)
         {
             return GetParentSkin(module as Control);
         }
 
-        /// <summary>
-        /// GetParentSkin gets the Parent Skin for a control.
-        /// </summary>
+        /// <summary>GetParentSkin gets the Parent Skin for a control.</summary>
         /// <param name="control">The control whose Parent Skin is requested.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Skin"/> instance or <see langword="null"/>.</returns>
         public static Skin GetParentSkin(Control control)
         {
             return ControlUtilities.FindParentControl<Skin>(control);
         }
 
-        /// <summary>
-        /// GetPopUpSkin gets the Skin that is used in modal popup.
-        /// </summary>
+        /// <summary>GetPopUpSkin gets the Skin that is used in modal popup.</summary>
         /// <param name="page">The Page.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Skin"/> instance.</returns>
         public static Skin GetPopUpSkin(PageBase page)
         {
             Skin skin = null;
@@ -339,11 +293,9 @@ namespace DotNetNuke.UI.Skins
             return skin;
         }
 
-        /// <summary>
-        /// GetSkin gets the Skin.
-        /// </summary>
+        /// <summary>GetSkin gets the Skin.</summary>
         /// <param name="page">The Page.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Skin"/> instance.</returns>
         public static Skin GetSkin(PageBase page)
         {
             Skin skin = null;
@@ -416,12 +368,10 @@ namespace DotNetNuke.UI.Skins
             return list;
         }
 
-        /// <summary>
-        /// InjectModule injects the module into the Pane.
-        /// </summary>
-        /// <param name="module">The module to inject.</param>
+        /// <summary>InjectModule injects the module into the Pane.</summary>
         /// <param name="pane">The pane.</param>
-        /// <returns></returns>
+        /// <param name="module">The module to inject.</param>
+        /// <returns><see langword="true"/> if the module is successfully injected, otherwise <see langword="false"/>.</returns>
         public bool InjectModule(Pane pane, ModuleInfo module)
         {
             bool bSuccess = true;
@@ -455,9 +405,7 @@ namespace DotNetNuke.UI.Skins
             return bSuccess;
         }
 
-        /// <summary>
-        /// RegisterModuleActionEvent registers a Module Action Event.
-        /// </summary>
+        /// <summary>RegisterModuleActionEvent registers a Module Action Event.</summary>
         /// <param name="moduleId">The ID of the module.</param>
         /// <param name="e">An Action Event Handler.</param>
         public void RegisterModuleActionEvent(int moduleId, ActionEventHandler e)
@@ -465,9 +413,7 @@ namespace DotNetNuke.UI.Skins
             this.ActionEventListeners.Add(new ModuleActionEventListener(moduleId, e));
         }
 
-        /// <summary>
-        /// OnInit runs when the Skin is initialised.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -523,9 +469,7 @@ namespace DotNetNuke.UI.Skins
             this.ProcessPanes();
         }
 
-        /// <summary>
-        /// OnLoad runs when the Skin is loaded.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -533,9 +477,7 @@ namespace DotNetNuke.UI.Skins
             this.InvokeSkinEvents(SkinEventType.OnSkinLoad);
         }
 
-        /// <summary>
-        /// OnLoad runs just before the Skin is rendered.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -576,9 +518,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// OnUnLoad runs when the Skin is unloaded.
-        /// </summary>
+        /// <inheritdoc />
         protected override void OnUnload(EventArgs e)
         {
             base.OnUnload(e);
@@ -829,11 +769,8 @@ namespace DotNetNuke.UI.Skins
             return success;
         }
 
-        /// <summary>
-        /// Handle access denied errors by displaying an error message
-        /// or by performing a redirect to a predefined "access denied URL".
-        /// </summary>
-        /// <param name="redirect"></param>
+        /// <summary>Handle access denied errors by displaying an error message or by performing a redirect to a predefined "access denied URL".</summary>
+        /// <param name="redirect"><see langword="true"/> to redirect to the access denied page, <see langword="false"/> (the default behavior) to display an Access Denied message on this page.</param>
         private void HandleAccesDenied(bool redirect = false)
         {
             var message = Localization.GetString("TabAccess.Error");

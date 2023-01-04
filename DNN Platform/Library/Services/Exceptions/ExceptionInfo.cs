@@ -15,16 +15,12 @@ namespace DotNetNuke.Services.Exceptions
     [Serializable]
     public class ExceptionInfo : IExceptionInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExceptionInfo"/> class.</summary>
         public ExceptionInfo()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExceptionInfo"/> class.</summary>
         /// <param name="e"></param>
         public ExceptionInfo(Exception e)
         {

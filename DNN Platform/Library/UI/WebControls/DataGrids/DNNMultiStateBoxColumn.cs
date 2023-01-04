@@ -11,9 +11,7 @@ namespace DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNMultiStateBoxColumn
-    /// <summary>
-    /// The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid.
-    /// </summary>
+    /// <summary>The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid.</summary>
     public class DNNMultiStateBoxColumn : TemplateColumn
     {
         private bool mAutoPostBack = true;
@@ -44,9 +42,7 @@ namespace DotNetNuke.UI.WebControls
             this.AutoPostBack = autoPostBack;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when the control changes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the column fires a postback when the control changes.</summary>
         /// <value>A Boolean.</value>
         public bool AutoPostBack
         {
@@ -61,9 +57,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the selected state of the DNNMultiStateBox (unless DataBound).
-        /// </summary>
+        /// <summary>Gets or sets the selected state of the DNNMultiStateBox (unless DataBound).</summary>
         /// <value>A Boolean.</value>
         public string SelectedStateKey
         {
@@ -133,9 +127,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the image path of the DNNMultiStateBox.
-        /// </summary>
+        /// <summary>Gets or sets the image path of the DNNMultiStateBox.</summary>
         /// <value>A Boolean.</value>
         public string ImagePath
         {
@@ -150,9 +142,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the state collection of the DNNMultiStateBox.
-        /// </summary>
+        /// <summary>Gets or sets the state collection of the DNNMultiStateBox.</summary>
         /// <value>A Boolean.</value>
         public DNNMultiStateCollection States
         {
@@ -172,9 +162,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
+        /// <summary>Initialises the Column.</summary>
         public override void Initialize()
         {
             this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
@@ -191,9 +179,7 @@ namespace DotNetNuke.UI.WebControls
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
 
-        /// <summary>
-        /// Creates a DNNMultiStateBoxColumnTemplate.
-        /// </summary>
+        /// <summary>Creates a DNNMultiStateBoxColumnTemplate.</summary>
         /// <returns>A DNNMultiStateBoxColumnTemplate.</returns>
         private DNNMultiStateBoxColumnTemplate CreateTemplate(ListItemType type)
         {

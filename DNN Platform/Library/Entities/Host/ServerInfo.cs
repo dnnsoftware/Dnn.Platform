@@ -13,17 +13,13 @@ namespace DotNetNuke.Entities.Host
     [Serializable]
     public class ServerInfo : IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ServerInfo"/> class.</summary>
         public ServerInfo()
             : this(DateTime.Now, DateTime.Now)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ServerInfo"/> class.</summary>
         /// <param name="created"></param>
         /// <param name="lastactivity"></param>
         public ServerInfo(DateTime created, DateTime lastactivity)
@@ -56,9 +52,7 @@ namespace DotNetNuke.Entities.Host
 
         public string UniqueId { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         public int KeyID
         {
@@ -73,9 +67,7 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// <summary>
-        /// Fills a ServerInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a ServerInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {

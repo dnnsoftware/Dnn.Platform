@@ -10,16 +10,12 @@ namespace DotNetNuke.HttpModules.Exceptions
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// Handles the exception that occur with http modules.
-    /// </summary>
+    /// <summary>Handles the exception that occur with http modules.</summary>
     public class ExceptionModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
 
-        /// <summary>
-        /// Gets the name of the module.
-        /// </summary>
+        /// <summary>Gets the name of the module.</summary>
         /// <value>
         /// The name of the module: "ExceptionModule".
         /// </value>
@@ -31,9 +27,7 @@ namespace DotNetNuke.HttpModules.Exceptions
             }
         }
 
-        /// <summary>
-        /// Initializes the error handling for the specified application.
-        /// </summary>
+        /// <summary>Initializes the error handling for the specified application.</summary>
         /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
@@ -45,9 +39,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         {
         }
 
-        /// <summary>
-        /// Called when error handling is requested.
-        /// </summary>
+        /// <summary>Called when error handling is requested.</summary>
         /// <param name="s">The object with the error.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public void OnErrorRequest(object s, EventArgs e)

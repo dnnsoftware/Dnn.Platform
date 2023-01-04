@@ -11,16 +11,12 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <summary>
-    /// A base class that implements <see cref="IStep"/>.
-    /// </summary>
+    /// <summary>A base class that implements <see cref="IStep"/>.</summary>
     internal abstract class StepBase : IStep
     {
         private readonly ILocalizer localizer;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StepBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StepBase"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         public StepBase(ILoggerSource loggerSource, ILocalizer localizer)
@@ -48,9 +44,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         /// <inheritdoc/>
         public bool Quiet { get; protected set; }
 
-        /// <summary>
-        /// Gets an instance of <see cref="ILog"/> specific to steps.
-        /// </summary>
+        /// <summary>Gets an instance of <see cref="ILog"/> specific to steps.</summary>
         protected ILog Log { get; private set; }
 
         /// <inheritdoc/>
@@ -69,9 +63,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             }
         }
 
-        /// <summary>
-        /// Performs the actual step execution.
-        /// </summary>
+        /// <summary>Performs the actual step execution.</summary>
         protected abstract void ExecuteInternal();
 
         /// <inheritdoc cref="ILocalizer.Localize(string)"/>

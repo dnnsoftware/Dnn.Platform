@@ -24,9 +24,7 @@ using System.IO;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// A <see cref="StringWriter"/> that can be <see cref="Reset"/> and reused
-    /// </summary>
+    /// <summary>A <see cref="StringWriter"/> that can be <see cref="Reset"/> and reused</summary>
     /// <remarks>
     /// <para>
     /// A <see cref="StringWriter"/> that can be <see cref="Reset"/> and reused.
@@ -36,9 +34,7 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class ReusableStringWriter : StringWriter
     {
-        /// <summary>
-        /// Create an instance of <see cref="ReusableStringWriter"/>
-        /// </summary>
+        /// <summary>Create an instance of <see cref="ReusableStringWriter"/></summary>
         /// <param name="formatProvider">the format provider to use</param>
         /// <remarks>
         /// <para>
@@ -49,9 +45,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Override Dispose to prevent closing of writer
-        /// </summary>
+        /// <summary>Override Dispose to prevent closing of writer</summary>
         /// <param name="disposing">flag</param>
         /// <remarks>
         /// <para>
@@ -63,9 +57,7 @@ namespace log4net.Util
             // Do not close the writer
         }
 
-        /// <summary>
-        /// Reset this string writer so that it can be reused.
-        /// </summary>
+        /// <summary>Reset this string writer so that it can be reused.</summary>
         /// <param name="maxCapacity">the maximum buffer capacity before it is trimmed</param>
         /// <param name="defaultSize">the default size to make the buffer</param>
         /// <remarks>

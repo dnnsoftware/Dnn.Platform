@@ -23,9 +23,7 @@ namespace DotNetNuke.UI.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// Provides context data for a particular instance of a module.
-    /// </summary>
+    /// <summary>Provides context data for a particular instance of a module.</summary>
     public class ModuleInstanceContext
     {
         private readonly IModuleControl moduleControl;
@@ -38,16 +36,12 @@ namespace DotNetNuke.UI.Modules
         private int nextActionId = -1;
         private Hashtable settings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.</summary>
         public ModuleInstanceContext()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.</summary>
         /// <param name="moduleControl"></param>
         public ModuleInstanceContext(IModuleControl moduleControl)
         {
@@ -66,9 +60,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the module is Editable (in Admin mode).
-        /// </summary>
+        /// <summary>Gets a value indicating whether the module is Editable (in Admin mode).</summary>
         public bool IsEditable
         {
             get
@@ -135,9 +127,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the settings for this context.
-        /// </summary>
+        /// <summary>Gets the settings for this context.</summary>
         public Hashtable Settings
         {
             get
@@ -158,9 +148,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the tab ID for this context.
-        /// </summary>
+        /// <summary>Gets the tab ID for this context.</summary>
         public int TabId
         {
             get
@@ -174,9 +162,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Actions for this module context.
-        /// </summary>
+        /// <summary>Gets or sets the Actions for this module context.</summary>
         public ModuleActionCollection Actions
         {
             get
@@ -195,9 +181,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context.
-        /// </summary>
+        /// <summary>Gets or sets the Module Configuration (ModuleInfo) for this context.</summary>
         public ModuleInfo Configuration
         {
             get
@@ -211,14 +195,10 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the HelpUrl for this context.
-        /// </summary>
+        /// <summary>Gets or sets the HelpUrl for this context.</summary>
         public string HelpURL { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the module ID for this context.
-        /// </summary>
+        /// <summary>Gets or sets the module ID for this context.</summary>
         public int ModuleId
         {
             get
@@ -240,9 +220,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets or sets the tabnmodule ID for this context.
-        /// </summary>
+        /// <summary>Gets or sets the tabnmodule ID for this context.</summary>
         public int TabModuleId
         {
             get
@@ -352,9 +330,7 @@ namespace DotNetNuke.UI.Modules
             return request.RawUrl.Replace("\"", string.Empty);
         }
 
-        /// <summary>
-        /// GetActionsCount gets the current number of actions.
-        /// </summary>
+        /// <summary>GetActionsCount gets the current number of actions.</summary>
         /// <param name="actions">The actions collection to count.</param>
         /// <param name="count">The current count.</param>
         private static int GetActionsCount(int count, ModuleActionCollection actions)
@@ -373,9 +349,7 @@ namespace DotNetNuke.UI.Modules
             return count;
         }
 
-        /// <summary>
-        /// AddHelpActions Adds the Help actions to the Action Menu.
-        /// </summary>
+        /// <summary>AddHelpActions Adds the Help actions to the Action Menu.</summary>
         private void AddHelpActions()
         {
             var url = string.Empty;
@@ -454,9 +428,7 @@ namespace DotNetNuke.UI.Modules
             this.moduleGenericActions.Actions.Add(action);
         }
 
-        /// <summary>
-        /// AddMenuMoveActions Adds the Move actions to the Action Menu.
-        /// </summary>
+        /// <summary>AddMenuMoveActions Adds the Move actions to the Action Menu.</summary>
         private void AddMenuMoveActions()
         {
             // module movement
@@ -539,9 +511,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// LoadActions loads the Actions collections.
-        /// </summary>
+        /// <summary>LoadActions loads the Actions collections.</summary>
         private void LoadActions(HttpRequest request)
         {
             this.actions = new ModuleActionCollection();

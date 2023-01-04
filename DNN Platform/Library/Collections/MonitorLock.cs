@@ -5,9 +5,7 @@ namespace DotNetNuke.Collections.Internal
 {
     using System;
 
-    /// <summary>
-    /// An <see cref="ISharedCollectionLock"/> implementation which uses an <see cref="ExclusiveLockStrategy"/>.
-    /// </summary>
+    /// <summary>An <see cref="ISharedCollectionLock"/> implementation which uses an <see cref="ExclusiveLockStrategy"/>.</summary>
     internal class MonitorLock : IDisposable, ISharedCollectionLock
     {
         private ExclusiveLockStrategy lockStrategy;
@@ -15,9 +13,7 @@ namespace DotNetNuke.Collections.Internal
         // To detect redundant calls
         private bool isDisposed;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MonitorLock"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MonitorLock"/> class.</summary>
         /// <param name="lockStrategy">An <see cref="ExclusiveLockStrategy"/> instance to use.</param>
         public MonitorLock(ExclusiveLockStrategy lockStrategy)
         {
@@ -32,9 +28,7 @@ namespace DotNetNuke.Collections.Internal
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Releases resources before final disposal.
-        /// </summary>
+        /// <summary>Releases resources before final disposal.</summary>
         /// <param name="disposing">A value indicating if the instance is currently beeing disposed.</param>
         protected virtual void Dispose(bool disposing)
         {

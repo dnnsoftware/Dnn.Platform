@@ -9,9 +9,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
     /// Project     : DotNetNuke
     /// Class       : ModuleActionCollection
-    /// <summary>
-    /// Represents a collection of <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> objects.
-    /// </summary>
+    /// <summary>Represents a collection of <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> objects.</summary>
     /// <remarks>The ModuleActionCollection is a custom collection of ModuleActions.
     /// Each ModuleAction in the collection has it's own <see cref="P:DotNetNuke.ModuleAction.Actions" />
     ///  collection which provides the ability to create a hierarchy of ModuleActions.</remarks>
@@ -75,9 +73,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// <summary>
-        /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
-        /// </summary>
+        /// <summary>Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.</summary>
         /// <param name="value">An object of type <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to add to the collection.</param>
         /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         public int Add(ModuleAction value)
@@ -85,9 +81,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             return this.List.Add(value);
         }
 
-        /// <summary>
-        /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
-        /// </summary>
+        /// <summary>Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.</summary>
         /// <param name="iD">This is the identifier to use for this action.</param>
         /// <param name="title">This is the title that will be displayed for this action.</param>
         /// <param name="cmdName">The command name passed to the client when this action is
@@ -100,9 +94,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             return this.Add(iD, title, cmdName, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false);
         }
 
-        /// <summary>
-        /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
-        /// </summary>
+        /// <summary>Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.</summary>
         /// <param name="iD">This is the identifier to use for this action.</param>
         /// <param name="title">This is the title that will be displayed for this action.</param>
         /// <param name="cmdName">The command name passed to the client when this action is
@@ -125,9 +117,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             return this.Add(iD, title, cmdName, cmdArg, icon, url, string.Empty, useActionEvent, secure, visible, newWindow);
         }
 
-        /// <summary>
-        /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
-        /// </summary>
+        /// <summary>Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.</summary>
         /// <param name="iD">This is the identifier to use for this action.</param>
         /// <param name="title">This is the title that will be displayed for this action.</param>
         /// <param name="cmdName">The command name passed to the client when this action is
@@ -184,9 +174,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the collection contains the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the collection contains the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</summary>
         /// <param name="value">The <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to search for in the collection.</param>
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         /// <example>
@@ -322,9 +310,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             this.List.Insert(index, value);
         }
 
-        /// <summary>
-        /// Remove the specified object of type <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> from the collection.
-        /// </summary>
+        /// <summary>Remove the specified object of type <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> from the collection.</summary>
         /// <param name="value">An object of type <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to remove from the collection.</param>
         /// <example>
         /// <code>

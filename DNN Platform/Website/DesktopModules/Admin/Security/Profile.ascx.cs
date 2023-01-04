@@ -18,14 +18,10 @@ namespace DesktopModules.Admin.Security
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
-    /// <summary>
-    /// The Profile UserModuleBase is used to register Users.
-    /// </summary>
+    /// <summary>The Profile UserModuleBase is used to register Users.</summary>
     public partial class DNNProfile : ProfileUserControlBase
     {
-        /// <summary>
-        /// Gets a value indicating whether gets whether the User is valid.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the User is valid.</summary>
         public bool IsValid
         {
             get
@@ -34,9 +30,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Gets the UserProfile associated with this control.
-        /// </summary>
+        /// <summary>Gets the UserProfile associated with this control.</summary>
         public UserProfile UserProfile
         {
             get
@@ -51,9 +45,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the EditorMode.
-        /// </summary>
+        /// <summary>Gets or sets the EditorMode.</summary>
         public PropertyEditorMode EditorMode
         {
             get
@@ -67,9 +59,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Update button.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the Update button.</summary>
         public bool ShowUpdate
         {
             get
@@ -83,9 +73,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether to display the Visibility controls.
-        /// </summary>
+        /// <summary>Gets a value indicating whether to display the Visibility controls.</summary>
         protected bool ShowVisibility
         {
             get
@@ -95,9 +83,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
+        /// <summary>DataBind binds the data to the controls.</summary>
         public override void DataBind()
         {
             // Before we bind the Profile to the editor we need to "update" the visible data
@@ -122,9 +108,7 @@ namespace DesktopModules.Admin.Security
             this.ProfileProperties.DataBind();
         }
 
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
+        /// <summary>Page_Init runs when the control is initialised.</summary>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -141,18 +125,14 @@ namespace DesktopModules.Admin.Security
             this.ProfileProperties.LocalResourceFile = this.LocalResourceFile;
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             this.cmdUpdate.Click += this.CmdUpdate_Click;
         }
 
-        /// <summary>
-        /// cmdUpdate_Click runs when the Update Button is clicked.
-        /// </summary>
+        /// <summary>cmdUpdate_Click runs when the Update Button is clicked.</summary>
         private void CmdUpdate_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false && this.UserId == Null.NullInteger)

@@ -17,9 +17,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Search Result Controller for Tab Indexer.
-    /// </summary>
+    /// <summary>Search Result Controller for Tab Indexer.</summary>
     [Serializable]
     public class UserResultController : BaseResultController
     {

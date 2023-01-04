@@ -5,9 +5,7 @@ namespace DotNetNuke.DependencyInjection
 {
     using System;
 
-    /// <summary>
-    /// Dependency used for property injection in Action Filters.
-    /// </summary>
+    /// <summary>Dependency used for property injection in Action Filters.</summary>
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class DependencyAttribute : Attribute
     {

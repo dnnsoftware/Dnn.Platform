@@ -15,9 +15,7 @@ namespace Dnn.PersonaBar.Library.Model
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : MenuPermissionInfo
-    /// <summary>
-    /// MenuPermissionInfo provides the Entity Layer for Module Permissions.
-    /// </summary>
+    /// <summary>MenuPermissionInfo provides the Entity Layer for Module Permissions.</summary>
     [Serializable]
     public class MenuPermissionInfo : PermissionInfoBase, IHydratable
     {
@@ -51,9 +49,7 @@ namespace Dnn.PersonaBar.Library.Model
             this.PermissionName = permission.PermissionName;
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Module Permission ID.
-        /// </summary>
+        /// <summary>Gets or sets the Module Permission ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlElement("menupermissionid")]
         public int MenuPermissionId
@@ -69,9 +65,7 @@ namespace Dnn.PersonaBar.Library.Model
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Module ID.
-        /// </summary>
+        /// <summary>Gets or sets the Module ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlElement("menuid")]
         public int MenuId
@@ -90,9 +84,7 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("portalid")]
         public int PortalId { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlIgnore]
         [JsonIgnore]
@@ -109,9 +101,7 @@ namespace Dnn.PersonaBar.Library.Model
             }
         }
 
-        /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a MenuPermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
@@ -121,9 +111,7 @@ namespace Dnn.PersonaBar.Library.Model
             this.PortalId = Null.SetNullInteger(dr["PortalId"]);
         }
 
-        /// <summary>
-        /// Compares if two MenuPermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
         /// <param name="other">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
@@ -148,9 +136,7 @@ namespace Dnn.PersonaBar.Library.Model
             return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
-        /// <summary>
-        /// Compares if two MenuPermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
         /// <param name="obj">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.

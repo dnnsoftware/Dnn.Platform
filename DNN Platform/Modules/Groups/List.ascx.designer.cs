@@ -15,41 +15,31 @@ namespace DotNetNuke.Modules.Groups {
     
     
     public partial class List {
-        /// <summary>
-        /// panelSearch control.
-        /// </summary>
+        /// <summary>panelSearch control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel panelSearch;
-        /// <summary>
-        /// txtFilter control.
-        /// </summary>
+        /// <summary>txtFilter control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtFilter;
-        /// <summary>
-        /// btnSearch control.
-        /// </summary>
+        /// <summary>btnSearch control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSearch;
-        /// <summary>
-        /// reqSearch control.
-        /// </summary>
+        /// <summary>reqSearch control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator reqSearch;
-        /// <summary>
-        /// ctlGroupList control.
-        /// </summary>
+        /// <summary>ctlGroupList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

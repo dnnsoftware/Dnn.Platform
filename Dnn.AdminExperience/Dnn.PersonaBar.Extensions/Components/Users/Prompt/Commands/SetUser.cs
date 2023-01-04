@@ -57,17 +57,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private readonly IUsersController usersController;
         private readonly IUserControllerWrapper userControllerWrapper;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SetUser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SetUser"/> class.</summary>
         public SetUser()
             : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SetUser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SetUser"/> class.</summary>
         /// <param name="userValidator"></param>
         /// <param name="usersController"></param>
         /// <param name="userControllerWrapper"></param>

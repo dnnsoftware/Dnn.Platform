@@ -19,9 +19,7 @@ namespace DotNetNuke.UI.Utilities
     /// Project  : DotNetNuke
     /// Class    : ClientAPI
     ///
-    /// <summary>
-    /// Library responsible for interacting with DNN Client API.
-    /// </summary>
+    /// <summary>Library responsible for interacting with DNN Client API.</summary>
     public class DNNClientAPI
     {
         private static readonly Hashtable ObjEnabledClientPersonalizationKeys = new Hashtable();
@@ -40,9 +38,7 @@ namespace DotNetNuke.UI.Utilities
             SetPersonalization = 1,
         }
 
-        /// <summary>
-        /// Adds client side body.onload event handler.
-        /// </summary>
+        /// <summary>Adds client side body.onload event handler.</summary>
         /// <param name="objPage">Current page rendering content.</param>
         /// <param name="strJSFunction">Javascript function name to execute.</param>
         [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
@@ -77,9 +73,7 @@ namespace DotNetNuke.UI.Utilities
             AddBodyOnLoad(objPage, "initFileManager", "initFileManager();");
         }
 
-        /// <summary>
-        /// Allows any module to have drag and drop functionality enabled.
-        /// </summary>
+        /// <summary>Allows any module to have drag and drop functionality enabled.</summary>
         /// <param name="objTitle">Title element that responds to the click and dragged.</param>
         /// <param name="objContainer">Container.</param>
         /// <param name="moduleID">Module ID.</param>
@@ -115,9 +109,7 @@ namespace DotNetNuke.UI.Utilities
             }
         }
 
-        /// <summary>
-        /// Allows a button and a content area to support client side min/max functionality.
-        /// </summary>
+        /// <summary>Allows a button and a content area to support client side min/max functionality.</summary>
         /// <param name="objButton">Control that when clicked causes content area to be hidden/shown.</param>
         /// <param name="objContent">Content area that is hidden/shown.</param>
         /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true.</param>
@@ -140,9 +132,7 @@ namespace DotNetNuke.UI.Utilities
             EnableMinMax(objButton, objContent, -1, blnDefaultMin, strMinIconLoc, strMaxIconLoc, ePersistanceType);
         }
 
-        /// <summary>
-        /// Allows a button and a content area to support client side min/max functionality.
-        /// </summary>
+        /// <summary>Allows a button and a content area to support client side min/max functionality.</summary>
         /// <param name="objButton">Control that when clicked causes content area to be hidden/shown.</param>
         /// <param name="objContent">Content area that is hidden/shown.</param>
         /// <param name="intModuleId">Module id of button/content, used only for persistance type of Cookie.</param>

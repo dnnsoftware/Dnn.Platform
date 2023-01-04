@@ -10,16 +10,12 @@ namespace DotNetNuke.Prompt
     {
         // the returned result - text or HTML
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
         public ConsoleResultModel()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConsoleResultModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
         /// <param name="output"></param>
         public ConsoleResultModel(string output)
         {

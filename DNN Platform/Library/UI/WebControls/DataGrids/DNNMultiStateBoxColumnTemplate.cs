@@ -12,9 +12,7 @@ namespace DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNMultiStateBoxColumnTemplate
-    /// <summary>
-    /// The DNNMultiStateBoxColumnTemplate provides a Template for the DNNMultiStateBoxColumn.
-    /// </summary>
+    /// <summary>The DNNMultiStateBoxColumnTemplate provides a Template for the DNNMultiStateBoxColumn.</summary>
     public class DNNMultiStateBoxColumnTemplate : ITemplate
     {
         private string mDataField = Null.NullString;
@@ -26,32 +24,24 @@ namespace DotNetNuke.UI.WebControls
         private DNNMultiStateCollection mStates;
         private string mText = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.</summary>
         public DNNMultiStateBoxColumnTemplate()
             : this(ListItemType.Item)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.</summary>
         /// <param name="itemType"></param>
         public DNNMultiStateBoxColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when the control changes.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the column fires a postback when the control changes.</summary>
         /// <value>A Boolean.</value>
         public bool AutoPostBack { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the selected state of the DNNMultiStateBox (unless DataBound).
-        /// </summary>
+        /// <summary>Gets or sets the selected state of the DNNMultiStateBox (unless DataBound).</summary>
         /// <value>A Boolean.</value>
         public string SelectedStateKey
         {
@@ -66,9 +56,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Data Field that the column should bind to.
-        /// </summary>
+        /// <summary>Gets or sets the Data Field that the column should bind to.</summary>
         /// <value>A String.</value>
         public string DataField
         {
@@ -83,9 +71,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
         /// <value>A Boolean.</value>
         public bool DesignMode { get; set; }
 
@@ -126,9 +112,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the type of Template to Create.
-        /// </summary>
+        /// <summary>Gets or sets the type of Template to Create.</summary>
         /// <value>A String.</value>
         public ListItemType ItemType
         {
@@ -143,9 +127,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Text to display in a Header Template.
-        /// </summary>
+        /// <summary>Gets or sets the Text to display in a Header Template.</summary>
         /// <value>A String.</value>
         public string Text
         {
@@ -160,9 +142,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the image path of the DNNMultiStateBox.
-        /// </summary>
+        /// <summary>Gets or sets the image path of the DNNMultiStateBox.</summary>
         /// <value>A Boolean.</value>
         public string ImagePath
         {
@@ -177,9 +157,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the state collection of the DNNMultiStateBox.
-        /// </summary>
+        /// <summary>Gets or sets the state collection of the DNNMultiStateBox.</summary>
         /// <value>A Boolean.</value>
         public DNNMultiStateCollection States
         {
@@ -199,9 +177,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// InstantiateIn is called when the Template is instantiated by the parent control.
-        /// </summary>
+        /// <summary>InstantiateIn is called when the Template is instantiated by the parent control.</summary>
         /// <param name="container">The container control.</param>
         public void InstantiateIn(Control container)
         {
@@ -225,9 +201,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Called when the template item is Data Bound.
-        /// </summary>
+        /// <summary>Called when the template item is Data Bound.</summary>
         private void Item_DataBinding(object sender, EventArgs e)
         {
             var box = (DNNMultiStateBox)sender;

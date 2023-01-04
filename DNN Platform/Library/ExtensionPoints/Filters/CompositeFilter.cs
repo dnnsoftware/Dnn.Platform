@@ -11,9 +11,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
     {
         private readonly IList<IExtensionPointFilter> filters;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CompositeFilter"/> class.</summary>
         public CompositeFilter()
         {
             this.filters = new List<IExtensionPointFilter>();

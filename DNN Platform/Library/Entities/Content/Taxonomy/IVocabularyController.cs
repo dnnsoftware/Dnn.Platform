@@ -5,9 +5,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 {
     using System.Linq;
 
-    /// <summary>
-    /// Interface of VocabularyController.
-    /// </summary>
+    /// <summary>Interface of VocabularyController.</summary>
     /// <seealso cref="VocabularyController"/>
     public interface IVocabularyController
     {

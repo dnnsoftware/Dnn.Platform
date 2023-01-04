@@ -6,17 +6,12 @@ namespace DotNetNuke.Common.Utilities
     using System;
     using System.Web.Script.Serialization;
 
-    /// <summary>
-    ///   Json Extensions based on the JavaScript Serializer in System.web.
-    /// </summary>
+    /// <summary>JSON Extensions based on the JavaScript Serializer in System.web.</summary>
     public static class JsonExtensionsWeb
     {
-        /// <summary>
-        ///   Serializes a type to Json. Note the type must be marked Serializable
-        ///   or include a DataContract attribute.
-        /// </summary>
-        /// <param name = "value"></param>
-        /// <returns></returns>
+        /// <summary>Serializes a type to JSON. Note the type must be marked Serializable or include a DataContract attribute.</summary>
+        /// <param name="value">The value to serialize.</param>
+        /// <returns>The JSON string.</returns>
         public static string ToJsonString(object value)
         {
             var ser = SerializerFactory();
@@ -24,24 +19,18 @@ namespace DotNetNuke.Common.Utilities
             return json;
         }
 
-        /// <summary>
-        ///   Extension method on object that serializes the value to Json.
-        ///   Note the type must be marked Serializable or include a DataContract attribute.
-        /// </summary>
-        /// <param name = "value"></param>
-        /// <returns></returns>
+        /// <summary>Extension method on object that serializes the value to JSON. Note the type must be marked Serializable or include a DataContract attribute.</summary>
+        /// <param name="value">The value to serialize.</param>
+        /// <returns>The JSON string.</returns>
         public static string ToJson(this object value)
         {
             return ToJsonString(value);
         }
 
-        /// <summary>
-        ///   Deserializes a json string into a specific type.
-        ///   Note that the type specified must be serializable.
-        /// </summary>
-        /// <param name = "json"></param>
-        /// <param name = "type"></param>
-        /// <returns></returns>
+        /// <summary>Deserializes a JSON string into a specific type. Note that the type specified must be serializable.</summary>
+        /// <param name="json">A JSON string.</param>
+        /// <param name="type">The type to deserialize the JSON into.</param>
+        /// <returns>The deserialized value.</returns>
         public static object FromJsonString(string json, Type type)
         {
             // *** Have to use Reflection with a 'dynamic' non constant type instance
@@ -51,19 +40,19 @@ namespace DotNetNuke.Common.Utilities
             return result;
         }
 
-        /// <summary>
-        ///   Extension method to string that deserializes a json string
-        ///   into a specific type.
-        ///   Note that the type specified must be serializable.
-        /// </summary>
-        /// <param name = "json"></param>
-        /// <param name = "type"></param>
-        /// <returns></returns>
+        /// <summary>Extension method to string that deserializes a JSON string into a specific type. Note that the type specified must be serializable.</summary>
+        /// <param name="json">A JSON string.</param>
+        /// <param name="type">The type to deserialize the JSON into.</param>
+        /// <returns>The deserialized value.</returns>
         public static object FromJson(this string json, Type type)
         {
             return FromJsonString(json, type);
         }
 
+        /// <summary>Extension method to string that deserializes a JSON string into a specific type. Note that the type specified must be serializable.</summary>
+        /// <typeparam name="TType">The type to deserialize the JSON into.</typeparam>
+        /// <param name="json">A JSON string.</param>
+        /// <returns>The deserialized value.</returns>
         public static TType FromJson<TType>(this string json)
         {
             var ser = SerializerFactory();

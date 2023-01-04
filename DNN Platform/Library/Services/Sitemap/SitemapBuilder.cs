@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Sitemap
         /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
         ///   Creates an instance of the sitemap builder class.
         /// </summary>
-        /// <param name = "ps">Current PortalSettings for the portal being processed.</param>
+        /// <param name="ps">Current PortalSettings for the portal being processed.</param>
         public SitemapBuilder(PortalSettings ps)
         {
             this.portalSettings = ps;
@@ -84,9 +84,7 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>
-        ///   Builds the complete portal sitemap.
-        /// </summary>
+        /// <summary>  Builds the complete portal sitemap.</summary>
         public void BuildSiteMap(TextWriter output)
         {
             int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.portalSettings.PortalId, "1"));
@@ -202,11 +200,9 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>
-        ///   Returns the sitemap file that is part of a sitemapindex.
-        /// </summary>
-        /// <param name = "index">Index of the sitemap to return.</param>
-        /// <param name = "output">The output stream.</param>
+        /// <summary>  Returns the sitemap file that is part of a sitemapindex.</summary>
+        /// <param name="index">Index of the sitemap to return.</param>
+        /// <param name="output">The output stream.</param>
         /// <remarks>
         ///   The file should already exist since when using sitemapindexes the files are all cached to disk.
         /// </remarks>
@@ -237,13 +233,11 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>
-        ///   Generates a sitemap file.
-        /// </summary>
-        /// <param name = "cached">Wheter the generated file should be cached or not.</param>
-        /// <param name = "output">The output stream.</param>
-        /// <param name = "index">For sitemapindex files the number of the file being generated, 0 otherwise.</param>
-        /// <param name = "allUrls">The list of urls to be included in the file.</param>
+        /// <summary>  Generates a sitemap file.</summary>
+        /// <param name="cached">Wheter the generated file should be cached or not.</param>
+        /// <param name="output">The output stream.</param>
+        /// <param name="index">For sitemapindex files the number of the file being generated, 0 otherwise.</param>
+        /// <param name="allUrls">The list of urls to be included in the file.</param>
         /// <remarks>
         ///   If the output should be cached it will generate a file under the portal directory (portals\[portalid]\sitemaps\) with
         ///   the result of the generation. If the file is part of a sitemap, <paramref name = "index">index</paramref> will be appended to the
@@ -306,11 +300,9 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>
-        ///   Generates a sitemapindex file.
-        /// </summary>
-        /// <param name = "output">The output stream.</param>
-        /// <param name = "totalFiles">Number of files that are included in the sitemap index.</param>
+        /// <summary>  Generates a sitemapindex file.</summary>
+        /// <param name="output">The output stream.</param>
+        /// <param name="totalFiles">Number of files that are included in the sitemap index.</param>
         private void WriteSitemapIndex(TextWriter output, int totalFiles)
         {
             TextWriter sitemapOutput;
@@ -353,10 +345,8 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>
-        ///   Adds a new url to the sitemap.
-        /// </summary>
-        /// <param name = "sitemapUrl">The url to be included in the sitemap.</param>
+        /// <summary>  Adds a new url to the sitemap.</summary>
+        /// <param name="sitemapUrl">The url to be included in the sitemap.</param>
         private void AddURL(SitemapUrl sitemapUrl, XmlWriter writer)
         {
             writer.WriteStartElement("url");
@@ -379,9 +369,7 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteEndElement();
         }
 
-        /// <summary>
-        ///   Is sitemap is cached, verifies is the cached file exists and is still valid.
-        /// </summary>
+        /// <summary>  Is sitemap is cached, verifies is the cached file exists and is still valid.</summary>
         /// <returns>True is the cached file exists and is still valid, false otherwise.</returns>
         private bool CacheIsValid()
         {
@@ -402,11 +390,9 @@ namespace DotNetNuke.Services.Sitemap
             return isValid;
         }
 
-        /// <summary>
-        ///   When the sitemap is cached, reads the sitemap file and writes to the output stream.
-        /// </summary>
+        /// <summary>  When the sitemap is cached, reads the sitemap file and writes to the output stream.</summary>
         /// <param name="file">File name.</param>
-        /// <param name = "output">The output stream.</param>
+        /// <param name="output">The output stream.</param>
         private void WriteSitemapFileToOutput(string file, TextWriter output)
         {
             if (!File.Exists(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + file))

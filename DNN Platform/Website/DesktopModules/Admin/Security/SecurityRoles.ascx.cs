@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>Gets or sets and sets the ParentModule (if one exists).</summary>
+        /// <summary>Gets or sets the ParentModule (if one exists).</summary>
         public PortalModuleBase ParentModule { get; set; }
 
         /// <summary>Gets the Return Url for the page.</summary>
@@ -140,9 +140,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// Gets the control should use a Combo Box or Text Box to display the users.
-        /// </summary>
+        /// <summary>Gets the control should use a Combo Box or Text Box to display the users.</summary>
         protected UsersControl UsersControl
         {
             get
@@ -176,9 +174,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         protected int CurrentPage { get; set; }
 
-        /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
+        /// <summary>DataBind binds the data to the controls.</summary>
         public override void DataBind()
         {
             if (!ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
@@ -232,10 +228,8 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>FormatExpiryDate formats the expiry/effective date and filters out nulls.</summary>
+        /// <returns>A string with an HTML link to edit the user.</returns>
         public string FormatUser(int userID, string displayName)
         {
             return "<a href=\"" + Globals.LinkClick("userid=" + userID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + displayName + "</a>";
@@ -372,9 +366,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// BindData loads the controls from the Database.
-        /// </summary>
+        /// <summary>BindData loads the controls from the Database.</summary>
         private void BindData()
         {
             // bind all portal roles to dropdownlist
@@ -475,9 +467,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>
-        /// BindGrid loads the data grid from the Database.
-        /// </summary>
+        /// <summary>BindGrid loads the data grid from the Database.</summary>
         private void BindGrid()
         {
             if (this.roleId != Null.NullInteger)

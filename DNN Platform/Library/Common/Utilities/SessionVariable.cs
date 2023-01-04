@@ -8,9 +8,7 @@ namespace DotNetNuke.Common.Utilities
     using System.Web;
     using System.Web.SessionState;
 
-    /// <summary>
-    /// Wrapper class for <see cref="HttpContext.Session"/>.
-    /// </summary>
+    /// <summary>Wrapper class for <see cref="HttpContext.Session"/>.</summary>
     /// <typeparam name="T">The type of the value to be stored.</typeparam>
     public class SessionVariable<T> : StateVariable<T>
     {

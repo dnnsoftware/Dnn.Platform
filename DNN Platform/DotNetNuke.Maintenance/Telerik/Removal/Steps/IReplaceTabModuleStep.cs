@@ -7,24 +7,16 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System;
     using System.Collections;
 
-    /// <summary>
-    /// Replaces a given module in a page with another module.
-    /// </summary>
+    /// <summary>Replaces a given module in a page with another module.</summary>
     internal interface IReplaceTabModuleStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the name of the module to replace.
-        /// </summary>
+        /// <summary>Gets or sets the name of the module to replace.</summary>
         string OldModuleName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the module that will replace the old module.
-        /// </summary>
+        /// <summary>Gets or sets the name of the module that will replace the old module.</summary>
         string NewModuleName { get; set; }
 
-        /// <summary>
-        /// Gets or sets callback function to migrate old settings.
-        /// </summary>
+        /// <summary>Gets or sets callback function to migrate old settings.</summary>
         Func<Hashtable, Hashtable> MigrateSettings { get; set; }
     }
 }

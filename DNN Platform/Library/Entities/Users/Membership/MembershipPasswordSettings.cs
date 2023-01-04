@@ -40,9 +40,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets minimum number of non-alphanumeric characters setting for password strength indicator.
-        /// </summary>
+        /// <summary>Gets minimum number of non-alphanumeric characters setting for password strength indicator.</summary>
         public int MinNonAlphanumericCharacters
         {
             get
@@ -51,9 +49,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets minimum length of password setting for password strength indicator.
-        /// </summary>
+        /// <summary>Gets minimum length of password setting for password strength indicator.</summary>
         public int MinPasswordLength
         {
             get
@@ -62,9 +58,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets currently configured password format for installation.
-        /// </summary>
+        /// <summary>Gets currently configured password format for installation.</summary>
         public PasswordFormat PasswordFormat
         {
             get
@@ -81,9 +75,7 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        /// <summary>
-        /// Gets regular Expression to validate password strength.
-        /// </summary>
+        /// <summary>Gets regular Expression to validate password strength.</summary>
         public string ValidationExpression
         {
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }

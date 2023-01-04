@@ -8,7 +8,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
 
     /// <summary></summary>
-    /// <returns></returns>
     public partial class Copyright : SkinObjectBase
     {
         private const string MyFileName = "Copyright.ascx";

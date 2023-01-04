@@ -15,9 +15,7 @@ namespace DotNetNuke.Entities.Profile
     /// </summary>
     public class ProfilePropertyDefinitionComparer : IComparer
     {
-        /// <summary>
-        /// Compares two <see cref="ProfilePropertyDefinition"/> objects.
-        /// </summary>
+        /// <summary>Compares two <see cref="ProfilePropertyDefinition"/> objects.</summary>
         /// <param name="x">A <see cref="ProfilePropertyDefinition"/> object.</param>
         /// <param name="y">The other <see cref="ProfilePropertyDefinition"/> object.</param>
         /// <returns>An integer indicating whether x greater than y, x=y or x less than y.</returns>

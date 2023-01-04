@@ -30,9 +30,7 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = "System.Int32";
         }
 
-        /// <summary>
-        /// Gets integerValue returns the Integer representation of the Value.
-        /// </summary>
+        /// <summary>Gets integerValue returns the Integer representation of the Value.</summary>
         /// <value>An integer representing the Value.</value>
         protected int IntegerValue
         {
@@ -56,9 +54,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets oldIntegerValue returns the Integer representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets oldIntegerValue returns the Integer representation of the OldValue.</summary>
         /// <value>An integer representing the OldValue.</value>
         protected int OldIntegerValue
         {
@@ -79,9 +75,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
         protected override string StringValue
         {
@@ -110,9 +104,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {

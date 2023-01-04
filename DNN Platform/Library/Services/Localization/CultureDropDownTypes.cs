@@ -12,39 +12,25 @@ namespace DotNetNuke.Services.Localization
     [Serializable]
     public enum CultureDropDownTypes
     {
-        /// <summary>
-        /// Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in the .NET Framework language
-        /// </summary>
+        /// <summary>Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in the .NET Framework language</summary>
         DisplayName = 0,
 
-        /// <summary>
-        /// Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in English
-        /// </summary>
+        /// <summary>Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in English</summary>
         EnglishName = 1,
 
-        /// <summary>
-        /// Displays the culture identifier
-        /// </summary>
+        /// <summary>Displays the culture identifier</summary>
         Lcid = 2,
 
-        /// <summary>
-        /// Displays the culture name in the format "&lt;languagecode2&gt; (&lt;country/regioncode2&gt;)
-        /// </summary>
+        /// <summary>Displays the culture name in the format "&lt;languagecode2&gt; (&lt;country/regioncode2&gt;)</summary>
         Name = 3,
 
-        /// <summary>
-        /// Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in the language that the culture is set to display
-        /// </summary>
+        /// <summary>Displays the culture name in the format "&lt;languagefull&gt; (&lt;country/regionfull&gt;) in the language that the culture is set to display</summary>
         NativeName = 4,
 
-        /// <summary>
-        /// Displays the IS0 639-1 two letter code
-        /// </summary>
+        /// <summary>Displays the IS0 639-1 two letter code</summary>
         TwoLetterIsoCode = 5,
 
-        /// <summary>
-        /// Displays the ISO 629-2 three letter code "&lt;languagefull&gt; (&lt;country/regionfull&gt;)
-        /// </summary>
+        /// <summary>Displays the ISO 629-2 three letter code "&lt;languagefull&gt; (&lt;country/regionfull&gt;)</summary>
         ThreeLetterIsoCode = 6,
     }
 }

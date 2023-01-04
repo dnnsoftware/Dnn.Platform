@@ -10,9 +10,7 @@ namespace DotNetNuke.Common.Utilities
 
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// The CBO class generates objects.
-    /// </summary>
+    /// <summary>The CBO class generates objects.</summary>
     public partial class CBO
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -11,22 +11,15 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly DNNNode objNode;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavDataPageHierarchyData"/> class.
-        /// </summary>
-        /// <param name="obj"></param>
+        /// <summary>Initializes a new instance of the <see cref="NavDataPageHierarchyData"/> class.</summary>
+        /// <param name="obj">The node.</param>
         public NavDataPageHierarchyData(DNNNode obj)
         {
             this.objNode = obj;
         }
 
-        /// <summary>
-        /// Gets nodes image.
-        /// </summary>
-        /// <value>
-        /// Returns nodes image.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets nodes image.</summary>
+        /// <value>Returns nodes image.</value>
         public virtual string ImageUrl
         {
             get
@@ -42,13 +35,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
-        /// </summary>
-        /// <value>
-        /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</summary>
+        /// <value>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</value>
         public virtual bool HasChildren
         {
             get
@@ -57,13 +45,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the hierarchical path of the node.
-        /// </summary>
-        /// <value>
-        /// The hierarchical path of the node.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the hierarchical path of the node.</summary>
+        /// <value>The hierarchical path of the node.</value>
         public virtual string Path
         {
             get
@@ -72,13 +55,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the hierarchical data node that the IHierarchyData object represents.
-        /// </summary>
-        /// <value>
-        /// The hierarchical data node that the IHierarchyData object represents.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the hierarchical data node that the IHierarchyData object represents.</summary>
+        /// <value>The hierarchical data node that the IHierarchyData object represents.</value>
         public virtual object Item
         {
             get
@@ -87,13 +65,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets the name of the type of Object contained in the Item property.
-        /// </summary>
-        /// <value>
-        /// The name of the type of Object contained in the Item property.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the name of the type of Object contained in the Item property.</summary>
+        /// <value>The name of the type of Object contained in the Item property.</value>
         public virtual string Type
         {
             get
@@ -102,13 +75,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets node name.
-        /// </summary>
-        /// <value>
-        /// Returns node name.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets node name.</summary>
+        /// <value>Returns node name.</value>
         public virtual string Name
         {
             get
@@ -117,13 +85,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets value path of node.
-        /// </summary>
-        /// <value>
-        /// Returns value path of node.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets value path of node.</summary>
+        /// <value>Returns value path of node.</value>
         public virtual string Value
         {
             get
@@ -132,13 +95,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets node navigation url.
-        /// </summary>
-        /// <value>
-        /// Returns node navigation url.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets node navigation url.</summary>
+        /// <value>Returns node navigation url.</value>
         public virtual string NavigateUrl
         {
             get
@@ -147,13 +105,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets node description.
-        /// </summary>
-        /// <value>
-        /// Returns Node description.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets node description.</summary>
+        /// <value>Returns Node description.</value>
         public virtual string Description
         {
             get
@@ -162,10 +115,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Gets an enumeration object that represents all the child nodes of the current hierarchical node.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets an enumeration object that represents all the child nodes of the current hierarchical node.</summary>
+        /// <returns>A collection of nodes.</returns>
         public virtual IHierarchicalEnumerable GetChildren()
         {
             var objNodes = new NavDataPageHierarchicalEnumerable();
@@ -180,10 +131,8 @@ namespace DotNetNuke.UI.WebControls
             return objNodes;
         }
 
-        /// <summary>
-        /// Gets an enumeration object that represents the parent node of the current hierarchical node.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Gets an enumeration object that represents the parent node of the current hierarchical node.</summary>
+        /// <returns>The parent node or <see langword="null"/>.</returns>
         public virtual IHierarchyData GetParent()
         {
             if (this.objNode != null)
@@ -202,12 +151,10 @@ namespace DotNetNuke.UI.WebControls
             return this.objNode.Text;
         }
 
-        /// <summary>
-        /// Helper function to handle cases where property is null (Nothing).
-        /// </summary>
-        /// <param name="value">Value to evaluate for null.</param>
-        /// <param name="def">If null, return this default.</param>
-        /// <returns></returns>
+        /// <summary>Helper function to handle cases where property is <see langword="null"/>.</summary>
+        /// <param name="value">Value to evaluate for <see langword="null"/>.</param>
+        /// <param name="def">If <see langword="null"/>, return this default.</param>
+        /// <returns><paramref name="value"/> or <paramref name="def"/> if <paramref name="value"/> is <see langword="null"/>.</returns>
         private string GetSafeValue(string value, string def)
         {
             if (value != null)
@@ -220,9 +167,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.
-        /// </summary>
+        /// <summary>Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.</summary>
         /// <param name="objNode"></param>
         /// <returns>ValuePath.</returns>
         /// <remarks>Not sure if it is ok to hardcode the "\" separator, but also not sure where I would get it from.</remarks>

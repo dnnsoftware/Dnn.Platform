@@ -16,9 +16,7 @@ namespace DotNetNuke.Services.Authentication
     /// </summary>
     public abstract class AuthenticationLoginBase : UserModuleBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationLoginBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationLoginBase"/> class.</summary>
         protected AuthenticationLoginBase()
         {
             this.RedirectURL = Null.NullString;
@@ -30,15 +28,11 @@ namespace DotNetNuke.Services.Authentication
 
         public event UserAuthenticatedEventHandler UserAuthenticated;
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the control is Enabled.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the control is Enabled.</summary>
         /// <remarks>This property must be overriden in the inherited class.</remarks>
         public abstract bool Enabled { get; }
 
-        /// <summary>
-        /// Gets the IP address associated with the request.
-        /// </summary>
+        /// <summary>Gets the IP address associated with the request.</summary>
         public string IPAddress
         {
             get
@@ -49,29 +43,21 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the control supports Registration.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the control supports Registration.</summary>
         /// <remarks>This property may be overriden in the inherited class.</remarks>
         public virtual bool SupportsRegistration
         {
             get { return false; }
         }
 
-        /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the Type of Authentication associated with this control.</summary>
         public string AuthenticationType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Authentication mode of the control (Login or Register).
-        /// </summary>
+        /// <summary>Gets or sets the Authentication mode of the control (Login or Register).</summary>
         /// <remarks>This property may be overriden in the inherited class.</remarks>
         public virtual AuthMode Mode { get; set; }
 
-        /// <summary>
-        /// Gets or sets and Sets the Redirect Url for this control.
-        /// </summary>
+        /// <summary>Gets or sets the Redirect Url for this control.</summary>
         public string RedirectURL { get; set; }
 
         [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]

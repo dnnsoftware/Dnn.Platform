@@ -10,17 +10,13 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// The SkinControlInstaller installs SkinControl (SkinObject) Components to a DotNetNuke site.
-    /// </summary>
+    /// <summary>The SkinControlInstaller installs SkinControl (SkinObject) Components to a DotNetNuke site.</summary>
     public class SkinControlInstaller : ComponentInstallerBase
     {
         private SkinControlInfo installedSkinControl;
         private SkinControlInfo skinControl;
 
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
         public override string AllowableFiles
         {
@@ -30,17 +26,13 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
+        /// <summary>The Commit method finalises the Install and commits any pending changes.</summary>
         /// <remarks>In the case of Modules this is not neccessary.</remarks>
         public override void Commit()
         {
         }
 
-        /// <summary>
-        /// The Install method installs the Module component.
-        /// </summary>
+        /// <summary>The Install method installs the Module component.</summary>
         public override void Install()
         {
             try
@@ -66,9 +58,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// The ReadManifest method reads the manifest file for the SkinControl compoent.
-        /// </summary>
+        /// <summary>The ReadManifest method reads the manifest file for the SkinControl compoent.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the SkinControl from the manifest
@@ -99,17 +89,13 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// The UnInstall method uninstalls the SkinControl component.
-        /// </summary>
+        /// <summary>The UnInstall method uninstalls the SkinControl component.</summary>
         public override void UnInstall()
         {
             this.DeleteSkinControl();
         }
 
-        /// <summary>
-        /// The DeleteSkinControl method deletes the SkinControl from the data Store.
-        /// </summary>
+        /// <summary>The DeleteSkinControl method deletes the SkinControl from the data Store.</summary>
         private void DeleteSkinControl()
         {
             try

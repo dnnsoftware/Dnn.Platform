@@ -10,9 +10,7 @@ namespace Dnn.PersonaBar.Licensing.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the licensing menu.
-    /// </summary>
+    /// <summary>Controls the licensing menu.</summary>
     public class LicensingMenuController : IMenuItemController
     {
         /// <inheritdoc/>

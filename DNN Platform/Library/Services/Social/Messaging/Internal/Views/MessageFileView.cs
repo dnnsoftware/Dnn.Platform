@@ -58,9 +58,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             }
         }
 
-        /// <summary>
-        /// Gets or sets the url of the file to download.
-        /// </summary>
+        /// <summary>Gets or sets the url of the file to download.</summary>
         public string Url { get; set; }
     }
 }

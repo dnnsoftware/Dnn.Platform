@@ -17,9 +17,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// </summary>
     public class SynchConnectionStringStep : BaseInstallationStep
     {
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
             this.Percentage = 0;

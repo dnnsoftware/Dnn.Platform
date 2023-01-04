@@ -27,9 +27,7 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// Simple filter to match a keyed string in the <see cref="MDC"/>
-    /// </summary>
+    /// <summary>Simple filter to match a keyed string in the <see cref="MDC"/></summary>
     /// <remarks>
     /// <para>
     /// Simple filter to match a keyed string in the <see cref="MDC"/>

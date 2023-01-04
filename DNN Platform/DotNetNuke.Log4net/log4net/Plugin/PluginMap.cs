@@ -26,9 +26,7 @@ using log4net.Repository;
 
 namespace log4net.Plugin
 {
-    /// <summary>
-    /// Map of repository plugins.
-    /// </summary>
+    /// <summary>Map of repository plugins.</summary>
     /// <remarks>
     /// <para>
     /// This class is a name keyed map of the plugins that are
@@ -39,9 +37,7 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public sealed class PluginMap
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
+        /// <summary>Constructor</summary>
         /// <param name="repository">The repository that the plugins should be attached to.</param>
         /// <remarks>
         /// <para>
@@ -54,9 +50,7 @@ namespace log4net.Plugin
             this.m_repository = repository;
         }
 
-        /// <summary>
-        /// Gets a <see cref="IPlugin" /> by name.
-        /// </summary>
+        /// <summary>Gets a <see cref="IPlugin" /> by name.</summary>
         /// <param name="name">The name of the <see cref="IPlugin" /> to lookup.</param>
         /// <returns>
         /// The <see cref="IPlugin" /> from the map with the name specified, or 
@@ -84,9 +78,7 @@ namespace log4net.Plugin
             }
         }
 
-        /// <summary>
-        /// Gets all possible plugins as a list of <see cref="IPlugin" /> objects.
-        /// </summary>
+        /// <summary>Gets all possible plugins as a list of <see cref="IPlugin" /> objects.</summary>
         /// <value>All possible plugins as a list of <see cref="IPlugin" /> objects.</value>
         /// <remarks>
         /// <para>
@@ -104,9 +96,7 @@ namespace log4net.Plugin
             }
         }
 
-        /// <summary>
-        /// Adds a <see cref="IPlugin" /> to the map.
-        /// </summary>
+        /// <summary>Adds a <see cref="IPlugin" /> to the map.</summary>
         /// <param name="plugin">The <see cref="IPlugin" /> to add to the map.</param>
         /// <remarks>
         /// <para>
@@ -147,9 +137,7 @@ namespace log4net.Plugin
             plugin.Attach(this.m_repository);
         }
 
-        /// <summary>
-        /// Removes a <see cref="IPlugin" /> from the map.
-        /// </summary>
+        /// <summary>Removes a <see cref="IPlugin" /> from the map.</summary>
         /// <param name="plugin">The <see cref="IPlugin" /> to remove from the map.</param>
         /// <remarks>
         /// <para>

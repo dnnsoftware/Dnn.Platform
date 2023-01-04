@@ -24,9 +24,7 @@ namespace DotNetNuke.UI.WebControls
             this.Editor = editor;
         }
 
-        /// <summary>
-        /// Gets or sets and sets whether the proeprty has changed.
-        /// </summary>
+        /// <summary>Gets or sets whether the proeprty has changed.</summary>
         /// <value>A String.</value>
         public EditorInfo Editor { get; set; }
     }

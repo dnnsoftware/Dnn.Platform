@@ -26,9 +26,7 @@ using log4net.Core;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Writes the event identity to the output
-    /// </summary>
+    /// <summary>Writes the event identity to the output</summary>
     /// <remarks>
     /// <para>
     /// Writes the value of the <see cref="LoggingEvent.Identity"/> to
@@ -39,9 +37,7 @@ namespace log4net.Layout.Pattern
     /// <author>Nicko Cadell</author>
     internal sealed class IdentityPatternConverter : PatternLayoutConverter 
     {
-        /// <summary>
-        /// Writes the event identity to the output
-        /// </summary>
+        /// <summary>Writes the event identity to the output</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">the event being logged</param>
         /// <remarks>

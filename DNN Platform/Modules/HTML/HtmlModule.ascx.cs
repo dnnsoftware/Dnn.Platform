@@ -21,26 +21,20 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    ///   The HtmlModule Class provides the UI for displaying the Html.
-    /// </summary>
+    /// <summary>  The HtmlModule Class provides the UI for displaying the Html.</summary>
     public partial class HtmlModule : HtmlModuleBase, IActionable
     {
         private readonly INavigationManager navigationManager;
         private bool editorEnabled;
         private int workflowID;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlModule"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
         public HtmlModule()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        ///   Gets moduleActions is an interface property that returns the module actions collection for the module.
-        /// </summary>
+        /// <summary>  Gets moduleActions is an interface property that returns the module actions collection for the module.</summary>
         public ModuleActionCollection ModuleActions
         {
             get
@@ -140,9 +134,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   Page_Init runs when the control is initialized.
-        /// </summary>
+        /// <summary>  Page_Init runs when the control is initialized.</summary>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -161,9 +153,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>
-        ///   Page_Load runs when the control is loaded.
-        /// </summary>
+        /// <summary>  Page_Load runs when the control is loaded.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -258,9 +248,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             }
         }
 
-        /// <summary>
-        ///   lblContent_UpdateLabel allows for inline editing of content.
-        /// </summary>
+        /// <summary>  lblContent_UpdateLabel allows for inline editing of content.</summary>
         private void LblContent_UpdateLabel(object source, DNNLabelEditEventArgs e)
         {
             try
@@ -302,9 +290,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             }
         }
 
-        /// <summary>
-        ///   ModuleAction_Click handles all ModuleAction events raised from the action menu.
-        /// </summary>
+        /// <summary>  ModuleAction_Click handles all ModuleAction events raised from the action menu.</summary>
         private void ModuleAction_Click(object sender, ActionEventArgs e)
         {
             try

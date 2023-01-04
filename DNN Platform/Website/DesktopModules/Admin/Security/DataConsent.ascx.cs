@@ -131,9 +131,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.Status = status;
             }
 
-            /// <summary>
-            /// Gets or sets and sets the Update Status.
-            /// </summary>
+            /// <summary>Gets or sets the Update Status.</summary>
             public DataConsentStatus Status { get; set; }
         }
     }

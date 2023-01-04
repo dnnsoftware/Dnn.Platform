@@ -31,9 +31,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private int moduleId = -1;
         private ModuleInfo module;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePermissions"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePermissions"/> class.</summary>
         public ModulePermissions()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

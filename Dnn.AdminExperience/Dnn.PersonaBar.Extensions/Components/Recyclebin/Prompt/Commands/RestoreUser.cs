@@ -24,17 +24,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         private IUserValidator userValidator;
         private IRecyclebinController recyclebinController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RestoreUser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RestoreUser"/> class.</summary>
         public RestoreUser()
             : this(new UserValidator(), RecyclebinController.Instance)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RestoreUser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RestoreUser"/> class.</summary>
         /// <param name="userValidator"></param>
         /// <param name="instance"></param>
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)

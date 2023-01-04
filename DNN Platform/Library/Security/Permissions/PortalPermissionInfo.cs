@@ -13,9 +13,7 @@ namespace DotNetNuke.Security.Permissions
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
     /// Class    : PortalPermissionInfo
-    /// <summary>
-    /// PortalPermissionInfo provides the Entity Layer for Portal Permissions.
-    /// </summary>
+    /// <summary>PortalPermissionInfo provides the Entity Layer for Portal Permissions.</summary>
     [Serializable]
     [XmlRoot("permission")]
     public class PortalPermissionInfo : PermissionInfoBase, IHydratable
@@ -50,9 +48,7 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Portal Permission ID.
-        /// </summary>
+        /// <summary>Gets or sets the Portal Permission ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlElement("portalpermissionid")]
         public int PortalPermissionID
@@ -68,9 +64,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Portal ID.
-        /// </summary>
+        /// <summary>Gets or sets the Portal ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlElement("portalid")]
         public int PortalID
@@ -86,9 +80,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         [XmlIgnore]
         public int KeyID
@@ -104,9 +96,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Fills a PortalPermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a PortalPermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {

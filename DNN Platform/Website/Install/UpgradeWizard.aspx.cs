@@ -40,9 +40,7 @@ namespace DotNetNuke.Services.Install
     using Globals = DotNetNuke.Common.Globals;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// The InstallWizard class provides the Installation Wizard for DotNetNuke.
-    /// </summary>
+    /// <summary>The InstallWizard class provides the Installation Wizard for DotNetNuke.</summary>
     public partial class UpgradeWizard : PageBase
     {
         /// <summary>Client ID of the hidden input containing the Telerik anti-forgery token.</summary>
@@ -137,9 +135,7 @@ namespace DotNetNuke.Services.Install
             return new Tuple<bool, string>(result, errorMsg);
         }
 
-        /// <summary>
-        /// Returns information to render the Security tab.
-        /// </summary>
+        /// <summary>Returns information to render the Security tab.</summary>
         /// <param name="accountInfo">Username and password to validate host user.</param>
         /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
         [WebMethod]

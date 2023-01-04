@@ -9,14 +9,10 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// The AuthenticationPackageWriter class.
-    /// </summary>
+    /// <summary>The AuthenticationPackageWriter class.</summary>
     public class AuthenticationPackageWriter : PackageWriterBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.</summary>
         /// <param name="package"></param>
         public AuthenticationPackageWriter(PackageInfo package)
             : base(package)
@@ -25,9 +21,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationPackageWriter"/> class.</summary>
         /// <param name="authSystem"></param>
         /// <param name="package"></param>
         public AuthenticationPackageWriter(AuthenticationInfo authSystem, PackageInfo package)
@@ -37,9 +31,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize();
         }
 
-        /// <summary>
-        /// Gets or sets the associated Authentication System.
-        /// </summary>
+        /// <summary>Gets or sets the associated Authentication System.</summary>
         /// <value>An AuthenticationInfo object.</value>
         public AuthenticationInfo AuthSystem { get; set; }
 

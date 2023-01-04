@@ -40,7 +40,7 @@ namespace DotNetNuke.Security.Permissions
         /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
         ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
-        /// <param name = "permission">A PermissionInfo object.</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         public WorkflowStatePermissionInfo(PermissionInfo permission)
             : this()
         {
@@ -51,9 +51,7 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// <summary>
-        ///   Gets or sets and sets the WorkflowState Permission ID.
-        /// </summary>
+        /// <summary>  Gets or sets and sets the WorkflowState Permission ID.</summary>
         /// <returns>An Integer.</returns>
         public int WorkflowStatePermissionID
         {
@@ -68,9 +66,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        ///   Gets or sets and sets the State ID.
-        /// </summary>
+        /// <summary>  Gets or sets and sets the State ID.</summary>
         /// <returns>An Integer.</returns>
         public int StateID
         {
@@ -85,9 +81,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        ///   Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>  Gets or sets and sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         public int KeyID
         {
@@ -102,10 +96,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        ///   Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.
-        /// </summary>
-        /// <param name = "obj">a WorkflowStatePermissionObject.</param>
+        /// <summary>  Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.</summary>
+        /// <param name="obj">a WorkflowStatePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         ///   in the current object.
         /// </returns>
@@ -158,10 +150,8 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        ///   Fills a WorkflowStatePermissionInfo from a Data Reader.
-        /// </summary>
-        /// <param name = "dr">The Data Reader to use.</param>
+        /// <summary>  Fills a WorkflowStatePermissionInfo from a Data Reader.</summary>
+        /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class proeprties

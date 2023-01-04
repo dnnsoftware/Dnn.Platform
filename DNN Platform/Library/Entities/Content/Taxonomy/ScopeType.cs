@@ -9,24 +9,18 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    /// Class of ScopeType.
-    /// </summary>
+    /// <summary>Class of ScopeType.</summary>
     /// <seealso cref="TermController"/>
     [Serializable]
     public class ScopeType : ScopeTypeMemberNameFixer, IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeType"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeType"/> class.</summary>
         public ScopeType()
             : this(Null.NullString)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeType"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeType"/> class.</summary>
         /// <param name="scopeType"></param>
         public ScopeType(string scopeType)
         {

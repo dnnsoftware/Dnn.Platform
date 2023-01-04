@@ -38,45 +38,31 @@ namespace DotNetNuke.UI.WebControls
             this.OldValue = oldValue;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the proeprty has changed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the proeprty has changed.</summary>
         /// <value>A String.</value>
         public bool Changed { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Index of the Item.
-        /// </summary>
+        /// <summary>Gets or sets the Index of the Item.</summary>
         /// <value>An Integer.</value>
         public int Index { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Key of the Item.
-        /// </summary>
+        /// <summary>Gets or sets the Key of the Item.</summary>
         /// <value>An Object.</value>
         public object Key { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Name of the Property being changed.
-        /// </summary>
+        /// <summary>Gets or sets the Name of the Property being changed.</summary>
         /// <value>A String.</value>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the OldValue of the Property being changed.
-        /// </summary>
+        /// <summary>Gets or sets the OldValue of the Property being changed.</summary>
         /// <value>An Object.</value>
         public object OldValue { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the String Value of the Property being changed.
-        /// </summary>
+        /// <summary>Gets or sets the String Value of the Property being changed.</summary>
         /// <value>An Object.</value>
         public string StringValue { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the Value of the Property being changed.
-        /// </summary>
+        /// <summary>Gets or sets the Value of the Property being changed.</summary>
         /// <value>An Object.</value>
         public object Value { get; set; }
     }

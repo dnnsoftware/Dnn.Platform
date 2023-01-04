@@ -14,9 +14,7 @@ namespace DotNetNuke.Services.Authentication
     {
         private string authenticationType = Null.NullString;
 
-        /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control.
-        /// </summary>
+        /// <summary>Gets or sets the Type of Authentication associated with this control.</summary>
         public string AuthenticationType
         {
             get
@@ -30,9 +28,7 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// <summary>
-        /// UpdateSettings updates the settings in the Data Store.
-        /// </summary>
+        /// <summary>UpdateSettings updates the settings in the Data Store.</summary>
         /// <remarks>This method must be overriden in the inherited class.</remarks>
         public abstract void UpdateSettings();
     }

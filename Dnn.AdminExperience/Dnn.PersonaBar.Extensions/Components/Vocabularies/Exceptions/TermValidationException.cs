@@ -8,9 +8,7 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
 
     public class TermValidationException : VocabulariesException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TermValidationException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TermValidationException"/> class.</summary>
         public TermValidationException()
             : base(Constants.TermValidationError)
         {

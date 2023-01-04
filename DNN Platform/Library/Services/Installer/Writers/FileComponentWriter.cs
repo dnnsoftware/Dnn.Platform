@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// The FileComponentWriter class handles creating the manifest for File Component(s).
-    /// </summary>
+    /// <summary>The FileComponentWriter class handles creating the manifest for File Component(s).</summary>
     public class FileComponentWriter
     {
         private readonly string basePath;
@@ -61,9 +59,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("files").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("files").</summary>
         /// <value>A String.</value>
         protected virtual string CollectionNodeName
         {
@@ -73,9 +69,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("File").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("File").</summary>
         /// <value>A String.</value>
         protected virtual string ComponentType
         {
@@ -85,9 +79,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("file").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("file").</summary>
         /// <value>A String.</value>
         protected virtual string ItemNodeName
         {
@@ -97,9 +89,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the Logger.
-        /// </summary>
+        /// <summary>Gets the Logger.</summary>
         /// <value>A Logger.</value>
         protected virtual Logger Log
         {
@@ -109,9 +99,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the Package.
-        /// </summary>
+        /// <summary>Gets the Package.</summary>
         /// <value>A PackageInfo.</value>
         protected virtual PackageInfo Package
         {

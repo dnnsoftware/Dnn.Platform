@@ -10,9 +10,7 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly string format;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FormatAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FormatAttribute"/> class.</summary>
         public FormatAttribute(string format)
         {
             this.format = format;

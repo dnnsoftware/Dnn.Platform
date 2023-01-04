@@ -7,9 +7,7 @@ namespace DotNetNuke.Modules.Journal
 
     public class FilesStatus
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FilesStatus"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FilesStatus"/> class.</summary>
         public FilesStatus()
         {
         }

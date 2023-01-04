@@ -20,9 +20,7 @@ namespace DotNetNuke.Modules.Journal
 
     using DotNetNuke.Services.Exceptions;
 
-    /// <summary>
-    /// The EditJournal class is used to manage content.
-    /// </summary>
+    /// <summary>The EditJournal class is used to manage content.</summary>
     public partial class Edit : JournalModuleBase
     {
         /// <inheritdoc/>
@@ -37,9 +35,7 @@ namespace DotNetNuke.Modules.Journal
             this.Load += new System.EventHandler(this.Page_Load);
         }
 
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
         private void Page_Load(object sender, System.EventArgs e)
         {
             try

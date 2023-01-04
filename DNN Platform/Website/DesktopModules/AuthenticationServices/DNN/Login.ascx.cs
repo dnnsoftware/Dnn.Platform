@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
-        /// <summary>Gets a value indicating whether gets whether the Captcha control is used to validate the login.</summary>
+        /// <summary>Gets a value indicating whether the Captcha control is used to validate the login.</summary>
         protected bool UseCaptcha
         {
             get

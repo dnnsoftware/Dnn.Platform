@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// The SkinComponentWriter class handles creating the manifest for Skin Component(s).
-    /// </summary>
+    /// <summary>The SkinComponentWriter class handles creating the manifest for Skin Component(s).</summary>
     public class SkinComponentWriter : FileComponentWriter
     {
         private readonly string skinName;
@@ -29,9 +27,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.skinName = skinName;
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("skinFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("skinFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -41,9 +37,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("Skin").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Skin").</summary>
         /// <value>A String.</value>
         protected override string ComponentType
         {
@@ -53,9 +47,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("skinFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("skinFile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {
@@ -65,9 +57,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the SkinName Node ("skinName").
-        /// </summary>
+        /// <summary>Gets the name of the SkinName Node ("skinName").</summary>
         /// <value>A String.</value>
         protected virtual string SkinNameNodeName
         {

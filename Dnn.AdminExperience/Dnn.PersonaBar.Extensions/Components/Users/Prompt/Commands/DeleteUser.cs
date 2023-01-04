@@ -28,17 +28,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private IUserValidator userValidator;
         private IUserControllerWrapper userControllerWrapper;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteUser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DeleteUser"/> class.</summary>
         public DeleteUser()
             : this(new UserValidator(), new UserControllerWrapper())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteUser"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DeleteUser"/> class.</summary>
         /// <param name="userValidator"></param>
         /// <param name="userControllerWrapper"></param>
         public DeleteUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)

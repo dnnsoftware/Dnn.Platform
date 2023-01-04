@@ -18,26 +18,20 @@ namespace DotNetNuke.Data.PetaPoco
         private readonly Database database;
         private readonly IMapper mapper;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
         public PetaPocoDataContext()
             : this(ConfigurationManager.ConnectionStrings[0].Name, string.Empty)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
         /// <param name="connectionStringName"></param>
         public PetaPocoDataContext(string connectionStringName)
             : this(connectionStringName, string.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
         /// <param name="connectionStringName"></param>
         /// <param name="tablePrefix"></param>
         public PetaPocoDataContext(string connectionStringName, string tablePrefix)
@@ -45,9 +39,7 @@ namespace DotNetNuke.Data.PetaPoco
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
         /// <param name="connectionStringName"></param>
         /// <param name="tablePrefix"></param>
         /// <param name="mappers"></param>

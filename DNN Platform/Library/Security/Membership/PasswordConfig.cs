@@ -12,14 +12,10 @@ namespace DotNetNuke.Security.Membership
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Membership
     /// Class:      PasswordConfig
-    /// <summary>
-    /// The PasswordConfig class provides a wrapper any Portal wide Password Settings.
-    /// </summary>
+    /// <summary>The PasswordConfig class provides a wrapper any Portal wide Password Settings.</summary>
     public class PasswordConfig
     {
-        /// <summary>
-        /// Gets or sets and sets the Password Expiry time in days.
-        /// </summary>
+        /// <summary>Gets or sets the Password Expiry time in days.</summary>
         /// <returns>An integer.</returns>
         [SortOrder(0)]
         [Category("Password")]

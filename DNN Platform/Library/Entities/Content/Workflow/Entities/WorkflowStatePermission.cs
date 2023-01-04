@@ -6,19 +6,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
     using DotNetNuke.Security.Permissions;
 
-    /// <summary>
-    /// This entity represents a state permission.
-    /// </summary>
+    /// <summary>This entity represents a state permission.</summary>
     public class WorkflowStatePermission : PermissionInfoBase
     {
-        /// <summary>
-        /// Gets or sets workflow state permission Id.
-        /// </summary>
+        /// <summary>Gets or sets workflow state permission Id.</summary>
         public int WorkflowStatePermissionID { get; set; }
 
-        /// <summary>
-        /// Gets or sets state Id.
-        /// </summary>
+        /// <summary>Gets or sets state Id.</summary>
         public int StateID { get; set; }
     }
 }

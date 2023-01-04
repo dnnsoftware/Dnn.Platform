@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.UserProfile
         ///   This handler handles requests for LinkClick.aspx, but only those specifc
         ///   to file serving.
         /// </summary>
-        /// <param name = "context">System.Web.HttpContext).</param>
+        /// <param name="context">System.Web.HttpContext).</param>
         public void ProcessRequest(HttpContext context)
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();

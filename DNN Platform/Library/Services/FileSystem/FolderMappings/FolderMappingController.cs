@@ -22,9 +22,7 @@ namespace DotNetNuke.Services.FileSystem
         private const string CacheKeyPrefix = "GetFolderMappingSettings";
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FolderMappingController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FolderMappingController"/> class.</summary>
         internal FolderMappingController()
         {
         }

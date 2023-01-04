@@ -19,9 +19,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// PoralController provides business layer of poatal.
-    /// </summary>
+    /// <summary>PoralController provides business layer of poatal.</summary>
     /// <remarks>
     /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
     /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.

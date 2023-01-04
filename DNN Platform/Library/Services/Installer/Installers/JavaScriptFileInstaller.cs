@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
     public class JavaScriptFileInstaller : FileInstaller
     {
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
         public override string AllowableFiles
         {
@@ -22,9 +20,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("jsfiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("jsfiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -34,9 +30,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("jsfile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("jsfile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {

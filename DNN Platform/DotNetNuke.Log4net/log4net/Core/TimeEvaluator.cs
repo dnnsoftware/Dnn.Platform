@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// An evaluator that triggers after specified number of seconds.
-    /// </summary>
+    /// <summary>An evaluator that triggers after specified number of seconds.</summary>
     /// <remarks>
     /// <para>
     /// This evaluator will trigger if the specified time period 
@@ -34,24 +32,16 @@ namespace log4net.Core
     /// <author>Robert Sevcik</author>
     public class TimeEvaluator : ITriggeringEventEvaluator
     {
-        /// <summary>
-        /// The time threshold for triggering in seconds. Zero means it won't trigger at all.
-        /// </summary>
+        /// <summary>The time threshold for triggering in seconds. Zero means it won't trigger at all.</summary>
         private int m_interval;
 
-        /// <summary>
-        /// The UTC time of last check. This gets updated when the object is created and when the evaluator triggers.
-        /// </summary>
+        /// <summary>The UTC time of last check. This gets updated when the object is created and when the evaluator triggers.</summary>
         private DateTime m_lastTimeUtc;
 
-        /// <summary>
-        /// The default time threshold for triggering in seconds. Zero means it won't trigger at all.
-        /// </summary>
+        /// <summary>The default time threshold for triggering in seconds. Zero means it won't trigger at all.</summary>
         const int DEFAULT_INTERVAL = 0;
 
-        /// <summary>
-        /// Create a new evaluator using the <see cref="DEFAULT_INTERVAL"/> time threshold in seconds.
-        /// </summary>
+        /// <summary>Create a new evaluator using the <see cref="DEFAULT_INTERVAL"/> time threshold in seconds.</summary>
         /// <remarks>
         /// <para>
         /// Create a new evaluator using the <see cref="DEFAULT_INTERVAL"/> time threshold in seconds.
@@ -66,9 +56,7 @@ namespace log4net.Core
         {
         }
 
-        /// <summary>
-        /// Create a new evaluator using the specified time threshold in seconds.
-        /// </summary>
+        /// <summary>Create a new evaluator using the specified time threshold in seconds.</summary>
         /// <param name="interval">
         /// The time threshold in seconds to trigger after.
         /// Zero means it won't trigger at all.
@@ -88,9 +76,7 @@ namespace log4net.Core
             this.m_lastTimeUtc = DateTime.UtcNow;
         }
 
-        /// <summary>
-        /// The time threshold in seconds to trigger after
-        /// </summary>
+        /// <summary>The time threshold in seconds to trigger after</summary>
         /// <value>
         /// The time threshold in seconds to trigger after.
         /// Zero means it won't trigger at all.
@@ -107,9 +93,7 @@ namespace log4net.Core
             set { this.m_interval = value; }
         }
 
-        /// <summary>
-        /// Is this <paramref name="loggingEvent"/> the triggering event?
-        /// </summary>
+        /// <summary>Is this <paramref name="loggingEvent"/> the triggering event?</summary>
         /// <param name="loggingEvent">The event to check</param>
         /// <returns>This method returns <c>true</c>, if the specified time period 
         /// <see cref="Interval"/> has passed since last check.. 

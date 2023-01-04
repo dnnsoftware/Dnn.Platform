@@ -31,9 +31,7 @@ namespace DotNetNuke.Services.Search.Internals
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    ///   The Impl Controller class for Lucene.
-    /// </summary>
+    /// <summary>  The Impl Controller class for Lucene.</summary>
     internal class InternalSearchControllerImpl : IInternalSearchController
     {
         private const string SearchableModuleDefsKey = "{0}-{1}-{2}";
@@ -60,9 +58,7 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly int authorBoost;
         private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.</summary>
         public InternalSearchControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -267,9 +263,7 @@ namespace DotNetNuke.Services.Search.Internals
             return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
         }
 
-        /// <summary>
-        /// Add Field to Doc when supplied fieldValue > 0.
-        /// </summary>
+        /// <summary>Add Field to Doc when supplied fieldValue > 0.</summary>
         private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {
             if (fieldValue > 0)

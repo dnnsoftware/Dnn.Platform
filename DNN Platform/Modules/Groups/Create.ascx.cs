@@ -24,9 +24,7 @@ namespace DotNetNuke.Modules.Groups
     {
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Create"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
         public Create()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

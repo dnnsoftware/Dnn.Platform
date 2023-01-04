@@ -15,24 +15,18 @@ namespace Dnn.Modules.TelerikRemoval
     using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <summary>
-    /// The main view of the DNN Telerik Removal module.
-    /// </summary>
+    /// <summary>The main view of the DNN Telerik Removal module.</summary>
     public partial class View : PortalModuleBase
     {
         private readonly IServiceProvider serviceProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="View"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         public View()
         {
             this.serviceProvider = this.DependencyProvider;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="View"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
         internal View(IServiceProvider serviceProvider)
         {
@@ -40,9 +34,7 @@ namespace Dnn.Modules.TelerikRemoval
                 throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        /// <summary>
-        /// Event handler for <see cref="CheckBox.CheckedChanged"/>.
-        /// </summary>
+        /// <summary>Event handler for <see cref="CheckBox.CheckedChanged"/>.</summary>
         /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         protected void BackupConfirmationCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -50,9 +42,7 @@ namespace Dnn.Modules.TelerikRemoval
             this.RemoveTelerikButton.Enabled = this.BackupConfirmationCheckBox.Checked;
         }
 
-        /// <summary>
-        /// Event handler for the <see cref="Page.OnLoadComplete(EventArgs)"/> event.
-        /// </summary>
+        /// <summary>Event handler for the <see cref="Page.OnLoadComplete(EventArgs)"/> event.</summary>
         /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
@@ -65,9 +55,7 @@ namespace Dnn.Modules.TelerikRemoval
             }
         }
 
-        /// <summary>
-        /// Click event handler for <c>RemoveTelerikButton</c>.
-        /// </summary>
+        /// <summary>Click event handler for <c>RemoveTelerikButton</c>.</summary>
         /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
         protected void RemoveTelerikButton_Click(object sender, EventArgs e)

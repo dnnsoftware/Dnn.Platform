@@ -8,9 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnImageEditControl : DnnFileEditControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnImageEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnImageEditControl"/> class.</summary>
         public DnnImageEditControl()
         {
             this.FileFilter = Globals.glbImageFileTypes;

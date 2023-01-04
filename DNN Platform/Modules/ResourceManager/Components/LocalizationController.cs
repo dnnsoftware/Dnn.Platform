@@ -18,9 +18,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Cache;
 
-    /// <summary>
-    /// Provides localization services.
-    /// </summary>
+    /// <summary>Provides localization services.</summary>
     public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         /// <inheritdoc/>
@@ -44,9 +42,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return () => new LocalizationControllerImplementation();
         }
 
-        /// <summary>
-        /// The localization controller implementation.
-        /// </summary>
+        /// <summary>The localization controller implementation.</summary>
         private class LocalizationControllerImplementation : ILocalizationController
         {
             private static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);

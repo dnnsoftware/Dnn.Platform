@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Removes any Telerik binding redirects found in the Web.config file.
-    /// </summary>
+    /// <summary>Removes any Telerik binding redirects found in the Web.config file.</summary>
     internal interface IRemoveTelerikBindingRedirectsStep : IStep
     {
     }

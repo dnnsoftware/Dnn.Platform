@@ -12,19 +12,11 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      CollectionEditorControl
-    /// <summary>
-    /// The CollectionEditorControl control provides a Control to display Collection
-    /// Properties.
-    /// </summary>
+    /// <summary>The CollectionEditorControl control provides a Control to display Collection Properties.</summary>
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
     {
-        /// <summary>
-        /// Gets or sets and sets the value of the Category.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Category.</summary>
         /// <value>A string representing the Category of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -32,9 +24,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that is data bound to the Category.")]
         public string CategoryDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Editor Type to use.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Editor Type to use.</summary>
         /// <value>A string representing the Editor Type of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -42,9 +32,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that is data bound to the Editor Type.")]
         public string EditorDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that determines the length.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that determines the length.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -52,9 +40,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that determines the length.")]
         public string LengthDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that is bound to the Label.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that is bound to the Label.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -62,9 +48,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that is data bound to the Label's Text property.")]
         public string NameDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that determines whether an item is required.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that determines whether an item is required.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -72,9 +56,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that determines whether an item is required.")]
         public string RequiredDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that is bound to the EditControl.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that is bound to the EditControl.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -93,9 +75,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that is data bound to the EditControl's Expression DynamicContentValidator.")]
         public string ValidationExpressionDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that is bound to the EditControl.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that is bound to the EditControl.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -103,9 +83,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that is data bound to the EditControl's Value property.")]
         public string ValueDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that determines whether the control is visible.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that determines whether the control is visible.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -113,9 +91,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that determines whether the item is visble.")]
         public string VisibleDataField { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the value of the Field that determines the visibility.
-        /// </summary>
+        /// <summary>Gets or sets the value of the Field that determines the visibility.</summary>
         /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
@@ -123,9 +99,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
 
-        /// <summary>
-        /// Gets the Underlying DataSource.
-        /// </summary>
+        /// <summary>Gets the Underlying DataSource.</summary>
         /// <value>An IEnumerable.</value>
         protected override IEnumerable UnderlyingDataSource
         {
@@ -153,10 +127,8 @@ namespace DotNetNuke.UI.WebControls
             this.AddEditorRow(this, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
         }
 
-        /// <summary>
-        /// GetCategory gets the Category of an object.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>GetCategory gets the Category of an object.</summary>
+        /// <returns>The category name or <see cref="Null.NullString"/>.</returns>
         protected override string GetCategory(object obj)
         {
             PropertyInfo objProperty;
@@ -175,10 +147,8 @@ namespace DotNetNuke.UI.WebControls
             return category;
         }
 
-        /// <summary>
-        /// GetGroups gets an array of Groups/Categories from the DataSource.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
+        /// <returns>An array of group/category names.</returns>
         protected override string[] GetGroups(IEnumerable arrObjects)
         {
             var arrGroups = new ArrayList();
@@ -211,11 +181,9 @@ namespace DotNetNuke.UI.WebControls
             return strGroups;
         }
 
-        /// <summary>
-        /// GetRowVisibility determines the Visibility of a row in the table.
-        /// </summary>
+        /// <summary>GetRowVisibility determines the Visibility of a row in the table.</summary>
         /// <param name="obj">The property.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the row is visible, otherwise <see langword="false"/>.</returns>
         protected override bool GetRowVisibility(object obj)
         {
             bool isVisible = true;

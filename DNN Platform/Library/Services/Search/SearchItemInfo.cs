@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.Search
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchItemInfo
-    /// <summary>
-    /// The SearchItemInfo represents a Search Item.
-    /// </summary>
+    /// <summary>The SearchItemInfo represents a Search Item.</summary>
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     [Serializable]
     public class SearchItemInfo
@@ -30,16 +28,12 @@ namespace DotNetNuke.Services.Search
         private int tabId;
         private string title;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchItemInfo"/> class.</summary>
         public SearchItemInfo()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchItemInfo"/> class.</summary>
         /// <param name="title"></param>
         /// <param name="description"></param>
         /// <param name="author"></param>
@@ -52,9 +46,7 @@ namespace DotNetNuke.Services.Search
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchItemInfo"/> class.</summary>
         /// <param name="title"></param>
         /// <param name="description"></param>
         /// <param name="author"></param>
@@ -68,9 +60,7 @@ namespace DotNetNuke.Services.Search
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchItemInfo"/> class.</summary>
         /// <param name="title"></param>
         /// <param name="description"></param>
         /// <param name="author"></param>
@@ -84,9 +74,7 @@ namespace DotNetNuke.Services.Search
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchItemInfo"/> class.</summary>
         /// <param name="title"></param>
         /// <param name="description"></param>
         /// <param name="author"></param>
@@ -110,9 +98,7 @@ namespace DotNetNuke.Services.Search
             this.hitCount = 0;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchItemInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SearchItemInfo"/> class.</summary>
         /// <param name="title"></param>
         /// <param name="description"></param>
         /// <param name="author"></param>

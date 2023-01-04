@@ -20,9 +20,7 @@ namespace DotNetNuke.UI.Modules
         private string localResourceFile;
         private ModuleInstanceContext moduleContext;
 
-        /// <summary>
-        /// Gets the underlying base control for this ModuleControl.
-        /// </summary>
+        /// <summary>Gets the underlying base control for this ModuleControl.</summary>
         /// <returns>A String.</returns>
         public Control Control
         {
@@ -32,9 +30,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the Path for this control (used primarily for UserControls).
-        /// </summary>
+        /// <summary>Gets the Path for this control (used primarily for UserControls).</summary>
         /// <returns>A String.</returns>
         public string ControlPath
         {
@@ -44,9 +40,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the Name for this control.
-        /// </summary>
+        /// <summary>Gets the Name for this control.</summary>
         /// <returns>A String.</returns>
         public string ControlName
         {
@@ -56,9 +50,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets the Module Context for this control.
-        /// </summary>
+        /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
         public ModuleInstanceContext ModuleContext
         {
@@ -73,9 +65,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the local resource file for this control.
-        /// </summary>
+        /// <summary>Gets or sets the local resource file for this control.</summary>
         /// <returns>A String.</returns>
         public string LocalResourceFile
         {

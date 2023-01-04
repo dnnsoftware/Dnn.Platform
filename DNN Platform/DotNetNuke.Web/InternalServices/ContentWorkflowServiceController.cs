@@ -22,9 +22,7 @@ namespace DotNetNuke.Web.InternalServices
     {
         private readonly IWorkflowEngine workflowEngine;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentWorkflowServiceController"/> class.</summary>
         public ContentWorkflowServiceController()
         {
             this.workflowEngine = WorkflowEngine.Instance;

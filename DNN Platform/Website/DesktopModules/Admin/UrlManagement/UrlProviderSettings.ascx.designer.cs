@@ -15,25 +15,19 @@ namespace DotNetNuke.Modules.UrlManagement {
     
     
     public partial class ProviderSettings {
-        /// <summary>
-        /// providerSettingsPlaceHolder control.
-        /// </summary>
+        /// <summary>providerSettingsPlaceHolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder providerSettingsPlaceHolder;
-        /// <summary>
-        /// cmdUpdate control.
-        /// </summary>
+        /// <summary>cmdUpdate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

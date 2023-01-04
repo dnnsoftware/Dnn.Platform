@@ -6,16 +6,12 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 {
     using System;
 
-    /// <summary>
-    /// Attribute to define the help for the flag parameter.
-    /// </summary>
+    /// <summary>Attribute to define the help for the flag parameter.</summary>
     [AttributeUsage(AttributeTargets.Field)]
     [Obsolete("Moved to DotNetNuke.Prompt in the core library project and is now a Property Attribute called CommandParameter. Will be removed in DNN 11.", false)]
     public class FlagParameterAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.</summary>
         /// <param name="flag"></param>
         /// <param name="description"></param>
         /// <param name="type"></param>
@@ -30,9 +26,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
             this.Description = description;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.</summary>
         /// <param name="flag"></param>
         /// <param name="description"></param>
         /// <param name="type"></param>
@@ -42,9 +36,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.</summary>
         /// <param name="flag"></param>
         /// <param name="description"></param>
         /// <param name="type"></param>
@@ -53,9 +45,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FlagParameterAttribute"/> class.</summary>
         /// <param name="flag"></param>
         /// <param name="description"></param>
         /// <param name="type"></param>
@@ -65,29 +55,19 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         {
         }
 
-        /// <summary>
-        /// Gets or sets name of the flag.
-        /// </summary>
+        /// <summary>Gets or sets name of the flag.</summary>
         public string Flag { get; set; }
 
-        /// <summary>
-        /// Gets or sets type of the flag value expected.
-        /// </summary>
+        /// <summary>Gets or sets type of the flag value expected.</summary>
         public string Type { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether is flag required or not.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether is flag required or not.</summary>
         public bool Required { get; set; }
 
-        /// <summary>
-        /// Gets or sets default value of the flag.
-        /// </summary>
+        /// <summary>Gets or sets default value of the flag.</summary>
         public string DefaultValue { get; set; }
 
-        /// <summary>
-        /// Gets or sets description of flag.
-        /// </summary>
+        /// <summary>Gets or sets description of flag.</summary>
         public string Description { get; set; }
     }
 }

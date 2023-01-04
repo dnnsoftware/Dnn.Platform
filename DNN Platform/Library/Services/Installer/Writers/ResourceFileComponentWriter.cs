@@ -25,9 +25,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("resourceFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("resourceFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -37,9 +35,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("ResourceFile").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("ResourceFile").</summary>
         /// <value>A String.</value>
         protected override string ComponentType
         {
@@ -49,9 +45,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("resourceFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("resourceFile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {

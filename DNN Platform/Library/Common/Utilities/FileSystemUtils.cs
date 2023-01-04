@@ -26,9 +26,7 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
-        /// <summary>
-        /// Adds a File to a Zip File.
-        /// </summary>
+        /// <summary>Adds a File to a Zip File.</summary>
         public static void AddToZip(ref ZipArchive zipFile, string filePath, string fileName, string folder)
         {
             FileStream fs = null;
@@ -72,9 +70,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Tries to copy a file in the file system.
-        /// </summary>
+        /// <summary>Tries to copy a file in the file system.</summary>
         /// <param name="sourceFileName">The name of the source file.</param>
         /// <param name="destFileName">The name of the destination file.</param>
         public static void CopyFile(string sourceFileName, string destFileName)
@@ -137,9 +133,7 @@ namespace DotNetNuke.Common.Utilities
             return fileDeleted;
         }
 
-        /// <summary>
-        /// Tries to delete a file from the file system.
-        /// </summary>
+        /// <summary>Tries to delete a file from the file system.</summary>
         /// <param name="fileName">The name of the file.</param>
         public static void DeleteFile(string fileName)
         {
@@ -356,9 +350,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.
-        /// </summary>
+        /// <summary>Deletes all empty folders beneath a given root folder and the root folder itself as well if empty.</summary>
         /// <param name="path">The root folder path.</param>
         public static void DeleteEmptyFoldersRecursive(string path)
         {
@@ -551,9 +543,7 @@ namespace DotNetNuke.Common.Utilities
             return strMessage;
         }
 
-        /// <summary>
-        /// Gets the filename for a file path.
-        /// </summary>
+        /// <summary>Gets the filename for a file path.</summary>
         /// <param name="filePath">The full name of the file.</param>
         private static string GetFileName(string filePath)
         {

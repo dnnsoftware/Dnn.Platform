@@ -25,9 +25,7 @@ namespace DotNetNuke.UI.WebControls
             this.Items = items;
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Items.
-        /// </summary>
+        /// <summary>Gets or sets the Items.</summary>
         /// <value>A List(Of String).</value>
         public List<string> Items { get; set; }
     }

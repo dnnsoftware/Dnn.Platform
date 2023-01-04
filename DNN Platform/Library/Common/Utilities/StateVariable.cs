@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Common.Utilities
 {
     using System;
@@ -48,9 +47,7 @@ namespace DotNetNuke.Common.Utilities
             this.initializer = initializer;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether indicates wether there is a value present or not.
-        /// </summary>
+        /// <summary>Gets a value indicating whether indicates wether there is a value present or not.</summary>
         public bool HasValue
         {
             get
@@ -59,9 +56,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets the value in the current items or if none is available <c>default(T)</c>.
-        /// </summary>
+        /// <summary>Gets the value in the current items or if none is available <c>default(T)</c>.</summary>
         public T ValueOrDefault
         {
             get
@@ -76,9 +71,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets or sets or gets the value in the current items.
-        /// </summary>
+        /// <summary>Gets or sets or gets the value in the current items.</summary>
         /// <exception cref="InvalidOperationException">
         /// If you try to get a value while none is set use <see cref="ValueOrDefault"/> for safe access.
         /// </exception>
@@ -101,25 +94,18 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>
-        /// Get/sets the value in associated dictionary/map.
-        /// </summary>
+        /// <summary>Get/sets the value in associated dictionary/map.</summary>
         /// <param name="key">Value key.</param>
-        /// <value></value>
-        /// <returns></returns>
+        /// <value>The value.</value>
         protected abstract object this[string key] { get; set; }
 
-        /// <summary>
-        /// Clears the value in the current items.
-        /// </summary>
+        /// <summary>Clears the value in the current items.</summary>
         public void Clear()
         {
             this.Remove(this.key);
         }
 
-        /// <summary>
-        /// Removes the value in associated dictionary according.
-        /// </summary>
+        /// <summary>Removes the value in associated dictionary according.</summary>
         /// <param name="key">Value key.</param>
         protected abstract void Remove(string key);
 

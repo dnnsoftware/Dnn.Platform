@@ -16,9 +16,7 @@ namespace DotNetNuke.Services.Exceptions
     using DotNetNuke.Instrumentation;
     using Newtonsoft.Json;
 
-    /// <summary>
-    /// Base Portal Exception.
-    /// </summary>
+    /// <summary>Base Portal Exception.</summary>
     public class BasePortalException : Exception
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
@@ -29,18 +27,14 @@ namespace DotNetNuke.Services.Exceptions
 
         // default constructor
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
         public BasePortalException()
         {
         }
 
         // constructor with exception message
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
         /// <param name="message"></param>
         public BasePortalException(string message)
             : base(message)
@@ -50,9 +44,7 @@ namespace DotNetNuke.Services.Exceptions
 
         // constructor with message and inner exception
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public BasePortalException(string message, Exception inner)
@@ -61,9 +53,7 @@ namespace DotNetNuke.Services.Exceptions
             this.InitializePrivateVariables();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasePortalException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BasePortalException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected BasePortalException(SerializationInfo info, StreamingContext context)

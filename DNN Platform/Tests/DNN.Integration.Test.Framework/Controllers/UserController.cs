@@ -26,9 +26,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string CreateFollowersMarker = @"'$[CreateFollowers]'";
         private static readonly string UserToCopy = AppConfigHelper.HostUserName;
 
-        /// <summary>
-        /// Creates a new user with Registered User Role and with the same password as the host user.
-        /// </summary>
+        /// <summary>Creates a new user with Registered User Role and with the same password as the host user.</summary>
         /// <param name="firstName">First name of the user.</param>
         /// <param name="lastName">Last name of the user.</param>
         /// <param name="portalId">PortalID to create the user under.</param>
@@ -41,9 +39,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId });
         }
 
-        /// <summary>
-        /// Creates a new SuperUser and with the same password as the host user.
-        /// </summary>
+        /// <summary>Creates a new SuperUser and with the same password as the host user.</summary>
         /// <param name="firstName">First name of the user.</param>
         /// <param name="lastName">Last name of the user.</param>
         /// <param name="portalId">PortalID to create the user under.</param>
@@ -54,9 +50,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, SuperUser = true });
         }
 
-        /// <summary>
-        /// Creates a new user with Administrator Role and with the same password as the host user.
-        /// </summary>
+        /// <summary>Creates a new user with Administrator Role and with the same password as the host user.</summary>
         /// <param name="firstName">First name of the administrator user.</param>
         /// <param name="lastName">Last name of the administrator user.</param>
         /// <param name="portalId">PortalID to create the user under.</param>

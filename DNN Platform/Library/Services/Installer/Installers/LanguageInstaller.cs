@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The LanguageInstaller installs Language Packs to a DotNetNuke site.
-    /// </summary>
+    /// <summary>The LanguageInstaller installs Language Packs to a DotNetNuke site.</summary>
     public class LanguageInstaller : FileInstaller
     {
         private readonly LanguagePackType languagePackType;
@@ -21,27 +19,21 @@ namespace DotNetNuke.Services.Installer.Installers
         private LanguagePackInfo languagePack;
         private Locale tempLanguage;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguageInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguageInstaller"/> class.</summary>
         /// <param name="type"></param>
         public LanguageInstaller(LanguagePackType type)
         {
             this.languagePackType = type;
         }
 
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
         public override string AllowableFiles
         {
             get { return "resx, xml, tdf,template"; }
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("languageFiles").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("languageFiles").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -51,9 +43,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("languageFile").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("languageFile").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {
@@ -63,9 +53,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
+        /// <summary>The Commit method finalises the Install and commits any pending changes.</summary>
         /// <remarks>In the case of Modules this is not neccessary.</remarks>
         public override void Commit()
         {
@@ -80,9 +68,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>
-        /// The Install method installs the language component.
-        /// </summary>
+        /// <summary>The Install method installs the language component.</summary>
         public override void Install()
         {
             if (this.languagePackType == LanguagePackType.Core || this.languagePack.DependentPackageID > 0)
@@ -155,9 +141,7 @@ namespace DotNetNuke.Services.Installer.Installers
             base.Rollback();
         }
 
-        /// <summary>
-        /// The UnInstall method uninstalls the language component.
-        /// </summary>
+        /// <summary>The UnInstall method uninstalls the language component.</summary>
         public override void UnInstall()
         {
             this.DeleteLanguage();
@@ -166,9 +150,7 @@ namespace DotNetNuke.Services.Installer.Installers
             base.UnInstall();
         }
 
-        /// <summary>
-        /// The ReadCustomManifest method reads the custom manifest items.
-        /// </summary>
+        /// <summary>The ReadCustomManifest method reads the custom manifest items.</summary>
         /// <param name="nav">The XPathNavigator representing the node.</param>
         protected override void ReadCustomManifest(XPathNavigator nav)
         {

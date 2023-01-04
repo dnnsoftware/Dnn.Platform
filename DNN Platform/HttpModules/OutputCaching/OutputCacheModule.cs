@@ -18,9 +18,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.OutputCache;
 
-    /// <summary>
-    /// Manages the output cache for a request.
-    /// </summary>
+    /// <summary>Manages the output cache for a request.</summary>
     public class OutputCacheModule : IHttpModule
     {
         private const string ContextKeyResponseFilter = "OutputCache:ResponseFilter";

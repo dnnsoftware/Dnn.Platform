@@ -16,16 +16,12 @@ namespace DotNetNuke.Data
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected readonly IDataContext DataContext;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.</summary>
         protected ControllerBase()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.</summary>
         /// <param name="dataContext"></param>
         protected ControllerBase(IDataContext dataContext)
         {

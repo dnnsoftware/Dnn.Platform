@@ -17,9 +17,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         private string serverVariable;
         private List<string> values = new List<string>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
         /// <param name="serverVariable"></param>
         /// <param name="values"></param>
         /// <param name="op"></param>
@@ -34,9 +32,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             this.location = location;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
         public RequestFilterRule()
         {
         }

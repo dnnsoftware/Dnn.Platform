@@ -139,9 +139,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Process legacy language package (that is based on manifest xml file).
-        /// </summary>
+        /// <summary>Process legacy language package (that is based on manifest xml file).</summary>
         [Obsolete("Module package required, functionality removed.  Will be removed in 10.0.0.")]
         public static void ProcessLegacyLanguages()
         {
@@ -265,9 +263,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        /// <summary>
-        /// Process legacy module version 3 .dnn install file.
-        /// </summary>
+        /// <summary>Process legacy module version 3 .dnn install file.</summary>
         /// <param name="desktopModule"></param>
         [Obsolete("Version 3 package formats not supported, must use modern package format.  Will be removed in 10.0.0.")]
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)

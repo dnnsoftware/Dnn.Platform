@@ -103,9 +103,7 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource["culture"] = new CulturePropertyAccess();
         }
 
-        /// <summary>
-        /// Gets or sets /sets the current ModuleID to be used for 'User:' token replacement.
-        /// </summary>
+        /// <summary>Gets or sets /sets the current ModuleID to be used for 'User:' token replacement.</summary>
         /// <value>ModuleID (Integer).</value>
         public int ModuleId
         {
@@ -113,18 +111,14 @@ namespace DotNetNuke.Services.Tokens
             set => this.TokenContext.Module = this.GetModule(value);
         }
 
-        /// <summary>
-        /// Gets or sets the module settings object to use for 'Module:' token replacement.
-        /// </summary>
+        /// <summary>Gets or sets the module settings object to use for 'Module:' token replacement.</summary>
         public ModuleInfo ModuleInfo
         {
             get => this.TokenContext.Module;
             set => this.TokenContext.Module = value;
         }
 
-        /// <summary>
-        /// Gets or sets /sets the portal settings object to use for 'Portal:' token replacement.
-        /// </summary>
+        /// <summary>Gets or sets /sets the portal settings object to use for 'Portal:' token replacement.</summary>
         /// <value>PortalSettings oject.</value>
         public PortalSettings PortalSettings
         {
@@ -132,9 +126,7 @@ namespace DotNetNuke.Services.Tokens
             set => this.TokenContext.Portal = value;
         }
 
-        /// <summary>
-        /// Gets or sets /sets the user object to use for 'User:' token replacement.
-        /// </summary>
+        /// <summary>Gets or sets /sets the user object to use for 'User:' token replacement.</summary>
         /// <value>UserInfo oject.</value>
         public UserInfo User
         {
@@ -142,9 +134,7 @@ namespace DotNetNuke.Services.Tokens
             set => this.TokenContext.User = value;
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText)
@@ -152,9 +142,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <param name="row"></param>
         /// <returns>string containing replaced values.</returns>
@@ -166,9 +154,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <param name="custom"></param>
         /// <param name="customCaption"></param>
@@ -179,9 +165,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string. </param>
         /// <param name="customCaption">Token name to be used inside token  [custom:name].</param>
@@ -192,9 +176,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string. </param>
         /// <param name="customCaptions">Token names to be used inside token [custom:name], where 'custom' is one of the values in the string array. </param>
@@ -209,9 +191,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string. </param>
         /// <param name="customCaption">Token name to be used inside token  [custom:name].</param>
@@ -226,9 +206,7 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values, skipping environment objects.
-        /// </summary>
+        /// <summary>Replaces tokens in sourceText parameter with the property values, skipping environment objects.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
         /// <returns>string containing replaced values.</returns>
         protected override string ReplaceTokens(string sourceText)
@@ -237,9 +215,7 @@ namespace DotNetNuke.Services.Tokens
             return base.ReplaceTokens(sourceText);
         }
 
-        /// <summary>
-        /// setup context by creating appropriate objects.
-        /// </summary>
+        /// <summary>setup context by creating appropriate objects.</summary>
         /// <remarks >
         /// security is not the purpose of the initialization, this is in the responsibility of each property access class.
         /// </remarks>
@@ -279,9 +255,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <summary>
-        /// Load the module for the Module Token Provider.
-        /// </summary>
+        /// <summary>Load the module for the Module Token Provider.</summary>
         /// <param name="moduleId"></param>
         /// <returns>The populated ModuleInfo or null.</returns>
         /// <remarks>

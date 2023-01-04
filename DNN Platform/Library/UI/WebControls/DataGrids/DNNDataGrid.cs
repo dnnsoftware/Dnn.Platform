@@ -17,9 +17,7 @@ namespace DotNetNuke.UI.WebControls
     {
         public event DNNDataGridCheckedColumnEventHandler ItemCheckedChanged;
 
-        /// <summary>
-        /// Called when the grid is Data Bound.
-        /// </summary>
+        /// <summary>Called when the grid is Data Bound.</summary>
         protected override void OnDataBinding(EventArgs e)
         {
             foreach (DataGridColumn column in this.Columns)
@@ -45,9 +43,7 @@ namespace DotNetNuke.UI.WebControls
             base.PrepareControlHierarchy();
         }
 
-        /// <summary>
-        /// Centralised Event that is raised whenever a check box is changed.
-        /// </summary>
+        /// <summary>Centralised Event that is raised whenever a check box is changed.</summary>
         private void OnItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
             if (this.ItemCheckedChanged != null)

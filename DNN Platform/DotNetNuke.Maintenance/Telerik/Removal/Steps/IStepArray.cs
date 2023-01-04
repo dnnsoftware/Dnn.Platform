@@ -6,14 +6,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// An interface that represent an abstract process step that contains a set of nested steps.
-    /// </summary>
+    /// <summary>An interface that represent an abstract process step that contains a set of nested steps.</summary>
     internal interface IStepArray : IStep
     {
-        /// <summary>
-        /// Gets an <see cref="IEnumerable{T}"/> of <see cref="IStep"/> instances contained in this array step.
-        /// </summary>
+        /// <summary>Gets an <see cref="IEnumerable{T}"/> of <see cref="IStep"/> instances contained in this array step.</summary>
         IEnumerable<IStep> Steps { get; }
     }
 }

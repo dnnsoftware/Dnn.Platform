@@ -4,19 +4,13 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Removes an extension.
-    /// </summary>
+    /// <summary>Removes an extension.</summary>
     internal interface IRemoveExtensionStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the package name.
-        /// </summary>
+        /// <summary>Gets or sets the package name.</summary>
         string PackageName { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to delete the installed files.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether to delete the installed files.</summary>
         bool DeleteFiles { get; set; }
     }
 }

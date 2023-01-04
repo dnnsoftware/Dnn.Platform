@@ -15,9 +15,7 @@ namespace Dnn.PersonaBar.Vocabularies.Validators
         private IVocabularyController vocabularyController;
         private ITermController termController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VocabularyNameValidator"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="VocabularyNameValidator"/> class.</summary>
         /// <param name="vocabularyController"></param>
         /// <param name="termController"></param>
         public VocabularyNameValidator(IVocabularyController vocabularyController, ITermController termController)

@@ -25,14 +25,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
 
-    /// <summary>
-    /// Settings Base Helper Class.
-    /// </summary>
+    /// <summary>Settings Base Helper Class.</summary>
     public class SettingsUtil
     {
-        /// <summary>
-        /// Checks the exists portal or page settings.
-        /// </summary>
+        /// <summary>Checks the exists portal or page settings.</summary>
         /// <param name="editorHostSettings">The editor host settings.</param>
         /// <param name="key">The key.</param>
         /// <returns>
@@ -54,9 +50,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks there are any Module Settings.
-        /// </summary>
+        /// <summary>Checks there are any Module Settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -72,9 +66,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Checks the exists of the module instance settings.
-        /// </summary>
+        /// <summary>Checks the exists of the module instance settings.</summary>
         /// <param name="moduleKey">The module key.</param>
         /// <param name="moduleId">The module id.</param>
         /// <returns>Returns if The Module Settings Exists or not.</returns>
@@ -91,9 +83,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Loads the portal or page settings.
-        /// </summary>
+        /// <summary>Loads the portal or page settings.</summary>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="editorHostSettings">The editor host settings.</param>
@@ -947,9 +937,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Loads the module settings.
-        /// </summary>
+        /// <summary>Loads the module settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="currentSettings">The current settings.</param>
         /// <param name="key">The module key.</param>
@@ -1445,9 +1433,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return currentSettings;
         }
 
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
+        /// <summary>Gets the default settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="alternateSubFolder">The alternate Sub Folder.</param>
@@ -1601,9 +1587,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return settings;
         }
 
-        /// <summary>
-        /// Creates the default settings file.
-        /// </summary>
+        /// <summary>Creates the default settings file.</summary>
         internal static void CreateDefaultSettingsFile()
         {
             var newSettings = new EditorProviderSettings();
@@ -1623,9 +1607,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             textWriter.Close();
         }
 
-        /// <summary>
-        /// Gets the editor config properties.
-        /// </summary>
+        /// <summary>Gets the editor config properties.</summary>
         /// <returns>Returns the EditorConfig Properties.</returns>
         internal static IEnumerable<PropertyInfo> GetEditorConfigProperties()
         {
@@ -1650,9 +1632,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
-        /// <summary>
-        /// Imports the old SettingsBase Xml File.
-        /// </summary>
+        /// <summary>Imports the old SettingsBase Xml File.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="isDefaultXmlFile">if set to <c>true</c> [is default XML file].</param>
         internal static void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile = false)
@@ -1773,9 +1753,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
         }
 
-        /// <summary>
-        /// Gets the size of the current user upload.
-        /// </summary>
+        /// <summary>Gets the size of the current user upload.</summary>
         /// <param name="settings">The settings.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="httpRequest">The HTTP request.</param>

@@ -98,11 +98,9 @@ namespace DotNetNuke.Services.Syndication
             this.Context.Response.Cache.VaryByParams["moduleid"] = true;
         }
 
-        /// <summary>
-        /// Creates an RSS Item.
-        /// </summary>
+        /// <summary>Creates an RSS Item.</summary>
         /// <param name="searchResult"></param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="GenericRssElement"/> instance.</returns>
         private GenericRssElement GetRssItem(SearchResult searchResult)
         {
             var item = new GenericRssElement();

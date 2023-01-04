@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.ConfigConsole.Services
 {
     using System;
@@ -23,13 +22,9 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         private Components.ConfigConsoleController controller = new Components.ConfigConsoleController();
 
         /// GET: api/ConfigConsole/GetConfigFilesList
-        /// <summary>
-        /// Gets list of config files.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets list of config files.A response indicating success.</summary>
         /// <returns>List of config files.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetConfigFilesList()
         {
             try
@@ -53,13 +48,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         }
 
         /// GET: api/ConfigConsole/GetConfigFile
-        /// <summary>
-        /// Gets content of a specific config file.
-        /// </summary>
+        /// <summary>Gets content of a specific config file.</summary>
         /// <param name="fileName">Name of a config file.</param>
         /// <returns>Content of a config file.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetConfigFile(string fileName)
         {
             try
@@ -86,14 +78,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         }
 
         /// POST: api/ConfigConsole/ValidateConfigFile
-        /// <summary>
-        /// Validates a config file against a well known schema.
-        /// </summary>
+        /// <summary>Validates a config file against a well known schema.</summary>
         /// <param name="configFileDto">Content of config file.</param>
         /// <returns>A list of validation errors.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ValidateConfigFile(ConfigFileDto configFileDto)
         {
             try
@@ -113,14 +102,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         }
 
         /// POST: api/ConfigConsole/UpdateConfigFile
-        /// <summary>
-        /// Updates a config file.
-        /// </summary>
+        /// <summary>Updates a config file.</summary>
         /// <param name="configFileDto">Content of config file.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateConfigFile(ConfigFileDto configFileDto)
         {
             try
@@ -140,14 +126,11 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         }
 
         /// POST: api/ConfigConsole/MergeConfigFile
-        /// <summary>
-        /// Merges config files.
-        /// </summary>
+        /// <summary>Merges config files.</summary>
         /// <param name="configFileDto">Content of config file.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage MergeConfigFile(ConfigFileDto configFileDto)
         {
             try

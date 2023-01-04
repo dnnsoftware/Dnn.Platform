@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly ArrayList custom;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArrayListPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ArrayListPropertyAccess"/> class.</summary>
         /// <param name="list"></param>
         public ArrayListPropertyAccess(ArrayList list)
         {

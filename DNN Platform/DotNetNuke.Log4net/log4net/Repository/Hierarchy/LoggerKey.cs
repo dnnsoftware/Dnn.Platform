@@ -22,9 +22,7 @@ using System;
 
 namespace log4net.Repository.Hierarchy
 {
-    /// <summary>
-    /// Used internally to accelerate hash table searches.
-    /// </summary>
+    /// <summary>Used internally to accelerate hash table searches.</summary>
     /// <remarks>
     /// <para>
     /// Internal class used to improve performance of 
@@ -41,9 +39,7 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     internal sealed class LoggerKey
     {
-        /// <summary>
-        /// Construct key with string name
-        /// </summary>
+        /// <summary>Construct key with string name</summary>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="LoggerKey" /> class 
@@ -72,9 +68,7 @@ namespace log4net.Repository.Hierarchy
             this.m_hashCache = name.GetHashCode();
         }
 
-        /// <summary>
-        /// Returns a hash code for the current instance.
-        /// </summary>
+        /// <summary>Returns a hash code for the current instance.</summary>
         /// <returns>A hash code for the current instance.</returns>
         /// <remarks>
         /// <para>

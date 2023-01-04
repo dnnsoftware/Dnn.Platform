@@ -8,9 +8,7 @@ namespace DotNetNuke.UI.Skins
     /// Project  : DotNetNuke
     /// Class    : SkinInfo
     ///
-    /// <summary>
-    ///     Handles the Business Object for Skins.
-    /// </summary>
+    /// <summary>    Handles the Business Object for Skins.</summary>
     [Serializable]
     public class SkinInfo
     {

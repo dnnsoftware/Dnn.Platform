@@ -44,9 +44,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.SystemType = type;
         }
 
-        /// <summary>
-        /// Gets oldStringValue returns the String representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets oldStringValue returns the String representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
         protected string OldStringValue
         {
@@ -65,9 +63,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.
-        /// </summary>
+        /// <summary>Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.</summary>
         /// <value>A Dictionary(Of Integer, String) representing the Value.</value>
         protected Dictionary<int, string> DictionaryValue
         {
@@ -82,9 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue.
-        /// </summary>
+        /// <summary>Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue.</summary>
         /// <value>A Dictionary(Of Integer, String) representing the OldValue.</value>
         protected Dictionary<int, string> OldDictionaryValue
         {
@@ -99,9 +93,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
         protected override string StringValue
         {
@@ -206,9 +198,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.OnValueChanged(args);
         }
 
-        /// <summary>
-        /// OnPreRender runs just before the control is due to be rendered.
-        /// </summary>
+        /// <summary>OnPreRender runs just before the control is due to be rendered.</summary>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -217,9 +207,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.Page.RegisterRequiresPostBack(this);
         }
 
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
@@ -307,9 +295,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control.
-        /// </summary>
+        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {

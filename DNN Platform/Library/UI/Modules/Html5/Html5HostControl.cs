@@ -22,9 +22,7 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly string html5File;
         private string fileContent;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Html5HostControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File"></param>
         public Html5HostControl(string html5File)
         {

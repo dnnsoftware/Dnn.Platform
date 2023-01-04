@@ -3,24 +3,16 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Settings
 {
-    /// <summary>
-    /// The configuration setting.
-    /// </summary>
+    /// <summary>The configuration setting.</summary>
     public interface IConfigurationSetting
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether if the configuration setting is secure.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether if the configuration setting is secure.</summary>
         bool IsSecure { get; set; }
 
-        /// <summary>
-        /// Gets or sets the configuration key.
-        /// </summary>
+        /// <summary>Gets or sets the configuration key.</summary>
         string Key { get; set; }
 
-        /// <summary>
-        /// Gets or sets the configuraiton value.
-        /// </summary>
+        /// <summary>Gets or sets the configuraiton value.</summary>
         string Value { get; set; }
     }
 }

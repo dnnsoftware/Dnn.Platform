@@ -27,9 +27,7 @@ namespace DotNetNuke.UI.Skins
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Skins
     /// Class    : Pane
-    /// <summary>
-    /// The Pane class represents a Pane within the Skin.
-    /// </summary>
+    /// <summary>The Pane class represents a Pane within the Skin.</summary>
     public class Pane
     {
         private const string CPaneOutline = "paneOutline";
@@ -62,9 +60,7 @@ namespace DotNetNuke.UI.Skins
             this.Name = name;
         }
 
-        /// <summary>
-        /// Gets a Dictionary of Containers.
-        /// </summary>
+        /// <summary>Gets a Dictionary of Containers.</summary>
         protected Dictionary<string, Containers.Container> Containers
         {
             get
@@ -73,9 +69,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Gets the PortalSettings of the Portal.
-        /// </summary>
+        /// <summary>Gets the PortalSettings of the Portal.</summary>
         protected PortalSettings PortalSettings
         {
             get
@@ -84,19 +78,13 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the name (ID) of the Pane.
-        /// </summary>
+        /// <summary>Gets or sets the name (ID) of the Pane.</summary>
         protected string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets and sets the HtmlContainerControl.
-        /// </summary>
+        /// <summary>Gets or sets the HtmlContainerControl.</summary>
         protected HtmlContainerControl PaneControl { get; set; }
 
-        /// <summary>
-        /// InjectModule injects a Module (and its container) into the Pane.
-        /// </summary>
+        /// <summary>InjectModule injects a Module (and its container) into the Pane.</summary>
         /// <param name="module">The Module.</param>
         public void InjectModule(ModuleInfo module)
         {
@@ -215,9 +203,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <summary>
-        /// ProcessPane processes the Attributes for the PaneControl.
-        /// </summary>
+        /// <summary>ProcessPane processes the Attributes for the PaneControl.</summary>
         public void ProcessPane()
         {
             if (this.PaneControl != null)
@@ -322,9 +308,7 @@ namespace DotNetNuke.UI.Skins
             return canCollapsePane;
         }
 
-        /// <summary>
-        /// LoadContainerByPath gets the Container from its Url(Path).
-        /// </summary>
+        /// <summary>LoadContainerByPath gets the Container from its Url(Path).</summary>
         /// <param name="containerPath">The Url to the Container control.</param>
         /// <returns>A Container.</returns>
         private Containers.Container LoadContainerByPath(string containerPath)
@@ -367,9 +351,7 @@ namespace DotNetNuke.UI.Skins
             return container;
         }
 
-        /// <summary>
-        /// LoadModuleContainer gets the Container for cookie.
-        /// </summary>
+        /// <summary>LoadModuleContainer gets the Container for cookie.</summary>
         /// <param name="request">Current Http Request.</param>
         /// <returns>A Container.</returns>
         private Containers.Container LoadContainerFromCookie(HttpRequest request)
@@ -554,9 +536,7 @@ namespace DotNetNuke.UI.Skins
             return container;
         }
 
-        /// <summary>
-        /// ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop.
-        /// </summary>
+        /// <summary>ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop.</summary>
         /// <param name="args">A ClientAPIPostBackEventArgs object.</param>
         private void ModuleMoveToPanePostBack(ClientAPIPostBackEventArgs args)
         {

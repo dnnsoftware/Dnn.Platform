@@ -18,16 +18,12 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <summary>
-    /// The ModulePackageWriter class.
-    /// </summary>
+    /// <summary>The ModulePackageWriter class.</summary>
     public class ModulePackageWriter : PackageWriterBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
         /// <param name="manifestNav"></param>
         /// <param name="installer"></param>
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
@@ -54,9 +50,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(this.DesktopModule.FolderName);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
         /// <param name="desktopModule"></param>
         /// <param name="manifestNav"></param>
         /// <param name="package"></param>
@@ -75,9 +69,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.ProcessModuleFolders(physicalFolderPath, physicalFolderPath);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
         /// <param name="package"></param>
         public ModulePackageWriter(PackageInfo package)
             : base(package)
@@ -86,9 +78,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(this.DesktopModule.FolderName);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModulePackageWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
         /// <param name="desktopModule"></param>
         /// <param name="package"></param>
         public ModulePackageWriter(DesktopModuleInfo desktopModule, PackageInfo package)
@@ -98,9 +88,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(desktopModule.FolderName);
         }
 
-        /// <summary>
-        /// Gets or sets the associated Desktop Module.
-        /// </summary>
+        /// <summary>Gets or sets the associated Desktop Module.</summary>
         /// <value>A DesktopModuleInfo object.</value>
         public DesktopModuleInfo DesktopModule { get; set; }
 

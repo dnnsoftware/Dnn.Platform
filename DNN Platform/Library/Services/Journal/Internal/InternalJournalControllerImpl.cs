@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Journal.Internal
     {
         private readonly IJournalDataService dataService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InternalJournalControllerImpl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="InternalJournalControllerImpl"/> class.</summary>
         public InternalJournalControllerImpl()
         {
             this.dataService = JournalDataService.Instance;

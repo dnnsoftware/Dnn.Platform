@@ -13,9 +13,7 @@ namespace DotNetNuke.Framework
     /// Namespace:  DotNetNuke.Framework
     /// Project:    DotNetNuke
     /// Class:      DiskPageStatePersister
-    /// <summary>
-    /// DiskPageStatePersister provides a disk (stream) based page state peristence mechanism.
-    /// </summary>
+    /// <summary>DiskPageStatePersister provides a disk (stream) based page state peristence mechanism.</summary>
     public class DiskPageStatePersister : PageStatePersister
     {
         /// <summary>
@@ -39,9 +37,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the StateFileName property is used to store the FileName for the State.
-        /// </summary>
+        /// <summary>Gets the StateFileName property is used to store the FileName for the State.</summary>
         public string StateFileName
         {
             get
@@ -58,9 +54,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Loads the Page State from the Cache.
-        /// </summary>
+        /// <summary>Loads the Page State from the Cache.</summary>
         public override void Load()
         {
             StreamReader reader = null;
@@ -89,9 +83,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Saves the Page State to the Cache.
-        /// </summary>
+        /// <summary>Saves the Page State to the Cache.</summary>
         public override void Save()
         {
             // No processing needed if no states available

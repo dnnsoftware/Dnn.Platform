@@ -27,24 +27,13 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchDataStore : SearchDataStoreProvider
     {
-        /// <summary>
-        /// GetSearchItems gets a collection of Search Items for a Module/Tab/Portal.
-        /// </summary>
-        /// <param name="portalId">A Id of the Portal.</param>
-        /// <param name="tabId">A Id of the Tab.</param>
-        /// <param name="moduleId">A Id of the Module.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId)
         {
             return SearchDataStoreController.GetSearchResults(portalId, tabId, moduleId);
         }
 
-        /// <summary>
-        /// GetSearchResults gets the search results for a passed in criteria string.
-        /// </summary>
-        /// <param name="portalId">A Id of the Portal.</param>
-        /// <param name="criteria">The criteria string.</param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override SearchResultsInfoCollection GetSearchResults(int portalId, string criteria)
         {
             bool hasExcluded = Null.NullBoolean;
@@ -189,10 +178,7 @@ namespace DotNetNuke.Services.Search
             return results;
         }
 
-        /// <summary>
-        /// StoreSearchItems adds the Search Item to the Data Store.
-        /// </summary>
-        /// <param name="searchItems">A Collection of SearchItems.</param>
+        /// <inheritdoc />
         public override void StoreSearchItems(SearchItemInfoCollection searchItems)
         {
             var indexer = new ModuleIndexer();
@@ -224,9 +210,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// <summary>
-        /// GetCommonWords gets a list of the Common Words for the locale.
-        /// </summary>
+        /// <summary>GetCommonWords gets a list of the Common Words for the locale.</summary>
         /// <param name="locale">The locale string.</param>
         /// <returns>A hashtable of common words.</returns>
         private Hashtable GetCommonWords(string locale)

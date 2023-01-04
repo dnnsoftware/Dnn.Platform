@@ -11,9 +11,7 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Razor;
 
-    /// <summary>
-    /// Implements the RazorHost view logic.
-    /// </summary>
+    /// <summary>Implements the RazorHost view logic.</summary>
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class RazorHost : RazorModuleBase, IActionable
     {

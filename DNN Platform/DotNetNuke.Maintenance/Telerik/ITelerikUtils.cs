@@ -8,31 +8,21 @@ namespace DotNetNuke.Maintenance.Telerik
     using System.Collections.Generic;
     using System.IO;
 
-    /// <summary>
-    /// Abstraction of Telerik related utilities.
-    /// </summary>
+    /// <summary>Abstraction of Telerik related utilities.</summary>
     public interface ITelerikUtils
     {
-        /// <summary>
-        /// Gets the path of the bin folder.
-        /// </summary>
+        /// <summary>Gets the path of the bin folder.</summary>
         string BinPath { get; }
 
-        /// <summary>
-        /// Gets an <see cref="IEnumerable{T}"/> containing all assemblies that depend on Telerik.
-        /// </summary>
+        /// <summary>Gets an <see cref="IEnumerable{T}"/> containing all assemblies that depend on Telerik.</summary>
         /// <returns>An <see cref="IEnumerable{T}"/> containing all assemblies that depend on Telerik.</returns>
         IEnumerable<string> GetAssembliesThatDependOnTelerik();
 
-        /// <summary>
-        /// Checks whether Telerik is installed on this site or not.
-        /// </summary>
+        /// <summary>Checks whether Telerik is installed on this site or not.</summary>
         /// <returns><c>True</c> if Telerik is found in this site, or <c>False</c> otherwise.</returns>
         bool TelerikIsInstalled();
 
-        /// <summary>
-        /// Loads the Telerik assembly and returns its version number.
-        /// </summary>
+        /// <summary>Loads the Telerik assembly and returns its version number.</summary>
         /// <returns>The Telerik version number.</returns>
         /// <exception cref="IOException">
         /// An error occurred while loading the Telerik assembly.

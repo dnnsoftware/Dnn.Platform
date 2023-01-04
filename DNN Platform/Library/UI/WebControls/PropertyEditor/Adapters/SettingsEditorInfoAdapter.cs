@@ -22,9 +22,7 @@ namespace DotNetNuke.UI.WebControls
         private readonly object dataSource;
         private string fieldName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.</summary>
         /// <param name="dataSource"></param>
         /// <param name="dataMember"></param>
         /// <param name="fieldName"></param>

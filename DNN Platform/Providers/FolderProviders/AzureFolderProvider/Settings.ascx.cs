@@ -16,16 +16,12 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.Blob;
 
-    /// <summary>
-    /// Windows Azure Storage Settings Control.
-    /// </summary>
+    /// <summary>Windows Azure Storage Settings Control.</summary>
     public partial class Settings : FolderMappingSettingsControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
-        /// <summary>
-        /// Loads concrete settings.
-        /// </summary>
+        /// <summary>Loads concrete settings.</summary>
         /// <param name="folderMappingSettings">The Hashtable containing the folder mapping settings.</param>
         public override void LoadSettings(Hashtable folderMappingSettings)
         {
@@ -81,9 +77,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        /// <summary>
-        /// Updates concrete settings for the specified folder mapping.
-        /// </summary>
+        /// <summary>Updates concrete settings for the specified folder mapping.</summary>
         /// <param name="folderMappingID">The folder mapping identifier.</param>
         public override void UpdateSettings(int folderMappingID)
         {

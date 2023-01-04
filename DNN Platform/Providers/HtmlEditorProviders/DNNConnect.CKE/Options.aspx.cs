@@ -19,24 +19,16 @@ namespace DNNConnect.CKEditorProvider
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// <summary>
-    /// The options page.
-    /// </summary>
+    /// <summary>The options page.</summary>
     public partial class Options : PageBase
     {
-        /// <summary>
-        /// The request.
-        /// </summary>
+        /// <summary>The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
 
-        /// <summary>
-        /// The _portal settings.
-        /// </summary>
+        /// <summary>The _portal settings.</summary>
         private PortalSettings curPortalSettings;
 
-        /// <summary>
-        ///   Gets Current Language from Url.
-        /// </summary>
+        /// <summary>  Gets Current Language from Url.</summary>
         protected string LangCode
         {
             get
@@ -45,9 +37,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        ///   Gets the Name for the Current Resource file name.
-        /// </summary>
+        /// <summary>  Gets the Name for the Current Resource file name.</summary>
         protected string ResXFile
         {
             get
@@ -64,9 +54,7 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Register the java scripts and CSS.
-        /// </summary>
+        /// <summary>Register the java scripts and CSS.</summary>
         /// <param name="e">
         /// The Event Args.
         /// </param>
@@ -83,9 +71,7 @@ namespace DNNConnect.CKEditorProvider
             base.OnPreRender(e);
         }
 
-        /// <summary>
-        /// Raises the <see cref="E:Init" /> event.
-        /// </summary>
+        /// <summary>Raises the <see cref="E:Init" /> event.</summary>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected override void OnInit(EventArgs e)
         {
@@ -97,9 +83,7 @@ namespace DNNConnect.CKEditorProvider
             this.LoadFavIcon();
         }
 
-        /// <summary>
-        /// Handles the Load event of the Page control.
-        /// </summary>
+        /// <summary>Handles the Load event of the Page control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
@@ -157,18 +141,14 @@ namespace DNNConnect.CKEditorProvider
             }
         }
 
-        /// <summary>
-        /// Closes the page.
-        /// </summary>
+        /// <summary>Closes the page.</summary>
         private void ClosePage()
         {
             this.Page.ClientScript.RegisterStartupScript(
                 this.GetType(), "closeScript", "javascript:self.close();", true);
         }
 
-        /// <summary>
-        /// Gets the portal settings.
-        /// </summary>
+        /// <summary>Gets the portal settings.</summary>
         /// <returns>
         /// The Portal Settings.
         /// </returns>
@@ -218,9 +198,7 @@ namespace DNNConnect.CKEditorProvider
             this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
         }
 
-        /// <summary>
-        /// Load Favicon from Current Portal Home Directory.
-        /// </summary>
+        /// <summary>Load Favicon from Current Portal Home Directory.</summary>
         private void LoadFavIcon()
         {
             this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.curPortalSettings.PortalId)));

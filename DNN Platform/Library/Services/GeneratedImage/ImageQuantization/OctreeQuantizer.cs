@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
     using System;
@@ -9,25 +8,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Drawing;
     using System.Drawing.Imaging;
 
-    /// <summary>
-    /// Quantize using an Octree.
-    /// </summary>
+    /// <summary>Quantize using an Octree.</summary>
     public class OctreeQuantizer : Quantizer
     {
-        /// <summary>
-        /// Stores the tree.
-        /// </summary>
+        /// <summary>Stores the tree.</summary>
         private Octree octree;
 
-        /// <summary>
-        /// Maximum allowed color depth.
-        /// </summary>
+        /// <summary>Maximum allowed color depth.</summary>
         private int maxColors;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OctreeQuantizer"/> class.
-        /// Construct the octree quantizer.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OctreeQuantizer"/> class.</summary>
         /// <remarks>
         /// The Octree quantizer is a two pass algorithm. The initial pass sets up the octree,
         /// the second pass quantizes a color based on the nodes in the tree.
@@ -52,25 +42,14 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             this.maxColors = maxColors;
         }
 
-        /// <summary>
-        /// Process the pixel in the first pass of the algorithm.
-        /// </summary>
-        /// <param name="pixel">The pixel to quantize.</param>
-        /// <remarks>
-        /// This function need only be overridden if your quantize algorithm needs two passes,
-        /// such as an Octree quantizer.
-        /// </remarks>
+        /// <inheritdoc />
         protected override void InitialQuantizePixel(Color32 pixel)
         {
             // Add the color to the octree
             this.octree.AddColor(pixel);
         }
 
-        /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm.
-        /// </summary>
-        /// <param name="pixel">The pixel to quantize.</param>
-        /// <returns>The quantized value.</returns>
+        /// <inheritdoc />
         protected override byte QuantizePixel(Color32 pixel)
         {
             byte paletteIndex = (byte)this.maxColors;   // The color at [_maxColors] is set to transparent
@@ -84,11 +63,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             return paletteIndex;
         }
 
-        /// <summary>
-        /// Retrieve the palette for the quantized image.
-        /// </summary>
-        /// <param name="original">Any old palette, this is overrwritten.</param>
-        /// <returns>The new color palette.</returns>
+        /// <inheritdoc />
         protected override ColorPalette GetPalette(ColorPalette original)
         {
             // First off convert the octree to _maxColors colors
@@ -106,50 +81,31 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             return original;
         }
 
-        /// <summary>
-        /// Class which does the actual quantization.
-        /// </summary>
+        /// <summary>Class which does the actual quantization.</summary>
         private class Octree
         {
-            /// <summary>
-            /// Mask used when getting the appropriate pixels for a given node.
-            /// </summary>
+            /// <summary>Mask used when getting the appropriate pixels for a given node.</summary>
             private static readonly int[] Mask = new int[8] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 
-            /// <summary>
-            /// The root of the octree.
-            /// </summary>
+            /// <summary>The root of the octree.</summary>
             private OctreeNode root;
 
-            /// <summary>
-            /// Number of leaves in the tree.
-            /// </summary>
+            /// <summary>Number of leaves in the tree.</summary>
             private int leafCount;
 
-            /// <summary>
-            /// Array of reducible nodes.
-            /// </summary>
+            /// <summary>Array of reducible nodes.</summary>
             private OctreeNode[] reducibleNodes;
 
-            /// <summary>
-            /// Maximum number of significant bits in the image.
-            /// </summary>
+            /// <summary>Maximum number of significant bits in the image.</summary>
             private int maxColorBits;
 
-            /// <summary>
-            /// Store the last node quantized.
-            /// </summary>
+            /// <summary>Store the last node quantized.</summary>
             private OctreeNode previousNode;
 
-            /// <summary>
-            /// Cache the previous color quantized.
-            /// </summary>
+            /// <summary>Cache the previous color quantized.</summary>
             private int previousColor;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Octree"/> class.
-            /// Construct the octree.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="Octree"/> class.</summary>
             /// <param name="maxColorBits">The maximum number of significant bits in the image.</param>
             public Octree(int maxColorBits)
             {
@@ -161,27 +117,21 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 this.previousNode = null;
             }
 
-            /// <summary>
-            /// Gets or sets get/Set the number of leaves in the tree.
-            /// </summary>
+            /// <summary>Gets or sets the number of leaves in the tree.</summary>
             public int Leaves
             {
                 get { return this.leafCount; }
                 set { this.leafCount = value; }
             }
 
-            /// <summary>
-            /// Gets return the array of reducible nodes.
-            /// </summary>
+            /// <summary>Gets the array of reducible nodes.</summary>
             protected OctreeNode[] ReducibleNodes
             {
                 get { return this.reducibleNodes; }
             }
 
-            /// <summary>
-            /// Add a given color value to the octree.
-            /// </summary>
-            /// <param name="pixel"></param>
+            /// <summary>Add a given color value to the octree.</summary>
+            /// <param name="pixel">The pixel color.</param>
             public void AddColor(Color32 pixel)
             {
                 // Check if this request is for the same color as the last
@@ -207,9 +157,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 }
             }
 
-            /// <summary>
-            /// Reduce the depth of the tree.
-            /// </summary>
+            /// <summary>Reduce the depth of the tree.</summary>
             public void Reduce()
             {
                 int index;
@@ -231,9 +179,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 this.previousNode = null;
             }
 
-            /// <summary>
-            /// Convert the nodes in the octree to a palette with a maximum of colorCount colors.
-            /// </summary>
+            /// <summary>Convert the nodes in the octree to a palette with a maximum of colorCount colors.</summary>
             /// <param name="colorCount">The maximum number of colors.</param>
             /// <returns>An arraylist with the palettized colors.</returns>
             public ArrayList Palletize(int colorCount)
@@ -252,74 +198,49 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 return palette;
             }
 
-            /// <summary>
-            /// Get the palette index for the passed color.
-            /// </summary>
-            /// <param name="pixel"></param>
-            /// <returns></returns>
+            /// <summary>Get the palette index for the passed color.</summary>
+            /// <param name="pixel">The pixel color.</param>
+            /// <returns>The index.</returns>
             public int GetPaletteIndex(Color32 pixel)
             {
                 return this.root.GetPaletteIndex(pixel, 0);
             }
 
-            /// <summary>
-            /// Keep track of the previous node that was quantized.
-            /// </summary>
+            /// <summary>Keep track of the previous node that was quantized.</summary>
             /// <param name="node">The node last quantized.</param>
             protected void TrackPrevious(OctreeNode node)
             {
                 this.previousNode = node;
             }
 
-            /// <summary>
-            /// Class which encapsulates each node in the tree.
-            /// </summary>
+            /// <summary>Class which encapsulates each node in the tree.</summary>
             protected class OctreeNode
             {
-                /// <summary>
-                /// Flag indicating that this is a leaf node.
-                /// </summary>
+                /// <summary>Flag indicating that this is a leaf node.</summary>
                 private bool leaf;
 
-                /// <summary>
-                /// Number of pixels in this node.
-                /// </summary>
+                /// <summary>Number of pixels in this node.</summary>
                 private int pixelCount;
 
-                /// <summary>
-                /// Red component.
-                /// </summary>
+                /// <summary>Red component.</summary>
                 private int red;
 
-                /// <summary>
-                /// Green Component.
-                /// </summary>
+                /// <summary>Green Component.</summary>
                 private int green;
 
-                /// <summary>
-                /// Blue component.
-                /// </summary>
+                /// <summary>Blue component.</summary>
                 private int blue;
 
-                /// <summary>
-                /// Pointers to any child nodes.
-                /// </summary>
+                /// <summary>Pointers to any child nodes.</summary>
                 private OctreeNode[] children;
 
-                /// <summary>
-                /// Pointer to next reducible node.
-                /// </summary>
+                /// <summary>Pointer to next reducible node.</summary>
                 private OctreeNode nextReducible;
 
-                /// <summary>
-                /// The index of this node in the palette.
-                /// </summary>
+                /// <summary>The index of this node in the palette.</summary>
                 private int paletteIndex;
 
-                /// <summary>
-                /// Initializes a new instance of the <see cref="OctreeNode"/> class.
-                /// Construct the node.
-                /// </summary>
+                /// <summary>Initializes a new instance of the <see cref="OctreeNode"/> class.</summary>
                 /// <param name="level">The level in the tree = 0 - 7.</param>
                 /// <param name="colorBits">The number of significant color bits in the image.</param>
                 /// <param name="octree">The tree to which this node belongs.</param>
@@ -347,26 +268,20 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     }
                 }
 
-                /// <summary>
-                /// Gets return the child nodes.
-                /// </summary>
+                /// <summary>Gets return the child nodes.</summary>
                 public OctreeNode[] Children
                 {
                     get { return this.children; }
                 }
 
-                /// <summary>
-                /// Gets or sets get/Set the next reducible node.
-                /// </summary>
+                /// <summary>Gets or sets the next reducible node.</summary>
                 public OctreeNode NextReducible
                 {
                     get { return this.nextReducible; }
                     set { this.nextReducible = value; }
                 }
 
-                /// <summary>
-                /// Add a color into the tree.
-                /// </summary>
+                /// <summary>Add a color into the tree.</summary>
                 /// <param name="pixel">The color.</param>
                 /// <param name="colorBits">The number of significant color bits.</param>
                 /// <param name="level">The level in the tree.</param>
@@ -403,9 +318,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     }
                 }
 
-                /// <summary>
-                /// Reduce this node by removing all of its children.
-                /// </summary>
+                /// <summary>Reduce this node by removing all of its children.</summary>
                 /// <returns>The number of leaves removed.</returns>
                 public int Reduce()
                 {
@@ -433,9 +346,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     return children - 1;
                 }
 
-                /// <summary>
-                /// Traverse the tree, building up the color palette.
-                /// </summary>
+                /// <summary>Traverse the tree, building up the color palette.</summary>
                 /// <param name="palette">The palette.</param>
                 /// <param name="paletteIndex">The current palette index.</param>
                 public void ConstructPalette(ArrayList palette, ref int paletteIndex)
@@ -461,9 +372,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     }
                 }
 
-                /// <summary>
-                /// Return the palette index for the passed color.
-                /// </summary>
+                /// <summary>Return the palette index for the passed color.</summary>
                 public int GetPaletteIndex(Color32 pixel, int level)
                 {
                     int paletteIndex = this.paletteIndex;
@@ -488,9 +397,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     return paletteIndex;
                 }
 
-                /// <summary>
-                /// Increment the pixel count and add to the color information.
-                /// </summary>
+                /// <summary>Increment the pixel count and add to the color information.</summary>
                 public void Increment(Color32 pixel)
                 {
                     this.pixelCount++;

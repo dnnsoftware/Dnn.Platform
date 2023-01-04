@@ -62,9 +62,7 @@ namespace DotNetNuke.Entities.Portals
             return Instance.GetPortalAlias(httpAlias);
         }
 
-        /// <summary>
-        /// Gets the portal alias by portal.
-        /// </summary>
+        /// <summary>Gets the portal alias by portal.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns>Portal alias.</returns>
@@ -72,9 +70,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetPortalAliasByPortal(int portalId, string portalAlias) =>
             ((IPortalAliasService)Instance).GetPortalAliasByPortal(portalId, portalAlias);
 
-        /// <summary>
-        /// Gets the portal alias by tab.
-        /// </summary>
+        /// <summary>Gets the portal alias by tab.</summary>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <returns>Portal alias.</returns>
@@ -82,9 +78,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetPortalAliasByTab(int tabId, string portalAlias) =>
             ((IPortalAliasService)Instance).GetPortalAliasByTab(tabId, portalAlias);
 
-        /// <summary>
-        /// Validates the alias.
-        /// </summary>
+        /// <summary>Validates the alias.</summary>
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="ischild">if set to <c>true</c> [ischild].</param>
         /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
@@ -151,9 +145,7 @@ namespace DotNetNuke.Entities.Portals
         public PortalAliasInfo GetPortalAlias(string alias) =>
             (PortalAliasInfo)((IPortalAliasService)this).GetPortalAlias(alias);
 
-        /// <summary>
-        /// Gets the portal alias.
-        /// </summary>
+        /// <summary>Gets the portal alias.</summary>
         /// <param name="alias">The portal alias.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>Portal Alias Info.</returns>
@@ -161,9 +153,7 @@ namespace DotNetNuke.Entities.Portals
         public PortalAliasInfo GetPortalAlias(string alias, int portalId) =>
             (PortalAliasInfo)((IPortalAliasService)this).GetPortalAlias(alias, portalId);
 
-        /// <summary>
-        /// Gets the portal alias by portal alias ID.
-        /// </summary>
+        /// <summary>Gets the portal alias by portal alias ID.</summary>
         /// <param name="portalAliasId">The portal alias ID.</param>
         /// <returns>Portal alias info.</returns>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]
@@ -189,9 +179,7 @@ namespace DotNetNuke.Entities.Portals
             ((IPortalAliasService)this).GetPortalAliasesByPortalId(portalId)
                 .Cast<PortalAliasInfo>();
 
-        /// <summary>
-        /// Gets the portal by portal alias ID.
-        /// </summary>
+        /// <summary>Gets the portal by portal alias ID.</summary>
         /// <param name="portalAliasId">The portal alias id.</param>
         /// <returns>Portal info.</returns>
         [Obsolete("Deprecated in 9.7.2. Scheduled for removal in v11.0.0, use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead.")]

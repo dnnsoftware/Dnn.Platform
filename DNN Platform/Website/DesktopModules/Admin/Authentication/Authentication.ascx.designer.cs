@@ -15,17 +15,13 @@ namespace DotNetNuke.Modules.Admin.Authentication {
     
     
     public partial class Authentication {
-        /// <summary>
-        /// pnlSettings control.
-        /// </summary>
+        /// <summary>pnlSettings control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSettings;
-        /// <summary>
-        /// cmdUpdate control.
-        /// </summary>
+        /// <summary>cmdUpdate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

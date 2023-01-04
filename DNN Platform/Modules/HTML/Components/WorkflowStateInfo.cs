@@ -9,9 +9,7 @@ namespace DotNetNuke.Modules.Html
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      WorkflowStateInfo
-    /// <summary>
-    ///   Defines an instance of a WorkflowState object.
-    /// </summary>
+    /// <summary>  Defines an instance of a WorkflowState object.</summary>
     [Serializable]
     public class WorkflowStateInfo
     {

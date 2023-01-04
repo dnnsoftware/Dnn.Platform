@@ -74,9 +74,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>CleanWithTagInfo removes unspecified HTML Tags, Entities (and optionally any punctuation) from a string.</summary>
-        /// <param name = "html"></param>
+        /// <param name="html"></param>
         /// <param name="tagsFilter"></param>
-        /// <param name = "removePunctuation"></param>
+        /// <param name="removePunctuation"></param>
         /// <returns>The cleaned up string.</returns>
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
@@ -103,9 +103,7 @@ namespace DotNetNuke.Common.Utilities
             return html;
         }
 
-        /// <summary>
-        /// Formats an Email address as a cloaked html link.
-        /// </summary>
+        /// <summary>Formats an Email address as a cloaked html link.</summary>
         /// <param name="email">The email address to format.</param>
         /// <returns>The email address as a cloaked html link.</returns>
         public static string FormatEmail(string email)
@@ -113,9 +111,7 @@ namespace DotNetNuke.Common.Utilities
             return FormatEmail(email, true);
         }
 
-        /// <summary>
-        /// Formats an Email address.
-        /// </summary>
+        /// <summary>Formats an Email address.</summary>
         /// <param name="email">The email address to format.</param>
         /// <param name="cloak">A flag that indicates whether the text should be cloaked.</param>
         /// <returns>The formatted email address.</returns>
@@ -275,9 +271,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>  StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info for the specified HTML tags. </summary>
-        /// <param name = "html"></param>
+        /// <param name="html"></param>
         /// <param name="specifiedTags"></param>
-        /// <param name = "retainSpace"></param>
+        /// <param name="retainSpace"></param>
         /// <returns>The cleaned up string.</returns>
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {

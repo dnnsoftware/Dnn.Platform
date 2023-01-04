@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly IDictionary nameValueCollection;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DictionaryPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DictionaryPropertyAccess"/> class.</summary>
         /// <param name="list"></param>
         public DictionaryPropertyAccess(IDictionary list)
         {

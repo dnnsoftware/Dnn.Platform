@@ -409,9 +409,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
         }
 
-        /// <summary>
-        /// The BuildTree helper method is used to build the tree.
-        /// </summary>
+        /// <summary>The BuildTree helper method is used to build the tree.</summary>
         private void BuildTree(DNNNode objNode, bool blnPODRequest)
         {
             bool blnAddUpNode = false;
@@ -499,9 +497,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Sets common properties on DNNTree control.
-        /// </summary>
+        /// <summary>Sets common properties on DNNTree control.</summary>
         private void InitializeTree()
         {
             if (string.IsNullOrEmpty(this.PathImage))

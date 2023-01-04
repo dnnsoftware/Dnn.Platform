@@ -67,9 +67,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
-        /// </summary>
+        /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
         /// <value>
         /// Property to allow the programmatic assigning of ScrollTop position.
         /// </value>
@@ -162,9 +160,7 @@ namespace DotNetNuke.Framework
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
-        /// <summary>
-        /// Contains the functionality to populate the Root aspx page with controls.
-        /// </summary>
+        /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
         /// <param name="e"></param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
@@ -300,9 +296,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
-        /// </summary>
+        /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
         /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {

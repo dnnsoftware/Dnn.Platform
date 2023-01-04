@@ -26,14 +26,10 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Services.Journal.Internal;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The Settings class manages Module Settings.
-    /// </summary>
+    /// <summary>The Settings class manages Module Settings.</summary>
     public partial class Settings : JournalSettingsBase
     {
-        /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them.
-        /// </summary>
+        /// <summary>LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
         {
             try
@@ -146,9 +142,7 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        /// <summary>
-        /// UpdateSettings saves the modified settings to the Database.
-        /// </summary>
+        /// <summary>UpdateSettings saves the modified settings to the Database.</summary>
         public override void UpdateSettings()
         {
             try

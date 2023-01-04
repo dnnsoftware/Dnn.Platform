@@ -8,9 +8,7 @@ namespace DotNetNuke.Services.Search
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchResultsInfo
-    /// <summary>
-    /// The SearchResultsInfo represents a Search Result Item.
-    /// </summary>
+    /// <summary>The SearchResultsInfo represents a Search Result Item.</summary>
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     [Serializable]
     public class SearchResultsInfo

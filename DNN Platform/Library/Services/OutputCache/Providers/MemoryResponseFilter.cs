@@ -9,17 +9,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Web;
     using System.Web.Caching;
 
-    /// <summary>
-    /// FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into memory.
-    /// </summary>
+    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into memory.</summary>
     public class MemoryResponseFilter : OutputCacheResponseFilter
     {
         // Private _content As StringBuilder
         private static System.Web.Caching.Cache runtimeCache;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryResponseFilter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MemoryResponseFilter"/> class.</summary>
         /// <param name="itemId"></param>
         /// <param name="maxVaryByCount"></param>
         /// <param name="filterChain"></param>

@@ -11,9 +11,7 @@ namespace DotNetNuke.Modules.Html
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextInfo
-    /// <summary>
-    ///   Defines an instance of an HtmlText object.
-    /// </summary>
+    /// <summary>  Defines an instance of an HtmlText object.</summary>
     [Serializable]
     public class HtmlTextInfo : BaseEntityInfo
     {

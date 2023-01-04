@@ -9,9 +9,7 @@ namespace Dnn.PersonaBar.AdminLogs.MenuControllers
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
 
-    /// <summary>
-    /// Controls the admin logs menu.
-    /// </summary>
+    /// <summary>Controls the admin logs menu.</summary>
     public class AdminLogsMenuController : IMenuItemController
     {
         /// <inheritdoc/>

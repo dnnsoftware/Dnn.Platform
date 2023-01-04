@@ -20,9 +20,7 @@
 
 namespace log4net.Plugin
 {
-    /// <summary>
-    /// Interface used to create plugins.
-    /// </summary>
+    /// <summary>Interface used to create plugins.</summary>
     /// <remarks>
     /// <para>
     /// Interface used to create  a plugin.
@@ -32,9 +30,7 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public interface IPluginFactory
     {
-        /// <summary>
-        /// Creates the plugin object.
-        /// </summary>
+        /// <summary>Creates the plugin object.</summary>
         /// <returns>the new plugin instance</returns>
         /// <remarks>
         /// <para>

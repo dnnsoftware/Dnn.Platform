@@ -26,9 +26,7 @@
     using Services.Cache;
 
     using Utilities.Mocks;
-    /// <summary>
-    /// Tests FileUploadController methods
-    /// </summary>
+    /// <summary>Tests FileUploadController methods</summary>
     [TestFixture]
     public class FileUploadControllerTests
     {

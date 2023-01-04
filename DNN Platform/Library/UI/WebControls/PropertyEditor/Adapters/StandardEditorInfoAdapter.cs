@@ -14,17 +14,13 @@ namespace DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      StandardEditorInfoAdapter
-    /// <summary>
-    /// The StandardEditorInfoAdapter control provides an Adapter for standard datasources.
-    /// </summary>
+    /// <summary>The StandardEditorInfoAdapter control provides an Adapter for standard datasources.</summary>
     public class StandardEditorInfoAdapter : IEditorInfoAdapter
     {
         private readonly object dataSource;
         private readonly string fieldName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.</summary>
         /// <param name="dataSource"></param>
         /// <param name="fieldName"></param>
         public StandardEditorInfoAdapter(object dataSource, string fieldName)
@@ -75,9 +71,7 @@ namespace DotNetNuke.UI.WebControls
             return false;
         }
 
-        /// <summary>
-        /// GetEditorInfo builds an EditorInfo object for a propoerty.
-        /// </summary>
+        /// <summary>GetEditorInfo builds an EditorInfo object for a propoerty.</summary>
         private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
         {
             var editInfo = new EditorInfo();
@@ -196,9 +190,7 @@ namespace DotNetNuke.UI.WebControls
             return editInfo;
         }
 
-        /// <summary>
-        /// GetProperty returns the property that is being "bound" to.
-        /// </summary>
+        /// <summary>GetProperty returns the property that is being "bound" to.</summary>
         private PropertyInfo GetProperty(object dataSource, string fieldName)
         {
             if (dataSource != null)

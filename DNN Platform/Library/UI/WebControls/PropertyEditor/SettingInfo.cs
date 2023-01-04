@@ -10,17 +10,13 @@ namespace DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      SettingInfo
-    /// <summary>
-    /// The SettingInfo class provides a helper class for the Settings Editor.
-    /// </summary>
+    /// <summary>The SettingInfo class provides a helper class for the Settings Editor.</summary>
     public class SettingInfo
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
         private Type type;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SettingInfo"/> class.</summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
         public SettingInfo(object name, object value)

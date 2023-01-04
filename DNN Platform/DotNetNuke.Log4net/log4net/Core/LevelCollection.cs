@@ -23,28 +23,20 @@ using System.Collections;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// A strongly-typed collection of <see cref="Level"/> objects.
-    /// </summary>
+    /// <summary>A strongly-typed collection of <see cref="Level"/> objects.</summary>
     /// <author>Nicko Cadell</author>
     public class LevelCollection : ICollection, IList, IEnumerable
 #if !NETSTANDARD1_3
         , ICloneable
 #endif
     {
-        /// <summary>
-        /// Supports type-safe iteration over a <see cref="LevelCollection"/>.
-        /// </summary>
+        /// <summary>Supports type-safe iteration over a <see cref="LevelCollection"/>.</summary>
         public interface ILevelCollectionEnumerator
         {
-            /// <summary>
-            /// Gets the current element in the collection.
-            /// </summary>
+            /// <summary>Gets the current element in the collection.</summary>
             Level Current { get; }
 
-            /// <summary>
-            /// Advances the enumerator to the next element in the collection.
-            /// </summary>
+            /// <summary>Advances the enumerator to the next element in the collection.</summary>
             /// <returns>
             /// <c>true</c> if the enumerator was successfully advanced to the next element; 
             /// <c>false</c> if the enumerator has passed the end of the collection.
@@ -54,9 +46,7 @@ namespace log4net.Core
             /// </exception>
             bool MoveNext();
 
-            /// <summary>
-            /// Sets the enumerator to its initial position, before the first element in the collection.
-            /// </summary>
+            /// <summary>Sets the enumerator to its initial position, before the first element in the collection.</summary>
             void Reset();
         }
 
@@ -66,9 +56,7 @@ namespace log4net.Core
         private int m_count = 0;
         private int m_version = 0;
 
-        /// <summary>
-        /// Creates a read-only wrapper for a <c>LevelCollection</c> instance.
-        /// </summary>
+        /// <summary>Creates a read-only wrapper for a <c>LevelCollection</c> instance.</summary>
         /// <param name="list">list to create a readonly wrapper arround</param>
         /// <returns>
         /// A <c>LevelCollection</c> wrapper that is read-only.
@@ -143,24 +131,18 @@ namespace log4net.Core
         /// </summary>
         protected internal enum Tag 
         {
-            /// <summary>
-            /// A value
-            /// </summary>
+            /// <summary>A value</summary>
             Default
         }
 
-        /// <summary>
-        /// Allow subclasses to avoid our default constructors
-        /// </summary>
+        /// <summary>Allow subclasses to avoid our default constructors</summary>
         /// <param name="tag"></param>
         protected internal LevelCollection(Tag tag)
         {
             this.m_array = null;
         }
 
-        /// <summary>
-        /// Gets the number of elements actually contained in the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Gets the number of elements actually contained in the <c>LevelCollection</c>.</summary>
         public virtual int Count
         {
             get { return this.m_count; }
@@ -192,26 +174,20 @@ namespace log4net.Core
             Array.Copy(this.m_array, 0, array, start, this.m_count); 
         }
 
-        /// <summary>
-        /// Gets a value indicating whether access to the collection is synchronized (thread-safe).
-        /// </summary>
+        /// <summary>Gets a value indicating whether access to the collection is synchronized (thread-safe).</summary>
         /// <returns>false, because the backing type is an array, which is never thread-safe.</returns>
         public virtual bool IsSynchronized
         {
             get { return false; }
         }
 
-        /// <summary>
-        /// Gets an object that can be used to synchronize access to the collection.
-        /// </summary>
+        /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         public virtual object SyncRoot
         {
             get { return this.m_array; }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="Level"/> at the specified index.
-        /// </summary>
+        /// <summary>Gets or sets the <see cref="Level"/> at the specified index.</summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="index"/> is less than zero</para>
@@ -233,9 +209,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Adds a <see cref="Level"/> to the end of the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Adds a <see cref="Level"/> to the end of the <c>LevelCollection</c>.</summary>
         /// <param name="item">The <see cref="Level"/> to be added to the end of the <c>LevelCollection</c>.</param>
         /// <returns>The index at which the value has been added.</returns>
         public virtual int Add(Level item)
@@ -251,9 +225,7 @@ namespace log4net.Core
             return this.m_count++;
         }
         
-        /// <summary>
-        /// Removes all elements from the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Removes all elements from the <c>LevelCollection</c>.</summary>
         public virtual void Clear()
         {
             ++this.m_version;
@@ -261,9 +233,7 @@ namespace log4net.Core
             this.m_count = 0;
         }
         
-        /// <summary>
-        /// Creates a shallow copy of the <see cref="LevelCollection"/>.
-        /// </summary>
+        /// <summary>Creates a shallow copy of the <see cref="LevelCollection"/>.</summary>
         /// <returns>A new <see cref="LevelCollection"/> with a shallow copy of the collection data.</returns>
         public virtual object Clone()
         {
@@ -275,9 +245,7 @@ namespace log4net.Core
             return newCol;
         }
 
-        /// <summary>
-        /// Determines whether a given <see cref="Level"/> is in the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Determines whether a given <see cref="Level"/> is in the <c>LevelCollection</c>.</summary>
         /// <param name="item">The <see cref="Level"/> to check for.</param>
         /// <returns><c>true</c> if <paramref name="item"/> is found in the <c>LevelCollection</c>; otherwise, <c>false</c>.</returns>
         public virtual bool Contains(Level item)
@@ -313,9 +281,7 @@ namespace log4net.Core
             return -1;
         }
 
-        /// <summary>
-        /// Inserts an element into the <c>LevelCollection</c> at the specified index.
-        /// </summary>
+        /// <summary>Inserts an element into the <c>LevelCollection</c> at the specified index.</summary>
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="Level"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
@@ -342,9 +308,7 @@ namespace log4net.Core
             this.m_version++;
         }
 
-        /// <summary>
-        /// Removes the first occurrence of a specific <see cref="Level"/> from the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Removes the first occurrence of a specific <see cref="Level"/> from the <c>LevelCollection</c>.</summary>
         /// <param name="item">The <see cref="Level"/> to remove from the <c>LevelCollection</c>.</param>
         /// <exception cref="ArgumentException">
         /// The specified <see cref="Level"/> was not found in the <c>LevelCollection</c>.
@@ -361,9 +325,7 @@ namespace log4net.Core
             this.RemoveAt(i);
         }
 
-        /// <summary>
-        /// Removes the element at the specified index of the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Removes the element at the specified index of the <c>LevelCollection</c>.</summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="index"/> is less than zero</para>
@@ -389,36 +351,28 @@ namespace log4net.Core
             this.m_version++;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the collection has a fixed size.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the collection has a fixed size.</summary>
         /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
         public virtual bool IsFixedSize
         {
             get { return false; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the IList is read-only.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the IList is read-only.</summary>
         /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
         public virtual bool IsReadOnly
         {
             get { return false; }
         }
 
-        /// <summary>
-        /// Returns an enumerator that can iterate through the <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Returns an enumerator that can iterate through the <c>LevelCollection</c>.</summary>
         /// <returns>An <see cref="Enumerator"/> for the entire <c>LevelCollection</c>.</returns>
         public virtual ILevelCollectionEnumerator GetEnumerator()
         {
             return new Enumerator(this);
         }
 
-        /// <summary>
-        /// Gets or sets the number of elements the <c>LevelCollection</c> can contain.
-        /// </summary>
+        /// <summary>Gets or sets the number of elements the <c>LevelCollection</c> can contain.</summary>
         public virtual int Capacity
         {
             get 
@@ -448,9 +402,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Adds the elements of another <c>LevelCollection</c> to the current <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Adds the elements of another <c>LevelCollection</c> to the current <c>LevelCollection</c>.</summary>
         /// <param name="x">The <c>LevelCollection</c> whose elements should be added to the end of the current <c>LevelCollection</c>.</param>
         /// <returns>The new <see cref="LevelCollection.Count"/> of the <c>LevelCollection</c>.</returns>
         public virtual int AddRange(LevelCollection x)
@@ -467,9 +419,7 @@ namespace log4net.Core
             return this.m_count;
         }
 
-        /// <summary>
-        /// Adds the elements of a <see cref="Level"/> array to the current <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Adds the elements of a <see cref="Level"/> array to the current <c>LevelCollection</c>.</summary>
         /// <param name="x">The <see cref="Level"/> array whose elements should be added to the end of the <c>LevelCollection</c>.</param>
         /// <returns>The new <see cref="LevelCollection.Count"/> of the <c>LevelCollection</c>.</returns>
         public virtual int AddRange(Level[] x)
@@ -486,9 +436,7 @@ namespace log4net.Core
             return this.m_count;
         }
 
-        /// <summary>
-        /// Adds the elements of a <see cref="Level"/> collection to the current <c>LevelCollection</c>.
-        /// </summary>
+        /// <summary>Adds the elements of a <see cref="Level"/> collection to the current <c>LevelCollection</c>.</summary>
         /// <param name="col">The <see cref="Level"/> collection whose elements should be added to the end of the <c>LevelCollection</c>.</param>
         /// <returns>The new <see cref="LevelCollection.Count"/> of the <c>LevelCollection</c>.</returns>
         public virtual int AddRange(ICollection col)
@@ -506,9 +454,7 @@ namespace log4net.Core
             return this.m_count;
         }
         
-        /// <summary>
-        /// Sets the capacity to the actual number of elements.
-        /// </summary>
+        /// <summary>Sets the capacity to the actual number of elements.</summary>
         public virtual void TrimToSize()
         {
             this.Capacity = this.m_count;
@@ -595,18 +541,14 @@ namespace log4net.Core
             return (IEnumerator)(this.GetEnumerator());
         }
 
-        /// <summary>
-        /// Supports simple iteration over a <see cref="LevelCollection"/>.
-        /// </summary>
+        /// <summary>Supports simple iteration over a <see cref="LevelCollection"/>.</summary>
         private sealed class Enumerator : IEnumerator, ILevelCollectionEnumerator
         {
             private readonly LevelCollection m_collection;
             private int m_index;
             private int m_version;
 
-            /// <summary>
-            /// Initializes a new instance of the <c>Enumerator</c> class.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <c>Enumerator</c> class.</summary>
             /// <param name="tc"></param>
             internal Enumerator(LevelCollection tc)
             {
@@ -615,17 +557,13 @@ namespace log4net.Core
                 this.m_version = tc.m_version;
             }
 
-            /// <summary>
-            /// Gets the current element in the collection.
-            /// </summary>
+            /// <summary>Gets the current element in the collection.</summary>
             public Level Current
             {
                 get { return this.m_collection[this.m_index]; }
             }
 
-            /// <summary>
-            /// Advances the enumerator to the next element in the collection.
-            /// </summary>
+            /// <summary>Advances the enumerator to the next element in the collection.</summary>
             /// <returns>
             /// <c>true</c> if the enumerator was successfully advanced to the next element; 
             /// <c>false</c> if the enumerator has passed the end of the collection.
@@ -644,9 +582,7 @@ namespace log4net.Core
                 return (this.m_index < this.m_collection.Count);
             }
 
-            /// <summary>
-            /// Sets the enumerator to its initial position, before the first element in the collection.
-            /// </summary>
+            /// <summary>Sets the enumerator to its initial position, before the first element in the collection.</summary>
             public void Reset()
             {
                 this.m_index = -1;

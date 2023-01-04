@@ -13,9 +13,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// </summary>
     public class AssemblyComponentWriter : FileComponentWriter
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyComponentWriter"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AssemblyComponentWriter"/> class.</summary>
         /// <param name="basePath"></param>
         /// <param name="assemblies"></param>
         /// <param name="package"></param>
@@ -24,9 +22,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        /// <summary>
-        /// Gets the name of the Collection Node ("assemblies").
-        /// </summary>
+        /// <summary>Gets the name of the Collection Node ("assemblies").</summary>
         /// <value>A String.</value>
         protected override string CollectionNodeName
         {
@@ -36,9 +32,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Component Type ("Assembly").
-        /// </summary>
+        /// <summary>Gets the name of the Component Type ("Assembly").</summary>
         /// <value>A String.</value>
         protected override string ComponentType
         {
@@ -48,9 +42,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <summary>
-        /// Gets the name of the Item Node ("assembly").
-        /// </summary>
+        /// <summary>Gets the name of the Item Node ("assembly").</summary>
         /// <value>A String.</value>
         protected override string ItemNodeName
         {

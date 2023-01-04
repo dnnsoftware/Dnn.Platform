@@ -34,9 +34,7 @@ namespace DotNetNuke.Services.Tokens
         private CultureInfo formatProvider;
         private string language;
 
-        /// <summary>
-        /// Gets or sets /sets the language to be used, e.g. for date format.
-        /// </summary>
+        /// <summary>Gets or sets /sets the language to be used, e.g. for date format.</summary>
         /// <value>A string, representing the locale.</value>
         public virtual string Language
         {
@@ -52,18 +50,14 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
+        /// <summary>Gets the Format provider as Culture info from stored language or current culture.</summary>
         /// <value>An CultureInfo.</value>
         protected virtual CultureInfo FormatProvider
         {
             get { return this.formatProvider ?? (this.formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
-        /// <summary>
-        /// Gets the Regular expression for the token to be replaced.
-        /// </summary>
+        /// <summary>Gets the Regular expression for the token to be replaced.</summary>
         /// <value>A regular Expression.</value>
         protected Regex TokenizerRegex
         {

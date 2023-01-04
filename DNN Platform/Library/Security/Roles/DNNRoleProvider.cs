@@ -30,9 +30,7 @@ namespace DotNetNuke.Security.Roles
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        /// <summary>
-        /// CreateRole persists a Role to the Data Store.
-        /// </summary>
+        /// <summary>CreateRole persists a Role to the Data Store.</summary>
         /// <param name="role">The role to persist to the Data Store.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
         public override bool CreateRole(RoleInfo role)
@@ -70,18 +68,14 @@ namespace DotNetNuke.Security.Roles
             return true;
         }
 
-        /// <summary>
-        /// DeleteRole deletes a Role from the Data Store.
-        /// </summary>
+        /// <summary>DeleteRole deletes a Role from the Data Store.</summary>
         /// <param name="role">The role to delete from the Data Store.</param>
         public override void DeleteRole(RoleInfo role)
         {
             this.dataProvider.DeleteRole(role.RoleID);
         }
 
-        /// <summary>
-        /// Get the roles for a portal.
-        /// </summary>
+        /// <summary>Get the roles for a portal.</summary>
         /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
         /// retrieved.</param>
         /// <returns>An ArrayList of RoleInfo objects.</returns>
@@ -117,9 +111,7 @@ namespace DotNetNuke.Security.Roles
             return settings;
         }
 
-        /// <summary>
-        /// Update a role.
-        /// </summary>
+        /// <summary>Update a role.</summary>
         /// <param name="role">The role to update.</param>
         public override void UpdateRole(RoleInfo role)
         {
@@ -144,9 +136,7 @@ namespace DotNetNuke.Security.Roles
                 role.IsSystemRole);
         }
 
-        /// <summary>
-        /// Update the role settings for a role.
-        /// </summary>
+        /// <summary>Update the role settings for a role.</summary>
         /// <param name="role">The role to update.</param>
         public override void UpdateRoleSettings(RoleInfo role)
         {
@@ -161,9 +151,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// <summary>
-        /// AddUserToRole adds a User to a Role.
-        /// </summary>
+        /// <summary>AddUserToRole adds a User to a Role.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="user">The user to add.</param>
         /// <param name="userRole">The role to add the user to.</param>
@@ -187,9 +175,7 @@ namespace DotNetNuke.Security.Roles
             return createStatus;
         }
 
-        /// <summary>
-        /// GetUserRole gets a User/Role object from the Data Store.
-        /// </summary>
+        /// <summary>GetUserRole gets a User/Role object from the Data Store.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="userId">The Id of the User.</param>
         /// <param name="roleId">The Id of the Role.</param>
@@ -199,9 +185,7 @@ namespace DotNetNuke.Security.Roles
             return CBO.FillObject<UserRoleInfo>(this.dataProvider.GetUserRole(portalId, userId, roleId));
         }
 
-        /// <summary>
-        /// Gets a list of UserRoles for the user.
-        /// </summary>
+        /// <summary>Gets a list of UserRoles for the user.</summary>
         /// <param name="user">A UserInfo object representaing the user.</param>
         /// <param name="includePrivate">Include private roles.</param>
         /// <returns>A list of UserRoleInfo objects.</returns>
@@ -214,9 +198,7 @@ namespace DotNetNuke.Security.Roles
                     : this.dataProvider.GetServices(user.PortalID, user.UserID));
         }
 
-        /// <summary>
-        /// GetUserRoles gets a collection of User/Role objects from the Data Store.
-        /// </summary>
+        /// <summary>GetUserRoles gets a collection of User/Role objects from the Data Store.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="userName">The user to fetch roles for.</param>
         /// <param name="roleName">The role to fetch users for.</param>
@@ -226,9 +208,7 @@ namespace DotNetNuke.Security.Roles
             return CBO.FillCollection(this.dataProvider.GetUserRolesByUsername(portalId, userName, roleName), typeof(UserRoleInfo));
         }
 
-        /// <summary>
-        /// Get the users in a role (as User objects).
-        /// </summary>
+        /// <summary>Get the users in a role (as User objects).</summary>
         /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
         /// retrieved.</param>
         /// <param name="roleName">The role to fetch users for.</param>
@@ -238,9 +218,7 @@ namespace DotNetNuke.Security.Roles
             return AspNetMembershipProvider.FillUserCollection(portalId, this.dataProvider.GetUsersByRolename(portalId, roleName));
         }
 
-        /// <summary>
-        /// Remove a User from a Role.
-        /// </summary>
+        /// <summary>Remove a User from a Role.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="user">The user to remove.</param>
         /// <param name="userRole">The role to remove the user from.</param>
@@ -249,9 +227,7 @@ namespace DotNetNuke.Security.Roles
             this.dataProvider.DeleteUserRole(userRole.UserID, userRole.RoleID);
         }
 
-        /// <summary>
-        /// Updates a User/Role.
-        /// </summary>
+        /// <summary>Updates a User/Role.</summary>
         /// <param name="userRole">The User/Role to update.</param>
         public override void UpdateUserRole(UserRoleInfo userRole)
         {
@@ -264,9 +240,7 @@ namespace DotNetNuke.Security.Roles
                 UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        /// <summary>
-        /// CreateRoleGroup persists a RoleGroup to the Data Store.
-        /// </summary>
+        /// <summary>CreateRoleGroup persists a RoleGroup to the Data Store.</summary>
         /// <param name="roleGroup">The RoleGroup to persist to the Data Store.</param>
         /// <returns>The Id of the new role.</returns>
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
@@ -280,9 +254,7 @@ namespace DotNetNuke.Security.Roles
             return roleGroupId;
         }
 
-        /// <summary>
-        /// DeleteRoleGroup deletes a RoleGroup from the Data Store.
-        /// </summary>
+        /// <summary>DeleteRoleGroup deletes a RoleGroup from the Data Store.</summary>
         /// <param name="roleGroup">The RoleGroup to delete from the Data Store.</param>
         public override void DeleteRoleGroup(RoleGroupInfo roleGroup)
         {
@@ -290,9 +262,7 @@ namespace DotNetNuke.Security.Roles
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 
-        /// <summary>
-        /// GetRoleGroup gets a RoleGroup from the Data Store.
-        /// </summary>
+        /// <summary>GetRoleGroup gets a RoleGroup from the Data Store.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <param name="roleGroupId">The Id of the RoleGroup to retrieve.</param>
         /// <returns>A RoleGroupInfo object.</returns>
@@ -309,9 +279,7 @@ namespace DotNetNuke.Security.Roles
                 r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
         }
 
-        /// <summary>
-        /// Get the RoleGroups for a portal.
-        /// </summary>
+        /// <summary>Get the RoleGroups for a portal.</summary>
         /// <param name="portalId">Id of the portal.</param>
         /// <returns>An ArrayList of RoleGroupInfo objects.</returns>
         public override ArrayList GetRoleGroups(int portalId)
@@ -319,9 +287,7 @@ namespace DotNetNuke.Security.Roles
             return new ArrayList(this.GetRoleGroupsInternal(portalId).ToList());
         }
 
-        /// <summary>
-        /// Update a RoleGroup.
-        /// </summary>
+        /// <summary>Update a RoleGroup.</summary>
         /// <param name="roleGroup">The RoleGroup to update.</param>
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {

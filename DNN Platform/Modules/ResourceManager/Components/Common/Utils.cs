@@ -8,9 +8,7 @@ namespace Dnn.Modules.ResourceManager.Components.Common
 
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// General utilities for the Resource Manager.
-    /// </summary>
+    /// <summary>General utilities for the Resource Manager.</summary>
     public class Utils
     {
         /// <summary>
@@ -32,9 +30,7 @@ namespace Dnn.Modules.ResourceManager.Components.Common
             return enumValue.ToString();
         }
 
-        /// <summary>
-        /// Gets the id of the group folder.
-        /// </summary>
+        /// <summary>Gets the id of the group folder.</summary>
         /// <param name="folderId">The id of the folder.</param>
         /// <returns>An integer representing the root folder id for the group.</returns>
         public static int GetFolderGroupId(int folderId)

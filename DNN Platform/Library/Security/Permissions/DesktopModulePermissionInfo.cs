@@ -48,9 +48,7 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        /// <summary>
-        /// Gets or sets and sets the DesktopModule Permission ID.
-        /// </summary>
+        /// <summary>Gets or sets the DesktopModule Permission ID.</summary>
         /// <returns>An Integer.</returns>
         public int DesktopModulePermissionID
         {
@@ -65,9 +63,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the PortalDesktopModule ID.
-        /// </summary>
+        /// <summary>Gets or sets the PortalDesktopModule ID.</summary>
         /// <returns>An Integer.</returns>
         public int PortalDesktopModuleID
         {
@@ -82,9 +78,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
         public int KeyID
         {
@@ -99,9 +93,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        /// <summary>
-        /// Fills a DesktopModulePermissionInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a DesktopModulePermissionInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
@@ -110,9 +102,7 @@ namespace DotNetNuke.Security.Permissions
             this.PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
         }
 
-        /// <summary>
-        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two DesktopModulePermissionInfo objects are equivalent/equal.</summary>
         /// <param name="other">a DesktopModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
@@ -137,9 +127,7 @@ namespace DotNetNuke.Security.Permissions
             return (this.AllowAccess == other.AllowAccess) && (this.PortalDesktopModuleID == other.PortalDesktopModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
-        /// <summary>
-        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal.
-        /// </summary>
+        /// <summary>Compares if two DesktopModulePermissionInfo objects are equivalent/equal.</summary>
         /// <param name="obj">a DesktopModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
         /// in the current object.
