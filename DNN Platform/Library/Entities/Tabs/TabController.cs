@@ -2733,9 +2733,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        /// <summary>
-        /// If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents
-        /// </summary>
+        /// <summary>If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents.</summary>
         /// <param name="portalId"></param>
         /// <param name="parentTabId"></param>
         private void UpdateChildTabLocalizedParents(int portalId, int parentTabId)

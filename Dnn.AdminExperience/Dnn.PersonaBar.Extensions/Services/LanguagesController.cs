@@ -39,9 +39,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <summary>A regular expression which matches a file name for a resource file.</summary>
         /// <remarks>
         /// Sample matches:
-        /// MyResources.ascx.en-US.resx
-        /// MyResources.ascx.en-US.Host.resx
-        /// MyResources.ascx.en-US.Portal-123.resx
+        /// <list type="bullet">
+        ///     <item><description><c>MyResources.ascx.en-US.resx</c></description></item>
+        ///     <item><description><c>MyResources.ascx.en-US.Host.resx</c></description></item>
+        ///     <item><description><c>MyResources.ascx.en-US.Portal-123.resx</c></description></item>
+        /// </list>
         /// </remarks>
         internal static readonly Regex FileInfoRegex = new Regex(
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
