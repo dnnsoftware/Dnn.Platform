@@ -134,6 +134,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Determines whether a property is <see langword="null"/>.</summary>
+        /// <typeparam name="T">The type of item.</typeparam>
         /// <param name="item">The object to test.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentNullException">When the property is <see langword="null"/>.</exception>
@@ -154,6 +155,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Determines whether a property is <see langword="null"/> or empty.</summary>
+        /// <typeparam name="T">The type of item.</typeparam>
         /// <param name="item">The object to test.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentException">When the property is <see langword="null"/> or empty.</exception>
