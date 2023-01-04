@@ -18,11 +18,7 @@ namespace DotNetNuke.Services.Syndication
 
     public class RssHandler : SyndicationHandlerBase
     {
-        /// <summary>
-        /// This method.
-        /// </summary>
-        /// <param name="channelName"></param>
-        /// <param name="userName"></param>
+        /// <inheritdoc />
         protected override void PopulateChannel(string channelName, string userName)
         {
             ModuleInfo objModule;

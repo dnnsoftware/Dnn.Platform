@@ -6,11 +6,9 @@ namespace DotNetNuke.Services.Syndication
     using System.Collections.Generic;
     using System.Xml;
 
-    /// <summary>
-    ///   Base class for RSS channel (for strongly-typed and late-bound channel types).
-    /// </summary>
-    /// <typeparam name = "TRssItemType"></typeparam>
-    /// <typeparam name = "TRssImageType"></typeparam>
+    /// <summary>Base class for RSS channel (for strongly-typed and late-bound channel types).</summary>
+    /// <typeparam name="TRssItemType">The item type.</typeparam>
+    /// <typeparam name="TRssImageType">The image type.</typeparam>
     public abstract class RssChannelBase<TRssItemType, TRssImageType> : RssElementBase
         where TRssItemType : RssElementBase, new()
         where TRssImageType : RssElementBase, new()
