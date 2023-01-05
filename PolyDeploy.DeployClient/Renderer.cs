@@ -139,7 +139,7 @@
                     if (level <= LogLevel.Error)
                     {
                         var failureTree = new Tree(Markup.FromInterpolated($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
-                        failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => f!));
+                        failureTree.AddNodes(file.Failures.Where(f => f != null).Select(f => new Text(f!)));
                         this.console.Write(failureTree);
                     }
 

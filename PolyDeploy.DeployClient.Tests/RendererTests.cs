@@ -468,6 +468,24 @@
             console.Output.ShouldContainStringsInOrder("❌", "Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
         }
 
+        [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Error)]
+        [Theory]
+        public void RenderInstallationStatus_FailuresHaveSpectreMarkup_RendersFailures(LogLevel logLevel)
+        {
+            var console = new TestConsole().Interactive();
+            var renderer = new Renderer(console);
+
+            var jimmy = new SessionResponse
+            {
+                Name = "Jimmy",
+                Attempted = true,
+                Failures = new List<string?> { "Failed SQL Query", "SELECT [Name] FROM Place" }
+            };
+            
+            renderer.RenderInstallationStatus(logLevel, new SortedList<int, SessionResponse?> { { 1, jimmy }, });
+            console.Output.ShouldContainStringsInOrder("❌", "Jimmy", "Failed", "Failed SQL Query", "SELECT [Name] FROM Place");
+        }
+
         [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.None)]
         [Theory]
         public void RenderCriticalError_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
