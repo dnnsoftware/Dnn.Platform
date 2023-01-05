@@ -39,8 +39,6 @@ namespace DotNetNuke.HttpModules.Membership
 
         private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
 
-        private static string cultureCode;
-
         /// <summary>
         /// Gets the name of the module.
         /// </summary>
