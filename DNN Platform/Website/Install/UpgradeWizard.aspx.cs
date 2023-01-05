@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Install
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
-        protected static string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+        protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
 
