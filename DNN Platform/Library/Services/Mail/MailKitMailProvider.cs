@@ -47,7 +47,11 @@ namespace DotNetNuke.Services.Mail
                         smtpClient.Authenticate(smtpInfo.Username, smtpInfo.Password);
                     }
 
-                    this.CheckOAuthSettings(smtpClient, smtpInfo);
+                    var (provider, portalId) = GetOAuthProvider(smtpClient, smtpInfo);
+                    if (provider != null)
+                    {
+                        provider.Authorize(portalId, new OAuthSmtpClient(smtpClient));
+                    }
 
                     smtpClient.Send(mailMessage);
                     smtpClient.Disconnect(true);
@@ -83,7 +87,11 @@ namespace DotNetNuke.Services.Mail
                         await smtpClient.AuthenticateAsync(smtpInfo.Username, smtpInfo.Password, cancellationToken);
                     }
 
-                    this.CheckOAuthSettings(smtpClient, smtpInfo);
+                    var (provider, portalId) = GetOAuthProvider(smtpClient, smtpInfo);
+                    if (provider != null)
+                    {
+                        provider.AuthorizeAsync(portalId, new OAuthSmtpClient(smtpClient), cancellationToken);
+                    }
 
                     await smtpClient.SendAsync(mailMessage, cancellationToken);
                     await smtpClient.DisconnectAsync(true, cancellationToken);
@@ -290,7 +298,7 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        private void CheckOAuthSettings(SmtpClient smtpClient, SmtpInfo smtpInfo)
+        private static (ISmtpOAuthProvider, int) GetOAuthProvider(SmtpClient smtpClient, SmtpInfo smtpInfo)
         {
             var usingOAuth = smtpInfo.Authentication == "3";
             if (usingOAuth)
@@ -304,8 +312,30 @@ namespace DotNetNuke.Services.Mail
                         portalId = PortalSettings.Current.PortalId;
                     }
 
-                    authProvider.Authorize(portalId, smtpClient);
+                    return (authProvider, portalId);
                 }
+            }
+
+            return (null, Null.NullInteger);
+        }
+
+        private class OAuthSmtpClient : IOAuth2SmtpClient
+        {
+            public OAuthSmtpClient(ISmtpClient smtpClient)
+            {
+                this.SmtpClient = smtpClient;
+            }
+
+            public ISmtpClient SmtpClient { get; }
+
+            public void Authenticate(string username, string token)
+            {
+                this.SmtpClient.Authenticate(new SaslMechanismOAuth2(username, token));
+            }
+
+            public Task AuthenticateAsync(string username, string token, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return this.SmtpClient.AuthenticateAsync(new SaslMechanismOAuth2(username, token), cancellationToken);
             }
         }
     }

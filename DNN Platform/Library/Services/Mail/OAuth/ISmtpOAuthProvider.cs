@@ -1,19 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Mail.OAuth
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
-    using MailKit.Net.Smtp;
-
     /// <summary>
-    /// Smtp Oauth provider interface.
+    /// Smtp OAuth provider interface.
     /// </summary>
     public interface ISmtpOAuthProvider
     {
@@ -62,6 +59,15 @@ namespace DotNetNuke.Services.Mail.OAuth
         /// </summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="smtpClient">The smtp client.</param>
-        void Authorize(int portalId, ISmtpClient smtpClient);
+        void Authorize(int portalId, IOAuth2SmtpClient smtpClient);
+
+        /// <summary>
+        /// Authorize the smtp client.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="smtpClient">The smtp client.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> indicating completion.</returns>
+        Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

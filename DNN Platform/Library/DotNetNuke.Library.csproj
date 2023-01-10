@@ -832,6 +832,7 @@
     <Compile Include="Services\Mail\MailInfo.cs" />
     <Compile Include="Services\Mail\MailAttachment.cs" />
     <Compile Include="Services\Mail\MailProvider.cs" />
+    <Compile Include="Services\Mail\OAuth\IOAuth2SmtpClient.cs" />
     <Compile Include="Services\Mail\OAuth\ISmtpOAuthProvider.cs" />
     <Compile Include="Services\Mail\OAuth\ISmtpOAuthController.cs" />
     <Compile Include="Services\Mail\OAuth\SmtpOAuthController.cs" />
