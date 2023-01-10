@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -18,7 +19,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// </summary>
     public class MemoryProvider : OutputCachingProvider
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1303:ConstFieldNamesMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected const string cachePrefix = "DNN_OUTPUT:";
+
         private static System.Web.Caching.Cache runtimeCache;
 
         internal static System.Web.Caching.Cache Cache

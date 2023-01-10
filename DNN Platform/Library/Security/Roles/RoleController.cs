@@ -54,8 +54,12 @@ namespace DotNetNuke.Security.Roles
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
             var id = Provider.CreateRoleGroup(objRoleGroupInfo);
-            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
+            EventLogController.Instance.AddLog(
+                objRoleGroupInfo,
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                EventLogController.EventLogType.USER_ROLE_CREATED);
             return id;
         }
 
@@ -608,6 +612,36 @@ namespace DotNetNuke.Security.Roles
             Instance.ClearRoleCache(portalId);
         }
 
+        /// <inheritdoc/>
+        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
+        {
+            Requires.NotNull("role", role);
+
+            var roleId = -1;
+            if (Provider.CreateRole(role))
+            {
+                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
+                if (addToExistUsers)
+                {
+                    this.AutoAssignUsers(role);
+                }
+
+                roleId = role.RoleID;
+
+                this.ClearRoleCache(role.PortalID);
+
+                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
+            }
+
+            return roleId;
+        }
+
+        /// <inheritdoc/>
+        void IRoleController.UpdateRole(RoleInfo role)
+        {
+            this.UpdateRole(role, true);
+        }
+
         /// <summary>
         /// Completely remove all a user's roles for a specific portal. This method is used when
         /// anonymizing a user.
@@ -688,15 +722,15 @@ namespace DotNetNuke.Security.Roles
                 FromUserID = portalSettings.AdministratorId,
                 ToUserID = objUser.UserID,
                 Subject =
-                    Localization.GetSystemMessage(objUser.Profile.PreferredLocale, portalSettings,
-                                                  "EMAIL_ROLE_" +
-                                                  UserRoleActionsCaption[(int)action] +
-                                                  "_SUBJECT", objUser),
+                    Localization.GetSystemMessage(
+                        objUser.Profile.PreferredLocale,
+                        portalSettings,
+                        $"EMAIL_ROLE_{UserRoleActionsCaption[(int)action]}_SUBJECT",
+                        objUser),
                 Body = Localization.GetSystemMessage(
                     objUser.Profile.PreferredLocale,
                     portalSettings,
-                    "EMAIL_ROLE_" +
-                                                     UserRoleActionsCaption[(int)action] + "_BODY",
+                    $"EMAIL_ROLE_{UserRoleActionsCaption[(int)action]}_BODY",
                     objUser,
                     Localization.GlobalResourceFile,
                     custom),
@@ -705,30 +739,6 @@ namespace DotNetNuke.Security.Roles
 
             // _messagingController.SaveMessage(_message);
             Mail.SendEmail(portalSettings.Email, objUser.Email, message.Subject, message.Body);
-        }
-
-        /// <inheritdoc/>
-        int IRoleController.AddRole(RoleInfo role, bool addToExistUsers)
-        {
-            Requires.NotNull("role", role);
-
-            var roleId = -1;
-            if (Provider.CreateRole(role))
-            {
-                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
-                if (addToExistUsers)
-                {
-                    this.AutoAssignUsers(role);
-                }
-
-                roleId = role.RoleID;
-
-                this.ClearRoleCache(role.PortalID);
-
-                EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
-            }
-
-            return roleId;
         }
 
         private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
@@ -760,12 +770,6 @@ namespace DotNetNuke.Security.Roles
                     }
                 }
             }
-        }
-
-        /// <inheritdoc/>
-        void IRoleController.UpdateRole(RoleInfo role)
-        {
-            this.UpdateRole(role, true);
         }
     }
 }

@@ -26,7 +26,6 @@ namespace Dnn.PersonaBar.Security.Components
 
     public class SecurityController
     {
-
         private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public IEnumerable<string> GetAuthenticationProviders()

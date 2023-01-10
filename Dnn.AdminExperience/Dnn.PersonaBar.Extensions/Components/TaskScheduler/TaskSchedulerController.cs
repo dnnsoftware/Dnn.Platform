@@ -86,9 +86,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", this.LocalResourcesFile));
         }
 
-        public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement,
-            int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled,
-            bool enabled, string objectDependencies, string scheduleStartDate, string servers)
+        public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string scheduleStartDate, string servers)
         {
             var scheduleItem = new ScheduleItem();
             scheduleItem.TypeFullName = typeFullName;

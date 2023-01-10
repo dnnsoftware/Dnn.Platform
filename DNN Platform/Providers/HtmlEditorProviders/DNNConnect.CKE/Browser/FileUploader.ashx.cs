@@ -33,6 +33,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         private readonly JavaScriptSerializer js = new JavaScriptSerializer();
 
+        private PortalSettings portalSettings = null;
+
         /// <summary>
         /// Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler" /> instance.
         /// </summary>
@@ -113,6 +115,22 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>
+        /// The get encoder.
+        /// </summary>
+        /// <param name="format">
+        /// The format.
+        /// </param>
+        /// <returns>
+        /// The Encoder.
+        /// </returns>
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
+        }
+
+        /// <summary>
         /// Handle request based on method.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -161,24 +179,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             this.WriteJsonIframeSafe(context, statuses);
         }
-
-        /// <summary>
-        /// The get encoder.
-        /// </summary>
-        /// <param name="format">
-        /// The format.
-        /// </param>
-        /// <returns>
-        /// The Encoder.
-        /// </returns>
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-
-            return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
-        }
-
-        private PortalSettings portalSettings = null;
 
         private EditorProviderSettings GetCurrentSettings(HttpContext context)
         {

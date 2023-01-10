@@ -1903,13 +1903,10 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         // Note: until now there is no use of time range for content
-        // ReSharper disable UnusedParameter.Local
-
+        // ReSharper disable once UnusedParameter.Local
         private int ExportPortableContent(ExportTab exportPage, ExportModule exportModule, DateTime toDate, DateTime? fromDat)
-
-        // ReSharper enable UnusedParameter.Local
         {
-            // check if module's contnt was exported before
+            // check if module's content was exported before
             var existingItems = this.Repository.FindItems<ExportModuleContent>(m => m.ModuleID == exportModule.ModuleID);
             if (!existingItems.Any())
             {

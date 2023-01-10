@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Response.Redirect(this.ReturnURL, true);
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

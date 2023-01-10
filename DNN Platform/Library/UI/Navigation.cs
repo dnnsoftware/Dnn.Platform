@@ -345,8 +345,9 @@ namespace DotNetNuke.UI
                             }
 
                             node.Image = action.Icon;
-                            if (action.HasChildren()) // if action has children then call function recursively
+                            if (action.HasChildren())
                             {
+                                // if action has children then call function recursively
                                 AddChildActions(action, node, rootNode, actionControl, intDepth);
                             }
                         }
@@ -371,7 +372,9 @@ namespace DotNetNuke.UI
         private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, IDictionary<string, DNNNode> nodesLookup)
         {
             var objNode = new DNNNode();
-            if (objTab.Title == "~") // NEW!
+
+            // NEW!
+            if (objTab.Title == "~")
             {
                 // A title (text) of ~ denotes a break
                 objNodes.AddBreak();
@@ -526,13 +529,13 @@ namespace DotNetNuke.UI
             return objTab.ParentId == ((TabInfo)objTabLookup[intStartTabId]).ParentId;
         }
 
-        private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
-                                       int intDepth, int intNavNodeOptions, IDictionary<string, DNNNode> nodesLookup)
+        private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions, IDictionary<string, DNNNode> nodesLookup)
         {
             PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             bool showHidden = (intNavNodeOptions & (int)NavNodeOptions.IncludeHiddenNodes) == (int)NavNodeOptions.IncludeHiddenNodes;
 
-            if (CanShowTab(objTab, TabPermissionController.CanAdminPage(), true, showHidden)) // based off of tab properties, is it shown
+            // based off of tab properties, is it shown
+            if (CanShowTab(objTab, TabPermissionController.CanAdminPage(), true, showHidden))
             {
                 DNNNodeCollection objParentNodes;
                 DNNNode objParentNode;
@@ -572,7 +575,8 @@ namespace DotNetNuke.UI
                 }
                 else
                 {
-                    if (blnParentFound) // if tabs parent already in hierarchy (as is the case when we are sending down more than 1 level)
+                    // if tabs parent already in hierarchy (as is the case when we are sending down more than 1 level)
+                    if (blnParentFound)
                     {
                         // parent will be found for siblings.  Check to see if we want them, if we don't make sure tab is not a sibling
                         if (((intNavNodeOptions & (int)NavNodeOptions.IncludeSiblings) != 0) || IsTabSibling(objTab, intStartTabId, objTabLookup) == false)

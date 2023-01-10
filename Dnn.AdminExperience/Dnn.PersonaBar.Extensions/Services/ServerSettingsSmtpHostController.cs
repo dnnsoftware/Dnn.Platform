@@ -1,11 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Servers.Services
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -19,8 +17,6 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.Providers;
@@ -134,9 +130,9 @@ namespace Dnn.PersonaBar.Servers.Services
                     this.hostSettingsService.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
                     this.hostSettingsService.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(), false);
 
-                    if (request.SmtpAuthentication == 3) //oauth authentication
+                    if (request.SmtpAuthentication == 3) // OAuth authentication
                     {
-                        // Only the mail kit provider supports oauth.
+                        // Only the mail kit provider supports OAuth.
                         this.EnsureUsingMailkitProvider();
 
                         var authProvider = this.hostSettingsService.GetString("SMTPAuthProvider", string.Empty);
@@ -157,7 +153,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     if (request.SmtpPassword == ObfuscateString)
                     {
-                        request.SmtpPassword = GetSmtpPassword(portalId, false);
+                        request.SmtpPassword = this.GetSmtpPassword(portalId, false);
                     }
 
                     PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
@@ -172,9 +168,9 @@ namespace Dnn.PersonaBar.Servers.Services
                     PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
-                    if (request.SmtpAuthentication == 3) //oauth authentication
+                    if (request.SmtpAuthentication == 3) // OAuth authentication
                     {
-                        // Only the mail kit provider supports oauth.
+                        // Only the mail kit provider supports OAuth.
                         this.EnsureUsingMailkitProvider();
 
                         var authProvider = PortalController.GetPortalSetting("SMTPAuthProvider", portalId, string.Empty);

@@ -13,7 +13,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class PermissionsDto : Permissions
     {
-
         public PermissionsDto(bool needDefinitions)
             : base(needDefinitions)
         {

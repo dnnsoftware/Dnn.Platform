@@ -10,7 +10,6 @@ namespace Dnn.PersonaBar.Prompt.Common
 
     internal class PortalHelper
     {
-
         internal static bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)
         {
             const int NO_SITE_GROUPID = -1;

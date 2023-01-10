@@ -10,17 +10,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using DotNetNuke.Entities.Modules;
 
     /// <summary>
-    /// This class exists solely to maintain compatibility between the original VB version
-    /// which supported ScopeType.ScopeType and the c# version which doesn't allow members with
-    /// the same naem as their parent type.
-    /// </summary>
-    [Serializable]
-    public abstract class ScopeTypeMemberNameFixer
-    {
-        public string ScopeType { get; set; }
-    }
-
-    /// <summary>
     /// Class of ScopeType.
     /// </summary>
     /// <seealso cref="TermController"/>

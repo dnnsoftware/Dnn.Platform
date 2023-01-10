@@ -685,7 +685,6 @@ namespace DotNetNuke.UI.Modules
                             string.Empty,
                             "action_export.gif",
                             this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
-
                             string.Empty,
                             false,
                             SecurityAccessLevel.View,

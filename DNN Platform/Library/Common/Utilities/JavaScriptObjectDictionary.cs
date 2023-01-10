@@ -109,6 +109,12 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
     }
 
     /// <inheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this.GetEnumeratorPrivate();
+    }
+
+    /// <inheritdoc/>
     public override string ToString()
     {
         return this.dictionary == null ? string.Empty : this.dictionary.ToString();
@@ -145,12 +151,6 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
 
         builder.Append('}');
         return builder.ToString();
-    }
-
-    /// <inheritdoc/>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this.GetEnumeratorPrivate();
     }
 
     private IEnumerator GetEnumeratorPrivate()

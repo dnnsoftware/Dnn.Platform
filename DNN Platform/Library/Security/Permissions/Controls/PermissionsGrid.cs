@@ -1,12 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Security.Permissions.Controls
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web.UI;
@@ -27,10 +29,15 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public abstract class PermissionsGrid : Control, INamingContainer
     {
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected const string PermissionTypeGrant = "True";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected const string PermissionTypeDeny = "False";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected const string PermissionTypeNull = "Null";
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DataGrid rolePermissionsGrid;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DataGrid userPermissionsGrid;
         private ArrayList permissions;
         private ArrayList users;
@@ -147,8 +154,9 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 int portalID;
-                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) // if we are in host filemanager then we need to pass a null portal id
+                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID))
                 {
+                    // if we are in host filemanager then we need to pass a null portal id
                     portalID = Null.NullInteger;
                 }
                 else
@@ -221,11 +229,17 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the underlying Permissions Data Table.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public DataTable dtRolePermissions { get; private set; }
 
         /// <summary>
         /// Gets the underlying Permissions Data Table.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public DataTable dtUserPermissions { get; private set; }
 
         /// <summary>

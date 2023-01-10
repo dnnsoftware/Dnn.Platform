@@ -1,11 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Security
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using System.Web.UI;
@@ -272,6 +274,9 @@ namespace DotNetNuke.Modules.Admin.Security
             return "<a href=\"" + Globals.LinkClick("userid=" + userID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + displayName + "</a>";
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public void cmdDeleteUserRole_click(object sender, ImageClickEventArgs e)
         {
             if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
@@ -374,16 +379,20 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
                 this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
-            catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
+            catch (ThreadAbortException exc)
             {
+                // Do nothing if ThreadAbort as this is caused by a redirect
                 Logger.Debug(exc);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void grdUserRoles_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             DataGridItem item = e.Item;
@@ -594,8 +603,9 @@ namespace DotNetNuke.Modules.Admin.Security
                     expiryDate = objUserRole.ExpiryDate;
                 }
             }
-            else // new role assignment
+            else
             {
+                // new role assignment
                 RoleInfo objRole = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
 
                 if (objRole.BillingPeriod > 0)
@@ -749,7 +759,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 this.BindGrid();
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -788,7 +798,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 item.Cells[5].Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -4,7 +4,6 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
-    using System.Collections.Generic;
     using System.Xml;
 
     /// <summary>
@@ -204,9 +203,5 @@ namespace DotNetNuke.Services.Syndication
         }
 
         public OpmlOutlines Outlines { get; set; }
-    }
-
-    public class OpmlOutlines : List<OpmlOutline>
-    {
     }
 }

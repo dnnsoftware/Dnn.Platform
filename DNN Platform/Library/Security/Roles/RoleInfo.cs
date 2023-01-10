@@ -383,8 +383,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser,
-                                  Scope accessLevel, ref bool propertyNotFound)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;
             if (format == string.Empty)

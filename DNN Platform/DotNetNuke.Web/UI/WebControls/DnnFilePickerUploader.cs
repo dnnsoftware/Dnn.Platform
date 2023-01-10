@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web.UI;
@@ -22,10 +24,21 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnFilePickerUploader : UserControl, IFilePickerUploader
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFileDropDownList FilesComboBox;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFolderDropDownList FoldersComboBox;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label FoldersLabel;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DnnFileUpload FileUploadControl;
+
+        // ReSharper restore InconsistentNaming
         private const string MyFileName = "filepickeruploader.ascx";
         private int? portalId = null;
         private string fileFilter;
@@ -229,8 +242,9 @@ namespace DotNetNuke.Web.UI.WebControls
                         Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
                     };
                 }
-                else if (this.UsePersonalFolder) // if UserPersonalFolder is true, make sure the file is under the user folder.
+                else if (this.UsePersonalFolder)
                 {
+                    // if UserPersonalFolder is true, make sure the file is under the user folder.
                     this.FoldersComboBox.SelectedItem = new ListItem
                     {
                         Text = FolderManager.Instance.MyFolderName,

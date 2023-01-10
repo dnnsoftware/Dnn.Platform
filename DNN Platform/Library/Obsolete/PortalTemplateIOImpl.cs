@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using System.IO;
     using System.Linq;
     using System.Xml;
+
     using DotNetNuke.Common;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -61,7 +62,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         /// <inheritdoc/>
         public (string, List<string>) GetTemplateLanguages(string templateFilePath)
         {
-            var defaultLanguage = "";
+            var defaultLanguage = string.Empty;
             var locales = new List<string>();
             var templateXml = new XmlDocument() { XmlResolver = null };
             templateXml.Load(templateFilePath);

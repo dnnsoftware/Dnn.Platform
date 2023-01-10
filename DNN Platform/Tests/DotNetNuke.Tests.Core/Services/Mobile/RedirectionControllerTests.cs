@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this.SetupRoleProvider();
 
             var tabController = TabController.Instance;
-            var dataProviderField = tabController.GetType().GetField("_dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
+            var dataProviderField = tabController.GetType().GetField("dataProvider", BindingFlags.NonPublic | BindingFlags.Instance);
             if (dataProviderField != null)
             {
                 dataProviderField.SetValue(tabController, this._dataProvider.Object);

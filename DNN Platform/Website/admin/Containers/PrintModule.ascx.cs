@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((ImageButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

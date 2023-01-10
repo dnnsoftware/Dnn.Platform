@@ -354,6 +354,11 @@ namespace DotNetNuke.Common.Utilities
                        configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
             if (httpNode != null)
             {
+                if (httpNode.Attributes["maxAllowedContentLength"] == null)
+                {
+                    httpNode.Attributes.Append(configNav.CreateAttribute("maxAllowedContentLength"));
+                }
+
                 httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
             }
 

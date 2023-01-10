@@ -128,10 +128,8 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    // ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable once EmptyGeneralCatchClause
                     catch
-
-                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1
@@ -258,29 +256,33 @@ namespace DotNetNuke.Entities.Urls
             string rootPath = Globals.ApplicationMapPath + "\\";
 
             string filePath;
-            if (portalId > -1) // specific portal
+            if (portalId > -1)
             {
+                // specific portal
                 // first look in the root folder with the portalid as a prefix
                 filePath = rootPath + portalId.ToString() + "." + fileName;
             }
-            else // no specific portal
+            else
             {
+                // no specific portal
                 filePath = rootPath + fileName; // just the pathname
             }
 
             if (File.Exists(filePath))
             {
                 result = filePath;
-                if (portalId > -1) // if there was a portal specified, this was a portal specific path
+                if (portalId > -1)
                 {
+                    // if there was a portal specified, this was a portal specific path
                     portalSpecificFound = true;
                 }
             }
             else
             {
                 // no portal specific name in the root folder
-                if (portalId > Null.NullInteger) // at this point, only interested if a specific portal is requested
+                if (portalId > Null.NullInteger)
                 {
+                    // at this point, only interested if a specific portal is requested
                     var portal = PortalController.Instance.GetPortal(portalId);
                     if (portal != null)
                     {
@@ -530,7 +532,8 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-            if (checkThisTab) // the specified tab
+            // the specified tab
+            if (checkThisTab)
             {
                 // tab exists, get the providers for this tab
                 string key = string.Format(PortalModuleProvidersForTabKey, portalId, tabId);

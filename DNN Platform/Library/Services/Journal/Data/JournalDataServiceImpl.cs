@@ -13,27 +13,41 @@ namespace DotNetNuke.Services.Journal
         private readonly DataProvider provider = DataProvider.Instance();
 
         /// <inheritdoc/>
-        public IDataReader Journal_ListForSummary(int portalId, int moduleId, int currentUserId, int rowIndex,
-                                                  int maxRows)
+        public IDataReader Journal_ListForSummary(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows)
         {
-            return this.provider.ExecuteReader("Journal_ListForSummary", portalId, moduleId, currentUserId, rowIndex,
-                                           maxRows);
+            return this.provider.ExecuteReader(
+                "Journal_ListForSummary",
+                portalId,
+                moduleId,
+                currentUserId,
+                rowIndex,
+                maxRows);
         }
 
         /// <inheritdoc/>
-        public IDataReader Journal_ListForProfile(int portalId, int moduleId, int currentUserId, int profileId,
-                                                  int rowIndex, int maxRows)
+        public IDataReader Journal_ListForProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex, int maxRows)
         {
-            return this.provider.ExecuteReader("Journal_ListForProfile", portalId, moduleId, currentUserId, profileId,
-                                           rowIndex, maxRows);
+            return this.provider.ExecuteReader(
+                "Journal_ListForProfile",
+                portalId,
+                moduleId,
+                currentUserId,
+                profileId,
+                rowIndex,
+                maxRows);
         }
 
         /// <inheritdoc/>
-        public IDataReader Journal_ListForGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex,
-                                                int maxRows)
+        public IDataReader Journal_ListForGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex, int maxRows)
         {
-            return this.provider.ExecuteReader("Journal_ListForGroup", portalId, moduleId, currentUserId, groupId, rowIndex,
-                                           maxRows);
+            return this.provider.ExecuteReader(
+                "Journal_ListForGroup",
+                portalId,
+                moduleId,
+                currentUserId,
+                groupId,
+                rowIndex,
+                maxRows);
         }
 
         /// <inheritdoc/>
@@ -115,39 +129,95 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <inheritdoc/>
-        public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
-                                string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
+        public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
         {
-            journalId = this.provider.ExecuteScalar<int>("Journal_Save", portalId, journalId, journalTypeId, currentUserId, profileId,
-                                                    groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, false, false);
+            journalId = this.provider.ExecuteScalar<int>(
+                "Journal_Save",
+                portalId,
+                journalId,
+                journalTypeId,
+                currentUserId,
+                profileId,
+                groupId,
+                title,
+                summary,
+                itemData,
+                xml,
+                objectKey,
+                accessKey,
+                securitySet,
+                false,
+                false);
             return journalId;
         }
 
         /// <inheritdoc/>
-        public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
-                        string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)
+        public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)
         {
-            journalId = this.provider.ExecuteScalar<int>("Journal_Save", portalId, journalId, journalTypeId, currentUserId, profileId,
-                                                    groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, commentsDisabled, commentsHidden);
+            journalId = this.provider.ExecuteScalar<int>(
+                "Journal_Save",
+                portalId,
+                journalId,
+                journalTypeId,
+                currentUserId,
+                profileId,
+                groupId,
+                title,
+                summary,
+                itemData,
+                xml,
+                objectKey,
+                accessKey,
+                securitySet,
+                commentsDisabled,
+                commentsHidden);
             return journalId;
         }
 
         /// <inheritdoc/>
-        public int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
-                        string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
+        public int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
         {
-            journalId = this.provider.ExecuteScalar<int>("Journal_Update", portalId, journalId, journalTypeId, currentUserId, profileId,
-                                                    groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, false, false);
+            journalId = this.provider.ExecuteScalar<int>(
+                "Journal_Update",
+                portalId,
+                journalId,
+                journalTypeId,
+                currentUserId,
+                profileId,
+                groupId,
+                title,
+                summary,
+                itemData,
+                xml,
+                objectKey,
+                accessKey,
+                securitySet,
+                false,
+                false);
 
             return journalId;
         }
 
         /// <inheritdoc/>
-        public int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
-                        string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)
+        public int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)
         {
-            journalId = this.provider.ExecuteScalar<int>("Journal_Update", portalId, journalId, journalTypeId, currentUserId, profileId,
-                                                    groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, commentsDisabled, commentsHidden);
+            journalId = this.provider.ExecuteScalar<int>(
+                "Journal_Update",
+                portalId,
+                journalId,
+                journalTypeId,
+                currentUserId,
+                profileId,
+                groupId,
+                title,
+                summary,
+                itemData,
+                xml,
+                objectKey,
+                accessKey,
+                securitySet,
+                commentsDisabled,
+                commentsHidden);
             return journalId;
         }
 
@@ -231,13 +301,20 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <inheritdoc/>
-        public int Journal_Types_Save(int journalTypeId, string journalType, string icon, int portalId, bool isEnabled,
-                                      bool appliesToProfile, bool appliesToGroup, bool appliesToStream, string options,
-                                      bool supportsNotify)
+        public int Journal_Types_Save(int journalTypeId, string journalType, string icon, int portalId, bool isEnabled, bool appliesToProfile, bool appliesToGroup, bool appliesToStream, string options, bool supportsNotify)
         {
-            journalTypeId = this.provider.ExecuteScalar<int>("Journal_Types_Save", journalTypeId, journalType, icon,
-                                                         portalId, isEnabled, appliesToProfile, appliesToGroup,
-                                                         appliesToStream, options, supportsNotify);
+            journalTypeId = this.provider.ExecuteScalar<int>(
+                "Journal_Types_Save",
+                journalTypeId,
+                journalType,
+                icon,
+                portalId,
+                isEnabled,
+                appliesToProfile,
+                appliesToGroup,
+                appliesToStream,
+                options,
+                supportsNotify);
             return journalTypeId;
         }
 

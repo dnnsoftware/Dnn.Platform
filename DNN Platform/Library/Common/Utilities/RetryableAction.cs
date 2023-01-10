@@ -17,6 +17,11 @@ namespace DotNetNuke.Common.Utilities.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
+        static RetryableAction()
+        {
+            SleepAction = GoToSleep;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RetryableAction"/> class.
         /// </summary>
@@ -49,11 +54,6 @@ namespace DotNetNuke.Common.Utilities.Internal
             this.MaxRetries = maxRetries;
             this.Delay = delay;
             this.DelayMultiplier = delayMultiplier;
-        }
-
-        static RetryableAction()
-        {
-            SleepAction = GoToSleep;
         }
 
         /// <summary>

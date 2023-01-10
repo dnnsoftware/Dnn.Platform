@@ -541,7 +541,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             if (!string.IsNullOrEmpty(folderPath))
             {
-                var newFolderPath = "";
+                var newFolderPath = string.Empty;
                 IFolderInfo retval = null;
                 foreach (var folderName in folderPath.Split('/'))
                 {

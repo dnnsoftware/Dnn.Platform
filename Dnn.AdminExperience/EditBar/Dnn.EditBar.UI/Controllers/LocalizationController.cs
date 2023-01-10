@@ -92,16 +92,13 @@ namespace Dnn.EditBar.UI.Controllers
                 var document = new XmlDocument();
                 document.Load(stream);
 
-                // ReSharper disable AssignNullToNotNullAttribute
+                // ReSharper disable once AssignNullToNotNullAttribute
                 var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
 
-                // ReSharper restore AssignNullToNotNullAttribute
                 AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
-                // ReSharper disable AssignNullToNotNullAttribute
+                // ReSharper disable once AssignNullToNotNullAttribute
                 foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
-
-                // ReSharper restore AssignNullToNotNullAttribute
                 {
                     if (navigator.NodeType == XPathNodeType.Comment)
                     {

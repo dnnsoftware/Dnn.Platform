@@ -122,7 +122,8 @@ namespace Dnn.PersonaBar.CssEditor.Services
                     var overrideSetting =
                         PortalController.GetPortalSetting(
                             ClientResourceSettings.OverrideDefaultSettingsKey,
-                            request.PortalId, "False");
+                            request.PortalId,
+                            "False");
                     bool overridePortal;
                     if (bool.TryParse(overrideSetting, out overridePortal))
                     {

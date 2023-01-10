@@ -293,8 +293,9 @@ namespace DotNetNuke.UI.Skins
                     }
 
                     // Add support for drag and drop
-                    if (Globals.IsEditMode()) // this call also checks for permission
+                    if (Globals.IsEditMode())
                     {
+                        // this call also checks for permission
                         if (this.PaneControl.Attributes["class"] != null)
                         {
                             this.PaneControl.Attributes["class"] = this.PaneControl.Attributes["class"] + " dnnSortable";

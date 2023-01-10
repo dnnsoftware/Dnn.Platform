@@ -78,9 +78,11 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>data reader.</returns>
         public IDataReader GetContentItems(int contentTypeId, int tabId, int moduleId)
         {
-            return this.provider.ExecuteReader("GetContentItems", this.provider.GetNull(contentTypeId),
-                                                            this.provider.GetNull(tabId),
-                                                            this.provider.GetNull(moduleId));
+            return this.provider.ExecuteReader(
+                "GetContentItems",
+                this.provider.GetNull(contentTypeId),
+                this.provider.GetNull(tabId),
+                this.provider.GetNull(moduleId));
         }
 
         /// <summary>

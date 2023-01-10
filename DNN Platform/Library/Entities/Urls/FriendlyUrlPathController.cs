@@ -57,8 +57,9 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 // check for 'all tabs' replaceions
-                if (replaceActions.ContainsKey(-1)) // -1 means 'all tabs' - replacing across all tabs
+                if (replaceActions.ContainsKey(-1))
                 {
+                    // -1 means 'all tabs' - replacing across all tabs
                     // initialise to empty collection if there are no specific tab replaces
                     if (parmReplaces == null)
                     {
@@ -137,8 +138,9 @@ namespace DotNetNuke.Entities.Urls
             // determine if this url should be converted to a userprofile url by checking the saved rules matching the tab/portalid
             if (portalSettings != null && tab.PortalID == portalSettings.PortalId &&
                     (tab.TabID == portalSettings.UserTabId || portalSettings.UserTabId == -1 ||
-                        tab.ParentId == portalSettings.UserTabId)) // -1 == all tabs in portal
+                        tab.ParentId == portalSettings.UserTabId))
             {
+                // -1 == all tabs in portal
                 int userId;
                 string rawUserId, remainingPath;
 

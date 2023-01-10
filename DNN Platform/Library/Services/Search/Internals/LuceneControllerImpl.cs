@@ -104,8 +104,11 @@ namespace DotNetNuke.Services.Search.Internals
                                 {
 #pragma warning disable 0618
                                     throw new SearchException(
-                                        Localization.GetExceptionMessage("UnableToCreateLuceneWriter", "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
-                                        e, new SearchItemInfo());
+                                        Localization.GetExceptionMessage(
+                                            "UnableToCreateLuceneWriter",
+                                            "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
+                                        e,
+                                        new SearchItemInfo());
 #pragma warning restore 0618
                                 }
                             }
@@ -113,7 +116,8 @@ namespace DotNetNuke.Services.Search.Internals
                             this.CheckDisposed();
                             var writer = new IndexWriter(
                                 FSDirectory.Open(this.IndexFolder),
-                                this.GetCustomAnalyzer() ?? new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
+                                this.GetCustomAnalyzer() ?? new SynonymAnalyzer(),
+                                IndexWriter.MaxFieldLength.UNLIMITED);
                             this.idxReader = writer.GetReader();
                             Thread.MemoryBarrier();
                             this.writer = writer;

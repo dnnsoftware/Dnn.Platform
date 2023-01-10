@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -26,39 +27,84 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class UrlControl : UserControlBase
     {
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel ErrorRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel FileRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel ImagesRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel TabRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel TypeRow;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel URLRow;
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel UserRow;
+
+        // ReSharper restore InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboFiles;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboFolders;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboImages;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboTabs;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected DropDownList cboUrls;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkLog;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkNewWindow;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected CheckBox chkTrack;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdAdd;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdCancel;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdDelete;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdSave;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdSelect;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected LinkButton cmdUpload;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Image imgStorageLocationType;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblFile;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblFolder;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblImages;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblMessage;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblTab;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblURL;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblURLType;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Label lblUser;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected RadioButtonList optType;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected HtmlInputFile txtFile;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtUrl;
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected TextBox txtUser;
         private bool doChangeURL;
         private bool doReloadFiles;
@@ -638,7 +684,7 @@ namespace DotNetNuke.UI.UserControls
                     // ViewState("IsUrlControlLoaded") = "Loaded"
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -687,6 +733,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cboFolders_SelectedIndexChanged(object sender, EventArgs e)
         {
             int portalId = Null.NullInteger;
@@ -746,6 +795,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = false;
@@ -760,6 +812,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             this.cboFiles.Visible = true;
@@ -774,6 +829,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
             if (this.cboUrls.SelectedItem != null)
@@ -790,6 +848,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdSave_Click(object sender, EventArgs e)
         {
             this.cmdUpload.Visible = false;
@@ -896,6 +957,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdSelect_Click(object sender, EventArgs e)
         {
             this.cboUrls.Visible = true;
@@ -917,10 +981,13 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void cmdUpload_Click(object sender, EventArgs e)
         {
             string strSaveFolder = this.cboFolders.SelectedValue;
-            this.LoadFolders("ADD");
+            this.LoadFolders("WRITE");
             if (this.cboFolders.Items.FindByValue(strSaveFolder) != null)
             {
                 this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
@@ -944,7 +1011,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     // reset controls
-                    this.LoadFolders("BROWSE,ADD");
+                    this.LoadFolders("BROWSE,WRITE");
                     this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
                     this.cboFiles.Visible = true;
                     this.cmdUpload.Visible = false;
@@ -963,6 +1030,9 @@ namespace DotNetNuke.UI.UserControls
             this.doReloadFiles = false;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Type changed, render the correct control set
@@ -1110,8 +1180,9 @@ namespace DotNetNuke.UI.UserControls
                     this.chkTrack.Checked = objUrlTracking.TrackClicks;
                     this.chkLog.Checked = objUrlTracking.LogActivity;
                 }
-                else // the url does not exist in the tracking table
+                else
                 {
+                    // the url does not exist in the tracking table
                     this.chkTrack.Checked = false;
                     this.chkLog.Checked = false;
                 }
@@ -1404,7 +1475,7 @@ namespace DotNetNuke.UI.UserControls
 
                         if (this.ViewState["FoldersLoaded"] == null || this.doReloadFolders)
                         {
-                            this.LoadFolders("BROWSE,ADD");
+                            this.LoadFolders("BROWSE,WRITE");
                             this.ViewState["FoldersLoaded"] = "Y";
                         }
 

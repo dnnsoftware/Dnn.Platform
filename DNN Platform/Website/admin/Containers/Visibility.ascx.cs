@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -85,11 +87,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        // ReSharper disable InconsistentNaming
         // TODO can this be renamed with a capital M
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string minIcon { get; set; }
 
-        // ReSharper restore InconsistentNaming
         public string MaxIcon { get; set; }
 
         private string MinIconLoc
@@ -213,7 +216,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -259,7 +262,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

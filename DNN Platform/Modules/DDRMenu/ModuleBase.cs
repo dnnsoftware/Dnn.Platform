@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class ModuleBase : PortalModuleBase
     {
-
         protected string GetStringSetting(string name, string defaultValue)
         {
             var result = this.Request.QueryString[name];

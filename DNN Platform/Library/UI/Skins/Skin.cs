@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -61,6 +62,20 @@ namespace DotNetNuke.UI.Skins
     {
         public const string OnInitMessage = "Skin_InitMessage";
         public const string OnInitMessageType = "Skin_InitMessageType";
+
+        // ReSharper disable InconsistentNaming
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+
+        // ReSharper restore InconsistentNaming
+        private readonly ModuleCommunicate communicator = new ModuleCommunicate();
         private ArrayList actionEventListeners;
         private Control controlPanel;
         private Dictionary<string, Pane> panes;
@@ -406,8 +421,7 @@ namespace DotNetNuke.UI.Skins
             {
                 // DNN-6170 ensure skin value is culture specific
                 // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
-                skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId,
-                    Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
+                skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId, Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                 if (!string.IsNullOrEmpty(skinSource))
                 {
                     skinSource = SkinController.FormatSkinSrc(skinSource, page.PortalSettings);
@@ -1046,17 +1060,5 @@ namespace DotNetNuke.UI.Skins
 
             return success;
         }
-
-        // ReSharper disable InconsistentNaming
-
-        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
-
-        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
-
-        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
-
-        private readonly ModuleCommunicate communicator = new ModuleCommunicate();
-
-        // ReSharper restore InconsistentNaming
     }
 }

@@ -239,6 +239,7 @@
     <Compile Include="Components\Security\IAuditCheck.cs" />
     <Compile Include="Components\Security\SecurityController.cs" />
     <Compile Include="Components\Security\SeverityEnum.cs" />
+    <Compile Include="Components\Security\Ssl\ISSlController.cs" />
     <Compile Include="Components\Security\Ssl\PortalStats.cs" />
     <Compile Include="Components\Security\Ssl\SslController.cs" />
     <Compile Include="Components\Security\Utility.cs" />
@@ -447,6 +448,7 @@
     <Compile Include="Services\Dto\VocabularyDto.cs" />
     <Compile Include="Services\Dto\WebServer.cs" />
     <Compile Include="Services\ExtensionsController.cs" />
+    <Compile Include="Services\KpvExtension.cs" />
     <Compile Include="Services\LanguagesController.cs" />
     <Compile Include="Services\LicensingController.cs" />
     <Compile Include="Services\PagesController.cs" />

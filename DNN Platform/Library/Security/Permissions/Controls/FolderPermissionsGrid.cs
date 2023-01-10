@@ -1,12 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Security.Permissions.Controls
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
@@ -20,7 +22,12 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class FolderPermissionsGrid : PermissionsGrid
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected FolderPermissionCollection FolderPermissions;
+
         private string folderPath = string.Empty;
         private List<PermissionInfoBase> permissionsList;
         private bool refreshGrid;

@@ -415,8 +415,7 @@ namespace DotNetNuke.Entities.Urls
             RedirectReason reason;
             ActionType action;
             string newUrl;
-            DetermineRedirectReasonAndAction(result.RewritePath, result, true, settings, out newUrl, out reason,
-                                             out action);
+            DetermineRedirectReasonAndAction(result.RewritePath, result, true, settings, out newUrl, out reason, out action);
             result.Action = action;
             result.Reason = reason;
             result.RewritePath = newUrl;

@@ -163,7 +163,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                     returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
                         ? string.Format(
                             this.LocalizeString("ModuleInfo.Text"),
-                            moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
+                            moduleInfo.ModuleDefinition.FriendlyName,
+                            moduleInfo.ModuleTitle,
+                            moduleInfo.PaneName)
                         : this.LocalizeString("ModuleInfoForNonAdmins.Text");
                 }
             }

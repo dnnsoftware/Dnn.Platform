@@ -174,8 +174,7 @@ namespace DotNetNuke.Services.Cache
         /// <param name="slidingExpiration">The sliding expiration.</param>
         /// <param name="priority">The priority.</param>
         /// <param name="onRemoveCallback">The on remove callback.</param>
-        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
-                                   CacheItemRemovedCallback onRemoveCallback)
+        public virtual void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
         {
             Cache.Insert(cacheKey, itemToCache, dependency == null ? null : dependency.SystemCacheDependency, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }

@@ -233,8 +233,9 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         {
             var redirectUrl = string.Empty;
             var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
-            if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
+            if (checkSettings && redirectAfterLogin > 0)
             {
+                // redirect to after registration page
                 redirectUrl = this.navigationManager.NavigateURL(redirectAfterLogin);
             }
             else
@@ -276,9 +277,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 string userName = PortalSecurity.Instance.InputFilter(
                     this.txtUsername.Text,
-                    PortalSecurity.FilterFlag.NoScripting |
-                                        PortalSecurity.FilterFlag.NoAngleBrackets |
-                                        PortalSecurity.FilterFlag.NoMarkup);
+                    PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
                 // DNN-6093
                 // check if we use email address here rather than username

@@ -95,419 +95,6 @@ namespace DotNetNuke.Security.Permissions
             return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
-        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
-        {
-            // first execute the cache clear action then check the dependency change
-            cacehClearAction.Invoke();
-            DNNCacheDependency dependency;
-            using (cacheDependencyDict.GetReadLock())
-            {
-                cacheDependencyDict.TryGetValue(portalId, out dependency);
-            }
-
-            if (dependency != null)
-            {
-                using (cacheDependencyDict.GetWriteLock())
-                {
-                    cacheDependencyDict.Remove(portalId);
-                }
-
-                dependency.Dispose();
-            }
-        }
-
-        protected bool HasModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
-        {
-            return this.CanViewModule(moduleConfiguration) &&
-                                (this.HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                                 || this.HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT"));
-        }
-
-        protected bool IsDeniedModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
-        {
-            return this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW")
-                        || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                        || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
-        }
-
-        private static DNNCacheDependency GetCacheDependency(int portalId)
-        {
-            DNNCacheDependency dependency;
-            using (cacheDependencyDict.GetReadLock())
-            {
-                cacheDependencyDict.TryGetValue(portalId, out dependency);
-            }
-
-            if (dependency == null)
-            {
-                var startAt = DateTime.UtcNow;
-                var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
-                DataCache.SetCache(cacheKey, portalId); // no expiration set for this
-                dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
-                using (cacheDependencyDict.GetWriteLock())
-                {
-                    cacheDependencyDict[portalId] = dependency;
-                }
-            }
-
-            return dependency;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
-        /// DesktopModule.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
-        {
-            return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
-                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by
-        /// DesktopModule from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return FillDesktopModulePermissionDictionary(DataProvider.Instance().GetDesktopModulePermissions());
-        }
-
-#if false
-        private object GetFolderPermissionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var PortalID = (int)cacheItemArgs.ParamList[0];
-            IDataReader dr = dataProvider.GetFolderPermissionsByPortal(PortalID);
-            var dic = new Dictionary<string, FolderPermissionCollection>();
-            try
-            {
-                while (dr.Read())
-                {
-                    //fill business object
-                    var folderPermissionInfo = CBO.FillObject<FolderPermissionInfo>(dr, false);
-                    string dictionaryKey = folderPermissionInfo.FolderPath;
-                    if (string.IsNullOrEmpty(dictionaryKey))
-                    {
-                        dictionaryKey = "[PortalRoot]";
-                    }
-
-                    //add Folder Permission to dictionary
-                    if (dic.ContainsKey(dictionaryKey))
-                    {
-                        //Add FolderPermission to FolderPermission Collection already in dictionary for FolderPath
-                        dic[dictionaryKey].Add(folderPermissionInfo);
-                    }
-                    else
-                    {
-                        //Create new FolderPermission Collection for TabId
-                        var collection = new FolderPermissionCollection {folderPermissionInfo};
-
-                        //Add Permission to Collection
-
-                        //Add Collection to Dictionary
-                        dic.Add(dictionaryKey, collection);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-            return dic;
-        }
-
-        private Dictionary<string, FolderPermissionCollection> GetFolderPermissions(int PortalID)
-        {
-            string cacheKey = string.Format(DataCache.FolderPermissionCacheKey, PortalID);
-            return
-                CBO.GetCachedObject<Dictionary<string, FolderPermissionCollection>>(
-                    new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority, PortalID), GetFolderPermissionsCallBack);
-        }
-#endif
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetModulePermissions gets a Dictionary of ModulePermissionCollections by
-        /// Module.
-        /// </summary>
-        /// <param name="tabID">The ID of the tab.</param>
-        /// -----------------------------------------------------------------------------
-        private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
-        {
-            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabID);
-            return CBO.GetCachedObject<Dictionary<int, ModulePermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabID), this.GetModulePermissionsCallBack);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetModulePermissionsCallBack gets a Dictionary of ModulePermissionCollections by
-        /// Module from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var tabID = (int)cacheItemArgs.ParamList[0];
-            IDataReader dr = this.dataProvider.GetModulePermissionsByTabID(tabID);
-            var dic = new Dictionary<int, ModulePermissionCollection>();
-            try
-            {
-                while (dr.Read())
-                {
-                    // fill business object
-                    var modulePermissionInfo = CBO.FillObject<ModulePermissionInfo>(dr, false);
-
-                    // add Module Permission to dictionary
-                    if (dic.ContainsKey(modulePermissionInfo.ModuleID))
-                    {
-                        dic[modulePermissionInfo.ModuleID].Add(modulePermissionInfo);
-                    }
-                    else
-                    {
-                        // Create new ModulePermission Collection for ModuleId
-                        var collection = new ModulePermissionCollection { modulePermissionInfo };
-
-                        // Add Permission to Collection
-
-                        // Add Collection to Dictionary
-                        dic.Add(modulePermissionInfo.ModuleID, collection);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return dic;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetTabPermissions gets a Dictionary of TabPermissionCollections by
-        /// Tab.
-        /// </summary>
-        /// <param name="portalID">The ID of the portal.</param>
-        /// -----------------------------------------------------------------------------
-        private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
-        {
-            string cacheKey = string.Format(DataCache.TabPermissionCacheKey, portalID);
-            return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
-                this.GetTabPermissionsCallBack);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetTabPermissionsCallBack gets a Dictionary of TabPermissionCollections by
-        /// Tab from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            var dic = new Dictionary<int, TabPermissionCollection>();
-
-            if (portalID > -1)
-            {
-                IDataReader dr = this.dataProvider.GetTabPermissionsByPortal(portalID);
-                try
-                {
-                    while (dr.Read())
-                    {
-                        // fill business object
-                        var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
-
-                        // add Tab Permission to dictionary
-                        if (dic.ContainsKey(tabPermissionInfo.TabID))
-                        {
-                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
-                            dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
-                        }
-                        else
-                        {
-                            // Create new TabPermission Collection for TabId
-                            var collection = new TabPermissionCollection { tabPermissionInfo };
-
-                            // Add Collection to Dictionary
-                            dic.Add(tabPermissionInfo.TabID, collection);
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    // close datareader
-                    CBO.CloseDataReader(dr, true);
-                }
-            }
-
-            return dic;
-        }
-
-        private bool HasFolderPermission(FolderInfo folder, string permissionKey)
-        {
-            if (folder == null)
-            {
-                return false;
-            }
-
-            return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
-                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
-                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
-
-            // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
-            // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
-        }
-
-        private bool HasPagePermission(TabInfo tab, string permissionKey)
-        {
-            return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
-                    || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
-                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
-
-            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
-        }
-
-        private bool HasSitePermission(PortalInfo portal, string permissionKey)
-        {
-            return (PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(permissionKey))
-                    || PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(AdminPagePermissionKey)))
-                    && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
-
-            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
-        }
-
-        private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
-        {
-            bool isDenied = Null.NullBoolean;
-            if (permissionKey.Contains(","))
-            {
-                foreach (string permission in permissionKey.Split(','))
-                {
-                    if (PortalSecurity.IsDenied(modulePermissions.ToString(permission)))
-                    {
-                        isDenied = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                isDenied = PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
-            }
-
-            return isDenied;
-        }
-
-        private bool IsDeniedTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
-        {
-            bool isDenied = Null.NullBoolean;
-            if (permissionKey.Contains(","))
-            {
-                foreach (string permission in permissionKey.Split(','))
-                {
-                    if (PortalSecurity.IsDenied(tabPermissions.ToString(permission)))
-                    {
-                        isDenied = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                isDenied = PortalSecurity.IsDenied(tabPermissions.ToString(permissionKey));
-            }
-
-            return isDenied;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillDesktopModulePermissionDictionary fills a Dictionary of DesktopModulePermissions from a
-        /// dataReader.
-        /// </summary>
-        /// <param name="dr">The IDataReader.</param>
-        /// -----------------------------------------------------------------------------
-        private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
-        {
-            var dic = new Dictionary<int, DesktopModulePermissionCollection>();
-            try
-            {
-                while (dr.Read())
-                {
-                    // fill business object
-                    var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
-
-                    // add DesktopModule Permission to dictionary
-                    if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
-                    {
-                        // Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
-                        dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
-                    }
-                    else
-                    {
-                        // Create new DesktopModulePermission Collection for DesktopModulePermissionID
-                        var collection = new DesktopModulePermissionCollection { desktopModulePermissionInfo };
-
-                        // Add Collection to Dictionary
-                        dic.Add(desktopModulePermissionInfo.PortalDesktopModuleID, collection);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return dic;
-        }
-
-        private IEnumerable<RoleInfo> DefaultImplicitRoles(int portalId)
-        {
-            return new List<RoleInfo>
-            {
-                RoleController.Instance.GetRoleById(
-                    portalId,
-                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId),
-            };
-        }
-
-        protected bool IsDeniedTabPermission(TabInfo tab, string permissionKey)
-        {
-            return this.IsDeniedTabPermission(tab.TabPermissions, "VIEW")
-                        || this.IsDeniedTabPermission(tab.TabPermissions, permissionKey)
-                        || this.IsDeniedTabPermission(tab.TabPermissions, "EDIT");
-        }
-
         /// <summary>
         /// Returns a flag indicating whether the current user can add a folder or file.
         /// </summary>
@@ -531,8 +118,8 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(BrowseFolderPermissionKey))
-                || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ViewFolderPermissionKey)))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(BrowseFolderPermissionKey));
+                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ViewFolderPermissionKey)))
+                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(BrowseFolderPermissionKey));
         }
 
         /// <summary>
@@ -1351,6 +938,483 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// HasPortalPermission checks whether the current user has a specific Portal Permission.
+        /// </summary>
+        /// <param name="portalPermissions">The Permissions for the Portal.</param>
+        /// <param name="permissionKey">The Permission to check.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public virtual bool HasPortalPermission(PortalPermissionCollection portalPermissions, string permissionKey)
+        {
+            bool hasPermission = false;
+            if (permissionKey.Contains(","))
+            {
+                if (permissionKey.Split(',').Any(permission => PortalSecurity.IsInRoles(portalPermissions.ToString(permission))))
+                {
+                    hasPermission = true;
+                }
+            }
+            else
+            {
+                hasPermission = PortalSecurity.IsInRoles(portalPermissions.ToString(permissionKey));
+            }
+
+            return hasPermission;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SavePortalPermissions saves a Portal's permissions.
+        /// </summary>
+        /// <param name="portal">The Portal to update.</param>
+        /// -----------------------------------------------------------------------------
+        public virtual void SavePortalPermissions(PortalInfo portal)
+        {
+            var objCurrentPortalPermissions = this.GetPortalPermissions(portal.PortalID);
+            if (!objCurrentPortalPermissions.CompareTo(portal.PortalPermissions))
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+                if (objCurrentPortalPermissions.Count > 0)
+                {
+                    this.dataProvider.DeletePortalPermissionsByPortalID(portal.PortalID);
+                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
+                }
+
+                if (portal.PortalPermissions != null && portal.PortalPermissions.Count > 0)
+                {
+                    foreach (PortalPermissionInfo objPortalPermission in portal.PortalPermissions)
+                    {
+                        objPortalPermission.PortalPermissionID = this.dataProvider.AddPortalPermission(
+                            portal.PortalID,
+                            objPortalPermission.PermissionID,
+                            objPortalPermission.RoleID,
+                            objPortalPermission.AllowAccess,
+                            objPortalPermission.UserID,
+                            userId);
+                    }
+
+                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_CREATED);
+                }
+            }
+        }
+
+        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
+        {
+            // first execute the cache clear action then check the dependency change
+            cacehClearAction.Invoke();
+            DNNCacheDependency dependency;
+            using (cacheDependencyDict.GetReadLock())
+            {
+                cacheDependencyDict.TryGetValue(portalId, out dependency);
+            }
+
+            if (dependency != null)
+            {
+                using (cacheDependencyDict.GetWriteLock())
+                {
+                    cacheDependencyDict.Remove(portalId);
+                }
+
+                dependency.Dispose();
+            }
+        }
+
+        protected bool HasModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return this.CanViewModule(moduleConfiguration) &&
+                   (this.HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                    || this.HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT"));
+        }
+
+        protected bool IsDeniedModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW")
+                   || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                   || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
+        }
+
+        protected bool IsDeniedTabPermission(TabInfo tab, string permissionKey)
+        {
+            return this.IsDeniedTabPermission(tab.TabPermissions, "VIEW")
+                   || this.IsDeniedTabPermission(tab.TabPermissions, permissionKey)
+                   || this.IsDeniedTabPermission(tab.TabPermissions, "EDIT");
+        }
+
+        private static DNNCacheDependency GetCacheDependency(int portalId)
+        {
+            DNNCacheDependency dependency;
+            using (cacheDependencyDict.GetReadLock())
+            {
+                cacheDependencyDict.TryGetValue(portalId, out dependency);
+            }
+
+            if (dependency == null)
+            {
+                var startAt = DateTime.UtcNow;
+                var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
+                DataCache.SetCache(cacheKey, portalId); // no expiration set for this
+                dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
+                using (cacheDependencyDict.GetWriteLock())
+                {
+                    cacheDependencyDict[portalId] = dependency;
+                }
+            }
+
+            return dependency;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
+        /// DesktopModule.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
+        {
+            return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
+                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by
+        /// DesktopModule from the the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return FillDesktopModulePermissionDictionary(DataProvider.Instance().GetDesktopModulePermissions());
+        }
+
+#if false
+        private object GetFolderPermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var PortalID = (int)cacheItemArgs.ParamList[0];
+            IDataReader dr = dataProvider.GetFolderPermissionsByPortal(PortalID);
+            var dic = new Dictionary<string, FolderPermissionCollection>();
+            try
+            {
+                while (dr.Read())
+                {
+                    //fill business object
+                    var folderPermissionInfo = CBO.FillObject<FolderPermissionInfo>(dr, false);
+                    string dictionaryKey = folderPermissionInfo.FolderPath;
+                    if (string.IsNullOrEmpty(dictionaryKey))
+                    {
+                        dictionaryKey = "[PortalRoot]";
+                    }
+
+                    //add Folder Permission to dictionary
+                    if (dic.ContainsKey(dictionaryKey))
+                    {
+                        //Add FolderPermission to FolderPermission Collection already in dictionary for FolderPath
+                        dic[dictionaryKey].Add(folderPermissionInfo);
+                    }
+                    else
+                    {
+                        //Create new FolderPermission Collection for TabId
+                        var collection = new FolderPermissionCollection {folderPermissionInfo};
+
+                        //Add Permission to Collection
+
+                        //Add Collection to Dictionary
+                        dic.Add(dictionaryKey, collection);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+            return dic;
+        }
+
+        private Dictionary<string, FolderPermissionCollection> GetFolderPermissions(int PortalID)
+        {
+            string cacheKey = string.Format(DataCache.FolderPermissionCacheKey, PortalID);
+            return
+                CBO.GetCachedObject<Dictionary<string, FolderPermissionCollection>>(
+                    new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority, PortalID), GetFolderPermissionsCallBack);
+        }
+#endif
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillDesktopModulePermissionDictionary fills a Dictionary of DesktopModulePermissions from a
+        /// dataReader.
+        /// </summary>
+        /// <param name="dr">The IDataReader.</param>
+        /// -----------------------------------------------------------------------------
+        private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
+        {
+            var dic = new Dictionary<int, DesktopModulePermissionCollection>();
+            try
+            {
+                while (dr.Read())
+                {
+                    // fill business object
+                    var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
+
+                    // add DesktopModule Permission to dictionary
+                    if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
+                    {
+                        // Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
+                        dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
+                    }
+                    else
+                    {
+                        // Create new DesktopModulePermission Collection for DesktopModulePermissionID
+                        var collection = new DesktopModulePermissionCollection { desktopModulePermissionInfo };
+
+                        // Add Collection to Dictionary
+                        dic.Add(desktopModulePermissionInfo.PortalDesktopModuleID, collection);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return dic;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModulePermissions gets a Dictionary of ModulePermissionCollections by
+        /// Module.
+        /// </summary>
+        /// <param name="tabID">The ID of the tab.</param>
+        /// -----------------------------------------------------------------------------
+        private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
+        {
+            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabID);
+            return CBO.GetCachedObject<Dictionary<int, ModulePermissionCollection>>(
+                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabID), this.GetModulePermissionsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModulePermissionsCallBack gets a Dictionary of ModulePermissionCollections by
+        /// Module from the the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var tabID = (int)cacheItemArgs.ParamList[0];
+            IDataReader dr = this.dataProvider.GetModulePermissionsByTabID(tabID);
+            var dic = new Dictionary<int, ModulePermissionCollection>();
+            try
+            {
+                while (dr.Read())
+                {
+                    // fill business object
+                    var modulePermissionInfo = CBO.FillObject<ModulePermissionInfo>(dr, false);
+
+                    // add Module Permission to dictionary
+                    if (dic.ContainsKey(modulePermissionInfo.ModuleID))
+                    {
+                        dic[modulePermissionInfo.ModuleID].Add(modulePermissionInfo);
+                    }
+                    else
+                    {
+                        // Create new ModulePermission Collection for ModuleId
+                        var collection = new ModulePermissionCollection { modulePermissionInfo };
+
+                        // Add Permission to Collection
+
+                        // Add Collection to Dictionary
+                        dic.Add(modulePermissionInfo.ModuleID, collection);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return dic;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetTabPermissions gets a Dictionary of TabPermissionCollections by
+        /// Tab.
+        /// </summary>
+        /// <param name="portalID">The ID of the portal.</param>
+        /// -----------------------------------------------------------------------------
+        private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
+        {
+            string cacheKey = string.Format(DataCache.TabPermissionCacheKey, portalID);
+            return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(
+                new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
+                this.GetTabPermissionsCallBack);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetTabPermissionsCallBack gets a Dictionary of TabPermissionCollections by
+        /// Tab from the the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            var dic = new Dictionary<int, TabPermissionCollection>();
+
+            if (portalID > -1)
+            {
+                IDataReader dr = this.dataProvider.GetTabPermissionsByPortal(portalID);
+                try
+                {
+                    while (dr.Read())
+                    {
+                        // fill business object
+                        var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
+
+                        // add Tab Permission to dictionary
+                        if (dic.ContainsKey(tabPermissionInfo.TabID))
+                        {
+                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
+                        }
+                        else
+                        {
+                            // Create new TabPermission Collection for TabId
+                            var collection = new TabPermissionCollection { tabPermissionInfo };
+
+                            // Add Collection to Dictionary
+                            dic.Add(tabPermissionInfo.TabID, collection);
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    // close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
+            }
+
+            return dic;
+        }
+
+        private bool HasFolderPermission(FolderInfo folder, string permissionKey)
+        {
+            if (folder == null)
+            {
+                return false;
+            }
+
+            return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
+                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
+            // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+        }
+
+        private bool HasPagePermission(TabInfo tab, string permissionKey)
+        {
+            return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
+                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
+
+        private bool HasSitePermission(PortalInfo portal, string permissionKey)
+        {
+            return (PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(permissionKey))
+                    || PortalSecurity.IsInRoles(portal.PortalPermissions.ToString(AdminPagePermissionKey)))
+                    && !PortalSecurity.IsDenied(portal.PortalPermissions.ToString(permissionKey));
+
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
+
+        private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
+        {
+            bool isDenied = Null.NullBoolean;
+            if (permissionKey.Contains(","))
+            {
+                foreach (string permission in permissionKey.Split(','))
+                {
+                    if (PortalSecurity.IsDenied(modulePermissions.ToString(permission)))
+                    {
+                        isDenied = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                isDenied = PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
+            }
+
+            return isDenied;
+        }
+
+        private bool IsDeniedTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
+        {
+            bool isDenied = Null.NullBoolean;
+            if (permissionKey.Contains(","))
+            {
+                foreach (string permission in permissionKey.Split(','))
+                {
+                    if (PortalSecurity.IsDenied(tabPermissions.ToString(permission)))
+                    {
+                        isDenied = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                isDenied = PortalSecurity.IsDenied(tabPermissions.ToString(permissionKey));
+            }
+
+            return isDenied;
+        }
+
+        private IEnumerable<RoleInfo> DefaultImplicitRoles(int portalId)
+        {
+            return new List<RoleInfo>
+            {
+                RoleController.Instance.GetRoleById(
+                    portalId,
+                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId),
+            };
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// GetPortalPermissions gets a Dictionary of PortalPermissionCollections by
         /// PortalId.
         /// </summary>
@@ -1414,70 +1478,6 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return dic;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// HasPortalPermission checks whether the current user has a specific Portal Permission.
-        /// </summary>
-        /// <param name="portalPermissions">The Permissions for the Portal.</param>
-        /// <param name="permissionKey">The Permission to check.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public virtual bool HasPortalPermission(PortalPermissionCollection portalPermissions, string permissionKey)
-        {
-            bool hasPermission = false;
-            if (permissionKey.Contains(","))
-            {
-                if (permissionKey.Split(',').Any(permission => PortalSecurity.IsInRoles(portalPermissions.ToString(permission))))
-                {
-                    hasPermission = true;
-                }
-            }
-            else
-            {
-                hasPermission = PortalSecurity.IsInRoles(portalPermissions.ToString(permissionKey));
-            }
-
-            return hasPermission;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SavePortalPermissions saves a Portal's permissions.
-        /// </summary>
-        /// <param name="portal">The Portal to update.</param>
-        /// -----------------------------------------------------------------------------
-        public virtual void SavePortalPermissions(PortalInfo portal)
-        {
-            var objCurrentPortalPermissions = this.GetPortalPermissions(portal.PortalID);
-            if (!objCurrentPortalPermissions.CompareTo(portal.PortalPermissions))
-            {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-
-                if (objCurrentPortalPermissions.Count > 0)
-                {
-                    this.dataProvider.DeletePortalPermissionsByPortalID(portal.PortalID);
-                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_DELETED);
-                }
-
-                if (portal.PortalPermissions != null && portal.PortalPermissions.Count > 0)
-                {
-                    foreach (PortalPermissionInfo objPortalPermission in portal.PortalPermissions)
-                    {
-                        objPortalPermission.PortalPermissionID = this.dataProvider.AddPortalPermission(
-                            portal.PortalID,
-                            objPortalPermission.PermissionID,
-                            objPortalPermission.RoleID,
-                            objPortalPermission.AllowAccess,
-                            objPortalPermission.UserID,
-                            userId);
-                    }
-
-                    EventLogController.Instance.AddLog(portal, portalSettings, userId, string.Empty, EventLogController.EventLogType.PORTALPERMISSION_CREATED);
-                }
-            }
         }
     }
 }

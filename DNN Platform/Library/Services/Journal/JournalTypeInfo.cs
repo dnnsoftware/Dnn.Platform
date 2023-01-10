@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.Journal
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -18,6 +19,9 @@ namespace DotNetNuke.Services.Journal
 
         public string JournalType { get; set; }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public string icon { get; set; }
 
         public bool AppliesToProfile { get; set; }

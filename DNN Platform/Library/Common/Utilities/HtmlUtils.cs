@@ -244,8 +244,8 @@ namespace DotNetNuke.Common.Utilities
                 {
                     if (website.ToString().IndexOf(".", StringComparison.Ordinal) > -1)
                     {
-                        formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", website,
-                            website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? string.Empty : "http://");
+                        var prefix = website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? string.Empty : "http://";
+                        formatWebsite = $"<a href=\"{prefix}{website}\">{website}</a>";
                     }
                     else
                     {

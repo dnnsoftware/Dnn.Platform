@@ -101,8 +101,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalId"></param>
         /// <returns>THe valid home page tabid for the portalid and culture.</returns>
         /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back.</remarks>
-        internal static int GetHomePageTabIdForCulture(string defaultCulture, int portalId, string cultureCode,
-                                                       int defaultHomeTabId)
+        internal static int GetHomePageTabIdForCulture(string defaultCulture, int portalId, string cultureCode, int defaultHomeTabId)
         {
             int homeTabId = defaultHomeTabId;
             if (string.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
@@ -182,9 +181,8 @@ namespace DotNetNuke.Entities.Urls
             customHttpAlias = null;
             isCustomPath = false;
             if (homePageSiteRoot && isHomeTab && !hasPath)
-
-            // && !isDefaultCultureCode - not working for non-language specifc custom root urls
             {
+                // && !isDefaultCultureCode - not working for non-language specifc custom root urls
                 newTabPath = "/"; // site root for home page
             }
             else

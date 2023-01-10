@@ -62,8 +62,12 @@ namespace Dnn.PersonaBar.Sites.Services
                 }
                 else
                 {
-                    portals = PortalController.GetPortalsByName($"%{filter}%", pageIndex, pageSize,
-                                ref totalRecords).Cast<PortalInfo>();
+                    portals = PortalController.GetPortalsByName(
+                            $"%{filter}%",
+                            pageIndex,
+                            pageSize,
+                            ref totalRecords)
+                        .Cast<PortalInfo>();
                 }
 
                 var response = new
@@ -96,12 +100,27 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 var errors = new List<string>();
-                var portalId = this.controller.CreatePortal(errors, this.GetDomainName(), this.GetAbsoluteServerPath(),
-                    request.SiteTemplate, request.SiteName,
-                    request.SiteAlias, request.SiteDescription, request.SiteKeywords,
-                    request.IsChildSite, request.HomeDirectory, request.SiteGroupId, request.UseCurrentUserAsAdmin,
-                    request.Firstname, request.Lastname, request.Username, request.Email, request.Password,
-                    request.PasswordConfirm, request.Question, request.Answer);
+                var portalId = this.controller.CreatePortal(
+                    errors,
+                    this.GetDomainName(),
+                    this.GetAbsoluteServerPath(),
+                    request.SiteTemplate,
+                    request.SiteName,
+                    request.SiteAlias,
+                    request.SiteDescription,
+                    request.SiteKeywords,
+                    request.IsChildSite,
+                    request.HomeDirectory,
+                    request.SiteGroupId,
+                    request.UseCurrentUserAsAdmin,
+                    request.Firstname,
+                    request.Lastname,
+                    request.Username,
+                    request.Email,
+                    request.Password,
+                    request.PasswordConfirm,
+                    request.Question,
+                    request.Answer);
                 if (portalId < 0)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join("<br/>", errors));

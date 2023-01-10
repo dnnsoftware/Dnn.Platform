@@ -114,15 +114,13 @@ namespace DotNetNuke.UI.Modules
         {
             bool viewMode;
 
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString,
-                                                              moduleInfo))
+            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString, moduleInfo))
             {
                 viewMode = false;
             }
             else
             {
-                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
-                                                              moduleInfo);
+                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, moduleInfo);
             }
 
             return viewMode || Personalization.GetUserMode() == PortalSettings.Mode.View;
@@ -353,8 +351,9 @@ namespace DotNetNuke.UI.Modules
                         this.control = this.moduleControlPipeline.LoadModuleControl(this.Page, this.moduleConfiguration);
                     }
                 }
-                else // content placeholder
+                else
                 {
+                    // content placeholder
                     this.control = this.moduleControlPipeline.CreateModuleControl(this.moduleConfiguration);
                 }
 

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
     using System.Xml;
@@ -21,7 +22,11 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ResourceFileInstaller : FileInstaller
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
         private string manifest;
 

@@ -300,8 +300,9 @@ namespace DotNetNuke.Entities.Urls
         {
             var finalPathBuilder = new StringBuilder();
 
-            if (changeToSiteRoot) // no page path if changing to site root because of parameter replacement rule (593)
+            if (changeToSiteRoot)
             {
+                // no page path if changing to site root because of parameter replacement rule (593)
                 if (newPath.StartsWith("/"))
                 {
                     newPath = newPath.Substring(1);
@@ -332,7 +333,8 @@ namespace DotNetNuke.Entities.Urls
                     && (langParms == string.Empty || dropLangParms)
 
                     // doesn't have any language parms, or we're intentionally getting rid of them
-                    && !builtInUrl) // builtin Url == login, terms, privacy, register
+                    // builtin Url == login, terms, privacy, register
+                    && !builtInUrl)
                 {
                     // Url is home page, and there's no friendly path to add, so we don't need the home page path (ie, /home is unneeded, just use the site root)
                     if (newPageName.Length == 0 && pageAndExtension.StartsWith("."))
@@ -349,10 +351,9 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 else
-
-                // this is the normal case
                 {
-                    // finalPath += newTabPath.TrimStart('/') + newPath + newPageName + pageAndExtension + qs;
+                    // this is the normal case
+                    ////finalPath += newTabPath.TrimStart('/') + newPath + newPageName + pageAndExtension + qs;
                     finalPathBuilder.Append(newTabPath.TrimStart('/'));
                     finalPathBuilder.Append(newPath);
                     finalPathBuilder.Append(newPageName);
@@ -367,8 +368,9 @@ namespace DotNetNuke.Entities.Urls
         private static string DetermineExtension(bool isHomePage, string pageName, FriendlyUrlSettings settings)
         {
             string extension = string.Empty;
-            if (!isHomePage) // no pageAndExtension for the home page when no query string specified
+            if (!isHomePage)
             {
+                // no pageAndExtension for the home page when no query string specified
                 // the ending of the url depends on the current page pageAndExtension settings
                 if (settings.PageExtensionUsageType == PageExtensionUsageType.AlwaysUse
                     || settings.PageExtensionUsageType == PageExtensionUsageType.PageOnly)
@@ -666,9 +668,8 @@ namespace DotNetNuke.Entities.Urls
                 friendlyPath = queryStringMatch.Groups[1].Value;
                 friendlyPath = DefaultPageRegex.Replace(friendlyPath, string.Empty);
                 if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
-
-                // take out the end page name, it will get re-added
                 {
+                    // take out the end page name, it will get re-added
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     friendlyPath = pgNameRx.Replace(friendlyPath, string.Empty);
                 }
@@ -692,8 +693,9 @@ namespace DotNetNuke.Entities.Urls
                         // Add name part of name/value pair
                         if (friendlyPath.EndsWith("/"))
                         {
-                            if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase)) // always lowercase the tabid part of the path
+                            if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                             {
+                                // always lowercase the tabid part of the path
                                 pathToAppend = pathToAppend + pair[0].ToLowerInvariant();
                             }
                             else
@@ -873,8 +875,9 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // no improved friendly urls for super tabs, admin tabs
-            if ((tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)) && settings.FriendlyAdminHostUrls == false) // 811 : allow for friendly admin/host urls
+            if ((tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)) && settings.FriendlyAdminHostUrls == false)
             {
+                // 811 : allow for friendly admin/host urls
                 return friendlyPath;
             }
 

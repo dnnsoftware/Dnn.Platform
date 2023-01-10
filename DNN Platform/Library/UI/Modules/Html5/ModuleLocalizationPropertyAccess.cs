@@ -9,16 +9,6 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Tokens;
-    using Newtonsoft.Json;
-
-    public class ModuleLocalizationDto
-    {
-        [JsonProperty("key")]
-        public string Key { get; set; }
-
-        [JsonProperty("localresourcefile")]
-        public string LocalResourceFile { get; set; }
-    }
 
     public class ModuleLocalizationPropertyAccess : JsonPropertyAccess<ModuleLocalizationDto>
     {

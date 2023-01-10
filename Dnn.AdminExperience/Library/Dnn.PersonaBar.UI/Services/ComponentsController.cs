@@ -80,8 +80,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
                 var totalRecords2 = 0;
-                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false);
+                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count, ref totalRecords, false, false);
                 matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
                 var finalUsers = matchedUsers
                     .Cast<UserInfo>()

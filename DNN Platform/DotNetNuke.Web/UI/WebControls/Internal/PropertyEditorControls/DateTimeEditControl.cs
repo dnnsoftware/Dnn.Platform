@@ -197,8 +197,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 else
                 {
                     DateTime value;
-                    if (DateTime.TryParseExact(postedValue, "yyyy-MM-dd-HH-mm-ss", CultureInfo.InvariantCulture,
-                        DateTimeStyles.None, out value))
+                    if (DateTime.TryParseExact(postedValue, "yyyy-MM-dd-HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out value))
                     {
                         this.Value = value;
                         dataChanged = true;

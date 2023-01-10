@@ -96,7 +96,9 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 var logItems = LogController.Instance.GetLogs(
                     portalId,
                     logType == "*" ? string.Empty : logType,
-                    pageSize, pageIndex, ref totalRecords);
+                    pageSize,
+                    pageIndex,
+                    ref totalRecords);
 
                 var items = logItems.Select(v => new
                 {
@@ -186,8 +188,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     subject = this.PortalSettings.PortalName + @" Exceptions";
                 }
 
-                string returnMsg = this.controller.EmailLogItems(subject, strFromEmailAddress, request.Email,
-                    request.Message, request.LogIds, out error);
+                string returnMsg = this.controller.EmailLogItems(subject, strFromEmailAddress, request.Email, request.Message, request.LogIds, out error);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = string.IsNullOrEmpty(returnMsg) ? true : false,

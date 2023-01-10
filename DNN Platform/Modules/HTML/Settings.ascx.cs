@@ -22,9 +22,9 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public partial class Settings : ModuleSettingsBase
     {
-        private HtmlModuleSettings moduleSettings;
-
         private readonly INavigationManager navigationManager;
+
+        private HtmlModuleSettings moduleSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Settings"/> class.

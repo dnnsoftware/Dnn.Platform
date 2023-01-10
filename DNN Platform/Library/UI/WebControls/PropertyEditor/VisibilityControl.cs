@@ -271,9 +271,12 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var group in this.User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
             {
-                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture),
-                                        group.RoleName,
-                                        this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
+                this.RenderCheckboxItem(
+                    writer,
+                    ":group_",
+                    group.RoleID.ToString(CultureInfo.InvariantCulture),
+                    group.RoleName,
+                    this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
             }
         }
 
@@ -281,9 +284,13 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var relationship in this.User.Social.Relationships)
             {
-                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
-                                        relationship.Name,
-                                        this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
+                var selected = this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1;
+                this.RenderCheckboxItem(
+                    writer,
+                    ":relationship_",
+                    relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
+                    relationship.Name,
+                    selected);
             }
         }
     }

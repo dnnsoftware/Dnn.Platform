@@ -167,8 +167,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         ///
         /// -----------------------------------------------------------------------------
-        public ModuleAction Add(int iD, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible,
-                                bool newWindow)
+        public ModuleAction Add(int iD, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible, bool newWindow)
         {
             var modAction = new ModuleAction(iD, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, secure, visible, newWindow);
             this.Add(modAction);

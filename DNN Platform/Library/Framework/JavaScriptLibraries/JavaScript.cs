@@ -323,8 +323,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static JavaScriptLibrary GetHighestVersionLibrary(string jsname)
         {
-            if (Globals.Status == Globals.UpgradeStatus.Install) // if in install process, then do not use JSL but all use the legacy versions.
+            if (Globals.Status == Globals.UpgradeStatus.Install)
             {
+                // if in install process, then do not use JSL but all use the legacy versions.
                 return null;
             }
 
@@ -521,14 +522,20 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     case CommonJs.jQuery:
                         if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryScriptReference(),
+                                FileOrder.Js.jQuery,
+                                "DnnPageHeaderProvider");
                         }
 
                         if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryMigrateScriptReference(),
+                                FileOrder.Js.jQueryMigrate,
+                                "DnnPageHeaderProvider");
                         }
 
                         break;
@@ -536,21 +543,30 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         // register dependency
                         if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryScriptReference(),
+                                FileOrder.Js.jQuery,
+                                "DnnPageHeaderProvider");
                         }
 
                         if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryMigrateScriptReference(),
+                                FileOrder.Js.jQueryMigrate,
+                                "DnnPageHeaderProvider");
                         }
 
                         // actual jqueryui
                         if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
-                                FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryUIScriptReference(),
+                                FileOrder.Js.jQueryUI,
+                                "DnnPageHeaderProvider");
                         }
 
                         break;
@@ -564,28 +580,38 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         // register dependency
                         if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryScriptReference(),
+                                FileOrder.Js.jQuery,
+                                "DnnPageHeaderProvider");
                         }
 
                         if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryMigrateScriptReference(),
+                                FileOrder.Js.jQueryMigrate,
+                                "DnnPageHeaderProvider");
                         }
 
                         // actual jqueryui
                         if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
                         {
-                            ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
-                                FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
+                            ClientResourceManager.RegisterScript(
+                                page,
+                                jQuery.GetJQueryUIScriptReference(),
+                                FileOrder.Js.jQueryUI,
+                                "DnnPageHeaderProvider");
                         }
 
                         if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
                         {
                             ClientResourceManager.RegisterScript(
                                 page,
-                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
+                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js",
+                                FileOrder.Js.HoverIntent);
                         }
 
                         // no package for this - CRM will deduplicate
@@ -604,7 +630,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         {
                             ClientResourceManager.RegisterScript(
                                 page,
-                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
+                                "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js",
+                                FileOrder.Js.HoverIntent);
                         }
 
                         break;

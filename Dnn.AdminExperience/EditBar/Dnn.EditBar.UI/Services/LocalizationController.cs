@@ -144,9 +144,4 @@ namespace Dnn.EditBar.UI.Services
             return Directory.GetFiles(physicalPath, "*.resx");
         }
     }
-
-    [Serializable]
-    public class CacheDto
-    {
-    }
 }

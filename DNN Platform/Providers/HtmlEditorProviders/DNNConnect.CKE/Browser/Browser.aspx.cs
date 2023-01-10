@@ -2135,17 +2135,23 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             this.SwitchDetailView.Text = string.Format(
                 SwitchContent,
-                "DetailView", this.LocalizeString("DetailView.Text"), this.LocalizeString("DetailViewTitle.Text"));
+                "DetailView",
+                this.LocalizeString("DetailView.Text"),
+                this.LocalizeString("DetailViewTitle.Text"));
             this.SwitchDetailView.ToolTip = this.LocalizeString("DetailViewTitle.Text");
 
             this.SwitchListView.Text = string.Format(
                 SwitchContent,
-                "ListView", this.LocalizeString("ListView.Text"), this.LocalizeString("ListViewTitle.Text"));
+                "ListView",
+                this.LocalizeString("ListView.Text"),
+                this.LocalizeString("ListViewTitle.Text"));
             this.SwitchListView.ToolTip = this.LocalizeString("ListViewTitle.Text");
 
             this.SwitchIconsView.Text = string.Format(
                 SwitchContent,
-                "IconsView", this.LocalizeString("IconsView.Text"), this.LocalizeString("IconsViewTitle.Text"));
+                "IconsView",
+                this.LocalizeString("IconsView.Text"),
+                this.LocalizeString("IconsViewTitle.Text"));
             this.SwitchIconsView.ToolTip = this.LocalizeString("IconsViewTitle.Text");
 
             this.SortAscending.Text = string.Format(
@@ -2542,7 +2548,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                     this.Response.ClearContent();
                     this.Response.ContentType = "application/json";
-                    this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");               
+                    this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");
                 }
 
                 this.Response.End();

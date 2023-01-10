@@ -109,7 +109,8 @@ namespace DotNetNuke.Modules.Groups
                 var roleInfo = RoleController.Instance.GetRoleById(this.PortalId, this.GroupId);
                 if (roleInfo != null)
                 {
-                    if (this.txtGroupName.Visible) // if this is visible assume that we're editing the groupname
+                    // if this is visible assume that we're editing the groupname
+                    if (this.txtGroupName.Visible)
                     {
                         if (this.txtGroupName.Text != roleInfo.RoleName)
                         {

@@ -1,11 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Modules.Admin.Security
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -92,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -130,7 +132,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         break;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -172,7 +174,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         break;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -201,7 +203,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 formatURL = serverPath + "Register.aspx?tabid=" + this.TabId;
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -240,7 +242,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -305,6 +307,9 @@ namespace DotNetNuke.Modules.Admin.Security
             this.lblRSVP.Text = string.Empty;
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+        // ReSharper disable once InconsistentNaming
         protected void grdServices_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             string commandName = e.CommandName;
@@ -352,7 +357,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     formatPrice = string.Empty;
                 }
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

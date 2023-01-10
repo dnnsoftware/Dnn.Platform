@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Users
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("UsersOnline purge completed.");
             }
-            catch (Exception exc) // REQUIRED
+            catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("UsersOnline purge failed." + exc);

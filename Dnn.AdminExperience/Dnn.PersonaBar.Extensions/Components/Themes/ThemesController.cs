@@ -472,8 +472,9 @@ namespace Dnn.PersonaBar.Themes.Components
                             objImage.Dispose();
                             objThumbnail.Dispose();
                         }
-                        catch (Exception ex) // problem creating thumbnail
+                        catch (Exception ex)
                         {
+                            // problem creating thumbnail
                             Logger.Error(ex);
                         }
                     }

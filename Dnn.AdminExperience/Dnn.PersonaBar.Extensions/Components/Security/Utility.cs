@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Security.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -272,8 +272,9 @@ namespace Dnn.PersonaBar.Security.Components
             }
 
             var file = new FileInfo(name);
-            if (file.Length > MaxFileSize) // when file large than 10M, then don't read it.
+            if (file.Length > MaxFileSize)
             {
+                // when file large than 10M, then don't read it.
                 return false;
             }
 
@@ -347,7 +348,9 @@ namespace Dnn.PersonaBar.Security.Components
         [JsonObject]
         private class SearchFileInfo
         {
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string FileName;
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
             public string LastWriteTime;
         }
     }

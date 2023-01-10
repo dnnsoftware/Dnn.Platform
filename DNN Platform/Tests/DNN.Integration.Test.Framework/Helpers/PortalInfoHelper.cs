@@ -11,7 +11,6 @@ namespace DNN.Integration.Test.Framework.Helpers
 
     public class PortalInfoHelper
     {
-
         public static PortalInfo GetPortalInfo(int portalId)
         {
             return DatabaseHelper.ExecuteStoredProcedure<PortalInfo>("GetPortals", "en-US").First(p => p.PortalID == portalId);

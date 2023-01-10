@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Imaging;
 
@@ -18,12 +19,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <summary>
         /// List of all colors in the palette.
         /// </summary>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
         protected Color[] _colors;
 
         /// <summary>
         /// Lookup table for colors.
         /// </summary>
-        private readonly Hashtable _colorMap;
+        private readonly Hashtable colorMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PaletteQuantizer"/> class.
@@ -36,7 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         public PaletteQuantizer(ArrayList palette)
             : base(true)
         {
-            this._colorMap = new Hashtable();
+            this.colorMap = new Hashtable();
 
             this._colors = new Color[palette.Count];
             palette.CopyTo(this._colors);
@@ -53,9 +58,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             int colorHash = pixel.ARGB;
 
             // Check if the color is in the lookup table
-            if (this._colorMap.ContainsKey(colorHash))
+            if (this.colorMap.ContainsKey(colorHash))
             {
-                colorIndex = (byte)this._colorMap[colorHash];
+                colorIndex = (byte)this.colorMap[colorHash];
             }
             else
             {
@@ -109,7 +114,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 }
 
                 // Now I have the color, pop it into the hashtable for next time
-                this._colorMap.Add(colorHash, colorIndex);
+                this.colorMap.Add(colorHash, colorIndex);
             }
 
             return colorIndex;

@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Install
 {
     using System;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -32,9 +33,14 @@ namespace DotNetNuke.Services.Install
 
     public partial class Install : Page
     {
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+
+        // ReSharper disable once InconsistentNaming
+        protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object InstallLocker = new object();
-        protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -130,6 +136,11 @@ namespace DotNetNuke.Services.Install
         private static void RegisterInstallEnd()
         {
             InstallBlocker.Instance.RegisterInstallEnd();
+        }
+
+        private static ITelerikUtils CreateTelerikUtils()
+        {
+            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
 
         private void ExecuteScripts()
@@ -614,11 +625,6 @@ namespace DotNetNuke.Services.Install
 
             // Write out Footer
             HtmlUtils.WriteFooter(this.Response);
-        }
-
-        private static ITelerikUtils CreateTelerikUtils()
-        {
-            return Globals.DependencyProvider.GetRequiredService<ITelerikUtils>();
         }
 
         private string LocalizeString(string key)

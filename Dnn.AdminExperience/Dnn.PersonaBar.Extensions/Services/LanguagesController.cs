@@ -36,17 +36,21 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
+        /// <summary>A regular expression which matches a file name for a resource file.</summary>
+        /// <remarks>
+        /// Sample matches:
+        /// MyResources.ascx.en-US.resx
+        /// MyResources.ascx.en-US.Host.resx
+        /// MyResources.ascx.en-US.Portal-123.resx
+        /// </remarks>
+        internal static readonly Regex FileInfoRegex = new Regex(
+            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled,
+            TimeSpan.FromSeconds(1));
+
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
 
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-
-        // Sample matches:
-        // MyResources.ascx.en-US.resx
-        // MyResources.ascx.en-US.Host.resx
-        // MyResources.ascx.en-US.Portal-123.resx
-        internal static readonly Regex FileInfoRegex = new Regex(
-            @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
-            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
 
@@ -1013,26 +1017,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
 
             return pages;
-        }
-    }
-
-    internal static class KpvExtension
-    {
-
-        public static IEnumerable<LocalizationEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
-        {
-            var appPath = Globals.ApplicationMapPath;
-            var appPathLen = appPath.Length;
-            if (!appPath.EndsWith(@"\"))
-            {
-                appPathLen++;
-            }
-
-            return list.Select(kpv => new LocalizationEntry
-            {
-                Name = kpv.Key,
-                NewValue = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/"),
-            });
         }
     }
 }

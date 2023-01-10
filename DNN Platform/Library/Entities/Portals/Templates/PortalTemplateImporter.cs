@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Portals.Templates
     using System.Xml;
     using System.Xml.Linq;
     using System.Xml.XPath;
+
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
@@ -38,8 +39,6 @@ namespace DotNetNuke.Entities.Portals.Templates
     {
         public const string HtmlTextTimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlTextAutoSaveEnabled = "HtmlText_AutoSaveEnabled";
-        private XmlDocument Template { get; set; }
-        public string TemplatePath { get; set; }
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalTemplateImporter));
 
         internal PortalTemplateImporter(IPortalTemplateInfo templateToLoad)
@@ -80,16 +79,562 @@ namespace DotNetNuke.Entities.Portals.Templates
 
         internal PortalTemplateImporter(string templatePath, string templateFile)
         {
-            var buffer = new StringBuilder(File.ReadAllText(Path.Combine(templatePath,templateFile)));
+            var buffer = new StringBuilder(File.ReadAllText(Path.Combine(templatePath, templateFile)));
 
             this.TemplatePath = templatePath;
             this.Template = new XmlDocument { XmlResolver = null };
             this.Template.LoadXml(buffer.ToString());
         }
 
+        public string TemplatePath { get; set; }
+
+        private XmlDocument Template { get; set; }
+
         internal void ParseTemplate(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             this.ParseTemplateInternal(portalId, administratorId, mergeTabs, isNewPortal);
+        }
+
+        internal void ParseTemplateInternal(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
+        {
+            LocaleCollection localeCollection;
+            this.ParseTemplateInternal(portalId, administratorId, mergeTabs, isNewPortal, out localeCollection);
+        }
+
+        internal void ParseTemplateInternal(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
+        {
+            CachingProvider.DisableCacheExpiration();
+
+            IFolderInfo objFolder;
+
+            var node = this.Template.SelectSingleNode("//portal/settings");
+            if (node != null && isNewPortal)
+            {
+                HtmlUtils.WriteKeepAlive();
+                this.ParsePortalSettings(node, portalId);
+            }
+
+            node = this.Template.SelectSingleNode("//locales");
+            if (node != null && isNewPortal)
+            {
+                HtmlUtils.WriteKeepAlive();
+                localeCollection = ParseEnabledLocales(node, portalId);
+            }
+            else
+            {
+                var portalInfo = PortalController.Instance.GetPortal(portalId);
+                var defaultLocale = LocaleController.Instance.GetLocale(portalInfo.DefaultLanguage);
+                if (defaultLocale == null)
+                {
+                    defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(portalInfo.DefaultLanguage).NativeName };
+                    Localization.SaveLanguage(defaultLocale, false);
+                }
+
+                localeCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
+            }
+
+            node = this.Template.SelectSingleNode("//portal/rolegroups");
+            if (node != null)
+            {
+                this.ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
+            }
+
+            node = this.Template.SelectSingleNode("//portal/roles");
+            if (node != null)
+            {
+                this.ParseRoles(node.CreateNavigator(), portalId, administratorId);
+            }
+
+            node = this.Template.SelectSingleNode("//portal/portalDesktopModules");
+            if (node != null)
+            {
+                ParsePortalDesktopModules(node.CreateNavigator(), portalId);
+            }
+
+            node = this.Template.SelectSingleNode("//portal/folders");
+            if (node != null)
+            {
+                this.ParseFolders(node, portalId);
+            }
+
+            node = this.Template.SelectSingleNode("//portal/extensionUrlProviders");
+            if (node != null)
+            {
+                this.ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
+            }
+
+            var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
+
+            if (FolderManager.Instance.GetFolder(portalId, string.Empty) == null)
+            {
+                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, string.Empty);
+                objFolder.IsProtected = true;
+                FolderManager.Instance.UpdateFolder(objFolder);
+
+                this.AddFolderPermissions(portalId, objFolder.FolderID);
+            }
+
+            if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
+            {
+                var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, "Templates/") ?? defaultFolderMapping;
+                objFolder = FolderManager.Instance.AddFolder(folderMapping, "Templates/");
+                objFolder.IsProtected = true;
+                FolderManager.Instance.UpdateFolder(objFolder);
+
+                // AddFolderPermissions(PortalId, objFolder.FolderID);
+            }
+
+            // force creation of users folder if not present on template
+            if (FolderManager.Instance.GetFolder(portalId, "Users/") == null)
+            {
+                var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, "Users/") ?? defaultFolderMapping;
+                objFolder = FolderManager.Instance.AddFolder(folderMapping, "Users/");
+                objFolder.IsProtected = true;
+                FolderManager.Instance.UpdateFolder(objFolder);
+
+                // AddFolderPermissions(PortalId, objFolder.FolderID);
+            }
+
+            if (mergeTabs == PortalTemplateModuleAction.Replace)
+            {
+                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
+                {
+                    var objTab = tabPair.Value;
+                    objTab.TabName = objTab.TabName + "_old";
+                    objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
+                    objTab.IsDeleted = true;
+                    TabController.Instance.UpdateTab(objTab);
+                    foreach (KeyValuePair<int, ModuleInfo> modulePair in ModuleController.Instance.GetTabModules(objTab.TabID))
+                    {
+                        var objModule = modulePair.Value;
+                        ModuleController.Instance.DeleteTabModule(objModule.TabID, objModule.ModuleID, false);
+                    }
+                }
+            }
+
+            node = this.Template.SelectSingleNode("//portal/tabs");
+            if (node != null)
+            {
+                string version = this.Template.DocumentElement.GetAttribute("version");
+                if (version != "5.0")
+                {
+                    XmlDocument xmlAdmin = new XmlDocument { XmlResolver = null };
+                    try
+                    {
+                        string path = Path.Combine(this.TemplatePath, "admin.template");
+                        if (!File.Exists(path))
+                        {
+                            // if the template is a merged copy of a localized templte the
+                            // admin.template may be one director up
+                            path = Path.Combine(this.TemplatePath, "..\admin.template");
+                        }
+
+                        xmlAdmin.Load(path);
+
+                        XmlNode adminNode = xmlAdmin.SelectSingleNode("//portal/tabs");
+                        foreach (XmlNode adminTabNode in adminNode.ChildNodes)
+                        {
+                            node.AppendChild(this.Template.ImportNode(adminTabNode, true));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                }
+
+                this.ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
+            }
+
+            CachingProvider.EnableCacheExpiration();
+        }
+
+        internal string CreateProfileDefinitions(int portalId)
+        {
+            string strMessage = Null.NullString;
+            try
+            {
+                // parse profile definitions if available
+                var node = this.Template.SelectSingleNode("//portal/profiledefinitions");
+                if (node != null)
+                {
+                    ParseProfileDefinitions(node, portalId);
+                }
+                else
+                {
+                    // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
+                    ProfileController.AddDefaultDefinitions(portalId);
+                }
+            }
+            catch (Exception ex)
+            {
+                strMessage = Localization.GetString("CreateProfileDefinitions.Error");
+                Exceptions.LogException(ex);
+            }
+
+            return strMessage;
+        }
+
+        private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
+        {
+            var listController = new ListController();
+            Dictionary<string, ListEntryInfo> colDataTypes = listController.GetListEntryInfoDictionary("DataType");
+
+            int orderCounter = -1;
+            ProfilePropertyDefinition objProfileDefinition;
+            bool preferredTimeZoneFound = false;
+            foreach (XmlNode node in nodeProfileDefinitions.SelectNodes("//profiledefinition"))
+            {
+                orderCounter += 2;
+                ListEntryInfo typeInfo;
+                if (!colDataTypes.TryGetValue("DataType:" + XmlUtils.GetNodeValue(node.CreateNavigator(), "datatype"), out typeInfo))
+                {
+                    typeInfo = colDataTypes["DataType:Unknown"];
+                }
+
+                objProfileDefinition = new ProfilePropertyDefinition(portalId);
+                objProfileDefinition.DataType = typeInfo.EntryID;
+                objProfileDefinition.DefaultValue = string.Empty;
+                objProfileDefinition.ModuleDefId = Null.NullInteger;
+                objProfileDefinition.PropertyCategory = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertycategory");
+                objProfileDefinition.PropertyName = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertyname");
+                objProfileDefinition.Required = false;
+                objProfileDefinition.Visible = true;
+                objProfileDefinition.ViewOrder = orderCounter;
+                objProfileDefinition.Length = XmlUtils.GetNodeValueInt(node, "length");
+
+                switch (XmlUtils.GetNodeValueInt(node, "defaultvisibility", 2))
+                {
+                    case 0:
+                        objProfileDefinition.DefaultVisibility = UserVisibilityMode.AllUsers;
+                        break;
+                    case 1:
+                        objProfileDefinition.DefaultVisibility = UserVisibilityMode.MembersOnly;
+                        break;
+                    case 2:
+                        objProfileDefinition.DefaultVisibility = UserVisibilityMode.AdminOnly;
+                        break;
+                }
+
+                if (objProfileDefinition.PropertyName == "PreferredTimeZone")
+                {
+                    preferredTimeZoneFound = true;
+                }
+
+                ProfileController.AddPropertyDefinition(objProfileDefinition);
+            }
+
+            // 6.0 requires the old TimeZone property to be marked as Deleted
+            ProfilePropertyDefinition pdf = ProfileController.GetPropertyDefinitionByName(portalId, "TimeZone");
+            if (pdf != null)
+            {
+                ProfileController.DeletePropertyDefinition(pdf);
+            }
+
+            // 6.0 introduced a new property called as PreferredTimeZone. If this property is not present in template
+            // it should be added. Situation will mostly happen while using an older template file.
+            if (!preferredTimeZoneFound)
+            {
+                orderCounter += 2;
+
+                ListEntryInfo typeInfo = colDataTypes["DataType:TimeZoneInfo"];
+                if (typeInfo == null)
+                {
+                    typeInfo = colDataTypes["DataType:Unknown"];
+                }
+
+                objProfileDefinition = new ProfilePropertyDefinition(portalId);
+                objProfileDefinition.DataType = typeInfo.EntryID;
+                objProfileDefinition.DefaultValue = string.Empty;
+                objProfileDefinition.ModuleDefId = Null.NullInteger;
+                objProfileDefinition.PropertyCategory = "Preferences";
+                objProfileDefinition.PropertyName = "PreferredTimeZone";
+                objProfileDefinition.Required = false;
+                objProfileDefinition.Visible = true;
+                objProfileDefinition.ViewOrder = orderCounter;
+                objProfileDefinition.Length = 0;
+                objProfileDefinition.DefaultVisibility = UserVisibilityMode.AdminOnly;
+                ProfileController.AddPropertyDefinition(objProfileDefinition);
+            }
+        }
+
+        private static void ParsePortalDesktopModules(XPathNavigator nav, int portalID)
+        {
+            foreach (XPathNavigator desktopModuleNav in nav.Select("portalDesktopModule"))
+            {
+                HtmlUtils.WriteKeepAlive();
+                var friendlyName = XmlUtils.GetNodeValue(desktopModuleNav, "friendlyname");
+                if (!string.IsNullOrEmpty(friendlyName))
+                {
+                    var desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName(friendlyName);
+                    if (desktopModule != null)
+                    {
+                        // Parse the permissions
+                        DesktopModulePermissionCollection permissions = new DesktopModulePermissionCollection();
+                        foreach (XPathNavigator permissionNav in
+                                 desktopModuleNav.Select("portalDesktopModulePermissions/portalDesktopModulePermission"))
+                        {
+                            string code = XmlUtils.GetNodeValue(permissionNav, "permissioncode");
+                            string key = XmlUtils.GetNodeValue(permissionNav, "permissionkey");
+                            DesktopModulePermissionInfo desktopModulePermission = null;
+                            ArrayList arrPermissions = new PermissionController().GetPermissionByCodeAndKey(code, key);
+                            if (arrPermissions.Count > 0)
+                            {
+                                PermissionInfo permission = arrPermissions[0] as PermissionInfo;
+                                if (permission != null)
+                                {
+                                    desktopModulePermission = new DesktopModulePermissionInfo(permission);
+                                }
+                            }
+
+                            desktopModulePermission.AllowAccess = bool.Parse(XmlUtils.GetNodeValue(permissionNav, "allowaccess"));
+                            string rolename = XmlUtils.GetNodeValue(permissionNav, "rolename");
+                            if (!string.IsNullOrEmpty(rolename))
+                            {
+                                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == rolename);
+                                if (role != null)
+                                {
+                                    desktopModulePermission.RoleID = role.RoleID;
+                                }
+                            }
+
+                            permissions.Add(desktopModulePermission);
+                        }
+
+                        DesktopModuleController.AddDesktopModuleToPortal(portalID, desktopModule, permissions, false);
+                    }
+                }
+            }
+        }
+
+        private static void ParseFolderPermissions(XmlNodeList nodeFolderPermissions, int portalId, FolderInfo folder)
+        {
+            PermissionController permissionController = new PermissionController();
+            int permissionId = 0;
+
+            // Clear the current folder permissions
+            folder.FolderPermissions.Clear();
+            foreach (XmlNode xmlFolderPermission in nodeFolderPermissions)
+            {
+                string permissionKey = XmlUtils.GetNodeValue(xmlFolderPermission.CreateNavigator(), "permissionkey");
+                string permissionCode = XmlUtils.GetNodeValue(xmlFolderPermission.CreateNavigator(), "permissioncode");
+                string roleName = XmlUtils.GetNodeValue(xmlFolderPermission.CreateNavigator(), "rolename");
+                bool allowAccess = XmlUtils.GetNodeValueBoolean(xmlFolderPermission, "allowaccess");
+                foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey))
+                {
+                    permissionId = permission.PermissionID;
+                }
+
+                int roleId = int.MinValue;
+                switch (roleName)
+                {
+                    case Globals.glbRoleAllUsersName:
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        break;
+                    case Globals.glbRoleUnauthUserName:
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        break;
+                    default:
+                        RoleInfo objRole = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
+                        if (objRole != null)
+                        {
+                            roleId = objRole.RoleID;
+                        }
+
+                        break;
+                }
+
+                // if role was found add, otherwise ignore
+                if (roleId != int.MinValue)
+                {
+                    var folderPermission = new FolderPermissionInfo
+                    {
+                        FolderID = folder.FolderID,
+                        PermissionID = permissionId,
+                        RoleID = roleId,
+                        UserID = Null.NullInteger,
+                        AllowAccess = allowAccess,
+                    };
+
+                    bool canAdd = !folder.FolderPermissions.Cast<FolderPermissionInfo>()
+                        .Any(fp => fp.FolderID == folderPermission.FolderID
+                                   && fp.PermissionID == folderPermission.PermissionID
+                                   && fp.RoleID == folderPermission.RoleID
+                                   && fp.UserID == folderPermission.UserID);
+                    if (canAdd)
+                    {
+                        folder.FolderPermissions.Add(folderPermission);
+                    }
+                }
+            }
+
+            FolderPermissionController.SaveFolderPermissions(folder);
+        }
+
+        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo folder)
+        {
+            var fileManager = FileManager.Instance;
+
+            foreach (XmlNode node in nodeFiles)
+            {
+                var fileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "filename");
+
+                // First check if the file exists
+                var file = fileManager.GetFile(folder, fileName);
+
+                if (file != null)
+                {
+                    continue;
+                }
+
+                file = new Services.FileSystem.FileInfo
+                {
+                    PortalId = portalId,
+                    FileName = fileName,
+                    Extension = XmlUtils.GetNodeValue(node.CreateNavigator(), "extension"),
+                    Size = XmlUtils.GetNodeValueInt(node, "size"),
+                    Width = XmlUtils.GetNodeValueInt(node, "width"),
+                    Height = XmlUtils.GetNodeValueInt(node, "height"),
+                    ContentType = XmlUtils.GetNodeValue(node.CreateNavigator(), "contenttype"),
+                    SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
+                    FolderId = folder.FolderID,
+                    Folder = folder.FolderPath,
+                    Title = string.Empty,
+                    StartDate = DateTime.Now,
+                    EndDate = Null.NullDate,
+                    EnablePublishPeriod = false,
+                    ContentItemID = Null.NullInteger,
+                };
+
+                // Save new File
+                try
+                {
+                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider
+                    using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
+                    {
+                        var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+                        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                        file.FileId = fileManager.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
+                    }
+
+                    fileManager.UpdateFile(file);
+                }
+                catch (InvalidFileExtensionException ex)
+                {
+                    // when the file is not allowed, we should not break parse process, but just log the error.
+                    Logger.Error(ex.Message);
+                }
+            }
+        }
+
+        private static void CreateRoleGroup(RoleGroupInfo roleGroup)
+        {
+            // First check if the role exists
+            var objRoleGroupInfo = RoleController.GetRoleGroupByName(roleGroup.PortalID, roleGroup.RoleGroupName);
+
+            if (objRoleGroupInfo == null)
+            {
+                roleGroup.RoleGroupID = RoleController.AddRoleGroup(roleGroup);
+            }
+            else
+            {
+                roleGroup.RoleGroupID = objRoleGroupInfo.RoleGroupID;
+            }
+        }
+
+        private static int CreateRole(RoleInfo role)
+        {
+            int roleId;
+
+            // First check if the role exists
+            var objRoleInfo = RoleController.Instance.GetRole(role.PortalID, r => r.RoleName == role.RoleName);
+            if (objRoleInfo == null)
+            {
+                roleId = RoleController.Instance.AddRole(role);
+            }
+            else
+            {
+                roleId = objRoleInfo.RoleID;
+            }
+
+            return roleId;
+        }
+
+        private static int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency, bool isPublic, bool isAuto)
+        {
+            RoleInfo objRoleInfo = new RoleInfo();
+            objRoleInfo.PortalID = portalId;
+            objRoleInfo.RoleName = roleName;
+            objRoleInfo.RoleGroupID = Null.NullInteger;
+            objRoleInfo.Description = description;
+            objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
+            objRoleInfo.BillingPeriod = billingPeriod;
+            objRoleInfo.BillingFrequency = billingFrequency;
+            objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
+            objRoleInfo.TrialPeriod = trialPeriod;
+            objRoleInfo.TrialFrequency = trialFrequency;
+            objRoleInfo.IsPublic = isPublic;
+            objRoleInfo.AutoAssignment = isAuto;
+            return CreateRole(objRoleInfo);
+        }
+
+        private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
+        {
+            // create required roles if not already created
+            if (administratorRoleId == -1)
+            {
+                administratorRoleId = CreateRole(portalId, "Administrators", "Administrators of this Website", 0, 0, "M", 0, 0, "N", false, false);
+            }
+
+            if (registeredRoleId == -1)
+            {
+                registeredRoleId = CreateRole(portalId, "Registered Users", "Registered Users", 0, 0, "M", 0, 0, "N", false, true);
+            }
+
+            if (subscriberRoleId == -1)
+            {
+                subscriberRoleId = CreateRole(portalId, "Subscribers", "A public role for site subscriptions", 0, 0, "M", 0, 0, "N", true, true);
+            }
+
+            if (unverifiedRoleId == -1)
+            {
+                CreateRole(portalId, "Unverified Users", "Unverified Users", 0, 0, "M", 0, 0, "N", false, false);
+            }
+
+            RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+        }
+
+        private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
+        {
+            var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalId);
+            var returnCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
+            var clearCache = false;
+            foreach (XmlNode node in nodeEnabledLocales.SelectNodes("//locale"))
+            {
+                var cultureCode = node.InnerText;
+                var locale = LocaleController.Instance.GetLocale(cultureCode);
+                if (locale == null)
+                {
+                    // if language does not exist in the installation, create it
+                    locale = new Locale { Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(cultureCode).NativeName };
+                    Localization.SaveLanguage(locale, false);
+                    clearCache = true;
+                }
+
+                if (locale.Code != defaultLocale.Code)
+                {
+                    returnCollection.Add(locale.Code, locale);
+                }
+            }
+
+            if (clearCache)
+            {
+                DataCache.ClearHostCache(true);
+            }
+
+            return returnCollection;
         }
 
         private void ParseFolders(XmlNode nodeFolders, int portalId)
@@ -514,8 +1059,9 @@ namespace DotNetNuke.Entities.Portals.Templates
             var portal = PortalController.Instance.GetPortal(portalId);
             if (!string.IsNullOrEmpty(strName))
             {
-                if (!isNewPortal) // running from wizard: try to find the tab by path
+                if (!isNewPortal)
                 {
+                    // running from wizard: try to find the tab by path
                     string parenttabname = string.Empty;
                     if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))
                     {
@@ -694,203 +1240,49 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        internal void ParseTemplateInternal(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
-        {
-            LocaleCollection localeCollection;
-            this.ParseTemplateInternal(portalId, administratorId, mergeTabs, isNewPortal, out localeCollection);
-        }
+        ////private void PrepareLocalizedPortalTemplate(PortalTemplateInfo template, out string templatePath, out string templateFile)
+        ////{
+        ////    if (string.IsNullOrEmpty(template.LanguageFilePath))
+        ////    {
+        ////        // no language to merge
+        ////        templatePath = Path.GetDirectoryName(template.TemplateFilePath) + @"\";
+        ////        templateFile = Path.GetFileName(template.TemplateFilePath);
+        ////        return;
+        ////    }
 
-        internal void ParseTemplateInternal(int portalId, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
-        {
-            CachingProvider.DisableCacheExpiration();
+        ////    templatePath = Path.Combine(TestableGlobals.Instance.HostMapPath, "MergedTemplate");
+        ////    Directory.CreateDirectory(templatePath);
 
-            IFolderInfo objFolder;
+        ////    var buffer = new StringBuilder(File.ReadAllText(template.TemplateFilePath));
 
-            var node = this.Template.SelectSingleNode("//portal/settings");
-            if (node != null && isNewPortal)
-            {
-                HtmlUtils.WriteKeepAlive();
-                this.ParsePortalSettings(node, portalId);
-            }
+        ////    XDocument languageDoc;
+        ////    using (var reader = PortalTemplateIO.Instance.OpenTextReader(template.LanguageFilePath))
+        ////    {
+        ////        languageDoc = XDocument.Load(reader);
+        ////    }
 
-            node = this.Template.SelectSingleNode("//locales");
-            if (node != null && isNewPortal)
-            {
-                HtmlUtils.WriteKeepAlive();
-                localeCollection = ParseEnabledLocales(node, portalId);
-            }
-            else
-            {
-                var portalInfo = PortalController.Instance.GetPortal(portalId);
-                var defaultLocale = LocaleController.Instance.GetLocale(portalInfo.DefaultLanguage);
-                if (defaultLocale == null)
-                {
-                    defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(portalInfo.DefaultLanguage).NativeName };
-                    Localization.SaveLanguage(defaultLocale, false);
-                }
+        ////    var localizedData = languageDoc.Descendants("data");
 
-                localeCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
-            }
+        ////    foreach (var item in localizedData)
+        ////    {
+        ////        var nameAttribute = item.Attribute("name");
+        ////        if (nameAttribute != null)
+        ////        {
+        ////            string name = nameAttribute.Value;
+        ////            var valueElement = item.Descendants("value").FirstOrDefault();
+        ////            if (valueElement != null)
+        ////            {
+        ////                string value = valueElement.Value;
 
-            node = this.Template.SelectSingleNode("//portal/rolegroups");
-            if (node != null)
-            {
-                this.ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
-            }
+        ////                buffer = buffer.Replace(string.Format("[{0}]", name), value);
+        ////            }
+        ////        }
+        ////    }
 
-            node = this.Template.SelectSingleNode("//portal/roles");
-            if (node != null)
-            {
-                this.ParseRoles(node.CreateNavigator(), portalId, administratorId);
-            }
+        ////    templateFile = string.Format("Merged-{0}-{1}", template.CultureCode, Path.GetFileName(template.TemplateFilePath));
 
-            node = this.Template.SelectSingleNode("//portal/portalDesktopModules");
-            if (node != null)
-            {
-                ParsePortalDesktopModules(node.CreateNavigator(), portalId);
-            }
-
-            node = this.Template.SelectSingleNode("//portal/folders");
-            if (node != null)
-            {
-                this.ParseFolders(node, portalId);
-            }
-
-            node = this.Template.SelectSingleNode("//portal/extensionUrlProviders");
-            if (node != null)
-            {
-                this.ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
-            }
-
-            var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
-
-            if (FolderManager.Instance.GetFolder(portalId, string.Empty) == null)
-            {
-                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, string.Empty);
-                objFolder.IsProtected = true;
-                FolderManager.Instance.UpdateFolder(objFolder);
-
-                this.AddFolderPermissions(portalId, objFolder.FolderID);
-            }
-
-            if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
-            {
-                var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, "Templates/") ?? defaultFolderMapping;
-                objFolder = FolderManager.Instance.AddFolder(folderMapping, "Templates/");
-                objFolder.IsProtected = true;
-                FolderManager.Instance.UpdateFolder(objFolder);
-
-                // AddFolderPermissions(PortalId, objFolder.FolderID);
-            }
-
-            // force creation of users folder if not present on template
-            if (FolderManager.Instance.GetFolder(portalId, "Users/") == null)
-            {
-                var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, "Users/") ?? defaultFolderMapping;
-                objFolder = FolderManager.Instance.AddFolder(folderMapping, "Users/");
-                objFolder.IsProtected = true;
-                FolderManager.Instance.UpdateFolder(objFolder);
-
-                // AddFolderPermissions(PortalId, objFolder.FolderID);
-            }
-
-            if (mergeTabs == PortalTemplateModuleAction.Replace)
-            {
-                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
-                {
-                    var objTab = tabPair.Value;
-                    objTab.TabName = objTab.TabName + "_old";
-                    objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
-                    objTab.IsDeleted = true;
-                    TabController.Instance.UpdateTab(objTab);
-                    foreach (KeyValuePair<int, ModuleInfo> modulePair in ModuleController.Instance.GetTabModules(objTab.TabID))
-                    {
-                        var objModule = modulePair.Value;
-                        ModuleController.Instance.DeleteTabModule(objModule.TabID, objModule.ModuleID, false);
-                    }
-                }
-            }
-
-            node = this.Template.SelectSingleNode("//portal/tabs");
-            if (node != null)
-            {
-                string version = this.Template.DocumentElement.GetAttribute("version");
-                if (version != "5.0")
-                {
-                    XmlDocument xmlAdmin = new XmlDocument { XmlResolver = null };
-                    try
-                    {
-                        string path = Path.Combine(this.TemplatePath, "admin.template");
-                        if (!File.Exists(path))
-                        {
-                            // if the template is a merged copy of a localized templte the
-                            // admin.template may be one director up
-                            path = Path.Combine(this.TemplatePath, "..\admin.template");
-                        }
-
-                        xmlAdmin.Load(path);
-
-                        XmlNode adminNode = xmlAdmin.SelectSingleNode("//portal/tabs");
-                        foreach (XmlNode adminTabNode in adminNode.ChildNodes)
-                        {
-                            node.AppendChild(this.Template.ImportNode(adminTabNode, true));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-                }
-
-                this.ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
-            }
-
-            CachingProvider.EnableCacheExpiration();
-        }
-
-        //private void PrepareLocalizedPortalTemplate(PortalTemplateInfo template, out string templatePath, out string templateFile)
-        //{
-        //    if (string.IsNullOrEmpty(template.LanguageFilePath))
-        //    {
-        //        // no language to merge
-        //        templatePath = Path.GetDirectoryName(template.TemplateFilePath) + @"\";
-        //        templateFile = Path.GetFileName(template.TemplateFilePath);
-        //        return;
-        //    }
-
-        //    templatePath = Path.Combine(TestableGlobals.Instance.HostMapPath, "MergedTemplate");
-        //    Directory.CreateDirectory(templatePath);
-
-        //    var buffer = new StringBuilder(File.ReadAllText(template.TemplateFilePath));
-
-        //    XDocument languageDoc;
-        //    using (var reader = PortalTemplateIO.Instance.OpenTextReader(template.LanguageFilePath))
-        //    {
-        //        languageDoc = XDocument.Load(reader);
-        //    }
-
-        //    var localizedData = languageDoc.Descendants("data");
-
-        //    foreach (var item in localizedData)
-        //    {
-        //        var nameAttribute = item.Attribute("name");
-        //        if (nameAttribute != null)
-        //        {
-        //            string name = nameAttribute.Value;
-        //            var valueElement = item.Descendants("value").FirstOrDefault();
-        //            if (valueElement != null)
-        //            {
-        //                string value = valueElement.Value;
-
-        //                buffer = buffer.Replace(string.Format("[{0}]", name), value);
-        //            }
-        //        }
-        //    }
-
-        //    templateFile = string.Format("Merged-{0}-{1}", template.CultureCode, Path.GetFileName(template.TemplateFilePath));
-
-        //    File.WriteAllText(Path.Combine(templatePath, templateFile), buffer.ToString());
-        //}
+        ////    File.WriteAllText(Path.Combine(templatePath, templateFile), buffer.ToString());
+        ////}
 
         private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
         {
@@ -943,8 +1335,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
         }
 
-        private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
-                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
+        private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalSetup(
                 portalId,
@@ -965,393 +1356,6 @@ namespace DotNetNuke.Entities.Portals.Templates
                 cultureCode);
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), PortalSettings.Current, UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
-        }
-
-        internal string CreateProfileDefinitions(int portalId)
-        {
-            string strMessage = Null.NullString;
-            try
-            {
-                // parse profile definitions if available
-                var node = this.Template.SelectSingleNode("//portal/profiledefinitions");
-                if (node != null)
-                {
-                    ParseProfileDefinitions(node, portalId);
-                }
-                else // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
-                {
-                    ProfileController.AddDefaultDefinitions(portalId);
-                }
-            }
-            catch (Exception ex)
-            {
-                strMessage = Localization.GetString("CreateProfileDefinitions.Error");
-                Exceptions.LogException(ex);
-            }
-
-            return strMessage;
-        }
-
-        private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
-        {
-            var listController = new ListController();
-            Dictionary<string, ListEntryInfo> colDataTypes = listController.GetListEntryInfoDictionary("DataType");
-
-            int orderCounter = -1;
-            ProfilePropertyDefinition objProfileDefinition;
-            bool preferredTimeZoneFound = false;
-            foreach (XmlNode node in nodeProfileDefinitions.SelectNodes("//profiledefinition"))
-            {
-                orderCounter += 2;
-                ListEntryInfo typeInfo;
-                if (!colDataTypes.TryGetValue("DataType:" + XmlUtils.GetNodeValue(node.CreateNavigator(), "datatype"), out typeInfo))
-                {
-                    typeInfo = colDataTypes["DataType:Unknown"];
-                }
-
-                objProfileDefinition = new ProfilePropertyDefinition(portalId);
-                objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = string.Empty;
-                objProfileDefinition.ModuleDefId = Null.NullInteger;
-                objProfileDefinition.PropertyCategory = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertycategory");
-                objProfileDefinition.PropertyName = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertyname");
-                objProfileDefinition.Required = false;
-                objProfileDefinition.Visible = true;
-                objProfileDefinition.ViewOrder = orderCounter;
-                objProfileDefinition.Length = XmlUtils.GetNodeValueInt(node, "length");
-
-                switch (XmlUtils.GetNodeValueInt(node, "defaultvisibility", 2))
-                {
-                    case 0:
-                        objProfileDefinition.DefaultVisibility = UserVisibilityMode.AllUsers;
-                        break;
-                    case 1:
-                        objProfileDefinition.DefaultVisibility = UserVisibilityMode.MembersOnly;
-                        break;
-                    case 2:
-                        objProfileDefinition.DefaultVisibility = UserVisibilityMode.AdminOnly;
-                        break;
-                }
-
-                if (objProfileDefinition.PropertyName == "PreferredTimeZone")
-                {
-                    preferredTimeZoneFound = true;
-                }
-
-                ProfileController.AddPropertyDefinition(objProfileDefinition);
-            }
-
-            // 6.0 requires the old TimeZone property to be marked as Deleted
-            ProfilePropertyDefinition pdf = ProfileController.GetPropertyDefinitionByName(portalId, "TimeZone");
-            if (pdf != null)
-            {
-                ProfileController.DeletePropertyDefinition(pdf);
-            }
-
-            // 6.0 introduced a new property called as PreferredTimeZone. If this property is not present in template
-            // it should be added. Situation will mostly happen while using an older template file.
-            if (!preferredTimeZoneFound)
-            {
-                orderCounter += 2;
-
-                ListEntryInfo typeInfo = colDataTypes["DataType:TimeZoneInfo"];
-                if (typeInfo == null)
-                {
-                    typeInfo = colDataTypes["DataType:Unknown"];
-                }
-
-                objProfileDefinition = new ProfilePropertyDefinition(portalId);
-                objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = string.Empty;
-                objProfileDefinition.ModuleDefId = Null.NullInteger;
-                objProfileDefinition.PropertyCategory = "Preferences";
-                objProfileDefinition.PropertyName = "PreferredTimeZone";
-                objProfileDefinition.Required = false;
-                objProfileDefinition.Visible = true;
-                objProfileDefinition.ViewOrder = orderCounter;
-                objProfileDefinition.Length = 0;
-                objProfileDefinition.DefaultVisibility = UserVisibilityMode.AdminOnly;
-                ProfileController.AddPropertyDefinition(objProfileDefinition);
-            }
-        }
-
-        private static void ParsePortalDesktopModules(XPathNavigator nav, int portalID)
-        {
-            foreach (XPathNavigator desktopModuleNav in nav.Select("portalDesktopModule"))
-            {
-                HtmlUtils.WriteKeepAlive();
-                var friendlyName = XmlUtils.GetNodeValue(desktopModuleNav, "friendlyname");
-                if (!string.IsNullOrEmpty(friendlyName))
-                {
-                    var desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName(friendlyName);
-                    if (desktopModule != null)
-                    {
-                        // Parse the permissions
-                        DesktopModulePermissionCollection permissions = new DesktopModulePermissionCollection();
-                        foreach (XPathNavigator permissionNav in
-                            desktopModuleNav.Select("portalDesktopModulePermissions/portalDesktopModulePermission"))
-                        {
-                            string code = XmlUtils.GetNodeValue(permissionNav, "permissioncode");
-                            string key = XmlUtils.GetNodeValue(permissionNav, "permissionkey");
-                            DesktopModulePermissionInfo desktopModulePermission = null;
-                            ArrayList arrPermissions = new PermissionController().GetPermissionByCodeAndKey(code, key);
-                            if (arrPermissions.Count > 0)
-                            {
-                                PermissionInfo permission = arrPermissions[0] as PermissionInfo;
-                                if (permission != null)
-                                {
-                                    desktopModulePermission = new DesktopModulePermissionInfo(permission);
-                                }
-                            }
-
-                            desktopModulePermission.AllowAccess = bool.Parse(XmlUtils.GetNodeValue(permissionNav, "allowaccess"));
-                            string rolename = XmlUtils.GetNodeValue(permissionNav, "rolename");
-                            if (!string.IsNullOrEmpty(rolename))
-                            {
-                                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == rolename);
-                                if (role != null)
-                                {
-                                    desktopModulePermission.RoleID = role.RoleID;
-                                }
-                            }
-
-                            permissions.Add(desktopModulePermission);
-                        }
-
-                        DesktopModuleController.AddDesktopModuleToPortal(portalID, desktopModule, permissions, false);
-                    }
-                }
-            }
-        }
-
-        private static void ParseFolderPermissions(XmlNodeList nodeFolderPermissions, int portalId, FolderInfo folder)
-        {
-            PermissionController permissionController = new PermissionController();
-            int permissionId = 0;
-
-            // Clear the current folder permissions
-            folder.FolderPermissions.Clear();
-            foreach (XmlNode xmlFolderPermission in nodeFolderPermissions)
-            {
-                string permissionKey = XmlUtils.GetNodeValue(xmlFolderPermission.CreateNavigator(), "permissionkey");
-                string permissionCode = XmlUtils.GetNodeValue(xmlFolderPermission.CreateNavigator(), "permissioncode");
-                string roleName = XmlUtils.GetNodeValue(xmlFolderPermission.CreateNavigator(), "rolename");
-                bool allowAccess = XmlUtils.GetNodeValueBoolean(xmlFolderPermission, "allowaccess");
-                foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey))
-                {
-                    permissionId = permission.PermissionID;
-                }
-
-                int roleId = int.MinValue;
-                switch (roleName)
-                {
-                    case Globals.glbRoleAllUsersName:
-                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
-                        break;
-                    case Globals.glbRoleUnauthUserName:
-                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
-                        break;
-                    default:
-                        RoleInfo objRole = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
-                        if (objRole != null)
-                        {
-                            roleId = objRole.RoleID;
-                        }
-
-                        break;
-                }
-
-                // if role was found add, otherwise ignore
-                if (roleId != int.MinValue)
-                {
-                    var folderPermission = new FolderPermissionInfo
-                    {
-                        FolderID = folder.FolderID,
-                        PermissionID = permissionId,
-                        RoleID = roleId,
-                        UserID = Null.NullInteger,
-                        AllowAccess = allowAccess,
-                    };
-
-                    bool canAdd = !folder.FolderPermissions.Cast<FolderPermissionInfo>()
-                                                .Any(fp => fp.FolderID == folderPermission.FolderID
-                                                        && fp.PermissionID == folderPermission.PermissionID
-                                                        && fp.RoleID == folderPermission.RoleID
-                                                        && fp.UserID == folderPermission.UserID);
-                    if (canAdd)
-                    {
-                        folder.FolderPermissions.Add(folderPermission);
-                    }
-                }
-            }
-
-            FolderPermissionController.SaveFolderPermissions(folder);
-        }
-
-        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo folder)
-        {
-            var fileManager = FileManager.Instance;
-
-            foreach (XmlNode node in nodeFiles)
-            {
-                var fileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "filename");
-
-                // First check if the file exists
-                var file = fileManager.GetFile(folder, fileName);
-
-                if (file != null)
-                {
-                    continue;
-                }
-
-                file = new Services.FileSystem.FileInfo
-                {
-                    PortalId = portalId,
-                    FileName = fileName,
-                    Extension = XmlUtils.GetNodeValue(node.CreateNavigator(), "extension"),
-                    Size = XmlUtils.GetNodeValueInt(node, "size"),
-                    Width = XmlUtils.GetNodeValueInt(node, "width"),
-                    Height = XmlUtils.GetNodeValueInt(node, "height"),
-                    ContentType = XmlUtils.GetNodeValue(node.CreateNavigator(), "contenttype"),
-                    SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
-                    FolderId = folder.FolderID,
-                    Folder = folder.FolderPath,
-                    Title = string.Empty,
-                    StartDate = DateTime.Now,
-                    EndDate = Null.NullDate,
-                    EnablePublishPeriod = false,
-                    ContentItemID = Null.NullInteger,
-                };
-
-                // Save new File
-                try
-                {
-                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider
-                    using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
-                    {
-                        var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-                        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-                        file.FileId = fileManager.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
-                    }
-
-                    fileManager.UpdateFile(file);
-                }
-                catch (InvalidFileExtensionException ex) // when the file is not allowed, we should not break parse process, but just log the error.
-                {
-                    Logger.Error(ex.Message);
-                }
-            }
-        }
-
-        private static void CreateRoleGroup(RoleGroupInfo roleGroup)
-        {
-            // First check if the role exists
-            var objRoleGroupInfo = RoleController.GetRoleGroupByName(roleGroup.PortalID, roleGroup.RoleGroupName);
-
-            if (objRoleGroupInfo == null)
-            {
-                roleGroup.RoleGroupID = RoleController.AddRoleGroup(roleGroup);
-            }
-            else
-            {
-                roleGroup.RoleGroupID = objRoleGroupInfo.RoleGroupID;
-            }
-        }
-
-        private static int CreateRole(RoleInfo role)
-        {
-            int roleId;
-
-            // First check if the role exists
-            var objRoleInfo = RoleController.Instance.GetRole(role.PortalID, r => r.RoleName == role.RoleName);
-            if (objRoleInfo == null)
-            {
-                roleId = RoleController.Instance.AddRole(role);
-            }
-            else
-            {
-                roleId = objRoleInfo.RoleID;
-            }
-
-            return roleId;
-        }
-
-        private static int CreateRole(int portalId, string roleName, string description, float serviceFee, int billingPeriod, string billingFrequency, float trialFee, int trialPeriod, string trialFrequency,
-                               bool isPublic, bool isAuto)
-        {
-            RoleInfo objRoleInfo = new RoleInfo();
-            objRoleInfo.PortalID = portalId;
-            objRoleInfo.RoleName = roleName;
-            objRoleInfo.RoleGroupID = Null.NullInteger;
-            objRoleInfo.Description = description;
-            objRoleInfo.ServiceFee = Convert.ToSingle(serviceFee < 0 ? 0 : serviceFee);
-            objRoleInfo.BillingPeriod = billingPeriod;
-            objRoleInfo.BillingFrequency = billingFrequency;
-            objRoleInfo.TrialFee = Convert.ToSingle(trialFee < 0 ? 0 : trialFee);
-            objRoleInfo.TrialPeriod = trialPeriod;
-            objRoleInfo.TrialFrequency = trialFrequency;
-            objRoleInfo.IsPublic = isPublic;
-            objRoleInfo.AutoAssignment = isAuto;
-            return CreateRole(objRoleInfo);
-        }
-
-        private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
-        {
-            // create required roles if not already created
-            if (administratorRoleId == -1)
-            {
-                administratorRoleId = CreateRole(portalId, "Administrators", "Administrators of this Website", 0, 0, "M", 0, 0, "N", false, false);
-            }
-
-            if (registeredRoleId == -1)
-            {
-                registeredRoleId = CreateRole(portalId, "Registered Users", "Registered Users", 0, 0, "M", 0, 0, "N", false, true);
-            }
-
-            if (subscriberRoleId == -1)
-            {
-                subscriberRoleId = CreateRole(portalId, "Subscribers", "A public role for site subscriptions", 0, 0, "M", 0, 0, "N", true, true);
-            }
-
-            if (unverifiedRoleId == -1)
-            {
-                CreateRole(portalId, "Unverified Users", "Unverified Users", 0, 0, "M", 0, 0, "N", false, false);
-            }
-
-            RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-            RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-            RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-        }
-
-        private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
-        {
-            var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalId);
-            var returnCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
-            var clearCache = false;
-            foreach (XmlNode node in nodeEnabledLocales.SelectNodes("//locale"))
-            {
-                var cultureCode = node.InnerText;
-                var locale = LocaleController.Instance.GetLocale(cultureCode);
-                if (locale == null)
-                {
-                    // if language does not exist in the installation, create it
-                    locale = new Locale { Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(cultureCode).NativeName };
-                    Localization.SaveLanguage(locale, false);
-                    clearCache = true;
-                }
-
-                if (locale.Code != defaultLocale.Code)
-                {
-                    returnCollection.Add(locale.Code, locale);
-                }
-            }
-
-            if (clearCache)
-            {
-                DataCache.ClearHostCache(true);
-            }
-
-            return returnCollection;
         }
 
         private void AddFolderPermissions(int portalId, int folderId)

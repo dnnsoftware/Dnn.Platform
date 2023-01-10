@@ -187,3 +187,5 @@ csharp_preserve_single_line_statements = true
 
 # ReSharper properties
 resharper_instance_members_qualify_members = field, property, event, method
+resharper_csharp_wrap_arguments_style = chop_if_long
+resharper_csharp_wrap_parameters_style = chop_if_long

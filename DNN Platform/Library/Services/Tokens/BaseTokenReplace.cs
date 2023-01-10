@@ -1,8 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Services.Tokens
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -34,15 +36,6 @@ namespace DotNetNuke.Services.Tokens
         private string language;
 
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
-        protected virtual CultureInfo FormatProvider
-        {
-            get { return this.formatProvider ?? (this.formatProvider = Thread.CurrentThread.CurrentUICulture); }
-        }
-
-        /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
         /// <value>A string, representing the locale.</value>
@@ -58,6 +51,15 @@ namespace DotNetNuke.Services.Tokens
                 this.language = value;
                 this.formatProvider = new CultureInfo(this.language);
             }
+        }
+
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture.
+        /// </summary>
+        /// <value>An CultureInfo.</value>
+        protected virtual CultureInfo FormatProvider
+        {
+            get { return this.formatProvider ?? (this.formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
@@ -81,6 +83,8 @@ namespace DotNetNuke.Services.Tokens
         }
 
         protected bool UseObjectLessExpression { get; set; }
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
         protected abstract string replacedTokenValue(string objectName, string propertyName, string format);

@@ -176,8 +176,7 @@ namespace DotNetNuke.Entities.Urls
                 // else
                 // {
                 if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
-                    (!Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex,
-                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)))
+                    !Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                 {
                     retVal = true;
                     result.CanRewrite = StateBoolean.True;
@@ -508,9 +507,8 @@ namespace DotNetNuke.Entities.Urls
                                         }
 
                                         // if the parms weren't rewritten by means of a regex, then process them normally
-                                        if (!rewriteParms && !isSiteRootMatch)
-
                                         // can only try other matches if it wasn't a site root match
+                                        if (!rewriteParms && !isSiteRootMatch)
                                         {
                                             // put those parms on the back of the url as a query string
                                             string cultureCode;
@@ -522,7 +520,9 @@ namespace DotNetNuke.Entities.Urls
                                                 langParms,
                                                 settings,
                                                 out cultureCode);
-                                            if (cultureCode != null) // set culture code if not already set
+
+                                            // set culture code if not already set
+                                            if (cultureCode != null)
                                             {
                                                 result.CultureCode = cultureCode;
                                             }
@@ -551,9 +551,8 @@ namespace DotNetNuke.Entities.Urls
                                         }
 
                                         if (isSiteRootMatch && !finished)
-
-                                        // when it was a site root match, this must be matched with a custom parameter regex
                                         {
+                                            // when it was a site root match, this must be matched with a custom parameter regex
                                             // only finished if the parms were rewritten by means of a regex rewrite
                                             reWritten = rewriteParms;
                                             finished = rewriteParms;
@@ -589,9 +588,14 @@ namespace DotNetNuke.Entities.Urls
                                             }
                                         }
 
-                                        RedirectTokens.DetermineRedirectReasonAndAction(newUrl, result, false, settings,
-                                                                                        out resultUrl, out reason,
-                                                                                        out action);
+                                        RedirectTokens.DetermineRedirectReasonAndAction(
+                                            newUrl,
+                                            result,
+                                            false,
+                                            settings,
+                                            out resultUrl,
+                                            out reason,
+                                            out action);
                                         newUrl = resultUrl;
                                         result.Reason = reason;
                                         result.Action = action;
@@ -783,8 +787,9 @@ namespace DotNetNuke.Entities.Urls
                     isDefaultAspxPath = true;
                 }
 
-                if (isDefaultAspxPath) // it is the default aspx path
+                if (isDefaultAspxPath)
                 {
+                    // it is the default aspx path
                     // check to see if it is a /default.aspx?key=value url (not just default.aspx, nor a child alias)
                     if (queryStringCol != null && queryStringCol.Count > 0)
                     {
@@ -1195,8 +1200,9 @@ namespace DotNetNuke.Entities.Urls
                             bool extReplaced;
                             string urlParm = CleanExtension(thisParm, pageExtension, out extReplaced);
 
-                            if (extReplaced && pageExtension == string.Empty) // replacing a .aspx extension
+                            if (extReplaced && pageExtension == string.Empty)
                             {
+                                // replacing a .aspx extension
                                 result.Action = ActionType.CheckFor301;
                             }
 
@@ -1296,7 +1302,8 @@ namespace DotNetNuke.Entities.Urls
             var messages = new List<string>();
             Dictionary<int, SharedList<ParameterRewriteAction>> rewriteActions = CacheController.GetParameterRewrites(
                 urlAction.PortalId,
-                ref messages, parentTraceId);
+                ref messages,
+                parentTraceId);
             if (messages == null)
             {
                 messages = new List<string>();
@@ -1322,8 +1329,9 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    if (rewriteActions.ContainsKey(AllTabsRewrite)) // -1 means 'all tabs' - rewriting across all tabs
+                    if (rewriteActions.ContainsKey(AllTabsRewrite))
                     {
+                        // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab rewrites
                         if (tabRewrites == null)
                         {
@@ -1382,8 +1390,9 @@ namespace DotNetNuke.Entities.Urls
                                         newUrl += "&";
                                     }
                                 }
-                                else // need to start the querystring off (592: allow for custom rewrites on site root)
+                                else
                                 {
+                                    // need to start the querystring off (592: allow for custom rewrites on site root)
                                     newUrl += "?";
                                 }
 
@@ -1655,7 +1664,8 @@ namespace DotNetNuke.Entities.Urls
                             // see if there is a skin for the alias/culture combination
                             string skin = TabPathHelper.GetTabAliasSkinForTabAndAlias(
                                 portalAlias.PortalID,
-                                portalAlias.HTTPAlias, culture);
+                                portalAlias.HTTPAlias,
+                                culture);
                             if (string.IsNullOrEmpty(skin) == false)
                             {
                                 newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty, "skinSrc=" + skin);
@@ -1710,9 +1720,8 @@ namespace DotNetNuke.Entities.Urls
 
                 // no .aspx on the end anymore
                 if (defaultStart > 0 && defaultStart > lastPath)
-
-                // there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
                 {
+                    // there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
                     tabKeyVal = tabKeyVal.Substring(0, defaultStart);
 
                     // get rid of the default.aspx part

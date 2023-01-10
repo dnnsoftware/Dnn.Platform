@@ -61,8 +61,9 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 object setting = GetSetting(this.PortalId, "Redirect_AfterRegistration");
 
-                if (Convert.ToInt32(setting) > 0) // redirect to after registration page
+                if (Convert.ToInt32(setting) > 0)
                 {
+                    // redirect to after registration page
                     redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
                 else
@@ -95,8 +96,9 @@ namespace DotNetNuke.Modules.Admin.Security
                             redirectURL = this.navigationManager.NavigateURL();
                         }
                     }
-                    else // redirect to after registration page
+                    else
                     {
+                        // redirect to after registration page
                         redirectURL = this.navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
                 }

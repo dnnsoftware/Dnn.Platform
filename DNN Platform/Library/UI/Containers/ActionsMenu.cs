@@ -295,7 +295,7 @@ namespace DotNetNuke.UI.Containers
                 this.ProviderControl.StyleRoot = "background-color: Transparent; font-size: 1pt;";
                 this.ProviderControl.NodeClick += this.MenuItem_Click;
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

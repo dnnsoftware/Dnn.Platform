@@ -142,8 +142,9 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             // call ReplyMessage
             var messageId = this.dataService.CreateMessageReply(conversationId, PortalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
-            if (messageId == -1) // Parent message was not found or Recipient was not found in the message
+            if (messageId == -1)
             {
+                // Parent message was not found or Recipient was not found in the message
                 throw new MessageOrRecipientNotFoundException(Localization.GetString("MsgMessageOrRecipientNotFound", Localization.ExceptionsResourceFile));
             }
 
@@ -363,8 +364,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             var count = this.dataService.CountTotalConversations(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 
@@ -385,8 +390,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             }
 
             var count = this.dataService.CountNewThreads(userId, portalId);
-            cache.Insert(cacheKey, count, (DNNCacheDependency)null,
-                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
+            cache.Insert(
+                cacheKey,
+                count,
+                (DNNCacheDependency)null,
+                DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec),
+                System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
         }
 

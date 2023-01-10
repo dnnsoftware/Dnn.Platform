@@ -181,6 +181,27 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             return containers;
         }
 
+        /// <summary>
+        /// Updates a file in Azure folder provider.
+        /// </summary>
+        /// <remarks>
+        /// Azure is case sensitive.  If you update dnninternals.pdf with DNNINTERNALS.pdf, to DNN it's the same
+        /// so it just re-uploads it, causing both files to exist in Azure. This azure specific method deletes the
+        /// old existing duplicate that only differs in case as part of the update.
+        /// </remarks>
+        public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
+        {
+            IFileInfo originalFile = FileManager.Instance.GetFile(folder, fileName);
+
+            base.UpdateFile(folder, fileName, content);
+
+            if (originalFile != null && originalFile.FileName != fileName)
+            {
+                FolderMappingInfo folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID);
+                this.DeleteFileInternal(folderMapping, folder.MappedPath + originalFile.FileName);
+            }
+        }
+
         /// <inheritdoc/>
         protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
@@ -293,27 +314,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
 
             this.ClearCache(folderMapping.FolderMappingID);
-        }
-
-        /// <summary>
-        /// Updates a file in Azure folder provider.
-        /// </summary>
-        /// <remarks>
-        /// Azure is case sensitive.  If you update dnninternals.pdf with DNNINTERNALS.pdf, to DNN it's the same
-        /// so it just re-uploads it, causing both files to exist in Azure. This azure specific method deletes the
-        /// old existing duplicate that only differs in case as part of the update.
-        /// </remarks>
-        public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
-        {
-            IFileInfo originalFile = FileManager.Instance.GetFile(folder, fileName);
-
-            base.UpdateFile(folder, fileName, content);
-
-            if (originalFile != null && originalFile.FileName != fileName)
-            {
-                FolderMappingInfo folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID);
-                this.DeleteFileInternal(folderMapping, folder.MappedPath + originalFile.FileName);
-            }
         }
 
         /// <inheritdoc/>

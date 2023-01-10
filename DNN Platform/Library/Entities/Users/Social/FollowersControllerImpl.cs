@@ -44,7 +44,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            var relationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
+            var relationship = RelationshipController.Instance.InitiateUserRelationship(
+                initiatingUser,
+                targetUser,
                 RelationshipController.Instance.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
 
             AddFollowerRequestNotification(initiatingUser, targetUser);

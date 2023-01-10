@@ -52,7 +52,9 @@ namespace DotNetNuke.Web.Common.Internal
                     var dirMonCount = (int)dirMonCompletion.InvokeMember(
                         "_activeDirMonCompletions",
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
-                        null, null, null);
+                        null,
+                        null,
+                        null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
 
                     // enable our monitor only when fcnMode="Disabled"

@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Groups
                 this.plhContent.Controls.Clear();
                 this.plhContent.Controls.Add(ctl);
             }
-            catch (Exception exc) // Module failed to load
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -64,12 +64,16 @@ namespace Dnn.PersonaBar.Users.Services
                     RandomPassword = contract.RandomPassword,
                     IgnoreRegistrationMode = true,
                 };
+
                 var userInfo = RegisterController.Instance.Register(settings);
-                return this.Request.CreateResponse(HttpStatusCode.OK, userInfo != null
-                    ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(
-                        this.PortalId,
-                        userInfo.UserId))
-                    : null);
+                UserBasicDto response = null;
+                if (userInfo != null)
+                {
+                    var userDetail = Components.UsersController.Instance.GetUserDetail(this.PortalId, userInfo.UserId);
+                    response = UserBasicDto.FromUserDetails(userDetail);
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {
@@ -97,9 +101,7 @@ namespace Dnn.PersonaBar.Users.Services
         /// <returns></returns>
         [HttpGet]
 
-        public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize,
-            string sortColumn,
-            bool sortAscending)
+        public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize, string sortColumn, bool sortAscending)
         {
             try
             {
@@ -115,8 +117,7 @@ namespace Dnn.PersonaBar.Users.Services
                     Filter = filter,
                 };
 
-                var results = Components.UsersController.Instance.GetUsers(getUsersContract, this.UserInfo.IsSuperUser,
-                    out totalRecords);
+                var results = Components.UsersController.Instance.GetUsers(getUsersContract, this.UserInfo.IsSuperUser, out totalRecords);
                 var response = new
                 {
                     Results = results,
@@ -336,8 +337,9 @@ namespace Dnn.PersonaBar.Users.Services
                     return httpResponseMessage;
                 }
 
-                if (user.Membership.Approved == authorized) // Do nothing if the new status is same as current status.
+                if (user.Membership.Approved == authorized)
                 {
+                    // Do nothing if the new status is same as current status.
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
 
@@ -632,8 +634,7 @@ namespace Dnn.PersonaBar.Users.Services
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
 
-        public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri] bool notifyUser,
-            [FromUri] bool isOwner)
+        public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri] bool notifyUser, [FromUri] bool isOwner)
         {
             try
             {
@@ -645,8 +646,12 @@ namespace Dnn.PersonaBar.Users.Services
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                var result = Components.UsersController.Instance.SaveUserRole(this.PortalId, this.UserInfo, userRoleDto,
-                    notifyUser, isOwner);
+                var result = Components.UsersController.Instance.SaveUserRole(
+                    this.PortalId,
+                    this.UserInfo,
+                    userRoleDto,
+                    notifyUser,
+                    isOwner);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }
@@ -673,8 +678,13 @@ namespace Dnn.PersonaBar.Users.Services
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                RoleController.Instance.UpdateUserRole(this.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
-                    RoleStatus.Approved, false, true);
+                RoleController.Instance.UpdateUserRole(
+                    this.PortalId,
+                    userRoleDto.UserId,
+                    userRoleDto.RoleId,
+                    RoleStatus.Approved,
+                    false,
+                    true);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

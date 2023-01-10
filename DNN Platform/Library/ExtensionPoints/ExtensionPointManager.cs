@@ -19,6 +19,34 @@ namespace DotNetNuke.ExtensionPoints
         private static readonly object SyncRoot = new object();
         private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
 
+#pragma warning disable 649
+
+        [ImportMany]
+        private IEnumerable<Lazy<IScriptItemExtensionPoint, IExtensionPointData>> scripts;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IEditPageTabExtensionPoint, IExtensionPointData>> editPageTabExtensionPoint;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IToolBarButtonExtensionPoint, IExtensionPointData>> toolbarButtonExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IEditPagePanelExtensionPoint, IExtensionPointData>> editPagePanelExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IContextMenuItemExtensionPoint, IExtensionPointData>> ctxMenuItemExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IUserControlExtensionPoint, IExtensionPointData>> userControlExtensionPoints;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IMenuItemExtensionPoint, IExtensionPointData>> menuItems;
+
+        [ImportMany]
+        private IEnumerable<Lazy<IGridColumnExtensionPoint, IExtensionPointData>> gridColumns;
+
+#pragma warning restore 649
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtensionPointManager"/> class.
         /// </summary>
@@ -189,33 +217,5 @@ namespace DotNetNuke.ExtensionPoints
         {
             return data.Module == module && (string.IsNullOrEmpty(@group) || data.Group == @group);
         }
-
-#pragma warning disable 649
-
-        [ImportMany]
-        private IEnumerable<Lazy<IScriptItemExtensionPoint, IExtensionPointData>> scripts;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IEditPageTabExtensionPoint, IExtensionPointData>> editPageTabExtensionPoint;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IToolBarButtonExtensionPoint, IExtensionPointData>> toolbarButtonExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IEditPagePanelExtensionPoint, IExtensionPointData>> editPagePanelExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IContextMenuItemExtensionPoint, IExtensionPointData>> ctxMenuItemExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IUserControlExtensionPoint, IExtensionPointData>> userControlExtensionPoints;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IMenuItemExtensionPoint, IExtensionPointData>> menuItems;
-
-        [ImportMany]
-        private IEnumerable<Lazy<IGridColumnExtensionPoint, IExtensionPointData>> gridColumns;
-
-#pragma warning restore 649
     }
 }

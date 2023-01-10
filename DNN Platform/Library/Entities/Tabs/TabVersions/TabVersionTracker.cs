@@ -187,8 +187,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     existingTabDetail.TabVersionDetailId);
             }
 
-            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
-                moduleVersion, TabVersionDetailAction.Added);
+            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(
+                targetVersion.TabVersionId,
+                module,
+                moduleVersion,
+                TabVersionDetailAction.Added);
             TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
         }
 
@@ -219,8 +222,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             ModuleInfo moduleInfo = ModuleController.Instance.GetModule(module.ModuleID, module.TabID, false);
             if (moduleInfo != null)
             {
-                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
-                    moduleVersion, TabVersionDetailAction.Deleted);
+                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(
+                    targetVersion.TabVersionId,
+                    module,
+                    moduleVersion,
+                    TabVersionDetailAction.Deleted);
                 TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
             }
         }

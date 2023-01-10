@@ -26,14 +26,4 @@ namespace Dnn.PersonaBar.Extensions.Components.Security.Ssl
             return () => new SslController();
         }
     }
-
-    public interface ISSlController
-    {
-        /// <summary>
-        /// Get statistics on the specified portal.
-        /// </summary>
-        /// <param name="portalId">Portal id of the portal.</param>
-        /// <returns>PortalStats object.</returns>
-        PortalStats GetPortalStats(int portalId);
-    }
 }
