@@ -1,31 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Mail.OAuth
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    /// <summary>
-    /// Smtp OAuth controller interface.
-    /// </summary>
+    /// <summary>A contract specifying the ability to retrieve the SMTP OAuth providers.</summary>
     public interface ISmtpOAuthController
     {
-        /// <summary>
-        /// Get all the oauth providers.
-        /// </summary>
+        /// <summary>Get all the OAuth providers.</summary>
         /// <returns>OAuth providers list.</returns>
         IList<ISmtpOAuthProvider> GetOAuthProviders();
 
-        /// <summary>
-        /// Get the oauth provider.
-        /// </summary>
-        /// <param name="name">provider name.</param>
-        /// <returns>the oauth provider.</returns>
+        /// <summary>Get an OAuth provider by name.</summary>
+        /// <param name="name">The provider name.</param>
+        /// <returns>The OAuth provider or <see langword="null"/>.</returns>
         ISmtpOAuthProvider GetOAuthProvider(string name);
     }
 }

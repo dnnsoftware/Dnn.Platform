@@ -9,63 +9,47 @@ namespace DotNetNuke.Services.Mail.OAuth
     using System.Threading;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// Smtp OAuth provider interface.
-    /// </summary>
+    using DotNetNuke.Common.Utilities;
+
+    /// <summary>A contract specifying the ability to authenticate an SMTP client with an OAuth 2 endpoint.</summary>
     public interface ISmtpOAuthProvider
     {
-        /// <summary>
-        /// Gets provider name.
-        /// </summary>
+        /// <summary>Gets provider name.</summary>
         string Name { get; }
 
-        /// <summary>
-        /// Gets the localized name.
-        /// </summary>
+        /// <summary>Gets the localized name.</summary>
         string LocalizedName { get; }
 
-        /// <summary>
-        /// Whether the provider completed the authorize process.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>status.</returns>
+        /// <summary>Whether the provider has completed the authorization process for the portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns><see langword="true"/> if the authorization has been completed, otherwise <see langword="false"/>..</returns>
         bool IsAuthorized(int portalId);
 
-        /// <summary>
-        /// Get the authorize url.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>The authorize url.</returns>
+        /// <summary>Get the authorize URL.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>The URL.</returns>
         string GetAuthorizeUrl(int portalId);
 
-        /// <summary>
-        /// Get the provider parameters.
-        /// </summary>
-        /// <param name="portalId">the portal id of the setting, pass Null.NullInteger if it's a global setting.</param>
-        /// <returns>parameters list.</returns>
+        /// <summary>Get the provider parameters.</summary>
+        /// <param name="portalId">the portal ID of the setting, pass <see cref="Null.NullInteger"/> if it's a global setting.</param>
+        /// <returns>The list of settings.</returns>
         IList<SmtpOAuthSetting> GetSettings(int portalId);
 
-        /// <summary>
-        /// update provider settings.
-        /// </summary>
-        /// <param name="portalId">the portal id of the setting, pass Null.NullInteger if it's a global setting.</param>
+        /// <summary>Update provider settings.</summary>
+        /// <param name="portalId">the portal id of the setting, pass <see cref="Null.NullInteger"/> if it's a global setting.</param>
         /// <param name="settings">the settings.</param>
         /// <param name="errorMessages">the errors.</param>
         /// <returns>Whether update the settings successfully.</returns>
         bool UpdateSettings(int portalId, IDictionary<string, string> settings, out IList<string> errorMessages);
 
-        /// <summary>
-        /// Authorize the smtp client.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="smtpClient">The smtp client.</param>
+        /// <summary>Authorize the SMTP client.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="smtpClient">The SMTP client.</param>
         void Authorize(int portalId, IOAuth2SmtpClient smtpClient);
 
-        /// <summary>
-        /// Authorize the smtp client.
-        /// </summary>
+        /// <summary>Authorize the SMTP client.</summary>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="smtpClient">The smtp client.</param>
+        /// <param name="smtpClient">The SMTP client.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A <see cref="Task"/> indicating completion.</returns>
         Task AuthorizeAsync(int portalId, IOAuth2SmtpClient smtpClient, CancellationToken cancellationToken = default(CancellationToken));

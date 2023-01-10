@@ -1,39 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Services.Mail.OAuth
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Smtp oauth controller.
-    /// </summary>
+    /// <summary>Smtp OAuth controller.</summary>
     public class SmtpOAuthController : ServiceLocator<ISmtpOAuthController, SmtpOAuthController>, ISmtpOAuthController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SmtpOAuthController));
 
-        /// <summary>
-        /// Get the oauth provider.
-        /// </summary>
-        /// <param name="name">provider name.</param>
-        /// <returns>the oauth provider.</returns>
+        /// <inheritdoc />
         public ISmtpOAuthProvider GetOAuthProvider(string name)
         {
             return this.GetOAuthProviders().FirstOrDefault(i => i.Name == name);
         }
 
-        /// <summary>
-        /// Get email smtp auth providers.
-        /// </summary>
-        /// <returns>smtp oauth providers list.</returns>
+        /// <inheritdoc />
         public IList<ISmtpOAuthProvider> GetOAuthProviders()
         {
             var typeLocator = new TypeLocator();
@@ -55,10 +44,7 @@ namespace DotNetNuke.Services.Mail.OAuth
                      }).Where(i => i != null).ToList();
         }
 
-        /// <summary>
-        /// Implement the service locator interface.
-        /// </summary>
-        /// <returns>the controller instance.</returns>
+        /// <inheritdoc />
         protected override Func<ISmtpOAuthController> GetFactory()
         {
             return () => new SmtpOAuthController();
