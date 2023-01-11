@@ -26,6 +26,9 @@ namespace DotNetNuke.Services.Mail
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
 
         /// <inheritdoc />
+        public override bool SupportsOAuth => true;
+
+        /// <inheritdoc />
         public override string SendMail(MailInfo mailInfo, SmtpInfo smtpInfo = null)
         {
             try

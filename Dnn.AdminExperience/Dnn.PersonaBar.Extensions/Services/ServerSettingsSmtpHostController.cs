@@ -130,10 +130,11 @@ namespace Dnn.PersonaBar.Servers.Services
                     this.hostSettingsService.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
                     this.hostSettingsService.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(), false);
 
-                    if (request.SmtpAuthentication == 3) // OAuth authentication
+                    // OAuth authentication
+                    if (request.SmtpAuthentication == 3)
                     {
                         // Only the mail kit provider supports OAuth.
-                        this.EnsureUsingMailkitProvider();
+                        EnsureMailProviderSupportOAuth();
 
                         var authProvider = this.hostSettingsService.GetString("SMTPAuthProvider", string.Empty);
                         if (authProvider != request.AuthProvider)
@@ -171,7 +172,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     if (request.SmtpAuthentication == 3) // OAuth authentication
                     {
                         // Only the mail kit provider supports OAuth.
-                        this.EnsureUsingMailkitProvider();
+                        EnsureMailProviderSupportOAuth();
 
                         var authProvider = PortalController.GetPortalSetting("SMTPAuthProvider", portalId, string.Empty);
                         if (authProvider != request.AuthProvider)
@@ -303,6 +304,39 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
+        private static void EnsureMailProviderSupportOAuth()
+        {
+            if (MailProvider.Instance().SupportsOAuth)
+            {
+                return;
+            }
+
+            const string providerName = "MailKitMailProvider";
+
+            var xmlConfig = Config.Load();
+
+            var provider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/mail/providers/add[@name='" + providerName + "']");
+            if (provider == null)
+            {
+                return;
+            }
+
+            var mailNode = xmlConfig.SelectSingleNode("configuration/dotnetnuke/mail");
+            if (mailNode?.Attributes == null)
+            {
+                return;
+            }
+
+            var defaultProvider = mailNode.Attributes["defaultProvider"].Value;
+            if (defaultProvider == providerName)
+            {
+                return;
+            }
+
+            XmlUtils.UpdateAttribute(mailNode, "defaultProvider", providerName);
+            Config.Save(xmlConfig);
+        }
+
         private string GetSmtpPassword(int portalId, bool obfuscate)
         {
             var pwd = string.Empty;
@@ -346,27 +380,6 @@ namespace Dnn.PersonaBar.Servers.Services
             }
 
             return decryptedText;
-        }
-
-        private void EnsureUsingMailkitProvider()
-        {
-            const string providerName = "MailKitMailProvider";
-
-            var xmlConfig = Config.Load();
-
-            // Update provider
-            var provider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/mail/providers/add[@name='" + providerName + "']");
-            if(provider != null)
-            {
-                var mailNode = xmlConfig.SelectSingleNode("configuration/dotnetnuke/mail");
-                var defaultProvder = mailNode.Attributes["defaultProvider"]?.Value;
-                if(defaultProvder != providerName)
-                {
-                    XmlUtils.UpdateAttribute(mailNode, "defaultProvider", providerName);
-
-                    Config.Save(xmlConfig);
-                }
-            }
         }
     }
 }
