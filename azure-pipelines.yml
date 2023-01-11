@@ -54,11 +54,6 @@ steps:
     path: $(YARN_CACHE_FOLDER)
 
 - task: UseDotNet@2
-  displayName: 'Use .NET 5.x SDK'
-  inputs:
-    version: 5.x
-
-- task: UseDotNet@2
   displayName: 'Use .NET 6.x SDK'
   inputs:
     version: 6.x

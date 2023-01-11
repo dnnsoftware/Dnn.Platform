@@ -28,7 +28,7 @@ namespace DotNetNuke.Build
                 .UseLifetime<Lifetime>()
                 .UseWorkingDirectory("..")
                 .UseModule<AzurePipelinesModule>()
-                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=5.7.0"))
+                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=5.11.1"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
                 .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.10.0"))
