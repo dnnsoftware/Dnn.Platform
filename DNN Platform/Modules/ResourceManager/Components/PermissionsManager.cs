@@ -6,7 +6,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using System;
 
     using Dnn.Modules.ResourceManager.Components.Common;
-
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -59,7 +59,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsInUserFolder(folderId))
             {
                 return false;
             }
@@ -93,7 +93,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsInUserFolder(folderId))
             {
                 return false;
             }
@@ -110,7 +110,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 return false;
             }
 
-            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsUserFolder(folderId))
+            if (moduleMode == (int)Constants.ModuleModes.User && !this.IsInUserFolder(folderId))
             {
                 return false;
             }
@@ -195,10 +195,27 @@ namespace Dnn.Modules.ResourceManager.Components
             return userRole != null && userRole.IsOwner;
         }
 
-        private bool IsUserFolder(int folderId)
+        private bool IsInUserFolder(int folderId)
         {
             var user = this.userController.GetCurrentUserInfo();
-            return this.folderManager.GetUserFolder(user).FolderID == folderId;
+            var userFolder = this.folderManager.GetUserFolder(user);
+            return this.IsUserFolder(folderId, userFolder);
+        }
+
+        private bool IsUserFolder(int folderId, IFolderInfo userFolder)
+        {
+            if (userFolder.FolderID == folderId)
+            {
+                return true;
+            }
+
+            if (userFolder.ParentID != Null.NullInteger)
+            {
+                var parent = this.folderManager.GetFolder(userFolder.ParentID);
+                return this.IsUserFolder(folderId, parent);
+            }
+
+            return false;
         }
 
         private UserRoleInfo GetUserRoleInfo(int groupId)
