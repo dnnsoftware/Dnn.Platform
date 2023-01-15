@@ -1832,7 +1832,7 @@ __metadata:
     react-motion: ^0.5.2
     react-scrollbar: ^0.5.4
     react-slider: 0.11.2
-    react-tabs: 3.0.0
+    react-tabs: 4.2.1
     react-test-renderer: ^17.0.2
     react-tooltip: ^4.2.21
     react-widgets: ^4.4.4
@@ -8301,7 +8301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.2.0, classnames@npm:^2.2.5, classnames@npm:^2.2.6":
+"classnames@npm:^2.2.5, classnames@npm:^2.2.6":
   version: 2.2.6
   resolution: "classnames@npm:2.2.6"
   checksum: 09a4fda780158aa8399079898eabeeca0c48c28641d9e4de140db7412e5e346843039ded1af0152f755afc2cc246ff8c3d6f227bf0dcb004e070b7fa14ec54cc
@@ -8470,6 +8470,13 @@ __metadata:
   version: 2.1.2
   resolution: "clone@npm:2.1.2"
   checksum: aaf106e9bc025b21333e2f4c12da539b568db4925c0501a1bf4070836c9e848c892fa22c35548ce0d1132b08bbbfa17a00144fe58fccdab6fa900fec4250f67d
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^1.1.0":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
   languageName: node
   linkType: hard
 
@@ -11462,7 +11469,7 @@ __metadata:
     react-modal: 3.6.1
     react-motion: 0.5.2
     react-redux: 5.1.1
-    react-tabs: 3.0.0
+    react-tabs: 4.2.1
     react-tooltip: 4.2.21
     react-widgets: 4.4.6
     redux: 4.2.0
@@ -20704,15 +20711,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-tabs@npm:3.0.0":
-  version: 3.0.0
-  resolution: "react-tabs@npm:3.0.0"
+"react-tabs@npm:4.2.1":
+  version: 4.2.1
+  resolution: "react-tabs@npm:4.2.1"
   dependencies:
-    classnames: ^2.2.0
+    clsx: ^1.1.0
     prop-types: ^15.5.0
   peerDependencies:
-    react: ^16.3.0
-  checksum: 7b84975019d7981099309ef694366edf37ee319d3131058ee361b37f5a9f7b75a450abc34dd2d7582496034f91c9a64a729995fcb98f93b34656d31d64080bf5
+    react: ^16.8.0 || ^17.0.0-0 || ^18.0.0
+  checksum: a031f358373c274432c4030873e1e41c4c744df04dbdc077f453568bf6161b8c3036934052ca9db6569d974edfceac48b2038d402eddc898f0c5752a8f8d8a93
   languageName: node
   linkType: hard
 
