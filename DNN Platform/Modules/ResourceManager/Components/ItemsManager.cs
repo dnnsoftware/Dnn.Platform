@@ -132,7 +132,11 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <inheritdoc />
         public void SaveFolderDetails(IFolderInfo folder, FolderDetailsRequest folderDetails)
         {
-            this.assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
+            if (!string.IsNullOrWhiteSpace(folderDetails.FolderName))
+            {
+                this.assetManager.RenameFolder(folderDetails.FolderId, folderDetails.FolderName);
+            }
+
             folder.FolderPermissions.Clear();
             folder.FolderPermissions.AddRange(folderDetails.Permissions.RolePermissions.ToPermissionInfos(folderDetails.FolderId));
             folder.FolderPermissions.AddRange(folderDetails.Permissions.UserPermissions.ToPermissionInfos(folderDetails.FolderId));

@@ -532,6 +532,10 @@ declare namespace LocalJSX {
           * Fires when a folder is picked.
          */
         "onDnnRmFolderListFolderPicked"?: (event: DnnRmFolderListCustomEvent<FolderTreeItem>) => void;
+        /**
+          * Fires when a context menu is opened for this item. Emits the folder ID.
+         */
+        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListCustomEvent<number>) => void;
     }
     interface DnnRmFolderListItem {
         /**
