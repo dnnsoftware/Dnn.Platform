@@ -14,10 +14,7 @@ namespace DotNetNuke.Services.Tokens
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>BaseCustomTokenReplace allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.</summary>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
@@ -28,9 +25,7 @@ namespace DotNetNuke.Services.Tokens
 
         private TokenContext tokenContext = new TokenContext();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="BaseCustomTokenReplace"/> class.</summary>
         public BaseCustomTokenReplace()
         {
             this.PropertySource = this.TokenContext.PropertySource;
@@ -46,33 +41,23 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        /// <summary>
-        /// Gets or sets /sets the user object representing the currently accessing user (permission).
-        /// </summary>
-        /// <value>UserInfo oject.</value>
+        /// <summary>Gets or sets the user object representing the currently accessing user (permission).</summary>
+        /// <value>UserInfo object.</value>
         public UserInfo AccessingUser
         {
             get => this.TokenContext.AccessingUser;
             set => this.TokenContext.AccessingUser = value;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
-        /// </summary>
-        /// <value>
-        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
-        /// </value>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <summary>Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.</summary>
+        /// <remarks>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages.</remarks>
         public bool DebugMessages
         {
             get => this.TokenContext.DebugMessages;
             set => this.TokenContext.DebugMessages = value;
         }
 
-        /// <summary>
-        /// Gets or sets /sets the language to be used, e.g. for date format.
-        /// </summary>
+        /// <summary>Gets or sets the language to be used, e.g. for date format.</summary>
         /// <value>A string, representing the locale.</value>
         public override string Language
         {
@@ -88,28 +73,20 @@ namespace DotNetNuke.Services.Tokens
             get => ComponentFactory.GetComponent<TokenProvider>();
         }
 
-        /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
+        /// <summary>Gets the Format provider as Culture info from stored language or current culture.</summary>
         protected override CultureInfo FormatProvider
         {
             get => this.TokenContext.Language;
         }
 
-        /// <summary>
-        /// Gets or sets /sets the current Access Level controlling access to critical user settings.
-        /// </summary>
-        /// <value>A TokenAccessLevel as defined above.</value>
+        /// <summary>Gets or sets the current Access Level controlling access to critical user settings.</summary>
         protected Scope CurrentAccessLevel
         {
             get => this.TokenContext.CurrentAccessLevel;
             set => this.TokenContext.CurrentAccessLevel = value;
         }
 
-        /// <summary>
-        /// returns cacheability of the passed text regarding all contained tokens.
-        /// </summary>
+        /// <summary>returns cacheability of the passed text regarding all contained tokens.</summary>
         /// <param name="sourceText">the text to parse for tokens to replace.</param>
         /// <returns>cacheability level (not - safe - fully).</returns>
         /// <remarks>always check cacheability before caching a module!.</remarks>
@@ -148,11 +125,9 @@ namespace DotNetNuke.Services.Tokens
             return isSafe;
         }
 
-        /// <summary>
-        /// Checks for present [Object:Property] tokens.
-        /// </summary>
-        /// <param name="strSourceText">String with [Object:Property] tokens.</param>
-        /// <returns></returns>
+        /// <summary>Checks for present <c>[Object:Property]</c> tokens.</summary>
+        /// <param name="strSourceText">String with <c>[Object:Property]</c> tokens.</param>
+        /// <returns><see langword="true"/> if the source text contains tokens, otherwise <see langword="false"/>.</returns>
         public bool ContainsTokens(string strSourceText)
         {
             if (string.IsNullOrEmpty(strSourceText))

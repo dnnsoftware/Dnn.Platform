@@ -366,11 +366,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             // hard-delete Tab Module Instance
         }
 
-        /// <summary>
-        /// Checks if the current user has enough rights to manage the provided user or not.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <summary>Checks if the current user has enough rights to manage the provided user or not.</summary>
+        /// <param name="user">The user to check.</param>
+        /// <returns><see langword="true"/> if the current user can managed the given <paramref name="user"/>, otherwise <see langword="false"/>.</returns>
         private bool CanManageUser(UserInfo user)
         {
             if (PortalSettings.UserInfo.IsSuperUser ||

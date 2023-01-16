@@ -15,9 +15,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     {
         private readonly IDataCache dataCache;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClearCacheStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ClearCacheStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="dataCache">An instance of <see cref="IDataCache"/>.</param>

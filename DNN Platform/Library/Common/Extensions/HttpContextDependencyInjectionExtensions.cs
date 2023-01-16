@@ -8,14 +8,10 @@ namespace DotNetNuke.Common.Extensions
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// Dependency injection extensions for HttpContext.
-    /// </summary>
+    /// <summary>Dependency injection extensions for HttpContext.</summary>
     public static class HttpContextDependencyInjectionExtensions
     {
-        /// <summary>
-        /// Sets the service scope for the http context base.
-        /// </summary>
+        /// <summary>Sets the service scope for the http context base.</summary>
         /// <param name="httpContext">The http context base.</param>
         /// <param name="scope">The service scope.</param>
         public static void SetScope(this HttpContextBase httpContext, IServiceScope scope)
@@ -23,9 +19,7 @@ namespace DotNetNuke.Common.Extensions
             httpContext.Items[typeof(IServiceScope)] = scope;
         }
 
-        /// <summary>
-        /// Sets the service scope for the http context.
-        /// </summary>
+        /// <summary>Sets the service scope for the http context.</summary>
         /// <param name="httpContext">The http context.</param>
         /// <param name="scope">The service scope.</param>
         public static void SetScope(this HttpContext httpContext, IServiceScope scope)
@@ -33,18 +27,14 @@ namespace DotNetNuke.Common.Extensions
             httpContext.Items[typeof(IServiceScope)] = scope;
         }
 
-        /// <summary>
-        /// Clears the service scope for the http context.
-        /// </summary>
+        /// <summary>Clears the service scope for the http context.</summary>
         /// <param name="httpContext">The http context on which to clear the service scope.</param>
         public static void ClearScope(this HttpContext httpContext)
         {
             httpContext.Items.Remove(typeof(IServiceScope));
         }
 
-        /// <summary>
-        /// Gets the http context base service scope.
-        /// </summary>
+        /// <summary>Gets the http context base service scope.</summary>
         /// <param name="httpContext">The http context base from which to get the scope from.</param>
         /// <returns>A service scope.</returns>
         public static IServiceScope GetScope(this HttpContextBase httpContext)
@@ -52,9 +42,7 @@ namespace DotNetNuke.Common.Extensions
             return GetScope(httpContext.Items);
         }
 
-        /// <summary>
-        /// Gets the http context service scope.
-        /// </summary>
+        /// <summary>Gets the http context service scope.</summary>
         /// <param name="httpContext">The http context from which to get the scope from.</param>
         /// <returns>A service scope.</returns>
         public static IServiceScope GetScope(this HttpContext httpContext)
@@ -62,9 +50,7 @@ namespace DotNetNuke.Common.Extensions
             return GetScope(httpContext.Items);
         }
 
-        /// <summary>
-        /// Gets the service scope from a collection of context items.
-        /// </summary>
+        /// <summary>Gets the service scope from a collection of context items.</summary>
         /// <param name="contextItems">A dictionary of context items.</param>
         /// <returns>The found service scope.</returns>
         internal static IServiceScope GetScope(System.Collections.IDictionary contextItems)

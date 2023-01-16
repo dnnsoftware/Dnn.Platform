@@ -4,12 +4,7 @@
 
 namespace DotNetNuke.UI.Skins.EventListeners
 {
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// SkinEventType provides a custom enum for skin event types.
-    /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>SkinEventType provides a custom enum for skin event types.</summary>
     public enum SkinEventType
     {
         OnSkinInit = 0,

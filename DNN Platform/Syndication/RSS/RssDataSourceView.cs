@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Syndication
     {
         private readonly RssDataSource owner;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RssDataSourceView"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RssDataSourceView"/> class.</summary>
         /// <param name="owner"></param>
         /// <param name="viewName"></param>
         internal RssDataSourceView(RssDataSource owner, string viewName)

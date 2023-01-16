@@ -30,9 +30,7 @@ using log4net.Core;
 
 namespace log4net.Config
 {
-    /// <summary>
-    /// Assembly level attribute to configure the <see cref="SecurityContextProvider"/>.
-    /// </summary>
+    /// <summary>Assembly level attribute to configure the <see cref="SecurityContextProvider"/>.</summary>
     /// <remarks>
     /// <para>
     /// This attribute may only be used at the assembly scope and can only
@@ -49,9 +47,7 @@ namespace log4net.Config
     [Serializable]
     public sealed class SecurityContextProviderAttribute : ConfiguratorAttribute
     {
-        /// <summary>
-        /// Construct provider attribute with type specified
-        /// </summary>
+        /// <summary>Construct provider attribute with type specified</summary>
         /// <param name="providerType">the type of the provider to use</param>
         /// <remarks>
         /// <para>
@@ -64,9 +60,7 @@ namespace log4net.Config
             this.m_providerType = providerType;
         }
 
-        /// <summary>
-        /// Gets or sets the type of the provider to use.
-        /// </summary>
+        /// <summary>Gets or sets the type of the provider to use.</summary>
         /// <value>
         /// the type of the provider to use.
         /// </value>
@@ -82,9 +76,7 @@ namespace log4net.Config
             set { this.m_providerType = value; }
         }
 
-        /// <summary>
-        /// Configures the SecurityContextProvider
-        /// </summary>
+        /// <summary>Configures the SecurityContextProvider</summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
         /// <remarks>
@@ -118,9 +110,7 @@ namespace log4net.Config
 
         private Type m_providerType = null;
 
-        /// <summary>
-        /// The fully qualified type of the SecurityContextProviderAttribute class.
-        /// </summary>
+        /// <summary>The fully qualified type of the SecurityContextProviderAttribute class.</summary>
         /// <remarks>
         /// Used by the internal logger to record the Type of the
         /// log message.

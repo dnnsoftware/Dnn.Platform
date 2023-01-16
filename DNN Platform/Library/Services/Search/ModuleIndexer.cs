@@ -22,18 +22,7 @@ namespace DotNetNuke.Services.Search
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke.Search.Index
-    /// Class:      ModuleIndexer
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The ModuleIndexer is an implementation of the abstract IndexingProvider
-    /// class.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The ModuleIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
     public class ModuleIndexer : IndexingProviderBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
@@ -41,17 +30,13 @@ namespace DotNetNuke.Services.Search
 
         private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleIndexer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
         public ModuleIndexer()
             : this(false)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleIndexer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
         /// <param name="needSearchModules"></param>
         public ModuleIndexer(bool needSearchModules)
         {
@@ -69,13 +54,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Returns the number of indexed SearchDocuments for the portal.
-        /// </summary>
-        /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
@@ -140,14 +119,10 @@ namespace DotNetNuke.Services.Search
             return totalIndexed;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Returns a collection of SearchDocuments containing module metadata (title, header, footer...) of Searchable Modules.
-        /// </summary>
+        /// <summary>Returns a collection of SearchDocuments containing module metadata (title, header, footer...) of Searchable Modules.</summary>
         /// <param name="portalId"></param>
         /// <param name="startDate"></param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A <see cref="List{T}"/> of <see cref="SearchDocument"/> instances.</returns>
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
@@ -191,15 +166,9 @@ namespace DotNetNuke.Services.Search
             return searchDocuments;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Converts a SearchItemInfo into a SearchDocument.
-        ///
-        /// SearchItemInfo object was used in the old version of search.
-        /// </summary>
+        /// <summary>Converts a SearchItemInfo into a SearchDocument. SearchItemInfo object was used in the old version of search.</summary>
         /// <param name="searchItem"></param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A new <see cref="SearchDocument"/> instance.</returns>
 #pragma warning disable 0618
         public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
         {
@@ -228,14 +197,9 @@ namespace DotNetNuke.Services.Search
             return searchDoc;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of modules that are listed as "Searchable" from the module definition and check if they
-        /// implement ModuleSearchBase -- which is a newer implementation of search that replaces ISearchable.
-        /// </summary>
+        /// <summary>Gets a list of modules that are listed as "Searchable" from the module definition and check if they implement <see cref="ModuleSearchBase"/> -- which is a newer implementation of search that replaces <see cref="ISearchable"/>.</summary>
         /// <param name="portalId"></param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A sequence of <see cref="ModuleInfo"/> instances.</returns>
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {
             return this.GetSearchModules(portalId, false);

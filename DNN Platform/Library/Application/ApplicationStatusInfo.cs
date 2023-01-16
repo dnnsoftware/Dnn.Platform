@@ -25,9 +25,7 @@ namespace DotNetNuke.Application
 
         private IApplicationInfo applicationInfo;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationStatusInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ApplicationStatusInfo"/> class.</summary>
         /// <param name="applicationInfo">The application info.</param>
         /// <remarks>
         /// This constructor is designed to be used with Dependency Injection.
@@ -148,9 +146,7 @@ namespace DotNetNuke.Application
             return isInstalled || this.HasInstallVersion();
         }
 
-        /// <summary>
-        /// Sets the status.
-        /// </summary>
+        /// <summary>Sets the status.</summary>
         /// <param name="status">The status.</param>
         public void SetStatus(UpgradeStatus status)
         {
@@ -210,9 +206,7 @@ namespace DotNetNuke.Application
             }
         }
 
-        /// <summary>
-        /// Determines whether current request is for install.
-        /// </summary>
+        /// <summary>Determines whether current request is for install.</summary>
         /// <returns>
         ///   <c>true</c> if current request is for install; otherwise, <c>false</c>.
         /// </returns>
@@ -222,9 +216,7 @@ namespace DotNetNuke.Application
             return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
         }
 
-        /// <summary>
-        /// Determines whether has installation date.
-        /// </summary>
+        /// <summary>Determines whether has installation date.</summary>
         /// <returns>
         ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
         /// </returns>
@@ -233,9 +225,7 @@ namespace DotNetNuke.Application
             return Config.GetSetting("InstallationDate") != null;
         }
 
-        /// <summary>
-        /// Determines whether has data provider log files.
-        /// </summary>
+        /// <summary>Determines whether has data provider log files.</summary>
         /// <returns>
         ///   <c>true</c> if has data provider log files; otherwise, <c>false</c>.
         /// </returns>
@@ -257,9 +247,7 @@ namespace DotNetNuke.Application
             return false;
         }
 
-        /// <summary>
-        /// Check whether the modules directory is exists.
-        /// </summary>
+        /// <summary>Check whether the modules directory is exists.</summary>
         /// <param name="moduleName">Name of the module.</param>
         /// <returns>
         /// <c>true</c> if the module directory exist, otherwise, <c>false</c>.
@@ -270,9 +258,7 @@ namespace DotNetNuke.Application
             return Directory.Exists(dir);
         }
 
-        /// <summary>
-        /// Determines whether has portal directory except default portal directory in portal path.
-        /// </summary>
+        /// <summary>Determines whether has portal directory except default portal directory in portal path.</summary>
         /// <returns>
         ///   <c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.
         /// </returns>
@@ -287,9 +273,7 @@ namespace DotNetNuke.Application
             return false;
         }
 
-        /// <summary>
-        /// Determines whether has InstallVersion set.
-        /// </summary>
+        /// <summary>Determines whether has InstallVersion set.</summary>
         /// <returns>
         ///   <c>true</c> if has installation date; otherwise, <c>false</c>.
         /// </returns>
@@ -298,9 +282,7 @@ namespace DotNetNuke.Application
             return Config.GetSetting("InstallVersion") != null;
         }
 
-        /// <summary>
-        /// Get the current domain directory.
-        /// </summary>
+        /// <summary>Get the current domain directory.</summary>
         /// <returns>returns the domain directory.</returns>
         private string GetCurrentDomainDirectory()
         {

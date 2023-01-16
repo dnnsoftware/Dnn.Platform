@@ -15,14 +15,10 @@ namespace DotNetNuke.Web.Api
 
     public abstract class AuthFilterBase : IAuthorizationFilter
     {
-        /// <summary>
-        /// Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
-        /// </summary>
+        /// <summary>Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.</summary>
         public abstract bool AllowMultiple { get; }
 
-        /// <summary>
-        /// Tests if the request passes the authorization requirements.
-        /// </summary>
+        /// <summary>Tests if the request passes the authorization requirements.</summary>
         /// <param name="context">The auth filter context.</param>
         /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
@@ -54,9 +50,7 @@ namespace DotNetNuke.Web.Api
             return continuation();
         }
 
-        /// <summary>
-        /// Co-ordinates check of authorization and handles Auth failure.  Should rarely be overridden.
-        /// </summary>
+        /// <summary>Co-ordinates check of authorization and handles Auth failure.  Should rarely be overridden.</summary>
         /// <param name="actionContext"></param>
         protected virtual void OnAuthorization(HttpActionContext actionContext)
         {

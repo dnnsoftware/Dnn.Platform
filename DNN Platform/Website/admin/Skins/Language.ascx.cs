@@ -20,10 +20,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The Language skinobject allows the visitor to select the language of the page.
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>The Language skinobject allows the visitor to select the language of the page.</summary>
     public partial class Language : SkinObjectBase
     {
         private const string MyFileName = "Language.ascx";
@@ -333,9 +330,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Binds data to repeater. a template is used to render the items.
-        /// </summary>
+        /// <summary>Binds data to repeater. a template is used to render the items.</summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]

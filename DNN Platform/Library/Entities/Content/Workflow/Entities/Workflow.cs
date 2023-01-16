@@ -11,17 +11,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    /// <summary>
-    /// This entity represents a Workflow.
-    /// </summary>
+    /// <summary>This entity represents a Workflow.</summary>
     [PrimaryKey("WorkflowID")]
     [TableName("ContentWorkflows")]
     [Serializable]
     public class Workflow
     {
-        /// <summary>
-        /// Gets first workflow state.
-        /// </summary>
+        /// <summary>Gets first workflow state.</summary>
         [IgnoreColumn]
         public WorkflowState FirstState
         {
@@ -31,9 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
             }
         }
 
-        /// <summary>
-        /// Gets last workflow state.
-        /// </summary>
+        /// <summary>Gets last workflow state.</summary>
         [IgnoreColumn]
         public WorkflowState LastState
         {
@@ -43,43 +37,29 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
             }
         }
 
-        /// <summary>
-        /// Gets or sets workflow Id.
-        /// </summary>
+        /// <summary>Gets or sets workflow Id.</summary>
         public int WorkflowID { get; set; }
 
-        /// <summary>
-        /// Gets or sets portal Id.
-        /// </summary>
+        /// <summary>Gets or sets portal Id.</summary>
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow Name.
-        /// </summary>
+        /// <summary>Gets or sets workflow Name.</summary>
         [Required]
         [StringLength(40)]
         public string WorkflowName { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow Key. This property can be used to.
-        /// </summary>
+        /// <summary>Gets or sets workflow Key. This property can be used to.</summary>
         [StringLength(40)]
         public string WorkflowKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets workflow Description.
-        /// </summary>
+        /// <summary>Gets or sets workflow Description.</summary>
         [StringLength(256)]
         public string Description { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether system workflow have a special behavior. It cannot be deleted and new states cannot be added.
-        /// </summary>
+        /// <summary>Gets a value indicating whether system workflow have a special behavior. It cannot be deleted and new states cannot be added.</summary>
         public bool IsSystem { get; internal set; }
 
-        /// <summary>
-        /// Gets workflow states.
-        /// </summary>
+        /// <summary>Gets workflow states.</summary>
         [IgnoreColumn]
         public IEnumerable<WorkflowState> States { get; internal set; }
     }

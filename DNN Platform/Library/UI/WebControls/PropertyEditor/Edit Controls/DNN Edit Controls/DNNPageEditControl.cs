@@ -12,25 +12,18 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNPageEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNPageEditControl control provides a standard UI component for selecting
     /// a DNN Page.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNPageEditControl runat=server></{0}:DNNPageEditControl>")]
     public class DNNPageEditControl : IntegerEditControl
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             PortalSettings portalSettings = Globals.GetPortalSettings();
@@ -66,12 +59,8 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderViewMode renders the View mode of the control.
-        /// </summary>
+        /// <summary>RenderViewMode renders the View mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             TabInfo linkedTabInfo = TabController.Instance.GetTab(this.IntegerValue, Globals.GetPortalSettings().PortalId, false);

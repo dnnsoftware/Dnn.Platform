@@ -17,9 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         // private DnnRadButton _checkBox;
         private CheckBox checkBox;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnFormToggleButtonItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnFormToggleButtonItem"/> class.</summary>
         public DnnFormToggleButtonItem()
         {
             this.Mode = CheckBoxMode.TrueFalse;

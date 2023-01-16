@@ -9,49 +9,38 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      EnumEditControl
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EnumEditControl control provides a standard UI component for editing
     /// enumerated properties.
     /// </summary>
-    /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:EnumEditControl runat=server></{0}:EnumEditControl>")]
     public class EnumEditControl : EditControl
     {
         private readonly Type enumType;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
         /// Constructs an EnumEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public EnumEditControl()
         {
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
         /// Constructs an EnumEditControl.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public EnumEditControl(string type)
         {
             this.SystemType = type;
             this.enumType = Type.GetType(type);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
+        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
         /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
             get
@@ -67,12 +56,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
         /// Event.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
             int intValue = Convert.ToInt32(this.Value);
@@ -84,12 +71,8 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control.
-        /// </summary>
+        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int propValue = Convert.ToInt32(this.Value);
@@ -127,12 +110,8 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control.
-        /// </summary>
+        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
         /// <param name="writer">A HtmlTextWriter.</param>
-        /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             int propValue = Convert.ToInt32(this.Value);

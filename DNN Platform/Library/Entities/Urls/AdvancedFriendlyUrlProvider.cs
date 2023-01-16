@@ -28,18 +28,14 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.</summary>
         /// <param name="attributes"></param>
         internal AdvancedFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
         }
 
-        /// <summary>
-        /// Return a full-improved Friendly Url for the supplied tab.
-        /// </summary>
+        /// <summary>Return a full-improved Friendly Url for the supplied tab.</summary>
         /// <param name="tab">The current page.</param>
         /// <param name="path">The non-friendly path to the page.</param>
         /// <param name="pageName">The name of the page.</param>
@@ -47,7 +43,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="ignoreCustomRedirects">If true, then the Friendly Url will be constructed without using any custom redirects.</param>
         /// <param name="settings">The current Friendly Url Settings to use.</param>
         /// <param name="parentTraceId"></param>
-        /// <returns></returns>
+        /// <returns>The friendly URL.</returns>
         public static string ImprovedFriendlyUrl(
             TabInfo tab,
             string path,
@@ -69,10 +65,8 @@ namespace DotNetNuke.Entities.Urls
                 parentTraceId);
         }
 
-        /// <summary>
-        /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.</summary>
+        /// <returns>The friendly URL.</returns>
         internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
         {
             bool cultureSpecificAlias;

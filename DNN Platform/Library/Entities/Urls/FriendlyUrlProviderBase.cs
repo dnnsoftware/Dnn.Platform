@@ -10,9 +10,7 @@ namespace DotNetNuke.Entities.Urls
 
     public abstract class FriendlyUrlProviderBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FriendlyUrlProviderBase"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FriendlyUrlProviderBase"/> class.</summary>
         /// <param name="attributes"></param>
         internal FriendlyUrlProviderBase(NameValueCollection attributes)
         {

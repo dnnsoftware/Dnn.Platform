@@ -7,16 +7,12 @@ namespace DotNetNuke.Services.Syndication
     using System.Collections.Generic;
     using System.ComponentModel;
 
-    /// <summary>
-    ///   Helper class to enable the data binding logic generate column names at runtime.
-    /// </summary>
+    /// <summary>  Helper class to enable the data binding logic generate column names at runtime.</summary>
     internal class RssElementCustomTypeDescriptor : ICustomTypeDescriptor
     {
         private readonly Dictionary<string, string> attributes;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RssElementCustomTypeDescriptor"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RssElementCustomTypeDescriptor"/> class.</summary>
         /// <param name="attributes"></param>
         public RssElementCustomTypeDescriptor(Dictionary<string, string> attributes)
         {

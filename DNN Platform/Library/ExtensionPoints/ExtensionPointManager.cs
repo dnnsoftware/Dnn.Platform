@@ -47,9 +47,7 @@ namespace DotNetNuke.ExtensionPoints
 
 #pragma warning restore 649
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtensionPointManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExtensionPointManager"/> class.</summary>
         public ExtensionPointManager()
         {
             ComposeParts(this);

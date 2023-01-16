@@ -11,85 +11,53 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// -----------------------------------------------------------------------------
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : ModuleControlController
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ModuleControlController provides the Business Layer for Module Controls.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ModuleControlController provides the Business Layer for Module Controls.</summary>
     public class SkinControlController
     {
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteSkinControl deletes a Skin Control in the database.
-        /// </summary>
+        /// <summary>DeleteSkinControl deletes a Skin Control in the database.</summary>
         /// <param name="skinControl">The Skin Control to delete.</param>
-        /// -----------------------------------------------------------------------------
         public static void DeleteSkinControl(SkinControlInfo skinControl)
         {
             DataProvider.DeleteSkinControl(skinControl.SkinControlID);
             EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_DELETED);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSkinControl gets a single Skin Control from the database.
-        /// </summary>
+        /// <summary>GetSkinControl gets a single Skin Control from the database.</summary>
         /// <param name="skinControlID">The ID of the SkinControl.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
         public static SkinControlInfo GetSkinControl(int skinControlID)
         {
             return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControl(skinControlID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSkinControlByPackageID gets a single Skin Control from the database.
-        /// </summary>
+        /// <summary>GetSkinControlByPackageID gets a single Skin Control from the database.</summary>
         /// <param name="packageID">The ID of the Package.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
         public static SkinControlInfo GetSkinControlByPackageID(int packageID)
         {
             return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControlByPackageID(packageID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSkinControlByKey gets a single Skin Control from the database.
-        /// </summary>
+        /// <summary>GetSkinControlByKey gets a single Skin Control from the database.</summary>
         /// <param name="key">The key of the Control.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
         public static SkinControlInfo GetSkinControlByKey(string key)
         {
             return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControlByKey(key));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSkinControls gets all the Skin Controls from the database.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <summary>GetSkinControls gets all the Skin Controls from the database.</summary>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping skin control ID to <see cref="SkinControlInfo"/>.</returns>
         public static Dictionary<string, SkinControlInfo> GetSkinControls()
         {
             return CBO.FillDictionary("ControlKey", DataProvider.GetSkinControls(), new Dictionary<string, SkinControlInfo>());
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SaveSkinControl updates a Skin Control in the database.
-        /// </summary>
+        /// <summary>SaveSkinControl updates a Skin Control in the database.</summary>
         /// <param name="skinControl">The Skin Control to save.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
+        /// <returns>The skin control ID.</returns>
         public static int SaveSkinControl(SkinControlInfo skinControl)
         {
             int skinControlID = skinControl.SkinControlID;

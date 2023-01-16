@@ -117,18 +117,14 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        /// <summary>
-        /// Requests that a CSS file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a CSS file be registered on the client browser.</summary>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         public void DnnCssInclude(string filePath)
         {
             ClientResourceManager.RegisterStyleSheet(this.DnnPage, filePath);
         }
 
-        /// <summary>
-        /// Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.
-        /// </summary>
+        /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public void DnnCssInclude(string filePath, int priority)
@@ -136,9 +132,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterStyleSheet(this.DnnPage, filePath, priority);
         }
 
-        /// <summary>
-        /// Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.
-        /// </summary>
+        /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public void DnnCssInclude(string filePath, FileOrder.Css priority)
@@ -146,9 +140,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterStyleSheet(this.DnnPage, filePath, priority);
         }
 
-        /// <summary>
-        /// Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.
-        /// </summary>
+        /// <summary>Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.</summary>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
@@ -157,9 +149,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterStyleSheet(this.DnnPage, filePath, priority, provider);
         }
 
-        /// <summary>
-        /// Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.
-        /// </summary>
+        /// <summary>Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.</summary>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
@@ -170,18 +160,14 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterStyleSheet(this.DnnPage, filePath, priority, provider, name, version);
         }
 
-        /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         public void DnnJsInclude(string filePath)
         {
             ClientResourceManager.RegisterScript(this.DnnPage, filePath);
         }
 
-        /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public void DnnJsInclude(string filePath, int priority)
@@ -189,9 +175,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterScript(this.DnnPage, filePath, priority);
         }
 
-        /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         public void DnnJsInclude(string filePath, FileOrder.Js priority)
@@ -199,9 +183,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterScript(this.DnnPage, filePath, priority);
         }
 
-        /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
@@ -210,9 +192,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ClientResourceManager.RegisterScript(this.DnnPage, filePath, priority, provider);
         }
 
-        /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser.
-        /// </summary>
+        /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>

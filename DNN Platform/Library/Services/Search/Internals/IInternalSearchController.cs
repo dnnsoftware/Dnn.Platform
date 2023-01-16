@@ -7,73 +7,50 @@ namespace DotNetNuke.Services.Search.Internals
 
     using DotNetNuke.Services.Search.Entities;
 
-    /// <summary>
-    /// Internal Search Controller Interface.
+    /// <summary>Internal Search Controller Interface.</summary>
     /// <remarks>This is an Internal interface and should not be used outside of Core.</remarks>
-    /// </summary>
     public interface IInternalSearchController
     {
-        /// <summary>
-        /// Get a List of Search Content Source that participate in Search.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Get a List of Search Content Source that participate in Search.</summary>
+        /// <returns>A sequence of <see cref="SearchContentSource"/> instances.</returns>
         IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId);
 
-        /// <summary>
-        /// Returns current search indexs general information.
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Returns current search indexes general information.</summary>
+        /// <returns>A <see cref="SearchStatistics"/> instance or <see langword="null"/>.</returns>
         SearchStatistics GetSearchStatistics();
 
-        /// <summary>
-        /// Get Friendly Display Name for the Search Result.
-        /// </summary>
+        /// <summary>Get Friendly Display Name for the Search Result.</summary>
         /// <remarks>SearchTypeId is used primarily to obtain this value. Multiple SearchTypeId can map to same Display Name,
         /// e.g. Tab, Module, Html/Module all map to Pages.
-        /// For SearchTypeId=module, ModuleDefitionId is also used. Module's display name is used unless an entry is found in
+        /// For SearchTypeId=module, ModuleDefinitionId is also used. Module's display name is used unless an entry is found in
         /// ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].txt is found.</remarks>
-        /// <returns></returns>
+        /// <returns>The display name or <see cref="string.Empty"/>.</returns>
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
 
-        /// <summary>
-        /// Add a Search Document to Search Index.
-        /// </summary>
+        /// <summary>Add a Search Document to Search Index.</summary>
         void AddSearchDocument(SearchDocument searchDocument);
 
-        /// <summary>
-        /// Adds the collection of search documents to the search index.
-        /// </summary>
-        /// <remarks>
-        /// The controller auto-commits at the end of this method.
-        /// </remarks>
+        /// <summary>Adds the collection of search documents to the search index.</summary>
+        /// <remarks>The controller auto-commits at the end of this method.</remarks>
         /// <param name="searchDocumentList"></param>
         void AddSearchDocuments(IEnumerable<SearchDocument> searchDocumentList);
 
-        /// <summary>
-        /// Delete a Search Document from the Search Index.
-        /// REQUIRES: searchDocument to have PortalId, UniqueKey, SearchTypeId properties set.
-        /// </summary>
+        /// <summary>Delete a Search Document from the Search Index. REQUIRES: searchDocument to have PortalId, UniqueKey, SearchTypeId properties set.</summary>
         /// <param name="searchDocument"></param>
         void DeleteSearchDocument(SearchDocument searchDocument);
 
-        /// <summary>
-        /// Delete all search documents related to a particula module.
-        /// </summary>
+        /// <summary>Delete all search documents related to a particular module.</summary>
         /// <param name="portalId"></param>
         /// <param name="moduleId"></param>
         /// <param name="moduleDefId"></param>
         void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId);
 
-        /// <summary>
-        /// Deletes all documents of a specified portal and search type (used for re-index operation).
-        /// </summary>
+        /// <summary>Deletes all documents of a specified portal and search type (used for re-index operation).</summary>
         /// <param name="portalId"></param>
         /// <param name="searchTypeId"></param>
         void DeleteAllDocuments(int portalId, int searchTypeId);
 
-        /// <summary>
-        /// Commits individually added/deleted documents to the search index.
-        /// </summary>
+        /// <summary>Commits individually added/deleted documents to the search index.</summary>
         void Commit();
 
         /// <summary>

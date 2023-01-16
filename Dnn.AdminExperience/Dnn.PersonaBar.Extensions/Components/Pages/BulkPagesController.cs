@@ -132,9 +132,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return () => new BulkPagesController();
         }
 
-        /// <summary>
-        /// Checks whether there is a duplicate tab exists.
-        /// </summary>
+        /// <summary>Checks whether there is a duplicate tab exists.</summary>
         /// <param name="pageIndex">Page index to check the duplicate for.</param>
         /// <param name="pages">Page list to check the duplicates from.</param>
         /// <returns>True in case there is a tab with the same name and path and with the index of greater than the first occurence; false otherwise.</returns>

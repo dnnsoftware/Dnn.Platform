@@ -12,17 +12,13 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <summary>
-    /// Deletes files.
-    /// </summary>
+    /// <summary>Deletes files.</summary>
     internal class DeleteFilesStep : StepBase, IDeleteFilesStep
     {
         private readonly IFileSystemProvider fileSystemProvider;
         private readonly IApplicationStatusInfo applicationStatusInfo;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteFilesStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DeleteFilesStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="fileSystemProvider">An instance of <see cref="IFileSystemProvider"/>.</param>

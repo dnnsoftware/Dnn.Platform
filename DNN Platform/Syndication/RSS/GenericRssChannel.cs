@@ -7,9 +7,7 @@ namespace DotNetNuke.Services.Syndication
     using System.Collections.Generic;
     using System.Xml;
 
-    /// <summary>
-    ///   Class to consume (or create) a channel in a late-bound way.
-    /// </summary>
+    /// <summary>  Class to consume (or create) a channel in a late-bound way.</summary>
     public sealed class GenericRssChannel : RssChannelBase<GenericRssElement, GenericRssElement>
     {
         public new Dictionary<string, string> Attributes

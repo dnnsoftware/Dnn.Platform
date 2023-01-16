@@ -38,14 +38,10 @@ namespace DotNetNuke.Services.Install
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// The InstallWizard class provides the Installation Wizard for DotNetNuke.
-    /// </summary>
+    /// <summary>The InstallWizard class provides the Installation Wizard for DotNetNuke.</summary>
     public partial class InstallWizard : PageBase, IClientAPICallbackEventHandler
     {
-        /// <summary>
-        /// The install status file name.
-        /// </summary>
+        /// <summary>The install status file name.</summary>
         protected static readonly string StatusFilename = "installstat.log.resources.txt";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
@@ -95,9 +91,7 @@ namespace DotNetNuke.Services.Install
         private Version dataBaseVersion;
         private XmlDocument installTemplate;
 
-        /// <summary>
-        /// Gets the current applicatoin version.
-        /// </summary>
+        /// <summary>Gets the current applicatoin version.</summary>
         protected Version ApplicationVersion
         {
             get
@@ -106,9 +100,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets the database version.
-        /// </summary>
+        /// <summary>Gets the database version.</summary>
         protected Version DatabaseVersion
         {
             get
@@ -117,9 +109,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets the base version from the install template.
-        /// </summary>
+        /// <summary>Gets the base version from the install template.</summary>
         protected Version BaseVersion
         {
             get
@@ -128,9 +118,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets the install template.
-        /// </summary>
+        /// <summary>Gets the install template.</summary>
         protected XmlDocument InstallTemplate
         {
             get
@@ -145,25 +133,19 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether localization is supported.
-        /// </summary>
+        /// <summary>Gets a value indicating whether localization is supported.</summary>
         protected bool SupportLocalization
         {
             get { return installConfig.SupportLocalization; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the user needs to accept the license terms.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the user needs to accept the license terms.</summary>
         protected bool NeedAcceptTerms
         {
             get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the permissions are valid.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the permissions are valid.</summary>
         protected bool PermissionsValid
         {
             get
@@ -183,9 +165,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets or sets the portal id.
-        /// </summary>
+        /// <summary>Gets or sets the portal id.</summary>
         protected int PortalId
         {
             get
@@ -205,9 +185,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets or sets the versions.
-        /// </summary>
+        /// <summary>Gets or sets the versions.</summary>
         protected string Versions
         {
             get
@@ -235,9 +213,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Runs the intaller.
-        /// </summary>
+        /// <summary>Runs the intaller.</summary>
         [System.Web.Services.WebMethod]
 
         public static void RunInstall()
@@ -246,9 +222,7 @@ namespace DotNetNuke.Services.Install
             LaunchAutoInstall();
         }
 
-        /// <summary>
-        /// Gets the installatoin log.
-        /// </summary>
+        /// <summary>Gets the installatoin log.</summary>
         /// <param name="startRow">At which line to start obtaining log lines.</param>
         /// <returns>Log string from the provided line number forward.</returns>
         [System.Web.Services.WebMethod]
@@ -289,9 +263,7 @@ namespace DotNetNuke.Services.Install
             return data;
         }
 
-        /// <summary>
-        /// Validates the information provided for the install.
-        /// </summary>
+        /// <summary>Validates the information provided for the install.</summary>
         /// <param name="installInfo">The information about the installation.</param>
         /// <returns>A value indicating if the input is valid and an error message if not.</returns>
         [System.Web.Services.WebMethod]
@@ -323,9 +295,7 @@ namespace DotNetNuke.Services.Install
             return new Tuple<bool, string>(result, errorMsg);
         }
 
-        /// <summary>
-        /// Validates file access permissions.
-        /// </summary>
+        /// <summary>Validates file access permissions.</summary>
         /// <returns>Returns if the permissions are valid or an error message.</returns>
         [System.Web.Services.WebMethod]
         public static Tuple<bool, string> ValidatePermissions()
@@ -353,9 +323,7 @@ namespace DotNetNuke.Services.Install
             return new Tuple<bool, string>(permissionsValid, errorMessage);
         }
 
-        /// <summary>
-        /// Validates the password for password requirements.
-        /// </summary>
+        /// <summary>Validates the password for password requirements.</summary>
         /// <param name="password">The entered password.</param>
         /// <returns>A value indicating whether the password is valid.</returns>
         [System.Web.Services.WebMethod]
@@ -380,9 +348,7 @@ namespace DotNetNuke.Services.Install
             return result;
         }
 
-        /// <summary>
-        /// Checks if the application can connect to the database on load.
-        /// </summary>
+        /// <summary>Checks if the application can connect to the database on load.</summary>
         /// <returns>A value indicating whether the application can connect to the database.</returns>
         [System.Web.Services.WebMethod]
         public static bool VerifyDatabaseConnectionOnLoad()
@@ -390,9 +356,7 @@ namespace DotNetNuke.Services.Install
             return CheckDatabaseConnection();
         }
 
-        /// <summary>
-        /// Verifies that the application can connect to the database with the provided settings.
-        /// </summary>
+        /// <summary>Verifies that the application can connect to the database with the provided settings.</summary>
         /// <param name="installInfo">The install information.</param>
         /// <returns>Returns if the connection is valid and an error message if not.</returns>
         [System.Web.Services.WebMethod]
@@ -438,9 +402,7 @@ namespace DotNetNuke.Services.Install
             return new Tuple<bool, string>(validConnection, result);
         }
 
-        /// <summary>
-        /// Indicate if the Installer is running.
-        /// </summary>
+        /// <summary>Indicate if the Installer is running.</summary>
         /// <returns>True or False.</returns>
         /// <remarks>Checks the local static variable or the existence of status file.</remarks>
         [System.Web.Services.WebMethod]
@@ -465,9 +427,7 @@ namespace DotNetNuke.Services.Install
             return isRunning;
         }
 
-        /// <summary>
-        /// Raises a client api callback event.
-        /// </summary>
+        /// <summary>Raises a client api callback event.</summary>
         /// <param name="eventArgument">The event arguments.</param>
         /// <returns>A string representing the result of the action.</returns>
         public string RaiseClientAPICallbackEvent(string eventArgument)
@@ -475,9 +435,7 @@ namespace DotNetNuke.Services.Install
             return this.ProcessAction(eventArgument);
         }
 
-        /// <summary>
-        /// Runs when there is a ClientCallback.
-        /// </summary>
+        /// <summary>Runs when there is a ClientCallback.</summary>
         /// <param name="someAction">The action to perform.</param>
         /// <returns>A string representing the result of the action.</returns>
         public string ProcessAction(string someAction)
@@ -540,18 +498,14 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// GetBaseDataBaseVersion gets the Base Database Version as a string.
-        /// </summary>
+        /// <summary>GetBaseDataBaseVersion gets the Base Database Version as a string.</summary>
         /// <returns>The database version.</returns>
         protected string GetBaseDatabaseVersion()
         {
             return Upgrade.GetStringVersion(this.BaseVersion);
         }
 
-        /// <summary>
-        /// LocalizeString is a helper function for localizing strings.
-        /// </summary>
+        /// <summary>LocalizeString is a helper function for localizing strings.</summary>
         /// <param name="key">The localization key.</param>
         /// <returns>The localized string.</returns>
         protected string LocalizeString(string key)
@@ -996,9 +950,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Updates and synchronizes DotNetNuke.install.config with Web.config.
-        /// </summary>
+        /// <summary>Updates and synchronizes DotNetNuke.install.config with Web.config.</summary>
         /// <param name="installInfo">The information about this installation.</param>
         private static void UpdateInstallConfig(Dictionary<string, string> installInfo)
         {
@@ -1221,9 +1173,7 @@ namespace DotNetNuke.Services.Install
             this.lblIntroDetail.Text = this.LocalizeString("IntroDetail");
         }
 
-        /// <summary>
-        /// TestDataBaseInstalled checks whether the Database is the current version.
-        /// </summary>
+        /// <summary>TestDataBaseInstalled checks whether the Database is the current version.</summary>
         /// <returns>A value indicating whether the database is the current version.</returns>
         private bool TestDataBaseInstalled()
         {

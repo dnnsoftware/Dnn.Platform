@@ -11,12 +11,10 @@ namespace DotNetNuke.Services.Syndication
 
     public delegate void PreRenderEventHandler(object source, EventArgs e);
 
-    /// <summary>
-    ///   Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.
-    /// </summary>
-    /// <typeparam name = "TRssChannelType"></typeparam>
-    /// <typeparam name = "TRssItemType"></typeparam>
-    /// <typeparam name = "TRssImageType"></typeparam>
+    /// <summary>Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.</summary>
+    /// <typeparam name="TRssChannelType">The channel type.</typeparam>
+    /// <typeparam name="TRssItemType">The item type.</typeparam>
+    /// <typeparam name="TRssImageType">The image type.</typeparam>
     public abstract class RssHttpHandlerBase<TRssChannelType, TRssItemType, TRssImageType> : IHttpHandler
         where TRssChannelType : RssChannelBase<TRssItemType, TRssImageType>, new()
         where TRssItemType : RssElementBase, new()
@@ -75,9 +73,7 @@ namespace DotNetNuke.Services.Syndication
             this.Render(new XmlTextWriter(this.Context.Response.OutputStream, null));
         }
 
-        /// <summary>
-        ///   Triggers the Init event.
-        /// </summary>
+        /// <summary>  Triggers the Init event.</summary>
         protected virtual void OnInit(EventArgs ea)
         {
             if (this.Init != null)
@@ -86,9 +82,7 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        /// <summary>
-        ///   Triggers the PreRender event.
-        /// </summary>
+        /// <summary>  Triggers the PreRender event.</summary>
         protected virtual void OnPreRender(EventArgs ea)
         {
             if (this.PreRender != null)

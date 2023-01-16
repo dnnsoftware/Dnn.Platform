@@ -31,9 +31,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private int moduleId = -1;
         private ModuleInfo module;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Import"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
         public Import()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

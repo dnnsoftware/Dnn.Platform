@@ -40,23 +40,17 @@ namespace Dnn.PersonaBar.Pages.Components
 
         void DeleteTabModule(int pageId, int moduleId);
 
-        /// <summary>
-        /// Returns a clean tab relative url based on Advanced Management Url settings.
-        /// </summary>
+        /// <summary>Returns a clean tab relative url based on Advanced Management Url settings.</summary>
         /// <param name="url">Url not cleaned, this could containes blank space or invalid characters.</param>
         /// <returns>Cleaned Url.</returns>
         string CleanTabUrl(string url);
 
-        /// <summary>
-        /// Copy the given theme to all descendant pages.
-        /// </summary>
+        /// <summary>Copy the given theme to all descendant pages.</summary>
         /// <param name="pageId">page identifier.</param>
         /// <param name="theme">Theme.</param>
         void CopyThemeToDescendantPages(int pageId, Theme theme);
 
-        /// <summary>
-        /// Copy the current page permissions to all descendant pages.
-        /// </summary>
+        /// <summary>Copy the current page permissions to all descendant pages.</summary>
         /// <param name="pageId">page identifier.</param>
         void CopyPermissionsToDescendantPages(int pageId);
 

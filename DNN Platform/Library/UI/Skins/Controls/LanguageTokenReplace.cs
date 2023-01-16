@@ -13,9 +13,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         // see http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=6505
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguageTokenReplace"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LanguageTokenReplace"/> class.</summary>
         public LanguageTokenReplace()
             : base(Scope.NoSettings)
         {

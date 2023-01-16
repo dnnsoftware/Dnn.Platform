@@ -13,15 +13,9 @@ namespace DotNetNuke.Common.Utilities
 
     public class Calendar
     {
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Opens a popup Calendar.
-        /// </summary>
+        /// <summary>Opens a popup Calendar.</summary>
         /// <param name="field">TextBox to return the date value.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <returns>A JavaScript URL.</returns>
         public static string InvokePopupCal(TextBox field)
         {
             // Define character array to trim from language strings

@@ -6,9 +6,7 @@ namespace DotNetNuke.HttpModules.Compression
     using System.IO;
     using System.IO.Compression;
 
-    /// <summary>
-    /// Summary description for DeflateFilter.
-    /// </summary>
+    /// <summary>Summary description for DeflateFilter.</summary>
     public class DeflateFilter : CompressingFilter
     {
         private readonly DeflateStream stream;

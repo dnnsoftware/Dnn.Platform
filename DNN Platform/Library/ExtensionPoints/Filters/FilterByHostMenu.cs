@@ -8,9 +8,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
     {
         private readonly bool isHostMenu;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FilterByHostMenu"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FilterByHostMenu"/> class.</summary>
         /// <param name="isHostMenu"></param>
         public FilterByHostMenu(bool isHostMenu)
         {

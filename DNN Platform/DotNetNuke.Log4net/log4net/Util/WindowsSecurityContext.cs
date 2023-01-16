@@ -37,9 +37,7 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-    /// <summary>
-    /// Impersonate a Windows Account
-    /// </summary>
+    /// <summary>Impersonate a Windows Account</summary>
     /// <remarks>
     /// <para>
     /// This <see cref="SecurityContext"/> impersonates a Windows account.
@@ -52,9 +50,7 @@ namespace log4net.Util
     /// </remarks>
     public class WindowsSecurityContext : SecurityContext, IOptionHandler
     {
-        /// <summary>
-        /// The impersonation modes for the <see cref="WindowsSecurityContext"/>
-        /// </summary>
+        /// <summary>The impersonation modes for the <see cref="WindowsSecurityContext"/></summary>
         /// <remarks>
         /// <para>
         /// See the <see cref="WindowsSecurityContext.Credentials"/> property for
@@ -63,14 +59,10 @@ namespace log4net.Util
         /// </remarks>
         public enum ImpersonationMode
         {
-            /// <summary>
-            /// Impersonate a user using the credentials supplied
-            /// </summary>
+            /// <summary>Impersonate a user using the credentials supplied</summary>
             User,
 
-            /// <summary>
-            /// Revert this the thread to the credentials of the process
-            /// </summary>
+            /// <summary>Revert this the thread to the credentials of the process</summary>
             Process
         }
 
@@ -80,9 +72,7 @@ namespace log4net.Util
         private string m_password;
         private WindowsIdentity m_identity;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
+        /// <summary>Default constructor</summary>
         /// <remarks>
         /// <para>
         /// Default constructor
@@ -92,9 +82,7 @@ namespace log4net.Util
         {
         }
 
-        /// <summary>
-        /// Gets or sets the impersonation mode for this security context
-        /// </summary>
+        /// <summary>Gets or sets the impersonation mode for this security context</summary>
         /// <value>
         /// The impersonation mode for this security context
         /// </value>
@@ -126,9 +114,7 @@ namespace log4net.Util
             set { this.m_impersonationMode = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the Windows username for this security context
-        /// </summary>
+        /// <summary>Gets or sets the Windows username for this security context</summary>
         /// <value>
         /// The Windows username for this security context
         /// </value>
@@ -144,9 +130,7 @@ namespace log4net.Util
             set { this.m_userName = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the Windows domain name for this security context
-        /// </summary>
+        /// <summary>Gets or sets the Windows domain name for this security context</summary>
         /// <value>
         /// The Windows domain name for this security context
         /// </value>
@@ -166,9 +150,7 @@ namespace log4net.Util
             set { this.m_domainName = value; }
         }
 
-        /// <summary>
-        /// Sets the password for the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.
-        /// </summary>
+        /// <summary>Sets the password for the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.</summary>
         /// <value>
         /// The password for the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.
         /// </value>
@@ -183,9 +165,7 @@ namespace log4net.Util
             set { this.m_password = value; }
         }
 
-        /// <summary>
-        /// Initialize the SecurityContext based on the options set.
-        /// </summary>
+        /// <summary>Initialize the SecurityContext based on the options set.</summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
@@ -228,9 +208,7 @@ namespace log4net.Util
             }
         }
 
-        /// <summary>
-        /// Impersonate the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.
-        /// </summary>
+        /// <summary>Impersonate the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.</summary>
         /// <param name="state">caller provided state</param>
         /// <returns>
         /// An <see cref="IDisposable"/> instance that will revoke the impersonation of this SecurityContext
@@ -259,9 +237,7 @@ namespace log4net.Util
             return null;
         }
 
-        /// <summary>
-        /// Create a <see cref="WindowsIdentity"/> given the userName, domainName and password.
-        /// </summary>
+        /// <summary>Create a <see cref="WindowsIdentity"/> given the userName, domainName and password.</summary>
         /// <param name="userName">the user name</param>
         /// <param name="domainName">the domain name</param>
         /// <param name="password">the password</param>
@@ -326,9 +302,7 @@ namespace log4net.Util
         [DllImport("advapi32.dll", CharSet=CharSet.Auto, SetLastError=true)]
         private static extern bool DuplicateToken(IntPtr ExistingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr DuplicateTokenHandle);
 
-        /// <summary>
-        /// Adds <see cref="IDisposable"/> to <see cref="WindowsImpersonationContext"/>
-        /// </summary>
+        /// <summary>Adds <see cref="IDisposable"/> to <see cref="WindowsImpersonationContext"/></summary>
         /// <remarks>
         /// <para>
         /// Helper class to expose the <see cref="WindowsImpersonationContext"/>
@@ -339,9 +313,7 @@ namespace log4net.Util
         {
             private readonly WindowsImpersonationContext m_impersonationContext;
 
-            /// <summary>
-            /// Constructor
-            /// </summary>
+            /// <summary>Constructor</summary>
             /// <param name="impersonationContext">the impersonation context being wrapped</param>
             /// <remarks>
             /// <para>
@@ -353,9 +325,7 @@ namespace log4net.Util
                 this.m_impersonationContext = impersonationContext;
             }
 
-            /// <summary>
-            /// Revert the impersonation
-            /// </summary>
+            /// <summary>Revert the impersonation</summary>
             /// <remarks>
             /// <para>
             /// Revert the impersonation

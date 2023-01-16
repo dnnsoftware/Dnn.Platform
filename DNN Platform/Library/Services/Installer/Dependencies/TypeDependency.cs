@@ -7,13 +7,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     using DotNetNuke.Framework;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The TypeDependency determines whether the dependent type is installed.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The TypeDependency determines whether the dependent type is installed.</summary>
     public class TypeDependency : DependencyBase
     {
         private string missingDependentType = string.Empty;

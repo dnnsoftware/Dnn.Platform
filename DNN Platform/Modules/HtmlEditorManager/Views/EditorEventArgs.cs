@@ -6,9 +6,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
 {
     using System;
 
-    /// <summary>
-    /// Contains information about the selected editor when saving.
-    /// </summary>
+    /// <summary>Contains information about the selected editor when saving.</summary>
     public class EditorEventArgs : EventArgs
     {
         /// <summary>Initializes a new instance of the <see cref="EditorEventArgs" /> class.</summary>

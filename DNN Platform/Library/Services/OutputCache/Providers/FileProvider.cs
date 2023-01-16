@@ -16,9 +16,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// <summary>
-    /// FileProvider implements the OutputCachingProvider for file storage.
-    /// </summary>
+    /// <summary>FileProvider implements the OutputCachingProvider for file storage.</summary>
     public class FileProvider : OutputCachingProvider
     {
         public const string DataFileExtension = ".data.resources";

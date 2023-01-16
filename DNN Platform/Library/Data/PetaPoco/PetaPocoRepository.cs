@@ -15,9 +15,7 @@ namespace DotNetNuke.Data.PetaPoco
         private readonly Database database;
         private readonly IMapper mapper;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PetaPocoRepository{T}"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PetaPocoRepository{T}"/> class.</summary>
         /// <param name="database"></param>
         /// <param name="mapper"></param>
         public PetaPocoRepository(Database database, IMapper mapper)

@@ -10,27 +10,28 @@ namespace DotNetNuke.Web.Client.Providers
     using System.Text;
     using System.Web;
     using System.Web.UI;
+    using System.Web.UI.HtmlControls;
 
     using ClientDependency.Core;
     using ClientDependency.Core.Config;
     using ClientDependency.Core.FileRegistration.Providers;
 
-    /// <summary>
-    /// Registers resources at the top of the body on default.aspx.
-    /// </summary>
-    public class DnnFormBottomProvider : DnnFileRegistrationProvider
+    /// <summary>Registers resources at the top of the body on default.aspx.</summary>
+    public class DnnBodyProvider : DnnFileRegistrationProvider
     {
-        /// <summary>
-        /// The default name of the provider.
-        /// </summary>
-        public const string DefaultName = "DnnFormBottomProvider";
+        /// <summary>The name of the provider.</summary>
+        public const string DefaultName = "DnnBodyProvider";
 
-        /// <summary>
-        /// The name of the placeholder in which the controls will be rendered.
-        /// </summary>
-        public const string DnnFormBottomPlaceHolderName = "ClientResourcesFormBottom";
+        /// <summary>The name of the placeholder in which the controls will be rendered.</summary>
+        public const string DnnBodyPlaceHolderName = "BodySCRIPTS";
 
-        /// <inheritdoc/>
+        /// <summary>Initializes the provider.</summary>
+        /// <param name="name">The friendly name of the provider.
+        ///                 </param><param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.
+        ///                 </param><exception cref="T:System.ArgumentNullException">The name of the provider is null.
+        ///                 </exception><exception cref="T:System.ArgumentException">The name of the provider has a length of zero.
+        ///                 </exception><exception cref="T:System.InvalidOperationException">An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
+        ///                 </exception>
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one
@@ -112,9 +113,7 @@ namespace DotNetNuke.Web.Client.Providers
             return string.Format(HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());
         }
 
-        /// <summary>
-        /// Registers the dependencies in the body of default.aspx.
-        /// </summary>
+        /// <summary>Registers the dependencies in the body of default.aspx.</summary>
         /// <param name="http"></param>
         /// <param name="js"></param>
         /// <param name="css"></param>
@@ -134,13 +133,29 @@ namespace DotNetNuke.Web.Client.Providers
 
             if (page.Header == null)
             {
-                throw new NullReferenceException("DnnFormBottomProvider requires a runat='server' tag in the page's header tag");
+                throw new NullReferenceException("DnnBodyProvider requires a runat='server' tag in the page's header tag");
             }
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));
             var cssStyleBlock = new LiteralControl(css.Replace("&", "&amp;"));
-            page.FindControl(DnnFormBottomPlaceHolderName).Controls.Add(jsScriptBlock);
-            page.FindControl(DnnFormBottomPlaceHolderName).Controls.Add(cssStyleBlock);
+
+            var holderControl = page.FindControl(DnnBodyPlaceHolderName);
+            holderControl.Controls.Add(jsScriptBlock);
+            holderControl.Controls.Add(cssStyleBlock);
+
+            var form = (HtmlForm)page.FindControl("Form");
+            if (form != null)
+            {
+                form.Controls.Remove(holderControl);
+                form.Controls.AddAt(0, holderControl);
+            }
+
+            var scriptManager = ScriptManager.GetCurrent(page);
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            {
+                holderControl.ID = "$crm_" + holderControl.ID;
+                scriptManager.RegisterDataItem(holderControl, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
+            }
         }
     }
 }

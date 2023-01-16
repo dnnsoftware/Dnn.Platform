@@ -7,14 +7,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     using System.Drawing;
     using System.Drawing.Drawing2D;
 
-    /// <summary>
-    /// Invert ImageTransform class.
-    /// </summary>
+    /// <summary>Invert ImageTransform class.</summary>
     public class ImageInvertTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageInvertTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageInvertTransform"/> class.</summary>
         public ImageInvertTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -23,9 +19,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.CompositingQuality = CompositingQuality.HighQuality;
         }
 
-        /// <summary>
-        /// Processes an input image applying an invert image transformation.
-        /// </summary>
+        /// <summary>Processes an input image applying an invert image transformation.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)

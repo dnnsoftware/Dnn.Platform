@@ -17,37 +17,25 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     /// </summary>
     public class ModuleActionAttribute : ActionFilterAttribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleActionAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleActionAttribute"/> class.</summary>
         public ModuleActionAttribute()
         {
             this.SecurityAccessLevel = SecurityAccessLevel.Edit;
         }
 
-        /// <summary>
-        /// Gets or sets the ControlKey property is the key for the module control.
-        /// </summary>
+        /// <summary>Gets or sets the ControlKey property is the key for the module control.</summary>
         public string ControlKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Icon property is the url for the Icon to be used in the Module Actions menu.  An empty string will mean that the Edit "pencil" icon is used.
-        /// </summary>
+        /// <summary>Gets or sets the Icon property is the url for the Icon to be used in the Module Actions menu.  An empty string will mean that the Edit "pencil" icon is used.</summary>
         public string Icon { get; set; }
 
-        /// <summary>
-        /// Gets or sets the SecurityAccessLevel is an enum property that sets the security level for the module action.
-        /// </summary>
+        /// <summary>Gets or sets the SecurityAccessLevel is an enum property that sets the security level for the module action.</summary>
         public SecurityAccessLevel SecurityAccessLevel { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Title property is the title for the Module Action.  This property is only used if the TitleKey is left blank.
-        /// </summary>
+        /// <summary>Gets or sets the Title property is the title for the Module Action.  This property is only used if the TitleKey is left blank.</summary>
         public string Title { get; set; }
 
-        /// <summary>
-        /// Gets or sets the TitleKey property is the localization key for the title for the Module Action.
-        /// </summary>
+        /// <summary>Gets or sets the TitleKey property is the localization key for the title for the Module Action.</summary>
         public string TitleKey { get; set; }
 
         /// <inheritdoc/>

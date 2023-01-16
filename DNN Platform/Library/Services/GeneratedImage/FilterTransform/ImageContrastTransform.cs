@@ -7,14 +7,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     using System.Drawing;
     using System.Drawing.Drawing2D;
 
-    /// <summary>
-    /// Constrast ImageTransform class.
-    /// </summary>
+    /// <summary>Constrast ImageTransform class.</summary>
     public class ImageContrastTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageContrastTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageContrastTransform"/> class.</summary>
         public ImageContrastTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -24,19 +20,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.Contrast = 0;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for this class.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for this class.</summary>
         public override string UniqueString => base.UniqueString + "-" + this.Contrast;
 
-        /// <summary>
-        /// Gets or sets the contrast value. Defaultvalue is 0. Range is -100 .. 100.
-        /// </summary>
+        /// <summary>Gets or sets the contrast value. Defaultvalue is 0. Range is -100 .. 100.</summary>
         public double Contrast { get; set; }
 
-        /// <summary>
-        /// Processes an input image applying a contrast image transformation.
-        /// </summary>
+        /// <summary>Processes an input image applying a contrast image transformation.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)

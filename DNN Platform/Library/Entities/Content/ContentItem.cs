@@ -69,9 +69,7 @@ namespace DotNetNuke.Entities.Content
         private List<IFileInfo> videos;
         private List<IFileInfo> images;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ContentItem"/> class.</summary>
         public ContentItem()
         {
             this.TabID = Null.NullInteger;
@@ -81,9 +79,7 @@ namespace DotNetNuke.Entities.Content
             this.StateID = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Gets the metadata.
-        /// </summary>
+        /// <summary>Gets the metadata.</summary>
         /// <value>metadata collection.</value>
         [XmlIgnore]
         [ScriptIgnore]
@@ -96,9 +92,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Gets the terms.
-        /// </summary>
+        /// <summary>Gets the terms.</summary>
         /// <value>Terms Collection.</value>
         [XmlIgnore]
         [ScriptIgnore]
@@ -111,9 +105,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Gets files that are attached to this ContentItem.
-        /// </summary>
+        /// <summary>Gets files that are attached to this ContentItem.</summary>
         [XmlIgnore]
         [ScriptIgnore]
         [JsonIgnore]
@@ -122,9 +114,7 @@ namespace DotNetNuke.Entities.Content
             get { return this.files ?? (this.files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
         }
 
-        /// <summary>
-        /// Gets video files attached to this ContentItem.
-        /// </summary>
+        /// <summary>Gets video files attached to this ContentItem.</summary>
         [XmlIgnore]
         [ScriptIgnore]
         [JsonIgnore]
@@ -133,9 +123,7 @@ namespace DotNetNuke.Entities.Content
             get { return this.videos ?? (this.videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
         }
 
-        /// <summary>
-        /// Gets images associated with this ContentItem.
-        /// </summary>
+        /// <summary>Gets images associated with this ContentItem.</summary>
         [XmlIgnore]
         [ScriptIgnore]
         [JsonIgnore]
@@ -144,9 +132,7 @@ namespace DotNetNuke.Entities.Content
             get { return this.images ?? (this.images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
         }
 
-        /// <summary>
-        /// Gets or sets the content item id.
-        /// </summary>
+        /// <summary>Gets or sets the content item id.</summary>
         /// <value>
         /// The content item id.
         /// </value>
@@ -155,27 +141,21 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public int ContentItemId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the content.
-        /// </summary>
+        /// <summary>Gets or sets the content.</summary>
         /// <value>
         /// The content.
         /// </value>
         [XmlElement("content")]
         public string Content { get; set; }
 
-        /// <summary>
-        /// Gets or sets the content key.
-        /// </summary>
+        /// <summary>Gets or sets the content key.</summary>
         /// <value>
         /// The content key.
         /// </value>
         [XmlElement("contentKey")]
         public string ContentKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the content type id.
-        /// </summary>
+        /// <summary>Gets or sets the content type id.</summary>
         /// <value>
         /// The content type id.
         /// </value>
@@ -185,9 +165,7 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public int ContentTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ContentItem"/> is indexed.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether this <see cref="ContentItem"/> is indexed.</summary>
         /// <value>
         ///   <c>true</c> if indexed; otherwise, <c>false</c>.
         /// </value>
@@ -196,18 +174,14 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public bool Indexed { get; set; }
 
-        /// <summary>
-        /// Gets or sets the module ID.
-        /// </summary>
+        /// <summary>Gets or sets the module ID.</summary>
         /// <value>
         /// The module ID.
         /// </value>
         [XmlElement("moduleID")]
         public int ModuleID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the tab ID.
-        /// </summary>
+        /// <summary>Gets or sets the tab ID.</summary>
         /// <value>
         /// The tab ID.
         /// </value>
@@ -229,9 +203,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Content Workflow State ID.
-        /// </summary>
+        /// <summary>Gets or sets the Content Workflow State ID.</summary>
         /// <value>
         /// The Content Workflow State ID.
         /// </value>
@@ -239,9 +211,7 @@ namespace DotNetNuke.Entities.Content
         [JsonIgnore]
         public int StateID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
+        /// <summary>Gets or sets the key ID.</summary>
         /// <value>
         /// The key ID.
         /// </value>
@@ -263,9 +233,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>
-        /// Fill this content object will the information from data reader.
-        /// </summary>
+        /// <summary>Fill this content object will the information from data reader.</summary>
         /// <param name="dr">The data reader.</param>
         /// <seealso cref="IHydratable.Fill"/>
         public virtual void Fill(IDataReader dr)
@@ -273,9 +241,7 @@ namespace DotNetNuke.Entities.Content
             this.FillInternal(dr);
         }
 
-        /// <summary>
-        /// Fills the internal.
-        /// </summary>
+        /// <summary>Fills the internal.</summary>
         /// <param name="dr">The data reader contains module information.</param>
         /// <remarks>
         /// Please remember to call base.FillInternal or base.Fill method in your Fill method.

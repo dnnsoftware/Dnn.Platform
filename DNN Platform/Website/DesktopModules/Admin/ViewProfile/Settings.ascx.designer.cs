@@ -15,41 +15,31 @@ namespace DotNetNuke.Modules.Admin.Users {
     
     
     public partial class ViewProfileSettings {
-        /// <summary>
-        /// lblIncludeButton control.
-        /// </summary>
+        /// <summary>lblIncludeButton control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl lblIncludeButton;
-        /// <summary>
-        /// IncludeButton control.
-        /// </summary>
+        /// <summary>IncludeButton control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox IncludeButton;
-        /// <summary>
-        /// plTemplate control.
-        /// </summary>
+        /// <summary>plTemplate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plTemplate;
-        /// <summary>
-        /// txtTemplate control.
-        /// </summary>
+        /// <summary>txtTemplate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTemplate;
-        /// <summary>
-        /// cmdLoadDefault control.
-        /// </summary>
+        /// <summary>cmdLoadDefault control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

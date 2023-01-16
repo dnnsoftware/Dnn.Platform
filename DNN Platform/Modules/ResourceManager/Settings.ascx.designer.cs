@@ -11,33 +11,25 @@ namespace Dnn.Modules.ResourceManager {
     
     
     public partial class Settings {
-        /// <summary>
-        /// lblMode control.
-        /// </summary>
+        /// <summary>lblMode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblMode;
-        /// <summary>
-        /// ddlMode control.
-        /// </summary>
+        /// <summary>ddlMode control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMode;
-        /// <summary>
-        /// lblHomeFolder control.
-        /// </summary>
+        /// <summary>lblHomeFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UserControl lblHomeFolder;
-        /// <summary>
-        /// ddlFolder control.
-        /// </summary>
+        /// <summary>ddlFolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

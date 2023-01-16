@@ -11,10 +11,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Tabs;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Links : SkinObjectBase
     {
         private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);

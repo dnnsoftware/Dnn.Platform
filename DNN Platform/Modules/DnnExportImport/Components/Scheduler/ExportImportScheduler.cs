@@ -17,9 +17,7 @@ namespace Dnn.ExportImport.Components.Scheduler
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
 
-    /// <summary>
-    /// Implements a SchedulerClient for the Exporting/Importing of site items.
-    /// </summary>
+    /// <summary>Implements a SchedulerClient for the Exporting/Importing of site items.</summary>
     public class ExportImportScheduler : SchedulerClient
     {
         private const int EmergencyScheduleFrequency = 120;
@@ -37,9 +35,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExportImportScheduler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ExportImportScheduler"/> class.</summary>
         /// <param name="objScheduleHistoryItem"></param>
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {

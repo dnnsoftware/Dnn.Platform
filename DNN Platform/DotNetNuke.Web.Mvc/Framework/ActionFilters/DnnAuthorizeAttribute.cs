@@ -20,9 +20,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         private string denyRoles;
         private string[] denyRolesSplit = new string[0];
 
-        /// <summary>
-        /// Gets or sets the authorized roles (separated by comma).
-        /// </summary>
+        /// <summary>Gets or sets the authorized roles (separated by comma).</summary>
         public string StaticRoles
         {
             get
@@ -37,9 +35,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             }
         }
 
-        /// <summary>
-        /// Gets or sets the denied roles (separated by comma).
-        /// </summary>
+        /// <summary>Gets or sets the denied roles (separated by comma).</summary>
         public string DenyRoles
         {
             get

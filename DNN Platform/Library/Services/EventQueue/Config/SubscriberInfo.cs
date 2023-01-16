@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.EventQueue.Config
     [Serializable]
     public class SubscriberInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubscriberInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SubscriberInfo"/> class.</summary>
         public SubscriberInfo()
         {
             this.ID = Guid.NewGuid().ToString();
@@ -23,9 +21,7 @@ namespace DotNetNuke.Services.EventQueue.Config
             this.PrivateKey = oPortalSecurity.CreateKey(16);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubscriberInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SubscriberInfo"/> class.</summary>
         /// <param name="subscriberName"></param>
         public SubscriberInfo(string subscriberName)
             : this()

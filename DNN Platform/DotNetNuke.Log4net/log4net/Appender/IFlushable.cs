@@ -22,14 +22,10 @@ using System;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Interface that can be implemented by Appenders that buffer logging data and expose a <see cref="Flush"/> method.
-    /// </summary>
+    /// <summary>Interface that can be implemented by Appenders that buffer logging data and expose a <see cref="Flush"/> method.</summary>
     public interface IFlushable
     {
-        /// <summary>
-        /// Flushes any buffered log data.
-        /// </summary>
+        /// <summary>Flushes any buffered log data.</summary>
         /// <remarks>
         /// Appenders that implement the <see cref="Flush"/> method must do so in a thread-safe manner: it can be called concurrently with
         /// the <see cref="log4net.Appender.IAppender.DoAppend"/> method.

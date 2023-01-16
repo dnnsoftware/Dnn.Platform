@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.WebControls.Internal
     {
         private readonly PermissionInfo permission;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PermissionTriStateTemplate"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PermissionTriStateTemplate"/> class.</summary>
         /// <param name="permission"></param>
         public PermissionTriStateTemplate(PermissionInfo permission)
         {

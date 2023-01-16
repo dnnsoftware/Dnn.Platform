@@ -20,9 +20,7 @@ namespace Dnn.PersonaBar.Licensing.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LicensingController));
 
         /// GET: api/Licensing/GetProduct
-        /// <summary>
-        /// Gets product info.
-        /// </summary>
+        /// <summary>Gets product info.</summary>
         /// <param></param>
         /// <returns>product info.</returns>
         [HttpGet]

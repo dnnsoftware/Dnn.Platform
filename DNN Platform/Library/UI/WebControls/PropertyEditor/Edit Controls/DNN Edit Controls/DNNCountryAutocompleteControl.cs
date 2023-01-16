@@ -20,17 +20,13 @@ namespace DotNetNuke.UI.WebControls
 
         private HiddenField countryId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         public DnnCountryAutocompleteControl()
         {
             this.Init += this.DnnCountryRegionControl_Init;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         /// <param name="type"></param>
         public DnnCountryAutocompleteControl(string type)
         {

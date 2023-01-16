@@ -14,261 +14,203 @@ namespace Dnn.Modules.TelerikRemoval
     public partial class View
     {
 
-        /// <summary>
-        /// MainUpdatePanel control.
-        /// </summary>
+        /// <summary>MainUpdatePanel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel MainUpdatePanel;
 
-        /// <summary>
-        /// MainMultiView control.
-        /// </summary>
+        /// <summary>MainMultiView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.MultiView MainMultiView;
 
-        /// <summary>
-        /// RegularUserView control.
-        /// </summary>
+        /// <summary>RegularUserView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View RegularUserView;
 
-        /// <summary>
-        /// SuperUserRequiredHeadingLabel control.
-        /// </summary>
+        /// <summary>SuperUserRequiredHeadingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel SuperUserRequiredHeadingLabel;
 
-        /// <summary>
-        /// SuperUserRequiredInfoLabel control.
-        /// </summary>
+        /// <summary>SuperUserRequiredInfoLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel SuperUserRequiredInfoLabel;
 
-        /// <summary>
-        /// NotInstalledView control.
-        /// </summary>
+        /// <summary>NotInstalledView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View NotInstalledView;
 
-        /// <summary>
-        /// TelerikNotInstalledHeadingLabel control.
-        /// </summary>
+        /// <summary>TelerikNotInstalledHeadingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikNotInstalledHeadingLabel;
 
-        /// <summary>
-        /// TelerikNotInstalledInfoLabel control.
-        /// </summary>
+        /// <summary>TelerikNotInstalledInfoLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikNotInstalledInfoLabel;
 
-        /// <summary>
-        /// InstalledView control.
-        /// </summary>
+        /// <summary>InstalledView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View InstalledView;
 
-        /// <summary>
-        /// TelerikInstalledButNotUsedHeadingLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledButNotUsedHeadingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledButNotUsedHeadingLabel;
 
-        /// <summary>
-        /// TelerikInstalledDetectedLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledDetectedLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledDetectedLabel;
 
-        /// <summary>
-        /// TelerikInstalledVersionLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledVersionLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledVersionLabel;
 
-        /// <summary>
-        /// TelerikInstalledButNotUsedBulletinLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledButNotUsedBulletinLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledButNotUsedBulletinLabel;
 
-        /// <summary>
-        /// InstalledMultiView control.
-        /// </summary>
+        /// <summary>InstalledMultiView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.MultiView InstalledMultiView;
 
-        /// <summary>
-        /// InstalledButNotUsedView control.
-        /// </summary>
+        /// <summary>InstalledButNotUsedView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View InstalledButNotUsedView;
 
-        /// <summary>
-        /// TelerikInstalledButNotUsedInfoLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledButNotUsedInfoLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledButNotUsedInfoLabel;
 
-        /// <summary>
-        /// BackupConfirmationCheckBox control.
-        /// </summary>
+        /// <summary>BackupConfirmationCheckBox control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Dnn.Modules.TelerikRemoval.UserControls.DnnCheckBox BackupConfirmationCheckBox;
 
-        /// <summary>
-        /// RemoveTelerikButton control.
-        /// </summary>
+        /// <summary>RemoveTelerikButton control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Dnn.Modules.TelerikRemoval.UserControls.DnnTextButton RemoveTelerikButton;
 
-        /// <summary>
-        /// InstalledAndUsedView control.
-        /// </summary>
+        /// <summary>InstalledAndUsedView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View InstalledAndUsedView;
 
-        /// <summary>
-        /// TelerikInstalledAndUsedInfoLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledAndUsedInfoLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledAndUsedInfoLabel;
 
-        /// <summary>
-        /// AssemblyListPlaceHolder control.
-        /// </summary>
+        /// <summary>AssemblyListPlaceHolder control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder AssemblyListPlaceHolder;
 
-        /// <summary>
-        /// TelerikInstalledAndUsedWarningLabel control.
-        /// </summary>
+        /// <summary>TelerikInstalledAndUsedWarningLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel TelerikInstalledAndUsedWarningLabel;
 
-        /// <summary>
-        /// UninstallReportView control.
-        /// </summary>
+        /// <summary>UninstallReportView control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View UninstallReportView;
 
-        /// <summary>
-        /// UninstallReportHeadingLabel control.
-        /// </summary>
+        /// <summary>UninstallReportHeadingLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportHeadingLabel;
 
-        /// <summary>
-        /// UninstallReportDetailLabel control.
-        /// </summary>
+        /// <summary>UninstallReportDetailLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportDetailLabel;
 
-        /// <summary>
-        /// UninstallReportStepColumnLabel control.
-        /// </summary>
+        /// <summary>UninstallReportStepColumnLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportStepColumnLabel;
 
-        /// <summary>
-        /// UninstallReportResultColumnLabel control.
-        /// </summary>
+        /// <summary>UninstallReportResultColumnLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportResultColumnLabel;
 
-        /// <summary>
-        /// UninstallReportNotesColumnLabel control.
-        /// </summary>
+        /// <summary>UninstallReportNotesColumnLabel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnLabel UninstallReportNotesColumnLabel;
 
-        /// <summary>
-        /// UninstallReportRepeater control.
-        /// </summary>
+        /// <summary>UninstallReportRepeater control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

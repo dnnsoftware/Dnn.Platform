@@ -15,9 +15,7 @@ namespace DotNetNuke.Modules.NavigationProvider
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public DNNNode Node;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NavigationEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NavigationEventArgs"/> class.</summary>
         /// <param name="strID"></param>
         /// <param name="objNode"></param>
         public NavigationEventArgs(string strID, DNNNode objNode)

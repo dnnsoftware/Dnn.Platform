@@ -24,9 +24,7 @@ using log4net.Core;
 
 namespace log4net.Filter
 {
-    /// <summary>
-    /// Implement this interface to provide customized logging event filtering
-    /// </summary>
+    /// <summary>Implement this interface to provide customized logging event filtering</summary>
     /// <remarks>
     /// <para>
     /// Users should implement this interface to implement customized logging
@@ -70,9 +68,7 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public interface IFilter : IOptionHandler
     {
-        /// <summary>
-        /// Decide if the logging event should be logged through an appender.
-        /// </summary>
+        /// <summary>Decide if the logging event should be logged through an appender.</summary>
         /// <param name="loggingEvent">The LoggingEvent to decide upon</param>
         /// <returns>The decision of the filter</returns>
         /// <remarks>
@@ -86,9 +82,7 @@ namespace log4net.Filter
         /// </remarks>
         FilterDecision Decide(LoggingEvent loggingEvent);
 
-        /// <summary>
-        /// Property to get and set the next filter
-        /// </summary>
+        /// <summary>Property to get and set the next filter</summary>
         /// <value>
         /// The next filter in the chain
         /// </value>

@@ -10,25 +10,19 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserRelationshipBlockedException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
         public UserRelationshipBlockedException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
         /// <param name="message"></param>
         public UserRelationshipBlockedException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public UserRelationshipBlockedException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Entities.Users
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="UserRelationshipBlockedException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public UserRelationshipBlockedException(SerializationInfo info, StreamingContext context)

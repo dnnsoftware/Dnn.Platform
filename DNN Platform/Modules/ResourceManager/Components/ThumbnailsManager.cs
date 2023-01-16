@@ -15,57 +15,39 @@ namespace Dnn.Modules.ResourceManager.Components
     using DotNetNuke.Framework;
     using DotNetNuke.Services.FileSystem;
 
-    /// <summary>
-    /// Provides services related to thumbnails.
-    /// </summary>
+    /// <summary>Provides services related to thumbnails.</summary>
     public class ThumbnailsManager : ServiceLocator<IThumbnailsManager, ThumbnailsManager>, IThumbnailsManager
     {
         private const int DefaultMaxWidth = 320;
         private const int DefaultMaxHeight = 240;
         private readonly IFileManager fileManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThumbnailsManager"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ThumbnailsManager"/> class.</summary>
         public ThumbnailsManager()
         {
             this.fileManager = FileManager.Instance;
         }
 
-        /// <summary>
-        /// Enumerates the possible thumbnail file name extensions.
-        /// </summary>
+        /// <summary>Enumerates the possible thumbnail file name extensions.</summary>
         private enum ThumbnailExtensions
         {
-            /// <summary>
-            /// A JPEG thumbnail.
-            /// </summary>
+            /// <summary>A JPEG thumbnail.</summary>
             JPEG = 0,
 
-            /// <summary>
-            /// A JPG thumbnail.
-            /// </summary>
+            /// <summary>A JPG thumbnail.</summary>
             JPG = 1,
 
-            /// <summary>
-            /// A PNG thumbnail.
-            /// </summary>
+            /// <summary>A PNG thumbnail.</summary>
             PNG = 2,
 
-            /// <summary>
-            /// A GIF thumbnail.
-            /// </summary>
+            /// <summary>A GIF thumbnail.</summary>
             GIF = 3,
         }
 
-        /// <summary>
-        /// Gets the default content mime type.
-        /// </summary>
+        /// <summary>Gets the default content mime type.</summary>
         public string DefaultContentType => "image/png";
 
-        /// <summary>
-        /// Gets the default file name extension.
-        /// </summary>
+        /// <summary>Gets the default file name extension.</summary>
         public string DefaultThumbnailExtension => "png";
 
         /// <inheritdoc/>

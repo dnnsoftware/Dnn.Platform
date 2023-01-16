@@ -25,15 +25,10 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Tokens;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
     /// Class    : ModuleInfo
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ModuleInfo provides the Entity Layer for Modules.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ModuleInfo provides the Entity Layer for Modules.</summary>
     [XmlRoot("module", IsNullable = false)]
     [Serializable]
     public class ModuleInfo : ContentItem, IPropertyAccess
@@ -54,9 +49,7 @@ namespace DotNetNuke.Entities.Modules
         private Hashtable moduleSettings;
         private Hashtable tabModuleSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleInfo"/> class.</summary>
         public ModuleInfo()
         {
             // initialize the properties that can be null
@@ -92,12 +85,8 @@ namespace DotNetNuke.Entities.Modules
             this.defaultLanguageGuid = Null.NullGuid;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Associated Desktop Module.
-        /// </summary>
+        /// <summary>Gets the Associated Desktop Module.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public DesktopModuleInfo DesktopModule
@@ -147,12 +136,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Associated Module Definition.
-        /// </summary>
+        /// <summary>Gets the Associated Module Definition.</summary>
         /// <returns>A ModuleDefinitionInfo.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public ModuleDefinitionInfo ModuleDefinition
@@ -360,12 +345,8 @@ namespace DotNetNuke.Entities.Modules
         [XmlElement("containersrc")]
         public string ContainerSrc { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ID of the Associated Desktop Module.
-        /// </summary>
+        /// <summary>Gets or sets the ID of the Associated Desktop Module.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int DesktopModuleID { get; set; }
@@ -421,12 +402,8 @@ namespace DotNetNuke.Entities.Modules
         [JsonIgnore]
         public int ModuleControlId { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the ID of the Associated Module Definition.
-        /// </summary>
+        /// <summary>Gets or sets the ID of the Associated Module Definition.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public int ModuleDefID { get; set; }
@@ -553,12 +530,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
+        /// <summary>Gets or sets the Key ID.</summary>
         /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
         [XmlIgnore]
         [JsonIgnore]
         public override int KeyID
@@ -574,12 +547,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Fills a ModuleInfo from a Data Reader.
-        /// </summary>
+        /// <summary>Fills a ModuleInfo from a Data Reader.</summary>
         /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class properties

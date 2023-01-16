@@ -15,9 +15,7 @@ namespace DotNetNuke.Modules.Journal {
     
     
     public partial class View {
-        /// <summary>
-        /// ctlJournalList control.
-        /// </summary>
+        /// <summary>ctlJournalList control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

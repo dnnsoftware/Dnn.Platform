@@ -9,24 +9,14 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Authentication;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The AuthenticationInstaller installs Authentication Service Components to a DotNetNuke site.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The AuthenticationInstaller installs Authentication Service Components to a DotNetNuke site.</summary>
     public class AuthenticationInstaller : ComponentInstallerBase
     {
         private AuthenticationInfo authSystem;
         private AuthenticationInfo tempAuthSystem;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
+        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
             get
@@ -35,21 +25,13 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
+        /// <summary>The Commit method finalises the Install and commits any pending changes.</summary>
         /// <remarks>In the case of Authentication systems this is not neccessary.</remarks>
-        /// -----------------------------------------------------------------------------
         public override void Commit()
         {
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the authentication component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The Install method installs the authentication component.</summary>
         public override void Install()
         {
             bool bAdd = Null.NullBoolean;
@@ -91,11 +73,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadManifest method reads the manifest file for the Authentication compoent.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The ReadManifest method reads the manifest file for the Authentication compoent.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.authSystem = new AuthenticationInfo();
@@ -118,12 +96,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
             // If Temp Auth System exists then we need to update the DataStore with this
@@ -139,22 +115,16 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the authentication component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>The UnInstall method uninstalls the authentication component.</summary>
         public override void UnInstall()
         {
             this.DeleteAuthentiation();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteAuthentiation method deletes the Authentication System
         /// from the data Store.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         private void DeleteAuthentiation()
         {
             try

@@ -184,11 +184,6 @@ namespace DotNetNuke.Services.ModuleCache
             return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
         }
 
-        /// <summary>
-        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
         private static string GetCacheFolder(int portalId)
         {
             string cacheFolder;

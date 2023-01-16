@@ -27,9 +27,7 @@ using Stack = log4net.Util.ThreadContextStack.Stack;
 
 namespace log4net
 {
-    /// <summary>
-    /// Implementation of Nested Diagnostic Contexts.
-    /// </summary>
+    /// <summary>Implementation of Nested Diagnostic Contexts.</summary>
     /// <remarks>
     /// <note>
     /// <para>
@@ -69,9 +67,7 @@ namespace log4net
     /*[Obsolete("NDC has been replaced by ThreadContext.Stacks")]*/
     public sealed class NDC
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NDC" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="NDC" /> class. </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.
         /// </remarks>
@@ -79,9 +75,7 @@ namespace log4net
         {
         }
 
-        /// <summary>
-        /// Gets the current context depth.
-        /// </summary>
+        /// <summary>Gets the current context depth.</summary>
         /// <value>The current context depth.</value>
         /// <remarks>
         /// <note>
@@ -105,9 +99,7 @@ namespace log4net
             get { return ThreadContext.Stacks["NDC"].Count; }
         }
 
-        /// <summary>
-        /// Clears all the contextual information held on the current thread.
-        /// </summary>
+        /// <summary>Clears all the contextual information held on the current thread.</summary>
         /// <remarks>
         /// <note>
         /// <para>
@@ -125,9 +117,7 @@ namespace log4net
             ThreadContext.Stacks["NDC"].Clear();
         }
 
-        /// <summary>
-        /// Creates a clone of the stack of context information.
-        /// </summary>
+        /// <summary>Creates a clone of the stack of context information.</summary>
         /// <returns>A clone of the context info for this thread.</returns>
         /// <remarks>
         /// <note>
@@ -148,9 +138,7 @@ namespace log4net
             return ThreadContext.Stacks["NDC"].InternalStack;
         }
 
-        /// <summary>
-        /// Inherits the contextual information from another thread.
-        /// </summary>
+        /// <summary>Inherits the contextual information from another thread.</summary>
         /// <param name="stack">The context stack to inherit.</param>
         /// <remarks>
         /// <note>
@@ -175,9 +163,7 @@ namespace log4net
             ThreadContext.Stacks["NDC"].InternalStack = stack;
         }
 
-        /// <summary>
-        /// Removes the top context from the stack.
-        /// </summary>
+        /// <summary>Removes the top context from the stack.</summary>
         /// <returns>
         /// The message in the context that was removed from the top 
         /// of the stack.
@@ -201,9 +187,7 @@ namespace log4net
             return ThreadContext.Stacks["NDC"].Pop();
         }
 
-        /// <summary>
-        /// Pushes a new context message.
-        /// </summary>
+        /// <summary>Pushes a new context message.</summary>
         /// <param name="message">The new context message.</param>
         /// <returns>
         /// An <see cref="IDisposable"/> that can be used to clean up 
@@ -237,9 +221,7 @@ namespace log4net
             return ThreadContext.Stacks["NDC"].Push(message);
         }
 
-        /// <summary>
-        /// Pushes a new context message.
-        /// </summary>
+        /// <summary>Pushes a new context message.</summary>
         /// <param name="messageFormat">The new context message string format.</param>
         /// <param name="args">Arguments to be passed into messageFormat.</param>
         /// <returns>
@@ -295,9 +277,7 @@ namespace log4net
         {
         }
 
-        /// <summary>
-        /// Forces the stack depth to be at most <paramref name="maxDepth"/>.
-        /// </summary>
+        /// <summary>Forces the stack depth to be at most <paramref name="maxDepth"/>.</summary>
         /// <param name="maxDepth">The maximum depth of the stack</param>
         /// <remarks>
         /// <note>

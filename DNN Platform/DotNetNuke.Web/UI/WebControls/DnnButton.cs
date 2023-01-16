@@ -12,9 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private bool localize = true;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnButton"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnButton"/> class.</summary>
         public DnnButton()
         {
             this.CssClass = "CommandButton";

@@ -12,19 +12,13 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// -----------------------------------------------------------------------------
     /// <summary></summary>
-    /// <returns></returns>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
     public partial class Privacy : SkinObjectBase
     {
         private const string MyFileName = "Privacy.ascx";
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Privacy"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Privacy"/> class.</summary>
         public Privacy()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

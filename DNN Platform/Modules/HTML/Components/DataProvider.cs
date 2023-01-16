@@ -7,12 +7,7 @@ namespace DotNetNuke.Modules.Html.Components
     using System;
     using System.Data;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    ///   The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>  The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module.</summary>
     public class DataProvider
     {
         // singleton reference to the instantiated object

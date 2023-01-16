@@ -21,9 +21,7 @@ namespace DotNetNuke.Services.Scheduling
         private DateTime startDate;
         private bool succeeded;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.</summary>
         public ScheduleHistoryItem()
         {
             this.scheduleHistoryID = Null.NullInteger;
@@ -34,9 +32,7 @@ namespace DotNetNuke.Services.Scheduling
             this.server = Null.NullString;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScheduleHistoryItem"/> class.</summary>
         /// <param name="objScheduleItem"></param>
         public ScheduleHistoryItem(ScheduleItem objScheduleItem)
         {

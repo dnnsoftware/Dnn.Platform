@@ -25,18 +25,14 @@ namespace DotNetNuke.Abstractions
         /// <returns>The <paramref name="value" /> serialized to a <see cref="string" />.</returns>
         string SerializeValue<T>(T value, string serializer);
 
-        /// <summary>
-        /// Serialize the property.
-        /// </summary>
+        /// <summary>Serialize the property.</summary>
         /// <typeparam name="T">The type to serialize.</typeparam>
         /// <param name="myObject">The object to serialize.</param>
         /// <param name="property">The property info.</param>
         /// <returns>A serialized string.</returns>
         string SerializeProperty<T>(T myObject, PropertyInfo property);
 
-        /// <summary>
-        /// Serialize the property.
-        /// </summary>
+        /// <summary>Serialize the property.</summary>
         /// <typeparam name="T">The type to serialize.</typeparam>
         /// <param name="myObject">The object to serialize..</param>
         /// <param name="property">The property info.</param>
@@ -59,9 +55,7 @@ namespace DotNetNuke.Abstractions
         /// <exception cref="InvalidCastException">The <paramref name="value"/> could not be deserialized into the given type.</exception>
         T DeserializeValue<T>(string value, string serializer);
 
-        /// <summary>
-        /// Deserializes the string property.
-        /// </summary>
+        /// <summary>Deserializes the string property.</summary>
         /// <typeparam name="T">The object the string should be deserialized into.</typeparam>
         /// <param name="myObject">The object.</param>
         /// <param name="property">The property info..</param>
@@ -70,9 +64,7 @@ namespace DotNetNuke.Abstractions
         void DeserializeProperty<T>(T myObject, PropertyInfo property, string propertyValue)
             where T : class, new();
 
-        /// <summary>
-        /// Deserializes the string property.
-        /// </summary>
+        /// <summary>Deserializes the string property.</summary>
         /// <typeparam name="T">The object the string should be deserialized into.</typeparam>
         /// <param name="myObject">The object..</param>
         /// <param name="property">The property info..</param>

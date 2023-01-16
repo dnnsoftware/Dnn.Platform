@@ -11,24 +11,17 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging.Views
     /// Class:      MessageConversationView
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The MessageConversationView class contains details of the latest message in a Conversation.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The MessageConversationView class contains details of the latest message in a Conversation.</summary>
     public class MessageConversationView : IHydratable
     {
         private int messageID = -1;
         private string displayDate;
         private DateTime createdOnDate;
 
-        /// <summary>
-        /// Gets a pretty printed string with the time since the message was created.
-        /// </summary>
+        /// <summary>Gets a pretty printed string with the time since the message was created.</summary>
         public string DisplayDate
         {
             get
@@ -42,9 +35,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             }
         }
 
-        /// <summary>
-        /// Gets the Sender User Profile URL.
-        /// </summary>
+        /// <summary>Gets the Sender User Profile URL.</summary>
         public string SenderProfileUrl
         {
             get
@@ -53,9 +44,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             }
         }
 
-        /// <summary>
-        /// Gets or sets messageID - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets messageID - The primary key.</summary>
         public int MessageID
         {
             get
@@ -69,49 +58,31 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             }
         }
 
-        /// <summary>
-        /// Gets or sets portalID for the message.
-        /// </summary>
+        /// <summary>Gets or sets portalID for the message.</summary>
         public int PortalID { get; set; }
 
-        /// <summary>
-        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message.
-        /// </summary>
+        /// <summary>Gets or sets to list for the message. This information is saved for faster display of To list in the message.</summary>
         public string To { get; set; }
 
-        /// <summary>
-        /// Gets or sets message From.
-        /// </summary>
+        /// <summary>Gets or sets message From.</summary>
         public string From { get; set; }
 
-        /// <summary>
-        /// Gets or sets message Subject.
-        /// </summary>
+        /// <summary>Gets or sets message Subject.</summary>
         public string Subject { get; set; }
 
-        /// <summary>
-        /// Gets or sets message body.
-        /// </summary>
+        /// <summary>Gets or sets message body.</summary>
         public string Body { get; set; }
 
-        /// <summary>
-        /// Gets or sets conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId.
-        /// </summary>
+        /// <summary>Gets or sets conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId.</summary>
         public int ConversationId { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether replyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether replyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender.</summary>
         public bool ReplyAllAllowed { get; set; }
 
-        /// <summary>
-        /// Gets or sets the UserID of the sender of the message.
-        /// </summary>
+        /// <summary>Gets or sets the UserID of the sender of the message.</summary>
         public int SenderUserID { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         public int KeyID
         {
             get
@@ -125,29 +96,19 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             }
         }
 
-        /// <summary>
-        /// Gets or sets rowNumber of the message in a set.
-        /// </summary>
+        /// <summary>Gets or sets rowNumber of the message in a set.</summary>
         public int RowNumber { get; set; }
 
-        /// <summary>
-        /// Gets or sets count of Total Attachments in a Conversation. It is calculated by adding attachments in all the threads for a given conversation.
-        /// </summary>
+        /// <summary>Gets or sets count of Total Attachments in a Conversation. It is calculated by adding attachments in all the threads for a given conversation.</summary>
         public int AttachmentCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets count of Total New (Unread) Threads in a Conversation. It is calculated by inspecting all the threads in a conversation and counting the ones that are not read yet.
-        /// </summary>
+        /// <summary>Gets or sets count of Total New (Unread) Threads in a Conversation. It is calculated by inspecting all the threads in a conversation and counting the ones that are not read yet.</summary>
         public int NewThreadCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets count of Total Threads in a Conversation.
-        /// </summary>
+        /// <summary>Gets or sets count of Total Threads in a Conversation.</summary>
         public int ThreadCount { get; set; }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

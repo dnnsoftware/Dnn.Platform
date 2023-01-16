@@ -13,9 +13,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
     public class PagePermissions : Permissions
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PagePermissions"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PagePermissions"/> class.</summary>
         /// <param name="needDefinitions"></param>
         public PagePermissions(bool needDefinitions)
             : base(needDefinitions)

@@ -100,9 +100,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        /// <summary>
-        /// Returns all the redirect rules for the specified portal.
-        /// </summary>
+        /// <summary>Returns all the redirect rules for the specified portal.</summary>
         /// <param name="actions"></param>
         /// <param name="fileName"></param>
         /// <param name="portalId"></param>

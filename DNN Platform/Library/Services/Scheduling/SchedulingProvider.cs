@@ -68,9 +68,7 @@ namespace DotNetNuke.Services.Scheduling
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public EventName EventName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulingProvider"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SchedulingProvider"/> class.</summary>
         protected SchedulingProvider()
         {
             var settings = this.Settings;

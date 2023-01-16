@@ -7,14 +7,10 @@ namespace DotNetNuke.Abstractions.Logging
     using System.Collections;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// add xml docs.
-    /// </summary>
+    /// <summary>add xml docs.</summary>
     public interface ILogProperties : ICollection<ILogDetailInfo>
     {
-        /// <summary>
-        /// Gets the Summary.
-        /// </summary>
+        /// <summary>Gets the Summary.</summary>
         string Summary { get; }
     }
 }

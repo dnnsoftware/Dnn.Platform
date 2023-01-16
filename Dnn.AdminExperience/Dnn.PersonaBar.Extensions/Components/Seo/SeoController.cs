@@ -17,9 +17,7 @@ namespace Dnn.PersonaBar.Seo.Components
     {
         private PortalSettings portalSettings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SeoController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SeoController"/> class.</summary>
         public SeoController()
         {
             this.portalSettings = PortalController.Instance.GetCurrentPortalSettings();

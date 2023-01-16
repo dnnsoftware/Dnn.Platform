@@ -7,23 +7,17 @@ namespace DNNConnect.CKEditorProvider.Objects
     using System.ComponentModel;
     using System.Xml.Serialization;
 
-    /// <summary>
-    /// WordCount Plugin Config.
-    /// </summary>
+    /// <summary>WordCount Plugin Config.</summary>
     public class WordCountConfig
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WordCountConfig" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WordCountConfig" /> class.</summary>
         public WordCountConfig()
         {
             this.ShowWordCount = true;
             this.ShowCharCount = false;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [show char count].
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether [show char count].</summary>
         /// <value>
         ///   <c>true</c> if [show char count]; otherwise, <c>false</c>.
         /// </value>
@@ -31,9 +25,7 @@ namespace DNNConnect.CKEditorProvider.Objects
         [Description("Whether or not you want to show the Word Count.")]
         public bool ShowCharCount { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [show word count].
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether [show word count].</summary>
         /// <value>
         ///   <c>true</c> if [show word count]; otherwise, <c>false</c>.
         /// </value>

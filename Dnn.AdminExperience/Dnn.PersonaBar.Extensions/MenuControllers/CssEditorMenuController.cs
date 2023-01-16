@@ -11,9 +11,7 @@ namespace Dnn.PersonaBar.CssEditor.MenuControllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the css editor menu.
-    /// </summary>
+    /// <summary>Controls the css editor menu.</summary>
     public class CssEditorMenuController : IMenuItemController
     {
         /// <inheritdoc/>

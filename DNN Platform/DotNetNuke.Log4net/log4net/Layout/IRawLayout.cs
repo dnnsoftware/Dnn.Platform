@@ -26,9 +26,7 @@ using log4net.Util.TypeConverters;
 
 namespace log4net.Layout
 {
-    /// <summary>
-    /// Interface for raw layout objects
-    /// </summary>
+    /// <summary>Interface for raw layout objects</summary>
     /// <remarks>
     /// <para>
     /// Interface used to format a <see cref="LoggingEvent"/>
@@ -47,9 +45,7 @@ namespace log4net.Layout
     [TypeConverter(typeof(RawLayoutConverter))]
     public interface IRawLayout
     {
-        /// <summary>
-        /// Implement this method to create your own layout format.
-        /// </summary>
+        /// <summary>Implement this method to create your own layout format.</summary>
         /// <param name="loggingEvent">The event to format</param>
         /// <returns>returns the formatted event</returns>
         /// <remarks>

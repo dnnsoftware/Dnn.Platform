@@ -14,9 +14,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         public string Data;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResponseModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ResponseModel"/> class.</summary>
         /// <param name="err"></param>
         /// <param name="msg"></param>
         public ResponseModel(bool err, string msg)
@@ -26,9 +24,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
             this.Data = string.Empty;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResponseModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ResponseModel"/> class.</summary>
         /// <param name="err"></param>
         /// <param name="msg"></param>
         /// <param name="data"></param>

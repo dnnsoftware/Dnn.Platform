@@ -20,9 +20,7 @@
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Implementation of the <see cref="ILoggerWrapper"/> interface.
-    /// </summary>
+    /// <summary>Implementation of the <see cref="ILoggerWrapper"/> interface.</summary>
     /// <remarks>
     /// <para>
     /// This class should be used as the base for all wrapper implementations.
@@ -32,9 +30,7 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public abstract class LoggerWrapperImpl : ILoggerWrapper
     {
-        /// <summary>
-        /// Constructs a new wrapper for the specified logger.
-        /// </summary>
+        /// <summary>Constructs a new wrapper for the specified logger.</summary>
         /// <param name="logger">The logger to wrap.</param>
         /// <remarks>
         /// <para>
@@ -46,9 +42,7 @@ namespace log4net.Core
             this.m_logger = logger;
         }
 
-        /// <summary>
-        /// Gets the implementation behind this wrapper object.
-        /// </summary>
+        /// <summary>Gets the implementation behind this wrapper object.</summary>
         /// <value>
         /// The <see cref="ILogger"/> object that this object is implementing.
         /// </value>
@@ -67,9 +61,7 @@ namespace log4net.Core
             get { return this.m_logger; }
         }
 
-        /// <summary>
-        /// The logger that this object is wrapping
-        /// </summary>
+        /// <summary>The logger that this object is wrapping</summary>
         private readonly ILogger m_logger;
     }
 }

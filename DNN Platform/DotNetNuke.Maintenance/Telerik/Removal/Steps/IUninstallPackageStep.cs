@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Telerik.Steps
 {
-    /// <summary>
-    /// Uninstalls a package.
-    /// </summary>
+    /// <summary>Uninstalls a package.</summary>
     internal interface IUninstallPackageStep : IStep
     {
         /// <summary>
@@ -15,9 +13,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         /// </summary>
         bool DeleteFiles { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the package to uninstall.
-        /// </summary>
+        /// <summary>Gets or sets the name of the package to uninstall.</summary>
         string PackageName { get; set; }
     }
 }

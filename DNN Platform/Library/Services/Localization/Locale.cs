@@ -11,15 +11,11 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
 
-    /// <summary>
-    ///   <para>The Locale class is a custom business object that represents a locale, which is the language and country combination.</para>
-    /// </summary>
+    /// <summary>  <para>The Locale class is a custom business object that represents a locale, which is the language and country combination.</para></summary>
     [Serializable]
     public class Locale : BaseEntityInfo, IHydratable
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Locale"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Locale"/> class.</summary>
         public Locale()
         {
             this.PortalId = Null.NullInteger;

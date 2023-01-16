@@ -10,16 +10,12 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Tokens;
 
-    /// <summary>
-    /// Replaces tokens related to the current http request.
-    /// </summary>
+    /// <summary>Replaces tokens related to the current http request.</summary>
     public class RequestPropertyAccess : IPropertyAccess
     {
         private readonly HttpRequest request;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequestPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RequestPropertyAccess"/> class.</summary>
         /// <param name="request">The current http request.</param>
         public RequestPropertyAccess(HttpRequest request)
         {

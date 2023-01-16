@@ -14,9 +14,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             return DatabaseHelper.ExecuteScalar<string>(query);
         }
 
-        /// <summary>
-        /// Adds a new entry to HostSettings table only if it does not exist and optionally clears the site cache or recycles the app.
-        /// </summary>
+        /// <summary>Adds a new entry to HostSettings table only if it does not exist and optionally clears the site cache or recycles the app.</summary>
         /// <param name="settingName">The name to add.</param>
         /// <param name="settingValue">The value associated with the name.</param>
         /// <param name="clearCache">Whether to clear the cache for the changes to take effect or not (only when record is added).</param>

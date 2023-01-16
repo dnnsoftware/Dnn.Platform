@@ -20,9 +20,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IServiceProvider serviceProvider;
         private readonly IList<IReplacePortalTabModuleStep> steps;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReplaceTabModuleStep"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ReplaceTabModuleStep"/> class.</summary>
         /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>

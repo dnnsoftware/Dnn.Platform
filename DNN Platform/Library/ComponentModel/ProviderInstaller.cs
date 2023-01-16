@@ -19,9 +19,7 @@ namespace DotNetNuke.ComponentModel
         private readonly string providerType;
         private Type defaultProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
         /// <param name="providerType"></param>
         /// <param name="providerInterface"></param>
         public ProviderInstaller(string providerType, Type providerInterface)
@@ -31,9 +29,7 @@ namespace DotNetNuke.ComponentModel
             this.providerInterface = providerInterface;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
         /// <param name="providerType"></param>
         /// <param name="providerInterface"></param>
         /// <param name="defaultProvider"></param>
@@ -45,9 +41,7 @@ namespace DotNetNuke.ComponentModel
             this.defaultProvider = defaultProvider;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProviderInstaller"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
         /// <param name="providerType"></param>
         /// <param name="providerInterface"></param>
         /// <param name="lifeStyle"></param>

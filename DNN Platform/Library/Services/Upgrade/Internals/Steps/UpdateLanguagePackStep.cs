@@ -12,18 +12,12 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// UpdateLanguagePackStep - Step that downloads and installs language pack.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>UpdateLanguagePackStep - Step that downloads and installs language pack.</summary>
     public class UpdateLanguagePackStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpdateLanguagePackStep));
 
-        /// <summary>
-        /// Main method to execute the step.
-        /// </summary>
+        /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
             this.Percentage = 0;

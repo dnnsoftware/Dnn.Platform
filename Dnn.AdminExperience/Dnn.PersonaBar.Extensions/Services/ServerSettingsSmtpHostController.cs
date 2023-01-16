@@ -24,9 +24,7 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// Provides the APIs for SMTP settings management.
-    /// </summary>
+    /// <summary>Provides the APIs for SMTP settings management.</summary>
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsSmtpHostController : PersonaBarApiController
     {
@@ -34,9 +32,7 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
         private readonly IHostSettingsService hostSettingsService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServerSettingsSmtpHostController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ServerSettingsSmtpHostController"/> class.</summary>
         /// <param name="hostSettingsService">A service to manage host settings.</param>
         public ServerSettingsSmtpHostController(
             IHostSettingsService hostSettingsService)
@@ -44,9 +40,7 @@ namespace Dnn.PersonaBar.Servers.Services
             this.hostSettingsService = hostSettingsService;
         }
 
-        /// <summary>
-        /// Gets the SMTP settings for the host.
-        /// </summary>
+        /// <summary>Gets the SMTP settings for the host.</summary>
         /// <returns>An object representing the host smtp settings.</returns>
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()
@@ -92,9 +86,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        /// <summary>
-        /// Updates the SMTP settings.
-        /// </summary>
+        /// <summary>Updates the SMTP settings.</summary>
         /// <param name="request">The request.</param>
         /// <returns>A value indicating whether the operation succeeded.</returns>
         [HttpPost]
@@ -153,9 +145,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        /// <summary>
-        /// Sends an email to test the SMTP settings.
-        /// </summary>
+        /// <summary>Sends an email to test the SMTP settings.</summary>
         /// <param name="request"><see cref="SendTestEmailRequest"/>.</param>
         /// <returns>A localized result message object.</returns>
         [HttpPost]

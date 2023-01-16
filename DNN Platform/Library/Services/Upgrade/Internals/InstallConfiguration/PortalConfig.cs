@@ -5,16 +5,10 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
     using System.Collections.Generic;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal.</summary>
     public class PortalConfig
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortalConfig"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PortalConfig"/> class.</summary>
         public PortalConfig()
         {
             this.PortAliases = new List<string>();

@@ -38,8 +38,6 @@ namespace DotNetNuke.Modules.Admin.Modules
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
     /// </summary>
-    /// <remarks>
-    /// </remarks>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
@@ -49,9 +47,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private Control control;
         private ModuleInfo module;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

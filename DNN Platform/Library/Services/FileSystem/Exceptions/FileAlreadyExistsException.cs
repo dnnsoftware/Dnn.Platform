@@ -10,25 +10,19 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FileAlreadyExistsException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.</summary>
         public FileAlreadyExistsException()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.</summary>
         /// <param name="message"></param>
         public FileAlreadyExistsException(string message)
             : base(message)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.</summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
         public FileAlreadyExistsException(string message, Exception inner)
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="FileAlreadyExistsException"/> class.</summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
         public FileAlreadyExistsException(SerializationInfo info, StreamingContext context)

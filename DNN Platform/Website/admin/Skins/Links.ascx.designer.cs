@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Links {
-        /// <summary>
-        /// lblLinks control.
-        /// </summary>
+        /// <summary>lblLinks control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

@@ -9,22 +9,16 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// Utility class to support simple localization.
-    /// </summary>
+    /// <summary>Utility class to support simple localization.</summary>
     internal class Localizer : ILocalizer
     {
-        /// <summary>
-        /// The relative path to the resources file for localization.
-        /// </summary>
+        /// <summary>The relative path to the resources file for localization.</summary>
         public static readonly string ResourceFile =
             "~/DesktopModules/TelerikRemoval/App_LocalResources/View.ascx.resx";
 
         private readonly ILocalizationProvider localizationProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Localizer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Localizer"/> class.</summary>
         /// <param name="localizationProvider">An instance of <see cref="ILocalizationProvider"/>.</param>
         public Localizer(ILocalizationProvider localizationProvider)
         {

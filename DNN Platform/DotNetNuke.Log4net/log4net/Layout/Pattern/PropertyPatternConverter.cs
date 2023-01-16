@@ -28,9 +28,7 @@ using log4net.Repository;
 
 namespace log4net.Layout.Pattern
 {
-    /// <summary>
-    /// Property pattern converter
-    /// </summary>
+    /// <summary>Property pattern converter</summary>
     /// <remarks>
     /// <para>
     /// Writes out the value of a named property. The property name
@@ -45,9 +43,7 @@ namespace log4net.Layout.Pattern
     /// <author>Nicko Cadell</author>
     internal sealed class PropertyPatternConverter : PatternLayoutConverter 
     {
-        /// <summary>
-        /// Write the property value to the output
-        /// </summary>
+        /// <summary>Write the property value to the output</summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">the event being logged</param>
         /// <remarks>

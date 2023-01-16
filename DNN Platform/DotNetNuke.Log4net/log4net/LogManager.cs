@@ -26,9 +26,7 @@ using log4net.Repository;
 
 namespace log4net
 {
-    /// <summary>
-    /// This class is used by client applications to request logger instances.
-    /// </summary>
+    /// <summary>This class is used by client applications to request logger instances.</summary>
     /// <remarks>
     /// <para>
     /// This class has static methods that are used by a client to request
@@ -58,9 +56,7 @@ namespace log4net
     /// <author>Gert Driesen</author>
     public sealed class LogManager
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LogManager" /> class. 
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="LogManager" /> class. </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.
         /// </remarks>
@@ -70,9 +66,7 @@ namespace log4net
 
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <overloads>Returns the named logger if it exists.</overloads>
-        /// <summary>
-        /// Returns the named logger if it exists.
-        /// </summary>
+        /// <summary>Returns the named logger if it exists.</summary>
         /// <remarks>
         /// <para>
         /// If the named logger exists (in the default repository) then it
@@ -87,9 +81,7 @@ namespace log4net
         }
         
         /// <overloads>Get the currently defined loggers.</overloads>
-        /// <summary>
-        /// Returns all the currently defined loggers in the default repository.
-        /// </summary>
+        /// <summary>Returns all the currently defined loggers in the default repository.</summary>
         /// <remarks>
         /// <para>The root logger is <b>not</b> included in the returned array.</para>
         /// </remarks>
@@ -100,9 +92,7 @@ namespace log4net
         }
         
         /// <overloads>Get or create a logger.</overloads>
-        /// <summary>
-        /// Retrieves or creates a named logger.
-        /// </summary>
+        /// <summary>Retrieves or creates a named logger.</summary>
         /// <remarks>
         /// <para>
         /// Retrieves a logger named as the <paramref name="name"/>
@@ -123,9 +113,7 @@ namespace log4net
         }
 #endif // !NETSTANDARD1_3
 
-        /// <summary>
-        /// Returns the named logger if it exists.
-        /// </summary>
+        /// <summary>Returns the named logger if it exists.</summary>
         /// <remarks>
         /// <para>
         /// If the named logger exists (in the specified repository) then it
@@ -144,9 +132,7 @@ namespace log4net
             return WrapLogger(LoggerManager.Exists(repository, name));
         }
 
-        /// <summary>
-        /// Returns the named logger if it exists.
-        /// </summary>
+        /// <summary>Returns the named logger if it exists.</summary>
         /// <remarks>
         /// <para>
         /// If the named logger exists (in the repository for the specified assembly) then it
@@ -165,9 +151,7 @@ namespace log4net
             return WrapLogger(LoggerManager.Exists(repositoryAssembly, name));
         }
 
-        /// <summary>
-        /// Returns all the currently defined loggers in the specified repository.
-        /// </summary>
+        /// <summary>Returns all the currently defined loggers in the specified repository.</summary>
         /// <param name="repository">The repository to lookup in.</param>
         /// <remarks>
         /// The root logger is <b>not</b> included in the returned array.
@@ -178,9 +162,7 @@ namespace log4net
             return WrapLoggers(LoggerManager.GetCurrentLoggers(repository));
         }
 
-        /// <summary>
-        /// Returns all the currently defined loggers in the specified assembly's repository.
-        /// </summary>
+        /// <summary>Returns all the currently defined loggers in the specified assembly's repository.</summary>
         /// <param name="repositoryAssembly">The assembly to use to lookup the repository.</param>
         /// <remarks>
         /// The root logger is <b>not</b> included in the returned array.
@@ -191,9 +173,7 @@ namespace log4net
             return WrapLoggers(LoggerManager.GetCurrentLoggers(repositoryAssembly));
         }
 
-        /// <summary>
-        /// Retrieves or creates a named logger.
-        /// </summary>
+        /// <summary>Retrieves or creates a named logger.</summary>
         /// <remarks>
         /// <para>
         /// Retrieve a logger named as the <paramref name="name"/>
@@ -215,9 +195,7 @@ namespace log4net
             return WrapLogger(LoggerManager.GetLogger(repository, name));
         }
 
-        /// <summary>
-        /// Retrieves or creates a named logger.
-        /// </summary>
+        /// <summary>Retrieves or creates a named logger.</summary>
         /// <remarks>
         /// <para>
         /// Retrieve a logger named as the <paramref name="name"/>
@@ -239,9 +217,7 @@ namespace log4net
             return WrapLogger(LoggerManager.GetLogger(repositoryAssembly, name));
         }	
 
-        /// <summary>
-        /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
-        /// </summary>
+        /// <summary>Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.</summary>
         /// <remarks>
         /// Get the logger for the fully qualified name of the type specified.
         /// </remarks>
@@ -256,9 +232,7 @@ namespace log4net
 #endif
         }
 
-        /// <summary>
-        /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
-        /// </summary>
+        /// <summary>Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.</summary>
         /// <remarks>
         /// Gets the logger for the fully qualified name of the type specified.
         /// </remarks>
@@ -270,9 +244,7 @@ namespace log4net
             return WrapLogger(LoggerManager.GetLogger(repository, type));
         }
 
-        /// <summary>
-        /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
-        /// </summary>
+        /// <summary>Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.</summary>
         /// <remarks>
         /// Gets the logger for the fully qualified name of the type specified.
         /// </remarks>
@@ -284,9 +256,7 @@ namespace log4net
             return WrapLogger(LoggerManager.GetLogger(repositoryAssembly, type));
         }
 
-        /// <summary>
-        /// Shuts down the log4net system.
-        /// </summary>
+        /// <summary>Shuts down the log4net system.</summary>
         /// <remarks>
         /// <para>
         /// Calling this method will <b>safely</b> close and remove all
@@ -310,9 +280,7 @@ namespace log4net
 
 #if !NETSTANDARD1_3
         /// <overloads>Shutdown a logger repository.</overloads>
-        /// <summary>
-        /// Shuts down the default repository.
-        /// </summary>
+        /// <summary>Shuts down the default repository.</summary>
         /// <remarks>
         /// <para>
         /// Calling this method will <b>safely</b> close and remove all
@@ -334,9 +302,7 @@ namespace log4net
         }
 #endif
 
-        /// <summary>
-        /// Shuts down the repository for the repository specified.
-        /// </summary>
+        /// <summary>Shuts down the repository for the repository specified.</summary>
         /// <remarks>
         /// <para>
         /// Calling this method will <b>safely</b> close and remove all
@@ -359,9 +325,7 @@ namespace log4net
             LoggerManager.ShutdownRepository(repository);
         }
 
-        /// <summary>
-        /// Shuts down the repository specified.
-        /// </summary>
+        /// <summary>Shuts down the repository specified.</summary>
         /// <remarks>
         /// <para>
         /// Calling this method will <b>safely</b> close and remove all
@@ -388,9 +352,7 @@ namespace log4net
 
 #if !NETSTANDARD1_3
         /// <overloads>Reset the configuration of a repository</overloads>
-        /// <summary>
-        /// Resets all values contained in this repository instance to their defaults.
-        /// </summary>
+        /// <summary>Resets all values contained in this repository instance to their defaults.</summary>
         /// <remarks>
         /// <para>
         /// Resets all values contained in the repository instance to their
@@ -407,9 +369,7 @@ namespace log4net
         }
 #endif
 
-        /// <summary>
-        /// Resets all values contained in this repository instance to their defaults.
-        /// </summary>
+        /// <summary>Resets all values contained in this repository instance to their defaults.</summary>
         /// <remarks>
         /// <para>
         /// Reset all values contained in the repository instance to their
@@ -426,9 +386,7 @@ namespace log4net
             LoggerManager.ResetConfiguration(repository);
         }
 
-        /// <summary>
-        /// Resets all values contained in this repository instance to their defaults.
-        /// </summary>
+        /// <summary>Resets all values contained in this repository instance to their defaults.</summary>
         /// <remarks>
         /// <para>
         /// Reset all values contained in the repository instance to their
@@ -447,9 +405,7 @@ namespace log4net
 
 #if !NETSTANDARD1_3
         /// <overloads>Get the logger repository.</overloads>
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <remarks>
         /// <para>
         /// Gets the <see cref="ILoggerRepository"/> for the repository specified
@@ -464,9 +420,7 @@ namespace log4net
         }
 #endif
 
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
         /// <para>
@@ -481,9 +435,7 @@ namespace log4net
             return GetRepository(repository);
         }
 
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
         /// <para>
@@ -500,9 +452,7 @@ namespace log4net
 
 #if !NETSTANDARD1_3
         /// <overloads>Get a logger repository.</overloads>
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <remarks>
         /// <para>
         /// Gets the <see cref="ILoggerRepository"/> for the repository specified
@@ -516,9 +466,7 @@ namespace log4net
         }
 #endif
 
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
         /// <para>
@@ -532,9 +480,7 @@ namespace log4net
             return LoggerManager.GetRepository(repository);
         }
 
-        /// <summary>
-        /// Returns the default <see cref="ILoggerRepository"/> instance.
-        /// </summary>
+        /// <summary>Returns the default <see cref="ILoggerRepository"/> instance.</summary>
         /// <returns>The default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
         /// <para>
@@ -550,9 +496,7 @@ namespace log4net
 
 #if !NETSTANDARD1_3
         /// <overloads>Create a domain</overloads>
-        /// <summary>
-        /// Creates a repository with the specified repository type.
-        /// </summary>
+        /// <summary>Creates a repository with the specified repository type.</summary>
         /// <remarks>
         /// <para>
         /// <b>CreateDomain is obsolete. Use CreateRepository instead of CreateDomain.</b>
@@ -574,9 +518,7 @@ namespace log4net
         }
 
         /// <overloads>Create a logger repository.</overloads>
-        /// <summary>
-        /// Creates a repository with the specified repository type.
-        /// </summary>
+        /// <summary>Creates a repository with the specified repository type.</summary>
         /// <param name="repositoryType">A <see cref="Type"/> that implements <see cref="ILoggerRepository"/>
         /// and has a no arg constructor. An instance of this type will be created to act
         /// as the <see cref="ILoggerRepository"/> for the repository specified.</param>
@@ -594,9 +536,7 @@ namespace log4net
         }
 #endif
 
-        /// <summary>
-        /// Creates a repository with the specified name.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name.</summary>
         /// <remarks>
         /// <para>
         /// <b>CreateDomain is obsolete. Use CreateRepository instead of CreateDomain.</b>
@@ -619,9 +559,7 @@ namespace log4net
             return LoggerManager.CreateRepository(repository);
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name.</summary>
         /// <remarks>
         /// <para>
         /// Creates the default type of <see cref="ILoggerRepository"/> which is a
@@ -640,9 +578,7 @@ namespace log4net
             return LoggerManager.CreateRepository(repository);
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name and repository type.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name and repository type.</summary>
         /// <remarks>
         /// <para>
         /// <b>CreateDomain is obsolete. Use CreateRepository instead of CreateDomain.</b>
@@ -664,9 +600,7 @@ namespace log4net
             return LoggerManager.CreateRepository(repository, repositoryType);
         }
 
-        /// <summary>
-        /// Creates a repository with the specified name and repository type.
-        /// </summary>
+        /// <summary>Creates a repository with the specified name and repository type.</summary>
         /// <remarks>
         /// <para>
         /// The <paramref name="repository"/> name must be unique. Repositories cannot be redefined.
@@ -684,9 +618,7 @@ namespace log4net
             return LoggerManager.CreateRepository(repository, repositoryType);
         }
 
-        /// <summary>
-        /// Creates a repository for the specified assembly and repository type.
-        /// </summary>
+        /// <summary>Creates a repository for the specified assembly and repository type.</summary>
         /// <remarks>
         /// <para>
         /// <b>CreateDomain is obsolete. Use CreateRepository instead of CreateDomain.</b>
@@ -708,9 +640,7 @@ namespace log4net
             return LoggerManager.CreateRepository(repositoryAssembly, repositoryType);
         }
 
-        /// <summary>
-        /// Creates a repository for the specified assembly and repository type.
-        /// </summary>
+        /// <summary>Creates a repository for the specified assembly and repository type.</summary>
         /// <remarks>
         /// <para>
         /// The <see cref="ILoggerRepository"/> created will be associated with the repository
@@ -728,9 +658,7 @@ namespace log4net
             return LoggerManager.CreateRepository(repositoryAssembly, repositoryType);
         }
 
-        /// <summary>
-        /// Gets the list of currently defined repositories.
-        /// </summary>
+        /// <summary>Gets the list of currently defined repositories.</summary>
         /// <remarks>
         /// <para>
         /// Get an array of all the <see cref="ILoggerRepository"/> objects that have been created.
@@ -742,9 +670,7 @@ namespace log4net
             return LoggerManager.GetAllRepositories();
         }
 
-            /// <summary>
-            /// Flushes logging events buffered in all configured appenders in the default repository.
-            /// </summary>
+            /// <summary>Flushes logging events buffered in all configured appenders in the default repository.</summary>
             /// <param name="millisecondsTimeout">The maximum time in milliseconds to wait for logging events from asycnhronous appenders to be flushed.</param>
             /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
             public static bool Flush(int millisecondsTimeout)
@@ -764,9 +690,7 @@ namespace log4net
 #endif
             }
 
-            /// <summary>
-        /// Looks up the wrapper object for the logger specified.
-        /// </summary>
+            /// <summary>Looks up the wrapper object for the logger specified.</summary>
         /// <param name="logger">The logger to get the wrapper for.</param>
         /// <returns>The wrapper for the logger specified.</returns>
         private static ILog WrapLogger(ILogger logger)
@@ -774,9 +698,7 @@ namespace log4net
             return (ILog)s_wrapperMap.GetWrapper(logger);
         }
 
-        /// <summary>
-        /// Looks up the wrapper objects for the loggers specified.
-        /// </summary>
+        /// <summary>Looks up the wrapper objects for the loggers specified.</summary>
         /// <param name="loggers">The loggers to get the wrappers for.</param>
         /// <returns>The wrapper objects for the loggers specified.</returns>
         private static ILog[] WrapLoggers(ILogger[] loggers)
@@ -800,9 +722,7 @@ namespace log4net
             return new LogImpl(logger);
         }
 
-        /// <summary>
-        /// The wrapper map to use to hold the <see cref="LogImpl"/> objects.
-        /// </summary>
+        /// <summary>The wrapper map to use to hold the <see cref="LogImpl"/> objects.</summary>
         private static readonly WrapperMap s_wrapperMap = new WrapperMap(new WrapperCreationHandler(WrapperCreationHandler));
     }
 }

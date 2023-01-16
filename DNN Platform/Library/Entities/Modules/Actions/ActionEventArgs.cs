@@ -5,44 +5,24 @@ namespace DotNetNuke.Entities.Modules.Actions
 {
     using System;
 
-    /// -----------------------------------------------------------------------------
     /// Project     : DotNetNuke
     /// Namespace   : DotNetNuke.Entities.Modules.Actions
     /// Class       : ActionEventArgs
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// ActionEventArgs provides a custom EventARgs class for Action Events.
-    /// </summary>
-    /// <remarks></remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>ActionEventArgs provides a custom EventARgs class for Action Events.</summary>
     public class ActionEventArgs : EventArgs
     {
         private readonly ModuleAction action;
         private readonly ModuleInfo moduleConfiguration;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionEventArgs"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ActionEventArgs"/> class.</summary>
         /// <param name="action"></param>
         /// <param name="moduleConfiguration"></param>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ActionEventArgs(ModuleAction action, ModuleInfo moduleConfiguration)
         {
             this.action = action;
             this.moduleConfiguration = moduleConfiguration;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleAction Action
         {
             get
@@ -51,15 +31,6 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///
-        /// </summary>
-        /// <value>
-        ///
-        /// </value>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {
             get

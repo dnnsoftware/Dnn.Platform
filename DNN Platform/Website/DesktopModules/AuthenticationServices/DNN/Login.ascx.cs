@@ -21,29 +21,19 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using Globals = DotNetNuke.Common.Globals;
     using Host = DotNetNuke.Entities.Host.Host;
 
-    /// <summary>
-    /// The Login AuthenticationLoginBase is used to provide a login for a registered user
-    /// portal.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
+    /// <summary>The Login AuthenticationLoginBase is used to provide a login for a registered user portal.</summary>
     public partial class Login : AuthenticationLoginBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
         private readonly INavigationManager navigationManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Login"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>
-        /// Gets a value indicating whether check if the Auth System is Enabled (for the Portal).
-        /// </summary>
-        /// <remarks></remarks>
+        /// <summary>Gets a value indicating whether check if the Auth System is Enabled (for the Portal).</summary>
         public override bool Enabled
         {
             get
@@ -52,9 +42,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the Captcha control is used to validate the login.</summary>
         protected bool UseCaptcha
         {
             get

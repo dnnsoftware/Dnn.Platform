@@ -12,9 +12,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>
-    ///   Summary description for ComponentFactoryTests.
-    /// </summary>
+    /// <summary>  Summary description for ComponentFactoryTests.</summary>
     [TestFixture]
     public class ComponentFactoryTests
     {

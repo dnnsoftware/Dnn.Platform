@@ -10,9 +10,7 @@ namespace DotNetNuke.Web.Api
 
     public static class UrlHelperExtensions
     {
-        /// <summary>
-        /// Generate WebAPI Links compatible with DNN Services Framework.
-        /// </summary>
+        /// <summary>Generate WebAPI Links compatible with DNN Services Framework.</summary>
         /// <param name="urlHelper">The UrlHelper.</param>
         /// <param name="moduleFolderName">ModuleFolderName for the route.</param>
         /// <param name="routeName">RouteName for the route.</param>
@@ -23,9 +21,7 @@ namespace DotNetNuke.Web.Api
             return DnnLink(urlHelper, moduleFolderName, routeName, routeValues, PortalController.Instance.GetCurrentPortalSettings().PortalAlias);
         }
 
-        /// <summary>
-        /// Generate WebAPI Links compatible with DNN Services Framework.
-        /// </summary>
+        /// <summary>Generate WebAPI Links compatible with DNN Services Framework.</summary>
         /// <param name="urlHelper">The UrlHelper.</param>
         /// <param name="moduleFolderName">ModuleFolderName for the route.</param>
         /// <param name="routeName">RouteName for the route.</param>

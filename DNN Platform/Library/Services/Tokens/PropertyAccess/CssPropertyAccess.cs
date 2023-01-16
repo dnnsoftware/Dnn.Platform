@@ -16,9 +16,7 @@ namespace DotNetNuke.Services.Tokens
     {
         private readonly Page page;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CssPropertyAccess"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
         /// <param name="page"></param>
         public CssPropertyAccess(Page page)
         {

@@ -6,19 +6,13 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System.Data;
 
-    /// <summary>
-    /// Enables arbitrary SQL execution.
-    /// </summary>
+    /// <summary>Enables arbitrary SQL execution.</summary>
     internal interface IExecuteSqlStep : IStep
     {
-        /// <summary>
-        /// Gets or sets the SQL command to execute.
-        /// </summary>
+        /// <summary>Gets or sets the SQL command to execute.</summary>
         string CommandText { get; set; }
 
-        /// <summary>
-        /// Gets an instance of <see cref="IDataReader"/> with the results of the command execution.
-        /// </summary>
+        /// <summary>Gets an instance of <see cref="IDataReader"/> with the results of the command execution.</summary>
         IDataReader Result { get; }
     }
 }

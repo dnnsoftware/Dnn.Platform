@@ -14,9 +14,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Web;
     using System.Web.Caching;
 
-    /// <summary>
-    /// MemoryResponseFilter implements the OutputCachingProvider for memory storage.
-    /// </summary>
+    /// <summary>MemoryResponseFilter implements the OutputCachingProvider for memory storage.</summary>
     public class MemoryProvider : OutputCachingProvider
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1303:ConstFieldNamesMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]

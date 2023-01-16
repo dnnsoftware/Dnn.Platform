@@ -6,74 +6,45 @@ namespace DotNetNuke.Services.ClientCapability
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// Default Implementation of IClientCapability.
-    /// </summary>
+    /// <summary>Default Implementation of IClientCapability.</summary>
     public class ClientCapability : IClientCapability
     {
         private IDictionary<string, string> capabilities;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientCapability"/> class.
-        ///   Default Constructor.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ClientCapability"/> class.</summary>
         public ClientCapability()
         {
             this.capabilities = new Dictionary<string, string>();
         }
 
-        /// <summary>
-        ///   Gets or sets unique ID of the client making request.
-        /// </summary>
+        /// <inheritdoc />
         public string ID { get; set; }
 
-        /// <summary>
-        ///   Gets or sets user Agent of the client making request.
-        /// </summary>
+        /// <inheritdoc />
         public string UserAgent { get; set; }
 
-        /// <summary>
-        ///   Gets or sets a value indicating whether is request coming from a mobile device.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsMobile { get; set; }
 
-        /// <summary>
-        ///   Gets or sets a value indicating whether is request coming from a tablet device.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsTablet { get; set; }
 
-        /// <summary>
-        ///   Gets or sets a value indicating whether does the requesting device supports touch screen.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsTouchScreen { get; set; }
 
-        /// <summary>
-        ///   Gets or sets facebookRequest property is filled when request is coming though Facebook iFrame (e.g. fan pages).
-        /// </summary>
-        /// <remarks>
-        ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.
-        ///   In order to ensure request is coming from Facebook, FacebookRequest.IsValidSignature method should be called with the secrety key provided by Facebook.
-        /// </remarks>
+        /// <inheritdoc />
         public FacebookRequest FacebookRequest { get; set; }
 
-        /// <summary>
-        ///   Gets or sets screenResolution Width of the requester in Pixels.
-        /// </summary>
+        /// <inheritdoc />
         public int ScreenResolutionWidthInPixels { get; set; }
 
-        /// <summary>
-        ///   Gets or sets screenResolution Height of the requester in Pixels.
-        /// </summary>
+        /// <inheritdoc />
         public int ScreenResolutionHeightInPixels { get; set; }
 
-        /// <summary>
-        ///   Gets or sets a value indicating whether does requester support Flash.
-        /// </summary>
+        /// <inheritdoc />
         public bool SupportsFlash { get; set; }
 
-        /// <summary>
-        /// Gets or sets a key-value collection containing all capabilities supported by requester.
-        /// </summary>
+        /// <inheritdoc />
         [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled removal in v10.0.0.")]
         public IDictionary<string, string> Capabilities
         {
@@ -88,26 +59,16 @@ namespace DotNetNuke.Services.ClientCapability
             }
         }
 
-        /// <summary>
-        /// Gets or sets represents the name of the broweser in the request.
-        /// </summary>
+        /// <inheritdoc />
         public string BrowserName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the request prefered HTML DTD.
-        /// </summary>
+        /// <inheritdoc />
         public string HtmlPreferedDTD { get; set; }
 
-        /// <summary>
-        ///   Gets or sets http server variable used for SSL offloading - if this value is empty offloading is not enabled.
-        /// </summary>
+        /// <inheritdoc />
         public string SSLOffload { get; set; }
 
-        /// <summary>
-        /// Get client capability value by property name.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public virtual string this[string name]
         {
             get

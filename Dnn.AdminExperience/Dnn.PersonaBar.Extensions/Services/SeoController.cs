@@ -1,11 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Seo.Services
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -25,7 +23,6 @@ namespace Dnn.PersonaBar.Seo.Services
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
@@ -51,12 +48,9 @@ namespace Dnn.PersonaBar.Seo.Services
         protected INavigationManager NavigationManager { get; }
 
         /// GET: api/SEO/GetGeneralSettings
-        /// <summary>
-        /// Gets general SEO settings.
-        /// </summary>
+        /// <summary>Gets general SEO settings.</summary>
         /// <returns>General SEO settings.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetGeneralSettings()
         {
             try
@@ -100,14 +94,11 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/UpdateGeneralSettings
-        /// <summary>
-        /// Updates SEO general settings.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Updates SEO general settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateGeneralSettings(UpdateGeneralSettingsRequest request)
         {
             try
@@ -139,13 +130,10 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// GET: api/SEO/GetRegexSettings
-        /// <summary>
-        /// Gets SEO regex settings.
-        /// </summary>
+        /// <summary>Gets SEO regex settings.</summary>
         /// <returns>General SEO regex settings.</returns>
         [HttpGet]
         [RequireHost]
-
         public HttpResponseMessage GetRegexSettings()
         {
             try
@@ -180,15 +168,12 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/UpdateRegexSettings
-        /// <summary>
-        /// Updates SEO regex settings.
-        /// </summary>
+        /// <summary>Updates SEO regex settings.</summary>
         /// <param name="request"></param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateRegexSettings(UpdateRegexSettingsRequest request)
         {
             try
@@ -267,13 +252,9 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// GET: api/SEO/GetSitemapSettings
-        /// <summary>
-        /// Gets sitemap settings.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets sitemap settings.</summary>
         /// <returns>Data of sitemap settings.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetSitemapSettings()
         {
             try
@@ -328,14 +309,11 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/CreateVerification
-        /// <summary>
-        /// Creates a verification file for specific search engine.
-        /// </summary>
+        /// <summary>Creates a verification file for specific search engine.</summary>
         /// <param name="verification">Name of verification.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage CreateVerification(string verification)
         {
             try
@@ -351,14 +329,11 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/UpdateSitemapSettings
-        /// <summary>
-        /// Updates sitemap settings.
-        /// </summary>
+        /// <summary>Updates sitemap settings.</summary>
         /// <param name="request">Data of sitemap settings.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSitemapSettings(SitemapSettingsRequest request)
         {
             try
@@ -397,14 +372,10 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/ResetCache
-        /// <summary>
-        /// Resets cache.
-        /// </summary>
-        /// <param></param>
-        /// <returns></returns>
+        /// <summary>Resets cache.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ResetCache()
         {
             try
@@ -420,13 +391,9 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// GET: api/SEO/GetSitemapProviders
-        /// <summary>
-        /// Gets list of sitemap providers.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets list of sitemap providers.</summary>
         /// <returns>Web Server information.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetSitemapProviders()
         {
             try
@@ -454,14 +421,11 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/UpdateSitemapProvider
-        /// <summary>
-        /// Updates settings of a sitemap provider.
-        /// </summary>
+        /// <summary>Updates settings of a sitemap provider.</summary>
         /// <param name="request">Data of sitemap provider.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSitemapProvider(UpdateSitemapProviderRequest request)
         {
             try
@@ -490,13 +454,9 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// GET: api/SEO/GetExtensionUrlProviders
-        /// <summary>
-        /// Gets list of extension url providers.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets list of extension url providers.</summary>
         /// <returns>extension url providers.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetExtensionUrlProviders()
         {
             try
@@ -524,14 +484,11 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// POST: api/SEO/UpdateExtensionUrlProviderStatus
-        /// <summary>
-        /// Enable or disable extension url provider.
-        /// </summary>
+        /// <summary>Enable or disable extension url provider.</summary>
         /// <param name="request">Data of extension url provider.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateExtensionUrlProviderStatus(UpdateExtensionUrlProviderStatusRequest request)
         {
             try
@@ -554,15 +511,14 @@ namespace Dnn.PersonaBar.Seo.Services
             }
         }
 
-        /// <summary>
-        /// Tests the internal URL.
-        /// </summary>
+        /// <summary>Tests the internal URL.</summary>
         /// <returns>Various forms of the URL and any messages when they exist.</returns>
         /// <example>
-        /// GET /API/PersonaBar/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page.
+        /// <code>
+        /// GET <c>/API/PersonaBar/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page</c>
+        /// </code>
         /// </example>
         [HttpGet]
-
         public HttpResponseMessage TestUrl(int pageId, string queryString, string customPageName)
         {
             try
@@ -582,15 +538,14 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// GET: api/SEO/TestUrlRewrite
-        /// <summary>
-        /// Tests the rewritten URL.
-        /// </summary>
-        /// <returns>Rewitten URL and few other information about the URL ( language, redirection result and reason, messages).</returns>
+        /// <summary>Tests the rewritten URL.</summary>
+        /// <returns>Rewritten URL and few other information about the URL ( language, redirection result and reason, messages).</returns>
         /// <example>
-        /// GET /API/PersonaBar/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page.
+        /// <code>
+        /// GET <c>/API/PersonaBar/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page</c>
+        /// </code>
         /// </example>
         [HttpGet]
-
         public HttpResponseMessage TestUrlRewrite(string uri)
         {
             try

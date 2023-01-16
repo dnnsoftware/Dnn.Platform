@@ -11,17 +11,13 @@ namespace DotNetNuke.Services.Localization.Internal
 
     public interface ILocalization
     {
-        /// <summary>
-        /// Inspect the browser supplied language headers and find the best match from the supplied list.
-        /// </summary>
+        /// <summary>Inspect the browser supplied language headers and find the best match from the supplied list.</summary>
         /// <param name="cultureCodes">The codes to search for a match.</param>
         /// <param name="fallback">The code to return if no good match is found.</param>
         /// <returns>Best matching culture code, or fallback if no good match found.</returns>
         string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback);
 
-        /// <summary>
-        /// Inspect the browser supplied language headers and find the best match from the supplied list.
-        /// </summary>
+        /// <summary>Inspect the browser supplied language headers and find the best match from the supplied list.</summary>
         /// <param name="cultureCodes">The codes to search for a match.</param>
         /// <returns>Best matching culture code, or SystemLocale if no good match found.</returns>
         string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes);
@@ -41,11 +37,9 @@ namespace DotNetNuke.Services.Localization.Internal
         /// <returns>A valid CultureInfo.</returns>
         CultureInfo GetPageLocale(PortalSettings portalSettings);
 
-        /// <summary>
-        ///   Sets the culture codes on the current Thread.
-        /// </summary>
-        /// <param name = "cultureInfo">Culture Info for the current page.</param>
-        /// <param name = "portalSettings">The current portalSettings.</param>
+        /// <summary>  Sets the culture codes on the current Thread.</summary>
+        /// <param name="cultureInfo">Culture Info for the current page.</param>
+        /// <param name="portalSettings">The current portalSettings.</param>
         /// <remarks>
         ///   This method will configure the Thread culture codes.  Any page which does not derive from PageBase should
         ///   be sure to call this method in OnInit to ensure localiztion works correctly.  See the TelerikDialogHandler for an example.

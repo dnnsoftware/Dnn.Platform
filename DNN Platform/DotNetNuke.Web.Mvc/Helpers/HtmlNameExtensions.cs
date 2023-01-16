@@ -9,14 +9,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    /// <summary>
-    /// Gets the HTML ID and name attributes of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
-    /// </summary>
+    /// <summary>Gets the HTML ID and name attributes of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.</summary>
     public static class HtmlNameExtensions
     {
-        /// <summary>
-        /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
-        /// </summary>
+        /// <summary>Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.</summary>
         ///
         /// <returns>
         /// The HTML ID attribute value for the object that is represented by the expression.
@@ -27,9 +23,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Id(name);
         }
 
-        /// <summary>
-        /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
-        /// </summary>
+        /// <summary>Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.</summary>
         ///
         /// <returns>
         /// The HTML ID attribute value for the object that is represented by the expression.
@@ -40,9 +34,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.IdFor(expression);
         }
 
-        /// <summary>
-        /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
-        /// </summary>
+        /// <summary>Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.</summary>
         ///
         /// <returns>
         /// The HTML ID attribute value for the object that is represented by the expression.
@@ -53,9 +45,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.IdForModel();
         }
 
-        /// <summary>
-        /// Gets the full HTML field name for the object that is represented by the expression.
-        /// </summary>
+        /// <summary>Gets the full HTML field name for the object that is represented by the expression.</summary>
         ///
         /// <returns>
         /// The full HTML field name for the object that is represented by the expression.
@@ -66,9 +56,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.Name(name);
         }
 
-        /// <summary>
-        /// Gets the full HTML field name for the object that is represented by the expression.
-        /// </summary>
+        /// <summary>Gets the full HTML field name for the object that is represented by the expression.</summary>
         ///
         /// <returns>
         /// The full HTML field name for the object that is represented by the expression.
@@ -79,9 +67,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.NameFor(expression);
         }
 
-        /// <summary>
-        /// Gets the full HTML field name for the object that is represented by the expression.
-        /// </summary>
+        /// <summary>Gets the full HTML field name for the object that is represented by the expression.</summary>
         ///
         /// <returns>
         /// The full HTML field name for the object that is represented by the expression.

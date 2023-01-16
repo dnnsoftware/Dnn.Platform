@@ -13,18 +13,14 @@ namespace DotNetNuke.UI.WebControls
         private readonly Unit height;
         private readonly Unit width;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.</summary>
         /// <param name="cssClass">The css class to apply to the associated property.</param>
         public ControlStyleAttribute(string cssClass)
         {
             this.cssClass = cssClass;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.</summary>
         /// <param name="cssClass">The css class to apply to the associated property.</param>
         /// <param name="width">control width.</param>
         public ControlStyleAttribute(string cssClass, string width)
@@ -33,9 +29,7 @@ namespace DotNetNuke.UI.WebControls
             this.width = Unit.Parse(width);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ControlStyleAttribute"/> class.</summary>
         /// <param name="cssClass">The css class to apply to the associated property.</param>
         /// <param name="width">control width.</param>
         /// <param name="height">control height.</param>

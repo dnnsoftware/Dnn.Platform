@@ -7,15 +7,10 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    /// <summary>
-    /// Creates a control that render one item in a list ($lt;li> control).
-    /// </summary>
-    /// <remarks></remarks>
+    /// <summary>Creates a control that render one item in a list ($lt;li> control).</summary>
     public class DnnUnsortedListItem : WebControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnUnsortedListItem"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnUnsortedListItem"/> class.</summary>
         public DnnUnsortedListItem()
             : base(HtmlTextWriterTag.Li)
         {

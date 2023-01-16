@@ -159,9 +159,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             }
         }
 
-        /// <summary>
-        /// Gets a list of servers to be recommended for a particular scheduler.
-        /// </summary>
+        /// <summary>Gets a list of servers to be recommended for a particular scheduler.</summary>
         /// <param name="schedulerId">Scheduler Id.</param>
         /// <returns>List of recommended servers for specified <paramref name="schedulerId"/>.</returns>
         public IEnumerable<string> GetRecommendedServers(int schedulerId)

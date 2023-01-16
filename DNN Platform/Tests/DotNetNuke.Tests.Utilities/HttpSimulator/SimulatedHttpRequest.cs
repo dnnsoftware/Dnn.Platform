@@ -11,9 +11,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     using System.Text;
     using System.Web.Hosting;
 
-    /// <summary>
-    /// Used to simulate an HttpRequest.
-    /// </summary>
+    /// <summary>Used to simulate an HttpRequest.</summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
         private readonly string _host;
@@ -66,21 +64,15 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         //    return (_port == 443) ? "https:" : "http:";
         // }
 
-        /// <summary>
-        /// Gets the headers.
-        /// </summary>
+        /// <summary>Gets the headers.</summary>
         /// <value>The headers.</value>
         public NameValueCollection Headers { get; private set; }
 
-        /// <summary>
-        /// Gets the format exception.
-        /// </summary>
+        /// <summary>Gets the format exception.</summary>
         /// <value>The format exception.</value>
         public NameValueCollection Form { get; private set; }
 
-        /// <summary>
-        /// Returns the specified member of the request header.
-        /// </summary>
+        /// <summary>Returns the specified member of the request header.</summary>
         /// <returns>
         /// The HTTP verb returned in the request
         /// header.
@@ -90,9 +82,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this._verb;
         }
 
-        /// <summary>
-        /// Gets the name of the server.
-        /// </summary>
+        /// <summary>Gets the name of the server.</summary>
         /// <returns></returns>
         public override string GetServerName()
         {
@@ -109,9 +99,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return (this._port == 443) ? true : false;
         }
 
-        /// <summary>
-        /// Get all nonstandard HTTP header name-value pairs.
-        /// </summary>
+        /// <summary>Get all nonstandard HTTP header name-value pairs.</summary>
         /// <returns>An array of header name-value pairs.</returns>
         public override string[][] GetUnknownRequestHeaders()
         {
@@ -151,9 +139,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this._physicalFilePath;
         }
 
-        /// <summary>
-        /// Reads request data from the client (when not preloaded).
-        /// </summary>
+        /// <summary>Reads request data from the client (when not preloaded).</summary>
         /// <returns>The number of bytes read.</returns>
         public override byte[] GetPreloadedEntityBody()
         {

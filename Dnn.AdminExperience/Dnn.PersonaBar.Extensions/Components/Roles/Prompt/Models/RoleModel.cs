@@ -11,16 +11,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 
     public class RoleModel : RoleModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RoleModel"/> class.</summary>
         public RoleModel()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoleModel"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="RoleModel"/> class.</summary>
         /// <param name="role"></param>
         public RoleModel(RoleInfo role)
             : base(role)

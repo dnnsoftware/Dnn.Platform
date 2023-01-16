@@ -6,9 +6,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 {
     using Dnn.PersonaBar.Library.Prompt.Attributes;
 
-    /// <summary>
-    /// Alias for list-portals.
-    /// </summary>
+    /// <summary>Alias for list-portals.</summary>
     [ConsoleCommand("list-sites", Constants.PortalCategory, "Prompt_ListSites_Description")]
 
     public class ListSites : ListPortals

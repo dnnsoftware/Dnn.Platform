@@ -53,14 +53,10 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
             this.CacheTimeOut = timeOut;
         }
 
-        /// <summary>
-        /// Gets or sets the root key to use for the cache.
-        /// </summary>
+        /// <summary>Gets or sets the root key to use for the cache.</summary>
         public string CacheKey { get; set; }
 
-        /// <summary>
-        /// Gets or sets the priority of the cached item.  The default value is CacheItemPriority.Default.
-        /// </summary>
+        /// <summary>Gets or sets the priority of the cached item.  The default value is CacheItemPriority.Default.</summary>
         public CacheItemPriority CachePriority { get; set; }
 
         /// <summary>

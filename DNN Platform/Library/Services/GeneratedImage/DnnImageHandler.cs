@@ -41,9 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage
         private static readonly int DefaultDimension = 10;
         private string defaultImageFile = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnImageHandler"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
         public DnnImageHandler()
         {
             // Set default settings here

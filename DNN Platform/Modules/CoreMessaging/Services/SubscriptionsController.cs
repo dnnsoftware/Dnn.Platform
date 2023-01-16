@@ -23,9 +23,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.Social.Subscriptions.Entities;
     using DotNetNuke.Web.Api;
 
-    /// <summary>
-    /// Provides a web service to manage subscriptions.
-    /// </summary>
+    /// <summary>Provides a web service to manage subscriptions.</summary>
     [DnnAuthorize]
     public class SubscriptionsController : DnnApiController
     {
@@ -42,9 +40,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Perform a search on Scoring Activities registered in the system.
-        /// </summary>
+        /// <summary>Perform a search on Scoring Activities registered in the system.</summary>
         /// <param name="pageIndex">Page index to begin from (0, 1, 2).</param>
         /// <param name="pageSize">Number of records to return per page.</param>
         /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc].</param>
@@ -104,9 +100,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Updates system sybscriptions.
-        /// </summary>
+        /// <summary>Updates system sybscriptions.</summary>
         /// <param name="post"><see cref="InboxSubscriptionViewModel"/>.</param>
         /// <returns><see cref="UserPreference"/>.</returns>
         [HttpPost]
@@ -136,9 +130,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Deletes a content subscriptions.
-        /// </summary>
+        /// <summary>Deletes a content subscriptions.</summary>
         /// <param name="subscription"><see cref="Subscription"/>.</param>
         /// <returns>"unsubscribed" or an InternalServerError.</returns>
         [HttpPost]
@@ -165,9 +157,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        /// <summary>
-        /// Gets a localized table for a given culture.
-        /// </summary>
+        /// <summary>Gets a localized table for a given culture.</summary>
         /// <param name="culture">The culture for which to get the localization.</param>
         /// <returns>A dictionnary of localization keys and their localized values.</returns>
         [HttpGet]

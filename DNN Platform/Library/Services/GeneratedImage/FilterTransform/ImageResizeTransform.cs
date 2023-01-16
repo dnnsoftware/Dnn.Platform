@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     using System.Drawing;
     using System.Drawing.Drawing2D;
 
-    /// <summary>
-    /// Resize ImageTransform class.
-    /// </summary>
+    /// <summary>Resize ImageTransform class.</summary>
     public class ImageResizeTransform : ImageTransform
     {
         private int width;
@@ -21,9 +19,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         private int maxWidth;
         private int maxHeight;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageResizeTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageResizeTransform"/> class.</summary>
         public ImageResizeTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -33,20 +29,14 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.Mode = ImageResizeMode.Fit;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for this transformation.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for this transformation.</summary>
         [Browsable(false)]
         public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
 
-        /// <summary>
-        /// Gets or sets the resize mode. The default value is Fit.
-        /// </summary>
+        /// <summary>Gets or sets the resize mode. The default value is Fit.</summary>
         public ImageResizeMode Mode { get; set; }
 
-        /// <summary>
-        /// Gets or sets the width of the resulting image.
-        /// </summary>
+        /// <summary>Gets or sets the width of the resulting image.</summary>
         public int Width
         {
             get
@@ -61,9 +51,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Max width of the resulting image.
-        /// </summary>
+        /// <summary>Gets or sets the Max width of the resulting image.</summary>
         public int MaxWidth
         {
             get
@@ -78,9 +66,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the height of the resulting image.
-        /// </summary>
+        /// <summary>Gets or sets the height of the resulting image.</summary>
         public int Height
         {
             get
@@ -95,9 +81,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the max height of the resulting image.
-        /// </summary>
+        /// <summary>Gets or sets the max height of the resulting image.</summary>
         public int MaxHeight
         {
             get
@@ -112,9 +96,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the border width of the resulting image.
-        /// </summary>
+        /// <summary>Gets or sets the border width of the resulting image.</summary>
         public int Border
         {
             get
@@ -129,14 +111,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        /// <summary>
-        /// Gets or sets the Backcolor.
-        /// </summary>
+        /// <summary>Gets or sets the Backcolor.</summary>
         public Color BackColor { get; set; } = Color.White;
 
-        /// <summary>
-        /// Processes an input image applying a resize image transformation.
-        /// </summary>
+        /// <summary>Processes an input image applying a resize image transformation.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)

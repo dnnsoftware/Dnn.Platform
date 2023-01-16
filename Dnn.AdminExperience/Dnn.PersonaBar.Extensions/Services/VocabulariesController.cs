@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Vocabularies.Services
 {
     using System;
@@ -33,13 +32,9 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Vocabularies/App_LocalResources/Vocabularies.resx");
 
         /// GET: api/Vocabularies/GetVocabularies
-        /// <summary>
-        /// Gets an overall list of vocabularies.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets an overall list of vocabularies.</summary>
         /// <returns>List of vocabularies.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetVocabularies(int pageIndex, int pageSize, int scopeTypeId = -1)
         {
             try
@@ -73,15 +68,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// POST: api/Vocabularies/CreateVocabulary
-        /// <summary>
-        /// Creates a new vocabulary.
-        /// </summary>
+        /// <summary>Creates a new vocabulary.</summary>
         /// <param name="vocabularyDto">Data of a new vocabulary.</param>
         /// <returns>Id of the new added vocabulary.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
-
         public HttpResponseMessage CreateVocabulary(VocabularyDto vocabularyDto)
         {
             try
@@ -107,15 +99,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// POST: api/Vocabularies/UpdateVocabulary
-        /// <summary>
-        /// Updates an existing vocabulary.
-        /// </summary>
+        /// <summary>Updates an existing vocabulary.</summary>
         /// <param name="vocabularyDto">Data of an existing vocabulary.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
-
         public HttpResponseMessage UpdateVocabulary(VocabularyDto vocabularyDto)
         {
             try
@@ -145,15 +134,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// POST: api/Vocabularies/DeleteVocabulary
-        /// <summary>
-        /// Removes an existing vocabulary.
-        /// </summary>
+        /// <summary>Removes an existing vocabulary.</summary>
         /// <param name="vocabularyId">Id of an existing vocabulary that will be deleted.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
-
         public HttpResponseMessage DeleteVocabulary(int vocabularyId)
         {
             try
@@ -174,13 +160,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// GET: api/Vocabularies/GetTermsByVocabularyId
-        /// <summary>
-        /// Gets a list of terms belonging to a specific vocabulary.
-        /// </summary>
+        /// <summary>Gets a list of terms belonging to a specific vocabulary.</summary>
         /// <param name="vocabularyId">Id of an existing vocabulary.</param>
         /// <returns>List of terms.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetTermsByVocabularyId(int vocabularyId)
         {
             try
@@ -210,13 +193,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// GET: api/Vocabularies/GetTerm
-        /// <summary>
-        /// Gets a term.
-        /// </summary>
+        /// <summary>Gets a term.</summary>
         /// <param name="termId">Id of an existing term.</param>
         /// <returns>Data of a term.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetTerm(int termId)
         {
             try
@@ -241,15 +221,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// POST: api/Vocabularies/CreateTerm
-        /// <summary>
-        /// Creates a new term.
-        /// </summary>
+        /// <summary>Creates a new term.</summary>
         /// <param name="termDto">Data of a new term.</param>
         /// <returns>Id of the new created term.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
-
         public HttpResponseMessage CreateTerm(TermDto termDto)
         {
             try
@@ -280,15 +257,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// POST: api/Vocabularies/UpdateTerm
-        /// <summary>
-        /// Updates an existing term.
-        /// </summary>
+        /// <summary>Updates an existing term.</summary>
         /// <param name="termDto">Data of an existing term.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
-
         public HttpResponseMessage UpdateTerm(TermDto termDto)
         {
             try
@@ -320,15 +294,12 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         }
 
         /// POST: api/Vocabularies/DeleteTerm
-        /// <summary>
-        /// Removes an existing term.
-        /// </summary>
+        /// <summary>Removes an existing term.</summary>
         /// <param name="termId">Id of an existing term.</param>
-        /// <returns></returns>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Constants.MenuIdentifier, Permission = "Edit")]
-
         public HttpResponseMessage DeleteTerm(int termId)
         {
             try

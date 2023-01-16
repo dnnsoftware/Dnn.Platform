@@ -11,23 +11,16 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging
     /// Class:      MessageAttachment
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The MessageAttachment class describes the content attachments associated with a message.
-    /// </summary>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The MessageAttachment class describes the content attachments associated with a message.</summary>
     [Serializable]
     public class MessageAttachment : BaseEntityInfo, IHydratable
     {
         private int messageattachmentID = -1;
 
-        /// <summary>
-        /// Gets or sets messageAttachmentID - The primary key.
-        /// </summary>
+        /// <summary>Gets or sets messageAttachmentID - The primary key.</summary>
         [XmlAttribute]
         public int MessageAttachmentID
         {
@@ -42,21 +35,15 @@ namespace DotNetNuke.Services.Social.Messaging
             }
         }
 
-        /// <summary>
-        /// Gets or sets messageID of the message that contains this attachment.
-        /// </summary>
+        /// <summary>Gets or sets messageID of the message that contains this attachment.</summary>
         [XmlAttribute]
         public int MessageID { get; set; }
 
-        /// <summary>
-        /// Gets or sets the FileID of the attachment (what will be used against the Files table to provide the attachment).
-        /// </summary>
+        /// <summary>Gets or sets the FileID of the attachment (what will be used against the Files table to provide the attachment).</summary>
         [XmlAttribute]
         public int FileID { get; set; }
 
-        /// <summary>
-        /// Gets or sets iHydratable.KeyID.
-        /// </summary>
+        /// <summary>Gets or sets iHydratable.KeyID.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public int KeyID
@@ -72,9 +59,7 @@ namespace DotNetNuke.Services.Social.Messaging
             }
         }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

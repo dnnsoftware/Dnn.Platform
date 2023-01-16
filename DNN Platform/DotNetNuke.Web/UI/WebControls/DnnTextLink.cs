@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool localize = true;
         private HyperLink textHyperlinkControl;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnTextLink"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnTextLink"/> class.</summary>
         public DnnTextLink()
             : base("span")
         {

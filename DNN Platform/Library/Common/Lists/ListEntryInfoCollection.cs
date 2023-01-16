@@ -9,9 +9,7 @@ namespace DotNetNuke.Common.Lists
 
     using DotNetNuke.Instrumentation;
 
-    /// <summary>
-    /// Represents a collection of list entries.
-    /// </summary>
+    /// <summary>Represents a collection of list entries.</summary>
     [Serializable]
     [Obsolete("Obsoleted in 6.0.1.  Replaced by using generic collections of ListEntryInfo objects. Scheduled removal in v10.0.0.")]
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -20,9 +18,7 @@ namespace DotNetNuke.Common.Lists
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListEntryInfoCollection));
         private readonly Hashtable keyIndexLookup = new Hashtable();
 
-        /// <summary>
-        /// Gets the entry at the given index.
-        /// </summary>
+        /// <summary>Gets the entry at the given index.</summary>
         /// <param name="index">The index of the entry to get.</param>
         /// <returns>A single entry.</returns>
         public ListEntryInfo Item(int index)
@@ -71,9 +67,7 @@ namespace DotNetNuke.Common.Lists
             return this.Item(parentName);
         }
 
-        /// <summary>
-        /// Adds an entry to the collection.
-        /// </summary>
+        /// <summary>Adds an entry to the collection.</summary>
         /// <param name="key">The key of the entry.</param>
         /// <param name="value">The value of the entry.</param>
         public void Add(string key, ListEntryInfo value)
@@ -92,9 +86,7 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        /// <summary>
-        /// Clears the collection.
-        /// </summary>
+        /// <summary>Clears the collection.</summary>
         internal new void Clear()
         {
             this.keyIndexLookup.Clear();

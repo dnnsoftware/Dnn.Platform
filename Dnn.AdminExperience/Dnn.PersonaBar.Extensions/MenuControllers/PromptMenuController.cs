@@ -10,9 +10,7 @@ namespace Dnn.PersonaBar.Prompt.MenuControllers
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>
-    /// Controls the prompt menu.
-    /// </summary>
+    /// <summary>Controls the prompt menu.</summary>
     public class PromptMenuController : IMenuItemController
     {
         /// <inheritdoc/>

@@ -10,14 +10,10 @@ namespace DotNetNuke.Services.Scheduling
 
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// This class is inherited by any class that wants to run tasks in the scheduler.
-    /// </summary>
+    /// <summary>This class is inherited by any class that wants to run tasks in the scheduler.</summary>
     public abstract class SchedulerClient
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SchedulerClient"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SchedulerClient"/> class.</summary>
         public SchedulerClient()
         {
             this.SchedulerEventGUID = Null.NullString;

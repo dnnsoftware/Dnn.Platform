@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Sites.Services
 {
     using System;
@@ -18,11 +17,9 @@ namespace Dnn.PersonaBar.Sites.Services
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
 
     [MenuPermission(Scope = ServiceScope.Host)]
@@ -31,19 +28,18 @@ namespace Dnn.PersonaBar.Sites.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
         private readonly Components.SitesController controller = new Components.SitesController();
 
-        /// <summary>
-        /// Gets list of portals.
-        /// </summary>
-        /// <param name="portalGroupId"></param>
-        /// <param name="filter"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <summary>Gets list of portals.</summary>
+        /// <param name="portalGroupId">The portal group ID or <see cref="Null.NullInteger"/> for no group.</param>
+        /// <param name="filter">THe portal name filter.</param>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
         /// <returns>List of portals.</returns>
         /// <example>
-        /// GET /api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10.
+        /// <code>
+        /// GET <c>/api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10</c>
+        /// </code>
         /// </example>
         [HttpGet]
-
         public HttpResponseMessage GetPortals(int portalGroupId, string filter, int pageIndex, int pageSize)
         {
             try
@@ -86,15 +82,12 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// POST: api/Sites/CreatePortal
-        /// <summary>
-        /// Adds a portal.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Adds a portal.</summary>
+        /// <param name="request">The creation request.</param>
+        /// <returns>A response with portal info and error messages.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage CreatePortal(CreatePortalRequest request)
         {
             try
@@ -141,14 +134,11 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// POST: api/Sites/DeletePortal
-        /// <summary>
-        /// Deletes a portal.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns></returns>
+        /// <summary>Deletes a portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeletePortal(int portalId)
         {
             try
@@ -185,14 +175,11 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// POST: api/Sites/ExportPortalTemplate
-        /// <summary>
-        /// Exports portal template.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <summary>Exports portal template.</summary>
+        /// <param name="request">The export request.</param>
+        /// <returns>A response with a message and template info.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ExportPortalTemplate(ExportTemplateRequest request)
         {
             try
@@ -225,10 +212,8 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// GET: api/Sites/GetPortalLocales
-        /// <summary>
-        /// Gets list of portal locales.
-        /// </summary>
-        /// <param name="portalId"></param>
+        /// <summary>Gets list of portal locales.</summary>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>List of portal locales.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalLocales(int portalId)
@@ -258,14 +243,10 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// POST: api/Sites/DeleteExpiredPortals
-        /// <summary>
-        /// Deletes expired portals.
-        /// </summary>
-        /// <param></param>
-        /// <returns></returns>
+        /// <summary>Deletes expired portals.</summary>
+        /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteExpiredPortals()
         {
             try
@@ -281,13 +262,9 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// GET: api/Sites/GetPortalTemplates
-        /// <summary>
-        /// Gets list of portal templates.
-        /// </summary>
-        /// <param></param>
+        /// <summary>Gets list of portal templates.</summary>
         /// <returns>List of portal templates.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetPortalTemplates()
         {
             try
@@ -330,11 +307,8 @@ namespace Dnn.PersonaBar.Sites.Services
         }
 
         /// GET: api/Sites/RequiresQuestionAndAnswer
-        /// <summary>
-        /// Gets whether a Question/Answer is required for Password retrieval.
-        /// </summary>
-        /// <param></param>
-        /// <returns></returns>
+        /// <summary>Gets whether a Question/Answer is required for Password retrieval.</summary>
+        /// <returns>A response with a <c>RequiresQuestionAndAnswer</c> field.</returns>
         [HttpGet]
         public HttpResponseMessage RequiresQuestionAndAnswer()
         {

@@ -16,16 +16,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>
-    /// Module business controller to implement Dnn module interfaces.
-    /// </summary>
+    /// <summary>Module business controller to implement Dnn module interfaces.</summary>
     public class CoreMessagingBusinessController : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreMessagingBusinessController));
 
-        /// <summary>
-        /// Runs upgrade logic upon module upgrade.
-        /// </summary>
+        /// <summary>Runs upgrade logic upon module upgrade.</summary>
         /// <param name="version">The version we are upgrading to.</param>
         /// <returns>"Success" or "Failed".</returns>
         public string UpgradeModule(string version)

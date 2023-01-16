@@ -4,24 +4,16 @@
 
 namespace DNNConnect.CKEditorProvider.Constants
 {
-    /// <summary>
-    /// The Enter Modes.
-    /// </summary>
+    /// <summary>The Enter Modes.</summary>
     public enum EnterModus
     {
-        /// <summary>
-        /// EnterMode p
-        /// </summary>
+        /// <summary>EnterMode p</summary>
         P = 0,
 
-        /// <summary>
-        /// EnterMode br
-        /// </summary>
+        /// <summary>EnterMode br</summary>
         BR = 1,
 
-        /// <summary>
-        /// EnterMode div
-        /// </summary>
+        /// <summary>EnterMode div</summary>
         DIV = 2,
     }
 }

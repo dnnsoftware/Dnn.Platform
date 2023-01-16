@@ -13,9 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private DnnTimeZoneComboBox timeZones;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnTimeZoneEditControl"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnTimeZoneEditControl"/> class.</summary>
         public DnnTimeZoneEditControl()
         {
         }

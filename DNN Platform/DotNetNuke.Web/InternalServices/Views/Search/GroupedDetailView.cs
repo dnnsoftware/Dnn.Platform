@@ -5,32 +5,22 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 {
     using System.Collections.Generic;
 
-    /// <summary>
-    /// DetailedView grouped by Url (TabId).
-    /// </summary>
+    /// <summary>DetailedView grouped by Url (TabId).</summary>
     public class GroupedDetailView
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GroupedDetailView"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GroupedDetailView"/> class.</summary>
         public GroupedDetailView()
         {
             this.Results = new List<DetailedView>();
         }
 
-        /// <summary>
-        /// Gets or sets document's Url.
-        /// </summary>
+        /// <summary>Gets or sets document's Url.</summary>
         public string DocumentUrl { get; set; }
 
-        /// <summary>
-        /// Gets or sets document's Title.
-        /// </summary>
+        /// <summary>Gets or sets document's Title.</summary>
         public string Title { get; set; }
 
-        /// <summary>
-        /// Gets or sets results of the Search.
-        /// </summary>
+        /// <summary>Gets or sets results of the Search.</summary>
         public List<DetailedView> Results { get; set; }
     }
 }

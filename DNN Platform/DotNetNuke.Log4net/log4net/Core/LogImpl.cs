@@ -26,9 +26,7 @@ using log4net.Util;
 
 namespace log4net.Core
 {
-    /// <summary>
-    /// Implementation of <see cref="ILog"/> wrapper interface.
-    /// </summary>
+    /// <summary>Implementation of <see cref="ILog"/> wrapper interface.</summary>
     /// <remarks>
     /// <para>
     /// This implementation of the <see cref="ILog"/> interface
@@ -99,9 +97,7 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class LogImpl : LoggerWrapperImpl, ILog
     {
-        /// <summary>
-        /// Construct a new wrapper for the specified logger.
-        /// </summary>
+        /// <summary>Construct a new wrapper for the specified logger.</summary>
         /// <param name="logger">The logger to wrap.</param>
         /// <remarks>
         /// <para>
@@ -117,9 +113,7 @@ namespace log4net.Core
             this.ReloadLevels(logger.Repository);
         }
 
-        /// <summary>
-        /// Virtual method called when the configuration of the repository changes
-        /// </summary>
+        /// <summary>Virtual method called when the configuration of the repository changes</summary>
         /// <param name="repository">the repository holding the levels</param>
         /// <remarks>
         /// <para>
@@ -137,9 +131,7 @@ namespace log4net.Core
             this.m_levelFatal = levelMap.LookupWithDefault(Level.Fatal);
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>DEBUG</c> level.
-        /// </summary>
+        /// <summary>Logs a message object with the <c>DEBUG</c> level.</summary>
         /// <param name="message">The message object to log.</param>
         /// <remarks>
         /// <para>
@@ -165,9 +157,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelDebug, message, null);
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>DEBUG</c> level
-        /// </summary>
+        /// <summary>Logs a message object with the <c>DEBUG</c> level</summary>
         /// <param name="message">The message object to log.</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
@@ -186,9 +176,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelDebug, message, exception);
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>DEBUG</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
         /// <remarks>
@@ -216,9 +204,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>DEBUG</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <remarks>
@@ -246,9 +232,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>DEBUG</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -277,9 +261,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>DEBUG</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -309,9 +291,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>DEBUG</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>DEBUG</c> level.</summary>
         /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
@@ -335,9 +315,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a message object with the <c>INFO</c> level.</summary>
         /// <param name="message">The message object to log.</param>
         /// <remarks>
         /// <para>
@@ -363,9 +341,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelInfo, message, null);
         }
   
-        /// <summary>
-        /// Logs a message object with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a message object with the <c>INFO</c> level.</summary>
         /// <param name="message">The message object to log.</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
@@ -384,9 +360,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelInfo, message, exception);
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>INFO</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
         /// <remarks>
@@ -414,9 +388,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>INFO</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <remarks>
@@ -444,9 +416,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>INFO</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -475,9 +445,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>INFO</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -507,9 +475,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>INFO</c> level.</summary>
         /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
@@ -533,9 +499,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Logs a message object with the <c>WARN</c> level.</summary>
         /// <param name="message">the message object to log</param>
         /// <remarks>
         /// <para>
@@ -561,9 +525,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelWarn, message, null);
         }
   
-        /// <summary>
-        /// Logs a message object with the <c>WARN</c> level
-        /// </summary>
+        /// <summary>Logs a message object with the <c>WARN</c> level</summary>
         /// <param name="message">The message object to log.</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
@@ -582,9 +544,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelWarn, message, exception);
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>WARN</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
         /// <remarks>
@@ -612,9 +572,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>WARN</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <remarks>
@@ -642,9 +600,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>WARN</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -673,9 +629,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>WARN</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -705,9 +659,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>WARN</c> level.</summary>
         /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
@@ -731,9 +683,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Logs a message object with the <c>ERROR</c> level.</summary>
         /// <param name="message">The message object to log.</param>
         /// <remarks>
         /// <para>
@@ -759,9 +709,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelError, message, null);
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>ERROR</c> level
-        /// </summary>
+        /// <summary>Logs a message object with the <c>ERROR</c> level</summary>
         /// <param name="message">The message object to log.</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
@@ -780,9 +728,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelError, message, exception);
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>ERROR</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
         /// <remarks>
@@ -810,9 +756,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>ERROR</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <remarks>
@@ -840,9 +784,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>ERROR</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -871,9 +813,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>ERROR</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -903,9 +843,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>ERROR</c> level.</summary>
         /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
@@ -929,9 +867,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a message object with the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Logs a message object with the <c>FATAL</c> level.</summary>
         /// <param name="message">The message object to log.</param>
         /// <remarks>
         /// <para>
@@ -957,9 +893,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelFatal, message, null);
         }
   
-        /// <summary>
-        /// Logs a message object with the <c>FATAL</c> level
-        /// </summary>
+        /// <summary>Logs a message object with the <c>FATAL</c> level</summary>
         /// <param name="message">The message object to log.</param>
         /// <param name="exception">The exception to log, including its stack trace.</param>
         /// <remarks>
@@ -978,9 +912,7 @@ namespace log4net.Core
             this.Logger.Log(ThisDeclaringType, this.m_levelFatal, message, exception);
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>FATAL</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
         /// <remarks>
@@ -1008,9 +940,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>FATAL</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <remarks>
@@ -1038,9 +968,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>FATAL</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -1069,9 +997,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>FATAL</c> level.</summary>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="arg0">An Object to format</param>
         /// <param name="arg1">An Object to format</param>
@@ -1101,9 +1027,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// Logs a formatted message string with the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Logs a formatted message string with the <c>FATAL</c> level.</summary>
         /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
         /// <param name="format">A String containing zero or more format items</param>
         /// <param name="args">An Object array containing zero or more objects to format</param>
@@ -1175,9 +1099,7 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelDebug); }
         }
   
-        /// <summary>
-        /// Checks if this logger is enabled for the <c>INFO</c> level.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for the <c>INFO</c> level.</summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>INFO</c> events,
         /// <c>false</c> otherwise.
@@ -1194,9 +1116,7 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelInfo); }
         }
 
-        /// <summary>
-        /// Checks if this logger is enabled for the <c>WARN</c> level.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for the <c>WARN</c> level.</summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>WARN</c> events,
         /// <c>false</c> otherwise.
@@ -1213,9 +1133,7 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelWarn); }
         }
 
-        /// <summary>
-        /// Checks if this logger is enabled for the <c>ERROR</c> level.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for the <c>ERROR</c> level.</summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>ERROR</c> events,
         /// <c>false</c> otherwise.
@@ -1231,9 +1149,7 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelError); }
         }
 
-        /// <summary>
-        /// Checks if this logger is enabled for the <c>FATAL</c> level.
-        /// </summary>
+        /// <summary>Checks if this logger is enabled for the <c>FATAL</c> level.</summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>FATAL</c> events,
         /// <c>false</c> otherwise.
@@ -1249,9 +1165,7 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelFatal); }
         }
 
-        /// <summary>
-        /// Event handler for the <see cref="log4net.Repository.ILoggerRepository.ConfigurationChanged"/> event
-        /// </summary>
+        /// <summary>Event handler for the <see cref="log4net.Repository.ILoggerRepository.ConfigurationChanged"/> event</summary>
         /// <param name="sender">the repository</param>
         /// <param name="e">Empty</param>
         private void LoggerRepositoryConfigurationChanged(object sender, EventArgs e)
@@ -1263,9 +1177,7 @@ namespace log4net.Core
             }
         }
 
-        /// <summary>
-        /// The fully qualified name of this declaring type not the type of any subclass.
-        /// </summary>
+        /// <summary>The fully qualified name of this declaring type not the type of any subclass.</summary>
         private static readonly Type ThisDeclaringType = typeof(LogImpl);
 
         private Level m_levelDebug;

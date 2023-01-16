@@ -50,9 +50,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Creates a new folder using the provided folder path.
-        /// </summary>
+        /// <summary>Creates a new folder using the provided folder path.</summary>
         /// <param name="folderMapping">The folder mapping to use.</param>
         /// <param name="folderPath">The path of the new folder.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folderPath or folderMapping are null.</exception>
@@ -63,9 +61,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.AddFolder(folderMapping, folderPath, folderPath);
         }
 
-        /// <summary>
-        /// Creates a new folder using the provided folder path and mapping.
-        /// </summary>
+        /// <summary>Creates a new folder using the provided folder path and mapping.</summary>
         /// <param name="folderMapping">The folder mapping to use.</param>
         /// <param name="folderPath">The path of the new folder.</param>
         /// <param name="mappedPath">The mapped path of the new folder.</param>
@@ -161,9 +157,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.AddFolder(folderMapping, folderPath);
         }
 
-        /// <summary>
-        /// Deletes the specified folder.
-        /// </summary>
+        /// <summary>Deletes the specified folder.</summary>
         /// <param name="folder">The folder to delete.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
@@ -172,18 +166,14 @@ namespace DotNetNuke.Services.FileSystem
             this.DeleteFolderInternal(folder, false);
         }
 
-        /// <summary>
-        /// Removes the database reference to a folder on disk.
-        /// </summary>
+        /// <summary>Removes the database reference to a folder on disk.</summary>
         /// <param name="folder">The folder to unlink.</param>
         public virtual void UnlinkFolder(IFolderInfo folder)
         {
             this.DeleteFolderRecursive(folder, new Collection<IFolderInfo>(), true, true);
         }
 
-        /// <summary>
-        /// Deletes the specified folder.
-        /// </summary>
+        /// <summary>Deletes the specified folder.</summary>
         /// <param name="folderId">The folder identifier.</param>
         public virtual void DeleteFolder(int folderId)
         {
@@ -192,9 +182,7 @@ namespace DotNetNuke.Services.FileSystem
             this.DeleteFolder(folder);
         }
 
-        /// <summary>
-        /// Deletes the specified folder and all its content.
-        /// </summary>
+        /// <summary>Deletes the specified folder and all its content.</summary>
         /// <param name="folder">The folder to delete.</param>
         /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action.</param>
         public void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
@@ -202,9 +190,7 @@ namespace DotNetNuke.Services.FileSystem
             this.DeleteFolderRecursive(folder, notDeletedSubfolders, true, this.GetOnlyUnmap(folder));
         }
 
-        /// <summary>
-        /// Checks the existence of the specified folder in the specified portal.
-        /// </summary>
+        /// <summary>Checks the existence of the specified folder in the specified portal.</summary>
         /// <param name="portalId">The portal where to check the existence of the folder.</param>
         /// <param name="folderPath">The path of folder to check the existence of.</param>
         /// <returns>A bool value indicating whether the folder exists or not in the specified portal.</returns>
@@ -215,9 +201,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolder(portalId, folderPath) != null;
         }
 
-        /// <summary>
-        /// Gets the files contained in the specified folder.
-        /// </summary>
+        /// <summary>Gets the files contained in the specified folder.</summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
         /// <returns>The list of files contained in the specified folder.</returns>
         public virtual IEnumerable<IFileInfo> GetFiles(IFolderInfo folder)
@@ -225,9 +209,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFiles(folder, false);
         }
 
-        /// <summary>
-        /// Gets the files contained in the specified folder.
-        /// </summary>
+        /// <summary>Gets the files contained in the specified folder.</summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
         /// <param name="recursive">Whether or not to include all the subfolders.</param>
         /// <returns>The list of files contained in the specified folder.</returns>
@@ -236,9 +218,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFiles(folder, recursive, false);
         }
 
-        /// <summary>
-        /// Gets the files contained in the specified folder.
-        /// </summary>
+        /// <summary>Gets the files contained in the specified folder.</summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
         /// <param name="recursive">Whether or not to include all the subfolders.</param>
         /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
@@ -250,9 +230,7 @@ namespace DotNetNuke.Services.FileSystem
             return CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, retrieveUnpublishedFiles, recursive));
         }
 
-        /// <summary>
-        /// Gets the list of Standard folders the specified user has the provided permissions.
-        /// </summary>
+        /// <summary>Gets the list of Standard folders the specified user has the provided permissions.</summary>
         /// <param name="user">The user info.</param>
         /// <param name="permissions">The permissions the folders have to met.</param>
         /// <returns>The list of Standard folders the specified user has the provided permissions.</returns>
@@ -291,9 +269,7 @@ namespace DotNetNuke.Services.FileSystem
             return userFolders;
         }
 
-        /// <summary>
-        /// Gets a folder entity by providing a folder identifier.
-        /// </summary>
+        /// <summary>Gets a folder entity by providing a folder identifier.</summary>
         /// <param name="folderId">The identifier of the folder.</param>
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
         public virtual IFolderInfo GetFolder(int folderId)
@@ -310,9 +286,7 @@ namespace DotNetNuke.Services.FileSystem
             return folder ?? CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId));
         }
 
-        /// <summary>
-        /// Gets a folder entity by providing a portal identifier and folder path.
-        /// </summary>
+        /// <summary>Gets a folder entity by providing a portal identifier and folder path.</summary>
         /// <param name="portalId">The portal where the folder exists.</param>
         /// <param name="folderPath">The path of the folder.</param>
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
@@ -326,9 +300,7 @@ namespace DotNetNuke.Services.FileSystem
             return folders.SingleOrDefault(f => f.FolderPath == folderPath) ?? CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(portalId, folderPath));
         }
 
-        /// <summary>
-        /// Gets a folder entity by providing its unique id.
-        /// </summary>
+        /// <summary>Gets a folder entity by providing its unique id.</summary>
         /// <param name="uniqueId">The unique id of the folder.</param>
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
         public virtual IFolderInfo GetFolder(Guid uniqueId)
@@ -336,9 +308,7 @@ namespace DotNetNuke.Services.FileSystem
             return CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolderByUniqueID(uniqueId));
         }
 
-        /// <summary>
-        /// Gets the list of subfolders for the specified folder.
-        /// </summary>
+        /// <summary>Gets the list of subfolders for the specified folder.</summary>
         /// <param name="parentFolder">The folder to get the list of subfolders.</param>
         /// <returns>The list of subfolders for the specified folder.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when parentFolder is null.</exception>
@@ -347,9 +317,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolders(parentFolder, false);
         }
 
-        /// <summary>
-        /// Gets the sorted list of folders of the provided portal.
-        /// </summary>
+        /// <summary>Gets the sorted list of folders of the provided portal.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="useCache">True = Read from Cache, False = Read from DB. </param>
         /// <returns>The sorted list of folders of the provided portal.</returns>
@@ -363,9 +331,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolders(portalId);
         }
 
-        /// <summary>
-        /// Gets the sorted list of folders of the provided portal.
-        /// </summary>
+        /// <summary>Gets the sorted list of folders of the provided portal.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <returns>The sorted list of folders of the provided portal.</returns>
         public virtual IEnumerable<IFolderInfo> GetFolders(int portalId)
@@ -378,9 +344,7 @@ namespace DotNetNuke.Services.FileSystem
             return folders;
         }
 
-        /// <summary>
-        /// Gets the sorted list of folders that match the provided permissions in the specified portal.
-        /// </summary>
+        /// <summary>Gets the sorted list of folders that match the provided permissions in the specified portal.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="permissions">The permissions to match.</param>
         /// <param name="userId">The user identifier to be used to check permissions.</param>
@@ -396,9 +360,7 @@ namespace DotNetNuke.Services.FileSystem
             return folders;
         }
 
-        /// <summary>
-        /// Gets the list of folders the specified user has read permissions.
-        /// </summary>
+        /// <summary>Gets the list of folders the specified user has read permissions.</summary>
         /// <param name="user">The user info.</param>
         /// <returns>The list of folders the specified user has read permissions.</returns>
         public virtual IEnumerable<IFolderInfo> GetFolders(UserInfo user)
@@ -406,9 +368,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolders(user, "READ");
         }
 
-        /// <summary>
-        /// Gets the list of folders the specified user has the provided permissions.
-        /// </summary>
+        /// <summary>Gets the list of folders the specified user has the provided permissions.</summary>
         /// <param name="user">The user info.</param>
         /// <param name="permissions">The permissions the folders have to met.</param>
         /// <returns>The list of folders the specified user has the provided permissions.</returns>
@@ -442,9 +402,7 @@ namespace DotNetNuke.Services.FileSystem
             return userFolders;
         }
 
-        /// <summary>
-        /// Gets the folder that belongs to a specific user.
-        /// </summary>
+        /// <summary>Gets the folder that belongs to a specific user.</summary>
         /// <param name="userInfo">The user to get the folder for.</param>
         /// <returns>The information about the the user folder, <see cref="IFolderInfo"></see>.</returns>
         public virtual IFolderInfo GetUserFolder(UserInfo userInfo)
@@ -456,9 +414,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolder(portalId, userFolderPath) ?? this.AddUserFolder(userInfo);
         }
 
-        /// <summary>
-        /// Moves a folder to a new location.
-        /// </summary>
+        /// <summary>Moves a folder to a new location.</summary>
         /// <param name="folder">The folder to move.</param>
         /// <param name="destinationFolder">Where to move the new folder.</param>
         /// <returns>The information about the moved folder, <see cref="IFolderInfo"></see>.</returns>
@@ -531,9 +487,7 @@ namespace DotNetNuke.Services.FileSystem
             return movedFolder;
         }
 
-        /// <summary>
-        /// Renames the specified folder by setting the new provided folder name.
-        /// </summary>
+        /// <summary>Renames the specified folder by setting the new provided folder name.</summary>
         /// <param name="folder">The folder to rename.</param>
         /// <param name="newFolderName">The new name to apply to the folder.</param>
         /// <exception cref="System.ArgumentException">Thrown when newFolderName is null or empty.</exception>
@@ -576,9 +530,7 @@ namespace DotNetNuke.Services.FileSystem
             this.OnFolderRenamed(folder, this.GetCurrentUserId(), currentFolderName);
         }
 
-        /// <summary>
-        /// Search the files contained in the specified folder, for a matching pattern.
-        /// </summary>
+        /// <summary>Search the files contained in the specified folder, for a matching pattern.</summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
         /// <param name="pattern">The patter to search for.</param>
         /// <param name="recursive">Shoud the search be recursive.</param>
@@ -595,9 +547,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.SearchFiles(folder, WildcardToRegex(pattern), recursive);
         }
 
-        /// <summary>
-        /// Synchronizes the entire folder tree for the specified portal.
-        /// </summary>
+        /// <summary>Synchronizes the entire folder tree for the specified portal.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <returns>The number of folder collisions.</returns>
         public virtual int Synchronize(int portalId)
@@ -609,9 +559,7 @@ namespace DotNetNuke.Services.FileSystem
             return folderCollisions;
         }
 
-        /// <summary>
-        /// Syncrhonizes the specified folder, its files and its subfolders.
-        /// </summary>
+        /// <summary>Syncrhonizes the specified folder, its files and its subfolders.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="relativePath">The relative path of the folder.</param>
         /// <returns>The number of folder collisions.</returns>
@@ -620,9 +568,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.Synchronize(portalId, relativePath, true, true);
         }
 
-        /// <summary>
-        /// Syncrhonizes the specified folder, its files and, optionally, its subfolders.
-        /// </summary>
+        /// <summary>Syncrhonizes the specified folder, its files and, optionally, its subfolders.</summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="relativePath">The relative path of the folder.</param>
         /// <param name="isRecursive">Indicates if the synchronization has to be recursive.</param>
@@ -690,9 +636,7 @@ namespace DotNetNuke.Services.FileSystem
             return 0;
         }
 
-        /// <summary>
-        /// Updates metadata of the specified folder.
-        /// </summary>
+        /// <summary>Updates metadata of the specified folder.</summary>
         /// <param name="folder">The folder to update.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
         /// <returns>The information about the updated folder, <see cref="IFolderInfo"></see>.</returns>
@@ -707,9 +651,7 @@ namespace DotNetNuke.Services.FileSystem
             return updatedFolder;
         }
 
-        /// <summary>
-        /// Adds read permissions for all users to the specified folder.
-        /// </summary>
+        /// <summary>Adds read permissions for all users to the specified folder.</summary>
         /// <param name="folder">The folder to add the permission to.</param>
         /// <param name="permission">Used as base class for FolderPermissionInfo when there is no read permission already defined.</param>
         public virtual void AddAllUserReadPermission(IFolderInfo folder, PermissionInfo permission)
@@ -739,9 +681,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// Sets folder permissions to the given folder by copying parent folder permissions.
-        /// </summary>
+        /// <summary>Sets folder permissions to the given folder by copying parent folder permissions.</summary>
         /// <param name="folder">The folder to copy permissions to.</param>
         public virtual void CopyParentFolderPermissions(IFolderInfo folder)
         {
@@ -770,9 +710,7 @@ namespace DotNetNuke.Services.FileSystem
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
-        /// <summary>
-        /// Sets specific folder permissions for the given role to the given folder.
-        /// </summary>
+        /// <summary>Sets specific folder permissions for the given role to the given folder.</summary>
         /// <param name="folder">The folder to set permission to.</param>
         /// <param name="permissionId">The id of the permission to assign.</param>
         /// <param name="roleId">The role to assign the permission to.</param>
@@ -781,9 +719,7 @@ namespace DotNetNuke.Services.FileSystem
             this.SetFolderPermission(folder, permissionId, roleId, Null.NullInteger);
         }
 
-        /// <summary>
-        /// Sets specific folder permissions for the given role/user to the given folder.
-        /// </summary>
+        /// <summary>Sets specific folder permissions for the given role/user to the given folder.</summary>
         /// <param name="folder">The folder to set permission to.</param>
         /// <param name="permissionId">The id of the permission to assign.</param>
         /// <param name="roleId">The role to assign the permission to.</param>
@@ -809,9 +745,7 @@ namespace DotNetNuke.Services.FileSystem
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
-        /// <summary>
-        /// Sets folder permissions for administrator role to the given folder.
-        /// </summary>
+        /// <summary>Sets folder permissions for administrator role to the given folder.</summary>
         /// <param name="folder">The folder to set permission to.</param>
         /// <param name="administratorRoleId">The administrator role id to assign the permission to.</param>
         public virtual void SetFolderPermissions(IFolderInfo folder, int administratorRoleId)
@@ -832,9 +766,7 @@ namespace DotNetNuke.Services.FileSystem
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
-        /// <summary>
-        /// Moves the specified folder and its contents to a new location.
-        /// </summary>
+        /// <summary>Moves the specified folder and its contents to a new location.</summary>
         /// <param name="folder">The folder to move.</param>
         /// <param name="newFolderPath">The new folder path.</param>
         /// <returns>The moved folder.</returns>
@@ -857,9 +789,7 @@ namespace DotNetNuke.Services.FileSystem
             return this.MoveFolder(folder, parentFolder);
         }
 
-        /// <summary>
-        /// Checks if a given folder path is valid.
-        /// </summary>
+        /// <summary>Checks if a given folder path is valid.</summary>
         /// <param name="folderPath">The folder path.</param>
         /// <returns>A value indicating whether the folder path is valid.</returns>
         internal virtual bool IsValidFolderPath(string folderPath)
@@ -868,9 +798,7 @@ namespace DotNetNuke.Services.FileSystem
             return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".");
         }
 
-        /// <summary>
-        /// Adds a log entry.
-        /// </summary>
+        /// <summary>Adds a log entry.</summary>
         /// <param name="folder">The folder to log about.</param>
         /// <param name="eventLogType">The type of the log entry.</param>
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
@@ -878,9 +806,7 @@ namespace DotNetNuke.Services.FileSystem
             EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
         }
 
-        /// <summary>
-        /// Adds a log entry.
-        /// </summary>
+        /// <summary>Adds a log entry.</summary>
         /// <param name="propertyName">The name of the property.</param>
         /// <param name="propertyValue">The value of the property.</param>
         /// <param name="eventLogType">The type of log entry.</param>
@@ -1038,9 +964,7 @@ namespace DotNetNuke.Services.FileSystem
             DataCache.ClearFolderCache(portalId);
         }
 
-        /// <summary>
-        /// Creates a folder in the database.
-        /// </summary>
+        /// <summary>Creates a folder in the database.</summary>
         /// <param name="portalId">The site (portal) ID.</param>
         /// <param name="folderPath">The folder path to create.</param>
         /// <param name="folderMappingId">The folder mapping id, <see cref="FolderMappings"/>.</param>
@@ -2364,50 +2288,32 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// This class and its members are reserved for internal use and are not intended to be used in your code.
-        /// </summary>
+        /// <summary>This class and its members are reserved for internal use and are not intended to be used in your code.</summary>
         internal class MergedTreeItem
         {
-            /// <summary>
-            /// Gets or sets a value indicating whether the item exists in the file system.
-            /// </summary>
+            /// <summary>Gets or sets a value indicating whether the item exists in the file system.</summary>
             public bool ExistsInFileSystem { get; set; }
 
-            /// <summary>
-            /// Gets or sets a value indicating whether the item exists in the database.
-            /// </summary>
+            /// <summary>Gets or sets a value indicating whether the item exists in the database.</summary>
             public bool ExistsInDatabase { get; set; }
 
-            /// <summary>
-            /// Gets or sets a value indicating whether the item exists in the folder mappings.
-            /// </summary>
+            /// <summary>Gets or sets a value indicating whether the item exists in the folder mappings.</summary>
             public bool ExistsInFolderMapping { get; set; }
 
-            /// <summary>
-            /// Gets or sets the folder id.
-            /// </summary>
+            /// <summary>Gets or sets the folder id.</summary>
             public int FolderID { get; set; }
 
-            /// <summary>
-            /// Gets or sets the folder path.
-            /// </summary>
+            /// <summary>Gets or sets the folder path.</summary>
             public int FolderMappingID { get; set; }
 
-            /// <summary>
-            /// Gets or sets the folder path.
-            /// </summary>
+            /// <summary>Gets or sets the folder path.</summary>
             public string FolderPath { get; set; }
 
-            /// <summary>
-            /// Gets or sets the mapped path.
-            /// </summary>
+            /// <summary>Gets or sets the mapped path.</summary>
             public string MappedPath { get; set; }
         }
 
-        /// <summary>
-        /// This class and its members are reserved for internal use and are not intended to be used in your code.
-        /// </summary>
+        /// <summary>This class and its members are reserved for internal use and are not intended to be used in your code.</summary>
         internal class IgnoreCaseStringComparer : IComparer<string>
         {
             /// <inheritdoc/>
@@ -2417,9 +2323,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>
-        /// This class and its members are reserved for internal use and are not intended to be used in your code.
-        /// </summary>
+        /// <summary>This class and its members are reserved for internal use and are not intended to be used in your code.</summary>
         internal class MoveFoldersInfo
         {
             /// <summary>Initializes a new instance of the <see cref="MoveFoldersInfo"/> class.</summary>

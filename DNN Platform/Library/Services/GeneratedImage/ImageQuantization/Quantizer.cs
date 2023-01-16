@@ -9,14 +9,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Drawing.Imaging;
     using System.Runtime.InteropServices;
 
-    /// <summary>
-    /// Abstarct class for Quantizers.
-    /// </summary>
+    /// <summary>Abstarct class for Quantizers.</summary>
     public abstract class Quantizer
     {
-        /// <summary>
-        /// Flag used to indicate whether a single pass or two passes are needed for quantization.
-        /// </summary>
+        /// <summary>Flag used to indicate whether a single pass or two passes are needed for quantization.</summary>
         private bool singlePass;
 
         private int pixelSize;
@@ -37,9 +33,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             this.pixelSize = Marshal.SizeOf(typeof(Color32));
         }
 
-        /// <summary>
-        /// Quantize an image and return the resulting output bitmap.
-        /// </summary>
+        /// <summary>Quantize an image and return the resulting output bitmap.</summary>
         /// <param name="source">The image to quantize.</param>
         /// <returns>A quantized version of the image.</returns>
         public Bitmap Quantize(Image source)
@@ -100,9 +94,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             return output;
         }
 
-        /// <summary>
-        /// Execute the first pass through the pixels in the image.
-        /// </summary>
+        /// <summary>Execute the first pass through the pixels in the image.</summary>
         /// <param name="sourceData">The source data.</param>
         /// <param name="width">The width in pixels of the image.</param>
         /// <param name="height">The height in pixels of the image.</param>
@@ -130,9 +122,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
         }
 
-        /// <summary>
-        /// Execute a second pass through the bitmap.
-        /// </summary>
+        /// <summary>Execute a second pass through the bitmap.</summary>
         /// <param name="sourceData">The source bitmap, locked into memory.</param>
         /// <param name="output">The output bitmap.</param>
         /// <param name="width">The width in pixels of the image.</param>
@@ -207,9 +197,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
         }
 
-        /// <summary>
-        /// Override this to process the pixel in the first pass of the algorithm.
-        /// </summary>
+        /// <summary>Override this to process the pixel in the first pass of the algorithm.</summary>
         /// <param name="pixel">The pixel to quantize.</param>
         /// <remarks>
         /// This function need only be overridden if your quantize algorithm needs two passes,
@@ -219,23 +207,17 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         {
         }
 
-        /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm.
-        /// </summary>
+        /// <summary>Override this to process the pixel in the second pass of the algorithm.</summary>
         /// <param name="pixel">The pixel to quantize.</param>
         /// <returns>The quantized value.</returns>
         protected abstract byte QuantizePixel(Color32 pixel);
 
-        /// <summary>
-        /// Retrieve the palette for the quantized image.
-        /// </summary>
+        /// <summary>Retrieve the palette for the quantized image.</summary>
         /// <param name="original">Any old palette, this is overrwritten.</param>
         /// <returns>The new color palette.</returns>
         protected abstract ColorPalette GetPalette(ColorPalette original);
 
-        /// <summary>
-        /// Struct that defines a 32 bpp colour.
-        /// </summary>
+        /// <summary>Struct that defines a 32 bpp colour.</summary>
         /// <remarks>
         /// This struct is used to read data from a 32 bits per pixel image
         /// in memory, and is ordered in this manner as this is the way that
@@ -244,48 +226,34 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         [StructLayout(LayoutKind.Explicit)]
         public struct Color32
         {
-            /// <summary>
-            /// Holds the blue component of the colour.
-            /// </summary>
+            /// <summary>Holds the blue component of the colour.</summary>
             [FieldOffset(0)]
             public byte Blue;
 
-            /// <summary>
-            /// Holds the green component of the colour.
-            /// </summary>
+            /// <summary>Holds the green component of the colour.</summary>
             [FieldOffset(1)]
             public byte Green;
 
-            /// <summary>
-            /// Holds the red component of the colour.
-            /// </summary>
+            /// <summary>Holds the red component of the colour.</summary>
             [FieldOffset(2)]
             public byte Red;
 
-            /// <summary>
-            /// Holds the alpha component of the colour.
-            /// </summary>
+            /// <summary>Holds the alpha component of the colour.</summary>
             [FieldOffset(3)]
             public byte Alpha;
 
-            /// <summary>
-            /// Permits the color32 to be treated as an int32.
-            /// </summary>
+            /// <summary>Permits the color32 to be treated as an int32.</summary>
             [FieldOffset(0)]
             public int ARGB;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="Color32"/> struct.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="Color32"/> struct.</summary>
             /// <param name="pSourcePixel"></param>
             public Color32(IntPtr pSourcePixel)
             {
                 this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
             }
 
-            /// <summary>
-            /// Gets return the color for this Color32 object.
-            /// </summary>
+            /// <summary>Gets return the color for this Color32 object.</summary>
             public Color Color
             {
                 get { return Color.FromArgb(this.Alpha, this.Red, this.Green, this.Blue); }

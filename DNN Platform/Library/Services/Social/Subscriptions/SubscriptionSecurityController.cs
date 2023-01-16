@@ -15,9 +15,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
     using DotNetNuke.Security;
     using DotNetNuke.Services.Social.Subscriptions.Entities;
 
-    /// <summary>
-    /// This controller provides permission info about the User Subscription.
-    /// </summary>
+    /// <summary>This controller provides permission info about the User Subscription.</summary>
     public class SubscriptionSecurityController : ServiceLocator<ISubscriptionSecurityController, SubscriptionSecurityController>, ISubscriptionSecurityController
     {
         /// <inheritdoc/>

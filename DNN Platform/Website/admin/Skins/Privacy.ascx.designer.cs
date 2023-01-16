@@ -15,9 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls {
     
     
     public partial class Privacy {
-        /// <summary>
-        /// hypPrivacy control.
-        /// </summary>
+        /// <summary>hypPrivacy control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

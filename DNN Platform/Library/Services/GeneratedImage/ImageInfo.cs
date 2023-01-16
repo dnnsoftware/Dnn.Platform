@@ -8,23 +8,17 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Drawing;
     using System.Net;
 
-    /// <summary>
-    /// Image info class.
-    /// </summary>
+    /// <summary>Image info class.</summary>
     public class ImageInfo
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageInfo"/> class.</summary>
         /// <param name="statusCode"></param>
         public ImageInfo(HttpStatusCode statusCode)
         {
             this.HttpStatusCode = statusCode;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageInfo"/> class.</summary>
         /// <param name="image"></param>
         public ImageInfo(Image image)
         {
@@ -36,9 +30,7 @@ namespace DotNetNuke.Services.GeneratedImage
             this.Image = image;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageInfo"/> class.</summary>
         /// <param name="imageBuffer"></param>
         public ImageInfo(byte[] imageBuffer)
         {
@@ -50,19 +42,13 @@ namespace DotNetNuke.Services.GeneratedImage
             this.ImageByteBuffer = imageBuffer;
         }
 
-        /// <summary>
-        /// Gets image.
-        /// </summary>
+        /// <summary>Gets image.</summary>
         public Image Image { get; private set; }
 
-        /// <summary>
-        /// Gets image byte buffer.
-        /// </summary>
+        /// <summary>Gets image byte buffer.</summary>
         public byte[] ImageByteBuffer { get; private set; }
 
-        /// <summary>
-        /// Gets http status code.
-        /// </summary>
+        /// <summary>Gets http status code.</summary>
         public HttpStatusCode? HttpStatusCode { get; private set; }
 
         public bool IsEmptyImage { get; set; } = false;

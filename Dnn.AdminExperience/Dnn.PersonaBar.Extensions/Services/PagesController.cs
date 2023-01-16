@@ -40,9 +40,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
     using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
-    /// <summary>
-    /// API controller for the Pages persona bar module.
-    /// </summary>
+    /// <summary>API controller for the Pages persona bar module.</summary>
     [MenuPermission(MenuName = "Dnn.Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
@@ -60,9 +58,7 @@ namespace Dnn.PersonaBar.Pages.Services
         private readonly ILocaleController localeController;
         private readonly ISecurityService securityService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PagesController"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PagesController"/> class.</summary>
         /// <param name="navigationManager">the navigation manager to provide navigation features.</param>
         public PagesController(INavigationManager navigationManager)
         {
@@ -79,15 +75,11 @@ namespace Dnn.PersonaBar.Pages.Services
             this.securityService = SecurityService.Instance;
         }
 
-        /// <summary>
-        /// Gets the Navigation Manager that provides navigation features.
-        /// </summary>
+        /// <summary>Gets the Navigation Manager that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
 
         /// GET: api/Pages/GetPageDetails
-        /// <summary>
-        /// Get detail of a page.
-        /// </summary>
+        /// <summary>Get detail of a page.</summary>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>The page details.</returns>
         [HttpGet]
@@ -111,9 +103,7 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         /// GET: api/Pages/GetCustomUrls
-        /// <summary>
-        /// Get custom Urls of a page.
-        /// </summary>
+        /// <summary>Get custom Urls of a page.</summary>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>A list of custom urls.</returns>
         [HttpGet]
@@ -127,9 +117,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, this.pagesController.GetPageUrls(pageId));
         }
 
-        /// <summary>
-        /// Creates a custom url for SEO purposes.
-        /// </summary>
+        /// <summary>Creates a custom url for SEO purposes.</summary>
         /// <param name="dto"><see cref="SeoUrl"/> DTO.</param>
         /// <returns>Information about success or failure as well as a possible error message and a new url suggestion.</returns>
         [HttpPost]
@@ -155,9 +143,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 });
         }
 
-        /// <summary>
-        /// Updates a custom url.
-        /// </summary>
+        /// <summary>Updates a custom url.</summary>
         /// <param name="dto"><see cref="SeoUrl"/> DTO.</param>
         /// <returns>the id, if the call succeeded or faile, a possible error message and a possible new url suggestion.</returns>
         [HttpPost]
@@ -181,9 +167,7 @@ namespace Dnn.PersonaBar.Pages.Services
             });
         }
 
-        /// <summary>
-        /// Deletes a custom URL.
-        /// </summary>
+        /// <summary>Deletes a custom URL.</summary>
         /// <param name="dto"><see cref="UrlIdDto"/> DTO.</param>
         /// <returns>A value indicating if the call succeeded.</returns>
         [HttpPost]
@@ -207,9 +191,7 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         /// GET: api/Pages/GetPageList
-        /// <summary>
-        /// Gets the list of pages for a given parent page.
-        /// </summary>
+        /// <summary>Gets the list of pages for a given parent page.</summary>
         /// <param name="parentId">The page (tab) id for the parent.</param>
         /// <param name="searchKey">An optional search string.</param>
         /// <returns>A list of pages.</returns>
@@ -226,9 +208,7 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         /// GET: api/Pages/SearchPages
-        /// <summary>
-        /// Searches for pages.
-        /// </summary>
+        /// <summary>Searches for pages.</summary>
         /// <param name="searchKey">The search string.</param>
         /// <param name="pageType">The type of page.</param>
         /// <param name="tags">The page tags.</param>
@@ -267,9 +247,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        /// <summary>
-        /// Gets the pages hierarchy.
-        /// </summary>
+        /// <summary>Gets the pages hierarchy.</summary>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>The page hierarchy.</returns>
         [HttpGet]
@@ -287,9 +265,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Moves a page to another place in the hierarchy.
-        /// </summary>
+        /// <summary>Moves a page to another place in the hierarchy.</summary>
         /// <param name="request"><see cref="PageMoveRequest"/> DTO.</param>
         /// <returns>A status and information about the page at it's new location.</returns>
         [HttpPost]
@@ -329,9 +305,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Deletes a page.
-        /// </summary>
+        /// <summary>Deletes a page.</summary>
         /// <param name="page">The page to delete, <see cref="PageItem"/> DTO.</param>
         /// <param name="hardDelete">Should the page be hard-deleted or not.</param>
         /// <returns>The status of the page deletion.</returns>
@@ -357,9 +331,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Deletes a module from a page.
-        /// </summary>
+        /// <summary>Deletes a module from a page.</summary>
         /// <param name="module">The module to delete, <see cref="PageModuleItem"/> DTO.</param>
         /// <returns>A status code or an error.</returns>
         [HttpPost]
@@ -383,9 +355,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Copies the theme from a page to descendend pages.
-        /// </summary>
+        /// <summary>Copies the theme from a page to descendend pages.</summary>
         /// <param name="copyTheme"><see cref="CopyThemeRequest"/>.</param>
         /// <returns>The status of the request.</returns>
         [HttpPost]
@@ -402,9 +372,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        /// <summary>
-        /// Copies permissions from a page to the descendent pages.
-        /// </summary>
+        /// <summary>Copies permissions from a page to the descendent pages.</summary>
         /// <param name="copyPermissions"><see cref="CopyPermissionsRequest"/> DTO.</param>
         /// <returns>The status of the operation.</returns>
         [HttpPost]
@@ -432,9 +400,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Sets a page in edit mode.
-        /// </summary>
+        /// <summary>Sets a page in edit mode.</summary>
         /// <param name="id">the page (tab) id.</param>
         /// <returns>Sets a cookie for edit mode on the specified page then returns a success message.</returns>
         [HttpPost]
@@ -450,9 +416,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
-        /// <summary>
-        /// Saves the page details.
-        /// </summary>
+        /// <summary>Saves the page details.</summary>
         /// <param name="pageSettings">The new page settings, <see cref="PageSettings"/> DTO.</param>
         /// <returns>The new page details.</returns>
         [HttpPost]
@@ -493,9 +457,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Gets the default page settings.
-        /// </summary>
+        /// <summary>Gets the default page settings.</summary>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>The page default settings.</returns>
         [HttpGet]
@@ -506,9 +468,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { page = settings, new DnnFileUploadOptions().ValidationCode });
         }
 
-        /// <summary>
-        /// Gets the list of cache providers.
-        /// </summary>
+        /// <summary>Gets the list of cache providers.</summary>
         /// <returns>List of cache providers.</returns>
         [HttpGet]
         public HttpResponseMessage GetCacheProviderList()
@@ -517,9 +477,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, providers);
         }
 
-        /// <summary>
-        /// Gets the available themes.
-        /// </summary>
+        /// <summary>Gets the available themes.</summary>
         /// <returns>Available themes.</returns>
         [HttpGet]
 
@@ -543,9 +501,7 @@ namespace Dnn.PersonaBar.Pages.Services
             });
         }
 
-        /// <summary>
-        /// Gets the theme files for a given theme.
-        /// </summary>
+        /// <summary>Gets the theme files for a given theme.</summary>
         /// <param name="themeName">The name of the theme.</param>
         /// <param name="level">The level of the theme, <see cref="ThemeLevel"/>.</param>
         /// <returns>Returns a list of available layouts and containers for each theme.</returns>
@@ -565,9 +521,7 @@ namespace Dnn.PersonaBar.Pages.Services
             });
         }
 
-        /// <summary>
-        /// Save bulk pages (Add multiple pages).
-        /// </summary>
+        /// <summary>Save bulk pages (Add multiple pages).</summary>
         /// <param name="bulkPage"><see cref="BulkPage"/> DTO.</param>
         /// <returns>A status code and the result of adding the multiple pages.</returns>
         [HttpPost]
@@ -598,9 +552,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Validates if bulk pages (Add multiple pages) information is valid.
-        /// </summary>
+        /// <summary>Validates if bulk pages (Add multiple pages) information is valid.</summary>
         /// <param name="bulkPage"><see cref="BulkPage"/> DTO.</param>
         /// <returns>A status code and the result of the bulk pages check.</returns>
         [HttpPost]
@@ -631,9 +583,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Saves a page as a template.
-        /// </summary>
+        /// <summary>Saves a page as a template.</summary>
         /// <param name="pageTemplate"><see cref="PageTemplate"/> DTO.</param>
         /// <returns>The status of the operation with a possible error message.</returns>
         [HttpPost]
@@ -665,9 +615,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Makes a localized pages neutral.
-        /// </summary>
+        /// <summary>Makes a localized pages neutral.</summary>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>A success status or an exception.</returns>
         /// <example>POST /api/personabar/pages/MakePageNeutral?tabId=123 .</example>
@@ -701,9 +649,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Makes a neutral page localizable.
-        /// </summary>
+        /// <summary>Makes a neutral page localizable.</summary>
         /// <param name="pageId">the page (tab) id.</param>
         /// <returns>A status code or an error message.</returns>
         /// <example>POST /api/personabar/pages/MakePageTranslatable?tabId=123 .</example>
@@ -740,9 +686,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Adds all missing languages to a page.
-        /// </summary>
+        /// <summary>Adds all missing languages to a page.</summary>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>A status code or an exception message.</returns>
         /// <example>POST /api/personabar/pages/AddMissingLanguages?tabId=123 .</example>
@@ -771,9 +715,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Notifies the translators with a comment.
-        /// </summary>
+        /// <summary>Notifies the translators with a comment.</summary>
         /// <param name="comment"><see cref="TranslatorsComment"/> DTO.</param>
         /// <returns>A status code and a message.</returns>
         /// <example>POST /api/personabar/pages/NotifyTranslators .</example>
@@ -853,9 +795,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Updates the page (tab) localization.
-        /// </summary>
+        /// <summary>Updates the page (tab) localization.</summary>
         /// <param name="request"><see cref="DnnPagesRequest"/> DTO.</param>
         /// <returns>A status code or an exception message.</returns>
         /// <example>POST /api/personabar/pages/UpdateTabLocalization .</example>
@@ -883,9 +823,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Restores a deleted module on a page (tab).
-        /// </summary>
+        /// <summary>Restores a deleted module on a page (tab).</summary>
         /// <param name="tabModuleId">The TabModule id.</param>
         /// <returns>A success message or an exception message.</returns>
         /// <example>POST /api/personabar/pages/RestoreModule?tabModuleId=123 .</example>
@@ -920,9 +858,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Deletes a module from a page (tab).
-        /// </summary>
+        /// <summary>Deletes a module from a page (tab).</summary>
         /// <param name="tabModuleId">The TabModuleId.</param>
         /// <returns>A status message or an error message.</returns>
         /// <example>POST /api/personabar/pages/DeleteModule?tabModuleId=123 .</example>
@@ -957,9 +893,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Gets ContentLocalizationEnabled.
-        /// </summary>
+        /// <summary>Gets ContentLocalizationEnabled.</summary>
         /// <returns>A value indicating if content localization is enabled.</returns>
         /// <example>GET /api/personabar/pages/GetContentLocalizationEnabled.</example>
         [HttpGet]
@@ -983,9 +917,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Gets GetCachedItemCount.
-        /// </summary>
+        /// <summary>Gets GetCachedItemCount.</summary>
         /// <param name="cacheProvider">The cache profider.</param>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>Caching information.</returns>
@@ -1011,9 +943,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        /// <summary>
-        /// Clears the page cache for a given page.
-        /// </summary>
+        /// <summary>Clears the page cache for a given page.</summary>
         /// <param name="cacheProvider">The cache provider to clear the cache for.</param>
         /// <param name="pageId">The page (tab) id.</param>
         /// <returns>A status code or an error message.</returns>

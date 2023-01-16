@@ -8,18 +8,14 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
     public class ScopeAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScopeAttribute"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ScopeAttribute"/> class.</summary>
         /// <param name="scope"></param>
         public ScopeAttribute(string scope)
         {
             this.Scope = scope;
         }
 
-        /// <summary>
-        /// Gets or sets the property to use to scope the cache.  The default is an empty string.
-        /// </summary>
+        /// <summary>Gets or sets the property to use to scope the cache.  The default is an empty string.</summary>
         public string Scope { get; set; }
     }
 }

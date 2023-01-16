@@ -20,9 +20,7 @@ namespace DotNetNuke.Entities.Users.Membership
 
         public string PasswordSalt { get; set; }
 
-        /// <summary>
-        /// Fill the object with data from database.
-        /// </summary>
+        /// <summary>Fill the object with data from database.</summary>
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {

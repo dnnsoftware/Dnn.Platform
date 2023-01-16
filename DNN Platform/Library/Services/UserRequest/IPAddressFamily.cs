@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Services.UserRequest
 {
-    /// <summary>
-    /// IP address family.
-    /// </summary>
+    /// <summary>IP address family.</summary>
     public enum IPAddressFamily
     {
         IPv4 = 0,

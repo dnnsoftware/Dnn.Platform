@@ -85,9 +85,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             return this.provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId, body, senderUserId, fromName, createUpdateUserId);
         }
 
-        /// <summary>
-        /// check if an attempt to reply to an existing mail has valid users.
-        /// </summary>
+        /// <summary>check if an attempt to reply to an existing mail has valid users.</summary>
         /// <param name="conversationId">the particular reply within the message.</param>
         /// <param name="userId">the user sending the message - as they are a recipient they must be excluded from the count.</param>
         /// <returns>The count of recipients.</returns>

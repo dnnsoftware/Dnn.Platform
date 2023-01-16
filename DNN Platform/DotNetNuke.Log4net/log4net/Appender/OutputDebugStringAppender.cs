@@ -31,9 +31,7 @@ using log4net.Core;
 
 namespace log4net.Appender
 {
-    /// <summary>
-    /// Appends log events to the OutputDebugString system.
-    /// </summary>
+    /// <summary>Appends log events to the OutputDebugString system.</summary>
     /// <remarks>
     /// <para>
     /// OutputDebugStringAppender appends log events to the
@@ -48,9 +46,7 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class OutputDebugStringAppender : AppenderSkeleton
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OutputDebugStringAppender" /> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="OutputDebugStringAppender" /> class.</summary>
         /// <remarks>
         /// <para>
         /// Default constructor.
@@ -60,9 +56,7 @@ namespace log4net.Appender
         {
         }
 
-        /// <summary>
-        /// Write the logging event to the output debug string API
-        /// </summary>
+        /// <summary>Write the logging event to the output debug string API</summary>
         /// <param name="loggingEvent">the event to log</param>
         /// <remarks>
         /// <para>
@@ -87,9 +81,7 @@ namespace log4net.Appender
             OutputDebugString(this.RenderLoggingEvent(loggingEvent));
         } 
 
-        /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
-        /// </summary>
+        /// <summary>This appender requires a <see cref="Layout"/> to be set.</summary>
         /// <value><c>true</c></value>
         /// <remarks>
         /// <para>
@@ -101,9 +93,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        /// <summary>
-        /// Stub for OutputDebugString native method
-        /// </summary>
+        /// <summary>Stub for OutputDebugString native method</summary>
         /// <param name="message">the string to output</param>
         /// <remarks>
         /// <para>

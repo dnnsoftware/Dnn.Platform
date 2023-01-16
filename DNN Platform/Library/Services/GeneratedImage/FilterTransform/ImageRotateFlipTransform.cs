@@ -7,14 +7,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     using System.Drawing;
     using System.Drawing.Drawing2D;
 
-    /// <summary>
-    /// Rotation ImageTransform class.
-    /// </summary>
+    /// <summary>Rotation ImageTransform class.</summary>
     public class ImageRotateFlipTransform : ImageTransform
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageRotateFlipTransform"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ImageRotateFlipTransform"/> class.</summary>
         public ImageRotateFlipTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -24,19 +20,13 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
         }
 
-        /// <summary>
-        /// Gets provides an Unique String for this transformation.
-        /// </summary>
+        /// <summary>Gets provides an Unique String for this transformation.</summary>
         public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
 
-        /// <summary>
-        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.
-        /// </summary>
+        /// <summary>Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.</summary>
         public RotateFlipType RotateFlip { get; set; }
 
-        /// <summary>
-        /// Processes an input image applying a rotation image transformation.
-        /// </summary>
+        /// <summary>Processes an input image applying a rotation image transformation.</summary>
         /// <param name="image">Input image.</param>
         /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)

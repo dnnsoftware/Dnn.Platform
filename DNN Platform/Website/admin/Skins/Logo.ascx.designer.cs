@@ -14,27 +14,21 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Logo
     {
 
-        /// <summary>
-        /// hypLogo control.
-        /// </summary>
+        /// <summary>hypLogo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink hypLogo;
 
-        /// <summary>
-        /// imgLogo control.
-        /// </summary>
+        /// <summary>imgLogo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgLogo;
 
-        /// <summary>
-        /// litLogo control.
-        /// </summary>
+        /// <summary>litLogo control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

@@ -21,9 +21,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
         private static Hashtable businessControllers = new Hashtable();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Html5ModuleTokenReplace"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="Html5ModuleTokenReplace"/> class.</summary>
         /// <param name="page"></param>
         /// <param name="html5File"></param>
         /// <param name="moduleContext"></param>

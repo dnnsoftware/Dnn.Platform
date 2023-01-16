@@ -15,65 +15,49 @@ namespace DotNetNuke.Modules.Admin.Modules {
     
     
     public partial class ViewSource {
-        /// <summary>
-        /// plFile control.
-        /// </summary>
+        /// <summary>plFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plFile;
-        /// <summary>
-        /// cboFile control.
-        /// </summary>
+        /// <summary>cboFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboFile;
-        /// <summary>
-        /// lblSourceFile control.
-        /// </summary>
+        /// <summary>lblSourceFile control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSourceFile;
-        /// <summary>
-        /// trSource control.
-        /// </summary>
+        /// <summary>trSource control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl trSource;
-        /// <summary>
-        /// plSource control.
-        /// </summary>
+        /// <summary>plSource control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plSource;
-        /// <summary>
-        /// txtSource control.
-        /// </summary>
+        /// <summary>txtSource control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSource;
-        /// <summary>
-        /// cmdUpdate control.
-        /// </summary>
+        /// <summary>cmdUpdate control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdUpdate;
-        /// <summary>
-        /// cmdCancel control.
-        /// </summary>
+        /// <summary>cmdCancel control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.

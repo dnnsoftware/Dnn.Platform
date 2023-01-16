@@ -40,33 +40,19 @@ namespace DotNetNuke.Services.Install
     using Globals = DotNetNuke.Common.Globals;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The InstallWizard class provides the Installation Wizard for DotNetNuke.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// -----------------------------------------------------------------------------
+    /// <summary>The InstallWizard class provides the Installation Wizard for DotNetNuke.</summary>
     public partial class UpgradeWizard : PageBase
     {
-        /// <summary>
-        /// Client ID of the hidden input containing the Telerik anti-forgery token.
-        /// </summary>
+        /// <summary>Client ID of the hidden input containing the Telerik anti-forgery token.</summary>
         protected static readonly string TelerikAntiForgeryTokenClientID = "telerikAntiForgeryToken";
 
-        /// <summary>
-        /// Client Id of the Telerik unintall radio buttons.
-        /// </summary>
+        /// <summary>Client Id of the Telerik unintall radio buttons.</summary>
         protected static readonly string TelerikUninstallOptionClientID = "telerikUninstallOption";
 
-        /// <summary>
-        /// Form value when user selects Yes.
-        /// </summary>
+        /// <summary>Form value when user selects Yes.</summary>
         protected static readonly string OptionYes = "Y";
 
-        /// <summary>
-        /// Form value when user selects No.
-        /// </summary>
+        /// <summary>Form value when user selects No.</summary>
         protected static readonly string OptionNo = "N";
 
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
@@ -75,7 +61,7 @@ namespace DotNetNuke.Services.Install
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
-        protected static string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+        protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
 
@@ -149,9 +135,7 @@ namespace DotNetNuke.Services.Install
             return new Tuple<bool, string>(result, errorMsg);
         }
 
-        /// <summary>
-        /// Returns information to render the Security tab.
-        /// </summary>
+        /// <summary>Returns information to render the Security tab.</summary>
         /// <param name="accountInfo">Username and password to validate host user.</param>
         /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
         [WebMethod]
@@ -281,13 +265,7 @@ namespace DotNetNuke.Services.Install
             HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the Page is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -301,13 +279,7 @@ namespace DotNetNuke.Services.Install
             GetInstallerLocales();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the Page loads.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             if (InstallBlocker.Instance.IsInstallInProgress())

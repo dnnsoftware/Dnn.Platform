@@ -6,9 +6,7 @@ namespace DotNetNuke.Services.Syndication
     using System;
     using System.Xml;
 
-    /// <summary>
-    ///   Class for managing an OPML feed outline.
-    /// </summary>
+    /// <summary>  Class for managing an OPML feed outline.</summary>
     public class OpmlOutline
     {
         private string category = string.Empty;

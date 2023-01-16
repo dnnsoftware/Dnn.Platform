@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Framework
 {
     using System;
@@ -27,13 +26,11 @@ namespace DotNetNuke.Framework
     // ReSharper disable once InconsistentNaming
     public class jQuery
     {
-        /// <summary>
-        /// Returns the default URL for a hosted version of the jQuery script.
-        /// </summary>
+        /// <summary>Returns the default URL for a hosted version of the jQuery script.</summary>
         /// <remarks>
         /// Google hosts versions of many popular javascript libraries on their CDN.
         /// Using the hosted version increases the likelihood that the file is already
-        /// cached in the users browser.
+        /// cached in the user's browser.
         /// </remarks>
         public const string DefaultHostedUrl = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
 
@@ -50,13 +47,8 @@ namespace DotNetNuke.Framework
         private const string JQueryUIVersionKey = "jQueryUIVersionKey";
         private const string JQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
 
-        /// <summary>
-        /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
-        /// </summary>
-        /// <value>
-        /// The HostSetting for the URL of the hosted version of the jQuery script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery script.</summary>
+        /// <value>The HostSetting for the URL of the hosted version of the jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUrl
@@ -72,13 +64,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.
-        /// </summary>
-        /// <value>
-        /// The HostSetting for the URL of the hosted version of the jQuery migrated script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.</summary>
+        /// <value>The HostSetting for the URL of the hosted version of the jQuery migrated script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedMigrateUrl
@@ -94,13 +81,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the HostSetting for the URL of the hosted version of the jQuery UI script.
-        /// </summary>
-        /// <value>
-        /// The HostSetting for the URL of the hosted version of the jQuery UI script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the HostSetting for the URL of the hosted version of the jQuery UI script.</summary>
+        /// <value>The HostSetting for the URL of the hosted version of the jQuery UI script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUIUrl
@@ -116,9 +98,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether checks whether the jQuery core script file exists locally.
-        /// </summary>
+        /// <summary>Gets a value indicating whether checks whether the jQuery core script file exists locally.</summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
@@ -134,9 +114,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether checks whether the jQuery UI core script file exists locally.
-        /// </summary>
+        /// <summary>Gets a value indicating whether checks whether the jQuery UI core script file exists locally.</summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery UI.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
@@ -184,13 +162,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
-        /// </summary>
-        /// <value>
-        /// The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</summary>
+        /// <value>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryDebug property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseDebugScript
@@ -206,13 +179,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.
-        /// </summary>
-        /// <value>
-        /// The HostSetting to determine if we should use a hosted version of the jQuery script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.</summary>
+        /// <value>The HostSetting to determine if we should use a hosted version of the jQuery script.</value>
         /// <remarks>This is a simple wrapper around the Host.jQueryHosted property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseHostedScript
@@ -228,13 +196,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the version string for the local jQuery script.
-        /// </summary>
-        /// <value>
-        /// The version string for the local jQuery script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the version string for the local jQuery script.</summary>
+        /// <value>The version string for the local jQuery script.</value>
         /// <remarks>
         /// This only evaluates the version in the full jQuery file and assumes that the minified script
         /// is the same version as the full script.
@@ -264,13 +227,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// Gets the version string for the local jQuery UI script.
-        /// </summary>
-        /// <value>
-        /// The version string for the local jQuery UI script.
-        /// </value>
-        /// <returns></returns>
+        /// <summary>Gets the version string for the local jQuery UI script.</summary>
+        /// <value>The version string for the local jQuery UI script.</value>
         /// <remarks>
         /// This only evaluates the version in the full jQuery UI file and assumes that the minified script
         /// is the same version as the full script.
@@ -384,9 +342,7 @@ namespace DotNetNuke.Framework
             return scriptsrc;
         }
 
-        /// <summary>
-        /// Active the page with keep alive, so that authentication will not expire.
-        /// </summary>
+        /// <summary>Active the page with keep alive, so that authentication will not expire.</summary>
         /// <param name="page">The page instance.</param>
         public static void KeepAlive(Page page)
         {

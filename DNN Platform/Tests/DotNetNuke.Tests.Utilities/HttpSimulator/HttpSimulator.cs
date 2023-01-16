@@ -60,17 +60,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this.PhysicalApplicationPath = physicalApplicationPath;
         }
 
-        /// <summary>
-        /// Gets physical path to the requested file (used for simulation purposes).
-        /// </summary>
+        /// <summary>Gets physical path to the requested file (used for simulation purposes).</summary>
         public string PhysicalPath
         {
             get { return this._physicalPath; }
         }
 
-        /// <summary>
-        /// Gets the text from the response to the simulated request.
-        /// </summary>
+        /// <summary>Gets the text from the response to the simulated request.</summary>
         public string ResponseText
         {
             get
@@ -85,9 +81,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         public int Port { get; private set; }
 
-        /// <summary>
-        /// Gets portion of the URL after the application.
-        /// </summary>
+        /// <summary>Gets portion of the URL after the application.</summary>
         public string Page { get; private set; }
 
         /// <summary>
@@ -105,9 +99,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
         }
 
-        /// <summary>
-        /// Gets or sets physical path to the application (used for simulation purposes).
-        /// </summary>
+        /// <summary>Gets or sets physical path to the application (used for simulation purposes).</summary>
         public string PhysicalApplicationPath
         {
             get { return this._physicalApplicationPath; }
@@ -125,9 +117,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         public SimulatedHttpRequest WorkerRequest { get; private set; }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a GET request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a GET request.</summary>
         /// <remarks>
         /// Simulates a request to http://localhost/.
         /// </remarks>
@@ -137,9 +127,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this.SimulateRequest(new Uri("http://localhost/"));
         }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a GET request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a GET request.</summary>
         /// <param name="url"></param>
         /// <returns></returns>
         public HttpSimulator SimulateRequest(Uri url)
@@ -147,9 +135,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this.SimulateRequest(url, HttpVerb.GET);
         }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a request.</summary>
         /// <param name="url"></param>
         /// <param name="httpVerb"></param>
         /// <returns></returns>
@@ -158,9 +144,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this.SimulateRequest(url, httpVerb, null, null);
         }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a POST request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a POST request.</summary>
         /// <param name="url"></param>
         /// <param name="formVariables"></param>
         /// <returns></returns>
@@ -169,9 +153,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this.SimulateRequest(url, HttpVerb.POST, formVariables, null);
         }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a POST request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a POST request.</summary>
         /// <param name="url"></param>
         /// <param name="formVariables"></param>
         /// <param name="headers"></param>
@@ -181,9 +163,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this.SimulateRequest(url, HttpVerb.POST, formVariables, headers);
         }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a request.</summary>
         /// <param name="url"></param>
         /// <param name="httpVerb"></param>
         /// <param name="headers"></param>
@@ -193,9 +173,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this.SimulateRequest(url, httpVerb, null, headers);
         }
 
-        /// <summary>
-        /// Sets the referer for the request. Uses a fluent interface.
-        /// </summary>
+        /// <summary>Sets the referer for the request. Uses a fluent interface.</summary>
         /// <param name="referer"></param>
         /// <returns></returns>
         public HttpSimulator SetReferer(Uri referer)
@@ -209,9 +187,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this;
         }
 
-        /// <summary>
-        /// Sets a form variable.
-        /// </summary>
+        /// <summary>Sets a form variable.</summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -227,9 +203,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this;
         }
 
-        /// <summary>
-        /// Sets a header value.
-        /// </summary>
+        /// <summary>Sets a header value.</summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -245,9 +219,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this;
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
@@ -305,9 +277,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return string.IsNullOrEmpty(s) ? string.Empty : Regex.Replace(s, @"(.*)\\*$", "$1", RegexOptions.RightToLeft);
         }
 
-        /// <summary>
-        /// Sets up the HttpContext objects to simulate a request.
-        /// </summary>
+        /// <summary>Sets up the HttpContext objects to simulate a request.</summary>
         /// <param name="url"></param>
         /// <param name="httpVerb"></param>
         /// <param name="formVariables"></param>
@@ -477,9 +447,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             private readonly object _syncRoot = new object();
             private int _timeout = 30; // minutes
 
-            /// <summary>
-            /// Gets the unique session identifier for the session.
-            /// </summary>
+            /// <summary>Gets the unique session identifier for the session.</summary>
             ///
             /// <returns>
             /// The session ID.
@@ -490,9 +458,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return this._sessionId; }
             }
 
-            /// <summary>
-            /// Gets a value indicating whether the session was created with the current request.
-            /// </summary>
+            /// <summary>Gets a value indicating whether the session was created with the current request.</summary>
             ///
             /// <returns>
             /// true if the session was created with the current request; otherwise, false.
@@ -503,9 +469,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return _isNewSession; }
             }
 
-            /// <summary>
-            /// Gets the current session-state mode.
-            /// </summary>
+            /// <summary>Gets the current session-state mode.</summary>
             ///
             /// <returns>
             /// One of the <see cref="T:System.Web.SessionState.SessionStateMode"></see> values.
@@ -516,9 +480,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return SessionStateMode.InProc; }
             }
 
-            /// <summary>
-            /// Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.
-            /// </summary>
+            /// <summary>Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.</summary>
             ///
             /// <returns>
             /// true if the session is embedded in the URL; otherwise, false.
@@ -529,9 +491,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return false; }
             }
 
-            /// <summary>
-            /// Gets a value that indicates whether the application is configured for cookieless sessions.
-            /// </summary>
+            /// <summary>Gets a value that indicates whether the application is configured for cookieless sessions.</summary>
             ///
             /// <returns>
             /// One of the <see cref="T:System.Web.HttpCookieMode"></see> values that indicate whether the application is configured for cookieless sessions. The default is <see cref="F:System.Web.HttpCookieMode.UseCookies"></see>.
@@ -542,9 +502,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return HttpCookieMode.UseCookies; }
             }
 
-            /// <summary>
-            /// Gets a collection of objects declared by &lt;object Runat="Server" Scope="Session"/&gt; tags within the ASP.NET application file Global.asax.
-            /// </summary>
+            /// <summary>Gets a collection of objects declared by &lt;object Runat="Server" Scope="Session"/&gt; tags within the ASP.NET application file Global.asax.</summary>
             ///
             /// <returns>
             /// An <see cref="T:System.Web.HttpStaticObjectsCollection"></see> containing objects declared in the Global.asax file.
@@ -555,9 +513,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return this._staticObjects; }
             }
 
-            /// <summary>
-            /// Gets an object that can be used to synchronize access to the collection of session-state values.
-            /// </summary>
+            /// <summary>Gets an object that can be used to synchronize access to the collection of session-state values.</summary>
             ///
             /// <returns>
             /// An object that can be used to synchronize access to the collection.
@@ -568,9 +524,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return this._syncRoot; }
             }
 
-            /// <summary>
-            /// Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).
-            /// </summary>
+            /// <summary>Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).</summary>
             /// <returns>
             /// true if access to the collection is synchronized (thread safe); otherwise, false.
             /// </returns>
@@ -580,9 +534,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return true; }
             }
 
-            /// <summary>
-            /// Gets or sets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
-            /// </summary>
+            /// <summary>Gets or sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.</summary>
             ///
             /// <returns>
             /// The time-out period, in minutes.
@@ -594,9 +546,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 set { this._timeout = value; }
             }
 
-            /// <summary>
-            /// Gets or sets the locale identifier (LCID) of the current session.
-            /// </summary>
+            /// <summary>Gets or sets the locale identifier (LCID) of the current session.</summary>
             ///
             /// <returns>
             /// A <see cref="T:System.Globalization.CultureInfo"></see> instance that specifies the culture of the current session.
@@ -604,9 +554,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             ///
             public int LCID { get; set; }
 
-            /// <summary>
-            /// Gets or sets the code-page identifier for the current session.
-            /// </summary>
+            /// <summary>Gets or sets the code-page identifier for the current session.</summary>
             ///
             /// <returns>
             /// The code-page identifier for the current session.
@@ -614,9 +562,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             ///
             public int CodePage { get; set; }
 
-            /// <summary>
-            /// Gets a value indicating whether the session is read-only.
-            /// </summary>
+            /// <summary>Gets a value indicating whether the session is read-only.</summary>
             ///
             /// <returns>
             /// true if the session is read-only; otherwise, false.
@@ -630,9 +576,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 }
             }
 
-            /// <summary>
-            /// Gets or sets a session-state item value by name.
-            /// </summary>
+            /// <summary>Gets or sets a session-state item value by name.</summary>
             ///
             /// <returns>
             /// The session-state item value specified in the name parameter.
@@ -645,9 +589,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 set { this.BaseSet(name, value); }
             }
 
-            /// <summary>
-            /// Gets or sets a session-state item value by numerical index.
-            /// </summary>
+            /// <summary>Gets or sets a session-state item value by numerical index.</summary>
             ///
             /// <returns>
             /// The session-state item value specified in the index parameter.
@@ -660,18 +602,14 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 set { this.BaseSet(index, value); }
             }
 
-            /// <summary>
-            /// Ends the current session.
-            /// </summary>
+            /// <summary>Ends the current session.</summary>
             ///
             public void Abandon()
             {
                 this.BaseClear();
             }
 
-            /// <summary>
-            /// Adds a new item to the session-state collection.
-            /// </summary>
+            /// <summary>Adds a new item to the session-state collection.</summary>
             ///
             /// <param name="name">The name of the item to add to the session-state collection. </param>
             /// <param name="value">The value of the item to add to the session-state collection. </param>
@@ -680,9 +618,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 this.BaseAdd(name, value);
             }
 
-            /// <summary>
-            /// Deletes an item from the session-state item collection.
-            /// </summary>
+            /// <summary>Deletes an item from the session-state item collection.</summary>
             ///
             /// <param name="name">The name of the item to delete from the session-state item collection. </param>
             public void Remove(string name)
@@ -690,9 +626,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 this.BaseRemove(name);
             }
 
-            /// <summary>
-            /// Deletes an item at a specified index from the session-state item collection.
-            /// </summary>
+            /// <summary>Deletes an item at a specified index from the session-state item collection.</summary>
             ///
             /// <param name="index">The index of the item to remove from the session-state collection. </param>
             public void RemoveAt(int index)
@@ -700,27 +634,21 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 this.BaseRemoveAt(index);
             }
 
-            /// <summary>
-            /// Clears all values from the session-state item collection.
-            /// </summary>
+            /// <summary>Clears all values from the session-state item collection.</summary>
             ///
             public void Clear()
             {
                 this.BaseClear();
             }
 
-            /// <summary>
-            /// Clears all values from the session-state item collection.
-            /// </summary>
+            /// <summary>Clears all values from the session-state item collection.</summary>
             ///
             public void RemoveAll()
             {
                 this.BaseClear();
             }
 
-            /// <summary>
-            /// Copies the collection of session-state item values to a one-dimensional array, starting at the specified index in the array.
-            /// </summary>
+            /// <summary>Copies the collection of session-state item values to a one-dimensional array, starting at the specified index in the array.</summary>
             ///
             /// <param name="array">The <see cref="T:System.Array"></see> that receives the session values. </param>
             /// <param name="index">The index in array where copying starts. </param>

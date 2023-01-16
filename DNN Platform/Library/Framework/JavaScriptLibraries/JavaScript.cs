@@ -35,27 +35,21 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string JQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string JQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JavaScript"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="JavaScript"/> class.</summary>
         protected JavaScript()
         {
         }
 
-        /// <summary>
-        ///     checks whether the script file is a known javascript library.
-        /// </summary>
+        /// <summary>checks whether the script file is a known javascript library.</summary>
         /// <param name="jsname">script identifier.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if a library with the given name is installed, otherwise <see langword="false"/>.</returns>
         public static bool IsInstalled(string jsname)
         {
             JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
             return library != null;
         }
 
-        /// <summary>
-        ///     determine whether to use the debug script for a file.
-        /// </summary>
+        /// <summary>determine whether to use the debug script for a file.</summary>
         /// <returns>whether to use the debug script.</returns>
         public static bool UseDebugScript()
         {
@@ -67,11 +61,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return HttpContextSource.Current.IsDebuggingEnabled;
         }
 
-        /// <summary>
-        ///     returns the version of a javascript library from the database.
-        /// </summary>
+        /// <summary>Returns the version of a javascript library from the database.</summary>
         /// <param name="jsname">the library name.</param>
-        /// <returns></returns>
+        /// <returns>The highest version number of the library or <see cref="string.Empty"/>.</returns>
         public static string Version(string jsname)
         {
             JavaScriptLibrary library = GetHighestVersionLibrary(jsname);
@@ -144,10 +136,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             LogCollision(string.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
         }
 
-        /// <summary>
-        ///     method is called once per page event cycle and will
-        ///     load all scripts requested during that page processing cycle.
-        /// </summary>
+        /// <summary>method is called once per page event cycle and will load all scripts requested during that page processing cycle.</summary>
         /// <param name="page">reference to the current page.</param>
         public static void Register(Page page)
         {

@@ -10,9 +10,7 @@ namespace DotNetNuke.Services.Localization
     {
         private readonly string compare;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CultureInfoComparer"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CultureInfoComparer"/> class.</summary>
         /// <param name="compareBy"></param>
         public CultureInfoComparer(string compareBy)
         {

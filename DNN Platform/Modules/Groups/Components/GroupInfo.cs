@@ -16,16 +16,12 @@ namespace DotNetNuke.Entities.Groups
     {
         // private RoleInfo roleInfo;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GroupInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
         public GroupInfo()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GroupInfo"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
         /// <param name="roleInfo"></param>
         public GroupInfo(RoleInfo roleInfo)
         {

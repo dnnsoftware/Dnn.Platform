@@ -55,12 +55,10 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   CreateChildControls overrides the Base class's method to correctly build the
         ///   control based on the configuration.
         /// </summary>
-        /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
             // First clear the controls collection
@@ -79,11 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   OnPreRender runs just before the control is rendered.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
+        /// <summary>  OnPreRender runs just before the control is rendered.</summary>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

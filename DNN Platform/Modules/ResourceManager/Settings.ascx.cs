@@ -14,9 +14,7 @@ namespace Dnn.Modules.ResourceManager
     using Constants = Dnn.Modules.ResourceManager.Components.Constants;
     using DnnExceptions = DotNetNuke.Services.Exceptions.Exceptions;
 
-    /// <summary>
-    /// Provides module settings control.
-    /// </summary>
+    /// <summary>Provides module settings control.</summary>
     public partial class Settings : ModuleSettingsBase
     {
         /// <inheritdoc/>

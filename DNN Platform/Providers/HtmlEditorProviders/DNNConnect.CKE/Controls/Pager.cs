@@ -11,20 +11,14 @@ namespace DNNConnect.CKEditorProvider.Controls
 
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The html generic self closing.
-    /// </summary>
+    /// <summary>The html generic self closing.</summary>
     [ToolboxData("<{0}:Pager runat=server></{0}:Pager>")]
     public class Pager : WebControl, IPostBackEventHandler
     {
-        /// <summary>
-        /// Occurs when [page changed].
-        /// </summary>
+        /// <summary>Occurs when [page changed].</summary>
         public event EventHandler PageChanged;
 
-        /// <summary>
-        ///   Gets or sets Language Code.
-        /// </summary>
+        /// <summary>  Gets or sets Language Code.</summary>
         public string LanguageCode
         {
             get
@@ -38,9 +32,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        ///   Gets or sets Ressource File.
-        /// </summary>
+        /// <summary>  Gets or sets Ressource File.</summary>
         public string RessourceFile
         {
             get
@@ -54,9 +46,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        ///   Gets or sets Page Count.
-        /// </summary>
+        /// <summary>  Gets or sets Page Count.</summary>
         public int PageCount
         {
             get
@@ -70,9 +60,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        ///   Gets or sets Current Page Index.
-        /// </summary>
+        /// <summary>  Gets or sets Current Page Index.</summary>
         public int CurrentPageIndex
         {
             get
@@ -86,9 +74,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Enables a server control to process an event raised when a form is posted to the server.
-        /// </summary>
+        /// <summary>Enables a server control to process an event raised when a form is posted to the server.</summary>
         /// <param name="eventArgument">A <see cref="T:System.String"/> that represents an optional event argument to be passed to the event handler.</param>
         public void RaisePostBackEvent(string eventArgument)
         {
@@ -96,9 +82,7 @@ namespace DNNConnect.CKEditorProvider.Controls
             this.OnPageChanged(new EventArgs());
         }
 
-        /// <summary>
-        /// Raises the <see cref="PageChanged"/> event.
-        /// </summary>
+        /// <summary>Raises the <see cref="PageChanged"/> event.</summary>
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void OnPageChanged(EventArgs e)
         {
@@ -108,18 +92,14 @@ namespace DNNConnect.CKEditorProvider.Controls
             }
         }
 
-        /// <summary>
-        /// Renders the control to the specified HTML writer.
-        /// </summary>
+        /// <summary>Renders the control to the specified HTML writer.</summary>
         /// <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"/> object that receives the control content.</param>
         protected override void Render(HtmlTextWriter writer)
         {
             this.GeneratePagerLinks(writer);
         }
 
-        /// <summary>
-        /// Generates the pager links.
-        /// </summary>
+        /// <summary>Generates the pager links.</summary>
         /// <param name="writer">The writer.</param>
         private void GeneratePagerLinks(HtmlTextWriter writer)
         {
