@@ -14,14 +14,13 @@ defaults:
     shell: pwsh
 
 env:
-    VERSION_SUFFIX: alpha-${{ github.run_number }}
+  VERSION_SUFFIX: alpha-${{ github.run_number }}
 
 jobs:
   build:
     strategy:
       matrix:
         configuration: [Release]
-        node-version: [16.x]
 
     runs-on: windows-latest
 
@@ -46,10 +45,10 @@ jobs:
         with:
           nuget-version: latest
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v3.5.1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: ".node-version"
 
       - name: Install npm modules
         run: |
